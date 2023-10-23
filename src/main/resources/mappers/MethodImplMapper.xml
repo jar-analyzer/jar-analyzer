@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.n1ar4.jar.analyzer.db.mapper.MethodImplMapper">
+    <resultMap id="methodMap" type="me.n1ar4.jar.analyzer.dto.MethodResult">
+        <result column="jar_name" property="jarName"/>
+        <result column="method_name" property="methodName"/>
+        <result column="class_name" property="className"/>
+        <result column="method_desc" property="methodDesc"/>
+    </resultMap>
+    <insert id="insertMethodImpl" parameterType="MethodImplEntity">
+        INSERT INTO method_impl_table
+            (class_name, method_name, method_desc, impl_class_name)
+        VALUES
+        <foreach collection="list" separator="," item="item">
+            (#{item.className}, #{item.methodName}, #{item.methodDesc}, #{item.implClassName})
+        </foreach>
+    </insert>
+    <select id="selectImplClassName" resultMap="methodMap">
+        SELECT DISTINCT
+        ct.jar_name AS jar_name,
+        mi.method_name AS method_name,
+        mi.method_desc AS method_desc,
+        mi.impl_class_name AS class_name
+        FROM method_impl_table mi
+        INNER JOIN class_table ct
+        ON ct.class_name = mi.impl_class_name
+        <where>
+            <if test="className != null and className != ''">
+                AND mi.class_name = #{className}
+            </if>
+            <if test="methodName != null and methodName != ''">
+                AND mi.method_name = #{methodName}
+            </if>
+            <if test="methodDesc != null and methodDesc != ''">
+                AND mi.method_desc = #{methodDesc}
+            </if>
+        </where>
+    </select>
+    <select id="selectSuperImpls" resultMap="methodMap">
+        SELECT DISTINCT
+        ct.jar_name AS jar_name,
+        mi.method_name AS method_name,
+        mi.method_desc AS method_desc,
+        mi.class_name AS class_name
+        FROM method_impl_table mi
+        INNER JOIN class_table ct
+        ON ct.class_name = mi.impl_class_name
+        <where>
+            <if test="className != null and className != ''">
+                AND mi.impl_class_name = #{className}
+            </if>
+            <if test="methodName != null and methodName != ''">
+                AND mi.method_name = #{methodName}
+            </if>
+            <if test="methodDesc != null and methodDesc != ''">
+                AND mi.method_desc = #{methodDesc}
+            </if>
+        </where>
+    </select>
+</mapper>

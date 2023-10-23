@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.n1ar4.jar.analyzer.db.mapper.MethodMapper">
+    <resultMap id="methodMap" type="me.n1ar4.jar.analyzer.dto.MethodResult">
+        <result column="jar_name" property="jarName"/>
+        <result column="method_name" property="methodName"/>
+        <result column="class_name" property="className"/>
+        <result column="method_desc" property="methodDesc"/>
+        <result column="is_static" property="isStaticInt"/>
+        <result column="access" property="accessInt"/>
+    </resultMap>
+    <insert id="insertMethod" parameterType="MethodEntity">
+        INSERT INTO method_table
+        (method_name, method_desc, is_static, class_name, access)
+        VALUES
+        <foreach collection="list" separator="," item="item">
+            (#{item.methodName}, #{item.methodDesc}, #{item.isStatic}, #{item.className}, #{item.access})
+        </foreach>
+    </insert>
+    <select id="selectMethodsByClassName" resultMap="methodMap">
+        SELECT DISTINCT cf.jar_name, m.method_name, m.class_name, m.method_desc, m.is_static, m.access
+        FROM method_table m
+                 INNER JOIN class_file_table cf ON
+            substr(cf.class_name, 1, length(cf.class_name) - 6) = m.class_name
+        WHERE m.class_name = #{className}
+    </select>
+    <select id="selectMethods" resultMap="methodMap">
+        SELECT DISTINCT cf.jar_name, m.method_name, m.class_name, m.method_desc, m.is_static, m.access
+        FROM method_table m
+                 INNER JOIN class_file_table cf ON
+            substr(cf.class_name, 1, length(cf.class_name) - 6) = m.class_name
+        <where>
+            <if test="methodName != null and methodName != ''">
+                AND m.method_name = #{methodName}
+            </if>
+            <if test="methodDesc != null and methodDesc != ''">
+                AND m.method_desc = #{methodDesc}
+            </if>
+            <if test="className != null and className != ''">
+                AND m.class_name = #{className}
+            </if>
+        </where>
+    </select>
+</mapper>

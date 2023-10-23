@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.n1ar4.jar.analyzer.db.mapper.MethodCallMapper">
+    <resultMap id="methodMap" type="me.n1ar4.jar.analyzer.dto.MethodResult">
+        <result column="method_name" property="methodName"/>
+        <result column="class_name" property="className"/>
+        <result column="method_desc" property="methodDesc"/>
+    </resultMap>
+    <insert id="insertMethodCall" parameterType="MethodCallEntity">
+        INSERT INTO method_call_table
+            (
+             caller_method_name, caller_method_desc, caller_class_name,
+             callee_method_name, callee_method_desc, callee_class_name
+             )
+        VALUES
+        <foreach collection="list" separator="," item="item">
+            (
+            #{item.callerMethodName}, #{item.callerMethodDesc}, #{item.callerClassName},
+            #{item.calleeMethodName}, #{item.calleeMethodDesc}, #{item.calleeClassName}
+            )
+        </foreach>
+    </insert>
+    <select id="selectCallers" resultMap="methodMap">
+        SELECT DISTINCT
+        mc.caller_method_name AS method_name,
+        mc.caller_class_name AS class_name,
+        mc.caller_method_desc AS method_desc
+        FROM method_call_table mc
+        <where>
+            <if test="calleeClassName != null and calleeClassName != ''">
+                AND mc.callee_class_name = #{calleeClassName}
+            </if>
+            <if test="calleeMethodName != null and calleeMethodName != ''">
+                AND mc.callee_method_name = #{calleeMethodName}
+            </if>
+            <if test="calleeMethodDesc != null and calleeMethodDesc != ''">
+                AND mc.callee_method_desc = #{calleeMethodDesc}
+            </if>
+        </where>
+    </select>
+    <select id="selectCallee" resultMap="methodMap">
+        SELECT DISTINCT
+        mc.callee_method_name AS method_name,
+        mc.callee_class_name AS class_name,
+        mc.callee_method_desc AS method_desc
+        FROM method_call_table mc
+        <where>
+            <if test="callerClassName != null and callerClassName != ''">
+                AND mc.caller_class_name = #{callerClassName}
+            </if>
+            <if test="callerMethodName != null and callerMethodName != ''">
+                AND mc.caller_method_name = #{callerMethodName}
+            </if>
+            <if test="callerMethodDesc != null and callerMethodDesc != ''">
+                AND mc.caller_method_desc = #{callerMethodDesc}
+            </if>
+        </where>
+    </select>
+</mapper>

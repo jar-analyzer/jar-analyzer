@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch4jConfig>
+  <dontWrapJar>true</dontWrapJar>
+  <headerType>console</headerType>
+  <jar>lib\jar-analyzer-2.0-beta.jar</jar>
+  <outfile>D:\new-jar-analyzer\jar-analyzer\release\jar-analyzer-2.0-beta-windows-system\jar-analyzer.exe</outfile>
+  <errTitle></errTitle>
+  <cmdLine></cmdLine>
+  <chdir>.</chdir>
+  <priority>normal</priority>
+  <downloadUrl></downloadUrl>
+  <supportUrl></supportUrl>
+  <stayAlive>false</stayAlive>
+  <restartOnCrash>false</restartOnCrash>
+  <manifest></manifest>
+  <icon>D:\new-jar-analyzer\jar-analyzer\build\jar-analyzer.ico</icon>
+  <singleInstance>
+    <mutexName>jar-analyzer</mutexName>
+    <windowTitle></windowTitle>
+  </singleInstance>
+  <jre>
+    <path>%JAVA_HOME%;%PATH%</path>
+    <requiresJdk>false</requiresJdk>
+    <requires64Bit>true</requires64Bit>
+    <minVersion>1.8</minVersion>
+    <maxVersion>17</maxVersion>
+  </jre>
+</launch4jConfig>

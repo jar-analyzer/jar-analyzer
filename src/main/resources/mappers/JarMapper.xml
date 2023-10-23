@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.n1ar4.jar.analyzer.db.mapper.JarMapper">
+    <insert id="insertJar" parameterType="JarEntity">
+        INSERT INTO jar_table
+            (jar_name, jar_abs_path)
+        VALUES
+        <foreach collection="list" separator="," item="item">
+            (#{item.jarName}, #{item.jarAbsPath})
+        </foreach>
+    </insert>
+    <select id="selectAllJars">
+        SELECT DISTINCT jar_abs_path FROM jar_table
+    </select>
+</mapper>

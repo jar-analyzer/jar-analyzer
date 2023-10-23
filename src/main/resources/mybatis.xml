@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <properties resource="jdbc.properties" />
+    <settings>
+        <!-- debug -->
+        <!-- <setting name="logImpl" value="STDOUT_LOGGING" /> -->
+        <setting name="logImpl" value="LOG4J2"/>
+    </settings>
+    <typeAliases>
+        <package name="me.n1ar4.jar.analyzer.entity"/>
+    </typeAliases>
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="me.n1ar4.jar.analyzer.db.DBCPDataSourceFactory">
+                <property name="driverClassName" value="${driver}"/>
+                <property name="url" value="${url}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="mappers/InitMapper.xml"/>
+        <mapper resource="mappers/JarMapper.xml"/>
+        <mapper resource="mappers/ClassMapper.xml"/>
+        <mapper resource="mappers/ClassFileMapper.xml"/>
+        <mapper resource="mappers/MemberMapper.xml"/>
+        <mapper resource="mappers/MethodMapper.xml"/>
+        <mapper resource="mappers/AnnoMapper.xml"/>
+        <mapper resource="mappers/InterfaceMapper.xml"/>
+        <mapper resource="mappers/MethodCallMapper.xml"/>
+        <mapper resource="mappers/MethodImplMapper.xml"/>
+        <mapper resource="mappers/StringMapper.xml"/>
+    </mappers>
+</configuration>

@@ -86,6 +86,24 @@
 
 关于 `Y4 JDK/JRE` 项目: https://y4sec-team.github.io/jdk8u/
 
+## 如何构建
+
+项目主要基于 `Java 8`
+- 下载 `JDK 8` (推荐 https://github.com/Y4Sec-Team/jdk8u)
+- 使用 `Maven` (https://maven.apache.org/download.cgi)
+- 使用 `Launch4j` 构建 (https://sourceforge.net/projects/launch4j/)
+- 使用 `Python 3` 辅助 (https://www.python.org/downloads/)
+
+步骤：
+
+(1) mvn -B package -Dmaven.test.skip=true --file pom.xml
+
+(2) python build.py
+
+(3) 启动 Launch4j 生成 exe
+
+(4) 复制 JRE 到 embed 版
+
 ## 其他
 
 如果你希望体验老版本 (不再维护) 的 `Jar Analyzer` 可以访问：

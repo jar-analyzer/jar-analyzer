@@ -4,7 +4,7 @@ import sys
 import subprocess
 
 OLD_VERSION = "2.0-beta"
-VERSION = "2.0-beta"
+VERSION = "2.1-beta"
 PROJECT = "PROJECT: https://github.com/jar-analyzer/jar-analyzer"
 
 

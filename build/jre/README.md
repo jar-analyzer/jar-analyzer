@@ -1,3 +1,0 @@
-# EMBED JRE
-
-Use Oracle JDK 8u381

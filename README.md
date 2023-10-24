@@ -74,8 +74,8 @@
 ## Release 说明
 
 在 `release` 中提供三种下载：
-- `embed` 使用系统 `JDK/JRE` 的 `exe` 下载 (需要自行安装 `JRE`)
-- `system` 内置安全 `Y4 JRE` 的 `exe` 版本下载 (无需另外安装一键启动)
+- `system` 使用系统 `JDK/JRE` 的 `exe` 下载 (需要自行安装 `JRE`)
+- `embed` 内置安全 `Y4 JRE` 的 `exe` 版本下载 (无需另外安装一键启动)
 - 简单的 `Jar` 文件 (可供 `Ubuntu` 和 `MacOS` 使用)
 
 由于本工具仅在 `Windows` 中测试，其他操作系统可能会有未知的问题

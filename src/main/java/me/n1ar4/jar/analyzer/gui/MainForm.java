@@ -17,6 +17,7 @@ import me.n1ar4.jar.analyzer.gui.adapter.TreeRightMenuAdapter;
 import me.n1ar4.jar.analyzer.gui.render.AllMethodsRender;
 import me.n1ar4.jar.analyzer.gui.render.MethodCallRender;
 import me.n1ar4.jar.analyzer.gui.tree.FileTree;
+import me.n1ar4.jar.analyzer.gui.update.UpdateChecker;
 import me.n1ar4.jar.analyzer.gui.util.*;
 import me.n1ar4.jar.analyzer.utils.DirUtil;
 import org.apache.logging.log4j.LogManager;
@@ -501,6 +502,8 @@ public class MainForm {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         frame.setIconImage(IconManager.showIcon.getImage());
+
+        UpdateChecker.checkUpdate();
 
         frame.pack();
         frame.setResizable(false);

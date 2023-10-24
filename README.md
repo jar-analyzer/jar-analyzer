@@ -95,7 +95,7 @@
 
 一般情况下，推荐使用内置 `Y4 JRE` 的版本 (jar-analyzer-xxx-embed.zip) 启动
 
-![](img/0000.png)
+[![](img/0000.png)](https://y4sec-team.github.io/jdk8u/)
 
 关于 `Y4 JDK/JRE` 项目: https://y4sec-team.github.io/jdk8u/
 

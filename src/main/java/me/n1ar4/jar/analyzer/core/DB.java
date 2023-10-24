@@ -5,6 +5,8 @@ import me.n1ar4.jar.analyzer.db.mapper.*;
 import me.n1ar4.jar.analyzer.entity.*;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
+import me.n1ar4.jar.analyzer.spring.SpringController;
+import me.n1ar4.jar.analyzer.spring.SpringMapping;
 import me.n1ar4.jar.analyzer.utils.OSUtil;
 import me.n1ar4.jar.analyzer.utils.PartitionUtils;
 import org.apache.ibatis.session.SqlSession;
@@ -27,6 +29,8 @@ public class DB {
     private static final ClassFileMapper classFileMapper;
     private static final MethodImplMapper methodImplMapper;
     private static final MethodCallMapper methodCallMapper;
+    private static final SpringControllerMapper springCMapper;
+    private static final SpringMethodMapper springMMapper;
 
     static {
         logger.info("init database");
@@ -43,6 +47,8 @@ public class DB {
         interfaceMapper = session.getMapper(InterfaceMapper.class);
         methodCallMapper = session.getMapper(MethodCallMapper.class);
         methodImplMapper = session.getMapper(MethodImplMapper.class);
+        springCMapper = session.getMapper(SpringControllerMapper.class);
+        springMMapper = session.getMapper(SpringMethodMapper.class);
         InitMapper initMapper = session.getMapper(InitMapper.class);
         initMapper.createJarTable();
         initMapper.createClassTable();
@@ -54,6 +60,8 @@ public class DB {
         initMapper.createMethodCallTable();
         initMapper.createMethodImplTable();
         initMapper.createStringTable();
+        initMapper.createSpringControllerTable();
+        initMapper.createSpringMappingTable();
         logger.info("create database finish");
         LogUtil.log("create database finish");
     }
@@ -286,5 +294,38 @@ public class DB {
             }
         }
         logger.info("save all string success");
+    }
+
+    public static void saveSpring(ArrayList<SpringController> controllers) {
+        List<SpringControllerEntity> cList = new ArrayList<>();
+        List<SpringMethodEntity> mList = new ArrayList<>();
+        for (SpringController controller : controllers) {
+            SpringControllerEntity ce = new SpringControllerEntity();
+            ce.setClassName(controller.getClassName().getName());
+            cList.add(ce);
+            for(SpringMapping mapping:controller.getMappings()){
+                SpringMethodEntity me = new SpringMethodEntity();
+                me.setClassName(controller.getClassName().getName());
+                me.setPath(mapping.getPath());
+                me.setMethodName(mapping.getMethodName().getName());
+                me.setMethodDesc(mapping.getMethodName().getDesc());
+                mList.add(me);
+            }
+        }
+        List<List<SpringControllerEntity>> cPartition = PartitionUtils.partition(cList, 100);
+        for (List<SpringControllerEntity> data : cPartition) {
+            int a = springCMapper.insertControllers(data);
+            if (a == 0) {
+                logger.warn("save error");
+            }
+        }
+        List<List<SpringMethodEntity>> mPartition = PartitionUtils.partition(mList, 100);
+        for (List<SpringMethodEntity> data : mPartition) {
+            int a = springMMapper.insertMappings(data);
+            if (a == 0) {
+                logger.warn("save error");
+            }
+        }
+        logger.info("save all spring data success");
     }
 }

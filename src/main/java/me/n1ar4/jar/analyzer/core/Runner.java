@@ -8,9 +8,9 @@ import me.n1ar4.jar.analyzer.entity.ClassFileEntity;
 import me.n1ar4.jar.analyzer.env.Const;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
+import me.n1ar4.jar.analyzer.spring.SpringService;
 import me.n1ar4.jar.analyzer.utils.CoreUtil;
 import me.n1ar4.jar.analyzer.utils.DirUtil;
-import org.apache.ibatis.javassist.bytecode.ClassFile;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.ClassReader;
@@ -67,9 +67,9 @@ public class Runner {
             String className = cf.getClassName();
             int i = className.indexOf("classes");
             if (className.contains("BOOT-INF")) {
-                className = className.substring(i+8);
-            }else if( className.contains("WEB-INF")){
-                className = className.substring(i+7);
+                className = className.substring(i + 8);
+            } else if (className.contains("WEB-INF")) {
+                className = className.substring(i + 7);
             }
             cf.setClassName(className);
         }
@@ -131,8 +131,13 @@ public class Runner {
                 logger.error("string analyze error: {}", ex.toString());
             }
         }
-        MainForm.getInstance().getBuildBar().setValue(90);
+        MainForm.getInstance().getBuildBar().setValue(80);
         DB.saveStrMap(Env.strMap);
+
+        SpringService.start(Env.classFileList, Env.controllers, Env.classMap, Env.methodMap);
+        DB.saveSpring(Env.controllers);
+
+        MainForm.getInstance().getBuildBar().setValue(90);
         logger.info("build database finish");
         LogUtil.log("build database finish");
 

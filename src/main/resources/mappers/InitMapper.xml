@@ -120,4 +120,25 @@
             jar_name         TEXT    not null
         );
     </update>
+    <update id="createSpringControllerTable">
+        create table if not exists spring_controller_table
+        (
+            sc_id      integer
+                constraint spring_controller_table_pk
+                    primary key autoincrement,
+            class_name TEXT not null
+        );
+    </update>
+    <update id="createSpringMappingTable">
+        create table if not exists spring_method_table
+        (
+            sm_id       integer
+                constraint spring_method_table_pk
+                    primary key autoincrement,
+            class_name  TEXT not null,
+            method_name TEXT not null,
+            method_desc TEXT not null,
+            path        TEXT not null
+        );
+    </update>
 </mapper>

@@ -20,4 +20,8 @@ public interface InitMapper {
     void createMethodImplTable();
 
     void createStringTable();
+
+    void createSpringControllerTable();
+
+    void createSpringMappingTable();
 }

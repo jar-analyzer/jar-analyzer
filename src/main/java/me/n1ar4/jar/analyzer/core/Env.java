@@ -1,6 +1,7 @@
 package me.n1ar4.jar.analyzer.core;
 
 import me.n1ar4.jar.analyzer.entity.ClassFileEntity;
+import me.n1ar4.jar.analyzer.spring.SpringController;
 
 import java.util.*;
 
@@ -16,4 +17,5 @@ public class Env {
             HashSet<MethodReference.Handle>> methodCalls = new HashMap<>();
     public static InheritanceMap inheritanceMap;
     public static Map<MethodReference.Handle, List<String>> strMap = new HashMap<>();
+    public static ArrayList<SpringController> controllers = new ArrayList<>();
 }

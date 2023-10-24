@@ -6,16 +6,18 @@ import com.intellij.uiDesigner.core.Spacer;
 import me.n1ar4.jar.analyzer.config.ConfigEngine;
 import me.n1ar4.jar.analyzer.config.ConfigFile;
 import me.n1ar4.jar.analyzer.decompile.DecompileEngine;
+import me.n1ar4.jar.analyzer.dto.ClassResult;
 import me.n1ar4.jar.analyzer.dto.MethodResult;
 import me.n1ar4.jar.analyzer.engine.CoreEngine;
+import me.n1ar4.jar.analyzer.engine.CoreHelper;
+import me.n1ar4.jar.analyzer.entity.SpringControllerEntity;
 import me.n1ar4.jar.analyzer.env.Const;
 import me.n1ar4.jar.analyzer.gui.action.*;
-import me.n1ar4.jar.analyzer.gui.adapter.AuthorAdapter;
-import me.n1ar4.jar.analyzer.gui.adapter.CommonMouseAdapter;
-import me.n1ar4.jar.analyzer.gui.adapter.TreeMouseAdapter;
-import me.n1ar4.jar.analyzer.gui.adapter.TreeRightMenuAdapter;
+import me.n1ar4.jar.analyzer.gui.adapter.*;
 import me.n1ar4.jar.analyzer.gui.render.AllMethodsRender;
+import me.n1ar4.jar.analyzer.gui.render.ClassRender;
 import me.n1ar4.jar.analyzer.gui.render.MethodCallRender;
+import me.n1ar4.jar.analyzer.gui.render.SpringMethodRender;
 import me.n1ar4.jar.analyzer.gui.tree.FileTree;
 import me.n1ar4.jar.analyzer.gui.update.UpdateChecker;
 import me.n1ar4.jar.analyzer.gui.util.*;
@@ -26,6 +28,8 @@ import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -152,12 +156,27 @@ public class MainForm {
     private JLabel repeaterLabel;
     private JButton listenerBtn;
     private JLabel listenerLabel;
+    private JPanel springPanel;
+    private JPanel springCPanel;
+    private JPanel springMPanel;
+    private JScrollPane scScroll;
+    private JScrollPane smScroll;
+    private JList<ClassResult> springCList;
+    private JList<MethodResult> springMList;
     private static MainForm instance;
     private static ConfigFile config;
     private static CoreEngine engine;
     private static JTextArea codeArea;
     private static MethodResult curMethod;
     private static DefaultListModel<MethodResult> historyListData;
+
+    public JList<ClassResult> getSpringCList() {
+        return springCList;
+    }
+
+    public JList<MethodResult> getSpringMList() {
+        return springMList;
+    }
 
     public JButton getEncoderBtn() {
         return encoderBtn;
@@ -448,6 +467,8 @@ public class MainForm {
         searchList.setCellRenderer(new MethodCallRender());
         methodImplList.setCellRenderer(new MethodCallRender());
         superImplList.setCellRenderer(new MethodCallRender());
+        springCList.setCellRenderer(new ClassRender());
+        springMList.setCellRenderer(new SpringMethodRender());
 
         historyList.setCellRenderer(new MethodCallRender());
         historyListData = new DefaultListModel<>();
@@ -488,6 +509,8 @@ public class MainForm {
         instance.superImplList.addMouseListener(new CommonMouseAdapter());
         instance.searchList.addMouseListener(new CommonMouseAdapter());
         instance.historyList.addMouseListener(new CommonMouseAdapter());
+        instance.springCList.addMouseListener(new ControllerMouseAdapter());
+        instance.springMList.addMouseListener(new CommonMouseAdapter());
     }
 
     public static void start() {
@@ -741,6 +764,25 @@ public class MainForm {
         superImplScroll.setBorder(BorderFactory.createTitledBorder(null, "Super Impl", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         superImplList = new JList();
         superImplScroll.setViewportView(superImplList);
+        springPanel = new JPanel();
+        springPanel.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
+        tabbedPanel.addTab("spring", springPanel);
+        springCPanel = new JPanel();
+        springCPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        springPanel.add(springCPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        springCPanel.setBorder(BorderFactory.createTitledBorder(null, "Spring Controllers", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+        scScroll = new JScrollPane();
+        springCPanel.add(scScroll, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        springCList = new JList();
+        scScroll.setViewportView(springCList);
+        springMPanel = new JPanel();
+        springMPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        springPanel.add(springMPanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        springMPanel.setBorder(BorderFactory.createTitledBorder(null, "Spring Mappings", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+        smScroll = new JScrollPane();
+        springMPanel.add(smScroll, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        springMList = new JList();
+        smScroll.setViewportView(springMList);
         historyPanel = new JPanel();
         historyPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPanel.addTab("history", historyPanel);

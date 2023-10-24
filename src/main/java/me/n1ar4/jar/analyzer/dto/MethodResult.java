@@ -9,6 +9,23 @@ public class MethodResult {
     private String methodDesc;
     private int isStaticInt;
     private int accessInt;
+    // for spring
+    private String path;
+
+    public String getPath() {
+        this.path = this.path.trim();
+        if (this.path.isEmpty()) {
+            return "path: none";
+        }
+        if (!path.startsWith("/")) {
+            path = "/" + path;
+        }
+        return "path: " + path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
 
     public String getJarName() {
         return jarName;

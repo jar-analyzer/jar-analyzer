@@ -5,6 +5,7 @@ import me.n1ar4.jar.analyzer.db.SqlSessionFactoryUtil;
 import me.n1ar4.jar.analyzer.db.mapper.*;
 import me.n1ar4.jar.analyzer.dto.ClassResult;
 import me.n1ar4.jar.analyzer.dto.MethodResult;
+import me.n1ar4.jar.analyzer.entity.SpringControllerEntity;
 import me.n1ar4.jar.analyzer.utils.StringUtil;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -16,6 +17,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 public class CoreEngine {
     private static final Logger logger = LogManager.getLogger();
@@ -130,5 +132,21 @@ public class CoreEngine {
         String result = classMapper.selectJarByClass(className);
         session.close();
         return result;
+    }
+
+    public ArrayList<ClassResult> getAllSpringC(){
+        SqlSession session = factory.openSession(true);
+        SpringControllerMapper springControllerMapper = session.getMapper(SpringControllerMapper.class);
+        List<ClassResult> res = springControllerMapper.selectAllSpringC();
+        session.close();
+        return new ArrayList<>(res);
+    }
+
+    public ArrayList<MethodResult> getSpringM(String className) {
+        SqlSession session = factory.openSession(true);
+        SpringMethodMapper springMethodMapper = session.getMapper(SpringMethodMapper.class);
+        List<MethodResult> res = springMethodMapper.selectMappingsByClassName(className);
+        session.close();
+        return new ArrayList<>(res);
     }
 }

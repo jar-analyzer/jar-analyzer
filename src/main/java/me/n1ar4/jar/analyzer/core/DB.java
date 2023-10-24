@@ -303,7 +303,7 @@ public class DB {
             SpringControllerEntity ce = new SpringControllerEntity();
             ce.setClassName(controller.getClassName().getName());
             cList.add(ce);
-            for(SpringMapping mapping:controller.getMappings()){
+            for (SpringMapping mapping : controller.getMappings()) {
                 SpringMethodEntity me = new SpringMethodEntity();
                 me.setClassName(controller.getClassName().getName());
                 me.setPath(mapping.getPath());

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="me.n1ar4.jar.analyzer.db.mapper.SpringControllerMapper">
+    <resultMap id="classMap" type="me.n1ar4.jar.analyzer.dto.ClassResult">
+        <result column="class_name" property="className"/>
+    </resultMap>
     <insert id="insertControllers">
         INSERT INTO spring_controller_table
         (class_name)
@@ -9,4 +12,7 @@
             (#{item.className})
         </foreach>
     </insert>
+    <select id="selectAllSpringC" resultMap="classMap">
+        SELECT DISTINCT class_name FROM spring_controller_table
+    </select>
 </mapper>

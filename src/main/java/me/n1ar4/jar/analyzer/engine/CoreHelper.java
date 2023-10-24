@@ -1,6 +1,8 @@
 package me.n1ar4.jar.analyzer.engine;
 
+import me.n1ar4.jar.analyzer.dto.ClassResult;
 import me.n1ar4.jar.analyzer.dto.MethodResult;
+import me.n1ar4.jar.analyzer.entity.SpringControllerEntity;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.render.AllMethodsRender;
 
@@ -76,6 +78,26 @@ public class CoreHelper {
         MainForm.getInstance().getCalleeList().setModel(methodsList);
         MainForm.getInstance().getCalleeList().repaint();
         MainForm.getInstance().getCalleeList().revalidate();
+    }
+
+    public static void refreshSpringC() {
+        ArrayList<ClassResult> results = MainForm.getEngine().getAllSpringC();
+        results.sort(Comparator.comparing(ClassResult::getClassName));
+        DefaultListModel<ClassResult> springCModel = new DefaultListModel<>();
+        for (ClassResult result : results) {
+            springCModel.addElement(result);
+        }
+        MainForm.getInstance().getSpringCList().setModel(springCModel);
+    }
+
+    public static void refreshSpringM(String className){
+        ArrayList<MethodResult> results = MainForm.getEngine().getSpringM(className);
+        results.sort(Comparator.comparing(MethodResult::getMethodName));
+        DefaultListModel<MethodResult> springCModel = new DefaultListModel<>();
+        for (MethodResult result : results) {
+            springCModel.addElement(result);
+        }
+        MainForm.getInstance().getSpringMList().setModel(springCModel);
     }
 
     public static void refreshCallSearch(String className, String methodName, String methodDesc) {

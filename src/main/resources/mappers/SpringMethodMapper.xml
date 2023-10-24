@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="me.n1ar4.jar.analyzer.db.mapper.SpringMethodMapper">
+    <resultMap id="methodMap" type="me.n1ar4.jar.analyzer.dto.MethodResult">
+        <result column="method_name" property="methodName"/>
+        <result column="class_name" property="className"/>
+        <result column="method_desc" property="methodDesc"/>
+        <result column="path" property="path" />
+    </resultMap>
     <insert id="insertMappings">
         INSERT INTO spring_method_table
         (class_name, method_name, method_desc, path)
@@ -9,4 +15,9 @@
             (#{item.className}, #{item.methodName}, #{item.methodDesc}, #{item.path})
         </foreach>
     </insert>
+    <select id="selectMappingsByClassName" resultMap="methodMap">
+        SELECT DISTINCT m.method_name, m.class_name, m.method_desc, m.path
+        FROM spring_method_table m
+        WHERE m.class_name = #{className}
+    </select>
 </mapper>

@@ -80,7 +80,7 @@
 
 由于本工具仅在 `Windows` 中测试，其他操作系统可能会有未知的问题
 
-一般情况下，推荐使用内置 `Y4 JRE` 的版本启动
+一般情况下，推荐使用内置 `Y4 JRE` 的版本 (jar-analyzer-xxx-windows-embed.zip) 启动
 
 ![](img/0000.png)
 

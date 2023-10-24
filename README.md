@@ -74,13 +74,13 @@
 ## Release 说明
 
 在 `release` 中提供三种下载：
-- `system` 使用系统 `JDK/JRE` 的 `exe` 下载 (需要自行安装 `JRE`)
-- `embed` 内置安全 `Y4 JRE` 的 `exe` 版本下载 (无需另外安装一键启动)
-- 简单的 `Jar` 文件 (可供 `Ubuntu` 和 `MacOS` 使用)
+- `system` 使用系统 `JDK/JRE` 的启动脚本 (需要自行安装 `JRE`)
+- `embed` 内置安全 `Y4 JRE` 的启动脚本 (无需另外安装一键启动)
+- 简单的 `Jar` 文件，不提供启动脚本
 
 由于本工具仅在 `Windows` 中测试，其他操作系统可能会有未知的问题
 
-一般情况下，推荐使用内置 `Y4 JRE` 的版本 (jar-analyzer-xxx-windows-embed.zip) 启动
+一般情况下，推荐使用内置 `Y4 JRE` 的版本 (jar-analyzer-xxx-embed.zip) 启动
 
 ![](img/0000.png)
 
@@ -91,7 +91,6 @@
 项目主要基于 `Java 8`
 - 下载 `JDK 8` (推荐 https://github.com/Y4Sec-Team/jdk8u)
 - 使用 `Maven` (https://maven.apache.org/download.cgi)
-- 使用 `Launch4j` 构建 (https://sourceforge.net/projects/launch4j/)
 - 使用 `Python 3` 辅助 (https://www.python.org/downloads/)
 
 步骤：
@@ -100,9 +99,7 @@
 
 (2) python build.py
 
-(3) 启动 Launch4j 生成 exe
-
-(4) 复制 JRE 到 embed 版
+(3) 复制 JRE 到 embed 版
 
 ## 其他
 

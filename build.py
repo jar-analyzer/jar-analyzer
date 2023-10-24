@@ -3,7 +3,6 @@ import shutil
 import sys
 import subprocess
 
-OLD_VERSION = "2.0-beta"
 VERSION = "2.1-beta"
 PROJECT = "PROJECT: https://github.com/jar-analyzer/jar-analyzer"
 
@@ -20,6 +19,13 @@ def copy_jar_files(source_dir, target_dir):
                 shutil.copy(source_path, target_path)
 
 
+def copy_file(source_path, destination_path):
+    try:
+        shutil.copy2(source_path, destination_path)
+    except Exception as e:
+        print("[!] error: ", str(e))
+
+
 def replace_version(file_path, old, new):
     with open(file_path, 'r') as file:
         content = file.read()
@@ -32,8 +38,8 @@ if __name__ == '__main__':
     java_target_directory = "target"
     target_directory = "release"
     print("[*] make new release dir: {}".format(VERSION))
-    release_system_dir = "jar-analyzer-{}-windows-system".format(VERSION)
-    release_embed_dir = "jar-analyzer-{}-windows-embed".format(VERSION)
+    release_system_dir = "jar-analyzer-{}-system".format(VERSION)
+    release_embed_dir = "jar-analyzer-{}-embed".format(VERSION)
     subprocess.run("mkdir {}".format(release_system_dir), shell=True, cwd=target_directory)
     subprocess.run("mkdir {}\\{}".format(release_system_dir, "lib"), shell=True, cwd=target_directory)
     subprocess.run("mkdir {}".format(release_embed_dir), shell=True, cwd=target_directory)
@@ -41,11 +47,8 @@ if __name__ == '__main__':
     print("[*] copy file")
     copy_jar_files(java_target_directory, "{}/{}/{}".format(target_directory, release_system_dir, "lib"))
     copy_jar_files(java_target_directory, "{}/{}/{}".format(target_directory, release_embed_dir, "lib"))
-    print("[*] fix version string")
-    system_ver_file = "build/launch4j-use-system-jre.xml"
-    embed_ver_file = "build/launch4j-use-embed-jre.xml"
-    replace_version(system_ver_file, OLD_VERSION, VERSION)
-    replace_version(embed_ver_file, OLD_VERSION, VERSION)
+    copy_file("build\\start-embed.bat","release\\"+release_embed_dir+"\\start.bat")
+    copy_file("build\\start-system.bat","release\\"+release_system_dir+"\\start.bat")
     subprocess.run("echo {} > {}".format(VERSION, "VERSION.txt"), shell=True,
                    cwd="{}/{}".format(target_directory, release_system_dir))
     subprocess.run("echo {} > {}".format(VERSION, "VERSION.txt"), shell=True,

@@ -8,6 +8,7 @@
 `Jar Analyzer` 是一个分析 `Jar` 文件的 `GUI` 工具：
 - 方便地搜索方法之间的调用关系
 - 方便地搜索 `Jar` 文件中的字符串
+- 一键分析 `Spring Controller/Mapping`
 - 对于方法字节码/指令等高级分析
 - 一键反编译
 

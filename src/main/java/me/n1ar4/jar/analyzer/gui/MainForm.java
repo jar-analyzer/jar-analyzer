@@ -9,11 +9,10 @@ import me.n1ar4.jar.analyzer.decompile.DecompileEngine;
 import me.n1ar4.jar.analyzer.dto.ClassResult;
 import me.n1ar4.jar.analyzer.dto.MethodResult;
 import me.n1ar4.jar.analyzer.engine.CoreEngine;
-import me.n1ar4.jar.analyzer.engine.CoreHelper;
-import me.n1ar4.jar.analyzer.entity.SpringControllerEntity;
 import me.n1ar4.jar.analyzer.env.Const;
 import me.n1ar4.jar.analyzer.gui.action.*;
 import me.n1ar4.jar.analyzer.gui.adapter.*;
+import me.n1ar4.jar.analyzer.gui.font.FontHelper;
 import me.n1ar4.jar.analyzer.gui.render.AllMethodsRender;
 import me.n1ar4.jar.analyzer.gui.render.ClassRender;
 import me.n1ar4.jar.analyzer.gui.render.MethodCallRender;
@@ -28,8 +27,6 @@ import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -143,19 +140,14 @@ public class MainForm {
     private JLabel searchStrLabel;
     private JScrollPane superImplScroll;
     private JList<MethodResult> superImplList;
-    private JPanel pluginsPanel;
-    private JPanel piPanel;
     private JPanel analysis;
     private JButton cfgBtn;
     private JLabel cfgLabel;
     private JLabel frameLabel;
     private JButton frameBtn;
     private JButton encoderBtn;
-    private JLabel encoderLabel;
     private JButton repeaterBtn;
-    private JLabel repeaterLabel;
     private JButton listenerBtn;
-    private JLabel listenerLabel;
     private JPanel springPanel;
     private JPanel springCPanel;
     private JPanel springMPanel;
@@ -163,6 +155,10 @@ public class MainForm {
     private JScrollPane smScroll;
     private JList<ClassResult> springCList;
     private JList<MethodResult> springMList;
+    private JPanel piPanel;
+    private JLabel encoderLabel;
+    private JLabel repeaterLabel;
+    private JLabel listenerLabel;
     private static MainForm instance;
     private static ConfigFile config;
     private static CoreEngine engine;
@@ -490,6 +486,8 @@ public class MainForm {
     }
 
     private static void init() {
+        FontHelper.installFont();
+
         ChoseJarAction.run();
         BuildAction.run();
         JarsInJarAction.run();
@@ -791,7 +789,7 @@ public class MainForm {
         historyList = new JList();
         hisScroll.setViewportView(historyList);
         advancePanel = new JPanel();
-        advancePanel.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
+        advancePanel.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPanel.addTab("advance", advancePanel);
         javaVulSearchPanel = new JPanel();
         javaVulSearchPanel.setLayout(new GridLayoutManager(4, 3, new Insets(0, 0, 0, 0), -1, -1));
@@ -828,7 +826,7 @@ public class MainForm {
         javaVulLabel.setText("Quickly Search Commons Java Vulnerabilities Call (todo)");
         javaVulSearchPanel.add(javaVulLabel, new GridConstraints(0, 0, 1, 3, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer2 = new Spacer();
-        advancePanel.add(spacer2, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        advancePanel.add(spacer2, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         chatgptPanel = new JPanel();
         chatgptPanel.setLayout(new GridLayoutManager(3, 6, new Insets(0, 0, 0, 0), -1, -1));
         advancePanel.add(chatgptPanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
@@ -845,7 +843,7 @@ public class MainForm {
         resultPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         chatgptPanel.add(resultPanel, new GridConstraints(2, 0, 1, 6, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         gptResultScroll = new JScrollPane();
-        resultPanel.add(gptResultScroll, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(-1, 300), new Dimension(-1, 300), new Dimension(-1, 300), 0, false));
+        resultPanel.add(gptResultScroll, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(-1, 150), new Dimension(-1, 150), new Dimension(-1, 150), 0, false));
         gptResultArea = new JTextArea();
         gptResultArea.setLineWrap(true);
         gptResultScroll.setViewportView(gptResultArea);
@@ -857,12 +855,9 @@ public class MainForm {
         gptLabel = new JLabel();
         gptLabel.setText("");
         chatgptPanel.add(gptLabel, new GridConstraints(0, 0, 2, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
-        pluginsPanel = new JPanel();
-        pluginsPanel.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
-        tabbedPanel.addTab("plugins", pluginsPanel);
         piPanel = new JPanel();
         piPanel.setLayout(new GridLayoutManager(3, 2, new Insets(0, 0, 0, 0), -1, -1));
-        pluginsPanel.add(piPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        advancePanel.add(piPanel, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         piPanel.setBorder(BorderFactory.createTitledBorder(null, "Plugins", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         encoderLabel = new JLabel();
         encoderLabel.setText("A tool for encode/decode encrypt/decrypt operations");
@@ -882,8 +877,6 @@ public class MainForm {
         listenerBtn = new JButton();
         listenerBtn.setText("Start");
         piPanel.add(listenerBtn, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final Spacer spacer3 = new Spacer();
-        pluginsPanel.add(spacer3, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         leftPanel = new JPanel();
         leftPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         corePanel.add(leftPanel, new GridConstraints(0, 0, 3, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));

@@ -1,8 +1,8 @@
-package me.n1ar4.jar.analyzer.cfg.theme.shape;
+package me.n1ar4.jar.analyzer.theme.shape;
 
-import me.n1ar4.jar.analyzer.cfg.canvas.Box;
-import me.n1ar4.jar.analyzer.cfg.canvas.Canvas;
-import me.n1ar4.jar.analyzer.cfg.canvas.Drawable;
+import me.n1ar4.jar.analyzer.canvas.Box;
+import me.n1ar4.jar.analyzer.canvas.Canvas;
+import me.n1ar4.jar.analyzer.canvas.Drawable;
 
 public class Rectangle implements Drawable {
     public final int width;

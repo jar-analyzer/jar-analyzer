@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+@SuppressWarnings("all")
 public class ASMAction {
     public static void run() {
         MainForm instance = MainForm.getInstance();

@@ -1,4 +1,4 @@
-package me.n1ar4.jar.analyzer.cfg.canvas;
+package me.n1ar4.jar.analyzer.canvas;
 
 public class TextPixel implements Comparable<TextPixel> {
     public int row;

@@ -3,8 +3,6 @@ package me.n1ar4.jar.analyzer.gui.action;
 import com.plexpt.chatgpt.ChatGPT;
 import me.n1ar4.jar.analyzer.config.ConfigEngine;
 import me.n1ar4.jar.analyzer.config.ConfigFile;
-import me.n1ar4.jar.analyzer.decompile.DecompileEngine;
-import me.n1ar4.jar.analyzer.dto.ClassResult;
 import me.n1ar4.jar.analyzer.dto.MethodResult;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;

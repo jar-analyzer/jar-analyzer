@@ -6,7 +6,6 @@ import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
 import me.n1ar4.jar.analyzer.utils.DirUtil;
 import me.n1ar4.jar.analyzer.utils.StringUtil;
-import org.apache.ibatis.logging.Log;
 
 import javax.swing.*;
 import java.io.File;

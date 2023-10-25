@@ -1,6 +1,6 @@
-package me.n1ar4.jar.analyzer.cfg.theme.table;
+package me.n1ar4.jar.analyzer.theme.table;
 
-import me.n1ar4.jar.analyzer.cfg.canvas.Drawable;
+import me.n1ar4.jar.analyzer.canvas.Drawable;
 
 public abstract class AbstractTable implements Drawable {
     public final int cell_inner_padding;

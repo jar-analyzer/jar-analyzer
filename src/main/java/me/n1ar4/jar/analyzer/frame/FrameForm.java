@@ -10,7 +10,6 @@ import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.util.Locale;
-import java.util.Stack;
 
 public class FrameForm {
 

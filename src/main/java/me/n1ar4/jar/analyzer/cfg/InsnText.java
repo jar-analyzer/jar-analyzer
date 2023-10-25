@@ -11,23 +11,11 @@ import java.util.Map;
 import static org.objectweb.asm.Opcodes.BIPUSH;
 import static org.objectweb.asm.Opcodes.SIPUSH;
 
+@SuppressWarnings("all")
 public class InsnText {
     private static final String INSTRUCTION_FORMAT = "%s %s";
 
     private final Map<LabelNode, String> labelNames = new HashMap<>();
-
-    public List<String> toLines(AbstractInsnNode[] array) {
-        List<String> resultList = new ArrayList<>();
-        if (array == null || array.length < 1) {
-            return resultList;
-        }
-
-        for (AbstractInsnNode node : array) {
-            List<String> lines = toLines(node);
-            resultList.addAll(lines);
-        }
-        return resultList;
-    }
 
     public List<String> toLines(AbstractInsnNode node) {
         List<String> resultList = new ArrayList<>();
@@ -35,13 +23,11 @@ public class InsnText {
             TableSwitchInsnNode currentNode = (TableSwitchInsnNode) node;
             List<String> list = table_switch_node_to_str_list(currentNode);
             resultList.addAll(list);
-        }
-        else if (node instanceof LookupSwitchInsnNode) {
+        } else if (node instanceof LookupSwitchInsnNode) {
             LookupSwitchInsnNode currentNode = (LookupSwitchInsnNode) node;
             List<String> list = lookup_switch_node_to_str_list(currentNode);
             resultList.addAll(list);
-        }
-        else {
+        } else {
             String item = node_to_str(node);
             resultList.add(item);
         }
@@ -52,16 +38,14 @@ public class InsnText {
     public String node_to_str(AbstractInsnNode currentNode) {
         if (currentNode instanceof InsnNode) {
             return getOpcodeName(currentNode);
-        }
-        else if (currentNode instanceof IntInsnNode) {
+        } else if (currentNode instanceof IntInsnNode) {
             int opcode = currentNode.getOpcode();
             String opcodeName = getOpcodeName(currentNode);
             IntInsnNode node = (IntInsnNode) currentNode;
             int operand = node.operand;
             if (opcode == BIPUSH || opcode == SIPUSH) {
                 return String.format(INSTRUCTION_FORMAT, opcodeName, operand);
-            }
-            else {
+            } else {
                 final String firstArg;
                 switch (operand) {
                     case 4: {
@@ -101,98 +85,78 @@ public class InsnText {
                 }
                 return String.format(INSTRUCTION_FORMAT, opcodeName, firstArg);
             }
-        }
-        else if (currentNode instanceof VarInsnNode) {
+        } else if (currentNode instanceof VarInsnNode) {
             String opcodeName = getOpcodeName(currentNode);
             VarInsnNode node = (VarInsnNode) currentNode;
             int var = node.var;
             if (var >= 0 && var <= 3) {
                 return String.format("%s_%d", opcodeName, var);
-            }
-            else {
+            } else {
                 return String.format(INSTRUCTION_FORMAT, opcodeName, var);
             }
-        }
-        else if (currentNode instanceof TypeInsnNode) {
+        } else if (currentNode instanceof TypeInsnNode) {
             String opcodeName = getOpcodeName(currentNode);
             TypeInsnNode node = (TypeInsnNode) currentNode;
             String type = getSimpleName(node.desc);
             return String.format(INSTRUCTION_FORMAT, opcodeName, type);
-        }
-        else if (currentNode instanceof FieldInsnNode) {
+        } else if (currentNode instanceof FieldInsnNode) {
             String opcodeName = getOpcodeName(currentNode);
             FieldInsnNode node = (FieldInsnNode) currentNode;
             String type = getSimpleName(node.owner);
             return String.format("%s %s.%s", opcodeName, type, node.name);
-        }
-        else if (currentNode instanceof MethodInsnNode) {
+        } else if (currentNode instanceof MethodInsnNode) {
             String opcodeName = getOpcodeName(currentNode);
             MethodInsnNode node = (MethodInsnNode) currentNode;
             String type = getSimpleName(node.owner);
             return String.format("%s %s.%s", opcodeName, type, node.name);
-        }
-        else if (currentNode instanceof InvokeDynamicInsnNode) {
+        } else if (currentNode instanceof InvokeDynamicInsnNode) {
             String opcodeName = getOpcodeName(currentNode);
             InvokeDynamicInsnNode node = (InvokeDynamicInsnNode) currentNode;
             Type methodType = Type.getMethodType(node.desc);
             Type returnType = methodType.getReturnType();
             String type = getSimpleName(returnType.getInternalName());
             return String.format("%s %s.%s", opcodeName, type, node.name);
-        }
-        else if (currentNode instanceof JumpInsnNode) {
+        } else if (currentNode instanceof JumpInsnNode) {
             String opcodeName = getOpcodeName(currentNode);
             JumpInsnNode node = (JumpInsnNode) currentNode;
             String labelName = getLabelName(node.label);
             return String.format(INSTRUCTION_FORMAT, opcodeName, labelName);
-        }
-        else if (currentNode instanceof LabelNode) {
+        } else if (currentNode instanceof LabelNode) {
             LabelNode node = (LabelNode) currentNode;
             return getLabelName(node);
-        }
-        else if (currentNode instanceof LdcInsnNode) {
+        } else if (currentNode instanceof LdcInsnNode) {
             String opcodeName = getOpcodeName(currentNode);
             LdcInsnNode node = (LdcInsnNode) currentNode;
             Object cst = node.cst;
             if (cst instanceof Integer) {
                 return String.format("%s %s(int)", opcodeName, cst);
-            }
-            else if (cst instanceof Float) {
+            } else if (cst instanceof Float) {
                 return String.format("%s %s(float)", opcodeName, cst);
-            }
-            else if (cst instanceof Long) {
+            } else if (cst instanceof Long) {
                 return String.format("%s %s(long)", opcodeName, cst);
-            }
-            else if (cst instanceof Double) {
+            } else if (cst instanceof Double) {
                 return String.format("%s %s(double)", opcodeName, cst);
-            }
-            else if (cst instanceof String) {
+            } else if (cst instanceof String) {
                 return String.format("%s \"%s\"", opcodeName, cst);
-            }
-            else if (cst instanceof Class<?>) {
+            } else if (cst instanceof Class<?>) {
                 return String.format("%s %s(class)", opcodeName, cst);
-            }
-            else {
+            } else {
                 return String.format("%s %s", opcodeName, cst);
             }
-        }
-        else if (currentNode instanceof IincInsnNode) {
+        } else if (currentNode instanceof IincInsnNode) {
             String opcodeName = getOpcodeName(currentNode);
             IincInsnNode node = (IincInsnNode) currentNode;
             return String.format("%s %d %d", opcodeName, node.var, node.incr);
-        }
-        else if (currentNode instanceof MultiANewArrayInsnNode) {
+        } else if (currentNode instanceof MultiANewArrayInsnNode) {
             String opcodeName = getOpcodeName(currentNode);
             MultiANewArrayInsnNode node = (MultiANewArrayInsnNode) currentNode;
             String type = getSimpleName(node.desc);
             return String.format(INSTRUCTION_FORMAT, opcodeName, type);
-        }
-        else if (currentNode instanceof FrameNode) {
+        } else if (currentNode instanceof FrameNode) {
             return "FrameNode";
-        }
-        else if (currentNode instanceof LineNumberNode) {
+        } else if (currentNode instanceof LineNumberNode) {
             return "LineNumberNode";
-        }
-        else {
+        } else {
             System.out.println(currentNode.getClass());
         }
         return currentNode.toString();
@@ -234,12 +198,7 @@ public class InsnText {
     }
 
     private String getLabelName(LabelNode labelNode) {
-        String labelName = labelNames.get(labelNode);
-        if (labelName == null) {
-            labelName = "L" + labelNames.size();
-            labelNames.put(labelNode, labelName);
-        }
-        return labelName;
+        return labelNames.computeIfAbsent(labelNode, k -> "L" + labelNames.size());
     }
 
     private static String getOpcodeName(AbstractInsnNode currentNode) {

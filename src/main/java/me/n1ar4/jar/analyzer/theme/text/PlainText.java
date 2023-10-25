@@ -1,7 +1,7 @@
-package me.n1ar4.jar.analyzer.cfg.theme.text;
+package me.n1ar4.jar.analyzer.theme.text;
 
-import me.n1ar4.jar.analyzer.cfg.canvas.Canvas;
-import me.n1ar4.jar.analyzer.cfg.canvas.Drawable;
+import me.n1ar4.jar.analyzer.canvas.Canvas;
+import me.n1ar4.jar.analyzer.canvas.Drawable;
 
 import java.util.ArrayList;
 import java.util.List;

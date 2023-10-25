@@ -2,7 +2,6 @@ package me.n1ar4.jar.analyzer.plugins.listener;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import me.n1ar4.jar.analyzer.plugins.repeater.HttpUtilForm;
 import me.n1ar4.jar.analyzer.plugins.repeater.SocketUtil;
 
 import javax.swing.*;

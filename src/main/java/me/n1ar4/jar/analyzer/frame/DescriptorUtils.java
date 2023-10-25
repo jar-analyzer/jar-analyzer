@@ -1,5 +1,6 @@
 package me.n1ar4.jar.analyzer.frame;
 
+@SuppressWarnings("all")
 public class DescriptorUtils {
     public static String simplify(String descriptor) {
         int squareIndex = descriptor.lastIndexOf("[");

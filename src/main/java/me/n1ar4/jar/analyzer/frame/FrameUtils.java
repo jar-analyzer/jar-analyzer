@@ -1,14 +1,17 @@
 package me.n1ar4.jar.analyzer.frame;
 
 import me.n1ar4.jar.analyzer.cfg.InsnText;
-import me.n1ar4.jar.analyzer.cfg.canvas.Canvas;
-import me.n1ar4.jar.analyzer.cfg.canvas.TextAlign;
-import me.n1ar4.jar.analyzer.cfg.theme.shape.Rectangle;
-import me.n1ar4.jar.analyzer.cfg.theme.table.FixedWidthOneLineTable;
+import me.n1ar4.jar.analyzer.canvas.Canvas;
+import me.n1ar4.jar.analyzer.canvas.TextAlign;
+import me.n1ar4.jar.analyzer.theme.shape.Rectangle;
+import me.n1ar4.jar.analyzer.theme.table.FixedWidthOneLineTable;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.MethodNode;
-import org.objectweb.asm.tree.analysis.*;
+import org.objectweb.asm.tree.analysis.Analyzer;
+import org.objectweb.asm.tree.analysis.AnalyzerException;
+import org.objectweb.asm.tree.analysis.Frame;
+import org.objectweb.asm.tree.analysis.Value;
 
 import java.util.List;
 import java.util.function.Function;
@@ -74,7 +77,8 @@ public class FrameUtils {
             }
             index -= valueSize;
         }
-        FixedWidthOneLineTable stack_table = new FixedWidthOneLineTable(matrix, TextAlign.CENTER, 25);
+        FixedWidthOneLineTable stack_table = new FixedWidthOneLineTable(
+                matrix, TextAlign.CENTER, 25);
         canvas.draw(3, 5, stack_table);
         canvas.moveTo(maxStack * 2, local_variable_col);
         canvas.drawText(local_variable_label);
@@ -82,7 +86,8 @@ public class FrameUtils {
         for (int i = 0; i < maxLocals; i++) {
             local_variable_matrix[0][i] = "" + i;
         }
-        FixedWidthOneLineTable local_table = new FixedWidthOneLineTable(local_variable_matrix, TextAlign.CENTER, 3);
+        FixedWidthOneLineTable local_table = new FixedWidthOneLineTable(
+                local_variable_matrix, TextAlign.CENTER, 3);
         canvas.draw(maxStack * 2 + 1, local_variable_col, local_table);
         canvas.moveTo(1, frame_width + padding);
         canvas.drawText("locals: " + f.getLocals());

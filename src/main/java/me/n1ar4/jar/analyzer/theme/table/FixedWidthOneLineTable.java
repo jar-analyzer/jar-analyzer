@@ -1,7 +1,7 @@
-package me.n1ar4.jar.analyzer.cfg.theme.table;
+package me.n1ar4.jar.analyzer.theme.table;
 
-import me.n1ar4.jar.analyzer.cfg.canvas.Drawable;
-import me.n1ar4.jar.analyzer.cfg.canvas.TextAlign;
+import me.n1ar4.jar.analyzer.canvas.Drawable;
+import me.n1ar4.jar.analyzer.canvas.TextAlign;
 
 public class FixedWidthOneLineTable extends OneLineTable implements Drawable {
     public final int fixedWidth;

@@ -2,7 +2,6 @@ package me.n1ar4.jar.analyzer.engine;
 
 import me.n1ar4.jar.analyzer.dto.ClassResult;
 import me.n1ar4.jar.analyzer.dto.MethodResult;
-import me.n1ar4.jar.analyzer.entity.SpringControllerEntity;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.render.AllMethodsRender;
 
@@ -10,6 +9,7 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+@SuppressWarnings("all")
 public class CoreHelper {
     public static void refreshAllMethods(String className) {
         ArrayList<MethodResult> results = MainForm.getEngine().getMethodsByClass(className);
@@ -44,7 +44,7 @@ public class CoreHelper {
         MainForm.getInstance().getCallerList().revalidate();
     }
 
-    public static void refreshImpls(String className,String methodName,String methodDesc){
+    public static void refreshImpls(String className, String methodName, String methodDesc) {
         ArrayList<MethodResult> results = MainForm.getEngine().getImpls(className, methodName, methodDesc);
         results.sort(Comparator.comparing(MethodResult::getMethodName));
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
@@ -56,7 +56,7 @@ public class CoreHelper {
         MainForm.getInstance().getMethodImplList().revalidate();
     }
 
-    public static void refreshSuperImpls(String className,String methodName,String methodDesc){
+    public static void refreshSuperImpls(String className, String methodName, String methodDesc) {
         ArrayList<MethodResult> results = MainForm.getEngine().getSuperImpls(className, methodName, methodDesc);
         results.sort(Comparator.comparing(MethodResult::getMethodName));
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
@@ -90,7 +90,7 @@ public class CoreHelper {
         MainForm.getInstance().getSpringCList().setModel(springCModel);
     }
 
-    public static void refreshSpringM(String className){
+    public static void refreshSpringM(String className) {
         ArrayList<MethodResult> results = MainForm.getEngine().getSpringM(className);
         results.sort(Comparator.comparing(MethodResult::getMethodName));
         DefaultListModel<MethodResult> springCModel = new DefaultListModel<>();

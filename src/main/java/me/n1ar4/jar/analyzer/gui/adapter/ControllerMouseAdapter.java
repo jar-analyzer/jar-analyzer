@@ -1,15 +1,12 @@
 package me.n1ar4.jar.analyzer.gui.adapter;
 
-import me.n1ar4.jar.analyzer.core.Finder;
 import me.n1ar4.jar.analyzer.decompile.DecompileEngine;
 import me.n1ar4.jar.analyzer.dto.ClassResult;
-import me.n1ar4.jar.analyzer.dto.MethodResult;
 import me.n1ar4.jar.analyzer.engine.CoreHelper;
 import me.n1ar4.jar.analyzer.env.Const;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.ProcessDialog;
 import me.n1ar4.jar.analyzer.utils.StringUtil;
-import org.objectweb.asm.Type;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;

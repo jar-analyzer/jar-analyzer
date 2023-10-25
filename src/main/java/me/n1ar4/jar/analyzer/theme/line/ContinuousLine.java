@@ -1,9 +1,9 @@
-package me.n1ar4.jar.analyzer.cfg.theme.line;
+package me.n1ar4.jar.analyzer.theme.line;
 
-import me.n1ar4.jar.analyzer.cfg.canvas.Box;
-import me.n1ar4.jar.analyzer.cfg.canvas.Canvas;
-import me.n1ar4.jar.analyzer.cfg.canvas.Drawable;
-import me.n1ar4.jar.analyzer.cfg.canvas.TextDirection;
+import me.n1ar4.jar.analyzer.canvas.Box;
+import me.n1ar4.jar.analyzer.canvas.Canvas;
+import me.n1ar4.jar.analyzer.canvas.Drawable;
+import me.n1ar4.jar.analyzer.canvas.TextDirection;
 
 public class ContinuousLine implements Drawable {
     private final Canvas localCanvas = new Canvas();

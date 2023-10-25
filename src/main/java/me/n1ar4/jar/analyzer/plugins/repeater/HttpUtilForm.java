@@ -2,7 +2,6 @@ package me.n1ar4.jar.analyzer.plugins.repeater;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import me.n1ar4.jar.analyzer.plugins.encoder.EncodeUtilForm;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;

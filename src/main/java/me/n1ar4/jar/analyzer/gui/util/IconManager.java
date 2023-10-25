@@ -1,7 +1,5 @@
 package me.n1ar4.jar.analyzer.gui.util;
 
-import me.n1ar4.jar.analyzer.gui.tree.FileTree;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;

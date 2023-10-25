@@ -24,6 +24,7 @@ public class TreeRightMenuAdapter extends MouseAdapter {
     private final JTree fileTree = MainForm.getInstance().getFileTree();
     private final JPopupMenu popupMenu;
 
+    @SuppressWarnings("all")
     public TreeRightMenuAdapter() {
         popupMenu = new JPopupMenu();
         JMenuItem decompileItem = new JMenuItem("Decompile");

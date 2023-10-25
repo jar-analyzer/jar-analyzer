@@ -61,11 +61,6 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.github.plexpt</groupId>
-                <artifactId>chatgpt</artifactId>
-                <version>${chatgpt.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.ow2.asm</groupId>
                 <artifactId>asm</artifactId>
                 <version>${asm.version}</version>
@@ -130,20 +125,10 @@
                 <artifactId>snakeyaml</artifactId>
                 <version>${snakeyaml.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.bitbucket.mstrobel</groupId>
-                <artifactId>procyon-compilertools</artifactId>
-                <version>${procyon.version}</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
     <dependencies>
-        <dependency>
-            <groupId>com.github.plexpt</groupId>
-            <artifactId>chatgpt</artifactId>
-            <version>${chatgpt.version}</version>
-        </dependency>
         <dependency>
             <groupId>org.ow2.asm</groupId>
             <artifactId>asm</artifactId>
@@ -203,11 +188,6 @@
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
             <version>${snakeyaml.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.bitbucket.mstrobel</groupId>
-            <artifactId>procyon-compilertools</artifactId>
-            <version>${procyon.version}</version>
         </dependency>
         <dependency>
             <groupId>com.intellij</groupId>

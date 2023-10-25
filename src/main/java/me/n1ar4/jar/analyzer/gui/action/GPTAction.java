@@ -1,6 +1,6 @@
 package me.n1ar4.jar.analyzer.gui.action;
 
-import com.plexpt.chatgpt.ChatGPT;
+import me.n1ar4.jar.analyzer.chatgpt.ChatGPT;
 import me.n1ar4.jar.analyzer.config.ConfigEngine;
 import me.n1ar4.jar.analyzer.config.ConfigFile;
 import me.n1ar4.jar.analyzer.dto.MethodResult;

@@ -27,6 +27,8 @@ public class Runner {
     private static final Logger logger = LogManager.getLogger();
 
     public static void run(Path jarPath, Path rtJarPath) {
+        MainForm.getInstance().getStartBuildDatabaseButton().setEnabled(false);
+
         List<ClassFileEntity> cfs;
         MainForm.getInstance().getBuildBar().setValue(10);
         if (Files.isDirectory(jarPath)) {
@@ -185,6 +187,7 @@ public class Runner {
         Env.strMap.clear();
         Env.inheritanceMap.getInheritanceMap().clear();
         Env.inheritanceMap.getSubClassMap().clear();
+        Env.controllers.clear();
         System.gc();
 
         CoreHelper.refreshSpringC();

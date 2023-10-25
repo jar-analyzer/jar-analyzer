@@ -18,3 +18,4 @@ first release
 ## 2.2-beta
 
 - [BUG] 分析`spring`由于`path`为空导致的`BUG` #5
+- [其他] 删除不必要代码以及简单优化已有代码

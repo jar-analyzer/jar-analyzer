@@ -63,7 +63,7 @@ public class SpringMethodAdapter extends MethodVisitor {
     @Override
     public void visitCode() {
         if (this.currentMapping != null) {
-            if (pathAnnoAdapter.getResults().size() > 0) {
+            if (!pathAnnoAdapter.getResults().isEmpty()) {
                 currentMapping.setPath(pathAnnoAdapter.getResults().get(0));
             }
         }
@@ -100,7 +100,7 @@ public class SpringMethodAdapter extends MethodVisitor {
     public void visitEnd() {
         if (currentMapping != null) {
             this.requestParam.forEach(param -> {
-                if (param.getReqName() == null || param.getReqName().equals("")) {
+                if (param.getReqName() == null || param.getReqName().isEmpty()) {
                     param.setReqName(param.getParamName());
                 }
             });

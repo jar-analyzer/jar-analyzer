@@ -320,12 +320,24 @@ public class DB {
             }
         }
         List<List<SpringMethodEntity>> mPartition = PartitionUtils.partition(mList, 100);
+
         for (List<SpringMethodEntity> data : mPartition) {
-            int a = springMMapper.insertMappings(data);
+
+            // FIX PATH NOT NULL BUG
+            List<SpringMethodEntity> newList = new ArrayList<>();
+            for (SpringMethodEntity entity : data) {
+                if (entity.getPath() == null || entity.getPath().isEmpty()) {
+                    entity.setPath("none");
+                }
+                newList.add(entity);
+            }
+
+            int a = springMMapper.insertMappings(newList);
             if (a == 0) {
                 logger.warn("save error");
             }
         }
+
         logger.info("save all spring data success");
     }
 }

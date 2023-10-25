@@ -33,7 +33,7 @@ public class SpringPathAnnoAdapter extends AnnotationVisitor {
 
         @Override
         public void visit(String name, Object value) {
-            if (!value.toString().trim().equals("")) {
+            if (!value.toString().trim().isEmpty()) {
                 results.add(value.toString());
             }
             super.visit(name, value);

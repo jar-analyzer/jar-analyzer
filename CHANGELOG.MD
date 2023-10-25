@@ -17,4 +17,4 @@ first release
 
 ## 2.2-beta
 
-todo
+- [BUG] 分析`spring`由于`path`为空导致的`BUG` #5

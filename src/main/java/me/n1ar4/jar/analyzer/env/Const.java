@@ -2,7 +2,7 @@ package me.n1ar4.jar.analyzer.env;
 
 public interface Const {
     String app = "Jar Analyzer V2 - 4ra1n";
-    String version = "2.1-beta";
+    String version = "2.2-beta";
     String checkUpdateUrl = "https://api.github.com/repos/jar-analyzer/jar-analyzer/releases/latest";
     String authorUrl = "https://github.com/4ra1n";
     String projectUrl = "https://github.com/jar-analyzer/jar-analyzer";

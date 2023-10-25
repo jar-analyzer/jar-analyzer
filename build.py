@@ -3,7 +3,7 @@ import shutil
 import sys
 import subprocess
 
-VERSION = "2.1-beta"
+VERSION = "2.2-beta"
 PROJECT = "PROJECT: https://github.com/jar-analyzer/jar-analyzer"
 
 
@@ -41,30 +41,25 @@ if __name__ == '__main__':
     print("[*] make new release dir: {}".format(VERSION))
     release_win_system_dir = "jar-analyzer-{}-windows-system".format(VERSION)
     release_win_embed_dir = "jar-analyzer-{}-windows-embed".format(VERSION)
-    release_linux_system_dir = "jar-analyzer-{}-linux-system".format(VERSION)
-    release_linux_embed_dir = "jar-analyzer-{}-linux-embed".format(VERSION)
+    release_linux_dir = "jar-analyzer-{}-linux".format(VERSION)
 
     print("[*] make dirs")
     subprocess.run("mkdir {}".format(release_win_system_dir), shell=True, cwd=target_directory)
     subprocess.run("mkdir {}\\{}".format(release_win_system_dir, "lib"), shell=True, cwd=target_directory)
     subprocess.run("mkdir {}".format(release_win_embed_dir), shell=True, cwd=target_directory)
     subprocess.run("mkdir {}\\{}".format(release_win_embed_dir, "lib"), shell=True, cwd=target_directory)
-    subprocess.run("mkdir {}".format(release_linux_system_dir), shell=True, cwd=target_directory)
-    subprocess.run("mkdir {}\\{}".format(release_linux_system_dir, "lib"), shell=True, cwd=target_directory)
-    subprocess.run("mkdir {}".format(release_linux_embed_dir), shell=True, cwd=target_directory)
-    subprocess.run("mkdir {}\\{}".format(release_linux_embed_dir, "lib"), shell=True, cwd=target_directory)
+    subprocess.run("mkdir {}".format(release_linux_dir), shell=True, cwd=target_directory)
+    subprocess.run("mkdir {}\\{}".format(release_linux_dir, "lib"), shell=True, cwd=target_directory)
 
     print("[*] copy file")
     copy_jar_files(java_target_directory, "{}/{}/{}".format(target_directory, release_win_system_dir, "lib"))
     copy_jar_files(java_target_directory, "{}/{}/{}".format(target_directory, release_win_embed_dir, "lib"))
-    copy_jar_files(java_target_directory, "{}/{}/{}".format(target_directory, release_linux_system_dir, "lib"))
-    copy_jar_files(java_target_directory, "{}/{}/{}".format(target_directory, release_linux_embed_dir, "lib"))
+    copy_jar_files(java_target_directory, "{}/{}/{}".format(target_directory, release_linux_dir, "lib"))
 
     print("[*] build start scripts")
     copy_file("build\\start-system.bat", "release\\" + release_win_system_dir + "\\start.bat")
     copy_file("build\\start-embed.bat", "release\\" + release_win_embed_dir + "\\start.bat")
-    copy_file("build\\start-system.sh", "release\\" + release_linux_system_dir + "\\start.sh")
-    copy_file("build\\start-embed.sh", "release\\" + release_linux_embed_dir + "\\start.sh")
+    copy_file("build\\start-system.sh", "release\\" + release_linux_dir + "\\start.sh")
 
     print("[*] build version")
     subprocess.run("echo {} > {}".format(VERSION, "VERSION.txt"), shell=True,
@@ -72,9 +67,7 @@ if __name__ == '__main__':
     subprocess.run("echo {} > {}".format(VERSION, "VERSION.txt"), shell=True,
                    cwd="{}/{}".format(target_directory, release_win_embed_dir))
     subprocess.run("echo {} > {}".format(VERSION, "VERSION.txt"), shell=True,
-                   cwd="{}/{}".format(target_directory, release_linux_system_dir))
-    subprocess.run("echo {} > {}".format(VERSION, "VERSION.txt"), shell=True,
-                   cwd="{}/{}".format(target_directory, release_linux_embed_dir))
+                   cwd="{}/{}".format(target_directory, release_linux_dir))
 
     print("[*] build about")
     subprocess.run("echo {} > {}".format(PROJECT, "ABOUT.txt"), shell=True,
@@ -82,8 +75,6 @@ if __name__ == '__main__':
     subprocess.run("echo {} > {}".format(PROJECT, "ABOUT.txt"), shell=True,
                    cwd="{}/{}".format(target_directory, release_win_embed_dir))
     subprocess.run("echo {} > {}".format(PROJECT, "ABOUT.txt"), shell=True,
-                   cwd="{}/{}".format(target_directory, release_linux_system_dir))
-    subprocess.run("echo {} > {}".format(PROJECT, "ABOUT.txt"), shell=True,
-                   cwd="{}/{}".format(target_directory, release_linux_embed_dir))
+                   cwd="{}/{}".format(target_directory, release_linux_dir))
 
     print("[*] build finish")

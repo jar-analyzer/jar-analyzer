@@ -6,14 +6,14 @@
     <proxies>
         <proxy>
             <id>proxy-1</id>
-            <active>false</active>
+            <active>true</active>
             <protocol>http</protocol>
             <host>127.0.0.1</host>
             <port>10809</port>
         </proxy>
         <proxy>
             <id>proxy-2</id>
-            <active>true</active>
+            <active>false</active>
             <protocol>http</protocol>
             <host>127.0.0.1</host>
             <port>1081</port>

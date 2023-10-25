@@ -86,14 +86,15 @@
 
 ## Release 说明
 
-在 `release` 中提供三种下载：
+在 `release` 中提供四种下载：
 - `system` 使用系统 `JDK/JRE` 的启动脚本 (需要自行安装 `JRE`)
 - `embed` 内置安全 `Y4 JRE` 的启动脚本 (无需另外安装一键启动)
+- `linux` 内置 `shell` 启动脚本 (需要自行安装 `JRE`)
 - 简单的 `Jar` 文件，不提供启动脚本
 
 由于本工具仅在 `Windows` 中测试，其他操作系统可能会有未知的问题
 
-一般情况下，推荐使用内置 `Y4 JRE` 的版本 (jar-analyzer-xxx-embed.zip) 启动
+一般情况下，推荐使用内置 `Y4 JRE` 的 `embed` 版本启动
 
 [![](img/0000.png)](https://y4sec-team.github.io/jdk8u/)
 

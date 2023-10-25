@@ -2,6 +2,7 @@ package me.n1ar4.jar.analyzer.utils;
 
 import me.n1ar4.jar.analyzer.core.Env;
 import me.n1ar4.jar.analyzer.entity.ClassFileEntity;
+import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -43,9 +44,33 @@ public class JarUtil {
         }
         try {
             if (jarPathStr.toLowerCase(Locale.ROOT).endsWith(".class")) {
-                ClassFileEntity classFile = new ClassFileEntity(jarPathStr, jarPath);
-                classFile.setJarName("class");
-                classFileSet.add(classFile);
+                String fileText = MainForm.getInstance().getFileText().getText().trim();
+                if (jarPathStr.contains(fileText)) {
+                    String backPath = jarPathStr;
+                    jarPathStr = jarPathStr.substring(fileText.length() + 1);
+
+                    String saveClass = jarPathStr.replace("\\", "/");
+                    ClassFileEntity classFile = new ClassFileEntity(saveClass, jarPath);
+                    classFile.setJarName("class");
+                    classFileSet.add(classFile);
+
+                    Path fullPath = tmpDir.resolve(jarPathStr);
+                    Path parPath = fullPath.getParent();
+                    if (!Files.exists(parPath)) {
+                        Files.createDirectories(parPath);
+                    }
+                    try {
+                        Files.createFile(fullPath);
+                    } catch (Exception ignored) {
+                    }
+                    InputStream fis = Files.newInputStream(Paths.get(backPath));
+                    OutputStream outputStream = Files.newOutputStream(fullPath);
+                    IOUtil.copy(fis, outputStream);
+                    outputStream.close();
+                    fis.close();
+                } else {
+                    return;
+                }
             }
             if (jarPathStr.toLowerCase(Locale.ROOT).endsWith(".jar") ||
                     jarPathStr.toLowerCase(Locale.ROOT).endsWith(".war")) {

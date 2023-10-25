@@ -1,13 +1,11 @@
 package me.n1ar4.jar.analyzer.gui.action;
 
-import me.n1ar4.jar.analyzer.core.*;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.io.File;
-import java.nio.file.Paths;
 
 public class ChoseJarAction {
     public static void run() {

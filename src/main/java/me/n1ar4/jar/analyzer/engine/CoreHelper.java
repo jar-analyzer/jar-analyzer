@@ -101,6 +101,8 @@ public class CoreHelper {
     }
 
     public static void refreshCallSearch(String className, String methodName, String methodDesc) {
+        // java.lang.String java/lang/String
+        className = className.replace(".", "/");
         ArrayList<MethodResult> results = MainForm.getEngine().getCallers(className, methodName, methodDesc);
         results.sort(Comparator.comparing(MethodResult::getMethodName));
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
@@ -113,6 +115,8 @@ public class CoreHelper {
     }
 
     public static void refreshDefSearch(String className, String methodName, String methodDesc) {
+        // java.lang.String java/lang/String
+        className = className.replace(".", "/");
         ArrayList<MethodResult> results = MainForm.getEngine().getMethod(className, methodName, methodDesc);
         results.sort(Comparator.comparing(MethodResult::getMethodName));
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();

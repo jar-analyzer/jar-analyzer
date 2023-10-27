@@ -1,7 +1,10 @@
 package me.n1ar4.jar.analyzer.gui.util;
 
 import me.n1ar4.jar.analyzer.env.Const;
+import me.n1ar4.jar.analyzer.gui.ChangeLogForm;
 import me.n1ar4.jar.analyzer.gui.MainForm;
+import me.n1ar4.jar.analyzer.txtmark.Processor;
+import me.n1ar4.jar.analyzer.utils.IOUtil;
 import okhttp3.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,7 +14,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 
 public class MenuUtil {
     private static final Logger logger = LogManager.getLogger();
@@ -80,7 +86,38 @@ public class MenuUtil {
             ImageIcon imageIcon = new ImageIcon(ImageIO.read(is));
             jarItem.setIcon(imageIcon);
 
+            JMenuItem updateItem = new JMenuItem("changelogs");
+            is = MainForm.class.getClassLoader().getResourceAsStream("img/update.png");
+            if (is == null) {
+                return null;
+            }
+            imageIcon = new ImageIcon(ImageIO.read(is));
+            updateItem.setIcon(imageIcon);
+            updateItem.addActionListener(e -> {
+                try {
+                    InputStream i = MenuUtil.class.getClassLoader().getResourceAsStream("CHANGELOG.MD");
+                    if (i == null) {
+                        return;
+                    }
+                    int bufferSize = 1024;
+                    char[] buffer = new char[bufferSize];
+                    StringBuilder out = new StringBuilder();
+                    Reader in = new InputStreamReader(i, StandardCharsets.UTF_8);
+                    for (int numRead; (numRead = in.read(buffer, 0, buffer.length)) > 0; ) {
+                        out.append(buffer, 0, numRead);
+                    }
+                    ChangeLogForm.start(Processor.process(out.toString()));
+                } catch (Exception ex) {
+                    logger.error("error: {}", ex.toString());
+                }
+            });
+
             JMenuItem downItem = new JMenuItem("check update");
+            is = MainForm.class.getClassLoader().getResourceAsStream("img/normal.png");
+            if (is == null) {
+                return null;
+            }
+            imageIcon = new ImageIcon(ImageIO.read(is));
             downItem.setIcon(imageIcon);
             downItem.addActionListener(e -> {
                 OkHttpClient client = new OkHttpClient();
@@ -119,6 +156,7 @@ public class MenuUtil {
             });
 
             verMenu.add(jarItem);
+            verMenu.add(updateItem);
             verMenu.add(downItem);
             return verMenu;
         } catch (Exception ex) {

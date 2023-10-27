@@ -10,6 +10,7 @@ public interface Const {
     String dbFile = "jar-analyzer.db";
     String tempDir = "jar-analyzer-temp";
     String OpcodeForm = "Jar Analyzer V2 - Method Opcode Form";
+    String ChangeLogForm = "Jar Analyzer V2 -Update Change Log";
     String CFGForm = "Jar Analyzer V2 - CFG Form";
     String FrameForm = "Jar Analyzer V2 - Frame Form";
 }

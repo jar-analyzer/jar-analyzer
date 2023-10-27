@@ -2,6 +2,8 @@ package me.n1ar4.jar.analyzer.dto;
 
 import me.n1ar4.jar.analyzer.utils.ASMUtil;
 
+import java.nio.file.Path;
+
 public class MethodResult {
     private String className;
     private String jarName;
@@ -9,6 +11,7 @@ public class MethodResult {
     private String methodDesc;
     private int isStaticInt;
     private int accessInt;
+    private Path classPath;
     // for spring
     private String path;
 
@@ -25,6 +28,14 @@ public class MethodResult {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public Path getClassPath() {
+        return classPath;
+    }
+
+    public void setClassPath(Path classPath) {
+        this.classPath = classPath;
     }
 
     public String getJarName() {

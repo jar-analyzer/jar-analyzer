@@ -6,6 +6,7 @@ import me.n1ar4.jar.analyzer.dto.MethodResult;
 import me.n1ar4.jar.analyzer.engine.CoreHelper;
 import me.n1ar4.jar.analyzer.env.Const;
 import me.n1ar4.jar.analyzer.gui.MainForm;
+import me.n1ar4.jar.analyzer.gui.state.State;
 import me.n1ar4.jar.analyzer.gui.util.ProcessDialog;
 import me.n1ar4.jar.analyzer.utils.StringUtil;
 import org.objectweb.asm.Type;
@@ -78,12 +79,24 @@ public class CommonMouseAdapter extends MouseAdapter {
 
             MainForm.getInstance().getCurClassText().setText(className);
             String jarName = res.getJarName();
-            if(StringUtil.isNull(jarName)){
+            if (StringUtil.isNull(jarName)) {
                 jarName = MainForm.getEngine().getJarByClass(className);
             }
             MainForm.getInstance().getCurJarText().setText(jarName);
             MainForm.getInstance().getCurMethodText().setText(res.getMethodName());
+            res.setClassPath(Paths.get(finalClassPath));
             MainForm.setCurMethod(res);
+
+            State newState = new State();
+            newState.setClassPath(Paths.get(finalClassPath));
+            newState.setJarName(jarName);
+            newState.setClassName(res.getClassName());
+            newState.setMethodDesc(res.getMethodDesc());
+            newState.setMethodName(res.getMethodName());
+
+            MainForm.setPrevState(MainForm.getCurState());
+            MainForm.setCurState(newState);
+            MainForm.setNextState(null);
         }
     }
 }

@@ -15,6 +15,8 @@ public class IconManager {
     public static ImageIcon auIcon;
     public static ImageIcon githubIcon;
     public static ImageIcon chatIcon;
+    public static ImageIcon nextIcon;
+    public static ImageIcon prevIcon;
 
     static {
         try {
@@ -62,6 +64,14 @@ public class IconManager {
             image = chatIcon.getImage();
             resizedImage = image.getScaledInstance(80, 80, Image.SCALE_SMOOTH);
             chatIcon = new ImageIcon(resizedImage);
+
+            prevIcon = new ImageIcon(ImageIO.read(
+                    Objects.requireNonNull(IconManager.class
+                            .getClassLoader().getResourceAsStream("img/prev.png"))));
+
+            nextIcon = new ImageIcon(ImageIO.read(
+                    Objects.requireNonNull(IconManager.class
+                            .getClassLoader().getResourceAsStream("img/next.png"))));
         } catch (Exception ignored) {
         }
     }

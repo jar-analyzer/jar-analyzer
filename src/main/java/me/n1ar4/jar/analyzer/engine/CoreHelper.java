@@ -4,6 +4,7 @@ import me.n1ar4.jar.analyzer.dto.ClassResult;
 import me.n1ar4.jar.analyzer.dto.MethodResult;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.render.AllMethodsRender;
+import me.n1ar4.jar.analyzer.gui.util.BlackListParser;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -104,9 +105,26 @@ public class CoreHelper {
         // java.lang.String java/lang/String
         className = className.replace(".", "/");
         ArrayList<MethodResult> results = MainForm.getEngine().getCallers(className, methodName, methodDesc);
-        results.sort(Comparator.comparing(MethodResult::getMethodName));
+
+        // BALCK LIST
+        ArrayList<String> bl = BlackListParser.parse(MainForm.getInstance().getBlackArea().getText());
+        ArrayList<MethodResult> newReulst = new ArrayList<>();
+        for (MethodResult m : results) {
+            boolean filtered = false;
+            for (String b : bl) {
+                if (m.getClassName().equals(b)) {
+                    filtered = true;
+                    break;
+                }
+            }
+            if (!filtered) {
+                newReulst.add(m);
+            }
+        }
+
+        newReulst.sort(Comparator.comparing(MethodResult::getMethodName));
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
-        for (MethodResult result : results) {
+        for (MethodResult result : newReulst) {
             methodsList.addElement(result);
         }
         MainForm.getInstance().getSearchList().setModel(methodsList);
@@ -118,9 +136,26 @@ public class CoreHelper {
         // java.lang.String java/lang/String
         className = className.replace(".", "/");
         ArrayList<MethodResult> results = MainForm.getEngine().getMethod(className, methodName, methodDesc);
-        results.sort(Comparator.comparing(MethodResult::getMethodName));
+
+        // BALCK LIST
+        ArrayList<String> bl = BlackListParser.parse(MainForm.getInstance().getBlackArea().getText());
+        ArrayList<MethodResult> newReulst = new ArrayList<>();
+        for (MethodResult m : results) {
+            boolean filtered = false;
+            for (String b : bl) {
+                if (m.getClassName().equals(b)) {
+                    filtered = true;
+                    break;
+                }
+            }
+            if (!filtered) {
+                newReulst.add(m);
+            }
+        }
+
+        newReulst.sort(Comparator.comparing(MethodResult::getMethodName));
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
-        for (MethodResult result : results) {
+        for (MethodResult result : newReulst) {
             methodsList.addElement(result);
         }
         MainForm.getInstance().getSearchList().setModel(methodsList);
@@ -130,9 +165,26 @@ public class CoreHelper {
 
     public static void refreshStrSearch(String val) {
         ArrayList<MethodResult> results = MainForm.getEngine().getMethodsByStr(val);
-        results.sort(Comparator.comparing(MethodResult::getMethodName));
+
+        // BALCK LIST
+        ArrayList<String> bl = BlackListParser.parse(MainForm.getInstance().getBlackArea().getText());
+        ArrayList<MethodResult> newReulst = new ArrayList<>();
+        for (MethodResult m : results) {
+            boolean filtered = false;
+            for (String b : bl) {
+                if (m.getClassName().equals(b)) {
+                    filtered = true;
+                    break;
+                }
+            }
+            if (!filtered) {
+                newReulst.add(m);
+            }
+        }
+
+        newReulst.sort(Comparator.comparing(MethodResult::getMethodName));
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
-        for (MethodResult result : results) {
+        for (MethodResult result : newReulst) {
             methodsList.addElement(result);
         }
         MainForm.getInstance().getSearchList().setModel(methodsList);
@@ -155,9 +207,26 @@ public class CoreHelper {
         // java.lang.String java/lang/String
         className = className.replace(".", "/");
         ArrayList<MethodResult> results = MainForm.getEngine().getCallersLike(className, methodName, methodDesc);
-        results.sort(Comparator.comparing(MethodResult::getMethodName));
+
+        // BALCK LIST
+        ArrayList<String> bl = BlackListParser.parse(MainForm.getInstance().getBlackArea().getText());
+        ArrayList<MethodResult> newReulst = new ArrayList<>();
+        for (MethodResult m : results) {
+            boolean filtered = false;
+            for (String b : bl) {
+                if (m.getClassName().equals(b)) {
+                    filtered = true;
+                    break;
+                }
+            }
+            if (!filtered) {
+                newReulst.add(m);
+            }
+        }
+
+        newReulst.sort(Comparator.comparing(MethodResult::getMethodName));
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
-        for (MethodResult result : results) {
+        for (MethodResult result : newReulst) {
             methodsList.addElement(result);
         }
         MainForm.getInstance().getSearchList().setModel(methodsList);
@@ -169,9 +238,26 @@ public class CoreHelper {
         // java.lang.String java/lang/String
         className = className.replace(".", "/");
         ArrayList<MethodResult> results = MainForm.getEngine().getMethodLike(className, methodName, methodDesc);
-        results.sort(Comparator.comparing(MethodResult::getMethodName));
+
+        // BALCK LIST
+        ArrayList<String> bl = BlackListParser.parse(MainForm.getInstance().getBlackArea().getText());
+        ArrayList<MethodResult> newReulst = new ArrayList<>();
+        for (MethodResult m : results) {
+            boolean filtered = false;
+            for (String b : bl) {
+                if (m.getClassName().equals(b)) {
+                    filtered = true;
+                    break;
+                }
+            }
+            if (!filtered) {
+                newReulst.add(m);
+            }
+        }
+
+        newReulst.sort(Comparator.comparing(MethodResult::getMethodName));
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
-        for (MethodResult result : results) {
+        for (MethodResult result : newReulst) {
             methodsList.addElement(result);
         }
         MainForm.getInstance().getSearchList().setModel(methodsList);

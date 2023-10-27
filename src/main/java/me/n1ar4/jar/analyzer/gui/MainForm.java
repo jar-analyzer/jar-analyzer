@@ -27,10 +27,13 @@ import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.plaf.FontUIResource;
+import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Locale;
 
 public class MainForm {
     private static final Logger logger = LogManager.getLogger();
@@ -163,6 +166,12 @@ public class MainForm {
     private JButton prevBtn;
     private JButton nextBtn;
     private JPanel actionPanel;
+    private JPanel soPanel;
+    private JRadioButton likeSearchRadioButton;
+    private JRadioButton equalsSearchRadioButton;
+    private JPanel blackListPanel;
+    private JScrollPane blackScroll;
+    private JTextArea blackArea;
     private static MainForm instance;
     private static ConfigFile config;
     private static CoreEngine engine;
@@ -449,6 +458,18 @@ public class MainForm {
         return nextBtn;
     }
 
+    public JRadioButton getLikeSearchRadioButton() {
+        return likeSearchRadioButton;
+    }
+
+    public JRadioButton getEqualsSearchRadioButton() {
+        return equalsSearchRadioButton;
+    }
+
+    public JTextArea getBlackArea() {
+        return blackArea;
+    }
+
     public MainForm() {
         logger.info("init main form");
         methodDefinitionRadioButton.setSelected(true);
@@ -524,6 +545,9 @@ public class MainForm {
         gptLabel.setIcon(IconManager.chatIcon);
 
         authorTextLabel.addMouseListener(new AuthorAdapter());
+
+        blackArea.setText("java.lang.Object;\njava.lang.Integer;\n");
+        equalsSearchRadioButton.setSelected(true);
 
         logger.info("init main form success");
     }
@@ -745,7 +769,7 @@ public class MainForm {
         searchList = new JList();
         searchScroll.setViewportView(searchList);
         searchOptionsPanel = new JPanel();
-        searchOptionsPanel.setLayout(new GridLayoutManager(3, 2, new Insets(0, 0, 0, 0), -1, -1));
+        searchOptionsPanel.setLayout(new GridLayoutManager(4, 2, new Insets(0, 0, 0, 0), -1, -1));
         searchResPanel.add(searchOptionsPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         searchOptionsPanel.setBorder(BorderFactory.createTitledBorder(null, "Search Options", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         methodDefinitionRadioButton = new JRadioButton();
@@ -762,7 +786,7 @@ public class MainForm {
         searchOptionsPanel.add(binarySearchRadioButton, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         searchInnerPanel = new JPanel();
         searchInnerPanel.setLayout(new GridLayoutManager(3, 3, new Insets(0, 0, 0, 0), -1, -1));
-        searchOptionsPanel.add(searchInnerPanel, new GridConstraints(2, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        searchOptionsPanel.add(searchInnerPanel, new GridConstraints(3, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         searchClassText = new JTextField();
         searchInnerPanel.add(searchClassText, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         searchClassLabel = new JLabel();
@@ -784,6 +808,26 @@ public class MainForm {
         logoLabel = new JLabel();
         logoLabel.setText("");
         searchInnerPanel.add(logoLabel, new GridConstraints(0, 2, 2, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        soPanel = new JPanel();
+        soPanel.setLayout(new GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
+        searchOptionsPanel.add(soPanel, new GridConstraints(2, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        soPanel.setBorder(BorderFactory.createTitledBorder(null, "Options", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+        likeSearchRadioButton = new JRadioButton();
+        likeSearchRadioButton.setText("like search");
+        soPanel.add(likeSearchRadioButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        equalsSearchRadioButton = new JRadioButton();
+        equalsSearchRadioButton.setText("equals search");
+        soPanel.add(equalsSearchRadioButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        blackListPanel = new JPanel();
+        blackListPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        soPanel.add(blackListPanel, new GridConstraints(1, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        blackListPanel.setBorder(BorderFactory.createTitledBorder(null, "Class Black List", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+        blackScroll = new JScrollPane();
+        blackListPanel.add(blackScroll, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(-1, 100), new Dimension(-1, 100), new Dimension(-1, 100), 0, false));
+        blackArea = new JTextArea();
+        Font blackAreaFont = this.$$$getFont$$$("Consolas", -1, -1, blackArea.getFont());
+        if (blackAreaFont != null) blackArea.setFont(blackAreaFont);
+        blackScroll.setViewportView(blackArea);
         callPanel = new JPanel();
         callPanel.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPanel.addTab("call", callPanel);
@@ -989,6 +1033,28 @@ public class MainForm {
         buttonGroup.add(binarySearchRadioButton);
         buttonGroup = new ButtonGroup();
         buttonGroup.add(fernRadio);
+    }
+
+    /**
+     * @noinspection ALL
+     */
+    private Font $$$getFont$$$(String fontName, int style, int size, Font currentFont) {
+        if (currentFont == null) return null;
+        String resultName;
+        if (fontName == null) {
+            resultName = currentFont.getName();
+        } else {
+            Font testFont = new Font(fontName, Font.PLAIN, 10);
+            if (testFont.canDisplay('a') && testFont.canDisplay('1')) {
+                resultName = fontName;
+            } else {
+                resultName = currentFont.getName();
+            }
+        }
+        Font font = new Font(resultName, style >= 0 ? style : currentFont.getStyle(), size >= 0 ? size : currentFont.getSize());
+        boolean isMac = System.getProperty("os.name", "").toLowerCase(Locale.ENGLISH).startsWith("mac");
+        Font fontWithFallback = isMac ? new Font(font.getFamily(), font.getStyle(), font.getSize()) : new StyleContext().getFont(font.getFamily(), font.getStyle(), font.getSize());
+        return fontWithFallback instanceof FontUIResource ? fontWithFallback : new FontUIResource(fontWithFallback);
     }
 
     /**

@@ -17,6 +17,7 @@ first release
 
 ## 2.2-beta
 
+- [重要] 支持搜索时选择`like`和`equals`两种模式
 - [功能] 支持前后跳转：返回上一步和回到当前
 - [功能] 程序内提供更新日志，集成`markdown`解析库
 - [BUG] 分析`spring`由于`path`为空导致的`BUG` #5

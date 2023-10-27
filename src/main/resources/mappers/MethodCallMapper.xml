@@ -38,6 +38,24 @@
             </if>
         </where>
     </select>
+    <select id="selectCallersLike" resultMap="methodMap">
+        SELECT DISTINCT
+        mc.caller_method_name AS method_name,
+        mc.caller_class_name AS class_name,
+        mc.caller_method_desc AS method_desc
+        FROM method_call_table mc
+        <where>
+            <if test="calleeClassName != null and calleeClassName != ''">
+                AND mc.callee_class_name LIKE '%${calleeClassName}%'
+            </if>
+            <if test="calleeMethodName != null and calleeMethodName != ''">
+                AND mc.callee_method_name LIKE '%${calleeMethodName}%'
+            </if>
+            <if test="calleeMethodDesc != null and calleeMethodDesc != ''">
+                AND mc.callee_method_desc = #{calleeMethodDesc}
+            </if>
+        </where>
+    </select>
     <select id="selectCallee" resultMap="methodMap">
         SELECT DISTINCT
         mc.callee_method_name AS method_name,

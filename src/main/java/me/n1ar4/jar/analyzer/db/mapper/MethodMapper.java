@@ -14,4 +14,8 @@ public interface MethodMapper {
     List<MethodResult> selectMethods(@Param("className") String className,
                                      @Param("methodName") String methodName,
                                      @Param("methodDesc") String methodDesc);
+
+    List<MethodResult> selectMethodsLike(@Param("className") String className,
+                                         @Param("methodName") String methodName,
+                                         @Param("methodDesc") String methodDesc);
 }

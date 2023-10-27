@@ -22,6 +22,10 @@ public class SearchAction {
         JRadioButton methodCallRadio = MainForm.getInstance().getMethodCallRadioButton();
         JRadioButton binaryRadio = MainForm.getInstance().getBinarySearchRadioButton();
         JRadioButton stringRadio = MainForm.getInstance().getStringContainsRadioButton();
+
+        JRadioButton equalsRadio = MainForm.getInstance().getEqualsSearchRadioButton();
+        JRadioButton likeRadio = MainForm.getInstance().getLikeSearchRadioButton();;
+
         CoreEngine engine = MainForm.getEngine();
         searchBtn.addActionListener(e -> {
             if (methodCallRadio.isSelected() || methodDefRadio.isSelected()) {
@@ -40,13 +44,25 @@ public class SearchAction {
             }
 
             if (methodCallRadio.isSelected()) {
-                new Thread(() -> CoreHelper.refreshCallSearch(
-                        scText.getText(), smText.getText(), null)).start();
+                if(equalsRadio.isSelected()){
+                    new Thread(() -> CoreHelper.refreshCallSearch(
+                            scText.getText(), smText.getText(), null)).start();
+                }
+                if(likeRadio.isSelected()){
+                    new Thread(() -> CoreHelper.refreshCallSearchLike(
+                            scText.getText(), smText.getText(), null)).start();
+                }
             }
 
             if (methodDefRadio.isSelected()) {
-                new Thread(() -> CoreHelper.refreshDefSearch(
-                        scText.getText(), smText.getText(), null)).start();
+                if(equalsRadio.isSelected()){
+                    new Thread(() -> CoreHelper.refreshDefSearch(
+                            scText.getText(), smText.getText(), null)).start();
+                }
+                if(likeRadio.isSelected()){
+                    new Thread(() -> CoreHelper.refreshDefSearchLike(
+                            scText.getText(), smText.getText(), null)).start();
+                }
             }
 
             if (stringRadio.isSelected()) {

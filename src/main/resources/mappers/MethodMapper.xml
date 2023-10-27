@@ -41,4 +41,21 @@
             </if>
         </where>
     </select>
+    <select id="selectMethodsLike" resultMap="methodMap">
+        SELECT DISTINCT cf.jar_name, m.method_name, m.class_name, m.method_desc, m.is_static, m.access
+        FROM method_table m
+        INNER JOIN class_file_table cf ON
+        substr(cf.class_name, 1, length(cf.class_name) - 6) = m.class_name
+        <where>
+            <if test="methodName != null and methodName != ''">
+                AND m.method_name LIKE '%${methodName}%'
+            </if>
+            <if test="methodDesc != null and methodDesc != ''">
+                AND m.method_desc = #{methodDesc}
+            </if>
+            <if test="className != null and className != ''">
+                AND m.class_name LIKE '%${className}%'
+            </if>
+        </where>
+    </select>
 </mapper>

@@ -150,4 +150,32 @@ public class CoreHelper {
         MainForm.getInstance().getHistoryList().repaint();
         MainForm.getInstance().getHistoryList().revalidate();
     }
+
+    public static void refreshCallSearchLike(String className, String methodName, String methodDesc) {
+        // java.lang.String java/lang/String
+        className = className.replace(".", "/");
+        ArrayList<MethodResult> results = MainForm.getEngine().getCallersLike(className, methodName, methodDesc);
+        results.sort(Comparator.comparing(MethodResult::getMethodName));
+        DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
+        for (MethodResult result : results) {
+            methodsList.addElement(result);
+        }
+        MainForm.getInstance().getSearchList().setModel(methodsList);
+        MainForm.getInstance().getSearchList().repaint();
+        MainForm.getInstance().getSearchList().revalidate();
+    }
+
+    public static void refreshDefSearchLike(String className, String methodName, String methodDesc) {
+        // java.lang.String java/lang/String
+        className = className.replace(".", "/");
+        ArrayList<MethodResult> results = MainForm.getEngine().getMethodLike(className, methodName, methodDesc);
+        results.sort(Comparator.comparing(MethodResult::getMethodName));
+        DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
+        for (MethodResult result : results) {
+            methodsList.addElement(result);
+        }
+        MainForm.getInstance().getSearchList().setModel(methodsList);
+        MainForm.getInstance().getSearchList().repaint();
+        MainForm.getInstance().getSearchList().revalidate();
+    }
 }

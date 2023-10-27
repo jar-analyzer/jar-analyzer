@@ -16,4 +16,8 @@ public interface MethodCallMapper {
     List<MethodResult> selectCallee(@Param("callerMethodName") String callerMethodName,
                                     @Param("callerMethodDesc") String callerMethodDesc,
                                     @Param("callerClassName") String callerClassName);
+
+    List<MethodResult> selectCallersLike(@Param("calleeMethodName") String calleeMethod,
+                                         @Param("calleeMethodDesc") String calleeDesc,
+                                         @Param("calleeClassName") String calleeClass);
 }

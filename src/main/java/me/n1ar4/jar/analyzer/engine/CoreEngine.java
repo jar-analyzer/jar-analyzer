@@ -69,6 +69,15 @@ public class CoreEngine {
         return results;
     }
 
+    public ArrayList<MethodResult> getCallersLike(String calleeClass, String calleeMethod, String calleeDesc) {
+        SqlSession session = factory.openSession(true);
+        MethodCallMapper methodCallMapper = session.getMapper(MethodCallMapper.class);
+        ArrayList<MethodResult> results = new ArrayList<>(methodCallMapper.selectCallersLike(
+                calleeMethod, calleeDesc, calleeClass));
+        session.close();
+        return results;
+    }
+
     public ArrayList<MethodResult> getCallee(String callerClass, String callerMethod, String callerDesc) {
         SqlSession session = factory.openSession(true);
         MethodCallMapper methodCallMapper = session.getMapper(MethodCallMapper.class);
@@ -83,6 +92,15 @@ public class CoreEngine {
         MethodMapper methodMapper = session.getMapper(MethodMapper.class);
         ArrayList<MethodResult> results = new ArrayList<>(
                 methodMapper.selectMethods(className, methodName, methodDesc));
+        session.close();
+        return results;
+    }
+
+    public ArrayList<MethodResult> getMethodLike(String className, String methodName, String methodDesc) {
+        SqlSession session = factory.openSession(true);
+        MethodMapper methodMapper = session.getMapper(MethodMapper.class);
+        ArrayList<MethodResult> results = new ArrayList<>(
+                methodMapper.selectMethodsLike(className, methodName, methodDesc));
         session.close();
         return results;
     }

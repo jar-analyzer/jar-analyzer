@@ -1033,6 +1033,9 @@ public class MainForm {
         buttonGroup.add(binarySearchRadioButton);
         buttonGroup = new ButtonGroup();
         buttonGroup.add(fernRadio);
+        buttonGroup = new ButtonGroup();
+        buttonGroup.add(likeSearchRadioButton);
+        buttonGroup.add(equalsSearchRadioButton);
     }
 
     /**

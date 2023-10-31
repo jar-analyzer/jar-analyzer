@@ -23,7 +23,7 @@
         <!-- Dependencies Version -->
         <asm.version>9.4</asm.version>
         <log4j.version>2.20.0</log4j.version>
-        <flatlaf.version>3.2.1</flatlaf.version>
+        <flatlaf.version>3.2.5</flatlaf.version>
         <okhttp.version>4.11.0</okhttp.version>
         <idea.forms.version>7.0.3</idea.forms.version>
         <syntax.version>3.3.4</syntax.version>
@@ -37,6 +37,7 @@
         <maven.resources.version>3.3.1</maven.resources.version>
         <maven.assembly.version>3.6.0</maven.assembly.version>
         <maven.compiler.version>3.11.0</maven.compiler.version>
+        <maven.versions.version>2.16.1</maven.versions.version>
         <!-- Java Compiler Version -->
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
@@ -163,9 +164,36 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>${maven.compiler.version}</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>versions-maven-plugin</artifactId>
+                    <version>${maven.versions.version}</version>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <configuration>
+                    <ruleSet>
+                        <ignoreVersions>
+                            <ignoreVersion>
+                                <type>regex</type>
+                                <version>(.+-SNAPSHOT|.+-M\d)</version>
+                            </ignoreVersion>
+                            <ignoreVersion>
+                                <type>regex</type>
+                                <version>.+-(alpha|beta).*</version>
+                            </ignoreVersion>
+                            <ignoreVersion>
+                                <type>regex</type>
+                                <version>.*\.android.*</version>
+                            </ignoreVersion>
+                        </ignoreVersions>
+                    </ruleSet>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>

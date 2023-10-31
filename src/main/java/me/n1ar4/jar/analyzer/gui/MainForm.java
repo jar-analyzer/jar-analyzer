@@ -172,6 +172,9 @@ public class MainForm {
     private JPanel blackListPanel;
     private JScrollPane blackScroll;
     private JTextArea blackArea;
+    private JTextArea classBlackArea;
+    private JLabel classBlackListLabel;
+    private JScrollPane classBlackPanel;
     private static MainForm instance;
     private static ConfigFile config;
     private static CoreEngine engine;
@@ -470,6 +473,43 @@ public class MainForm {
         return blackArea;
     }
 
+    public JTextArea getClassBlackArea() {
+        return classBlackArea;
+    }
+
+    private void resolveConfig() {
+        if (config != null) {
+            String temp = config.getTempPath();
+            String db = config.getDbPath();
+            if (Files.exists(Paths.get(temp)) && Files.exists(Paths.get(db))) {
+                databaseSizeVal.setText(config.getDbSize());
+                totalClassVal.setText(config.getTotalClass());
+                totalJarVal.setText(config.getTotalJar());
+                totalMethodVal.setText(config.getTotalMethod());
+                fileText.setText(config.getJarPath());
+                loadDBText.setText(config.getDbPath());
+                String gptHost = config.getGptHost();
+                String gptKey = config.getGptKey();
+                gptHostText.setText(gptHost);
+                apiKeyText.setText(gptKey);
+
+                engine = new CoreEngine(config);
+                engineVal.setText("RUNNING");
+                engineVal.setForeground(Color.GREEN);
+                buildBar.setValue(100);
+            } else {
+                try {
+                    Files.delete(Paths.get(ConfigEngine.CONFIG_FILE_PATH));
+                } catch (Exception ignored) {
+                }
+                try {
+                    DirUtil.removeDir(new File(Const.tempDir));
+                } catch (Exception ignored) {
+                }
+            }
+        }
+    }
+
     public MainForm() {
         logger.info("init main form");
         methodDefinitionRadioButton.setSelected(true);
@@ -484,36 +524,7 @@ public class MainForm {
         autoSaveCheckBox.setSelected(true);
         if (ConfigEngine.exist()) {
             config = ConfigEngine.parseConfig();
-            if (config != null) {
-                String temp = config.getTempPath();
-                String db = config.getDbPath();
-                if (Files.exists(Paths.get(temp)) && Files.exists(Paths.get(db))) {
-                    databaseSizeVal.setText(config.getDbSize());
-                    totalClassVal.setText(config.getTotalClass());
-                    totalJarVal.setText(config.getTotalJar());
-                    totalMethodVal.setText(config.getTotalMethod());
-                    fileText.setText(config.getJarPath());
-                    loadDBText.setText(config.getDbPath());
-                    String gptHost = config.getGptHost();
-                    String gptKey = config.getGptKey();
-                    gptHostText.setText(gptHost);
-                    apiKeyText.setText(gptKey);
-
-                    engine = new CoreEngine(config);
-                    engineVal.setText("RUNNING");
-                    engineVal.setForeground(Color.GREEN);
-                    buildBar.setValue(100);
-                } else {
-                    try {
-                        Files.delete(Paths.get(ConfigEngine.CONFIG_FILE_PATH));
-                    } catch (Exception ignored) {
-                    }
-                    try {
-                        DirUtil.removeDir(new File(Const.tempDir));
-                    } catch (Exception ignored) {
-                    }
-                }
-            }
+            resolveConfig();
         }
         fileTree.refresh();
 
@@ -543,10 +554,13 @@ public class MainForm {
         authorLabel.setIcon(IconManager.auIcon);
         authorTextLabel.setIcon(IconManager.githubIcon);
         gptLabel.setIcon(IconManager.chatIcon);
+        classBlackListLabel.setIcon(IconManager.whiteIcon);
 
         authorTextLabel.addMouseListener(new AuthorAdapter());
 
         blackArea.setText("java.lang.Object;\njava.lang.Integer;\n");
+        classBlackArea.setText("com.test.a;\ncom.test.a.;\ncom.test.a.TestClass;\n");
+
         equalsSearchRadioButton.setSelected(true);
 
         logger.info("init main form success");
@@ -629,7 +643,7 @@ public class MainForm {
         startPanel.setLayout(new GridLayoutManager(6, 1, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPanel.addTab("start", startPanel);
         chosePanel = new JPanel();
-        chosePanel.setLayout(new GridLayoutManager(6, 6, new Insets(0, 0, 0, 0), -1, -1));
+        chosePanel.setLayout(new GridLayoutManager(7, 6, new Insets(0, 0, 0, 0), -1, -1));
         startPanel.add(chosePanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         chosePanel.setBorder(BorderFactory.createTitledBorder(null, "Starter", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         choseBtn = new JButton();
@@ -641,14 +655,14 @@ public class MainForm {
         chosePanel.add(fileText, new GridConstraints(0, 1, 1, 5, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         resolveJarsInJarCheckBox = new JCheckBox();
         resolveJarsInJarCheckBox.setText("Resolve Jars in Jar");
-        chosePanel.add(resolveJarsInJarCheckBox, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        chosePanel.add(resolveJarsInJarCheckBox, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         buildBar = new JProgressBar();
         buildBar.setForeground(new Color(-9524737));
         buildBar.setStringPainted(true);
-        chosePanel.add(buildBar, new GridConstraints(5, 0, 1, 6, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        chosePanel.add(buildBar, new GridConstraints(6, 0, 1, 6, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         autoSaveCheckBox = new JCheckBox();
         autoSaveCheckBox.setText("Auto Save");
-        chosePanel.add(autoSaveCheckBox, new GridConstraints(3, 1, 1, 4, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        chosePanel.add(autoSaveCheckBox, new GridConstraints(4, 1, 1, 4, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         dbPathLabel = new JLabel();
         dbPathLabel.setText("Database Path");
         chosePanel.add(dbPathLabel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
@@ -663,16 +677,23 @@ public class MainForm {
         chosePanel.add(rtText, new GridConstraints(2, 1, 1, 5, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         autoFindRtJarCheckBox = new JCheckBox();
         autoFindRtJarCheckBox.setText("Auto Find rt.jar");
-        chosePanel.add(autoFindRtJarCheckBox, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        chosePanel.add(autoFindRtJarCheckBox, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         addRtJarWhenCheckBox = new JCheckBox();
         addRtJarWhenCheckBox.setText("Add rt.jar to Analyze");
-        chosePanel.add(addRtJarWhenCheckBox, new GridConstraints(4, 1, 1, 4, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        chosePanel.add(addRtJarWhenCheckBox, new GridConstraints(5, 1, 1, 4, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         startEngineButton = new JButton();
         startEngineButton.setText("Start Engine");
-        chosePanel.add(startEngineButton, new GridConstraints(4, 5, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        chosePanel.add(startEngineButton, new GridConstraints(5, 5, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         deleteTempCheckBox = new JCheckBox();
         deleteTempCheckBox.setText("Delete Temp");
-        chosePanel.add(deleteTempCheckBox, new GridConstraints(3, 5, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        chosePanel.add(deleteTempCheckBox, new GridConstraints(4, 5, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        classBlackListLabel = new JLabel();
+        classBlackListLabel.setText("Class Black List");
+        chosePanel.add(classBlackListLabel, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
+        classBlackPanel = new JScrollPane();
+        chosePanel.add(classBlackPanel, new GridConstraints(3, 1, 1, 5, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(-1, 66), new Dimension(-1, 66), new Dimension(-1, 66), 0, false));
+        classBlackArea = new JTextArea();
+        classBlackPanel.setViewportView(classBlackArea);
         decompilerPanel = new JPanel();
         decompilerPanel.setLayout(new GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
         startPanel.add(decompilerPanel, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));

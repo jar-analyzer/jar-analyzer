@@ -2,7 +2,7 @@ package me.n1ar4.jar.analyzer.gui.util;
 
 import java.util.ArrayList;
 
-public class BlackListParser {
+public class ListParser {
     public static ArrayList<String> parse(String text) {
         text = text.trim();
         String[] temp = text.split("\n");

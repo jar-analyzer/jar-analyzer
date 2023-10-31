@@ -4,7 +4,7 @@ import me.n1ar4.jar.analyzer.dto.ClassResult;
 import me.n1ar4.jar.analyzer.dto.MethodResult;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.render.AllMethodsRender;
-import me.n1ar4.jar.analyzer.gui.util.BlackListParser;
+import me.n1ar4.jar.analyzer.gui.util.ListParser;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -107,7 +107,7 @@ public class CoreHelper {
         ArrayList<MethodResult> results = MainForm.getEngine().getCallers(className, methodName, methodDesc);
 
         // BALCK LIST
-        ArrayList<String> bl = BlackListParser.parse(MainForm.getInstance().getBlackArea().getText());
+        ArrayList<String> bl = ListParser.parse(MainForm.getInstance().getBlackArea().getText());
         ArrayList<MethodResult> newReulst = new ArrayList<>();
         for (MethodResult m : results) {
             boolean filtered = false;
@@ -138,7 +138,7 @@ public class CoreHelper {
         ArrayList<MethodResult> results = MainForm.getEngine().getMethod(className, methodName, methodDesc);
 
         // BALCK LIST
-        ArrayList<String> bl = BlackListParser.parse(MainForm.getInstance().getBlackArea().getText());
+        ArrayList<String> bl = ListParser.parse(MainForm.getInstance().getBlackArea().getText());
         ArrayList<MethodResult> newReulst = new ArrayList<>();
         for (MethodResult m : results) {
             boolean filtered = false;
@@ -167,7 +167,7 @@ public class CoreHelper {
         ArrayList<MethodResult> results = MainForm.getEngine().getMethodsByStr(val);
 
         // BALCK LIST
-        ArrayList<String> bl = BlackListParser.parse(MainForm.getInstance().getBlackArea().getText());
+        ArrayList<String> bl = ListParser.parse(MainForm.getInstance().getBlackArea().getText());
         ArrayList<MethodResult> newReulst = new ArrayList<>();
         for (MethodResult m : results) {
             boolean filtered = false;
@@ -209,7 +209,7 @@ public class CoreHelper {
         ArrayList<MethodResult> results = MainForm.getEngine().getCallersLike(className, methodName, methodDesc);
 
         // BALCK LIST
-        ArrayList<String> bl = BlackListParser.parse(MainForm.getInstance().getBlackArea().getText());
+        ArrayList<String> bl = ListParser.parse(MainForm.getInstance().getBlackArea().getText());
         ArrayList<MethodResult> newReulst = new ArrayList<>();
         for (MethodResult m : results) {
             boolean filtered = false;
@@ -240,7 +240,7 @@ public class CoreHelper {
         ArrayList<MethodResult> results = MainForm.getEngine().getMethodLike(className, methodName, methodDesc);
 
         // BALCK LIST
-        ArrayList<String> bl = BlackListParser.parse(MainForm.getInstance().getBlackArea().getText());
+        ArrayList<String> bl = ListParser.parse(MainForm.getInstance().getBlackArea().getText());
         ArrayList<MethodResult> newReulst = new ArrayList<>();
         for (MethodResult m : results) {
             boolean filtered = false;

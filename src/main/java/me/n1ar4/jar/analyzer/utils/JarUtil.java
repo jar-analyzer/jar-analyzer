@@ -3,6 +3,7 @@ package me.n1ar4.jar.analyzer.utils;
 import me.n1ar4.jar.analyzer.core.Env;
 import me.n1ar4.jar.analyzer.entity.ClassFileEntity;
 import me.n1ar4.jar.analyzer.gui.MainForm;
+import me.n1ar4.jar.analyzer.gui.util.ListParser;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -37,6 +38,7 @@ public class JarUtil {
     }
 
     private static void resolve(String jarPathStr, Path tmpDir) {
+        String text = MainForm.getInstance().getClassBlackArea().getText();
         Path jarPath = Paths.get(jarPathStr);
         if (!Files.exists(jarPath)) {
             logger.error("jar not exist");
@@ -48,8 +50,31 @@ public class JarUtil {
                 if (jarPathStr.contains(fileText)) {
                     String backPath = jarPathStr;
                     jarPathStr = jarPathStr.substring(fileText.length() + 1);
-
                     String saveClass = jarPathStr.replace("\\", "/");
+
+                    boolean doIt = true;
+                    if (text != null && !StringUtil.isNull(text)) {
+                        ArrayList<String> data = ListParser.parse(text);
+                        String className = saveClass;
+                        if (className.endsWith(".class")) {
+                            className = className.substring(0, className.length() - 6);
+                        }
+                        for (String s : data) {
+                            // com.a.TestClass
+                            if (className.equals(s)) {
+                                doIt = false;
+                                break;
+                            }
+                            // com.a
+                            if (className.startsWith(s)) {
+                                doIt = false;
+                                break;
+                            }
+                        }
+                    }
+                    if (!doIt) {
+                        return;
+                    }
                     ClassFileEntity classFile = new ClassFileEntity(saveClass, jarPath);
                     classFile.setJarName("class");
                     classFileSet.add(classFile);
@@ -93,11 +118,36 @@ public class JarUtil {
                                 }
                                 OutputStream outputStream = Files.newOutputStream(fullPath);
                                 IOUtil.copy(jarInputStream, outputStream);
-                                doInternal(fullPath, tmpDir);
+                                doInternal(fullPath, tmpDir, text);
                                 outputStream.close();
                             }
                             continue;
                         }
+
+                        boolean doIt = true;
+                        if (text != null && !StringUtil.isNull(text)) {
+                            ArrayList<String> data = ListParser.parse(text);
+                            String className = jarEntry.getName();
+                            if (className.endsWith(".class")) {
+                                className = className.substring(0, className.length() - 6);
+                            }
+                            for (String s : data) {
+                                // com.a.TestClass
+                                if (className.equals(s)) {
+                                    doIt = false;
+                                    break;
+                                }
+                                // com.a
+                                if (className.startsWith(s)) {
+                                    doIt = false;
+                                    break;
+                                }
+                            }
+                        }
+                        if (!doIt) {
+                            continue;
+                        }
+
                         Path dirName = fullPath.getParent();
                         if (!Files.exists(dirName)) {
                             Files.createDirectories(dirName);
@@ -126,7 +176,7 @@ public class JarUtil {
         }
     }
 
-    private static void doInternal(Path jarPath, Path tmpDir) {
+    private static void doInternal(Path jarPath, Path tmpDir, String text) {
         try {
             InputStream is = Files.newInputStream(jarPath);
             JarInputStream jarInputStream = new JarInputStream(is);
@@ -137,6 +187,30 @@ public class JarUtil {
                     if (!jarEntry.getName().endsWith(".class")) {
                         continue;
                     }
+                    boolean doIt = true;
+                    if (text != null && !StringUtil.isNull(text)) {
+                        ArrayList<String> data = ListParser.parse(text);
+                        String className = jarEntry.getName();
+                        if (className.endsWith(".class")) {
+                            className = className.substring(0, className.length() - 6);
+                        }
+                        for (String s : data) {
+                            // com.a.TestClass
+                            if (className.equals(s)) {
+                                doIt = false;
+                                break;
+                            }
+                            // com.a
+                            if (className.startsWith(s)) {
+                                doIt = false;
+                                break;
+                            }
+                        }
+                    }
+                    if (!doIt) {
+                        continue;
+                    }
+
                     Path dirName = fullPath.getParent();
                     if (!Files.exists(dirName)) {
                         Files.createDirectories(dirName);

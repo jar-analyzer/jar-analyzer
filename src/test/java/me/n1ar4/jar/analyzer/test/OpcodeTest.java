@@ -1,7 +1,7 @@
 package me.n1ar4.jar.analyzer.test;
 
 
-import me.n1ar4.jar.analyzer.asm.IdentifyCallEngine;
+import me.n1ar4.jar.analyzer.analyze.asm.IdentifyCallEngine;
 
 public class OpcodeTest {
     public static void main(String[] args)throws Exception {

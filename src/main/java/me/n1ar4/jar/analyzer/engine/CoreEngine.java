@@ -1,8 +1,8 @@
 package me.n1ar4.jar.analyzer.engine;
 
 import me.n1ar4.jar.analyzer.config.ConfigFile;
-import me.n1ar4.jar.analyzer.db.SqlSessionFactoryUtil;
-import me.n1ar4.jar.analyzer.db.mapper.*;
+import me.n1ar4.jar.analyzer.core.mapper.*;
+import me.n1ar4.jar.analyzer.core.SqlSessionFactoryUtil;
 import me.n1ar4.jar.analyzer.entity.ClassResult;
 import me.n1ar4.jar.analyzer.entity.MethodResult;
 import me.n1ar4.jar.analyzer.utils.StringUtil;

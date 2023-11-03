@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="me.n1ar4.jar.analyzer.db.mapper.JarMapper">
+<mapper namespace="me.n1ar4.jar.analyzer.core.mapper.JarMapper">
     <insert id="insertJar" parameterType="JarEntity">
         INSERT INTO jar_table
             (jar_name, jar_abs_path)

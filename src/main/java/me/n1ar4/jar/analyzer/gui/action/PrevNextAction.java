@@ -1,7 +1,7 @@
 package me.n1ar4.jar.analyzer.gui.action;
 
 import me.n1ar4.jar.analyzer.core.Finder;
-import me.n1ar4.jar.analyzer.decompile.DecompileEngine;
+import me.n1ar4.jar.analyzer.engine.DecompileEngine;
 import me.n1ar4.jar.analyzer.entity.MethodResult;
 import me.n1ar4.jar.analyzer.engine.CoreHelper;
 import me.n1ar4.jar.analyzer.starter.Const;

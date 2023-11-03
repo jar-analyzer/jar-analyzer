@@ -1,12 +1,11 @@
 package me.n1ar4.jar.analyzer.core;
 
-import me.n1ar4.jar.analyzer.db.SqlSessionFactoryUtil;
-import me.n1ar4.jar.analyzer.db.mapper.*;
+import me.n1ar4.jar.analyzer.core.mapper.*;
 import me.n1ar4.jar.analyzer.entity.*;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
-import me.n1ar4.jar.analyzer.spring.SpringController;
-import me.n1ar4.jar.analyzer.spring.SpringMapping;
+import me.n1ar4.jar.analyzer.analyze.spring.SpringController;
+import me.n1ar4.jar.analyzer.analyze.spring.SpringMapping;
 import me.n1ar4.jar.analyzer.utils.OSUtil;
 import me.n1ar4.jar.analyzer.utils.PartitionUtils;
 import org.apache.ibatis.session.SqlSession;

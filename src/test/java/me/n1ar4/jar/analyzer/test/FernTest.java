@@ -1,6 +1,6 @@
 package me.n1ar4.jar.analyzer.test;
 
-import me.n1ar4.jar.analyzer.decompile.DecompileEngine;
+import me.n1ar4.jar.analyzer.engine.DecompileEngine;
 
 import java.nio.file.Paths;
 

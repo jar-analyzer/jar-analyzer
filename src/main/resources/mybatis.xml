@@ -15,7 +15,7 @@
     <environments default="development">
         <environment id="development">
             <transactionManager type="JDBC"/>
-            <dataSource type="me.n1ar4.jar.analyzer.db.DBCPDataSourceFactory">
+            <dataSource type="me.n1ar4.jar.analyzer.core.DBCPDataSourceFactory">
                 <property name="driverClassName" value="${driver}"/>
                 <property name="url" value="${url}"/>
             </dataSource>

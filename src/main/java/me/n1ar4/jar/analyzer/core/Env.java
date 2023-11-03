@@ -1,7 +1,7 @@
 package me.n1ar4.jar.analyzer.core;
 
 import me.n1ar4.jar.analyzer.entity.ClassFileEntity;
-import me.n1ar4.jar.analyzer.spring.SpringController;
+import me.n1ar4.jar.analyzer.analyze.spring.SpringController;
 
 import java.util.*;
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="me.n1ar4.jar.analyzer.db.mapper.MethodMapper">
+<mapper namespace="me.n1ar4.jar.analyzer.core.mapper.MethodMapper">
     <resultMap id="methodMap" type="me.n1ar4.jar.analyzer.entity.MethodResult">
         <result column="jar_name" property="jarName"/>
         <result column="method_name" property="methodName"/>

@@ -702,7 +702,7 @@ public class MainForm {
         fernRadio = new JRadioButton();
         fernRadio.setEnabled(true);
         fernRadio.setSelected(true);
-        fernRadio.setText(" FernFlower");
+        fernRadio.setText(" FernFlower (from jetbrains/intellij-community)");
         decompilerPanel.add(fernRadio, new GridConstraints(1, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         opcodeBtn = new JButton();
         opcodeBtn.setText("Show Method Opcode");

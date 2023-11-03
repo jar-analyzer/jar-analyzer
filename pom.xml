@@ -30,7 +30,7 @@
         <sqlite.jdbc.version>3.43.2.2</sqlite.jdbc.version>
         <slf4j.api.version>2.0.8</slf4j.api.version>
         <slf4j.simple.version>2.0.9</slf4j.simple.version>
-        <mybatis.version>3.5.13</mybatis.version>
+        <mybatis.version>3.5.14</mybatis.version>
         <snakeyaml.version>2.2</snakeyaml.version>
         <fastjson.version>2.0.41</fastjson.version>
         <commons.dhcp.version>2.11.0</commons.dhcp.version>

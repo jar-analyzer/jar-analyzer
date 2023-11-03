@@ -6,7 +6,7 @@ import me.n1ar4.jar.analyzer.core.asm.StringClassVisitor;
 import me.n1ar4.jar.analyzer.engine.CoreEngine;
 import me.n1ar4.jar.analyzer.engine.CoreHelper;
 import me.n1ar4.jar.analyzer.entity.ClassFileEntity;
-import me.n1ar4.jar.analyzer.env.Const;
+import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
 import me.n1ar4.jar.analyzer.spring.SpringService;

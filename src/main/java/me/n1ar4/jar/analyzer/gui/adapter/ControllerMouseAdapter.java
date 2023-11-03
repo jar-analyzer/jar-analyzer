@@ -1,9 +1,9 @@
 package me.n1ar4.jar.analyzer.gui.adapter;
 
 import me.n1ar4.jar.analyzer.decompile.DecompileEngine;
-import me.n1ar4.jar.analyzer.dto.ClassResult;
+import me.n1ar4.jar.analyzer.entity.ClassResult;
 import me.n1ar4.jar.analyzer.engine.CoreHelper;
-import me.n1ar4.jar.analyzer.env.Const;
+import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.ProcessDialog;
 import me.n1ar4.jar.analyzer.utils.StringUtil;

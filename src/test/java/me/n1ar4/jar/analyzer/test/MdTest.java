@@ -1,6 +1,6 @@
 package me.n1ar4.jar.analyzer.test;
 
-import me.n1ar4.jar.analyzer.txtmark.Processor;
+import com.github.rjeschke.txtmark.Processor;
 
 public class MdTest {
     public static void main(String[] args) {

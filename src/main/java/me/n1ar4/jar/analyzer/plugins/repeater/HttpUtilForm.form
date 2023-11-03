@@ -88,7 +88,7 @@
           <component id="3104e" class="javax.swing.JTextArea" binding="reqArea">
             <constraints/>
             <properties>
-              <background color="-853761"/>
+              <background color="-1"/>
               <font name="Consolas" size="18"/>
               <lineWrap value="true"/>
               <text value=""/>
@@ -112,7 +112,7 @@
           <component id="9daf1" class="javax.swing.JTextArea" binding="respArea">
             <constraints/>
             <properties>
-              <background color="-853761"/>
+              <background color="-1"/>
               <font name="Consolas" size="18"/>
               <lineWrap value="true"/>
               <text value=""/>

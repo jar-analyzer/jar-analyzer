@@ -1,7 +1,5 @@
 package me.n1ar4.jar.analyzer.starter;
 
-import me.n1ar4.jar.analyzer.env.Const;
-
 public class Logo {
     public static void print() {
         System.out.println("     ____.                 _____                .__                      \n" +

@@ -1,10 +1,10 @@
 package me.n1ar4.jar.analyzer.cfg;
 
-import me.n1ar4.jar.analyzer.canvas.Box;
-import me.n1ar4.jar.analyzer.canvas.Canvas;
-import me.n1ar4.jar.analyzer.canvas.TextDirection;
-import me.n1ar4.jar.analyzer.theme.line.ContinuousLine;
-import me.n1ar4.jar.analyzer.theme.text.PlainText;
+import me.n1ar4.jar.analyzer.draw.canvas.Box;
+import me.n1ar4.jar.analyzer.draw.canvas.Canvas;
+import me.n1ar4.jar.analyzer.draw.canvas.TextDirection;
+import me.n1ar4.jar.analyzer.draw.canvas.theme.line.ContinuousLine;
+import me.n1ar4.jar.analyzer.draw.canvas.theme.text.PlainText;
 
 import java.util.ArrayList;
 import java.util.List;

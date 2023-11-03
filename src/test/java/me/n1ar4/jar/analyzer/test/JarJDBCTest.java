@@ -1,9 +1,8 @@
 package me.n1ar4.jar.analyzer.test;
 
 import me.n1ar4.jar.analyzer.config.ConfigFile;
-import me.n1ar4.jar.analyzer.dto.MethodResult;
 import me.n1ar4.jar.analyzer.engine.CoreEngine;
-import me.n1ar4.jar.analyzer.env.Const;
+import me.n1ar4.jar.analyzer.starter.Const;
 
 import java.util.List;
 

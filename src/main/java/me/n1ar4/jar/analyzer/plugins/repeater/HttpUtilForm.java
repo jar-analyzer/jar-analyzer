@@ -104,7 +104,7 @@ public class HttpUtilForm {
         httpUtilPanel.add(reqScroll, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(500, 600), new Dimension(500, 600), new Dimension(500, 600), 0, false));
         reqScroll.setBorder(BorderFactory.createTitledBorder(null, "request", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         reqArea = new JTextArea();
-        reqArea.setBackground(new Color(-853761));
+        reqArea.setBackground(new Color(-1));
         Font reqAreaFont = this.$$$getFont$$$("Consolas", -1, 18, reqArea.getFont());
         if (reqAreaFont != null) reqArea.setFont(reqAreaFont);
         reqArea.setLineWrap(true);
@@ -115,7 +115,7 @@ public class HttpUtilForm {
         httpUtilPanel.add(respScroll, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(500, 600), new Dimension(500, 600), new Dimension(500, 600), 0, false));
         respScroll.setBorder(BorderFactory.createTitledBorder(null, "response", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         respArea = new JTextArea();
-        respArea.setBackground(new Color(-853761));
+        respArea.setBackground(new Color(-1));
         Font respAreaFont = this.$$$getFont$$$("Consolas", -1, 18, respArea.getFont());
         if (respAreaFont != null) respArea.setFont(respAreaFont);
         respArea.setLineWrap(true);

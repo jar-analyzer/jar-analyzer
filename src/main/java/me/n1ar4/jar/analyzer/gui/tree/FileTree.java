@@ -1,6 +1,6 @@
 package me.n1ar4.jar.analyzer.gui.tree;
 
-import me.n1ar4.jar.analyzer.env.Const;
+import me.n1ar4.jar.analyzer.starter.Const;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

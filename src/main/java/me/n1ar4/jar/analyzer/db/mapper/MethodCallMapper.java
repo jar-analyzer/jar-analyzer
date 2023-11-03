@@ -1,6 +1,6 @@
 package me.n1ar4.jar.analyzer.db.mapper;
 
-import me.n1ar4.jar.analyzer.dto.MethodResult;
+import me.n1ar4.jar.analyzer.entity.MethodResult;
 import me.n1ar4.jar.analyzer.entity.MethodCallEntity;
 import org.apache.ibatis.annotations.Param;
 

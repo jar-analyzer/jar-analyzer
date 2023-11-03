@@ -2,7 +2,7 @@ package me.n1ar4.jar.analyzer.frame;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import me.n1ar4.jar.analyzer.env.Const;
+import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 
 import javax.swing.*;

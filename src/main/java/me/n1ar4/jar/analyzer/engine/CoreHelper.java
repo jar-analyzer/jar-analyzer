@@ -1,7 +1,7 @@
 package me.n1ar4.jar.analyzer.engine;
 
-import me.n1ar4.jar.analyzer.dto.ClassResult;
-import me.n1ar4.jar.analyzer.dto.MethodResult;
+import me.n1ar4.jar.analyzer.entity.ClassResult;
+import me.n1ar4.jar.analyzer.entity.MethodResult;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.render.AllMethodsRender;
 import me.n1ar4.jar.analyzer.gui.util.ListParser;

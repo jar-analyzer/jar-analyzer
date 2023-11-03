@@ -1,6 +1,6 @@
 package me.n1ar4.jar.analyzer.gui.update;
 
-import me.n1ar4.jar.analyzer.env.Const;
+import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;

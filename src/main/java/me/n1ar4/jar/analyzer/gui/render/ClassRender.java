@@ -1,6 +1,6 @@
 package me.n1ar4.jar.analyzer.gui.render;
 
-import me.n1ar4.jar.analyzer.dto.ClassResult;
+import me.n1ar4.jar.analyzer.entity.ClassResult;
 
 import javax.swing.*;
 import java.awt.*;

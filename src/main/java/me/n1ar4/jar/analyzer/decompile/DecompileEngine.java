@@ -1,6 +1,6 @@
 package me.n1ar4.jar.analyzer.decompile;
 
-import me.n1ar4.jar.analyzer.env.Const;
+import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
 import org.apache.logging.log4j.LogManager;

@@ -1,10 +1,10 @@
 package me.n1ar4.jar.analyzer.frame;
 
 import me.n1ar4.jar.analyzer.cfg.InsnText;
-import me.n1ar4.jar.analyzer.canvas.Canvas;
-import me.n1ar4.jar.analyzer.canvas.TextAlign;
-import me.n1ar4.jar.analyzer.theme.shape.Rectangle;
-import me.n1ar4.jar.analyzer.theme.table.FixedWidthOneLineTable;
+import me.n1ar4.jar.analyzer.draw.canvas.Canvas;
+import me.n1ar4.jar.analyzer.draw.canvas.TextAlign;
+import me.n1ar4.jar.analyzer.draw.canvas.theme.shape.Rectangle;
+import me.n1ar4.jar.analyzer.draw.canvas.theme.table.FixedWidthOneLineTable;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.MethodNode;

@@ -1,6 +1,6 @@
 package me.n1ar4.jar.analyzer.gui.adapter;
 
-import me.n1ar4.jar.analyzer.env.Const;
+import me.n1ar4.jar.analyzer.starter.Const;
 
 import java.awt.*;
 import java.awt.event.*;

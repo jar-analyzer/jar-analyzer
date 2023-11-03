@@ -3,7 +3,7 @@ package me.n1ar4.jar.analyzer.gui.action;
 import me.n1ar4.jar.analyzer.asm.ASMPrint;
 import me.n1ar4.jar.analyzer.asm.IdentifyCallEngine;
 import me.n1ar4.jar.analyzer.cfg.CFGForm;
-import me.n1ar4.jar.analyzer.dto.MethodResult;
+import me.n1ar4.jar.analyzer.entity.MethodResult;
 import me.n1ar4.jar.analyzer.engine.CoreEngine;
 import me.n1ar4.jar.analyzer.frame.FrameForm;
 import me.n1ar4.jar.analyzer.gui.MainForm;

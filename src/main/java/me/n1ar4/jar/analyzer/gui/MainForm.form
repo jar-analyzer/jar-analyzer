@@ -210,7 +210,7 @@
                         <properties>
                           <enabled value="true"/>
                           <selected value="true"/>
-                          <text value=" FernFlower"/>
+                          <text value=" FernFlower (from jetbrains/intellij-community)"/>
                         </properties>
                       </component>
                       <component id="416b5" class="javax.swing.JButton" binding="opcodeBtn">

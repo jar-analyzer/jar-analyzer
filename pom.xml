@@ -28,7 +28,6 @@
         <idea.forms.version>7.0.3</idea.forms.version>
         <syntax.version>3.3.4</syntax.version>
         <sqlite.jdbc.version>3.43.2.2</sqlite.jdbc.version>
-        <fernflower.version>6.3.3.Final</fernflower.version>
         <slf4j.api.version>2.0.8</slf4j.api.version>
         <slf4j.simple.version>2.0.9</slf4j.simple.version>
         <mybatis.version>3.5.13</mybatis.version>
@@ -84,11 +83,6 @@
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
             <version>${okhttp.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.windup.decompiler</groupId>
-            <artifactId>decompiler-fernflower</artifactId>
-            <version>${fernflower.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fifesoft</groupId>

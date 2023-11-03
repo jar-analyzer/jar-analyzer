@@ -55,7 +55,7 @@
 
 方法调用搜索 (支持 `equals/like` 选项，支持黑名单过滤)
 
-![](img/0011.png)
+![](img/0012.png)
 
 方法调用关系
 
@@ -92,18 +92,16 @@
 - `linux` 内置 `shell` 启动脚本 (需要自行安装 `JRE`)
 - 简单的 `Jar` 文件，不提供启动脚本
 
-由于本工具仅在 `Windows` 中测试，其他操作系统可能会有未知的问题
+由于本工具仅在 `Windows` 中测试，其他操作系统可能会有未知的问题，欢迎提 `issue`
 
-一般情况下，推荐使用内置 `Y4 JRE` 的 `embed` 版本启动
+一般情况下，推荐使用内置 `Y4 JRE` 的 `embed` 版本启动 (这是一个定制的安全的 `JRE 8`)
 
-[![](img/0000.png)](https://y4sec-team.github.io/jdk8u/)
-
-关于 `Y4 JDK/JRE` 项目: https://y4sec-team.github.io/jdk8u/
+关于 `Y4 JDK/JRE` 项目: https://github.com/Y4Sec-Team/jdk8u
 
 ## 如何构建
 
-项目主要基于 `Java 8`
-- 下载 `JDK 8` (推荐 https://github.com/Y4Sec-Team/jdk8u)
+构建一般基于 `Java 8`
+- 下载 `JDK 8`
 - 使用 `Maven` (https://maven.apache.org/download.cgi)
 - 使用 `Python 3` 辅助 (https://www.python.org/downloads/)
 
@@ -226,7 +224,7 @@ class Cat extends Animal {
 ## 致谢
 
 感谢以下项目提供的思路和代码
-- https://github.com/FabricMC/intellij-fernflower
+- https://github.com/JetBrains/intellij-community/tree/master/plugins/java-decompiler/engine
 - https://github.com/bobbylight/RSyntaxTextArea
 - https://github.com/JackOfMostTrades/gadgetinspector
 - https://github.com/lsieun/learn-java-asm

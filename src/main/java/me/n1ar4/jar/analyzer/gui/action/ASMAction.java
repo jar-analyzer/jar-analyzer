@@ -24,6 +24,7 @@ public class ASMAction {
         JButton asmBtn = instance.getJavaAsmBtn();
         JButton cfgBtn = instance.getCfgBtn();
         JButton frameBtn = instance.getFrameBtn();
+        JButton simpleFrameBtn = instance.getSimpleFrameButton();
 
         cfgBtn.addActionListener(e->{
             MethodResult curMethod = MainForm.getCurMethod();
@@ -52,7 +53,22 @@ public class ASMAction {
                 JOptionPane.showMessageDialog(instance.getMasterPanel(), "current method data error");
                 return;
             }
-            FrameForm.start();
+            FrameForm.start(true);
+        });
+
+        simpleFrameBtn.addActionListener(e->{
+            MethodResult curMethod = MainForm.getCurMethod();
+            if (curMethod == null) {
+                JOptionPane.showMessageDialog(instance.getMasterPanel(), "current method is null");
+                return;
+            }
+            if (StringUtil.isNull(curMethod.getMethodName()) ||
+                    StringUtil.isNull(curMethod.getMethodDesc()) ||
+                    StringUtil.isNull(curMethod.getClassName())) {
+                JOptionPane.showMessageDialog(instance.getMasterPanel(), "current method data error");
+                return;
+            }
+            FrameForm.start(false);
         });
 
         opcodeBtn.addActionListener(e -> {

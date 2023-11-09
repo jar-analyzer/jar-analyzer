@@ -17,20 +17,33 @@ public class FrameForm {
     private JScrollPane rootScroll;
     private JTextArea frameArea;
 
-    public static void start() {
+    public static void start(boolean useFull) {
         JFrame frame = new JFrame(Const.FrameForm);
         FrameForm instance = new FrameForm();
 
-        StackFrameEngine engine = new StackFrameEngine();
-        instance.frameArea.setText("please wait...");
+        if (useFull) {
+            StackFrameEngine engine = new StackFrameEngine();
+            instance.frameArea.setText("please wait...");
 
-        new Thread(() -> {
-            String res = engine.doAnalyze(MainForm.getCurMethod().getClassName(),
-                    MainForm.getCurMethod().getMethodName(),
-                    MainForm.getCurMethod().getMethodDesc());
-            instance.frameArea.setText(res);
-            instance.frameArea.setCaretPosition(0);
-        }).start();
+            new Thread(() -> {
+                String res = engine.doAnalyze(MainForm.getCurMethod().getClassName(),
+                        MainForm.getCurMethod().getMethodName(),
+                        MainForm.getCurMethod().getMethodDesc());
+                instance.frameArea.setText(res);
+                instance.frameArea.setCaretPosition(0);
+            }).start();
+        } else {
+            SimpleStackFrameEngine engine = new SimpleStackFrameEngine();
+            instance.frameArea.setText("please wait...");
+
+            new Thread(() -> {
+                String res = engine.doAnalyze(MainForm.getCurMethod().getClassName(),
+                        MainForm.getCurMethod().getMethodName(),
+                        MainForm.getCurMethod().getMethodDesc());
+                instance.frameArea.setText(res);
+                instance.frameArea.setCaretPosition(0);
+            }).start();
+        }
 
         frame.setContentPane(instance.masterPanel);
         frame.setResizable(true);

@@ -6,24 +6,14 @@
 ![](https://img.shields.io/github/v/release/jar-analyzer/jar-analyzer)
 
 `Jar Analyzer` 是一个分析 `Jar` 文件的 `GUI` 工具：
+- 支持大 `Jar` 以及批量 `Jars` 分析
 - 方便地搜索方法之间的调用关系
-- 方便地搜索 `Jar` 文件中的字符串
+- 分析 `LDC` 指令定位 `Jar` 中的字符串
 - 一键分析 `Spring Controller/Mapping`
 - 对于方法字节码/指令等高级分析
-- 一键反编译
-
-相比 `Jar-Analyzer V1` 在 `V2` 版本中解决了很多重要问题：
-- 中文不再乱码，代码 `GUI` 部分更美观
-- 支持大 `Jar` 文件以及批量分析
-- 支持保存状态，重启还原上次分析内容
-
-另外有很多改进功能：
-- 更好的 `GUI` 界面，代码高亮改进
-- 文件树改进，按照文件夹以及字母排序
-- 反编译改进，优化对内部类的处理
-- 自动搜索 `rt.jar` 并加入分析
-- 一键查看任意方法的 `Control Flow Gragh`
-- 一键查看任意方法的 `Stack Frame` 分析
+- 一键反编译，优化对内部类的处理
+- 一键生成方法的 `CFG` 信息
+- 一键生成 `JVM Stack Frame` 分析结果
 
 更多的功能正在开发中
 

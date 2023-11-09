@@ -32,7 +32,7 @@
         <slf4j.simple.version>2.0.9</slf4j.simple.version>
         <mybatis.version>3.5.14</mybatis.version>
         <snakeyaml.version>2.2</snakeyaml.version>
-        <fastjson.version>2.0.41</fastjson.version>
+        <fastjson.version>2.0.42</fastjson.version>
         <commons.dhcp.version>2.11.0</commons.dhcp.version>
         <!-- Maven Build Version -->
         <maven.resources.version>3.3.1</maven.resources.version>

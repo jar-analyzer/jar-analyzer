@@ -5,6 +5,8 @@ import me.n1ar4.jar.analyzer.utils.canvas.Canvas;
 import me.n1ar4.jar.analyzer.utils.canvas.TextAlign;
 import me.n1ar4.jar.analyzer.utils.theme.shape.Rectangle;
 import me.n1ar4.jar.analyzer.utils.theme.table.FixedWidthOneLineTable;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.MethodNode;
@@ -17,33 +19,39 @@ import java.util.List;
 import java.util.function.Function;
 
 public class FrameUtils {
+    private static final Logger logger = LogManager.getLogger();
+
     public static <V extends Value, T> void printGraph(String owner,
                                                        MethodNode mn,
                                                        Analyzer<V> analyzer,
                                                        Function<V, T> func,
-                                                       StringBuilder builder) throws AnalyzerException {
-        builder.append(mn.name).append(":").append(mn.desc).append("\n");
-        int maxLocals = mn.maxLocals;
-        int maxStack = mn.maxStack;
-        InsnList instructions = mn.instructions;
-        int size = instructions.size();
-        InsnText insnText = new InsnText();
-        Frame<V>[] frames = analyzer.analyze(owner, mn);
-        String format = "%03d:    %-36s";
-        for (int index = 0; index < size; index++) {
-            AbstractInsnNode node = instructions.get(index);
-            List<String> nodeLines = insnText.toLines(node);
-            Frame<V> f = frames[index];
-            printOneFrame(maxLocals, maxStack, f, func, builder);
-            String firstLine = String.format(format, index, nodeLines.get(0));
-            builder.append(firstLine).append("\n");
-            for (int i = 1; i < nodeLines.size(); i++) {
-                String item = nodeLines.get(i);
-                String line = String.format("%4s    %-36s", "", item);
-                builder.append(line);
+                                                       StringBuilder builder) {
+        try {
+            builder.append(mn.name).append(":").append(mn.desc).append("\n");
+            int maxLocals = mn.maxLocals;
+            int maxStack = mn.maxStack;
+            InsnList instructions = mn.instructions;
+            int size = instructions.size();
+            InsnText insnText = new InsnText();
+            Frame<V>[] frames = analyzer.analyze(owner, mn);
+            String format = "%03d:    %-36s";
+            for (int index = 0; index < size; index++) {
+                AbstractInsnNode node = instructions.get(index);
+                List<String> nodeLines = insnText.toLines(node);
+                Frame<V> f = frames[index];
+                printOneFrame(maxLocals, maxStack, f, func, builder);
+                String firstLine = String.format(format, index, nodeLines.get(0));
+                builder.append(firstLine).append("\n");
+                for (int i = 1; i < nodeLines.size(); i++) {
+                    String item = nodeLines.get(i);
+                    String line = String.format("%4s    %-36s", "", item);
+                    builder.append(line);
+                }
             }
+            builder.append("\n");
+        } catch (Exception ex) {
+            logger.error("analyze error: {}", ex.getMessage());
         }
-        builder.append("\n");
     }
 
     public static <V extends Value, T> void printOneFrame(int maxLocals,

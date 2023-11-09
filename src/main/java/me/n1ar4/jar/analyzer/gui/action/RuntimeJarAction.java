@@ -40,6 +40,7 @@ public class RuntimeJarAction {
                 if (StringUtil.isNull(rtText.getText())) {
                     JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                             "you must find rt.jar first");
+                    addRtBox.setSelected(false);
                     return;
                 }
                 String rtJarPath = rtText.getText();
@@ -48,6 +49,7 @@ public class RuntimeJarAction {
                 } else {
                     JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                             "file not found");
+                    addRtBox.setSelected(false);
                 }
             } else {
                 LogUtil.log("not add rt.jar");

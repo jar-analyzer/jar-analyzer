@@ -2,6 +2,7 @@ package me.n1ar4.jar.analyzer.core.asm;
 
 import me.n1ar4.jar.analyzer.core.ClassReference;
 import me.n1ar4.jar.analyzer.core.MethodReference;
+import org.objectweb.asm.Handle;
 import org.objectweb.asm.MethodVisitor;
 
 import java.util.HashMap;
@@ -27,5 +28,21 @@ public class MethodCallMethodVisitor extends MethodVisitor {
                 new MethodReference.Handle(
                         new ClassReference.Handle(owner), name, desc));
         super.visitMethodInsn(opcode, owner, name, desc, itf);
+    }
+
+    @Override
+    public void visitInvokeDynamicInsn(String name, String descriptor,
+                                       Handle bootstrapMethodHandle,
+                                       Object... bootstrapMethodArguments) {
+        for (Object bsmArg : bootstrapMethodArguments) {
+            if (bsmArg instanceof Handle) {
+                Handle handle = (Handle) bsmArg;
+                calledMethods.add(new MethodReference.Handle(
+                        new ClassReference.Handle(handle.getOwner()),
+                        handle.getName(), handle.getDesc()));
+            }
+        }
+        super.visitInvokeDynamicInsn(name, descriptor,
+                bootstrapMethodHandle, bootstrapMethodArguments);
     }
 }

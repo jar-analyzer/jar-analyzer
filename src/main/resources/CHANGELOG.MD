@@ -4,9 +4,12 @@
 
 - [功能] 支持手动刷新`spring`分析结果
 - [BUG] 修复在分析部分类的时候发生空指针异常的问题
+- [BUG] 在使用`Lambda/Streamd/Runnable`等特性时丢失分析结果 #8
 - [优化] 优化检查最新版本中的`json`解析代码
 
-感谢 whwlsfb 的贡献
+感谢以下用户的帮助和贡献:
+- whwlsfb
+- wouijvziqy 
 
 ## 2.3-beta
 

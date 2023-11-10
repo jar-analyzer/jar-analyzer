@@ -55,6 +55,8 @@ public class SpringMethodAdapter extends MethodVisitor {
             av = pathAnnoAdapter;
         }
         if (descriptor.equals(SpringConstant.ResponseBodyAnno)) {
+            if (currentMapping == null)
+                currentMapping = new SpringMapping();
             currentMapping.setRest(true);
         }
         return av;

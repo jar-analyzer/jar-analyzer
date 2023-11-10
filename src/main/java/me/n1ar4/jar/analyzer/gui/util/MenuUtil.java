@@ -1,5 +1,8 @@
 package me.n1ar4.jar.analyzer.gui.util;
 
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
+import me.n1ar4.jar.analyzer.gui.update.UpdateChecker;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.gui.ChangeLogForm;
 import me.n1ar4.jar.analyzer.gui.MainForm;
@@ -122,6 +125,7 @@ public class MenuUtil {
                 OkHttpClient client = new OkHttpClient();
                 Request request = new Request.Builder()
                         .url(Const.checkUpdateUrl)
+                        .addHeader("User-Agent", UpdateChecker.ua)
                         .addHeader("Connection", "close")
                         .build();
                 client.newCall(request).enqueue(new Callback() {
@@ -139,8 +143,24 @@ public class MenuUtil {
                                 JOptionPane.showMessageDialog(instance.getMasterPanel(), "network error");
                             }
                             String body = response.body().string();
-                            String ver = body.split("\"tag_name\":")[1].split(",")[0];
-                            ver = ver.substring(1, ver.length() - 1);
+
+                            Object obj = JSON.parse(body);
+                            if (!(obj instanceof JSONObject)) {
+                                return;
+                            }
+                            JSONObject jsonObject = (JSONObject) obj;
+                            String tagName = (String) jsonObject.get("tag_name");
+                            String name = (String) jsonObject.get("name");
+                            String ver;
+                            if (tagName != null && !tagName.isEmpty()) {
+                                ver = tagName;
+                            } else if (name != null && !name.isEmpty()) {
+                                ver = name;
+                            } else {
+                                LogUtil.log("check update api fail");
+                                return;
+                            }
+                            LogUtil.log("latest: " + ver);
 
                             String output;
                             output = String.format("%s: %s\n%s: %s",

@@ -1,20 +1,17 @@
 package me.n1ar4.jar.analyzer.gui.util;
 
-import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONObject;
-import me.n1ar4.jar.analyzer.gui.update.UpdateChecker;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.gui.ChangeLogForm;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import com.github.rjeschke.txtmark.Processor;
-import okhttp3.*;
+import me.n1ar4.jar.analyzer.utils.http.Http;
+import me.n1ar4.jar.analyzer.utils.http.HttpResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -122,39 +119,18 @@ public class MenuUtil {
             imageIcon = new ImageIcon(ImageIO.read(is));
             downItem.setIcon(imageIcon);
             downItem.addActionListener(e -> {
-                OkHttpClient client = new OkHttpClient();
-                Request request = new Request.Builder()
-                        .url(Const.checkUpdateUrl)
-                        .addHeader("User-Agent", UpdateChecker.ua)
-                        .addHeader("Connection", "close")
-                        .build();
-                client.newCall(request).enqueue(new Callback() {
-                    @Override
-                    @SuppressWarnings("all")
-                    public void onFailure(Call call, IOException e) {
-                        JOptionPane.showMessageDialog(instance.getMasterPanel(), e.toString());
-                    }
-
-                    @Override
-                    @SuppressWarnings("all")
-                    public void onResponse(Call call, Response response) {
-                        try {
-                            if (response.body() == null) {
-                                JOptionPane.showMessageDialog(instance.getMasterPanel(), "network error");
-                            }
-                            String body = response.body().string();
-                            String ver = body.trim();
-                            LogUtil.log("latest: " + ver);
-                            String output;
-                            output = String.format("%s: %s\n%s: %s",
-                                    "Current Version", Const.version,
-                                    "Latest Version", ver);
-                            JOptionPane.showMessageDialog(instance.getMasterPanel(), output);
-                        } catch (Exception ex) {
-                            JOptionPane.showMessageDialog(instance.getMasterPanel(), ex.toString());
-                        }
-                    }
-                });
+                HttpResponse resp = Http.doGet(Const.checkUpdateUrl);
+                String body = new String(resp.getBody());
+                if (body.isEmpty()) {
+                    return;
+                }
+                String ver = body.trim();
+                LogUtil.log("latest: " + ver);
+                String output;
+                output = String.format("%s: %s\n%s: %s",
+                        "Current Version", Const.version,
+                        "Latest Version", ver);
+                JOptionPane.showMessageDialog(instance.getMasterPanel(), output);
             });
 
             verMenu.add(jarItem);

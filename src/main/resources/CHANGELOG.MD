@@ -7,8 +7,10 @@
 - [BUG] 在使用`Lambda/Streamd/Runnable`等特性时丢失分析结果 #8
 - [优化] 优化检查最新版本中的`json`解析代码
 - [优化] 使用单独的服务器验证最新版避免`github api`访问不到
+- [优化] 自行实现`http`库代替`okhttp`减小体积
 
 感谢以下用户的帮助和贡献:
+
 - whwlsfb
 - wouijvziqy 
 

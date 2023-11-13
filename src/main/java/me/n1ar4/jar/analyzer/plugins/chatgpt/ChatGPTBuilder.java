@@ -10,7 +10,7 @@ public class ChatGPTBuilder {
     }
 
     public ChatGPTBuilder apiHost(String apiHost) {
-        this.apiHost = apiHost+"/v1/chat/completions";
+        this.apiHost = apiHost + "/v1/chat/completions";
         return this;
     }
 

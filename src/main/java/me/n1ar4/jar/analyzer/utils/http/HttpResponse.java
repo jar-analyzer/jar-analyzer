@@ -5,7 +5,7 @@ import java.util.Map;
 public class HttpResponse {
     private int statusCode;
     private String responseMessage;
-    private Map<String,String> headers;
+    private Map<String, String> headers;
     private byte[] body;
 
     public int getStatusCode() {

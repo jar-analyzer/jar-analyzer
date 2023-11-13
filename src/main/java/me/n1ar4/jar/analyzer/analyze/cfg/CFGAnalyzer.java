@@ -40,25 +40,19 @@ public class CFGAnalyzer<V extends Value> extends Analyzer<V> {
         if (insnType == AbstractInsnNode.JUMP_INSN) {
             if ((insnIndex + 1) == successorIndex) {
                 addNext(insnIndex, successorIndex);
-            }
-            else {
+            } else {
                 addJump(insnIndex, successorIndex);
             }
-        }
-        else if (insnOpcode == LOOKUPSWITCH) {
+        } else if (insnOpcode == LOOKUPSWITCH) {
             addJump(insnIndex, successorIndex);
-        }
-        else if (insnOpcode == TABLESWITCH) {
+        } else if (insnOpcode == TABLESWITCH) {
             addJump(insnIndex, successorIndex);
-        }
-        else if (insnOpcode == RET) {
+        } else if (insnOpcode == RET) {
             addJump(insnIndex, successorIndex);
-        }
-        else if (insnOpcode == ATHROW || (insnOpcode >= IRETURN && insnOpcode <= RETURN)) {
+        } else if (insnOpcode == ATHROW || (insnOpcode >= IRETURN && insnOpcode <= RETURN)) {
             assert false : "should not be here";
             removeNextAndJump(insnIndex);
-        }
-        else {
+        } else {
             addNext(insnIndex, successorIndex);
         }
 
@@ -86,7 +80,7 @@ public class CFGAnalyzer<V extends Value> extends Analyzer<V> {
 
     private InsnBlock getBlock(int insnIndex) {
         InsnBlock block = blocks[insnIndex];
-        if (block == null){
+        if (block == null) {
             block = new InsnBlock();
             blocks[insnIndex] = block;
         }

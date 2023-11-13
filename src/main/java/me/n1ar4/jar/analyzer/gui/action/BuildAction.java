@@ -43,7 +43,7 @@ public class BuildAction {
                 }
             }
 
-            if(MainForm.getInstance().getDeleteTempCheckBox().isSelected()){
+            if (MainForm.getInstance().getDeleteTempCheckBox().isSelected()) {
                 LogUtil.log("start delete temp");
                 DirUtil.removeDir(new File(Const.tempDir));
                 // REFRESH TREE

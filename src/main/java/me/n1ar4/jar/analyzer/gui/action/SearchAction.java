@@ -24,7 +24,7 @@ public class SearchAction {
         JRadioButton stringRadio = MainForm.getInstance().getStringContainsRadioButton();
 
         JRadioButton equalsRadio = MainForm.getInstance().getEqualsSearchRadioButton();
-        JRadioButton likeRadio = MainForm.getInstance().getLikeSearchRadioButton();;
+        JRadioButton likeRadio = MainForm.getInstance().getLikeSearchRadioButton();
 
         CoreEngine engine = MainForm.getEngine();
         searchBtn.addActionListener(e -> {
@@ -44,22 +44,22 @@ public class SearchAction {
             }
 
             if (methodCallRadio.isSelected()) {
-                if(equalsRadio.isSelected()){
+                if (equalsRadio.isSelected()) {
                     new Thread(() -> CoreHelper.refreshCallSearch(
                             scText.getText(), smText.getText(), null)).start();
                 }
-                if(likeRadio.isSelected()){
+                if (likeRadio.isSelected()) {
                     new Thread(() -> CoreHelper.refreshCallSearchLike(
                             scText.getText(), smText.getText(), null)).start();
                 }
             }
 
             if (methodDefRadio.isSelected()) {
-                if(equalsRadio.isSelected()){
+                if (equalsRadio.isSelected()) {
                     new Thread(() -> CoreHelper.refreshDefSearch(
                             scText.getText(), smText.getText(), null)).start();
                 }
-                if(likeRadio.isSelected()){
+                if (likeRadio.isSelected()) {
                     new Thread(() -> CoreHelper.refreshDefSearchLike(
                             scText.getText(), smText.getText(), null)).start();
                 }

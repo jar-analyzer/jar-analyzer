@@ -19,7 +19,7 @@ public class ASMUtil {
 
         Type[] argumentTypes = Type.getArgumentTypes(methodDesc);
         sb.append("<font style=\"color: red; font-weight: bold;\">");
-        if(methodName.equals("<init>")){
+        if (methodName.equals("<init>")) {
             methodName = "[init]";
         }
         sb.append(methodName);

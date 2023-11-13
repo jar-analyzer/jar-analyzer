@@ -11,7 +11,7 @@ import java.io.InputStream;
 import java.util.Objects;
 
 public class ControlFlowGraphEngine {
-    public static void start(InputStream is, String methodName, String methodDesc,StringBuilder builder) throws Exception {
+    public static void start(InputStream is, String methodName, String methodDesc, StringBuilder builder) throws Exception {
         ClassReader cr = new ClassReader(is);
         ClassNode cn = new ClassNode();
         int parsingOptions = ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES;

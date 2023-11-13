@@ -99,8 +99,7 @@ public class TextGraph {
                             .turn(TextDirection.LEFT).drawLine(colStop - colStart);
                     canvas.draw(rowStart, colStart + 1, line);
 
-                }
-                else {
+                } else {
                     ContinuousLine line = new ContinuousLine();
                     line.setDirection(TextDirection.RIGHT);
                     line.drawLine(colStop - colStart)

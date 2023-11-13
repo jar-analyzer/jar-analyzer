@@ -63,11 +63,9 @@ public class CoreCFGAnalyzer<V extends Value> extends CFGAnalyzer<V> {
 
             if (i == 0) {
                 resultList.add(currentBlock);
-            }
-            else if (newBlockSet.contains(currentBlock)) {
+            } else if (newBlockSet.contains(currentBlock)) {
                 resultList.add(currentBlock);
-            }
-            else {
+            } else {
                 int size = resultList.size();
                 InsnBlock lastBlock = resultList.get(size - 1);
                 lastBlock.lines.addAll(currentBlock.lines);

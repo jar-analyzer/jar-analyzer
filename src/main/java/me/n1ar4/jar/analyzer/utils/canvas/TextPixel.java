@@ -15,14 +15,11 @@ public class TextPixel implements Comparable<TextPixel> {
     public int compareTo(TextPixel item) {
         if (this.row < item.row) {
             return -1;
-        }
-        else if (this.row > item.row) {
+        } else if (this.row > item.row) {
             return 1;
-        }
-        else if (this.col < item.col) {
+        } else if (this.col < item.col) {
             return -1;
-        }
-        else if (this.col > item.col) {
+        } else if (this.col > item.col) {
             return 1;
         }
         return 0;

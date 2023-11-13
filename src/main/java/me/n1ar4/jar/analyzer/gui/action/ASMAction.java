@@ -26,7 +26,7 @@ public class ASMAction {
         JButton frameBtn = instance.getFrameBtn();
         JButton simpleFrameBtn = instance.getSimpleFrameButton();
 
-        cfgBtn.addActionListener(e->{
+        cfgBtn.addActionListener(e -> {
             MethodResult curMethod = MainForm.getCurMethod();
             if (curMethod == null) {
                 JOptionPane.showMessageDialog(instance.getMasterPanel(), "current method is null");
@@ -41,7 +41,7 @@ public class ASMAction {
             CFGForm.start();
         });
 
-        frameBtn.addActionListener(e->{
+        frameBtn.addActionListener(e -> {
             MethodResult curMethod = MainForm.getCurMethod();
             if (curMethod == null) {
                 JOptionPane.showMessageDialog(instance.getMasterPanel(), "current method is null");
@@ -56,7 +56,7 @@ public class ASMAction {
             FrameForm.start(true);
         });
 
-        simpleFrameBtn.addActionListener(e->{
+        simpleFrameBtn.addActionListener(e -> {
             MethodResult curMethod = MainForm.getCurMethod();
             if (curMethod == null) {
                 JOptionPane.showMessageDialog(instance.getMasterPanel(), "current method is null");

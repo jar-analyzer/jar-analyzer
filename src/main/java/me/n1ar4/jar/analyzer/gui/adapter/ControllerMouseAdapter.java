@@ -64,7 +64,7 @@ public class ControllerMouseAdapter extends MouseAdapter {
 
             MainForm.getInstance().getCurClassText().setText(className);
             String jarName = res.getJarName();
-            if(StringUtil.isNull(jarName)){
+            if (StringUtil.isNull(jarName)) {
                 jarName = MainForm.getEngine().getJarByClass(className);
             }
             MainForm.getInstance().getCurJarText().setText(jarName);

@@ -1,19 +1,19 @@
 package me.n1ar4.jar.analyzer.analyze.cfg;
 
 public class OpcodeConst {
-    
-    public static final short  UNDEFINED      = -1;
 
-    
-    public static final short  UNPREDICTABLE  = -2;
+    public static final short UNDEFINED = -1;
 
-    
-    public static final short  RESERVED       = -3;
 
-    
+    public static final short UNPREDICTABLE = -2;
+
+
+    public static final short RESERVED = -3;
+
+
     public static final String ILLEGAL_OPCODE = "<illegal opcode>";
 
-    
+
     private static final String[] OPCODE_NAMES = {
 
             "nop", "aconst_null", "iconst_m1", "iconst_0", "iconst_1",
@@ -134,7 +134,7 @@ public class OpcodeConst {
 
     };
 
-    
+
     public static short getNoOfOperands(final int index) {
         return NO_OF_OPERANDS[index];
     }

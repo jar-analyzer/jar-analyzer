@@ -65,18 +65,15 @@ public class Canvas {
     }
 
 
-
     public void drawPixel(Box value) {
         TextPixel pixel = findPixel(row, col);
         if (pixel != null) {
             if (Box.isValid(pixel.value)) {
                 pixel.value = Box.merge(pixel.value, value.val).val;
-            }
-            else {
+            } else {
                 pixel.value = value.val;
             }
-        }
-        else {
+        } else {
             pixel = TextPixel.valueOf(row, col, value.val);
             pixelList.add(pixel);
             Collections.sort(pixelList);
@@ -88,8 +85,7 @@ public class Canvas {
         TextPixel pixel = findPixel(row, col);
         if (pixel != null) {
             pixel.value = firstChar;
-        }
-        else {
+        } else {
             pixel = TextPixel.valueOf(row, col, firstChar);
             pixelList.add(pixel);
             Collections.sort(pixelList);
@@ -100,42 +96,33 @@ public class Canvas {
         if (from == TextDirection.UP && to == TextDirection.LEFT) {
             drawPixel(Box.UP_AND_LEFT);
             left(1);
-        }
-        else if (from == TextDirection.UP && to == TextDirection.RIGHT) {
+        } else if (from == TextDirection.UP && to == TextDirection.RIGHT) {
             drawPixel(Box.UP_AND_RIGHT);
             right(1);
-        }
-        else if (from == TextDirection.RIGHT && to == TextDirection.UP) {
+        } else if (from == TextDirection.RIGHT && to == TextDirection.UP) {
             drawPixel(Box.UP_AND_RIGHT);
             up(1);
-        }
-        else if (from == TextDirection.RIGHT && to == TextDirection.DOWN) {
+        } else if (from == TextDirection.RIGHT && to == TextDirection.DOWN) {
             drawPixel(Box.DOWN_AND_RIGHT);
             down(1);
-        }
-        else if (from == TextDirection.DOWN && to == TextDirection.RIGHT) {
+        } else if (from == TextDirection.DOWN && to == TextDirection.RIGHT) {
             drawPixel(Box.DOWN_AND_RIGHT);
             right(1);
-        }
-        else if (from == TextDirection.DOWN && to == TextDirection.LEFT) {
+        } else if (from == TextDirection.DOWN && to == TextDirection.LEFT) {
             drawPixel(Box.DOWN_AND_LEFT);
             left(1);
-        }
-        else if (from == TextDirection.LEFT && to == TextDirection.DOWN) {
+        } else if (from == TextDirection.LEFT && to == TextDirection.DOWN) {
             drawPixel(Box.DOWN_AND_LEFT);
             down(1);
-        }
-        else if (from == TextDirection.LEFT && to == TextDirection.UP) {
+        } else if (from == TextDirection.LEFT && to == TextDirection.UP) {
             drawPixel(Box.UP_AND_LEFT);
             up(1);
-        }
-        else {
+        } else {
             assert false : "impossible here";
         }
 
         return this;
     }
-
 
 
     public Canvas drawHorizontalLine(int num) {
@@ -166,7 +153,6 @@ public class Canvas {
             col++;
         }
     }
-
 
 
     public void drawRectangle(int width, int height) {
@@ -280,8 +266,7 @@ public class Canvas {
                 if (item != null && item.col == col) {
                     sb.append(item.value);
                     i++;
-                }
-                else {
+                } else {
                     sb.append(Box.SPACE.val);
                 }
             }
@@ -309,12 +294,10 @@ public class Canvas {
             if (targetPixel != null) {
                 if (Box.isValid(targetPixel.value) && Box.isValid(pixel.value)) {
                     targetPixel.value = Box.merge(targetPixel.value, pixel.value).val;
-                }
-                else {
+                } else {
                     targetPixel.value = pixel.value;
                 }
-            }
-            else {
+            } else {
                 targetPixel = TextPixel.valueOf(targetRow, targetCol, pixel.value);
                 pixelList.add(targetPixel);
             }

@@ -18,36 +18,28 @@ public class ContinuousLine implements Drawable {
         if (this.direction == TextDirection.UP && direction == TextDirection.LEFT) {
             localCanvas.drawPixel(Box.DOWN_AND_LEFT);
             localCanvas.left(1);
-        }
-        else if (this.direction == TextDirection.UP && direction == TextDirection.RIGHT) {
+        } else if (this.direction == TextDirection.UP && direction == TextDirection.RIGHT) {
             localCanvas.drawPixel(Box.DOWN_AND_RIGHT);
             localCanvas.right(1);
-        }
-        else if (this.direction == TextDirection.RIGHT && direction == TextDirection.UP) {
+        } else if (this.direction == TextDirection.RIGHT && direction == TextDirection.UP) {
             localCanvas.drawPixel(Box.UP_AND_LEFT);
             localCanvas.up(1);
-        }
-        else if (this.direction == TextDirection.RIGHT && direction == TextDirection.DOWN) {
+        } else if (this.direction == TextDirection.RIGHT && direction == TextDirection.DOWN) {
             localCanvas.drawPixel(Box.DOWN_AND_LEFT);
             localCanvas.down(1);
-        }
-        else if (this.direction == TextDirection.DOWN && direction == TextDirection.RIGHT) {
+        } else if (this.direction == TextDirection.DOWN && direction == TextDirection.RIGHT) {
             localCanvas.drawPixel(Box.UP_AND_RIGHT);
             localCanvas.right(1);
-        }
-        else if (this.direction == TextDirection.DOWN && direction == TextDirection.LEFT) {
+        } else if (this.direction == TextDirection.DOWN && direction == TextDirection.LEFT) {
             localCanvas.drawPixel(Box.UP_AND_LEFT);
             localCanvas.left(1);
-        }
-        else if (this.direction == TextDirection.LEFT && direction == TextDirection.DOWN) {
+        } else if (this.direction == TextDirection.LEFT && direction == TextDirection.DOWN) {
             localCanvas.drawPixel(Box.DOWN_AND_RIGHT);
             localCanvas.down(1);
-        }
-        else if (this.direction == TextDirection.LEFT && direction == TextDirection.UP) {
+        } else if (this.direction == TextDirection.LEFT && direction == TextDirection.UP) {
             localCanvas.drawPixel(Box.UP_AND_RIGHT);
             localCanvas.up(1);
-        }
-        else {
+        } else {
             assert false : "impossible here";
         }
         this.direction = direction;

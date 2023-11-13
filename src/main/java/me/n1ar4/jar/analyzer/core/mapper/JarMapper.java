@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface JarMapper {
     int insertJar(List<JarEntity> jar);
+
     List<String> selectAllJars();
 }

@@ -8,6 +8,7 @@ import java.util.*;
 
 public class CustomSource extends SourceInterpreter {
     private final Map<AbstractInsnNode, Set<SourceValue>> sources;
+
     public CustomSource(Map<AbstractInsnNode, Set<SourceValue>> sources) {
         super(ASM9);
         this.sources = sources;

@@ -25,7 +25,7 @@ public class OneLineTable extends AbstractTable implements Drawable {
     @Override
     protected int getCellLength(int row, int col) {
         String item = matrix[row][col];
-        int length =  item == null ? 0 : item.length();
+        int length = item == null ? 0 : item.length();
         return length + 2 * col_padding;
     }
 

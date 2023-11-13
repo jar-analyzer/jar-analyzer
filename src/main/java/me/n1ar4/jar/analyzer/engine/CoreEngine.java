@@ -143,7 +143,7 @@ public class CoreEngine {
         return results;
     }
 
-    public String getJarByClass(String className){
+    public String getJarByClass(String className) {
         SqlSession session = factory.openSession(true);
         ClassMapper classMapper = session.getMapper(ClassMapper.class);
         String result = classMapper.selectJarByClass(className);
@@ -151,7 +151,7 @@ public class CoreEngine {
         return result;
     }
 
-    public ArrayList<ClassResult> getAllSpringC(){
+    public ArrayList<ClassResult> getAllSpringC() {
         SqlSession session = factory.openSession(true);
         SpringControllerMapper springControllerMapper = session.getMapper(SpringControllerMapper.class);
         List<ClassResult> res = springControllerMapper.selectAllSpringC();

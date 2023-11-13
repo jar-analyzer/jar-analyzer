@@ -2,8 +2,8 @@ package me.n1ar4.jar.analyzer.analyze.frame;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.gui.MainForm;
+import me.n1ar4.jar.analyzer.starter.Const;
 
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;

@@ -1,7 +1,7 @@
 package me.n1ar4.jar.analyzer.starter;
 
-import me.n1ar4.jar.analyzer.gui.util.JarAnalyzerLaf;
 import me.n1ar4.jar.analyzer.gui.MainForm;
+import me.n1ar4.jar.analyzer.gui.util.JarAnalyzerLaf;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

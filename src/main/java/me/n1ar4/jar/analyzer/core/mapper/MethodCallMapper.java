@@ -1,7 +1,7 @@
 package me.n1ar4.jar.analyzer.core.mapper;
 
-import me.n1ar4.jar.analyzer.entity.MethodResult;
 import me.n1ar4.jar.analyzer.entity.MethodCallEntity;
+import me.n1ar4.jar.analyzer.entity.MethodResult;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

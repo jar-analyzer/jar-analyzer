@@ -2,7 +2,6 @@
 package org.jetbrains.java.decompiler.main.decompiler;
 
 import org.jetbrains.java.decompiler.main.extern.IFernflowerLogger;
-import org.jetbrains.java.decompiler.util.TextUtil;
 
 import java.io.PrintStream;
 

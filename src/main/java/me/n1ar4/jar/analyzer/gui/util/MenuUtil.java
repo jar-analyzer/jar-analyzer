@@ -1,9 +1,9 @@
 package me.n1ar4.jar.analyzer.gui.util;
 
-import me.n1ar4.jar.analyzer.starter.Const;
+import com.github.rjeschke.txtmark.Processor;
 import me.n1ar4.jar.analyzer.gui.ChangeLogForm;
 import me.n1ar4.jar.analyzer.gui.MainForm;
-import com.github.rjeschke.txtmark.Processor;
+import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.utils.http.Http;
 import me.n1ar4.jar.analyzer.utils.http.HttpResponse;
 import org.apache.logging.log4j.LogManager;

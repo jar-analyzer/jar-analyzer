@@ -1,8 +1,8 @@
 package me.n1ar4.jar.analyzer.gui;
 
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.gui.util.SyntaxAreaHelper;
+import me.n1ar4.jar.analyzer.starter.Const;
 
 import javax.swing.*;
 import java.awt.*;

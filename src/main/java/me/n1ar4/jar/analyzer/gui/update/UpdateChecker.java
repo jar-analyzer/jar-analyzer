@@ -1,8 +1,8 @@
 package me.n1ar4.jar.analyzer.gui.update;
 
+import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
 import me.n1ar4.jar.analyzer.starter.Const;
-import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.utils.http.Http;
 import me.n1ar4.jar.analyzer.utils.http.HttpResponse;
 

@@ -1,6 +1,6 @@
 package me.n1ar4.jar.analyzer.utils;
 
-import org.objectweb.asm.*;
+import org.objectweb.asm.Type;
 
 public class ASMUtil {
     public static String convertMethodDesc(String methodName, String methodDesc) {

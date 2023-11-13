@@ -6,11 +6,15 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
-import javax.swing.tree.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.io.File;
-import java.util.*;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class FileTree extends JTree {
     protected DefaultMutableTreeNode rootNode;

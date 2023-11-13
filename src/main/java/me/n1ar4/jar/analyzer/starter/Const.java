@@ -3,8 +3,7 @@ package me.n1ar4.jar.analyzer.starter;
 public interface Const {
     String app = "Jar Analyzer V2 - 4ra1n";
     String version = "2.3-beta";
-    String checkUpdateUrl = "https://api.github.com/repos/jar-analyzer/jar-analyzer/releases/latest";
-    String checkUpdateReleaseUrl = "https://github.com/jar-analyzer/jar-analyzer/releases/latest";
+    String checkUpdateUrl = "http://47.97.182.120/version.txt";
     String authorUrl = "https://github.com/4ra1n";
     String projectUrl = "https://github.com/jar-analyzer/jar-analyzer";
     String newIssueUrl = "https://github.com/jar-analyzer/jar-analyzer/issues/new";

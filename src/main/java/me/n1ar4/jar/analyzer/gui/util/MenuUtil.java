@@ -143,25 +143,8 @@ public class MenuUtil {
                                 JOptionPane.showMessageDialog(instance.getMasterPanel(), "network error");
                             }
                             String body = response.body().string();
-
-                            Object obj = JSON.parse(body);
-                            if (!(obj instanceof JSONObject)) {
-                                return;
-                            }
-                            JSONObject jsonObject = (JSONObject) obj;
-                            String tagName = (String) jsonObject.get("tag_name");
-                            String name = (String) jsonObject.get("name");
-                            String ver;
-                            if (tagName != null && !tagName.isEmpty()) {
-                                ver = tagName;
-                            } else if (name != null && !name.isEmpty()) {
-                                ver = name;
-                            } else {
-                                LogUtil.log("check update api fail");
-                                return;
-                            }
+                            String ver = body.trim();
                             LogUtil.log("latest: " + ver);
-
                             String output;
                             output = String.format("%s: %s\n%s: %s",
                                     "Current Version", Const.version,

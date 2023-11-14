@@ -2,9 +2,11 @@
 
 ## 2.4-beta
 
-- [功能] 支持`SPEL`和`OGNL`的一键搜索
 - [功能] 支持`Runtime.exec`和`ProcessBuilder.start`一键搜索
 - [功能] 支持`JNDI`漏洞`Context.lookup`一键搜索
+- [功能] 支持`readObject`和`ScriptEngine.eval`一键搜索
+- [功能] 支持`BCEL.loadClass`和`defineClass`一键搜索
+- [功能] 支持`SPEL`和`OGNL`的一键搜索
 - [功能] 支持手动刷新`spring`分析结果
 - [BUG] 修复在分析部分类的时候发生空指针异常的问题
 - [BUG] 在使用`Lambda/Streamd/Runnable`等特性时丢失分析结果 #8

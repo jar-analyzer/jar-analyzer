@@ -635,6 +635,10 @@ public class MainForm {
         ProcessBuilderAction.register();
         SpELAction.register();
         OGNLAction.register();
+        BCELVulAction.register();
+        DefineClassAction.register();
+        ReadObjectVulAction.register();
+        ScriptEngineAction.register();
 
         instance.fileTree.addMouseListener(new TreeMouseAdapter());
         instance.fileTree.addMouseListener(new TreeRightMenuAdapter());

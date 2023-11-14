@@ -2,6 +2,7 @@
 
 ## 2.4-beta
 
+- [功能] 支持`SPEL`和`OGNL`的一键搜索
 - [功能] 支持`Runtime.exec`和`ProcessBuilder.start`一键搜索
 - [功能] 支持`JNDI`漏洞`Context.lookup`一键搜索
 - [功能] 支持手动刷新`spring`分析结果

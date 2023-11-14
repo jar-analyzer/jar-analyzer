@@ -20,9 +20,7 @@ import me.n1ar4.jar.analyzer.gui.state.State;
 import me.n1ar4.jar.analyzer.gui.tree.FileTree;
 import me.n1ar4.jar.analyzer.gui.update.UpdateChecker;
 import me.n1ar4.jar.analyzer.gui.util.*;
-import me.n1ar4.jar.analyzer.gui.vul.JNDIVulAction;
-import me.n1ar4.jar.analyzer.gui.vul.ProcessBuilderAction;
-import me.n1ar4.jar.analyzer.gui.vul.RuntimeExecAction;
+import me.n1ar4.jar.analyzer.gui.vul.*;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.utils.DirUtil;
 import org.apache.logging.log4j.LogManager;
@@ -504,6 +502,30 @@ public class MainForm {
         return processBuilderStartButton;
     }
 
+    public JButton getSpELGetValueButton() {
+        return spELGetValueButton;
+    }
+
+    public JButton getReadObjectButton() {
+        return readObjectButton;
+    }
+
+    public JButton getOGNLGetValueButton() {
+        return OGNLGetValueButton;
+    }
+
+    public JButton getBCELLoadClassButton() {
+        return BCELLoadClassButton;
+    }
+
+    public JButton getDefineClassButton() {
+        return defineClassButton;
+    }
+
+    public JButton getScriptEngineEvalButton() {
+        return scriptEngineEvalButton;
+    }
+
     private void resolveConfig() {
         if (config != null) {
             String temp = config.getTempPath();
@@ -611,6 +633,8 @@ public class MainForm {
         JNDIVulAction.register();
         RuntimeExecAction.register();
         ProcessBuilderAction.register();
+        SpELAction.register();
+        OGNLAction.register();
 
         instance.fileTree.addMouseListener(new TreeMouseAdapter());
         instance.fileTree.addMouseListener(new TreeRightMenuAdapter());

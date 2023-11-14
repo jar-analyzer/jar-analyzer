@@ -21,6 +21,8 @@ import me.n1ar4.jar.analyzer.gui.tree.FileTree;
 import me.n1ar4.jar.analyzer.gui.update.UpdateChecker;
 import me.n1ar4.jar.analyzer.gui.util.*;
 import me.n1ar4.jar.analyzer.gui.vul.JNDIVulAction;
+import me.n1ar4.jar.analyzer.gui.vul.ProcessBuilderAction;
+import me.n1ar4.jar.analyzer.gui.vul.RuntimeExecAction;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.utils.DirUtil;
 import org.apache.logging.log4j.LogManager;
@@ -494,6 +496,14 @@ public class MainForm {
         return JNDIButton;
     }
 
+    public JButton getRuntimeExecButton() {
+        return runtimeExecButton;
+    }
+
+    public JButton getProcessBuilderStartButton() {
+        return processBuilderStartButton;
+    }
+
     private void resolveConfig() {
         if (config != null) {
             String temp = config.getTempPath();
@@ -599,6 +609,8 @@ public class MainForm {
         SpringAction.run();
 
         JNDIVulAction.register();
+        RuntimeExecAction.register();
+        ProcessBuilderAction.register();
 
         instance.fileTree.addMouseListener(new TreeMouseAdapter());
         instance.fileTree.addMouseListener(new TreeRightMenuAdapter());

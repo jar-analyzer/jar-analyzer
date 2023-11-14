@@ -20,6 +20,7 @@ import me.n1ar4.jar.analyzer.gui.state.State;
 import me.n1ar4.jar.analyzer.gui.tree.FileTree;
 import me.n1ar4.jar.analyzer.gui.update.UpdateChecker;
 import me.n1ar4.jar.analyzer.gui.util.*;
+import me.n1ar4.jar.analyzer.gui.vul.JNDIVulAction;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.utils.DirUtil;
 import org.apache.logging.log4j.LogManager;
@@ -489,6 +490,10 @@ public class MainForm {
         return refreshButton;
     }
 
+    public JButton getJNDIButton() {
+        return JNDIButton;
+    }
+
     private void resolveConfig() {
         if (config != null) {
             String temp = config.getTempPath();
@@ -592,6 +597,8 @@ public class MainForm {
         PluginsAction.run();
         PrevNextAction.run();
         SpringAction.run();
+
+        JNDIVulAction.register();
 
         instance.fileTree.addMouseListener(new TreeMouseAdapter());
         instance.fileTree.addMouseListener(new TreeRightMenuAdapter());
@@ -969,7 +976,7 @@ public class MainForm {
         OGNLGetValueButton.setText("OGNL getValue");
         javaVulSearchPanel.add(OGNLGetValueButton, new GridConstraints(3, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         javaVulLabel = new JLabel();
-        javaVulLabel.setText("Quickly Search Commons Java Vulnerabilities Call (todo)");
+        javaVulLabel.setText("Quickly Search Commons Java Vulnerabilities Call");
         javaVulSearchPanel.add(javaVulLabel, new GridConstraints(0, 0, 1, 3, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer3 = new Spacer();
         advancePanel.add(spacer3, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));

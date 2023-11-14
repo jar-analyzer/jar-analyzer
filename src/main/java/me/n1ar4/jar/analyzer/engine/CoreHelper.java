@@ -15,18 +15,6 @@ public class CoreHelper {
     public static void refreshAllMethods(String className) {
         ArrayList<MethodResult> results = MainForm.getEngine().getMethodsByClass(className);
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
-        for (MethodResult result : results) {
-            if (result.getMethodName().startsWith("lambda$")) {
-                continue;
-            }
-            if (result.getMethodName().startsWith("access$")) {
-                continue;
-            }
-            if (result.getMethodName().equals("<clinit>")) {
-                continue;
-            }
-            methodsList.addElement(result);
-        }
         MainForm.getInstance().getAllMethodList().setCellRenderer(new AllMethodsRender());
         MainForm.getInstance().getAllMethodList().setModel(methodsList);
         MainForm.getInstance().getAllMethodList().repaint();
@@ -127,6 +115,13 @@ public class CoreHelper {
         for (MethodResult result : newReulst) {
             methodsList.addElement(result);
         }
+
+        if (methodsList.isEmpty() || methodsList.size() == 0) {
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                    "result is null");
+            return;
+        }
+
         MainForm.getInstance().getSearchList().setModel(methodsList);
         MainForm.getInstance().getSearchList().repaint();
         MainForm.getInstance().getSearchList().revalidate();
@@ -158,6 +153,13 @@ public class CoreHelper {
         for (MethodResult result : newReulst) {
             methodsList.addElement(result);
         }
+
+        if (methodsList.isEmpty() || methodsList.size() == 0) {
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                    "result is null");
+            return;
+        }
+
         MainForm.getInstance().getSearchList().setModel(methodsList);
         MainForm.getInstance().getSearchList().repaint();
         MainForm.getInstance().getSearchList().revalidate();
@@ -187,6 +189,13 @@ public class CoreHelper {
         for (MethodResult result : newReulst) {
             methodsList.addElement(result);
         }
+
+        if (methodsList.isEmpty() || methodsList.size() == 0) {
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                    "result is null");
+            return;
+        }
+
         MainForm.getInstance().getSearchList().setModel(methodsList);
         MainForm.getInstance().getSearchList().repaint();
         MainForm.getInstance().getSearchList().revalidate();
@@ -229,6 +238,13 @@ public class CoreHelper {
         for (MethodResult result : newReulst) {
             methodsList.addElement(result);
         }
+
+        if (methodsList.isEmpty() || methodsList.size() == 0) {
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                    "result is null");
+            return;
+        }
+
         MainForm.getInstance().getSearchList().setModel(methodsList);
         MainForm.getInstance().getSearchList().repaint();
         MainForm.getInstance().getSearchList().revalidate();
@@ -260,6 +276,13 @@ public class CoreHelper {
         for (MethodResult result : newReulst) {
             methodsList.addElement(result);
         }
+
+        if (methodsList.isEmpty() || methodsList.size() == 0) {
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                    "result is null");
+            return;
+        }
+
         MainForm.getInstance().getSearchList().setModel(methodsList);
         MainForm.getInstance().getSearchList().repaint();
         MainForm.getInstance().getSearchList().revalidate();

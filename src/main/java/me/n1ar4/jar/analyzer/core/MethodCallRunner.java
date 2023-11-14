@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-public class MethodCall {
+public class MethodCallRunner {
     private static final Logger logger = LogManager.getLogger();
 
     public static void start(Set<ClassFileEntity> classFileList, HashMap<MethodReference.Handle,

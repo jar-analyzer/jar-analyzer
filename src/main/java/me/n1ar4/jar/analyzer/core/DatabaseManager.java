@@ -15,7 +15,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
-public class DB {
+public class DatabaseManager {
     private static final Logger logger = LogManager.getLogger();
     private static final SqlSession session;
     private static final ClassMapper classMapper;
@@ -273,8 +273,8 @@ public class DB {
             MethodReference.Handle method = strEntry.getKey();
             List<String> strList = strEntry.getValue();
             for (String s : strList) {
-                MethodReference mr = Env.methodMap.get(method);
-                ClassReference cr = Env.classMap.get(mr.getClassReference());
+                MethodReference mr = AnalyzeEnv.methodMap.get(method);
+                ClassReference cr = AnalyzeEnv.classMap.get(mr.getClassReference());
                 StringEntity stringEntity = new StringEntity();
                 stringEntity.setValue(s);
                 stringEntity.setAccess(mr.getAccess());

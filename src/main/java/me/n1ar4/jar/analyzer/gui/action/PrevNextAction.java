@@ -1,6 +1,6 @@
 package me.n1ar4.jar.analyzer.gui.action;
 
-import me.n1ar4.jar.analyzer.core.Finder;
+import me.n1ar4.jar.analyzer.core.FinderRunner;
 import me.n1ar4.jar.analyzer.engine.CoreHelper;
 import me.n1ar4.jar.analyzer.engine.DecompileEngine;
 import me.n1ar4.jar.analyzer.entity.MethodResult;
@@ -88,7 +88,7 @@ public class PrevNextAction {
                 }
                 int paramNum = Type.getMethodType(
                         m.getMethodDesc()).getArgumentTypes().length;
-                int pos = Finder.find(code, methodName, paramNum);
+                int pos = FinderRunner.find(code, methodName, paramNum);
 
                 MainForm.getCodeArea().setText(code);
                 MainForm.getCodeArea().setCaretPosition(pos + 1);
@@ -176,7 +176,7 @@ public class PrevNextAction {
                 }
                 int paramNum = Type.getMethodType(
                         m.getMethodDesc()).getArgumentTypes().length;
-                int pos = Finder.find(code, methodName, paramNum);
+                int pos = FinderRunner.find(code, methodName, paramNum);
 
                 MainForm.getCodeArea().setText(code);
                 MainForm.getCodeArea().setCaretPosition(pos + 1);

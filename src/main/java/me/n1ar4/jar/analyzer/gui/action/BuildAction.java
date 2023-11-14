@@ -1,6 +1,6 @@
 package me.n1ar4.jar.analyzer.gui.action;
 
-import me.n1ar4.jar.analyzer.core.Runner;
+import me.n1ar4.jar.analyzer.core.CoreRunner;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
 import me.n1ar4.jar.analyzer.starter.Const;
@@ -70,9 +70,9 @@ public class BuildAction {
                             "rt.jar file not exist");
                     return;
                 }
-                new Thread(() -> Runner.run(Paths.get(path), rtJarPath)).start();
+                new Thread(() -> CoreRunner.run(Paths.get(path), rtJarPath)).start();
             } else {
-                new Thread(() -> Runner.run(Paths.get(path), null)).start();
+                new Thread(() -> CoreRunner.run(Paths.get(path), null)).start();
             }
             MainForm.getInstance().getStartBuildDatabaseButton().setEnabled(false);
         });

@@ -23,7 +23,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.*;
 
-public class Runner {
+public class CoreRunner {
     private static final Logger logger = LogManager.getLogger();
 
     public static void run(Path jarPath, Path rtJarPath) {
@@ -43,7 +43,7 @@ public class Runner {
 
             MainForm.getInstance().getTotalJarVal().setText(String.valueOf(files.size()));
             for (String s : files) {
-                DB.saveJar(s);
+                DatabaseManager.saveJar(s);
             }
             cfs = CoreUtil.getAllClassesFromJars(files);
         } else {
@@ -61,7 +61,7 @@ public class Runner {
 
             MainForm.getInstance().getTotalJarVal().setText("1");
             jarList.add(jarPath.toAbsolutePath().toString());
-            DB.saveJar(jarList.get(0));
+            DatabaseManager.saveJar(jarList.get(0));
             cfs = CoreUtil.getAllClassesFromJars(jarList);
         }
 
@@ -78,56 +78,56 @@ public class Runner {
         }
 
         MainForm.getInstance().getBuildBar().setValue(15);
-        Env.classFileList.addAll(cfs);
+        AnalyzeEnv.classFileList.addAll(cfs);
         logger.info("get all class");
         LogUtil.log("get all class");
-        DB.saveClassFiles(Env.classFileList);
+        DatabaseManager.saveClassFiles(AnalyzeEnv.classFileList);
         MainForm.getInstance().getBuildBar().setValue(20);
-        Discovery.start(Env.classFileList, Env.discoveredClasses,
-                Env.discoveredMethods, Env.classMap, Env.methodMap);
-        DB.saveClassInfo(Env.discoveredClasses);
+        DiscoveryRunner.start(AnalyzeEnv.classFileList, AnalyzeEnv.discoveredClasses,
+                AnalyzeEnv.discoveredMethods, AnalyzeEnv.classMap, AnalyzeEnv.methodMap);
+        DatabaseManager.saveClassInfo(AnalyzeEnv.discoveredClasses);
         MainForm.getInstance().getBuildBar().setValue(25);
-        DB.saveMethods(Env.discoveredMethods);
+        DatabaseManager.saveMethods(AnalyzeEnv.discoveredMethods);
         MainForm.getInstance().getBuildBar().setValue(30);
         logger.info("analyze class finish");
         LogUtil.log("analyze class finish");
-        for (MethodReference mr : Env.discoveredMethods) {
+        for (MethodReference mr : AnalyzeEnv.discoveredMethods) {
             ClassReference.Handle ch = mr.getClassReference();
-            if (Env.methodsInClassMap.get(ch) == null) {
+            if (AnalyzeEnv.methodsInClassMap.get(ch) == null) {
                 List<MethodReference> ml = new ArrayList<>();
                 ml.add(mr);
-                Env.methodsInClassMap.put(ch, ml);
+                AnalyzeEnv.methodsInClassMap.put(ch, ml);
             } else {
-                List<MethodReference> ml = Env.methodsInClassMap.get(ch);
+                List<MethodReference> ml = AnalyzeEnv.methodsInClassMap.get(ch);
                 ml.add(mr);
-                Env.methodsInClassMap.put(ch, ml);
+                AnalyzeEnv.methodsInClassMap.put(ch, ml);
             }
         }
         MainForm.getInstance().getBuildBar().setValue(35);
-        MethodCall.start(Env.classFileList, Env.methodCalls);
+        MethodCallRunner.start(AnalyzeEnv.classFileList, AnalyzeEnv.methodCalls);
         MainForm.getInstance().getBuildBar().setValue(40);
-        Env.inheritanceMap = Inheritance.derive(Env.classMap);
+        AnalyzeEnv.inheritanceMap = InheritanceRunner.derive(AnalyzeEnv.classMap);
         MainForm.getInstance().getBuildBar().setValue(50);
         logger.info("build inheritance");
         LogUtil.log("build inheritance");
         Map<MethodReference.Handle, Set<MethodReference.Handle>> implMap =
-                Inheritance.getAllMethodImplementations(Env.inheritanceMap, Env.methodMap);
-        DB.saveImpls(implMap);
+                InheritanceRunner.getAllMethodImplementations(AnalyzeEnv.inheritanceMap, AnalyzeEnv.methodMap);
+        DatabaseManager.saveImpls(implMap);
         MainForm.getInstance().getBuildBar().setValue(60);
         for (Map.Entry<MethodReference.Handle, Set<MethodReference.Handle>> entry :
                 implMap.entrySet()) {
             MethodReference.Handle k = entry.getKey();
             Set<MethodReference.Handle> v = entry.getValue();
-            HashSet<MethodReference.Handle> calls = Env.methodCalls.get(k);
+            HashSet<MethodReference.Handle> calls = AnalyzeEnv.methodCalls.get(k);
             calls.addAll(v);
         }
-        DB.saveMethodCalls(Env.methodCalls);
+        DatabaseManager.saveMethodCalls(AnalyzeEnv.methodCalls);
         MainForm.getInstance().getBuildBar().setValue(70);
         logger.info("build extra inheritance");
         LogUtil.log("build extra inheritance");
-        for (ClassFileEntity file : Env.classFileList) {
+        for (ClassFileEntity file : AnalyzeEnv.classFileList) {
             try {
-                StringClassVisitor dcv = new StringClassVisitor(Env.strMap, Env.classMap, Env.methodMap);
+                StringClassVisitor dcv = new StringClassVisitor(AnalyzeEnv.strMap, AnalyzeEnv.classMap, AnalyzeEnv.methodMap);
                 ClassReader cr = new ClassReader(file.getFile());
                 cr.accept(dcv, ClassReader.EXPAND_FRAMES);
             } catch (Exception ex) {
@@ -135,10 +135,10 @@ public class Runner {
             }
         }
         MainForm.getInstance().getBuildBar().setValue(80);
-        DB.saveStrMap(Env.strMap);
+        DatabaseManager.saveStrMap(AnalyzeEnv.strMap);
 
-        SpringService.start(Env.classFileList, Env.controllers, Env.classMap, Env.methodMap);
-        DB.saveSpring(Env.controllers);
+        SpringService.start(AnalyzeEnv.classFileList, AnalyzeEnv.controllers, AnalyzeEnv.classMap, AnalyzeEnv.methodMap);
+        DatabaseManager.saveSpring(AnalyzeEnv.controllers);
 
         MainForm.getInstance().getBuildBar().setValue(90);
         logger.info("build database finish");
@@ -177,17 +177,17 @@ public class Runner {
         MainForm.getInstance().getFileTree().refresh();
 
         // GC
-        Env.classFileList.clear();
-        Env.discoveredClasses.clear();
-        Env.discoveredMethods.clear();
-        Env.methodsInClassMap.clear();
-        Env.classMap.clear();
-        Env.methodMap.clear();
-        Env.methodCalls.clear();
-        Env.strMap.clear();
-        Env.inheritanceMap.getInheritanceMap().clear();
-        Env.inheritanceMap.getSubClassMap().clear();
-        Env.controllers.clear();
+        AnalyzeEnv.classFileList.clear();
+        AnalyzeEnv.discoveredClasses.clear();
+        AnalyzeEnv.discoveredMethods.clear();
+        AnalyzeEnv.methodsInClassMap.clear();
+        AnalyzeEnv.classMap.clear();
+        AnalyzeEnv.methodMap.clear();
+        AnalyzeEnv.methodCalls.clear();
+        AnalyzeEnv.strMap.clear();
+        AnalyzeEnv.inheritanceMap.getInheritanceMap().clear();
+        AnalyzeEnv.inheritanceMap.getSubClassMap().clear();
+        AnalyzeEnv.controllers.clear();
         System.gc();
 
         CoreHelper.refreshSpringC();

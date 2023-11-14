@@ -3,7 +3,7 @@ package me.n1ar4.jar.analyzer.core;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Finder {
+public class FinderRunner {
     public static int find(String total, String methodName, int paramNum) {
         // 以第一处方法名索引开始搜索
         for (int i = total.indexOf(methodName);

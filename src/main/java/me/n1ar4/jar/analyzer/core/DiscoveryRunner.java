@@ -9,7 +9,7 @@ import org.objectweb.asm.ClassReader;
 import java.util.Map;
 import java.util.Set;
 
-public class Discovery {
+public class DiscoveryRunner {
     private static final Logger logger = LogManager.getLogger();
 
     public static void start(Set<ClassFileEntity> classFileList,

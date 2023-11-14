@@ -1,6 +1,6 @@
 package me.n1ar4.jar.analyzer.gui.action;
 
-import me.n1ar4.jar.analyzer.core.Env;
+import me.n1ar4.jar.analyzer.core.AnalyzeEnv;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
 
@@ -12,10 +12,10 @@ public class JarsInJarAction {
         jarsInJar.addActionListener(e -> {
             if (!jarsInJar.isSelected()) {
                 LogUtil.log("not use jars in jar");
-                Env.jarsInJar = false;
+                AnalyzeEnv.jarsInJar = false;
             } else {
                 LogUtil.log("use jars in jar");
-                Env.jarsInJar = true;
+                AnalyzeEnv.jarsInJar = true;
             }
         });
     }

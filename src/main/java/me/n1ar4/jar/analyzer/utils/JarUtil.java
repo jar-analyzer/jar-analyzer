@@ -1,6 +1,6 @@
 package me.n1ar4.jar.analyzer.utils;
 
-import me.n1ar4.jar.analyzer.core.Env;
+import me.n1ar4.jar.analyzer.core.AnalyzeEnv;
 import me.n1ar4.jar.analyzer.entity.ClassFileEntity;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.ListParser;
@@ -106,7 +106,7 @@ public class JarUtil {
                     Path fullPath = tmpDir.resolve(jarEntry.getName());
                     if (!jarEntry.isDirectory()) {
                         if (!jarEntry.getName().endsWith(".class")) {
-                            if (Env.jarsInJar && jarEntry.getName().endsWith(".jar")) {
+                            if (AnalyzeEnv.jarsInJar && jarEntry.getName().endsWith(".jar")) {
                                 LogUtil.log("analyze jars in jar");
                                 Path dirName = fullPath.getParent();
                                 if (!Files.exists(dirName)) {

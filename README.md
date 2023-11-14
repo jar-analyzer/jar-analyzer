@@ -97,7 +97,7 @@
 
 步骤：
 
-(1) mvn -B package -Dmaven.test.skip=true --file pom.xml
+(1) mvn -B package -DskipTests --file pom.xml
 
 (2) python build.py
 

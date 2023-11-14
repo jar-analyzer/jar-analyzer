@@ -101,6 +101,10 @@ public class Http {
             URL requestUrl = new URL(request.getUrl());
             HttpURLConnection connection = (HttpURLConnection) requestUrl.openConnection();
             connection.setRequestMethod(request.getMethod());
+            if (!request.getMethod().equalsIgnoreCase("GET")) {
+                // POST PUT ...
+                connection.setDoOutput(true);
+            }
             // set timeout
             connection.setConnectTimeout(5000);
             connection.setReadTimeout(5000);

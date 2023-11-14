@@ -121,7 +121,6 @@ public class CoreHelper {
         if (methodsList.isEmpty() || methodsList.size() == 0) {
             JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                     "result is null");
-            return;
         }
 
         MainForm.getInstance().getSearchList().setModel(methodsList);
@@ -161,7 +160,6 @@ public class CoreHelper {
         if (methodsList.isEmpty() || methodsList.size() == 0) {
             JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                     "result is null");
-            return;
         }
 
         MainForm.getInstance().getSearchList().setModel(methodsList);
@@ -197,7 +195,6 @@ public class CoreHelper {
         if (methodsList.isEmpty() || methodsList.size() == 0) {
             JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                     "result is null");
-            return;
         }
 
         MainForm.getInstance().getSearchList().setModel(methodsList);
@@ -248,7 +245,6 @@ public class CoreHelper {
         if (methodsList.isEmpty() || methodsList.size() == 0) {
             JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                     "result is null");
-            return;
         }
 
         MainForm.getInstance().getSearchList().setModel(methodsList);
@@ -288,7 +284,6 @@ public class CoreHelper {
         if (methodsList.isEmpty() || methodsList.size() == 0) {
             JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                     "result is null");
-            return;
         }
 
         MainForm.getInstance().getSearchList().setModel(methodsList);

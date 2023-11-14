@@ -15,6 +15,9 @@ public class CoreHelper {
     public static void refreshAllMethods(String className) {
         ArrayList<MethodResult> results = MainForm.getEngine().getMethodsByClass(className);
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
+        for (MethodResult result : results) {
+            methodsList.addElement(result);
+        }
         MainForm.getInstance().getAllMethodList().setCellRenderer(new AllMethodsRender());
         MainForm.getInstance().getAllMethodList().setModel(methodsList);
         MainForm.getInstance().getAllMethodList().repaint();

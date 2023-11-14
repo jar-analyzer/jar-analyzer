@@ -6,7 +6,7 @@ Steps:
 - Check build bat/sh files
 - Check `pom.xml` version tag
 - Check `build.py` VERSION
-- Run `mvn -B package -Dmaven.test.skip=true --file pom.xml`
+- Run `mvn -B package -DskipTests --file pom.xml`
 - Run `python build.py`
 - Copy `JRE` to `embed` type
 - Change `version.txt` on server

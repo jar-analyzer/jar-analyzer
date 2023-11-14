@@ -91,7 +91,9 @@ public class CoreHelper {
 
     public static void refreshCallSearch(String className, String methodName, String methodDesc) {
         // java.lang.String java/lang/String
-        className = className.replace(".", "/");
+        if (className != null) {
+            className = className.replace(".", "/");
+        }
         ArrayList<MethodResult> results = MainForm.getEngine().getCallers(className, methodName, methodDesc);
 
         // BALCK LIST
@@ -129,7 +131,9 @@ public class CoreHelper {
 
     public static void refreshDefSearch(String className, String methodName, String methodDesc) {
         // java.lang.String java/lang/String
-        className = className.replace(".", "/");
+        if (className != null) {
+            className = className.replace(".", "/");
+        }
         ArrayList<MethodResult> results = MainForm.getEngine().getMethod(className, methodName, methodDesc);
 
         // BALCK LIST
@@ -214,7 +218,9 @@ public class CoreHelper {
 
     public static void refreshCallSearchLike(String className, String methodName, String methodDesc) {
         // java.lang.String java/lang/String
-        className = className.replace(".", "/");
+        if (className != null) {
+            className = className.replace(".", "/");
+        }
         ArrayList<MethodResult> results = MainForm.getEngine().getCallersLike(className, methodName, methodDesc);
 
         // BALCK LIST
@@ -252,7 +258,9 @@ public class CoreHelper {
 
     public static void refreshDefSearchLike(String className, String methodName, String methodDesc) {
         // java.lang.String java/lang/String
-        className = className.replace(".", "/");
+        if (className != null) {
+            className = className.replace(".", "/");
+        }
         ArrayList<MethodResult> results = MainForm.getEngine().getMethodLike(className, methodName, methodDesc);
 
         // BALCK LIST

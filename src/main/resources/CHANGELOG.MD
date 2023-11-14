@@ -8,6 +8,7 @@
 - [功能] 支持`BCEL.loadClass`和`defineClass`一键搜索
 - [功能] 支持`SPEL`和`OGNL`的一键搜索
 - [功能] 支持手动刷新`spring`分析结果
+- [BUG] 修复输入`classname`为`null`时的空指针
 - [BUG] 修复在分析部分类的时候发生空指针异常的问题
 - [BUG] 在使用`Lambda/Streamd/Runnable`等特性时丢失分析结果 #8
 - [优化] 优化检查最新版本中的`json`解析代码

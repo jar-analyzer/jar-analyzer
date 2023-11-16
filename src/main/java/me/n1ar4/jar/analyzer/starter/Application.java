@@ -9,13 +9,8 @@ import org.apache.logging.log4j.io.IoBuilder;
 
 public class Application {
     private static final Logger logger = LogManager.getLogger();
-    private static final boolean PROXY_ENABLE = false;
 
     public static void main(String[] args) {
-        if (PROXY_ENABLE) {
-            System.setProperty("socksProxyHost", "127.0.0.1");
-            System.setProperty("socksProxyPort", "1080");
-        }
         Logo.print();
         try {
             if (JarAnalyzerLaf.setup()) {

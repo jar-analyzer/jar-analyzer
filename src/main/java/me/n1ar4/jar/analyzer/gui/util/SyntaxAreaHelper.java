@@ -27,4 +27,13 @@ public class SyntaxAreaHelper {
         codePanel.add(sp, new GridConstraints());
         OpcodeForm.setCodeArea(textArea);
     }
+
+    public static void buildSQL(JPanel codePanel) {
+        RSyntaxTextArea textArea = new RSyntaxTextArea(20, 80);
+        textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_SQL);
+        textArea.setCodeFoldingEnabled(true);
+        RTextScrollPane sp = new RTextScrollPane(textArea);
+        codePanel.add(sp, new GridConstraints());
+        MainForm.setCodeArea(textArea);
+    }
 }

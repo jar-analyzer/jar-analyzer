@@ -13,4 +13,5 @@ public interface Const {
     String ChangeLogForm = "Jar Analyzer V2 -Update Change Log";
     String CFGForm = "Jar Analyzer V2 - CFG Form";
     String FrameForm = "Jar Analyzer V2 - Frame Form";
+    String SQLiteForm = "Jar Analyzer V2 - SQLite Form";
 }

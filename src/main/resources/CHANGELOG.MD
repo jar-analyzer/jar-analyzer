@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.5-beta
+
+- [优化] 解决某些情况下`UI`抖动的问题
+
 ## 2.4-beta
 
 - [功能] 支持`Runtime.exec`和`ProcessBuilder.start`一键搜索

@@ -14,6 +14,7 @@
 - 一键反编译，优化对内部类的处理
 - 一键生成方法的 `CFG` 分析结果
 - 一键生成方法的 `Stack Frame` 分析结果
+- 自定义 `SQL` 语句进行高级分析
 
 更多的功能正在开发中
 
@@ -33,11 +34,19 @@
 
 `JVM Stack Frame` 分析
 
+![](img/0013.png)
+
+带图形的 `Stack Frame` 分析
+
 ![](img/0008.png)
 
 分析 `Spring Framework`
 
 ![](img/0009.png)
+
+自定义 `SQL` 语句任意分析
+
+![](img/0014.png)
 
 首页
 

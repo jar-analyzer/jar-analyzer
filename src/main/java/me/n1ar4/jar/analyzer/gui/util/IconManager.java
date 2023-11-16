@@ -14,7 +14,6 @@ public class IconManager {
     public static ImageIcon curIcon;
     public static ImageIcon auIcon;
     public static ImageIcon githubIcon;
-    public static ImageIcon chatIcon;
     public static ImageIcon whiteIcon;
     public static ImageIcon nextIcon;
     public static ImageIcon prevIcon;
@@ -58,13 +57,6 @@ public class IconManager {
             githubIcon = new ImageIcon(ImageIO.read(
                     Objects.requireNonNull(IconManager.class
                             .getClassLoader().getResourceAsStream("img/github.png"))));
-
-            chatIcon = new ImageIcon(ImageIO.read(
-                    Objects.requireNonNull(IconManager.class
-                            .getClassLoader().getResourceAsStream("img/chat.png"))));
-            image = chatIcon.getImage();
-            resizedImage = image.getScaledInstance(80, 80, Image.SCALE_SMOOTH);
-            chatIcon = new ImageIcon(resizedImage);
 
             whiteIcon = new ImageIcon(ImageIO.read(
                     Objects.requireNonNull(IconManager.class

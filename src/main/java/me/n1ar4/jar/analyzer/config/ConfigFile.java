@@ -8,25 +8,6 @@ public class ConfigFile {
     private String totalJar;
     private String totalClass;
     private String totalMethod;
-    private String gptHost;
-    private String gptKey;
-
-    public String getGptHost() {
-        return gptHost;
-    }
-
-    public void setGptHost(String gptHost) {
-        this.gptHost = gptHost;
-    }
-
-    public String getGptKey() {
-        return gptKey;
-    }
-
-    public void setGptKey(String gptKey) {
-        this.gptKey = gptKey;
-    }
-
     public String getJarPath() {
         return jarPath;
     }
@@ -93,8 +74,6 @@ public class ConfigFile {
                 ", totalJar='" + totalJar + '\'' +
                 ", totalClass='" + totalClass + '\'' +
                 ", totalMethod='" + totalMethod + '\'' +
-                ", gptHost='" + gptHost + '\'' +
-                ", gptKey='" + gptKey + '\'' +
                 '}';
     }
 }

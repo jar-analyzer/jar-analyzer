@@ -163,8 +163,6 @@ public class CoreRunner {
         config.setDbPath(Const.dbFile);
         config.setJarPath(MainForm.getInstance().getFileText().getText());
         config.setDbSize(fileSizeMB);
-        config.setGptHost("none");
-        config.setGptKey("none");
         MainForm.setConfig(config);
         MainForm.setEngine(new CoreEngine(config));
 

@@ -30,7 +30,6 @@
         <slf4j.api.version>2.0.8</slf4j.api.version>
         <slf4j.simple.version>2.0.9</slf4j.simple.version>
         <mybatis.version>3.5.14</mybatis.version>
-        <snakeyaml.version>2.2</snakeyaml.version>
         <commons.dhcp.version>2.11.0</commons.dhcp.version>
         <!-- Maven Build Version -->
         <maven.resources.version>3.3.1</maven.resources.version>
@@ -96,11 +95,6 @@
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis</artifactId>
             <version>${mybatis.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.yaml</groupId>
-            <artifactId>snakeyaml</artifactId>
-            <version>${snakeyaml.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

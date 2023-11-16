@@ -1,15 +1,15 @@
 package me.n1ar4.jar.analyzer.config;
 
+import me.n1ar4.jar.analyzer.gui.MainForm;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.yaml.snakeyaml.LoaderOptions;
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.Constructor;
-import org.yaml.snakeyaml.inspector.TagInspector;
 
+import javax.swing.*;
+import java.io.ByteArrayInputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Properties;
 
 public class ConfigEngine {
     private static final Logger logger = LogManager.getLogger();
@@ -22,19 +22,36 @@ public class ConfigEngine {
 
     public static ConfigFile parseConfig() {
         try {
-            LoaderOptions loaderOptions = new LoaderOptions();
-            TagInspector taginspector =
-                    tag -> tag.getClassName().equals(ConfigFile.class.getName());
-            loaderOptions.setTagInspector(taginspector);
-            Yaml yaml = new Yaml(new Constructor(ConfigFile.class, loaderOptions));
             Path configPath = Paths.get(CONFIG_FILE_PATH);
             if (!Files.exists(configPath)) {
                 return null;
             }
-            Object obj = yaml.load(new String(Files.readAllBytes(configPath)));
-            return (ConfigFile) obj;
+
+            byte[] data = Files.readAllBytes(configPath);
+            if (new String(data).contains("!!me.n1ar4.")) {
+                JOptionPane.showMessageDialog(null,
+                        "<html>" +
+                                "<p>config file <b>changed</b> in <b>2.5-beta+</b></p>" +
+                                "<br>" +
+                                "<p>the old config file will be deleted</p>" +
+                                "</html>");
+                Files.delete(configPath);
+                return null;
+            }
+
+            Properties properties = new Properties();
+            properties.load(new ByteArrayInputStream(Files.readAllBytes(configPath)));
+            ConfigFile obj = new ConfigFile();
+            obj.setDbPath(properties.getProperty("db-path"));
+            obj.setDbSize(properties.getProperty("db-size"));
+            obj.setJarPath(properties.getProperty("jar-path"));
+            obj.setTempPath(properties.getProperty("temp-path"));
+            obj.setTotalClass(properties.getProperty("total-class"));
+            obj.setTotalJar(properties.getProperty("total-jar"));
+            obj.setTotalMethod(properties.getProperty("total-method"));
+            return obj;
         } catch (Exception ex) {
-            logger.error("parse yaml error: {}", ex.toString());
+            logger.error("parse config error: {}", ex.toString());
         }
         return null;
     }
@@ -42,11 +59,17 @@ public class ConfigEngine {
     public static void saveConfig(ConfigFile configFile) {
         try {
             Path configPath = Paths.get(CONFIG_FILE_PATH);
-            Yaml yaml = new Yaml();
-            String yamlStr = yaml.dump(configFile);
-            Files.write(configPath, yamlStr.getBytes());
+            Properties properties = new Properties();
+            properties.setProperty("db-path", configFile.getDbPath());
+            properties.setProperty("db-size", configFile.getDbSize());
+            properties.setProperty("jar-path", configFile.getJarPath());
+            properties.setProperty("temp-path", configFile.getTempPath());
+            properties.setProperty("total-class", configFile.getTotalClass());
+            properties.setProperty("total-jar", configFile.getTotalJar());
+            properties.setProperty("total-method", configFile.getTotalMethod());
+            properties.store(Files.newOutputStream(configPath), null);
         } catch (Exception ex) {
-            logger.error("save yaml error: {}", ex.toString());
+            logger.error("save config error: {}", ex.toString());
         }
     }
 }

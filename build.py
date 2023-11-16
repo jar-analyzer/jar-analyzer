@@ -55,6 +55,7 @@ if __name__ == '__main__':
     copy_jar_files(java_target_directory, "{}/{}/{}".format(target_directory, release_win_system_dir, "lib"))
     copy_jar_files(java_target_directory, "{}/{}/{}".format(target_directory, release_win_embed_dir, "lib"))
     copy_jar_files(java_target_directory, "{}/{}/{}".format(target_directory, release_linux_dir, "lib"))
+    copy_jar_files(java_target_directory, target_directory)
 
     print("[*] build start scripts")
     copy_file("build\\start-system.bat", "release\\" + release_win_system_dir + "\\start.bat")

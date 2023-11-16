@@ -62,6 +62,11 @@ if __name__ == '__main__':
     copy_file("build\\start-embed.bat", "release\\" + release_win_embed_dir + "\\start.bat")
     copy_file("build\\start-system.sh", "release\\" + release_linux_dir + "\\start.sh")
 
+    print("[*] build license")
+    copy_file("LICENSE", "release\\" + release_win_system_dir + "\\LICENSE")
+    copy_file("LICENSE", "release\\" + release_win_embed_dir + "\\LICENSE")
+    copy_file("LICENSE", "release\\" + release_linux_dir + "\\LICENSE")
+
     print("[*] build version")
     subprocess.run("echo {} > {}".format(VERSION, "VERSION.txt"), shell=True,
                    cwd="{}/{}".format(target_directory, release_win_system_dir))

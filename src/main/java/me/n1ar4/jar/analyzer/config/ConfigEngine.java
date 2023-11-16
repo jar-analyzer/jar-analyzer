@@ -1,6 +1,5 @@
 package me.n1ar4.jar.analyzer.config;
 
-import me.n1ar4.jar.analyzer.gui.MainForm;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

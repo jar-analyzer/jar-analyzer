@@ -16,6 +16,9 @@ public class CoreHelper {
         ArrayList<MethodResult> results = MainForm.getEngine().getMethodsByClass(className);
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
         for (MethodResult result : results) {
+            if (result.getMethodName().startsWith("access$")) {
+                continue;
+            }
             methodsList.addElement(result);
         }
         MainForm.getInstance().getAllMethodList().setCellRenderer(new AllMethodsRender());

@@ -28,12 +28,12 @@ public class SyntaxAreaHelper {
         OpcodeForm.setCodeArea(textArea);
     }
 
-    public static void buildSQL(JPanel codePanel) {
-        RSyntaxTextArea textArea = new RSyntaxTextArea(20, 80);
+    public static JTextArea buildSQL(JPanel codePanel) {
+        RSyntaxTextArea textArea = new RSyntaxTextArea(10, 80);
         textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_SQL);
         textArea.setCodeFoldingEnabled(true);
         RTextScrollPane sp = new RTextScrollPane(textArea);
         codePanel.add(sp, new GridConstraints());
-        MainForm.setCodeArea(textArea);
+        return textArea;
     }
 }

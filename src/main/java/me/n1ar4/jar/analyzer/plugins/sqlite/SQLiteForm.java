@@ -22,21 +22,64 @@ public class SQLiteForm {
     private JScrollPane resultScroll;
     private JPanel sqlPanel;
     private JPanel opPanel;
+    private JTextArea errArea;
+    private JPanel errorPanel;
+    private JScrollPane errorScroll;
     private static SQLiteForm instance;
+    private static SQLiteHelper helper = null;
+
+    public static SQLiteHelper getHelper() {
+        return helper;
+    }
+
+    public static void setHelper(SQLiteHelper helper) {
+        SQLiteForm.helper = helper;
+    }
+
+    public JPanel getMasterPanel() {
+        return masterPanel;
+    }
 
     public static SQLiteForm getInstance() {
         return instance;
     }
 
-    public SQLiteForm() {
-        // todo
+    public JButton getConnectButton() {
+        return connectButton;
+    }
+
+    public JTextArea getErrArea() {
+        return errArea;
+    }
+
+    public JTextField getSqliteText() {
+        return sqliteText;
+    }
+
+    public JComboBox<String> getTablesBox() {
+        return tablesBox;
+    }
+
+    public JTable getResultTable() {
+        return resultTable;
+    }
+
+    public JButton getRunButton() {
+        return runButton;
+    }
+
+    private static JTextArea sqlArea;
+
+    public static JTextArea getSqlArea() {
+        return sqlArea;
     }
 
     public static void start() {
         JFrame frame = new JFrame(Const.SQLiteForm);
         instance = new SQLiteForm();
-        instance.resultTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        SyntaxAreaHelper.buildSQL(instance.sqlPanel);
+        ConnectAction.register();
+        RunAction.register();
+        sqlArea = SyntaxAreaHelper.buildSQL(instance.sqlPanel);
         frame.setContentPane(instance.masterPanel);
         frame.setResizable(false);
         frame.pack();
@@ -65,30 +108,38 @@ public class SQLiteForm {
         masterPanel.add(opPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         sqliteLabel = new JLabel();
         sqliteLabel.setText("Your DB File");
-        opPanel.add(sqliteLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        opPanel.add(sqliteLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
         sqliteText = new JTextField();
+        sqliteText.setEditable(false);
         opPanel.add(sqliteText, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         connectButton = new JButton();
         connectButton.setText("Connect");
         opPanel.add(connectButton, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         tableNameLabel = new JLabel();
         tableNameLabel.setText("Table Name");
-        opPanel.add(tableNameLabel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        opPanel.add(tableNameLabel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
         tablesBox = new JComboBox();
         opPanel.add(tablesBox, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         runButton = new JButton();
         runButton.setText("Run");
         opPanel.add(runButton, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, new Dimension(100, -1), 0, false));
         resultScroll = new JScrollPane();
-        masterPanel.add(resultScroll, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        masterPanel.add(resultScroll, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(-1, 250), new Dimension(-1, 250), new Dimension(-1, 250), 0, false));
         resultTable = new JTable();
         resultScroll.setViewportView(resultTable);
         sqlPanel = new JPanel();
         sqlPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         masterPanel.add(sqlPanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         sqlPanel.setBorder(BorderFactory.createTitledBorder(null, "SQL", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
-        final Spacer spacer1 = new Spacer();
-        masterPanel.add(spacer1, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        errorPanel = new JPanel();
+        errorPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        masterPanel.add(errorPanel, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        errorScroll = new JScrollPane();
+        errorPanel.add(errorScroll, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(-1, 50), new Dimension(-1, 50), new Dimension(-1, 50), 0, false));
+        errArea = new JTextArea();
+        errArea.setEditable(false);
+        errArea.setForeground(new Color(-1765829));
+        errorScroll.setViewportView(errArea);
     }
 
     /**

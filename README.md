@@ -22,6 +22,8 @@
 
 [前往下载](https://github.com/jar-analyzer/jar-analyzer/releases/latest)
 
+注意：在 `Windows` 下请勿双击启动，请使用 `java -jar` 或双击 `bat` 脚本启动
+
 ## 一些截图
 
 指令分析

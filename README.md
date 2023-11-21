@@ -22,7 +22,9 @@
 
 [前往下载](https://github.com/jar-analyzer/jar-analyzer/releases/latest)
 
-注意：在 `Windows` 下请勿双击启动，请使用 `java -jar` 或双击 `bat` 脚本启动
+注意：
+- 在 `Windows` 下请勿双击启动，请使用 `java -jar` 或双击 `bat` 脚本启动
+- 如果使用 `java -jar` 启动乱码，请加入 `-Dfile.encoding=UTF-8` 参数
 
 ## 一些截图
 

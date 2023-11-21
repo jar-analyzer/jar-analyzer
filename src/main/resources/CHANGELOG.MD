@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.6-beta
+
+- todo
+
 ## 2.5-beta
 
 - [重要] 支持编写自定义`SQL`语句查询

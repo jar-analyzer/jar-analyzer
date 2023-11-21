@@ -16,6 +16,7 @@ public class CommonSearchAction {
                 LogUtil.log("select method call search");
                 MainForm.getInstance().getSearchClassText().setEnabled(true);
                 MainForm.getInstance().getSearchMethodText().setEnabled(true);
+                MainForm.getInstance().getSearchStrText().setText(null);
                 MainForm.getInstance().getSearchStrText().setEnabled(false);
             }
         });
@@ -24,12 +25,15 @@ public class CommonSearchAction {
                 LogUtil.log("select method def search");
                 MainForm.getInstance().getSearchClassText().setEnabled(true);
                 MainForm.getInstance().getSearchMethodText().setEnabled(true);
+                MainForm.getInstance().getSearchStrText().setText(null);
                 MainForm.getInstance().getSearchStrText().setEnabled(false);
             }
         });
         strContainsR.addActionListener(e -> {
             if (strContainsR.isSelected()) {
                 LogUtil.log("select string contains search");
+                MainForm.getInstance().getSearchClassText().setText(null);
+                MainForm.getInstance().getSearchMethodText().setText(null);
                 MainForm.getInstance().getSearchClassText().setEnabled(false);
                 MainForm.getInstance().getSearchMethodText().setEnabled(false);
                 MainForm.getInstance().getSearchStrText().setEnabled(true);
@@ -38,6 +42,8 @@ public class CommonSearchAction {
         binaryR.addActionListener(e -> {
             if (binaryR.isSelected()) {
                 LogUtil.log("select binary search");
+                MainForm.getInstance().getSearchClassText().setText(null);
+                MainForm.getInstance().getSearchMethodText().setText(null);
                 MainForm.getInstance().getSearchClassText().setEnabled(false);
                 MainForm.getInstance().getSearchMethodText().setEnabled(false);
                 MainForm.getInstance().getSearchStrText().setEnabled(true);

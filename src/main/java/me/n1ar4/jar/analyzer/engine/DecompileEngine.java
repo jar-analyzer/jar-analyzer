@@ -27,6 +27,8 @@ public class DecompileEngine {
             "// (powered by FernFlower decompiler)\n" +
             "//\n";
 
+    private static final LRUCache lruCache = new LRUCache(100);
+
     /**
      * Decompile Any Class
      *
@@ -37,6 +39,13 @@ public class DecompileEngine {
         try {
             boolean fern = MainForm.getInstance().getFernRadio().isSelected();
             if (fern) {
+                // USE LRU CACHE
+                String key = classFilePath.toAbsolutePath().toString();
+                String data = lruCache.get(key);
+                if (data != null && !data.isEmpty()) {
+                    logger.info("use cache");
+                    return data;
+                }
                 Path dirPath = Paths.get(Const.tempDir);
                 Path deDirPath = dirPath.resolve(Paths.get(JAVA_DIR));
                 if (!Files.exists(deDirPath)) {
@@ -91,6 +100,8 @@ public class DecompileEngine {
                     Files.delete(newFilePath);
                 } catch (Exception ignored) {
                 }
+                logger.info("save cache");
+                lruCache.put(key, codeStr);
                 return codeStr;
             } else {
                 LogUtil.log("unknown error");

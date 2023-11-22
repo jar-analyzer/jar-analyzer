@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileLock;
 import java.nio.channels.OverlappingFileLockException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 public class Single {
     private static final String LOCK_FILE = "jar-analyzer-lockfile";

@@ -508,6 +508,10 @@ public class MainForm {
         return sqliteButton;
     }
 
+    public JButton getGptButton() {
+        return gptButton;
+    }
+
     private void resolveConfig() {
         if (config != null) {
             String temp = config.getTempPath();

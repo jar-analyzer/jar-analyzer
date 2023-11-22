@@ -17,6 +17,7 @@ import java.util.Map;
  */
 public class Http {
     private static final Logger logger = LogManager.getLogger();
+    private static int TIMEOUT = 10000;
     public static final String ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) " +
             "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36";
 
@@ -90,6 +91,14 @@ public class Http {
         headers.put("Connection", "close");
     }
 
+    public static void setTimeout(int second) {
+        if (second < 1000) {
+            TIMEOUT = second * 1000;
+        } else {
+            TIMEOUT = second;
+        }
+    }
+
     /**
      * Do Http Request
      *
@@ -106,8 +115,8 @@ public class Http {
                 connection.setDoOutput(true);
             }
             // set timeout
-            connection.setConnectTimeout(20000);
-            connection.setReadTimeout(20000);
+            connection.setConnectTimeout(TIMEOUT);
+            connection.setReadTimeout(TIMEOUT);
             // set request header
             if (request.getHeaders() != null) {
                 for (Map.Entry<String, String> entry : request.getHeaders().entrySet()) {

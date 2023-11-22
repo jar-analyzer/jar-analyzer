@@ -1,5 +1,7 @@
 package me.n1ar4.jar.analyzer.plugins.chatgpt;
 
+import me.n1ar4.jar.analyzer.utils.http.Http;
+
 public class ChatGPTBuilder {
     private String apiKey;
     private String apiHost;
@@ -15,6 +17,7 @@ public class ChatGPTBuilder {
     }
 
     public ChatGPT build() {
+        Http.setTimeout(60);
         return new ChatGPT(apiKey, apiHost);
     }
 }

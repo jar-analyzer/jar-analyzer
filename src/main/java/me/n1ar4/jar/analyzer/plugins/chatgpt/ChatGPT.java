@@ -11,7 +11,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ChatGPT {
-    public static final String jsonType = "application/json";
+    public static final String openaiHost = "https://api.openai.com";
+    public static final String chatAnywhereHost = "https://api.chatanywhere.com.cn";
     private final String apiKey;
     private final String apiHost;
     private boolean initialized;
@@ -49,12 +50,15 @@ public class ChatGPT {
         request.setHeaders(headers);
 
         HttpResponse response = Http.doRequest(request);
+
         if (response.getBody().length == 0) {
             return "none";
         }
+
         String respBody = new String(response.getBody());
         JSONObject resp = JSON.parseObject(respBody);
 
+        // todo: parse body to GPTResponse
         Object choices = resp.get("choices");
         if (choices == null) {
             return "none";
@@ -62,7 +66,6 @@ public class ChatGPT {
         if (!(choices instanceof JSONArray)) {
             return "none";
         }
-
         JSONArray array = (JSONArray) choices;
         JSONObject choice = (JSONObject) array.get(0);
         JSONObject message = (JSONObject) choice.get("message");

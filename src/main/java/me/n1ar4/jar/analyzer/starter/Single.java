@@ -24,15 +24,6 @@ public class Single {
     private static boolean isInstanceRunning() {
         try {
             RandomAccessFile randomAccessFile = new RandomAccessFile(LOCK_FILE, "rw");
-
-            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                try {
-                    Files.delete(Paths.get(LOCK_FILE));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }));
-
             FileLock lock = randomAccessFile.getChannel().tryLock();
             if (lock == null) {
                 randomAccessFile.close();

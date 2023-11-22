@@ -106,8 +106,8 @@ public class Http {
                 connection.setDoOutput(true);
             }
             // set timeout
-            connection.setConnectTimeout(5000);
-            connection.setReadTimeout(5000);
+            connection.setConnectTimeout(20000);
+            connection.setReadTimeout(20000);
             // set request header
             if (request.getHeaders() != null) {
                 for (Map.Entry<String, String> entry : request.getHeaders().entrySet()) {
@@ -142,7 +142,14 @@ public class Http {
             resp.setHeaders(respHeaders);
             // get response body
             ByteArrayOutputStream bao = new ByteArrayOutputStream();
-            InputStream is = connection.getInputStream();
+
+            InputStream is;
+            try {
+                is = connection.getInputStream();
+            } catch (Exception ignored) {
+                is = connection.getErrorStream();
+            }
+
             byte[] byteChunk = new byte[4096];
             int n;
             while ((n = is.read(byteChunk)) > 0) {

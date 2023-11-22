@@ -175,4 +175,9 @@ public class Http {
         }
         return null;
     }
+
+    public static void setSocksProxy(String proxyHost, int proxyPort) {
+        System.setProperty("socksProxyHost", proxyHost);
+        System.setProperty("socksProxyPort", String.valueOf(proxyPort));
+    }
 }

@@ -7,6 +7,7 @@ public class ChatTest {
     public static void main(String[] args) {
         ChatGPT gpt = new ChatGPTBuilder()
                 .apiHost(ChatGPT.chatAnywhereHost)
+                .socksProxy("127.0.0.1", 1080)
                 .apiKey("")
                 .build();
         gpt.init();

@@ -27,7 +27,7 @@ public class DecompileEngine {
             "// (powered by FernFlower decompiler)\n" +
             "//\n";
 
-    private static final LRUCache lruCache = new LRUCache(100);
+    private static final LRUCache lruCache = new LRUCache(30);
 
     /**
      * Decompile Any Class

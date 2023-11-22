@@ -47,3 +47,4 @@ target/
 .idea/
 jar-analyzer-temp/
 build/jre/jre/
+jar-analyzer-lockfile

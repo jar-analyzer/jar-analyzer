@@ -17,6 +17,10 @@ public class Application {
                 logger.info("setup look and feel success");
             }
 
+            if (!Single.canRun()) {
+                System.exit(0);
+            }
+
             System.setOut(
                     IoBuilder.forLogger(LogManager.getLogger("system.out"))
                             .setLevel(Level.INFO)

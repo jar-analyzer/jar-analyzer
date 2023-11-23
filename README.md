@@ -99,7 +99,7 @@
 
 一般情况下，推荐使用内置 `Y4 JRE` 的 `embed` 版本启动 (这是一个定制的安全的 `JRE 8`)
 
-关于 `Y4 JDK/JRE` 项目: https://github.com/Y4Sec-Team/jdk8u
+关于 `Y4 JDK/JRE` 项目: https://github.com/jar-analyzer/jdk8u
 
 ## 如何构建
 
@@ -117,6 +117,10 @@
 (3) 复制 JRE 到 embed 版
 
 ## 其他
+
+`Jar Analyzer` 子项目：
+- [Y4 JDK/JRE](https://github.com/jar-analyzer/jdk8u) 为 `Jar Analyzer` 提供定制的 `JRE` 环境
+- [Y4 JSON](https://github.com/jar-analyzer/y4-json) 为 `Jar Analyzer` 提供 `JSON` 序列化和反序列化
 
 如果你希望体验老版本 (不再维护) 的 `Jar Analyzer` 可以访问：
 - https://github.com/4ra1n/jar-analyzer-cli

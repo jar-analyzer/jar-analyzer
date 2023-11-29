@@ -91,15 +91,13 @@
 
 在 `release` 中提供四种下载：
 - `system` 使用系统 `JDK/JRE` 的启动脚本 (需要自行安装 `JRE`)
-- `embed` 内置安全 `Y4 JRE` 的启动脚本 (无需另外安装一键启动)
+- `embed` 内置 `JRE` 的启动脚本 (无需另外安装一键启动)
 - `linux` 内置 `shell` 启动脚本 (需要自行安装 `JRE`)
 - 简单的 `Jar` 文件，不提供启动脚本
 
 由于本工具仅在 `Windows` 中测试，其他操作系统可能会有未知的问题，欢迎提 `issue`
 
-一般情况下，推荐使用内置 `Y4 JRE` 的 `embed` 版本启动 (这是一个定制的安全的 `JRE 8`)
-
-关于 `Y4 JDK/JRE` 项目: https://github.com/jar-analyzer/jdk8u
+一般情况下，推荐使用内置 `JRE` 的 `embed` 版本启动
 
 ## 如何构建
 
@@ -119,7 +117,6 @@
 ## 其他
 
 `Jar Analyzer` 子项目：
-- [Y4 JDK/JRE](https://github.com/jar-analyzer/jdk8u) 为 `Jar Analyzer` 提供定制的 `JRE` 环境
 - [Y4 JSON](https://github.com/jar-analyzer/y4-json) 为 `Jar Analyzer` 提供 `JSON` 序列化和反序列化
 
 如果你希望体验老版本 (不再维护) 的 `Jar Analyzer` 可以访问：

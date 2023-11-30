@@ -19,8 +19,9 @@ public class HttpResponse {
         response.headers = new HashMap<>();
         response.cookies = new HashMap<>();
         ByteArrayOutputStream headerBuffer = new ByteArrayOutputStream();
-        boolean isHeader = true;
+
         int prev = -1, current;
+        boolean isHeader = true;
         while (isHeader && (current = is.read()) != -1) {
             headerBuffer.write(current);
             if (prev == '\n' && current == '\r') {
@@ -33,21 +34,72 @@ public class HttpResponse {
             }
             prev = current;
         }
+
         String headerString = headerBuffer.toString();
         String[] headerLines = headerString.split(Global.LINE_SEP);
+        boolean isChunked = false;
         for (String line : headerLines) {
             if (!line.isEmpty()) {
                 processHeaderLine(line, response);
+                if (line.contains("Transfer-Encoding: chunked")) {
+                    isChunked = true;
+                }
             }
         }
 
-        ByteArrayOutputStream bodyBuffer = new ByteArrayOutputStream();
-        while ((current = is.read()) != -1) {
-            bodyBuffer.write(current);
+        try (ByteArrayOutputStream bodyBuffer = new ByteArrayOutputStream()) {
+            if (isChunked) {
+                readChunkedBody(is, bodyBuffer);
+            } else {
+                readBody(is, bodyBuffer);
+            }
+            response.body = bodyBuffer.toByteArray();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        response.body = bodyBuffer.toByteArray();
 
         return response;
+    }
+
+    private static void readBody(InputStream is, ByteArrayOutputStream bodyBuffer) throws IOException {
+        byte[] buffer = new byte[1024];
+        int bytesRead;
+        while ((bytesRead = is.read(buffer)) != -1) {
+            bodyBuffer.write(buffer, 0, bytesRead);
+        }
+    }
+
+    private static void readChunkedBody(InputStream is, ByteArrayOutputStream bodyBuffer) throws IOException {
+        while (true) {
+            String sizeLine = readLine(is);
+            int size = Integer.parseInt(sizeLine.trim(), 16);
+            if (size == 0) {
+                break;
+            }
+            byte[] buffer = new byte[size];
+            int read = 0;
+            while (read < size) {
+                int result = is.read(buffer, read, size - read);
+                if (result == -1) {
+                    break;
+                }
+                read += result;
+            }
+            bodyBuffer.write(buffer, 0, read);
+            readLine(is);
+        }
+    }
+
+    private static String readLine(InputStream is) throws IOException {
+        ByteArrayOutputStream lineBuffer = new ByteArrayOutputStream();
+        int b;
+        while ((b = is.read()) != -1) {
+            lineBuffer.write(b);
+            if (b == '\n') {
+                break;
+            }
+        }
+        return lineBuffer.toString();
     }
 
     private static void processHeaderLine(String headerLine, HttpResponse response) {

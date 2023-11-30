@@ -2,7 +2,6 @@ package me.n1ar4.y4json;
 
 import me.n1ar4.y4json.log.LogManager;
 import me.n1ar4.y4json.log.Logger;
-import me.n1ar4.y4json.util.UnsafeUtil;
 import me.n1ar4.y4json.util.QuickSort;
 
 import java.lang.reflect.Array;
@@ -121,7 +120,8 @@ public class CoreWriter implements JSONConst {
                 // 尝试反射获取值
                 Object val = null;
                 try {
-                    val = UnsafeUtil.getFieldValue(object, field);
+                    field.setAccessible(true);
+                    val = field.get(object);
                 } catch (Exception ex) {
                     logger.error("reflect get val error: " + ex);
                     // 显示错误

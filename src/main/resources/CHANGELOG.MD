@@ -17,12 +17,9 @@
 - [优化] 内置`sqlite`驱动删除不必要的部分
 - [优化] 优化反编译部分的`LRU`缓存代码
 - [优化] 同时只允许运行一个实例防止数据冲突
-- [Y4-JSON] 内置`Y4-JSON`库代替`Fastjson`库
-- [Y4-JSON] 使用正常反射代替`Unsafe`方式
-- [Y4-HTTP] 内置`Y4-HTTP`库替换原`http`库
-- [Y4-HTTP] 处理`chunked`类型`body`读取问题
-- [Y4-LOG] 内置`Y4-LOG`库代替`Log4j2`库
-- [Y4-LOG] 支持将`System.out`重定向到`logger`
+- [Y4-JSON] 内置`Y4-JSON`库代替原`Fastjson`库
+- [Y4-HTTP] 内置`Y4-HTTP`库代替原`http`库
+- [Y4-LOG] 内置`Y4-LOG`库代替原`Log4j2`库
 - [JRE] 使用更稳定的`Zulu JRE`支持内置版本
 - [其他] 支持了英文版的文档
 

@@ -2,6 +2,9 @@ package me.n1ar4.jar.analyzer.plugins.chatgpt;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
+import me.n1ar4.jar.analyzer.config.ConfigEngine;
+import me.n1ar4.jar.analyzer.config.ConfigFile;
+import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.IconManager;
 import me.n1ar4.jar.analyzer.starter.Const;
 
@@ -34,9 +37,86 @@ public class ChatGPTForm {
     private JLabel gptImgLabel;
 
     private static ChatGPTForm instance;
+    private ChatGPT chatGPT;
+    private String socksHost;
+    private int socksPort;
 
     public static void init() {
+        instance.chatAnywhereRadioButton.setSelected(true);
+        ConfigFile config = MainForm.getConfig();
+        if (config.getGptHost() != null &&
+                !config.getGptHost().isEmpty() &&
+                !config.getGptHost().equals("null")) {
+            instance.hostText.setText(config.getGptProxyHost());
+            instance.portText.setText(config.getGptProxyPort());
+            if (config.getGptHost().equals(ChatGPT.chatAnywhereHost)) {
+                instance.chatAnywhereRadioButton.setSelected(true);
+            } else {
+                instance.openAIRadioButton.setSelected(true);
+            }
+            instance.apiKeyText.setText(config.getGptKey());
+        }
         instance.gptImgLabel.setIcon(IconManager.chatIcon);
+        instance.cleanButton.addActionListener(e -> {
+            instance.inputArea.setText(null);
+            instance.resultArea.setText(null);
+        });
+        instance.setButton.addActionListener(e -> {
+            String host = instance.hostText.getText();
+            String port = instance.portText.getText();
+            if (host == null || host.isEmpty()) {
+                JOptionPane.showMessageDialog(instance.masterPanel, "need host");
+                return;
+            }
+            if (port == null || port.isEmpty()) {
+                JOptionPane.showMessageDialog(instance.masterPanel, "need port");
+                return;
+            }
+            instance.socksHost = host;
+            instance.socksPort = Integer.parseInt(port);
+            JOptionPane.showMessageDialog(instance.masterPanel, "set proxy success");
+
+            MainForm.getConfig().setGptProxyHost(instance.socksHost);
+            MainForm.getConfig().setGptProxyPort(port);
+            ConfigEngine.saveConfig(MainForm.getConfig());
+        });
+        instance.startButton.addActionListener(e -> {
+            String apiHost = instance.openAIRadioButton.isSelected() ?
+                    ChatGPT.openaiHost : ChatGPT.chatAnywhereHost;
+            String apiKey = instance.apiKeyText.getText();
+            String input = instance.inputArea.getText();
+            if (apiKey == null || apiKey.isEmpty()) {
+                JOptionPane.showMessageDialog(instance.masterPanel, "need api key");
+                return;
+            }
+            if (input == null || input.isEmpty()) {
+                JOptionPane.showMessageDialog(instance.masterPanel, "need input");
+                return;
+            }
+            if (instance.socksHost != null && !instance.socksHost.isEmpty()) {
+                instance.chatGPT = ChatGPT.builder()
+                        .apiHost(apiHost)
+                        .apiKey(apiKey)
+                        .socksProxy(instance.socksHost, instance.socksPort)
+                        .build();
+                MainForm.getConfig().setGptProxyHost(instance.socksHost);
+                MainForm.getConfig().setGptProxyPort(String.valueOf(instance.socksPort));
+            } else {
+                instance.chatGPT = ChatGPT.builder()
+                        .apiHost(apiHost)
+                        .apiKey(apiKey)
+                        .build();
+            }
+            MainForm.getConfig().setGptHost(apiHost);
+            MainForm.getConfig().setGptKey(apiKey);
+            ConfigEngine.saveConfig(MainForm.getConfig());
+            new Thread(() -> {
+                instance.chatGPT.init();
+                instance.resultArea.setText("please wait...");
+                String res = instance.chatGPT.chat(input);
+                instance.resultArea.setText(res);
+            }).start();
+        });
     }
 
     public static void start() {
@@ -123,11 +203,14 @@ public class ChatGPTForm {
         panel1.add(inputScroll, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(600, 100), null, null, 0, false));
         inputScroll.setBorder(BorderFactory.createTitledBorder(null, "Input", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         inputArea = new JTextArea();
+        inputArea.setLineWrap(true);
         inputScroll.setViewportView(inputArea);
         resultPanel = new JScrollPane();
         panel1.add(resultPanel, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(600, 300), null, null, 0, false));
         resultPanel.setBorder(BorderFactory.createTitledBorder(null, "Reslt", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         resultArea = new JTextArea();
+        resultArea.setEditable(false);
+        resultArea.setLineWrap(true);
         resultPanel.setViewportView(resultArea);
         ButtonGroup buttonGroup;
         buttonGroup = new ButtonGroup();

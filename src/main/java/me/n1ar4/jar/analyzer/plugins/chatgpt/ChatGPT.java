@@ -1,6 +1,8 @@
 package me.n1ar4.jar.analyzer.plugins.chatgpt;
 
 import me.n1ar4.http.*;
+import me.n1ar4.log.LogManager;
+import me.n1ar4.log.Logger;
 import me.n1ar4.y4json.JSON;
 import me.n1ar4.y4json.JSONArray;
 import me.n1ar4.y4json.JSONObject;
@@ -11,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ChatGPT {
+    private static final Logger logger = LogManager.getLogger();
     public static final String openaiHost = "https://api.openai.com";
     public static final String chatAnywhereHost = "https://api.chatanywhere.com.cn";
     private final String apiKey;
@@ -35,7 +38,31 @@ public class ChatGPT {
             throw new IllegalStateException("need init chat gpt");
         }
         String json = JSON.toJSONString(new GPTRequest(input));
+        logger.info("start chat");
+        HttpRequest request = getHttpRequest(json);
+        HttpResponse response = client.request(request);
+        if (response.getBody().length == 0) {
+            return "none";
+        }
+        if (!response.getHeaders().get(HttpHeaders.ContentType).contains("json")) {
+            return "none";
+        }
+        String respBody = new String(response.getBody());
+        JSONObject resp = JSON.parseObject(respBody);
+        Object choices = resp.get("choices");
+        if (choices == null) {
+            return "none";
+        }
+        if (!(choices instanceof JSONArray)) {
+            return "none";
+        }
+        JSONArray array = (JSONArray) choices;
+        JSONObject choice = (JSONObject) array.get(0);
+        JSONObject message = (JSONObject) choice.get("message");
+        return (String) message.get("content");
+    }
 
+    private HttpRequest getHttpRequest(String json) {
         String key = "Bearer " + this.apiKey;
 
         HttpRequest request = new HttpRequest();
@@ -55,30 +82,7 @@ public class ChatGPT {
         headers.put(HttpHeaders.Authorization, key);
 
         request.setHeaders(headers);
-        HttpResponse response = client.request(request);
-
-        if (response.getBody().length == 0) {
-            return "none";
-        }
-
-        if (!response.getHeaders().get(HttpHeaders.ContentType).contains("json")) {
-            return "none";
-        }
-
-        String respBody = new String(response.getBody());
-        JSONObject resp = JSON.parseObject(respBody);
-
-        Object choices = resp.get("choices");
-        if (choices == null) {
-            return "none";
-        }
-        if (!(choices instanceof JSONArray)) {
-            return "none";
-        }
-        JSONArray array = (JSONArray) choices;
-        JSONObject choice = (JSONObject) array.get(0);
-        JSONObject message = (JSONObject) choice.get("message");
-        return (String) message.get("content");
+        return request;
     }
 
     public static ChatGPTBuilder builder() {

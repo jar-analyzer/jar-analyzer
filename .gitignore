@@ -37,7 +37,6 @@ target/
 .DS_Store
 
 ### My Project ###
-*.dll
 *.exe
 *.jar
 *.db

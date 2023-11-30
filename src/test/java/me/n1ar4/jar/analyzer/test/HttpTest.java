@@ -6,7 +6,7 @@ import me.n1ar4.http.Y4Client;
 
 public class HttpTest {
     public static void main(String[] args) {
-        HttpResponse resp = new Y4Client().get("https://www.baidu.com");
+        HttpResponse resp = new Y4Client().get("http://www.hostbuf.com/downloads/finalshell_install.exe");
         System.out.println(new String(resp.getBody()));
     }
 }

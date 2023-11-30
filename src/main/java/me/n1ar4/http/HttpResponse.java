@@ -105,7 +105,7 @@ public class HttpResponse {
     private static void processHeaderLine(String headerLine, HttpResponse response) {
         if (response.statusCode == 0) {
             String[] parts = headerLine.split(" ");
-            if (parts.length < 3) {
+            if (parts.length < 2) {
                 throw new RuntimeException("http header error");
             }
             response.statusCode = Integer.parseInt(parts[1]);

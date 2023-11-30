@@ -20,6 +20,8 @@ public class Y4Client {
     private Proxy proxy;
     private final int timeout;
 
+    public static final Y4Client INSTANCE = new Y4Client();
+
     public Y4Client() {
         this(DEFAULT_TIMEOUT);
     }

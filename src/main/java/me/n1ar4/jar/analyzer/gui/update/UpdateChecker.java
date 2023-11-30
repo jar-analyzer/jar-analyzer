@@ -12,7 +12,7 @@ public class UpdateChecker {
     public static void checkUpdate() {
         MainForm instance = MainForm.getInstance();
         new Thread(() -> {
-            HttpResponse resp = new Y4Client().get(Const.checkUpdateUrl);
+            HttpResponse resp = Y4Client.INSTANCE.get(Const.checkUpdateUrl);
             String body = new String(resp.getBody());
             if (body.isEmpty()) {
                 return;

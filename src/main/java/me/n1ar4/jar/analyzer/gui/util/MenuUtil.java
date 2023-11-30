@@ -119,7 +119,7 @@ public class MenuUtil {
             imageIcon = new ImageIcon(ImageIO.read(is));
             downItem.setIcon(imageIcon);
             downItem.addActionListener(e -> {
-                HttpResponse resp = new Y4Client().get(Const.checkUpdateUrl);
+                HttpResponse resp = Y4Client.INSTANCE.get(Const.checkUpdateUrl);
                 String body = new String(resp.getBody());
                 if (body.isEmpty()) {
                     return;

@@ -1,5 +1,6 @@
 package me.n1ar4.jar.analyzer.plugins.chatgpt;
 
+import me.n1ar4.http.HttpHeaders;
 import me.n1ar4.http.HttpRequest;
 import me.n1ar4.http.HttpResponse;
 import me.n1ar4.http.Y4Client;
@@ -18,10 +19,12 @@ public class ChatGPT {
     private final String apiKey;
     private final String apiHost;
     private boolean initialized;
+    private final Y4Client client;
 
-    public ChatGPT(String apiKey, String apiHost) {
+    public ChatGPT(String apiKey, String apiHost, Y4Client client) {
         this.apiKey = apiKey;
         this.apiHost = apiHost;
+        this.client = client;
         this.initialized = false;
     }
 
@@ -54,11 +57,13 @@ public class ChatGPT {
         headers.put("Authorization", key);
 
         request.setHeaders(headers);
-
-        Y4Client client = new Y4Client(30000);
         HttpResponse response = client.request(request);
 
         if (response.getBody().length == 0) {
+            return "none";
+        }
+
+        if (!response.getHeaders().get(HttpHeaders.ContentType).contains("json")) {
             return "none";
         }
 

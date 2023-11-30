@@ -1,5 +1,8 @@
 package me.n1ar4.http;
 
+import me.n1ar4.log.LogManager;
+import me.n1ar4.log.Logger;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class HttpResponse {
+    private static final Logger logger = LogManager.getLogger();
     private int statusCode;
     private String message;
     private Map<String, String> headers;
@@ -46,6 +50,7 @@ public class HttpResponse {
                 }
             }
         }
+        logger.debug("headers:{}{}", "\n", headerString);
 
         try (ByteArrayOutputStream bodyBuffer = new ByteArrayOutputStream()) {
             if (isChunked) {
@@ -61,7 +66,8 @@ public class HttpResponse {
         return response;
     }
 
-    private static void readBody(InputStream is, ByteArrayOutputStream bodyBuffer) throws IOException {
+    private static void readBody(InputStream is,
+                                 ByteArrayOutputStream bodyBuffer) throws IOException {
         byte[] buffer = new byte[1024];
         int bytesRead;
         while ((bytesRead = is.read(buffer)) != -1) {
@@ -69,7 +75,8 @@ public class HttpResponse {
         }
     }
 
-    private static void readChunkedBody(InputStream is, ByteArrayOutputStream bodyBuffer) throws IOException {
+    private static void readChunkedBody(InputStream is,
+                                        ByteArrayOutputStream bodyBuffer) throws IOException {
         while (true) {
             String sizeLine = readLine(is);
             int size = Integer.parseInt(sizeLine.trim(), 16);

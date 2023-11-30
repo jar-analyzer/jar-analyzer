@@ -1,6 +1,9 @@
 package me.n1ar4.jar.analyzer.plugins.chatgpt;
 
+import me.n1ar4.http.Y4Client;
+
 public class ChatGPTBuilder {
+    private static final int GPT_TIMEOUT = 30000;
     private String apiKey;
     private String apiHost;
     private String proxyHost;
@@ -23,6 +26,12 @@ public class ChatGPTBuilder {
     }
 
     public ChatGPT build() {
-        return new ChatGPT(apiKey, apiHost);
+        if (proxyHost == null || proxyHost.isEmpty()) {
+            return new ChatGPT(apiKey, apiHost,
+                    new Y4Client(GPT_TIMEOUT));
+        } else {
+            return new ChatGPT(apiKey, apiHost,
+                    new Y4Client(GPT_TIMEOUT, proxyHost, proxyPort));
+        }
     }
 }

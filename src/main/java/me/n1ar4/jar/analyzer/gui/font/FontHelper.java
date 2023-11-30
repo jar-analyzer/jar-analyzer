@@ -1,7 +1,7 @@
 package me.n1ar4.jar.analyzer.gui.font;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import me.n1ar4.log.LogManager;
+import me.n1ar4.log.Logger;
 
 import java.awt.*;
 import java.io.InputStream;

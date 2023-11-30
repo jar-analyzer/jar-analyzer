@@ -23,7 +23,6 @@
         <!-- Dependencies Version -->
         <y4-json.version>0.0.2</y4-json.version>
         <asm.version>9.6</asm.version>
-        <log4j.version>2.22.0</log4j.version>
         <flatlaf.version>3.2.5</flatlaf.version>
         <idea.forms.version>7.0.3</idea.forms.version>
         <syntax.version>3.3.4</syntax.version>
@@ -61,16 +60,6 @@
             <groupId>org.ow2.asm</groupId>
             <artifactId>asm-commons</artifactId>
             <version>${asm.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>${log4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-iostreams</artifactId>
-            <version>${log4j.version}</version>
         </dependency>
         <dependency>
             <groupId>com.formdev</groupId>

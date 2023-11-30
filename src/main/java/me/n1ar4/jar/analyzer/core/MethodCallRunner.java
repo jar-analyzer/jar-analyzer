@@ -2,8 +2,8 @@ package me.n1ar4.jar.analyzer.core;
 
 import me.n1ar4.jar.analyzer.core.asm.MethodCallClassVisitor;
 import me.n1ar4.jar.analyzer.entity.ClassFileEntity;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import me.n1ar4.log.LogManager;
+import me.n1ar4.log.Logger;
 import org.objectweb.asm.ClassReader;
 
 import java.util.HashMap;

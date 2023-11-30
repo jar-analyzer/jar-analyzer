@@ -2,8 +2,8 @@ package me.n1ar4.jar.analyzer.analyze.cfg;
 
 import me.n1ar4.jar.analyzer.engine.CoreEngine;
 import me.n1ar4.jar.analyzer.gui.MainForm;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import me.n1ar4.log.LogManager;
+import me.n1ar4.log.Logger;
 
 import java.nio.file.Files;
 import java.nio.file.Path;

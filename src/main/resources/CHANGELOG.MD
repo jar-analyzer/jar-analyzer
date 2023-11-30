@@ -5,10 +5,12 @@
 - [优化] 内置`HTTP`库支持代理和超时设置
 - [优化] 优化反编译部分的`LRU`缓存代码
 - [优化] 同时只允许运行一个实例防止数据冲突
-- [Y4-JSON] 内置`Y4-JSON`库代替`Fastjson`
+- [Y4-JSON] 内置`Y4-JSON`库代替`Fastjson`库
 - [Y4-JSON] 使用正常反射代替没必要的`Unsafe`方式
 - [Y4-HTTP] 内置`Y4-HTTP`库替换原`http`库
 - [Y4-HTTP] 处理`chunked`类型`body`读取问题
+- [Y4-LOG] 内置`Y4-LOG`库代替`Log4j2`库
+- [Y4-LOG] 支持将`System.out`重定向到`logger`
 - [JRE] 使用更稳定的`Zulu JRE`支持内置版本
 
 ## 2.5-beta

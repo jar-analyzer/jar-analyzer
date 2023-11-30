@@ -2,8 +2,8 @@ package me.n1ar4.y4json.test;
 
 import me.n1ar4.y4json.JSON;
 import me.n1ar4.y4json.JSONObject;
-import me.n1ar4.y4json.log.LogLevel;
-import me.n1ar4.y4json.log.LogManager;
+import me.n1ar4.log.LogLevel;
+import me.n1ar4.log.LogManager;
 
 public class Test001 {
     public static void main(String[] args) {

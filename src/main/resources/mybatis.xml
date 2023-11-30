@@ -3,12 +3,12 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-    <properties resource="jdbc.properties" />
-    <settings>
-        <!-- debug -->
-        <!-- <setting name="logImpl" value="STDOUT_LOGGING" /> -->
-        <setting name="logImpl" value="LOG4J2"/>
-    </settings>
+    <properties resource="jdbc.properties"/>
+    <!--    <settings>-->
+    <!--        &lt;!&ndash; debug &ndash;&gt;-->
+    <!--        &lt;!&ndash; <setting name="logImpl" value="STDOUT_LOGGING" /> &ndash;&gt;-->
+    <!--        <setting name="logImpl" value="LOG4J2"/>-->
+    <!--    </settings>-->
     <typeAliases>
         <package name="me.n1ar4.jar.analyzer.entity"/>
     </typeAliases>

@@ -1,4 +1,4 @@
-package me.n1ar4.y4json.log;
+package me.n1ar4.log;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

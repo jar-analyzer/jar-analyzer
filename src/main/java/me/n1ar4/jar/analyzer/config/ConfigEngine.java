@@ -1,7 +1,7 @@
 package me.n1ar4.jar.analyzer.config;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import me.n1ar4.log.LogManager;
+import me.n1ar4.log.Logger;
 
 import javax.swing.*;
 import java.io.ByteArrayInputStream;

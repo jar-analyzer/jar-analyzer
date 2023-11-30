@@ -1,7 +1,7 @@
 package me.n1ar4.y4json;
 
-import me.n1ar4.y4json.log.LogManager;
-import me.n1ar4.y4json.log.Logger;
+import me.n1ar4.log.LogManager;
+import me.n1ar4.log.Logger;
 import me.n1ar4.y4json.util.QuickSort;
 
 import java.lang.reflect.Array;

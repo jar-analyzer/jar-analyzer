@@ -1,10 +1,10 @@
 package me.n1ar4.jar.analyzer.core;
 
+import me.n1ar4.log.LogManager;
+import me.n1ar4.log.Logger;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;

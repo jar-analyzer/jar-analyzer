@@ -1,6 +1,5 @@
 package me.n1ar4.jar.analyzer.plugins.chatgpt;
 
-import me.n1ar4.http.HttpHeaders;
 import me.n1ar4.http.HttpRequest;
 import me.n1ar4.http.HttpResponse;
 import me.n1ar4.http.Y4Client;

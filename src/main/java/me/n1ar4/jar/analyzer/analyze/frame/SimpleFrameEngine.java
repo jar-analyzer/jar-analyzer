@@ -1,8 +1,8 @@
 package me.n1ar4.jar.analyzer.analyze.frame;
 
 import me.n1ar4.jar.analyzer.gui.MainForm;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import me.n1ar4.log.LogManager;
+import me.n1ar4.log.Logger;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;

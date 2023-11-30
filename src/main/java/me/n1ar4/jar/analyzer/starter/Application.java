@@ -2,10 +2,9 @@ package me.n1ar4.jar.analyzer.starter;
 
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.JarAnalyzerLaf;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.io.IoBuilder;
+import me.n1ar4.log.LogManager;
+import me.n1ar4.log.Logger;
+import me.n1ar4.log.LoggingStream;
 
 public class Application {
     private static final Logger logger = LogManager.getLogger();
@@ -21,11 +20,7 @@ public class Application {
                 System.exit(0);
             }
 
-            System.setOut(
-                    IoBuilder.forLogger(LogManager.getLogger("system.out"))
-                            .setLevel(Level.INFO)
-                            .buildPrintStream()
-            );
+            System.setOut(new LoggingStream(System.out, logger));
             System.out.println("set log42j io-streams");
 
             MainForm.start();

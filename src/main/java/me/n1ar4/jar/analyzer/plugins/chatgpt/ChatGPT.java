@@ -1,9 +1,6 @@
 package me.n1ar4.jar.analyzer.plugins.chatgpt;
 
-import me.n1ar4.http.HttpHeaders;
-import me.n1ar4.http.HttpRequest;
-import me.n1ar4.http.HttpResponse;
-import me.n1ar4.http.Y4Client;
+import me.n1ar4.http.*;
 import me.n1ar4.y4json.JSON;
 import me.n1ar4.y4json.JSONArray;
 import me.n1ar4.y4json.JSONObject;
@@ -51,10 +48,11 @@ public class ChatGPT {
         request.setBody(json.getBytes());
 
         Map<String, String> headers = new HashMap<>();
-        headers.put("Content-Type", "application/json; charset=utf-8");
-        headers.put("User-Agent", HttpRequest.DefaultUA);
-        headers.put("Connection", "close");
-        headers.put("Authorization", key);
+
+        headers.put(HttpHeaders.ContentType, ContentType.JSON);
+        headers.put(HttpHeaders.UserAgent, HttpRequest.DefaultUA);
+        headers.put(HttpHeaders.Connection, "close");
+        headers.put(HttpHeaders.Authorization, key);
 
         request.setHeaders(headers);
         HttpResponse response = client.request(request);

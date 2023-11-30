@@ -155,7 +155,10 @@ public class CoreRunner {
 
         MainForm.getInstance().getLoadDBText().setText(Const.dbFile);
 
-        ConfigFile config = new ConfigFile();
+        ConfigFile config = MainForm.getConfig();
+        if (config == null) {
+            config = new ConfigFile();
+        }
         config.setTotalMethod(MainForm.getInstance().getTotalMethodVal().getText());
         config.setTotalClass(MainForm.getInstance().getTotalClassVal().getText());
         config.setTotalJar(MainForm.getInstance().getTotalJarVal().getText());

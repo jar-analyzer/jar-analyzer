@@ -2,6 +2,8 @@
 
 [English Doc](doc/README-en.md)
 
+[CHANGE LOG](src/main/resources/CHANGELOG.MD)
+
 ![](https://img.shields.io/badge/build-passing-brightgreen)
 ![](https://img.shields.io/badge/build-Java%208-orange)
 ![](https://img.shields.io/github/downloads/jar-analyzer/jar-analyzer/total)

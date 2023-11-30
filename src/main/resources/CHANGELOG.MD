@@ -12,6 +12,7 @@
 - [Y4-LOG] 内置`Y4-LOG`库代替`Log4j2`库
 - [Y4-LOG] 支持将`System.out`重定向到`logger`
 - [JRE] 使用更稳定的`Zulu JRE`支持内置版本
+- [其他] 支持了英文版的文档
 
 ## 2.5-beta
 

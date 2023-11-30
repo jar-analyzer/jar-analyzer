@@ -46,23 +46,7 @@
         <main.name>me.n1ar4.jar.analyzer.starter.Application</main.name>
     </properties>
 
-    <repositories>
-        <repository>
-            <id>maven</id>
-            <url>https://repo.maven.apache.org/maven2/</url>
-        </repository>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-    </repositories>
-
     <dependencies>
-        <dependency>
-            <groupId>com.github.jar-analyzer</groupId>
-            <artifactId>y4-json</artifactId>
-            <version>${y4-json.version}</version>
-        </dependency>
         <dependency>
             <groupId>org.ow2.asm</groupId>
             <artifactId>asm</artifactId>

@@ -1,12 +1,15 @@
 package me.n1ar4.jar.analyzer.plugins.chatgpt;
 
-import me.n1ar4.jar.analyzer.utils.http.Http;
-import me.n1ar4.jar.analyzer.utils.http.HttpRequest;
-import me.n1ar4.jar.analyzer.utils.http.HttpResponse;
+import me.n1ar4.http.HttpHeaders;
+import me.n1ar4.http.HttpRequest;
+import me.n1ar4.http.HttpResponse;
+import me.n1ar4.http.Y4Client;
 import me.n1ar4.y4json.JSON;
 import me.n1ar4.y4json.JSONArray;
 import me.n1ar4.y4json.JSONObject;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,19 +40,24 @@ public class ChatGPT {
         String key = "Bearer " + this.apiKey;
 
         HttpRequest request = new HttpRequest();
-        request.setUrl(this.apiHost);
+        try {
+            request.setUrl(new URL(this.apiHost));
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
         request.setMethod("POST");
         request.setBody(json.getBytes());
 
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json; charset=utf-8");
-        headers.put("User-Agent", Http.ua);
-        headers.put("Connection", "keep-alive");
+        headers.put("User-Agent", HttpRequest.DefaultUA);
+        headers.put("Connection", "close");
         headers.put("Authorization", key);
 
         request.setHeaders(headers);
 
-        HttpResponse response = Http.doRequest(request);
+        Y4Client client = new Y4Client(30000);
+        HttpResponse response = client.request(request);
 
         if (response.getBody().length == 0) {
             return "none";
@@ -58,7 +66,6 @@ public class ChatGPT {
         String respBody = new String(response.getBody());
         JSONObject resp = JSON.parseObject(respBody);
 
-        // todo: parse body to GPTResponse
         Object choices = resp.get("choices");
         if (choices == null) {
             return "none";

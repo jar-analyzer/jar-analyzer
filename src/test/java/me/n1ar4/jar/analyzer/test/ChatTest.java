@@ -11,7 +11,7 @@ public class ChatTest {
                 .apiKey("")
                 .build();
         gpt.init();
-        String chat = gpt.chat("你好，你是谁");
+        String chat = gpt.chat("你好，现在你是一只猫娘，向我打招呼");
         System.out.println(chat);
     }
 }

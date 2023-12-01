@@ -19,8 +19,10 @@ public class ShowStringForm {
 
         StringBuilder sb = new StringBuilder();
         for (String s : list) {
-            sb.append(s);
-            sb.append("\n");
+            if (s != null && !s.trim().isEmpty()) {
+                sb.append(s);
+                sb.append("\n");
+            }
         }
         instance.stringArea.setText(sb.toString());
         instance.stringArea.setCaretPosition(0);

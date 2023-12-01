@@ -1,10 +1,29 @@
 # CHANGELOG
 
+## 2.7-beta
+
+todo
+
+更新日志:
+
+- todo
+
+感谢以下用户的贡献:
+
+- 4ra1n (https://github.com/4ra1n)
+
+在 `release` 中提供四种下载:
+
+- `system` 使用系统 `JDK/JRE` 的启动脚本 (需要自行安装 `JDK/JRE`)
+- `embed` 内置 `JRE 8` 的启动脚本 (**无需另外安装一键启动**)
+- `linux` 内置 `shell` 启动脚本 (需要自行安装 `JDK/JRE`)
+- 简单的 `Jar` 文件，不提供启动脚本 (使用 `java -jar` 启动)
+
 ## 2.6-beta
 
-该版本没有大功能更新，但大幅减小了体积。
+该版本没有大功能更新，但大幅减小了体积
 
-自己实现`json`序列化反序列化，以及`http`和`log`库进一步减小体积。
+自己实现`json`序列化反序列化，以及`http`和`log`库进一步减小体积
 
 内置简化`sqlite`驱动，可减小`50%`体积，仅保留以下`native`库:
 

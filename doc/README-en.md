@@ -22,6 +22,8 @@ Issues and suggestions are welcome
 
 [Go to Download](https://github.com/jar-analyzer/jar-analyzer/releases/latest)
 
+[Video Tutorials](https://www.bilibili.com/video/BV1ac411S7q4/)
+
 Note:
 - Do not double-click to start on `Windows`, please use `java -jar` or double-click the `bat` script
 - If using `java -jar` causes garbled text, add `-Dfile.encoding=UTF-8` parameter

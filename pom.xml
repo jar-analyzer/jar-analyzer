@@ -34,7 +34,7 @@
         <maven.resources.version>3.3.1</maven.resources.version>
         <maven.assembly.version>3.6.0</maven.assembly.version>
         <maven.compiler.version>3.11.0</maven.compiler.version>
-        <maven.versions.version>2.16.1</maven.versions.version>
+        <maven.versions.version>2.16.2</maven.versions.version>
         <!-- Java Compiler Version -->
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>

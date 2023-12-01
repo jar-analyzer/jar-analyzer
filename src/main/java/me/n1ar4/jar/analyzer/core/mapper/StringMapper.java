@@ -10,4 +10,6 @@ public interface StringMapper {
     int insertString(List<StringEntity> str);
 
     List<MethodResult> selectMethodByString(@Param("value") String value);
+
+    List<String> selectStrings();
 }

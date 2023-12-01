@@ -15,4 +15,5 @@ public interface Const {
     String FrameForm = "Jar Analyzer V2 - Frame Form";
     String SQLiteForm = "Jar Analyzer V2 - SQLite Form";
     String ChatGPTForm = "Jar Analyzer V2 - ChatGPT";
+    String StringForm = "Jar Analyzer V2 - String Form";
 }

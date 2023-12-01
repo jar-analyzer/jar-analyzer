@@ -31,4 +31,7 @@
         WHERE
         s.value LIKE '%${value}%'
     </select>
+    <select id="selectStrings">
+        SELECT DISTINCT s.value FROM string_table s
+    </select>
 </mapper>

@@ -166,4 +166,12 @@ public class CoreEngine {
         session.close();
         return new ArrayList<>(res);
     }
+
+    public ArrayList<String> getStrings() {
+        SqlSession session = factory.openSession(true);
+        StringMapper stringMapper = session.getMapper(StringMapper.class);
+        List<String> res = stringMapper.selectStrings();
+        session.close();
+        return new ArrayList<>(res);
+    }
 }

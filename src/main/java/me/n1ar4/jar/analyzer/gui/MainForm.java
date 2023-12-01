@@ -598,6 +598,7 @@ public class MainForm {
 
     private static void init() {
         FontHelper.installFont();
+        DropHelper.setDrop();
 
         ChoseJarAction.run();
         BuildAction.run();

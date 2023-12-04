@@ -61,7 +61,9 @@ public class CoreRunner {
 
             MainForm.getInstance().getTotalJarVal().setText("1");
             jarList.add(jarPath.toAbsolutePath().toString());
-            DatabaseManager.saveJar(jarList.get(0));
+            for (String s : jarList) {
+                DatabaseManager.saveJar(s);
+            }
             cfs = CoreUtil.getAllClassesFromJars(jarList);
         }
 

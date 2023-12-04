@@ -35,7 +35,7 @@
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="编码"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="73baf" class="javax.swing.JTextField" binding="baseDecodeText">
@@ -53,7 +53,7 @@
               <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="解码"/>
+              <text value=""/>
             </properties>
           </component>
         </children>
@@ -83,7 +83,7 @@
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="编码"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="2e240" class="javax.swing.JTextField" binding="urlDecodeText">
@@ -101,7 +101,7 @@
               <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="解码"/>
+              <text value=""/>
             </properties>
           </component>
         </children>
@@ -131,7 +131,7 @@
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="加密"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="8f891" class="javax.swing.JTextField" binding="md5ResultText">
@@ -171,7 +171,7 @@
               <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="生成命令"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="ec9cd" class="javax.swing.JTextField" binding="cmdBashResultText">
@@ -222,7 +222,7 @@
               <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="生成命令"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="d2461" class="javax.swing.JTextField" binding="cmdPwResultText">
@@ -270,7 +270,7 @@
               <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="生成命令"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="bb168" class="javax.swing.JTextField" binding="stringCmdResultText">

@@ -126,8 +126,8 @@ public class EncodeUtilForm {
         stringCmdPanel.setBorder(BorderFactory.createTitledBorder(null,
                 "Other Encode", TitledBorder.DEFAULT_JUSTIFICATION,
                 TitledBorder.DEFAULT_POSITION, null, null));
-        baseDecodeButton.setText("Encode");
-        baseEncodeButton.setText("Decode");
+        baseDecodeButton.setText("Decode");
+        baseEncodeButton.setText("Encode");
         cmdBashEncodeButton.setText("Generate");
         md5EncodeButton.setText("Encrypt");
         cmdPwEncodeButton.setText("Generate");
@@ -180,12 +180,12 @@ public class EncodeUtilForm {
         baseEncodeText = new JTextField();
         basePanel.add(baseEncodeText, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, new Dimension(500, -1), new Dimension(500, -1), new Dimension(500, -1), 0, false));
         baseEncodeButton = new JButton();
-        baseEncodeButton.setText("编码");
+        baseEncodeButton.setText("");
         basePanel.add(baseEncodeButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         baseDecodeText = new JTextField();
         basePanel.add(baseDecodeText, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, new Dimension(500, -1), new Dimension(500, -1), new Dimension(500, -1), 0, false));
         baseDecodeButton = new JButton();
-        baseDecodeButton.setText("解码");
+        baseDecodeButton.setText("");
         basePanel.add(baseDecodeButton, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         urlPanel = new JPanel();
         urlPanel.setLayout(new GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
@@ -195,12 +195,12 @@ public class EncodeUtilForm {
         urlEncodeText = new JTextField();
         urlPanel.add(urlEncodeText, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, new Dimension(500, -1), new Dimension(500, -1), new Dimension(500, -1), 0, false));
         urlEncodeButton = new JButton();
-        urlEncodeButton.setText("编码");
+        urlEncodeButton.setText("");
         urlPanel.add(urlEncodeButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         urlDecodeText = new JTextField();
         urlPanel.add(urlDecodeText, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, new Dimension(500, -1), new Dimension(500, -1), new Dimension(500, -1), 0, false));
         urlDecodeButton = new JButton();
-        urlDecodeButton.setText("解码");
+        urlDecodeButton.setText("");
         urlPanel.add(urlDecodeButton, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         md5Panel = new JPanel();
         md5Panel.setLayout(new GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
@@ -210,7 +210,7 @@ public class EncodeUtilForm {
         md5EncodeText = new JTextField();
         md5Panel.add(md5EncodeText, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, new Dimension(500, -1), new Dimension(500, -1), new Dimension(500, -1), 0, false));
         md5EncodeButton = new JButton();
-        md5EncodeButton.setText("加密");
+        md5EncodeButton.setText("");
         md5Panel.add(md5EncodeButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         md5ResultText = new JTextField();
         md5Panel.add(md5ResultText, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, new Dimension(500, -1), new Dimension(500, -1), new Dimension(500, -1), 0, false));
@@ -222,7 +222,7 @@ public class EncodeUtilForm {
         cmdBashEncodeText = new JTextField();
         cmdBashPanel.add(cmdBashEncodeText, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, new Dimension(500, -1), new Dimension(500, -1), new Dimension(500, -1), 0, false));
         cmdBashEncodeButton = new JButton();
-        cmdBashEncodeButton.setText("生成命令");
+        cmdBashEncodeButton.setText("");
         cmdBashPanel.add(cmdBashEncodeButton, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         cmdBashResultText = new JTextField();
         cmdBashResultText.setText("");
@@ -239,7 +239,7 @@ public class EncodeUtilForm {
         cmdPwEncodeText = new JTextField();
         cmdPwPanel.add(cmdPwEncodeText, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, new Dimension(500, -1), new Dimension(500, -1), new Dimension(500, -1), 0, false));
         cmdPwEncodeButton = new JButton();
-        cmdPwEncodeButton.setText("生成命令");
+        cmdPwEncodeButton.setText("");
         cmdPwPanel.add(cmdPwEncodeButton, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         cmdPwResultText = new JTextField();
         cmdPwPanel.add(cmdPwResultText, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, new Dimension(500, -1), new Dimension(500, -1), new Dimension(500, -1), 0, false));
@@ -254,7 +254,7 @@ public class EncodeUtilForm {
         stringCmdText = new JTextField();
         stringCmdPanel.add(stringCmdText, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, new Dimension(500, -1), new Dimension(500, -1), new Dimension(500, -1), 0, false));
         stringCmdButton = new JButton();
-        stringCmdButton.setText("生成命令");
+        stringCmdButton.setText("");
         stringCmdPanel.add(stringCmdButton, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         stringCmdResultText = new JTextField();
         stringCmdPanel.add(stringCmdResultText, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, new Dimension(500, -1), new Dimension(500, -1), new Dimension(500, -1), 0, false));

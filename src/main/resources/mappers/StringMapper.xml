@@ -32,11 +32,11 @@
         s.value LIKE '%${value}%'
     </select>
     <select id="selectStrings">
-        SELECT s.value FROM string_table s
+        SELECT DISTINCT s.value FROM string_table s
         ORDER BY value COLLATE NOCASE
         LIMIT 100 OFFSET #{offset}
     </select>
     <select id="selectCount">
-        SELECT COUNT(1) FROM string_table
+        SELECT COUNT(DISTINCT s.value) FROM string_table s;
     </select>
 </mapper>

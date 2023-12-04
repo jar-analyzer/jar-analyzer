@@ -33,7 +33,6 @@ public class StringMethodVisitor extends MethodVisitor {
     @Override
     public void visitLdcInsn(Object o) {
         if (o instanceof String) {
-
             MethodReference mr = null;
             ClassReference.Handle ch = new ClassReference.Handle(ownerName);
             if (classMap.get(ch) != null) {
@@ -45,8 +44,10 @@ public class StringMethodVisitor extends MethodVisitor {
             if (mr == null) {
                 return;
             }
-
             String str = (String) o;
+            if (str.trim().isEmpty()) {
+                return;
+            }
             List<String> mList = strMap.getOrDefault(mr.getHandle(), new ArrayList<>());
             mList.add(str);
             strMap.put(mr.getHandle(), mList);

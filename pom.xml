@@ -21,7 +21,6 @@
 
     <properties>
         <!-- Dependencies Version -->
-        <y4-json.version>0.0.2</y4-json.version>
         <asm.version>9.6</asm.version>
         <flatlaf.version>3.2.5</flatlaf.version>
         <idea.forms.version>7.0.3</idea.forms.version>

@@ -167,11 +167,20 @@ public class CoreEngine {
         return new ArrayList<>(res);
     }
 
-    public ArrayList<String> getStrings() {
+    public ArrayList<String> getStrings(int page) {
         SqlSession session = factory.openSession(true);
         StringMapper stringMapper = session.getMapper(StringMapper.class);
-        List<String> res = stringMapper.selectStrings();
+        int offset = (page - 1) * 100;
+        List<String> res = stringMapper.selectStrings(offset);
         session.close();
         return new ArrayList<>(res);
+    }
+
+    public int getStringCount() {
+        SqlSession session = factory.openSession(true);
+        StringMapper stringMapper = session.getMapper(StringMapper.class);
+        int res = stringMapper.selectCount();
+        session.close();
+        return res;
     }
 }

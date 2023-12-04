@@ -11,5 +11,7 @@ public interface StringMapper {
 
     List<MethodResult> selectMethodByString(@Param("value") String value);
 
-    List<String> selectStrings();
+    List<String> selectStrings(int offset);
+
+    int selectCount();
 }

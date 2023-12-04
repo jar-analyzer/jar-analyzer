@@ -19,8 +19,9 @@ public class ShowStringAction {
             JDialog dialog = ProcessDialog.createProgressDialog(MainForm.getInstance().getMasterPanel());
             new Thread(() -> dialog.setVisible(true)).start();
             new Thread(() -> {
-                ArrayList<String> stringList = MainForm.getEngine().getStrings();
-                ShowStringForm.start(stringList,dialog);
+                ArrayList<String> stringList = MainForm.getEngine().getStrings(1);
+                int total = MainForm.getEngine().getStringCount();
+                ShowStringForm.start(total,  stringList, dialog);
             }).start();
         });
     }

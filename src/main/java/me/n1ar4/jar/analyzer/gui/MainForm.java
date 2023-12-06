@@ -633,6 +633,9 @@ public class MainForm {
         ReadObjectVulAction.register();
         ScriptEngineAction.register();
 
+        codeArea.addKeyListener(new GlobalKeyListener());
+        instance.allMethodList.addKeyListener(new GlobalKeyListener());
+
         instance.fileTree.addMouseListener(new TreeMouseAdapter());
         instance.fileTree.addMouseListener(new TreeRightMenuAdapter());
         instance.allMethodList.addMouseListener(new CommonMouseAdapter());

@@ -11,18 +11,11 @@ import java.nio.file.Paths;
 
 public class CFGEngine {
     private static final Logger logger = LogManager.getLogger();
-    private final CoreEngine coreEngine;
-
-    public CFGEngine() {
-        this.coreEngine = MainForm.getEngine();
-    }
-
-    public String doAnalyze(String className,
+    public String doAnalyze(String absPath,
                             String methodName,
                             String methodDesc) {
         StringBuilder globalBuilder = new StringBuilder();
         try {
-            String absPath = this.coreEngine.getAbsPath(className);
             Path absPathPath = Paths.get(absPath);
             ControlFlowGraphEngine.start(Files.newInputStream(absPathPath),
                     methodName, methodDesc, globalBuilder);

@@ -21,12 +21,40 @@ import java.nio.charset.StandardCharsets;
 public class MenuUtil {
     private static final Logger logger = LogManager.getLogger();
     private static final MainForm instance = MainForm.getInstance();
+    private static final JCheckBoxMenuItem showInnerConfig = new JCheckBoxMenuItem("show inner class");
+    private static final JCheckBoxMenuItem fixClassPathConfig = new JCheckBoxMenuItem("fix class path");
+
+    static {
+        showInnerConfig.setState(false);
+        fixClassPathConfig.setState(false);
+    }
+
+    public static JCheckBoxMenuItem getShowInnerConfig() {
+        return showInnerConfig;
+    }
+
+    public static JCheckBoxMenuItem getFixClassPathConfig() {
+        return fixClassPathConfig;
+    }
 
     public static JMenuBar createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(createAboutMenu());
         menuBar.add(createVersionMenu());
+        menuBar.add(createConfigMenu());
         return menuBar;
+    }
+
+    private static JMenu createConfigMenu() {
+        try {
+            JMenu configMenu = new JMenu("config");
+            configMenu.add(showInnerConfig);
+            configMenu.add(fixClassPathConfig);
+            return configMenu;
+        } catch (Exception ex) {
+            logger.error("error: {}", ex.toString());
+        }
+        return null;
     }
 
     private static JMenu createAboutMenu() {

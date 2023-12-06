@@ -51,7 +51,7 @@ public class Client {
                     logger.warn("delete old db fail");
                 }
             }
-            CoreRunner.run(jarPathPath, null);
+            CoreRunner.run(jarPathPath, null, false);
             logger.info("write file to: {}", Const.dbFile);
             System.exit(0);
         } else if (cmd.equals("gui")) {

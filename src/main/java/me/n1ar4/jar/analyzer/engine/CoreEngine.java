@@ -183,4 +183,13 @@ public class CoreEngine {
         session.close();
         return res;
     }
+
+    public ArrayList<MethodResult> getMethodsByClassNoJar(String className) {
+        SqlSession session = factory.openSession(true);
+        MethodMapper methodMapper = session.getMapper(MethodMapper.class);
+        ArrayList<MethodResult> results = new ArrayList<>(methodMapper.selectMethodsByClassNameNoJar(className));
+        results.sort(Comparator.comparing(MethodResult::getMethodName));
+        session.close();
+        return results;
+    }
 }

@@ -26,7 +26,8 @@ public class FrameForm {
             instance.frameArea.setText("please wait...");
 
             new Thread(() -> {
-                String res = engine.doAnalyze(MainForm.getCurMethod().getClassName(),
+                String res = engine.doAnalyze(
+                        MainForm.getCurMethod().getClassPath().toAbsolutePath().toString(),
                         MainForm.getCurMethod().getMethodName(),
                         MainForm.getCurMethod().getMethodDesc());
                 instance.frameArea.setText(res);
@@ -37,7 +38,8 @@ public class FrameForm {
             instance.frameArea.setText("please wait...");
 
             new Thread(() -> {
-                String res = engine.doAnalyze(MainForm.getCurMethod().getClassName(),
+                String res = engine.doAnalyze(
+                        MainForm.getCurMethod().getClassPath().toAbsolutePath().toString(),
                         MainForm.getCurMethod().getMethodName(),
                         MainForm.getCurMethod().getMethodDesc());
                 instance.frameArea.setText(res);

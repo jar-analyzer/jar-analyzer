@@ -24,6 +24,11 @@
             substr(cf.class_name, 1, length(cf.class_name) - 6) = m.class_name
         WHERE m.class_name = #{className}
     </select>
+    <select id="selectMethodsByClassNameNoJar" resultMap="methodMap">
+        SELECT DISTINCT m.method_name, m.class_name, m.method_desc, m.is_static, m.access
+        FROM method_table m
+        WHERE m.class_name = #{className}
+    </select>
     <select id="selectMethods" resultMap="methodMap">
         SELECT DISTINCT cf.jar_name, m.method_name, m.class_name, m.method_desc, m.is_static, m.access
         FROM method_table m

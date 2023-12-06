@@ -86,7 +86,7 @@ public class ASMAction {
                     JOptionPane.showMessageDialog(instance.getMasterPanel(), "current method data error");
                     return;
                 }
-                String absPath = engine.getAbsPath(curMethod.getClassName());
+                String absPath = curMethod.getClassPath().toAbsolutePath().toString();
 
                 String test = IdentifyCallEngine.run(
                         absPath, curMethod.getMethodName(), curMethod.getMethodDesc());
@@ -112,7 +112,7 @@ public class ASMAction {
                     JOptionPane.showMessageDialog(instance.getMasterPanel(), "current method data error");
                     return;
                 }
-                String absPath = engine.getAbsPath(curMethod.getClassName());
+                String absPath = curMethod.getClassPath().toAbsolutePath().toString();
 
                 InputStream is = Files.newInputStream(Paths.get(absPath));
                 String data = ASMPrint.getPrint(is, true);

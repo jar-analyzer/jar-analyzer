@@ -22,7 +22,8 @@ public class CFGForm {
         CFGForm instance = new CFGForm();
 
         CFGEngine engine = new CFGEngine();
-        String res = engine.doAnalyze(MainForm.getCurMethod().getClassName(),
+        String res = engine.doAnalyze(
+                MainForm.getCurMethod().getClassPath().toAbsolutePath().toString(),
                 MainForm.getCurMethod().getMethodName(),
                 MainForm.getCurMethod().getMethodDesc());
 

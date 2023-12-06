@@ -1,5 +1,7 @@
 package me.n1ar4.jar.analyzer.gui.tree;
 
+import me.n1ar4.jar.analyzer.gui.util.MenuUtil;
+
 import java.io.File;
 
 public class TreeFileFilter {
@@ -19,7 +21,8 @@ public class TreeFileFilter {
 
     @SuppressWarnings("all")
     public boolean shouldFilter() {
-        if (file.getName().contains(INNER)) {
+        boolean showInner = MenuUtil.getShowInnerConfig().getState();
+        if (!showInner && file.getName().contains(INNER)) {
             return true;
         }
         if (file.isFile() && !showFiles) {

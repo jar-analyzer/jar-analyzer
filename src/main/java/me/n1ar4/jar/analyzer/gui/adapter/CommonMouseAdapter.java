@@ -24,8 +24,14 @@ public class CommonMouseAdapter extends MouseAdapter {
         JList<?> list = (JList<?>) evt.getSource();
         if (evt.getClickCount() == 2) {
             int index = list.locationToIndex(evt.getPoint());
-            MethodResult res = (MethodResult) list.getModel().getElementAt(index);
-
+            MethodResult res = null;
+            try {
+                res = (MethodResult) list.getModel().getElementAt(index);
+            } catch (Exception ignored) {
+            }
+            if (res == null) {
+                return;
+            }
             String className = res.getClassName();
             String tempPath = className.replace("/", File.separator);
             String classPath;
@@ -47,15 +53,16 @@ public class CommonMouseAdapter extends MouseAdapter {
 
             String finalClassPath = classPath;
 
+            MethodResult finalRes = res;
             new Thread(() -> {
                 String code = DecompileEngine.decompile(Paths.get(finalClassPath));
-                String methodName = res.getMethodName();
+                String methodName = finalRes.getMethodName();
                 if (methodName.equals("<init>")) {
-                    String[] c = res.getClassName().split("/");
+                    String[] c = finalRes.getClassName().split("/");
                     methodName = c[c.length - 1];
                 }
                 int paramNum = Type.getMethodType(
-                        res.getMethodDesc()).getArgumentTypes().length;
+                        finalRes.getMethodDesc()).getArgumentTypes().length;
                 int pos = FinderRunner.find(code, methodName, paramNum);
 
                 MainForm.getCodeArea().setText(code);
@@ -64,15 +71,16 @@ public class CommonMouseAdapter extends MouseAdapter {
 
             JDialog dialog = ProcessDialog.createProgressDialog(MainForm.getInstance().getMasterPanel());
             new Thread(() -> dialog.setVisible(true)).start();
+            MethodResult refreshRes = res;
             new Thread() {
                 @Override
                 public void run() {
                     CoreHelper.refreshAllMethods(className);
-                    CoreHelper.refreshCallers(className, res.getMethodName(), res.getMethodDesc());
-                    CoreHelper.refreshCallee(className, res.getMethodName(), res.getMethodDesc());
-                    CoreHelper.refreshHistory(className, res.getMethodName(), res.getMethodDesc());
-                    CoreHelper.refreshImpls(className, res.getMethodName(), res.getMethodDesc());
-                    CoreHelper.refreshSuperImpls(className, res.getMethodName(), res.getMethodDesc());
+                    CoreHelper.refreshCallers(className, refreshRes.getMethodName(), refreshRes.getMethodDesc());
+                    CoreHelper.refreshCallee(className, refreshRes.getMethodName(), refreshRes.getMethodDesc());
+                    CoreHelper.refreshHistory(className, refreshRes.getMethodName(), refreshRes.getMethodDesc());
+                    CoreHelper.refreshImpls(className, refreshRes.getMethodName(), refreshRes.getMethodDesc());
+                    CoreHelper.refreshSuperImpls(className, refreshRes.getMethodName(), refreshRes.getMethodDesc());
                     dialog.dispose();
                 }
             }.start();

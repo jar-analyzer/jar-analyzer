@@ -3,6 +3,7 @@ package me.n1ar4.jar.analyzer.gui.action;
 import me.n1ar4.jar.analyzer.core.CoreRunner;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
+import me.n1ar4.jar.analyzer.gui.util.MenuUtil;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.utils.DirUtil;
 import me.n1ar4.jar.analyzer.utils.StringUtil;
@@ -55,6 +56,9 @@ public class BuildAction {
                     "cannot start build - jar is null");
             return;
         }
+
+        boolean fixClass = MenuUtil.getFixClassPathConfig().getState();
+
         if (MainForm.getInstance().getAddRtJarWhenCheckBox().isSelected()) {
             String text = MainForm.getInstance().getRtText().getText();
             if (StringUtil.isNull(text)) {
@@ -68,9 +72,9 @@ public class BuildAction {
                         "rt.jar file not exist");
                 return;
             }
-            new Thread(() -> CoreRunner.run(Paths.get(path), rtJarPath)).start();
+            new Thread(() -> CoreRunner.run(Paths.get(path), rtJarPath, fixClass)).start();
         } else {
-            new Thread(() -> CoreRunner.run(Paths.get(path), null)).start();
+            new Thread(() -> CoreRunner.run(Paths.get(path), null, fixClass)).start();
         }
         MainForm.getInstance().getStartBuildDatabaseButton().setEnabled(false);
     }

@@ -1,7 +1,5 @@
 package me.n1ar4.jar.analyzer.analyze.frame;
 
-import me.n1ar4.jar.analyzer.engine.CoreEngine;
-import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 
@@ -11,18 +9,12 @@ import java.nio.file.Paths;
 
 public class StackFrameEngine {
     private static final Logger logger = LogManager.getLogger();
-    private final CoreEngine coreEngine;
 
-    public StackFrameEngine() {
-        this.coreEngine = MainForm.getEngine();
-    }
-
-    public String doAnalyze(String className,
+    public String doAnalyze(String absPath,
                             String methodName,
                             String methodDesc) {
         StringBuilder globalBuilder = new StringBuilder();
         try {
-            String absPath = this.coreEngine.getAbsPath(className);
             Path absPathPath = Paths.get(absPath);
             FrameEngine.start(Files.newInputStream(absPathPath),
                     methodName, methodDesc, globalBuilder);

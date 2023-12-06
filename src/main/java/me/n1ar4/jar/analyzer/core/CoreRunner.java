@@ -3,6 +3,7 @@ package me.n1ar4.jar.analyzer.core;
 import me.n1ar4.jar.analyzer.analyze.spring.SpringService;
 import me.n1ar4.jar.analyzer.config.ConfigEngine;
 import me.n1ar4.jar.analyzer.config.ConfigFile;
+import me.n1ar4.jar.analyzer.core.asm.FixClassVisitor;
 import me.n1ar4.jar.analyzer.core.asm.StringClassVisitor;
 import me.n1ar4.jar.analyzer.engine.CoreEngine;
 import me.n1ar4.jar.analyzer.engine.CoreHelper;
@@ -12,38 +13,43 @@ import me.n1ar4.jar.analyzer.gui.util.LogUtil;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.utils.CoreUtil;
 import me.n1ar4.jar.analyzer.utils.DirUtil;
+import me.n1ar4.jar.analyzer.utils.IOUtil;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 import org.objectweb.asm.ClassReader;
 
 import java.awt.*;
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.*;
 
 public class CoreRunner {
     private static final Logger logger = LogManager.getLogger();
 
-    public static void run(Path jarPath, Path rtJarPath) {
+    public static void run(Path jarPath, Path rtJarPath,boolean fixClass) {
         MainForm.getInstance().getStartBuildDatabaseButton().setEnabled(false);
 
         List<ClassFileEntity> cfs;
         MainForm.getInstance().getBuildBar().setValue(10);
         if (Files.isDirectory(jarPath)) {
-            logger.info("input is a jar dir");
-            LogUtil.log("input is a jar dir");
+            logger.info("input is a dir");
+            LogUtil.log("input is a dir");
             List<String> files = DirUtil.GetFiles(jarPath.toAbsolutePath().toString());
-
             if (rtJarPath != null) {
                 files.add(rtJarPath.toAbsolutePath().toString());
                 LogUtil.log("analyze with rt.jar file");
             }
-
             MainForm.getInstance().getTotalJarVal().setText(String.valueOf(files.size()));
             for (String s : files) {
-                DatabaseManager.saveJar(s);
+                if (s.toLowerCase().endsWith(".jar")) {
+                    DatabaseManager.saveJar(s);
+                }
             }
             cfs = CoreUtil.getAllClassesFromJars(files);
         } else {
@@ -66,7 +72,6 @@ public class CoreRunner {
             }
             cfs = CoreUtil.getAllClassesFromJars(jarList);
         }
-
         // BUG CLASS NAME
         for (ClassFileEntity cf : cfs) {
             String className = cf.getClassName();
@@ -76,7 +81,38 @@ public class CoreRunner {
             } else if (className.contains("WEB-INF")) {
                 className = className.substring(i + 7);
             }
-            cf.setClassName(className);
+            if (fixClass) {
+                // fix class name
+                Path parPath = Paths.get(Const.tempDir);
+                FixClassVisitor cv = new FixClassVisitor();
+                ClassReader cr = new ClassReader(cf.getFile());
+                cr.accept(cv, ClassReader.EXPAND_FRAMES);
+                // get actual class name
+                Path path = parPath.resolve(Paths.get(cv.getName()));
+                File file = path.toFile();
+                // write file
+                if (!file.getParentFile().mkdirs()) {
+                    logger.error("fix class mkdirs error");
+                }
+                try {
+                    if (!file.createNewFile()) {
+                        logger.error("fix path create file error");
+                    }
+                } catch (Exception ignored) {
+                    logger.error("fix path create file error");
+                }
+                className = file + ".class";
+                try {
+                    IOUtil.copy(new ByteArrayInputStream(cf.getFile()),
+                            new FileOutputStream(className));
+                } catch (FileNotFoundException ignored) {
+                    logger.error("fix path copy bytes error");
+                }
+                cf.setClassName(className);
+                cf.setPath(Paths.get(className));
+            } else {
+                cf.setClassName(className);
+            }
         }
 
         MainForm.getInstance().getBuildBar().setValue(15);
@@ -150,7 +186,7 @@ public class CoreRunner {
         String fileSizeMB = formatSizeInMB(fileSizeBytes);
         MainForm.getInstance().getDatabaseSizeVal().setText(fileSizeMB);
         MainForm.getInstance().getBuildBar().setValue(100);
-        MainForm.getInstance().getStartBuildDatabaseButton().setEnabled(true);
+        MainForm.getInstance().getStartBuildDatabaseButton().setEnabled(false);
 
         MainForm.getInstance().getEngineVal().setText("RUNNING");
         MainForm.getInstance().getEngineVal().setForeground(Color.GREEN);

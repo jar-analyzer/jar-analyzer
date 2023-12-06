@@ -17,8 +17,9 @@ heapsize=$((m * 2 / 3))
 
 # jvm args
 gc_args="-XX:+PrintGC -XX:+PrintGCTimeStamps"
+no_agent_args="-XX:+DisableAttachMechanism"
 other_args="-Dfile.encoding=UTF-8"
-java_args="$gc_args -Xmx${heapsize}M -Xms${heapsize}M $other_args"
+java_args="$gc_args $no_agent_args -Xmx${heapsize}M -Xms${heapsize}M $other_args"
 
 # start jar
-java $java_args -jar "$jar_file_abs"
+java $java_args -jar "$jar_file_abs" gui

@@ -26,9 +26,10 @@ set /A "heapsize = freemem * 2 / 3"
 rem jvm args 
 set "gc_args=-XX:+PrintGC -XX:+PrintGCTimeStamps"
 set "other_args=-Dfile.encoding=UTF-8"
-set "java_args=%gc_args% -Xmx%heapsize%M -Xms%heapsize%M %other_args%"
+set "no_agent_args=-XX:+DisableAttachMechanism"
+set "java_args=%gc_args% %no_agent_args% -Xmx%heapsize%M -Xms%heapsize%M %other_args%"
 
 rem start jar
-%jre_bin_abs% %java_args% -jar %jar_file_abs%
+%jre_bin_abs% %java_args% -jar %jar_file_abs% gui
 
 endlocal

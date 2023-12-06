@@ -44,17 +44,19 @@ public class ChatGPTForm {
     public static void init() {
         instance.chatAnywhereRadioButton.setSelected(true);
         ConfigFile config = MainForm.getConfig();
-        if (config.getGptHost() != null &&
-                !config.getGptHost().isEmpty() &&
-                !config.getGptHost().equals("null")) {
-            instance.hostText.setText(config.getGptProxyHost());
-            instance.portText.setText(config.getGptProxyPort());
-            if (config.getGptHost().equals(ChatGPT.chatAnywhereHost)) {
-                instance.chatAnywhereRadioButton.setSelected(true);
-            } else {
-                instance.openAIRadioButton.setSelected(true);
+        if (config != null) {
+            if (config.getGptHost() != null &&
+                    !config.getGptHost().isEmpty() &&
+                    !config.getGptHost().equals("null")) {
+                instance.hostText.setText(config.getGptProxyHost());
+                instance.portText.setText(config.getGptProxyPort());
+                if (config.getGptHost().equals(ChatGPT.chatAnywhereHost)) {
+                    instance.chatAnywhereRadioButton.setSelected(true);
+                } else {
+                    instance.openAIRadioButton.setSelected(true);
+                }
+                instance.apiKeyText.setText(config.getGptKey());
             }
-            instance.apiKeyText.setText(config.getGptKey());
         }
         instance.gptImgLabel.setIcon(IconManager.chatIcon);
         instance.cleanButton.addActionListener(e -> {

@@ -68,6 +68,10 @@ One-click Analysis, Custom `SQL` Analysis, Other Plugins, etc.
 
 ![One-click Analysis, Custom SQL Analysis, Other Plugins](../img/0015.png)
 
+Running on `Ubuntu`
+
+![](../img/0016.png)
+
 ## Notes
 
 This tool has been adapted for `1080P` (considering most machines should be at or above this resolution)

@@ -42,6 +42,7 @@ target/
 *.db
 *.res
 *.txt
+*.log
 .jar-analyzer
 .idea/
 jar-analyzer-temp/

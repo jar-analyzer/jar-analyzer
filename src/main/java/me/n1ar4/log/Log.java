@@ -1,5 +1,9 @@
 package me.n1ar4.log;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -30,6 +34,8 @@ class Log {
         if (level.compareTo(LogManager.logLevel) >= 0) {
             String timestamp = LocalDateTime.now().format(
                     DateTimeFormatter.ofPattern("HH:mm:ss"));
+            String datestamp = LocalDateTime.now().format(
+                    DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             String className = LogUtil.getClassName();
             String methodName = LogUtil.getMethodName();
             String lineNumber = LogUtil.getLineNumber();
@@ -37,6 +43,25 @@ class Log {
                     timestamp, color, level.name(), ANSI_RESET, className,
                     methodName, lineNumber, message);
             System.out.println(logMessage);
+
+            try {
+                File logDirectory = new File("logs");
+                if (!logDirectory.exists()) {
+                    boolean success = logDirectory.mkdirs();
+                    if (!success) {
+                        throw new RuntimeException("make dirs error");
+                    }
+                }
+                File logFile = new File(logDirectory, datestamp + ".log");
+                try (PrintWriter out = new PrintWriter(new FileWriter(logFile, true))) {
+                    String fileMessage = String.format("[%s] [%s] [%s:%s:%s] %s",
+                            timestamp, level.name(), className,
+                            methodName, lineNumber, message);
+                    out.println(fileMessage);
+                }
+            } catch (IOException e) {
+                throw new RuntimeException("cannot write log file");
+            }
         }
     }
 }

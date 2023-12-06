@@ -89,6 +89,33 @@ The basic principle of this tool:
 
 Note: A large number of `Jar` files or huge sizes might cause the temporary directory and database file to become very large
 
+If you do not want to run `GUI`, here is a cli version
+
+```text
+Usage: java -jar jar-analyzer.jar [command] [command options]
+  Commands:
+    build      build database
+      Usage: build [options]
+        Options:
+          --del-cache
+            delete old cache
+            Default: false
+          --del-exist
+            delete old database
+            Default: false
+          -j, --jar
+            jar file/dir
+
+    gui      start jar-analyzer gui
+      Usage: gui
+```
+
+Example: build `test.jar` database and delete cache and old database
+
+```shell
+java -jar jar-analyzer.jar build --jar 1.jar --del-cache --del-exist
+```
+
 ## Release Notes
 
 Four types of downloads available in `release`:

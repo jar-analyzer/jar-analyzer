@@ -176,6 +176,7 @@ public class MainForm {
     private JLabel chatGPTLabel;
     private JButton cleanButton;
     private JButton showStringListButton;
+    private JButton fastjsonButton;
     private static MainForm instance;
     private static ConfigFile config;
     private static CoreEngine engine;
@@ -522,6 +523,10 @@ public class MainForm {
         return showStringListButton;
     }
 
+    public JButton getFastjsonButton() {
+        return fastjsonButton;
+    }
+
     private void resolveConfig() {
         if (config != null) {
             String temp = config.getTempPath();
@@ -632,6 +637,7 @@ public class MainForm {
         DefineClassAction.register();
         ReadObjectVulAction.register();
         ScriptEngineAction.register();
+        FastjsonVulAction.register();
 
         codeArea.addKeyListener(new GlobalKeyListener());
         instance.allMethodList.addKeyListener(new GlobalKeyListener());
@@ -845,7 +851,7 @@ public class MainForm {
         cleanButton.setText("Clean");
         actionPanel.add(cleanButton, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         showStringListButton = new JButton();
-        showStringListButton.setText("Show String List");
+        showStringListButton.setText("All Strings");
         actionPanel.add(showStringListButton, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         searchResPanel = new JPanel();
         searchResPanel.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
@@ -987,7 +993,7 @@ public class MainForm {
         advancePanel.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPanel.addTab("advance", advancePanel);
         javaVulSearchPanel = new JPanel();
-        javaVulSearchPanel.setLayout(new GridLayoutManager(4, 3, new Insets(0, 0, 0, 0), -1, -1));
+        javaVulSearchPanel.setLayout(new GridLayoutManager(5, 3, new Insets(0, 0, 0, 0), -1, -1));
         advancePanel.add(javaVulSearchPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         javaVulSearchPanel.setBorder(BorderFactory.createTitledBorder(null, "Java Vulnerability", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         JNDIButton = new JButton();
@@ -1020,6 +1026,9 @@ public class MainForm {
         javaVulLabel = new JLabel();
         javaVulLabel.setText("Quickly Search Commons Java Vulnerabilities Call");
         javaVulSearchPanel.add(javaVulLabel, new GridConstraints(0, 0, 1, 3, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        fastjsonButton = new JButton();
+        fastjsonButton.setText("Fastjson");
+        javaVulSearchPanel.add(fastjsonButton, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer3 = new Spacer();
         advancePanel.add(spacer3, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         piPanel = new JPanel();

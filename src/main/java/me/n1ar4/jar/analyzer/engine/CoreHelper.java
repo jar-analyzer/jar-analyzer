@@ -9,6 +9,7 @@ import me.n1ar4.jar.analyzer.gui.util.ListParser;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 @SuppressWarnings("all")
 public class CoreHelper {
@@ -106,6 +107,51 @@ public class CoreHelper {
         ArrayList<String> bl = ListParser.parse(MainForm.getInstance().getBlackArea().getText());
         ArrayList<MethodResult> newReulst = new ArrayList<>();
         for (MethodResult m : results) {
+            boolean filtered = false;
+            for (String b : bl) {
+                if (m.getClassName().equals(b)) {
+                    filtered = true;
+                    break;
+                }
+            }
+            if (!filtered) {
+                newReulst.add(m);
+            }
+        }
+
+        newReulst.sort(Comparator.comparing(MethodResult::getMethodName));
+        DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
+        for (MethodResult result : newReulst) {
+            methodsList.addElement(result);
+        }
+
+        if (methodsList.isEmpty() || methodsList.size() == 0) {
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                    "result is null");
+        }
+
+        MainForm.getInstance().getSearchList().setModel(methodsList);
+        MainForm.getInstance().getSearchList().repaint();
+        MainForm.getInstance().getSearchList().revalidate();
+    }
+
+    public static void refreshCallSearchList(List<SearchCondition> conditions) {
+        ArrayList<MethodResult> totalResults = new ArrayList<>();
+        for (SearchCondition condition : conditions) {
+            String className = condition.getClassName();
+            String methodName = condition.getMethodName();
+            String methodDesc = condition.getMethodDesc();
+            // java.lang.String java/lang/String
+            if (className != null) {
+                className = className.replace(".", "/");
+            }
+            ArrayList<MethodResult> results = MainForm.getEngine().getCallers(className, methodName, methodDesc);
+            totalResults.addAll(results);
+        }
+        // BALCK LIST
+        ArrayList<String> bl = ListParser.parse(MainForm.getInstance().getBlackArea().getText());
+        ArrayList<MethodResult> newReulst = new ArrayList<>();
+        for (MethodResult m : totalResults) {
             boolean filtered = false;
             for (String b : bl) {
                 if (m.getClassName().equals(b)) {

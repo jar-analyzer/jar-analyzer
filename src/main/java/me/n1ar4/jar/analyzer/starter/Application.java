@@ -1,5 +1,9 @@
 package me.n1ar4.jar.analyzer.starter;
 
+import com.beust.jcommander.JCommander;
+import me.n1ar4.jar.analyzer.cli.BuildCmd;
+import me.n1ar4.jar.analyzer.cli.Client;
+import me.n1ar4.jar.analyzer.cli.StartCmd;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.JarAnalyzerLaf;
 import me.n1ar4.log.LogLevel;
@@ -7,8 +11,11 @@ import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 import me.n1ar4.log.LoggingStream;
 
+
 public class Application {
     private static final Logger logger = LogManager.getLogger();
+    private static final BuildCmd buildCmd = new BuildCmd();
+    private static final StartCmd startCmd = new StartCmd();
 
     /**
      * Main Method
@@ -31,6 +38,19 @@ public class Application {
         LogManager.setLevel(LogLevel.INFO);
         // PRINT LOGO
         Logo.print();
+
+        JCommander commander = JCommander.newBuilder()
+                .addCommand("build", buildCmd)
+                .addCommand("gui", startCmd)
+                .build();
+        try {
+            commander.parse(args);
+        } catch (Exception ignored) {
+            commander.usage();
+            return;
+        }
+        Client.run(commander, buildCmd);
+        // RUN GUI
         try {
             // SET LOOK AND FEEL
             if (JarAnalyzerLaf.setup()) {

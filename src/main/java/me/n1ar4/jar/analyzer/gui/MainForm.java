@@ -231,8 +231,15 @@ public class MainForm {
         return listenerBtn;
     }
 
+    // FOR CLI
+    private static final MainForm fakeInstance = new MainForm();
+
     public static MainForm getInstance() {
-        return instance;
+        if (instance == null) {
+            return fakeInstance;
+        } else {
+            return instance;
+        }
     }
 
     public static void setCodeArea(JTextArea codeArea) {

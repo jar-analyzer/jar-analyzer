@@ -29,6 +29,7 @@
         <slf4j.simple.version>2.0.9</slf4j.simple.version>
         <mybatis.version>3.5.14</mybatis.version>
         <commons.dhcp.version>2.11.0</commons.dhcp.version>
+        <jcommander.version>1.82</jcommander.version>
         <!-- Maven Build Version -->
         <maven.resources.version>3.3.1</maven.resources.version>
         <maven.assembly.version>3.6.0</maven.assembly.version>
@@ -44,6 +45,11 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>com.beust</groupId>
+            <artifactId>jcommander</artifactId>
+            <version>${jcommander.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.ow2.asm</groupId>
             <artifactId>asm</artifactId>
@@ -154,6 +160,10 @@
                             <ignoreVersion>
                                 <type>regex</type>
                                 <version>.*\.android.*</version>
+                            </ignoreVersion>
+                            <ignoreVersion>
+                                <type>regex</type>
+                                <version>.*\-RC.*</version>
                             </ignoreVersion>
                         </ignoreVersions>
                     </ruleSet>

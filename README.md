@@ -192,9 +192,6 @@ java -jar jar-analyzer.jar build --jar 1.jar --del-cache --del-exist
 
 ## 其他
 
-`Jar Analyzer` 子项目：
-- [Y4 JSON](https://github.com/jar-analyzer/y4-json) 为 `Jar Analyzer` 提供 `JSON` 序列化和反序列化
-
 如果你希望体验老版本 (不再维护) 的 `Jar Analyzer` 可以访问：
 - https://github.com/4ra1n/jar-analyzer-cli
 - https://github.com/4ra1n/jar-analyzer-gui

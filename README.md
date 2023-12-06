@@ -26,6 +26,15 @@
 
 [前往下载](https://github.com/jar-analyzer/jar-analyzer/releases/latest)
 
+`Jar Analyzer` 的用途
+- 场景1：你有一堆 `JAR` 包需要知道某个方法在哪个 `JAR` 里定义
+- 场景2：你有一堆 `JAR` 包需要知道哪里调用了 `Runtime.exec` 方法
+- 场景3：你有一堆 `JAR` 包需要知道字符串 `${jndi` 精确出现在哪些方法中
+- 场景4：你有一堆 `JAR` 包需要知道一共有哪些 `Spring Controller` 和路由
+- 场景5：你需要深入地分析某个方法中 `JVM` 指令调用的传参
+- 场景6：你需要深入地分析某个方法中 `JVM` 指令和栈帧的状态
+- 场景7：你需要深入地分析某个方法的 `Control Flow Graph`
+
 ## 一些截图
 
 指令分析

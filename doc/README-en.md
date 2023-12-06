@@ -22,6 +22,15 @@ Issues and suggestions are welcome
 
 [Go to Download](https://github.com/jar-analyzer/jar-analyzer/releases/latest)
 
+**Uses of `Jar Analyzer`**
+- **Scenario 1:** You have a bunch of `JAR` files and need to know in which `JAR` a particular method is defined.
+- **Scenario 2:** You have a bunch of `JAR` files and need to know where the `Runtime.exec` method is called.
+- **Scenario 3:** You have a bunch of `JAR` files and need to know in which methods the string `${jndi}` exactly appears.
+- **Scenario 4:** You have a bunch of `JAR` files and need to know all the `Spring Controllers` and routes.
+- **Scenario 5:** You need to deeply analyze the passing parameters of `JVM` instructions within a method.
+- **Scenario 6:** You need to deeply analyze the state of `JVM` instructions and stack frames within a method.
+- **Scenario 7:** You need to deeply analyze the `Control Flow Graph` of a method.
+
 Note:
 - Do not double-click to start on `Windows`, please use `java -jar` or double-click the `bat` script
 - If using `java -jar` causes garbled text, add `-Dfile.encoding=UTF-8` parameter

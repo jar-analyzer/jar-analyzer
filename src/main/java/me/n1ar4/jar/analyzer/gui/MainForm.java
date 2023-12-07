@@ -653,6 +653,7 @@ public class MainForm {
         instance.fileTree.addMouseListener(new TreeMouseAdapter());
         instance.fileTree.addMouseListener(new TreeRightMenuAdapter());
         instance.allMethodList.addMouseListener(new CommonMouseAdapter());
+        instance.allMethodList.addMouseListener(new MethodRightMenuAdapter());
         instance.callerList.addMouseListener(new CommonMouseAdapter());
         instance.calleeList.addMouseListener(new CommonMouseAdapter());
         instance.methodImplList.addMouseListener(new CommonMouseAdapter());

@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## 2.8
+
+更新日志：
+- [BUG] 修复手动查看最新版空指针问题
+
+感谢以下用户的贡献:
+
+- 4ra1n (https://github.com/4ra1n)
+
+在 `release` 中提供四种下载:
+
+- `system` 使用系统 `JDK/JRE` 的启动脚本 (需要自行安装 `JDK/JRE`)
+- `embed` 内置 `JRE 8` 的启动脚本 (**无需另外安装一键启动**)
+- `linux` 内置 `shell` 启动脚本 (需要自行安装 `JDK/JRE`)
+- 简单的 `Jar` 文件，不提供启动脚本 (使用 `java -jar` 启动)
+
 ## 2.7
 
 正式版本 `2.7` 发布

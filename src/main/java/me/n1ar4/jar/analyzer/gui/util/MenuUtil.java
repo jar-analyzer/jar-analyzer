@@ -158,7 +158,7 @@ public class MenuUtil {
                 output = String.format("%s: %s\n%s: %s",
                         "Current Version", Const.version,
                         "Latest Version", ver);
-                JOptionPane.showMessageDialog(instance.getMasterPanel(), output);
+                JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(), output);
             });
 
             verMenu.add(jarItem);

@@ -1,7 +1,5 @@
 package me.n1ar4.jar.analyzer.analyze.frame;
 
-import me.n1ar4.jar.analyzer.engine.CoreEngine;
-import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 

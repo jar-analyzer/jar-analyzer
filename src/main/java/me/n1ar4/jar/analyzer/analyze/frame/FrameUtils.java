@@ -72,6 +72,12 @@ public class FrameUtils {
                 localList.add(localValue);
             } else {
                 T item = func.apply(localValue);
+                if (item instanceof String) {
+                    if (((String) item).startsWith(".@")) {
+                        localList.add("null");
+                        continue;
+                    }
+                }
                 localList.add(item);
             }
         }

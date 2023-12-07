@@ -94,14 +94,7 @@ public class CoreRunner {
                 if (!file.getParentFile().mkdirs()) {
                     logger.error("fix class mkdirs error");
                 }
-                try {
-                    if (!file.createNewFile()) {
-                        logger.error("fix path create file error");
-                    }
-                } catch (Exception ignored) {
-                    logger.error("fix path create file error");
-                }
-                className = file + ".class";
+                className = file.getPath() + ".class";
                 try {
                     IOUtil.copy(new ByteArrayInputStream(cf.getFile()),
                             new FileOutputStream(className));

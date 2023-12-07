@@ -20,7 +20,6 @@ import java.nio.charset.StandardCharsets;
 
 public class MenuUtil {
     private static final Logger logger = LogManager.getLogger();
-    private static final MainForm instance = MainForm.getInstance();
     private static final JCheckBoxMenuItem showInnerConfig = new JCheckBoxMenuItem("show inner class");
     private static final JCheckBoxMenuItem fixClassPathConfig = new JCheckBoxMenuItem("fix class path");
 

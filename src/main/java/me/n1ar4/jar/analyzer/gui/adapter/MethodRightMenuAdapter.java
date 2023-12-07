@@ -1,15 +1,52 @@
 package me.n1ar4.jar.analyzer.gui.adapter;
 
+import me.n1ar4.jar.analyzer.engine.DecompileEngine;
 import me.n1ar4.jar.analyzer.entity.MethodResult;
 import me.n1ar4.jar.analyzer.gui.MainForm;
+import me.n1ar4.jar.analyzer.starter.Const;
+import me.n1ar4.log.LogManager;
+import me.n1ar4.log.Logger;
+import org.objectweb.asm.*;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class MethodRightMenuAdapter extends MouseAdapter {
+    private static final Logger logger = LogManager.getLogger();
     private final JList<MethodResult> list;
     private final JPopupMenu popupMenu;
+
+    public static byte[] renameMethod(String className,
+                                      String methodName,
+                                      String methodDesc,
+                                      String newMethodName) {
+        try {
+            Path finalFile = Paths.get(Const.tempDir).resolve(Paths.get(className + ".class"));
+            ClassReader classReader = new ClassReader(Files.readAllBytes(finalFile));
+            ClassWriter classWriter = new ClassWriter(classReader, 0);
+            ClassVisitor classVisitor = new ClassVisitor(Opcodes.ASM9, classWriter) {
+                @Override
+                public MethodVisitor visitMethod(int access, String name, String desc,
+                                                 String signature, String[] exceptions) {
+                    System.out.println(methodDesc);
+                    System.out.println(name);
+                    if (name.equals(methodName) && desc.equals(methodDesc)) {
+                        name = newMethodName;
+                    }
+                    return super.visitMethod(access, name, desc, signature, exceptions);
+                }
+            };
+            classReader.accept(classVisitor, 0);
+            return classWriter.toByteArray();
+        } catch (Exception ex) {
+            return new byte[]{};
+        }
+    }
+
 
     @SuppressWarnings("all")
     public MethodRightMenuAdapter() {
@@ -35,7 +72,21 @@ public class MethodRightMenuAdapter extends MouseAdapter {
                                 "update database error");
                         return;
                     }
-
+                    byte[] modifiedClass = renameMethod(currentItem.getClassName(),
+                            currentItem.getMethodName(), currentItem.getMethodDesc(), newItem);
+                    try {
+                        String originClass = currentItem.getClassName();
+                        Path finalFile = Paths.get(Const.tempDir).resolve(Paths.get(originClass + ".class"));
+                        Files.delete(finalFile);
+                        Files.write(finalFile, modifiedClass);
+                        DecompileEngine.cleanCache();
+                        String code = DecompileEngine.decompile(finalFile);
+                        MainForm.getCodeArea().setText(code);
+                        logger.info("refresh bytecode");
+                    } catch (Exception ignored) {
+                        ignored.printStackTrace();
+                        logger.error("write bytecode error");
+                    }
                     currentItem.setMethodName(newItem);
                     model.setElementAt(currentItem, selectedIndex);
                 }

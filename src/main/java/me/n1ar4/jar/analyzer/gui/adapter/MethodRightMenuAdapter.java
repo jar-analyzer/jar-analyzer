@@ -32,8 +32,6 @@ public class MethodRightMenuAdapter extends MouseAdapter {
                 @Override
                 public MethodVisitor visitMethod(int access, String name, String desc,
                                                  String signature, String[] exceptions) {
-                    System.out.println(methodDesc);
-                    System.out.println(name);
                     if (name.equals(methodName) && desc.equals(methodDesc)) {
                         name = newMethodName;
                     }

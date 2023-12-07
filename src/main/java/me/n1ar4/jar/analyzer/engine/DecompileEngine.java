@@ -108,7 +108,7 @@ public class DecompileEngine {
                 return null;
             }
         } catch (Exception ex) {
-            logger.error("decompile error: {}", ex.toString());
+            logger.warn("decompile fail");
         }
         return null;
     }

@@ -8,10 +8,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class MethodRightMenuAdapter extends MouseAdapter {
-    private static final String TIPS = "<html>" +
-            "super class is missing (need <b>rt.jar</b>)<br>" +
-            "maybe super class is <b>java.lang.Object</b> from rt.jar" +
-            "</html>";
     private final JList<MethodResult> list;
     private final JPopupMenu popupMenu;
 
@@ -30,6 +26,16 @@ public class MethodRightMenuAdapter extends MouseAdapter {
                 String newItem = JOptionPane.showInputDialog(MainForm.getInstance().getMasterPanel(),
                         "rename method: ", currentItem.getMethodName());
                 if (newItem != null && !newItem.isEmpty()) {
+                    // change database
+                    int res = MainForm.getEngine().updateMethod(currentItem.getClassName(),
+                            currentItem.getMethodName(),
+                            currentItem.getMethodDesc(), newItem);
+                    if (res == 0) {
+                        JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                                "update database error");
+                        return;
+                    }
+
                     currentItem.setMethodName(newItem);
                     model.setElementAt(currentItem, selectedIndex);
                 }

@@ -63,4 +63,9 @@
             </if>
         </where>
     </select>
+    <update id="updateMethod">
+        UPDATE method_table
+        SET method_name = #{newItem}
+        WHERE class_name = #{className} AND method_name = #{methodName} AND method_desc = #{methodDesc}
+    </update>
 </mapper>

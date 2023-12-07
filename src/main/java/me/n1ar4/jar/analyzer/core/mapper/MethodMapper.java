@@ -20,4 +20,9 @@ public interface MethodMapper {
                                          @Param("methodDesc") String methodDesc);
 
     List<MethodResult> selectMethodsByClassNameNoJar(@Param("className") String className);
+
+    int updateMethod(@Param("className") String className,
+                     @Param("methodName") String methodName,
+                     @Param("methodDesc") String methodDesc,
+                     @Param("newItem") String newItem);
 }

@@ -192,4 +192,12 @@ public class CoreEngine {
         session.close();
         return results;
     }
+
+    public int updateMethod(String className, String methodName, String methodDesc, String newItem) {
+        SqlSession session = factory.openSession(true);
+        MethodMapper methodMapper = session.getMapper(MethodMapper.class);
+        int res = methodMapper.updateMethod(className, methodName, methodDesc, newItem);
+        session.close();
+        return res;
+    }
 }

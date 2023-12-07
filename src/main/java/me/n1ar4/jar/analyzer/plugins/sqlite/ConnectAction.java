@@ -24,7 +24,7 @@ public class ConnectAction {
             DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
             String getAllTablesSQL = "SELECT tbl_name FROM sqlite_master";
             try (ResultSet rs = helper.executeQuery(getAllTablesSQL)) {
-                while (rs.next()){
+                while (rs.next()) {
                     String tblName = rs.getString("tbl_name");
                     model.addElement(tblName);
                 }

@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 
 public class CFGEngine {
     private static final Logger logger = LogManager.getLogger();
+
     public String doAnalyze(String absPath,
                             String methodName,
                             String methodDesc) {

@@ -21,7 +21,7 @@ public class ShowStringAction {
             new Thread(() -> {
                 ArrayList<String> stringList = MainForm.getEngine().getStrings(1);
                 int total = MainForm.getEngine().getStringCount();
-                ShowStringForm.start(total,  stringList, dialog);
+                ShowStringForm.start(total, stringList, dialog);
             }).start();
         });
     }

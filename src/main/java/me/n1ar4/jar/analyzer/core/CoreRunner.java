@@ -32,7 +32,7 @@ import java.util.*;
 public class CoreRunner {
     private static final Logger logger = LogManager.getLogger();
 
-    public static void run(Path jarPath, Path rtJarPath,boolean fixClass) {
+    public static void run(Path jarPath, Path rtJarPath, boolean fixClass) {
         MainForm.getInstance().getStartBuildDatabaseButton().setEnabled(false);
 
         List<ClassFileEntity> cfs;

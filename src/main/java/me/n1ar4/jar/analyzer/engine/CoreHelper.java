@@ -15,7 +15,7 @@ import java.util.List;
 public class CoreHelper {
     public static void refreshAllMethods(String className) {
         ArrayList<MethodResult> results = MainForm.getEngine().getMethodsByClass(className);
-        if(results.size()==0){
+        if (results.size() == 0) {
             results = MainForm.getEngine().getMethodsByClassNoJar(className);
         }
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();

@@ -118,7 +118,7 @@ public class HttpRequest {
                     .append(": ").append(body.length).append(Global.LINE_SEP);
             requestBuilder.append(Global.LINE_SEP);
             requestBuilder.append(new String(body));
-        }else{
+        } else {
             requestBuilder.append(Global.LINE_SEP);
         }
         this.rawRequest = requestBuilder.toString();

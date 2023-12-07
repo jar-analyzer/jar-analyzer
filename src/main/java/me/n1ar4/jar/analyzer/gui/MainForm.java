@@ -634,6 +634,7 @@ public class MainForm {
         SpringAction.run();
         CleanAction.run();
         ShowStringAction.run();
+        TipsAction.run();
 
         JNDIVulAction.register();
         RuntimeExecAction.register();

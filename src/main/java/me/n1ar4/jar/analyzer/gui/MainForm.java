@@ -538,6 +538,9 @@ public class MainForm {
         if (config != null) {
             String temp = config.getTempPath();
             String db = config.getDbPath();
+            if (temp == null || db == null) {
+                return;
+            }
             if (Files.exists(Paths.get(temp)) && Files.exists(Paths.get(db))) {
                 databaseSizeVal.setText(config.getDbSize());
                 totalClassVal.setText(config.getTotalClass());

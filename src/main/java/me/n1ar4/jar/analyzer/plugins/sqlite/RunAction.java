@@ -9,6 +9,7 @@ import java.util.Vector;
 public class RunAction {
     public static void register() {
         SQLiteForm.getInstance().getRunButton().addActionListener(e -> {
+            SQLiteForm.getInstance().getErrArea().setText(null);
             if (SQLiteForm.getHelper() == null) {
                 JOptionPane.showMessageDialog(SQLiteForm.getInstance().getMasterPanel(),
                         "please connect first");

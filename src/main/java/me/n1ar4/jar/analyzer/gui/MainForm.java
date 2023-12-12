@@ -232,7 +232,13 @@ public class MainForm {
     }
 
     // FOR CLI
-    private static final MainForm fakeInstance = new MainForm();
+    private static final MainForm fakeInstance = new MainForm(true);
+
+    public MainForm(boolean fake) {
+        if (fake) {
+            logger.info("init fake instance");
+        }
+    }
 
     public static MainForm getInstance() {
         if (instance == null) {

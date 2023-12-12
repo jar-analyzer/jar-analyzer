@@ -619,8 +619,8 @@ public class MainForm {
 
         authorTextLabel.addMouseListener(new AuthorAdapter());
 
-        blackArea.setText("java.lang.Object;\njava.lang.Integer;\n");
-        classBlackArea.setText("com.test.a;\ncom.test.a.;\ncom.test.a.TestClass;\n");
+        blackArea.setText(Const.blackAreaText);
+        classBlackArea.setText(Const.classBlackAreaText);
 
         equalsSearchRadioButton.setSelected(true);
 

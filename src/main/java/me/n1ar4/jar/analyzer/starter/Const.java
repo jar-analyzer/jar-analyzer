@@ -9,11 +9,13 @@ public interface Const {
     String newIssueUrl = "https://github.com/jar-analyzer/jar-analyzer/issues/new";
     String dbFile = "jar-analyzer.db";
     String tempDir = "jar-analyzer-temp";
-    String OpcodeForm = "Jar Analyzer V2 - Method Opcode Form";
-    String ChangeLogForm = "Jar Analyzer V2 -Update Change Log";
-    String CFGForm = "Jar Analyzer V2 - CFG Form";
-    String FrameForm = "Jar Analyzer V2 - Frame Form";
-    String SQLiteForm = "Jar Analyzer V2 - SQLite Form";
+    String OpcodeForm = "Jar Analyzer V2 - Method Opcode";
+    String ChangeLogForm = "Jar Analyzer V2 - CHANGELOG";
+    String CFGForm = "Jar Analyzer V2 - CFG";
+    String FrameForm = "Jar Analyzer V2 - Frame";
+    String SQLiteForm = "Jar Analyzer V2 - SQLite";
     String ChatGPTForm = "Jar Analyzer V2 - ChatGPT";
-    String StringForm = "Jar Analyzer V2 - String Form";
+    String StringForm = "Jar Analyzer V2 - String";
+    String blackAreaText = "java.lang.Object;\njava.lang.Integer;\n";
+    String classBlackAreaText = "com.test.a;\ncom.test.a.;\ncom.test.a.TestClass;\n";
 }

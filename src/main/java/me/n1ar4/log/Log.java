@@ -39,9 +39,16 @@ class Log {
             String className = LogUtil.getClassName();
             String methodName = LogUtil.getMethodName();
             String lineNumber = LogUtil.getLineNumber();
-            String logMessage = String.format("[%s] [%s%s%s] [%s:%s:%s] %s",
-                    timestamp, color, level.name(), ANSI_RESET, className,
-                    methodName, lineNumber, message);
+            String logMessage;
+            if (!lineNumber.equals("-1")) {
+                logMessage = String.format("[%s] [%s%s%s] [%s:%s:%s] %s",
+                        timestamp, color, level.name(), ANSI_RESET, className,
+                        methodName, lineNumber, message);
+            } else {
+                logMessage = String.format("[%s] [%s%s%s] [%s:%s] %s",
+                        timestamp, color, level.name(), ANSI_RESET, className,
+                        methodName, message);
+            }
             System.out.println(logMessage);
 
             try {

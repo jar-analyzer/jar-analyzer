@@ -14,6 +14,7 @@
 - One-click decompile, optimized for inner classes
 - One-click generation of method's `CFG` analysis results
 - One-click generation of method's `Stack Frame` analysis results
+- Remote analyze `Servlet` of `Apache Tomcat`
 - Custom `SQL` statement for advanced analysis
 
 More features are under development

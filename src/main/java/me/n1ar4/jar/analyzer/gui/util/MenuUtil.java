@@ -8,6 +8,7 @@ import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
+import me.n1ar4.shell.analyzer.form.ShellForm;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -41,7 +42,21 @@ public class MenuUtil {
         menuBar.add(createAboutMenu());
         menuBar.add(createVersionMenu());
         menuBar.add(createConfigMenu());
+        menuBar.add(createShellAnalyzer());
         return menuBar;
+    }
+
+    private static JMenu createShellAnalyzer() {
+        try {
+            JMenu configMenu = new JMenu("shell-analyzer");
+            JMenuItem start = new JMenuItem("start");
+            start.addActionListener(e-> ShellForm.start0());
+            configMenu.add(start);
+            return configMenu;
+        } catch (Exception ex) {
+            logger.error("error: {}", ex.toString());
+        }
+        return null;
     }
 
     private static JMenu createConfigMenu() {

@@ -35,7 +35,7 @@
 - 场景5：你需要深入地分析某个方法中 `JVM` 指令调用的传参（带有图形界面）
 - 场景6：你需要深入地分析某个方法中 `JVM` 指令和栈帧的状态（带有图形界面）
 - 场景7：你需要深入地分析某个方法的 `Control Flow Graph` （带有图形界面）
-- 场景8：你有一个`Tomcat`需要远程分析其中的`Servlet/Filter/Listener`信息
+- 场景8：你有一个 `Tomcat` 需要远程分析其中的 `Servlet/Filter/Listener` 信息
 
 ## 一些截图
 

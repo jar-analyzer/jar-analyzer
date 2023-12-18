@@ -379,8 +379,10 @@ public class ShellForm {
                 VirtualMachine vm = VirtualMachine.attach(pid);
                 log("正在加载Agent程序...");
 
-                Path agentPath = Paths.get("agent.jar");
-                Path agentDepPath = Paths.get("agent-jar-with-dependencies.jar");
+                Path agentPath = Paths.get("lib").resolve(
+                        Paths.get("agent.jar"));
+                Path agentDepPath = Paths.get("lib").resolve(
+                        Paths.get("agent-jar-with-dependencies.jar"));
 
                 String path;
                 if (Files.exists(agentPath)) {

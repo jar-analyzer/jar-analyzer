@@ -39,6 +39,7 @@
                   <grid row="2" column="0" row-span="1" col-span="4" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
+                  <background color="-12895429"/>
                   <horizontalScrollBarPolicy value="30"/>
                   <verticalScrollBarPolicy value="20"/>
                 </properties>
@@ -256,6 +257,7 @@
                   <component id="16eb6" class="javax.swing.JTextArea" binding="logArea">
                     <constraints/>
                     <properties>
+                      <background color="-14211289"/>
                       <editable value="false"/>
                       <font name="Consolas" size="12"/>
                       <foreground color="-16711895"/>

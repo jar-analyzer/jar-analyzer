@@ -30,6 +30,7 @@ Issues and suggestions are welcome
 - **Scenario 5:** You need to deeply analyze the passing parameters of `JVM` instructions within a method.
 - **Scenario 6:** You need to deeply analyze the state of `JVM` instructions and stack frames within a method.
 - **Scenario 7:** You need to deeply analyze the `Control Flow Graph` of a method.
+- **Scenario 8:** You need to analyzer `Servlet/Filter/Listener` from a Tomcat
 
 Note:
 - Do not double-click to start on `Windows`, please use `java -jar` or double-click the `bat` script
@@ -56,6 +57,10 @@ Graphical `Stack Frame` Analysis
 Analyzing `Spring Framework`
 
 ![Analyzing Spring Framework](../img/0009.png)
+
+Support Tomcat Analyzer since 2.8
+
+![](../img/0017.png)
 
 Custom `SQL` Query Analysis
 

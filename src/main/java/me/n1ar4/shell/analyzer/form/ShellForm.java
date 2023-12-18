@@ -479,8 +479,10 @@ public class ShellForm {
             SocketHelper.setPass(pass);
             try {
                 VirtualMachine vm = VirtualMachine.attach(pid);
-                Path agentPath = Paths.get("agent.jar");
-                Path agentDepPath = Paths.get("agent-jar-with-dependencies.jar");
+                Path agentPath = Paths.get("lib").resolve(
+                        Paths.get("agent.jar"));
+                Path agentDepPath = Paths.get("lib").resolve(
+                        Paths.get("agent-jar-with-dependencies.jar"));
 
                 String path;
                 if (Files.exists(agentPath)) {
@@ -570,7 +572,7 @@ public class ShellForm {
     }
 
     public static void start0() {
-        JFrame frame = new JFrame("shell-analyzer by 4ra1n");
+        JFrame frame = new JFrame("tomcat-analyzer by 4ra1n");
         instance = new ShellForm();
         frame.setContentPane(instance.shellPanel);
         frame.pack();
@@ -610,6 +612,7 @@ public class ShellForm {
         runningButton.setText("检测当前运行的Java进程");
         topPanel.add(runningButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         processScroll = new JScrollPane();
+        processScroll.setBackground(new Color(-12895429));
         processScroll.setHorizontalScrollBarPolicy(30);
         processScroll.setVerticalScrollBarPolicy(20);
         topPanel.add(processScroll, new GridConstraints(2, 0, 1, 4, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
@@ -685,6 +688,7 @@ public class ShellForm {
         logScroll = new JScrollPane();
         logPanel.add(logScroll, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         logArea = new JTextArea();
+        logArea.setBackground(new Color(-14211289));
         logArea.setEditable(false);
         Font logAreaFont = this.$$$getFont$$$("Consolas", -1, 12, logArea.getFont());
         if (logAreaFont != null) logArea.setFont(logAreaFont);

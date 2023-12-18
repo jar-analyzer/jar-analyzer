@@ -48,7 +48,7 @@ public class MenuUtil {
 
     private static JMenu createShellAnalyzer() {
         try {
-            JMenu configMenu = new JMenu("shell-analyzer");
+            JMenu configMenu = new JMenu("tomcat-analyzer");
             JMenuItem start = new JMenuItem("start");
             start.addActionListener(e-> ShellForm.start0());
             configMenu.add(start);

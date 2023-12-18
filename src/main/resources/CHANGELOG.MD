@@ -2,8 +2,11 @@
 
 ## 2.8
 
+修复了一些问题，集成了`shell-analyzer`项目 (改名为`tomcat-analyzer`)
+
 更新日志：
 
+- [重要] 集成`tomcat-analyzer`项目
 - [安全] 阻止`SQLITE`执行`ATTACH`语句
 - [BUG] 修复某些情况下程序无法启动的问题
 - [BUG] 修复手动查看最新版空指针问题

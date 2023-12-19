@@ -83,15 +83,18 @@ if __name__ == '__main__':
     subprocess.run("echo {} > {}".format(PROJECT, "ABOUT.txt"), shell=True,
                    cwd="{}/{}".format(target_directory, release_linux_dir))
 
-    print("[*] copy agent.jar")
+    print("[*] copy build agent.jar")
+    copy_file("agent-jar-with-dependencies.jar", "lib\\agent.jar")
+
+    print("[*] copy windows agent.jar")
     copy_file("lib\\agent.jar", "release\\" + release_win_system_dir + "\\lib\\agent.jar")
     copy_file("lib\\agent.jar", "release\\" + release_win_embed_dir + "\\lib\\agent.jar")
 
-    print("[*] copy tools.jar")
+    print("[*] copy windows tools.jar")
     copy_file("lib\\tools.jar", "release\\" + release_win_system_dir + "\\lib\\tools.jar")
     copy_file("lib\\tools.jar", "release\\" + release_win_embed_dir + "\\lib\\tools.jar")
 
-    print("[*] copy attach.dll")
+    print("[*] copy windows attach.dll")
     subprocess.run("mkdir {}\\jre\\bin".format(release_win_embed_dir), shell=True, cwd=target_directory)
     copy_file("lib\\attach.dll", "release\\" + release_win_embed_dir + "\\jre\\bin\\attach.dll")
 

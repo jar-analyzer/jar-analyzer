@@ -16,4 +16,8 @@ for /f "delims=" %%D in ('dir /ad /b /s "%TARGET_DIR%" ^| sort /r') do (
     rd "%%D" 2>nul
 )
 
+echo delete build files...
+
+del "agent-jar-with-dependencies.jar" /q
+
 echo clean finish

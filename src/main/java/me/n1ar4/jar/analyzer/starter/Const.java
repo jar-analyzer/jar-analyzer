@@ -18,4 +18,5 @@ public interface Const {
     String StringForm = "Jar Analyzer V2 - String";
     String blackAreaText = "java.lang.Object;\njava.lang.Integer;\n";
     String classBlackAreaText = "com.test.a;\ncom.test.a.;\ncom.test.a.TestClass;\n";
+    String Y4LangForm = "Jar Analyzer V2 - Y4Lang";
 }

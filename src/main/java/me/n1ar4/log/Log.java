@@ -61,9 +61,16 @@ class Log {
                 }
                 File logFile = new File(logDirectory, datestamp + ".log");
                 try (PrintWriter out = new PrintWriter(new FileWriter(logFile, true))) {
-                    String fileMessage = String.format("[%s] [%s] [%s:%s:%s] %s",
-                            timestamp, level.name(), className,
-                            methodName, lineNumber, message);
+                    String fileMessage;
+                    if (!lineNumber.equals("-1")) {
+                        fileMessage = String.format("[%s] [%s] [%s:%s:%s] %s",
+                                timestamp, level.name(), className,
+                                methodName, lineNumber, message);
+                    } else {
+                        fileMessage = String.format("[%s] [%s] [%s:%s] %s",
+                                timestamp, level.name(), className,
+                                methodName, message);
+                    }
                     out.println(fileMessage);
                 }
             } catch (IOException e) {

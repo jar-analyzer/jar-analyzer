@@ -63,6 +63,8 @@ public class Application {
             // REDIRECT SYSTEM OUT
             System.setOut(new LoggingStream(System.out, logger));
             System.out.println("set log42j io-streams");
+            System.setErr(new LoggingStream(System.err, logger));
+            System.err.println("set log4j err-streams");
             // START GUI
             MainForm.start();
         } catch (Exception ex) {

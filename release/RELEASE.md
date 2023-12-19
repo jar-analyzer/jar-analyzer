@@ -9,6 +9,8 @@ Steps:
 - Check build bat/sh files
 - Check `pom.xml` version tag
 - Check `build.py` VERSION
+- Run `clean.bat`
+- Run `agent/package.bat`
 - Run `package.bat`
 - Run `python build.py`
 - Copy `JRE` to `embed` type

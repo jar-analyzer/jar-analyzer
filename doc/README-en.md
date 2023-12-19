@@ -147,6 +147,32 @@ Generally, it's recommended to use the `embed` version with embedded `JRE` for s
 
 ## Subprojects
 
+### Tomcat Analyzer
+
+it is `shell-analyzer` or `tomcat-analyzer`
+
+(1) attach
+
+![](../img/0023.jpg)
+
+please set a password
+
+(2) select and analyze
+
+click refresh
+
+(3) double click and dump class
+
+(4) copy class name and fix
+
+![](../img/0024.jpg)
+
+details
+
+![](../img/0025.png)
+
+![](../img/0026.png)
+
 ### Y4-HTTP
 
 Located in `me.n1ar4.http`, this is a manual construction and parsing `HTTP/1.1` protocol `HTTP` client library

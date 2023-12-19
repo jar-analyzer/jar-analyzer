@@ -163,6 +163,34 @@ java -jar jar-analyzer.jar build --jar 1.jar --del-cache --del-exist
 
 ## 子项目
 
+### Tomcat Analyzer
+
+该项目原名`shell-analyzer`现改名`tomcat-analyzer`
+
+(1) 第一步：检测进程并`Attach`
+
+![](img/0023.jpg)
+
+为了防止目标被恶意利用，需要输入一个密码
+
+**注意：尽管使用了密码保护，但还是存在拒绝服务等风险，请勿在生产环境使用，目前适用于自己搭建靶机分析学习**
+
+(2) 第二步：勾选并分析
+
+点击**刷新**即可获得实时的数据
+
+(3) 双击任意一个类即可`Dump`并反编译
+
+(4) 复制类名过去即可修复内存马
+
+![](img/0024.jpg)
+
+一些原理
+
+![](img/0025.png)
+
+![](img/0026.png)
+
 ### Y4-HTTP
 
 该项目位于`me.n1ar4.http`中，这是一个手动构造和解析`HTTP/1.1`协议的`HTTP`客户端库

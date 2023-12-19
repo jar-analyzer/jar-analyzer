@@ -151,15 +151,16 @@ java -jar jar-analyzer.jar build --jar 1.jar --del-cache --del-exist
 
 ## Release 说明
 
-在 `release` 中提供四种下载：
-- `system` 使用系统 `JDK/JRE` 的启动脚本 (需要自行安装 `JRE`)
-- `embed` 内置 `JRE` 的启动脚本 (无需另外安装一键启动)
-- `linux` 内置 `shell` 启动脚本 (需要自行安装 `JRE`)
-- 简单的 `Jar` 文件，不提供启动脚本
+在 `release` 中提供四种下载:
 
-由于本工具仅在 `Windows` 中测试，其他操作系统可能会有未知的问题，欢迎提 `issue`
+- 推荐 `embed` 版内置 `JRE 8` 的启动脚本 (**无需另外安装一键启动**)
+- `system` 使用系统 `JDK/JRE` 的启动脚本 (需要自行安装 `JDK/JRE`)
+- `linux` 内置 `shell` 启动脚本 (需要自行安装 `JDK/JRE`)
+- 简单的 `jar` 文件，不提供启动脚本 (使用 `java -jar` 启动)
 
-一般情况下，推荐使用内置 `JRE` 的 `embed` 版本启动
+推荐使用 `embed` 版，经过了较多测试，完善支持 `tomcat-analyzer` 模块
+
+由于本工具仅在 `Windows` 和 `Java 8` 中测试，其他环境可能有未知的问题，欢迎提 `issue`
 
 ## 子项目
 
@@ -211,18 +212,24 @@ java -jar jar-analyzer.jar build --jar 1.jar --del-cache --del-exist
 
 ## 如何构建
 
-构建一般基于 `Java 8`
+请使用 `Java 8`
 - 下载 `JDK 8`
 - 使用 `Maven` (https://maven.apache.org/download.cgi)
 - 使用 `Python 3` 辅助 (https://www.python.org/downloads/)
 
 步骤：
 
-(1) mvn -B package -DskipTests --file pom.xml
+(1) package.bat
 
-(2) python build.py
+(2) cd agent
 
-(3) 复制 JRE 到 embed 版
+(3) package.bat
+
+(4) cd ..
+
+(5) python build.py
+
+(6) 复制 JRE 到 embed 版
 
 ## 其他
 

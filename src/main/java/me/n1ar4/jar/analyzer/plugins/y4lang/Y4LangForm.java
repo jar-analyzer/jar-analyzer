@@ -5,12 +5,17 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.starter.Const;
+import me.n1ar4.y4lang.core.Core;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.PrintStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class Y4LangForm {
     private JPanel masterPanel;
@@ -31,6 +36,37 @@ public class Y4LangForm {
         codeArea.setCodeFoldingEnabled(true);
         RTextScrollPane sp = new RTextScrollPane(codeArea);
         instance.codePanel.add(sp, new GridConstraints());
+
+        instance.runButton.addActionListener(e -> {
+            instance.logArea.setText(null);
+            PrintStream printStream = new PrintStream(new TestAreaStream(instance.logArea));
+            System.setOut(printStream);
+            System.setErr(printStream);
+            new Thread(() -> {
+                String text = codeArea.getText();
+                if (text == null || text.isEmpty()) {
+                    JOptionPane.showMessageDialog(instance.masterPanel, "input is null");
+                    return;
+                }
+                Path p = Paths.get("test.h");
+                try {
+                    Files.delete(p);
+                } catch (Exception ignored) {
+                }
+                try {
+                    Files.write(p, text.getBytes());
+                } catch (Exception ignored) {
+                }
+                Core.start(new String[]{p.toAbsolutePath().toString()});
+                System.setOut(System.out);
+                System.setErr(System.err);
+            }).start();
+        });
+
+        instance.clearButton.addActionListener(e -> {
+            codeArea.setText(null);
+            instance.logArea.setText(null);
+        });
     }
 
     public static void start() {
@@ -70,6 +106,7 @@ public class Y4LangForm {
         opPanel.add(consoleScroll, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(800, 200), new Dimension(800, 200), new Dimension(800, 200), 0, false));
         logArea = new JTextArea();
         logArea.setBackground(new Color(-12895429));
+        logArea.setEditable(false);
         logArea.setForeground(new Color(-16711931));
         consoleScroll.setViewportView(logArea);
         actionPanel = new JPanel();

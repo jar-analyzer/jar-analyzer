@@ -48,3 +48,4 @@ target/
 jar-analyzer-temp/
 build/jre/jre/
 jar-analyzer-lockfile
+*.h

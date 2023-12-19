@@ -2,7 +2,6 @@ package me.n1ar4.jar.analyzer.plugins.y4lang;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import com.intellij.uiDesigner.core.Spacer;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.y4lang.core.Core;
@@ -37,9 +36,22 @@ public class Y4LangForm {
         RTextScrollPane sp = new RTextScrollPane(codeArea);
         instance.codePanel.add(sp, new GridConstraints());
 
+        codeArea.setText("#include \"base64\"\n" +
+                "\n" +
+                "def hello(a, b) {\n" +
+                "    if a < b {\n" +
+                "        data = \"4ra1n\";\n" +
+                "\t   enc = base64::encode(data);\n" +
+                "\t   print(enc);\n" +
+                "    }\n" +
+                "}\n" +
+                "print(formatTime());\n" +
+                "hello(1,2);");
+        codeArea.setCaretPosition(0);
+
         instance.runButton.addActionListener(e -> {
             instance.logArea.setText(null);
-            PrintStream printStream = new PrintStream(new TestAreaStream(instance.logArea));
+            PrintStream printStream = new PrintStream(new TextAreaStream(instance.logArea));
             System.setOut(printStream);
             System.setErr(printStream);
             new Thread(() -> {
@@ -48,7 +60,7 @@ public class Y4LangForm {
                     JOptionPane.showMessageDialog(instance.masterPanel, "input is null");
                     return;
                 }
-                Path p = Paths.get("test.h");
+                Path p = Paths.get(Const.tempDir).resolve(Paths.get("test.h"));
                 try {
                     Files.delete(p);
                 } catch (Exception ignored) {

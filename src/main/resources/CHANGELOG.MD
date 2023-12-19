@@ -2,8 +2,6 @@
 
 ## 2.8
 
-支持执行自创的`Y4Lang`脚本语言，集成了`shell-analyzer`项目 (改名为`tomcat-analyzer`)
-
 更新日志：
 
 - [重要] 集成`tomcat-analyzer`项目

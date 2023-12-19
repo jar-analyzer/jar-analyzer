@@ -60,7 +60,12 @@ public class Y4LangForm {
                     JOptionPane.showMessageDialog(instance.masterPanel, "input is null");
                     return;
                 }
-                Path p = Paths.get(Const.tempDir).resolve(Paths.get("test.h"));
+                Path tmp = Paths.get(Const.tempDir);
+                try {
+                    Files.createDirectory(tmp);
+                } catch (Exception ignored) {
+                }
+                Path p = tmp.resolve(Paths.get("test.h"));
                 try {
                     Files.delete(p);
                 } catch (Exception ignored) {

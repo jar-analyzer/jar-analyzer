@@ -57,7 +57,7 @@ public class Y4LangForm {
             new Thread(() -> {
                 instance.runButton.setText("Running");
                 instance.runButton.setEnabled(false);
-                instance.logArea.setText("running y4lang script...");
+                instance.logArea.setText("running y4lang script:\n");
                 String text = codeArea.getText();
                 if (text == null || text.isEmpty()) {
                     JOptionPane.showMessageDialog(instance.masterPanel, "input is null");

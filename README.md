@@ -48,10 +48,6 @@
 
 ![](img/0007.png)
 
-`JVM Stack Frame` 分析
-
-![](img/0013.png)
-
 带图形的 `Stack Frame` 分析
 
 ![](img/0008.png)
@@ -72,10 +68,6 @@
 
 ![](img/0018.png)
 
-首页
-
-![](img/0002.png)
-
 方法调用搜索 (支持 `equals/like` 选项，支持黑名单过滤)
 
 ![](img/0012.png)
@@ -83,14 +75,6 @@
 方法调用关系
 
 ![](img/0004.png)
-
-一键分析，自定义 `SQL` 分析，其他插件等
-
-![](img/0015.png)
-
-在 `Ubuntu` 中使用的截图
-
-![](img/0016.png)
 
 ## 注意事项
 
@@ -171,31 +155,11 @@ java -jar jar-analyzer.jar build --jar 1.jar --del-cache --del-exist
 
 ### Tomcat Analyzer
 
-该项目原名`shell-analyzer`现改名`tomcat-analyzer`
+该项目位于`me.n1ar4.shell.analyzer`中，这是一个分析`Tomcat`内存马的工具
 
-(1) 第一步：检测进程并`Attach`
+[代码](src/main/java/me/n1ar4/shell/analyzer)
 
-![](img/0023.jpg)
-
-为了防止目标被恶意利用，需要输入一个密码
-
-**注意：尽管使用了密码保护，但还是存在拒绝服务等风险，请勿在生产环境使用，目前适用于自己搭建靶机分析学习**
-
-(2) 第二步：勾选并分析
-
-点击**刷新**即可获得实时的数据
-
-(3) 双击任意一个类即可`Dump`并反编译
-
-(4) 复制类名过去即可修复内存马
-
-![](img/0024.jpg)
-
-一些原理
-
-![](img/0025.png)
-
-![](img/0026.png)
+[文档](doc/TOMCAT.MD)
 
 ### Y4-Lang
 

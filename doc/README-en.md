@@ -47,10 +47,6 @@ Instruction Analysis
 
 ![CFG Analysis](../img/0007.png)
 
-`JVM Stack Frame` Analysis
-
-![JVM Stack Frame Analysis](../img/0013.png)
-
 Graphical `Stack Frame` Analysis
 
 ![Graphical Stack Frame Analysis](../img/0008.png)
@@ -71,10 +67,6 @@ A script language based on `Java`
 
 ![](../img/0018.png)
 
-Homepage
-
-![Homepage](../img/0002.png)
-
 Method Call Search (supports `equals/like` options, blacklist filtering)
 
 ![Method Call Search](../img/0012.png)
@@ -82,14 +74,6 @@ Method Call Search (supports `equals/like` options, blacklist filtering)
 Method Call Relationships
 
 ![Method Call Relationships](../img/0004.png)
-
-One-click Analysis, Custom `SQL` Analysis, Other Plugins, etc.
-
-![One-click Analysis, Custom SQL Analysis, Other Plugins](../img/0015.png)
-
-Running on `Ubuntu`
-
-![](../img/0016.png)
 
 ## Notes
 
@@ -153,29 +137,7 @@ Generally, it's recommended to use the `embed` version with embedded `JRE` for s
 
 ### Tomcat Analyzer
 
-it is `shell-analyzer` or `tomcat-analyzer`
-
-(1) attach
-
-![](../img/0023.jpg)
-
-please set a password
-
-(2) select and analyze
-
-click refresh
-
-(3) double click and dump class
-
-(4) copy class name and fix
-
-![](../img/0024.jpg)
-
-details
-
-![](../img/0025.png)
-
-![](../img/0026.png)
+[doc](TOMCAT.MD)
 
 ### Y4-HTTP
 

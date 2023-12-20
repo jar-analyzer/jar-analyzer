@@ -5,7 +5,7 @@ import me.n1ar4.y4lang.lib.LibManager;
 
 import java.util.List;
 
-public class IncludeStmt extends ASTList{
+public class IncludeStmt extends ASTList {
     public IncludeStmt(List<ASTree> list) {
         super(list);
     }
@@ -13,7 +13,7 @@ public class IncludeStmt extends ASTList{
     @Override
     public Object eval(Environment env) {
         String includeName = (String) child(0).eval(env);
-        LibManager.addLib(includeName,env);
+        LibManager.addLib(includeName, env);
         return null;
     }
 }

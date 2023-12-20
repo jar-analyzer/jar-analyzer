@@ -1,9 +1,10 @@
 package me.n1ar4.y4lang.lexer;
 
-import me.n1ar4.log.LogManager;
-import me.n1ar4.log.Logger;
 import me.n1ar4.y4lang.exception.ParseException;
-import me.n1ar4.y4lang.token.*;
+import me.n1ar4.y4lang.token.IdToken;
+import me.n1ar4.y4lang.token.NumToken;
+import me.n1ar4.y4lang.token.StrToken;
+import me.n1ar4.y4lang.token.Token;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
  * Coded By 4ra1n
  */
 public class Lexer {
-    private static final Logger logger = LogManager.getLogger();
+
     private final Reader reader;
     private static final int EMPTY = -1;
     private int lastChar = EMPTY;
@@ -199,7 +200,7 @@ public class Lexer {
                 throw new ParseException("error token");
             }
         } catch (IOException e) {
-            logger.error("lexer error: {}",e.toString());
+            e.printStackTrace();
         }
         return Token.EOF;
     }

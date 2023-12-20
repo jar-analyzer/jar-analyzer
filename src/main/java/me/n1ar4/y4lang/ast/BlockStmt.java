@@ -13,7 +13,7 @@ public class BlockStmt extends ASTList {
     public Object eval(Environment env) {
         Object result = 0;
         for (ASTree t : this) {
-            if(t instanceof ReturnStmt){
+            if (t instanceof ReturnStmt) {
                 return t.eval(env);
             }
             if (!(t instanceof NullStmt)) {

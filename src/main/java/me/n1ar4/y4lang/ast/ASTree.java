@@ -21,5 +21,6 @@ public abstract class ASTree implements Iterable<ASTree> {
 
     public abstract Object eval(Environment env);
 
-    public void lookup(Symbols sym) {}
+    public void lookup(Symbols sym) {
+    }
 }

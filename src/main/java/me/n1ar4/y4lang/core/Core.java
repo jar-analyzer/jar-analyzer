@@ -1,8 +1,6 @@
 package me.n1ar4.y4lang.core;
 
 import com.beust.jcommander.JCommander;
-import me.n1ar4.log.LogManager;
-import me.n1ar4.log.Logger;
 import me.n1ar4.y4lang.Command;
 import me.n1ar4.y4lang.ast.ASTree;
 import me.n1ar4.y4lang.ast.NullStmt;
@@ -19,7 +17,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class Core {
-    private static final Logger logger = LogManager.getLogger();
+
 
     public static void start(String[] args) {
         Command command = new Command();
@@ -69,7 +67,7 @@ public class Core {
             }
             Threads.stopAll();
         } catch (Exception e) {
-            logger.error("y4lang runtime error: {}", e.toString());
+            e.printStackTrace();
         }
     }
 }

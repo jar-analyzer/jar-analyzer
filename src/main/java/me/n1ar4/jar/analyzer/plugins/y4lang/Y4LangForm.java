@@ -55,6 +55,9 @@ public class Y4LangForm {
             System.setOut(printStream);
             System.setErr(printStream);
             new Thread(() -> {
+                instance.runButton.setText("Running");
+                instance.runButton.setEnabled(false);
+                instance.logArea.setText("running y4lang script...");
                 String text = codeArea.getText();
                 if (text == null || text.isEmpty()) {
                     JOptionPane.showMessageDialog(instance.masterPanel, "input is null");
@@ -77,6 +80,8 @@ public class Y4LangForm {
                 Core.start(new String[]{p.toAbsolutePath().toString()});
                 System.setOut(System.out);
                 System.setErr(System.err);
+                instance.runButton.setText("Run");
+                instance.runButton.setEnabled(true);
             }).start();
         });
 

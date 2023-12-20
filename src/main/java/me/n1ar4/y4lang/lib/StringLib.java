@@ -1,5 +1,7 @@
 package me.n1ar4.y4lang.lib;
 
+import me.n1ar4.log.LogManager;
+import me.n1ar4.log.Logger;
 import me.n1ar4.y4lang.env.Environment;
 import me.n1ar4.y4lang.function.NativeFunction;
 
@@ -8,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StringLib {
+    private static final Logger logger = LogManager.getLogger();
     private static final String LIB_NAME = "string";
     public static List<NativeFunction> lib = new ArrayList<>();
 
@@ -22,7 +25,7 @@ public class StringLib {
             Method substr = StringLib.class.getMethod("substr", String.class, int.class, int.class);
             lib.add(new NativeFunction(LIB_NAME + LibManager.SEP + "substr", substr));
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("load natives error: {}",e.toString());
         }
     }
 
@@ -30,7 +33,7 @@ public class StringLib {
         if (data == null) {
             return Environment.TRUE;
         }
-        if (data.trim().equals("")) {
+        if (data.trim().isEmpty()) {
             return Environment.TRUE;
         }
         return Environment.FALSE;

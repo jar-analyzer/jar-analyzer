@@ -1,5 +1,7 @@
 package me.n1ar4.y4lang.lib;
 
+import me.n1ar4.log.LogManager;
+import me.n1ar4.log.Logger;
 import me.n1ar4.y4lang.function.NativeFunction;
 import me.n1ar4.y4lang.util.EncodeUtil;
 
@@ -8,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ToolLib {
+    private static final Logger logger = LogManager.getLogger();
     private static final String LIB_NAME = "tool";
     public static List<NativeFunction> lib = new ArrayList<>();
 
@@ -22,7 +25,7 @@ public class ToolLib {
             Method getStringCommand = ToolLib.class.getMethod("getStringCommand", String.class);
             lib.add(new NativeFunction(LIB_NAME + LibManager.SEP + "getStringCommand", getStringCommand));
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("load natives error: {}",e.toString());
         }
     }
 
@@ -38,7 +41,7 @@ public class ToolLib {
             }
             return outStr.toString();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("exec error: {}",e.toString());
         }
         return null;
     }

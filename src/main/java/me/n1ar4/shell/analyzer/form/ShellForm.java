@@ -466,7 +466,6 @@ public class ShellForm {
                     }
                     log("已删除内存马: " + kill);
                 } catch (Exception ex) {
-                    ex.printStackTrace();
                     log("无法删除内存马");
                 }
             }).start();

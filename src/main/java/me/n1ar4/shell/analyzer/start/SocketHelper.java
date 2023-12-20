@@ -1,5 +1,8 @@
 package me.n1ar4.shell.analyzer.start;
 
+import me.n1ar4.log.LogManager;
+import me.n1ar4.log.Logger;
+
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -11,6 +14,7 @@ import java.util.List;
 
 @SuppressWarnings("all")
 public class SocketHelper {
+    private static final Logger logger = LogManager.getLogger();
     private static String host;
     private static final int port = 10032;
     private static String pass;
@@ -28,7 +32,7 @@ public class SocketHelper {
             new Socket(host, port);
             return true;
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.error("socket check error: {}", ex.toString());
             return false;
         }
     }

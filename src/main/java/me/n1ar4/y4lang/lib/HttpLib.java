@@ -1,13 +1,15 @@
 package me.n1ar4.y4lang.lib;
 
+import me.n1ar4.log.LogManager;
+import me.n1ar4.log.Logger;
 import me.n1ar4.y4lang.exception.Y4LangException;
 import me.n1ar4.y4lang.function.NativeFunction;
 
 import java.lang.reflect.Method;
 import java.util.*;
 
-@SuppressWarnings("unchecked")
 public class HttpLib {
+    private static final Logger logger = LogManager.getLogger();
     private static final String LIB_NAME = "http";
     public static List<NativeFunction> lib = new ArrayList<>();
 
@@ -22,7 +24,7 @@ public class HttpLib {
             Method doRequest = HttpLib.class.getMethod("doRequest", String.class);
             lib.add(new NativeFunction(LIB_NAME + LibManager.SEP + "doRequest", doRequest));
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("load natives error: {}",e.toString());
         }
     }
 
@@ -31,7 +33,7 @@ public class HttpLib {
         try {
            //todo
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("http do get error: {}",e.toString());
         }
         return null;
     }
@@ -41,7 +43,7 @@ public class HttpLib {
         try {
             //todo
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("http do post error: {}",e.toString());
         }
         return null;
     }
@@ -50,7 +52,7 @@ public class HttpLib {
         try {
             //todo
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("http do request error: {}",e.toString());
         }
         return null;
     }

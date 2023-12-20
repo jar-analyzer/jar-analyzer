@@ -82,7 +82,6 @@ public class MethodRightMenuAdapter extends MouseAdapter {
                         MainForm.getCodeArea().setText(code);
                         logger.info("refresh bytecode");
                     } catch (Exception ignored) {
-                        ignored.printStackTrace();
                         logger.error("write bytecode error");
                     }
                     currentItem.setMethodName(newItem);

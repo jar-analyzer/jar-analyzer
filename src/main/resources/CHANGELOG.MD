@@ -1,5 +1,24 @@
 # CHANGELOG
 
+## 2.9
+
+更新日志：
+
+- [优化] 整体优化错误日志的输出
+
+感谢以下用户的贡献:
+
+- 4ra1n (https://github.com/4ra1n)
+
+在 `release` 中提供四种下载:
+
+- 推荐 `embed` 版内置 `JRE 8` 的启动脚本 (**无需另外安装一键启动**)
+- `system` 使用系统 `JDK` 的启动脚本 (需要自行安装 `JDK`)
+- `linux` 内置 `shell` 启动脚本 (需要自行安装 `JDK/JRE`)
+- 简单的 `jar` 文件，不提供启动脚本 (使用 `java -jar` 启动)
+
+推荐使用 `embed` 版，经过了较多测试，完善支持 `tomcat-analyzer` 模块
+
 ## 2.8
 
 更新日志：

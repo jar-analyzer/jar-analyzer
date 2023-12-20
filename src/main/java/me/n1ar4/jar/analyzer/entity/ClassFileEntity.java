@@ -1,9 +1,13 @@
 package me.n1ar4.jar.analyzer.entity;
 
+import me.n1ar4.log.LogManager;
+import me.n1ar4.log.Logger;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class ClassFileEntity {
+    private static final Logger logger = LogManager.getLogger();
     // SAVE
     private int cfId;
     // SAVE
@@ -66,7 +70,7 @@ public class ClassFileEntity {
         try {
             return Files.readAllBytes(this.path);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("get file error: {}", e.toString());
         }
         return null;
     }

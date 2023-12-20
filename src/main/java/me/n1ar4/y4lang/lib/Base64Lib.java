@@ -1,5 +1,7 @@
 package me.n1ar4.y4lang.lib;
 
+import me.n1ar4.log.LogManager;
+import me.n1ar4.log.Logger;
 import me.n1ar4.y4lang.exception.Y4LangException;
 import me.n1ar4.y4lang.function.NativeFunction;
 
@@ -10,6 +12,7 @@ import java.util.Base64;
 import java.util.List;
 
 public class Base64Lib {
+    private static final Logger logger = LogManager.getLogger();
     private static final String LIB_NAME = "base64";
     public static List<NativeFunction> lib = new ArrayList<>();
 
@@ -20,7 +23,7 @@ public class Base64Lib {
             Method decode = Base64Lib.class.getMethod("decode", String.class);
             lib.add(new NativeFunction(LIB_NAME + LibManager.SEP + "decode", decode));
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("load natives error: {}",e.toString());
         }
     }
 

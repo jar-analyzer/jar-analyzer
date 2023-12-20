@@ -1,5 +1,8 @@
 package me.n1ar4.jar.analyzer.plugins.repeater;
 
+import me.n1ar4.log.LogManager;
+import me.n1ar4.log.Logger;
+
 import javax.swing.*;
 import java.io.*;
 import java.net.ServerSocket;
@@ -8,6 +11,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class SocketUtil {
+    private static final Logger logger = LogManager.getLogger();
+
     private static String readLine(InputStream is, int contentLe) throws IOException {
         ArrayList<Byte> lineByteList = new ArrayList<>();
         byte readByte;
@@ -53,7 +58,6 @@ public class SocketUtil {
             }
         } catch (Exception e) {
             area.setText(e.toString());
-            e.printStackTrace();
         }
     }
 
@@ -86,7 +90,7 @@ public class SocketUtil {
             is.close();
             return sb + body;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("send raw error: {}", e.toString());
         }
         return null;
     }

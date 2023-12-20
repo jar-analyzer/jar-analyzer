@@ -70,8 +70,11 @@ public class HttpResponse {
                                  ByteArrayOutputStream bodyBuffer) throws IOException {
         byte[] buffer = new byte[1024];
         int bytesRead;
-        while ((bytesRead = is.read(buffer)) != -1) {
-            bodyBuffer.write(buffer, 0, bytesRead);
+        try {
+            while ((bytesRead = is.read(buffer)) != -1) {
+                bodyBuffer.write(buffer, 0, bytesRead);
+            }
+        }catch (Exception ignored){
         }
     }
 
@@ -116,7 +119,11 @@ public class HttpResponse {
                 throw new RuntimeException("http header error");
             }
             response.statusCode = Integer.parseInt(parts[1]);
-            response.message = parts[2];
+            if (parts.length == 3) {
+                response.message = parts[2];
+            } else {
+                response.message = null;
+            }
         } else {
             int separator = headerLine.indexOf(":");
             if (separator == -1) {

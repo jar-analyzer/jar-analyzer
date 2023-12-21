@@ -6,6 +6,7 @@ import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.utils.DirUtil;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
+import me.n1ar4.y4lang.core.Core;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -15,7 +16,7 @@ import java.nio.file.Paths;
 public class Client {
     private static final Logger logger = LogManager.getLogger();
 
-    public static void run(JCommander commander, BuildCmd buildCmd) {
+    public static void run(JCommander commander, BuildCmd buildCmd, Y4LangCmd y4langCmd) {
         String cmd = commander.getParsedCommand();
         if (cmd == null || cmd.trim().isEmpty()) {
             commander.usage();
@@ -56,6 +57,12 @@ public class Client {
             System.exit(0);
         } else if (cmd.equals("gui")) {
             logger.info("run jar-analyzer gui");
+        } else if (cmd.equals("y4lang")) {
+            String file = y4langCmd.getFile();
+            String[] args = new String[]{file};
+            logger.info("run y4lang script");
+            Core.start(args);
+            System.exit(0);
         } else {
             throw new RuntimeException("invalid params");
         }

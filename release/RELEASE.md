@@ -9,6 +9,10 @@ Steps:
 - Check build bat/sh files
 - Check `pom.xml` version tag
 - Check `build.py` VERSION
+- Check `build.yml` VERSION
+- Github build
+
+Optional:
 - Run `clean.bat`
 - Run `agent/package.bat`
 - Run `package.bat`

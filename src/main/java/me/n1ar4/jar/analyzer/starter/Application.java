@@ -4,7 +4,6 @@ import com.beust.jcommander.JCommander;
 import me.n1ar4.jar.analyzer.cli.BuildCmd;
 import me.n1ar4.jar.analyzer.cli.Client;
 import me.n1ar4.jar.analyzer.cli.StartCmd;
-import me.n1ar4.jar.analyzer.cli.Y4LangCmd;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.JarAnalyzerLaf;
 import me.n1ar4.log.LogLevel;
@@ -17,7 +16,6 @@ public class Application {
     private static final Logger logger = LogManager.getLogger();
     private static final BuildCmd buildCmd = new BuildCmd();
     private static final StartCmd startCmd = new StartCmd();
-    private static final Y4LangCmd y4langCmd = new Y4LangCmd();
 
     /**
      * Main Method
@@ -44,7 +42,6 @@ public class Application {
         JCommander commander = JCommander.newBuilder()
                 .addCommand("build", buildCmd)
                 .addCommand("gui", startCmd)
-                .addCommand("y4lang", y4langCmd)
                 .build();
         try {
             commander.parse(args);
@@ -52,7 +49,7 @@ public class Application {
             commander.usage();
             return;
         }
-        Client.run(commander, buildCmd, y4langCmd);
+        Client.run(commander, buildCmd);
         // RUN GUI
         try {
             // SET LOOK AND FEEL

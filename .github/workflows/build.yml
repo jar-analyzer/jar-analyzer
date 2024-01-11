@@ -8,12 +8,8 @@ jobs:
   build:
     runs-on: windows-2019
     env:
-      VERSION: 2.8
+      VERSION: "2.8"
     steps:
-
-      - name: set version
-        run: echo "VERSION=2.8" >> $GITHUB_ENV
-
       - name: checkout the source
         uses: actions/checkout@v4
         with:

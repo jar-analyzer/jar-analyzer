@@ -30,6 +30,7 @@
         <mybatis.version>3.5.15</mybatis.version>
         <commons.dhcp.version>2.11.0</commons.dhcp.version>
         <jcommander.version>1.82</jcommander.version>
+        <jna.version>5.14.0</jna.version>
         <!-- Maven Build Version -->
         <maven.resources.version>3.3.1</maven.resources.version>
         <maven.assembly.version>3.6.0</maven.assembly.version>
@@ -45,6 +46,16 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna</artifactId>
+            <version>${jna.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna-platform</artifactId>
+            <version>${jna.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.beust</groupId>
             <artifactId>jcommander</artifactId>

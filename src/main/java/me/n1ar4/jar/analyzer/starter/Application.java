@@ -6,6 +6,8 @@ import me.n1ar4.jar.analyzer.cli.Client;
 import me.n1ar4.jar.analyzer.cli.StartCmd;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.JarAnalyzerLaf;
+import me.n1ar4.jar.analyzer.utils.ConsoleUtils;
+import me.n1ar4.jar.analyzer.utils.OSUtil;
 import me.n1ar4.log.LogLevel;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
@@ -34,6 +36,10 @@ public class Application {
      * 　　＞―r￣￣~∠--|
      */
     public static void main(String[] args) {
+        // CHECK WINDOWS
+        if (OSUtil.isWindows()) {
+            ConsoleUtils.setWindowsColorSupport();
+        }
         // SET LOG LEVEL
         LogManager.setLevel(LogLevel.INFO);
         // PRINT LOGO

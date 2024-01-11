@@ -64,10 +64,6 @@
 
 ![](img/0014.png)
 
-支持运行基于 `Java` 的脚本语言 `Y4 Lang`
-
-![](img/0018.png)
-
 方法调用搜索 (支持 `equals/like` 选项，支持黑名单过滤)
 
 ![](img/0012.png)
@@ -160,14 +156,6 @@ java -jar jar-analyzer.jar build --jar 1.jar --del-cache --del-exist
 [代码](src/main/java/me/n1ar4/shell/analyzer)
 
 [文档](doc/TOMCAT.MD)
-
-### Y4-Lang
-
-该项目位于`me.n1ar4.y4lang`中，这是一个简单的脚本语言
-
-[代码](src/main/java/me/n1ar4/y4lang)
-
-[文档](doc/Y4LANG.MD)
 
 ### Y4-HTTP
 

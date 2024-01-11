@@ -1,0 +1,83 @@
+name: jar analyzer build
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  build:
+    runs-on: windows-2019
+    steps:
+
+      - name: checkout the source
+        uses: actions/checkout@v4
+        with:
+          path: jar-analyzer
+
+      - name: set up java 8
+        uses: actions/setup-java@v4
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: set up python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.8'
+
+      - name: build agent
+        run: |
+          cd agent
+          package.bat
+          cd ..
+          mv agent-jar-with-dependencies.jar agent.jar
+        working-directory: jar-analyzer
+
+      - name: build core
+        run: |
+          package.bat
+          mv target\jar-analyzer-2.8-jar-with-dependencies.jar jar-analyzer-2.8.jar
+        working-directory: jar-analyzer
+
+      - name: build release
+        run: |
+          python .\build.py
+        working-directory: jar-analyzer
+
+      - name: zip release
+        run: >
+          zip -r9
+          "jar-analyzer-2.8-windows-system.zip"
+          jar-analyzer-2.8-windows-system;
+          zip -r9
+          "jar-analyzer-2.8-windows-embed.zip"
+          jar-analyzer-2.8-windows-embed;
+          zip -r9
+          "jar-analyzer-2.8-linux.zip"
+          jar-analyzer-2.8-linux;
+        working-directory: jar-analyzer/release
+
+      - name: upload embed artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: jar-analyzer-windows-embed
+          path: jar-analyzer/release/jar-analyzer-2.8-windows-embed.zip
+
+      - name: upload system artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: jar-analyzer-windows-system
+          path: jar-analyzer/release/jar-analyzer-2.8-windows-system.zip
+
+      - name: upload linux artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: jar-analyzer-linux
+          path: jar-analyzer/release/jar-analyzer-2.8-linux.zip
+
+      - name: upload jar artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: jar-analyzer-jar
+          path: jar-analyzer/release/jar-analyzer-2.8.jar

@@ -3,12 +3,13 @@ name: jar analyzer build
 on:
   workflow_dispatch:
 
+env:
+  VERSION: "2.8"
+
 jobs:
 
   build:
     runs-on: windows-2019
-    env:
-      VERSION: "2.8"
     steps:
       - name: checkout the source
         uses: actions/checkout@v4
@@ -75,14 +76,14 @@ jobs:
 
       - name: copy jar
         run: |
-          Copy-Item "target\jar-analyzer-$VERSION-jar-with-dependencies.jar" -Destination "..\release\jar-analyzer-$VERSION.jar"
+          Copy-Item "target\jar-analyzer-${{ env.VERSION }}-jar-with-dependencies.jar" -Destination "..\release\jar-analyzer-${{ env.VERSION }}.jar"
         working-directory: jar-analyzer
 
       - name: unpack jre
         run: >
           dir ;
           $env:Path = "$HOME\cygwin\cygwin64\bin;$env:Path" ;
-          unzip jre.zip -d release\jar-analyzer-$VERSION-windows-embed\
+          unzip jre.zip -d release\jar-analyzer-${{ env.VERSION }}-windows-embed\
         working-directory: jar-analyzer
 
       - name: zip release
@@ -90,14 +91,14 @@ jobs:
           dir ;
           $env:Path = "$HOME\cygwin\cygwin64\bin;$env:Path" ;
           zip -r9
-          "jar-analyzer-$VERSION-windows-system.zip"
-          jar-analyzer-$VERSION-windows-system;
+          "jar-analyzer-${{ env.VERSION }}-windows-system.zip"
+          jar-analyzer-${{ env.VERSION }}-windows-system;
           zip -r9
-          "jar-analyzer-$VERSION-windows-embed.zip"
-          jar-analyzer-$VERSION-windows-embed;
+          "jar-analyzer-${{ env.VERSION }}-windows-embed.zip"
+          jar-analyzer-${{ env.VERSION }}-windows-embed;
           zip -r9
-          "jar-analyzer-$VERSION-linux.zip"
-          jar-analyzer-$VERSION-linux;
+          "jar-analyzer-${{ env.VERSION }}-linux.zip"
+          jar-analyzer-${{ env.VERSION }}-linux;
         working-directory: jar-analyzer/release
 
       - name: upload artifact
@@ -105,7 +106,7 @@ jobs:
         with:
           name: jar-analyzer
           path: |
-            jar-analyzer/release/jar-analyzer-$VERSION-windows-embed.zip
-            jar-analyzer/release/jar-analyzer-$VERSION-windows-system.zip
-            jar-analyzer/release/jar-analyzer-$VERSION-linux.zip
-            jar-analyzer/release/jar-analyzer-$VERSION.jar
+            jar-analyzer/release/jar-analyzer-${{ env.VERSION }}-windows-embed.zip
+            jar-analyzer/release/jar-analyzer-${{ env.VERSION }}-windows-system.zip
+            jar-analyzer/release/jar-analyzer-${{ env.VERSION }}-linux.zip
+            jar-analyzer/release/jar-analyzer-${{ env.VERSION }}.jar

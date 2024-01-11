@@ -63,10 +63,6 @@ Custom `SQL` Query Analysis
 
 ![Custom SQL Query Analysis](../img/0014.png)
 
-A script language based on `Java`
-
-![](../img/0018.png)
-
 Method Call Search (supports `equals/like` options, blacklist filtering)
 
 ![Method Call Search](../img/0012.png)

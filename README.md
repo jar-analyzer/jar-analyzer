@@ -136,10 +136,10 @@ java -jar jar-analyzer.jar build --jar 1.jar --del-cache --del-exist
 
 ## Release 说明
 
-在 `release` 中提供四种下载:
+所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
 
 - 推荐 `embed` 版内置 `JRE 8` 的启动脚本 (**无需另外安装一键启动**)
-- `system` 使用系统 `JDK/JRE` 的启动脚本 (需要自行安装 `JDK/JRE`)
+- `system` 使用系统 `JDK` 的启动脚本 (需要自行安装 `JDK`)
 - `linux` 内置 `shell` 启动脚本 (需要自行安装 `JDK/JRE`)
 - 简单的 `jar` 文件，不提供启动脚本 (使用 `java -jar` 启动)
 

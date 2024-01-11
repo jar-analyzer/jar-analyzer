@@ -6,7 +6,6 @@ import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.utils.DirUtil;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
-import me.n1ar4.y4lang.core.Core;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -61,7 +60,6 @@ public class Client {
             String file = y4langCmd.getFile();
             String[] args = new String[]{file};
             logger.info("run y4lang script");
-            Core.start(args);
             System.exit(0);
         } else {
             throw new RuntimeException("invalid params");

@@ -6,7 +6,6 @@ import me.n1ar4.jar.analyzer.plugins.encoder.EncodeUtilForm;
 import me.n1ar4.jar.analyzer.plugins.listener.ListenUtilForm;
 import me.n1ar4.jar.analyzer.plugins.repeater.HttpUtilForm;
 import me.n1ar4.jar.analyzer.plugins.sqlite.SQLiteForm;
-import me.n1ar4.jar.analyzer.plugins.y4lang.Y4LangForm;
 
 public class PluginsAction {
     public static void run() {
@@ -19,7 +18,5 @@ public class PluginsAction {
         MainForm.getInstance().getRepeaterBtn().addActionListener(e -> HttpUtilForm.start());
 
         MainForm.getInstance().getListenerBtn().addActionListener(e -> ListenUtilForm.start());
-
-        MainForm.getInstance().getY4langButton().addActionListener(e-> Y4LangForm.start());
     }
 }

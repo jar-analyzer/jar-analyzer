@@ -76,7 +76,9 @@ jobs:
 
       - name: copy jar
         run: |
-          Copy-Item "target\jar-analyzer-${{ env.VERSION }}-jar-with-dependencies.jar" -Destination "..\release\jar-analyzer-${{ env.VERSION }}.jar"
+          Copy-Item "target\jar-analyzer-${{ env.VERSION }}-jar-with-dependencies.jar" -Destination "..\release"
+          cd release
+          mv jar-analyzer-${{ env.VERSION }}-jar-with-dependencies.jar jar-analyzer-${{ env.VERSION }}.jar
         working-directory: jar-analyzer
 
       - name: unpack jre

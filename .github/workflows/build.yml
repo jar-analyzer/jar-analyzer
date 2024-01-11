@@ -71,6 +71,8 @@ jobs:
 
       - name: zip release
         run: >
+          dir ;
+          $env:Path = "$HOME\cygwin\cygwin64\bin;$env:Path" ;
           zip -r9
           "jar-analyzer-2.8-windows-system.zip"
           jar-analyzer-2.8-windows-system;

@@ -29,14 +29,14 @@ jobs:
       - name: build agent
         run: |
           cd agent
-          package.bat
+          .\package.bat
           cd ..
           mv agent-jar-with-dependencies.jar agent.jar
         working-directory: jar-analyzer
 
       - name: build core
         run: |
-          package.bat
+          .\package.bat
           mv target\jar-analyzer-2.8-jar-with-dependencies.jar jar-analyzer-2.8.jar
         working-directory: jar-analyzer
 

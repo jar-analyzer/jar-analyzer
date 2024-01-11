@@ -25,8 +25,8 @@
         <flatlaf.version>3.2.5</flatlaf.version>
         <idea.forms.version>7.0.3</idea.forms.version>
         <syntax.version>3.3.4</syntax.version>
-        <slf4j.api.version>2.0.8</slf4j.api.version>
-        <slf4j.simple.version>2.0.9</slf4j.simple.version>
+        <slf4j.api.version>2.0.11</slf4j.api.version>
+        <slf4j.simple.version>2.0.11</slf4j.simple.version>
         <mybatis.version>3.5.15</mybatis.version>
         <commons.dhcp.version>2.11.0</commons.dhcp.version>
         <jcommander.version>1.82</jcommander.version>

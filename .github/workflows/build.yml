@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  VERSION: "2.8"
+  VERSION: "2.9"
 
 jobs:
 

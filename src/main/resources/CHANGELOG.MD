@@ -4,6 +4,7 @@
 
 更新日志：
 
+- [BUG] 解决不可读字符串导致的 `NullPointerException`
 - [BUG] 使用`JNA`解决部分`Windows`颜色显示问题
 - [优化] 使用`Github Actions`构建
 - [优化] 整体优化错误日志的输出

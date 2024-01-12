@@ -30,6 +30,10 @@ public class StringMethodVisitor extends MethodVisitor {
         this.methodMap = methodMap;
     }
 
+    public static boolean isPrintable(String str) {
+        return str.matches("\\A\\p{Print}+\\z");
+    }
+
     @Override
     public void visitLdcInsn(Object o) {
         if (o instanceof String) {
@@ -46,6 +50,9 @@ public class StringMethodVisitor extends MethodVisitor {
             }
             String str = (String) o;
             if (str.trim().isEmpty()) {
+                return;
+            }
+            if (!isPrintable(str)) {
                 return;
             }
             List<String> mList = strMap.getOrDefault(mr.getHandle(), new ArrayList<>());

@@ -4,6 +4,7 @@
 
 更新日志：
 
+- [安全] 修复`HackingFernFlower`提出的拒绝服务漏洞
 - [功能] 支持`Hessian`反序列化一键搜索
 - [功能] 支持可能的解压操作一键搜索(`Zip Slip`相关)
 - [BUG] 解决不可读字符串导致的`NullPointerException`
@@ -17,6 +18,7 @@
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
+- Y4tacker (https://github.com/Y4tacker)
 
 所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
 

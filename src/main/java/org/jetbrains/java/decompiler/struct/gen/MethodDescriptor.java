@@ -37,10 +37,13 @@ public class MethodDescriptor {
             }
             break;
           case 'L':
+            // FIX SECURITY ISSUE
             ind = parameters.indexOf(";", index);
-            lst.add(parameters.substring(indexFrom < 0 ? index : indexFrom, ind + 1));
-            index = ind;
-            indexFrom = -1;
+            if (ind != -1) {
+              lst.add(parameters.substring(indexFrom < 0 ? index : indexFrom, ind + 1));
+              index = ind;
+              indexFrom = -1;
+            }
             break;
           default:
             lst.add(parameters.substring(indexFrom < 0 ? index : indexFrom, index + 1));

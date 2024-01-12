@@ -177,7 +177,8 @@ public class MainForm {
     private JButton cleanButton;
     private JButton showStringListButton;
     private JButton fastjsonButton;
-    private JButton y4langButton;
+    private JButton unzipButton;
+    private JButton hessianButton;
     private static MainForm instance;
     private static ConfigFile config;
     private static CoreEngine engine;
@@ -541,8 +542,12 @@ public class MainForm {
         return fastjsonButton;
     }
 
-    public JButton getY4langButton() {
-        return y4langButton;
+    public JButton getUnzipButton() {
+        return unzipButton;
+    }
+
+    public JButton getHessianButton() {
+        return hessianButton;
     }
 
     private void resolveConfig() {
@@ -660,6 +665,8 @@ public class MainForm {
         ReadObjectVulAction.register();
         ScriptEngineAction.register();
         FastjsonVulAction.register();
+        ZIPVulAction.register();
+        HessianAction.register();
 
         codeArea.addKeyListener(new GlobalKeyListener());
         instance.allMethodList.addKeyListener(new GlobalKeyListener());
@@ -1052,6 +1059,12 @@ public class MainForm {
         fastjsonButton = new JButton();
         fastjsonButton.setText("Fastjson");
         javaVulSearchPanel.add(fastjsonButton, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        unzipButton = new JButton();
+        unzipButton.setText("Unzip Code");
+        javaVulSearchPanel.add(unzipButton, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        hessianButton = new JButton();
+        hessianButton.setText("Hessian readObject");
+        javaVulSearchPanel.add(hessianButton, new GridConstraints(4, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer3 = new Spacer();
         advancePanel.add(spacer3, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         piPanel = new JPanel();

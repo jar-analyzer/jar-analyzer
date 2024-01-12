@@ -2,6 +2,10 @@
 
 ## 2.9
 
+安全更新，修复了一处比较严重的拒绝服务漏洞
+
+安全公告：[GHSA-43rf-3hm4-hv5f](https://github.com/jar-analyzer/jar-analyzer/security/advisories/GHSA-43rf-3hm4-hv5f)
+
 更新日志：
 
 - [安全] 修复`HackingFernFlower`提出的拒绝服务漏洞

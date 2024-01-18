@@ -4,11 +4,12 @@
 
 更新日志：
 
-- todo
+- [功能] 分析`Spring`时根据`Controller`注解显示完整路径
 
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
+- veo (https://github.com/veo)
 
 所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
 

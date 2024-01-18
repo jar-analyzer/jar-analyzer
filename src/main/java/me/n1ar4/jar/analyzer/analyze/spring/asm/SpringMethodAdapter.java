@@ -25,7 +25,7 @@ public class SpringMethodAdapter extends MethodVisitor {
     private final String owner;
     private final String desc;
 
-    private SpringPathAnnoAdapter pathAnnoAdapter;
+    private SpringPathAnnoAdapter pathAnnoAdapter = null;
 
     public SpringMethodAdapter(String name, String descriptor, String owner,
                                int api, MethodVisitor methodVisitor,
@@ -68,8 +68,14 @@ public class SpringMethodAdapter extends MethodVisitor {
     @Override
     public void visitCode() {
         if (this.currentMapping != null) {
-            if (!pathAnnoAdapter.getResults().isEmpty()) {
-                currentMapping.setPath(pathAnnoAdapter.getResults().get(0));
+            if (pathAnnoAdapter != null) {
+                if (!pathAnnoAdapter.getResults().isEmpty()) {
+                    if (controller.getBasePath() != null && !controller.getBasePath().isEmpty()) {
+                        currentMapping.setPath(controller.getBasePath() + pathAnnoAdapter.getResults().get(0));
+                    } else {
+                        currentMapping.setPath(pathAnnoAdapter.getResults().get(0));
+                    }
+                }
             }
         }
         Type[] argTypes = Type.getArgumentTypes(this.desc);

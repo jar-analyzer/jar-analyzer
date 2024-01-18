@@ -4,6 +4,7 @@ import me.n1ar4.jar.analyzer.analyze.spring.SpringConstant;
 import me.n1ar4.jar.analyzer.analyze.spring.SpringController;
 import me.n1ar4.jar.analyzer.core.ClassReference;
 import me.n1ar4.jar.analyzer.core.MethodReference;
+import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -19,6 +20,7 @@ public class SpringClassVisitor extends ClassVisitor {
     private boolean isSpring;
     private SpringController currentController;
     private String name;
+    private SpringPathAnnoAdapter pathAnnoAdapter = null;
 
     public SpringClassVisitor(List<SpringController> controllers,
                               Map<ClassReference.Handle, ClassReference> classMap,
@@ -27,6 +29,16 @@ public class SpringClassVisitor extends ClassVisitor {
         this.methodMap = methodMap;
         this.controllers = controllers;
         this.classMap = classMap;
+    }
+
+    @Override
+    public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
+        AnnotationVisitor av = super.visitAnnotation(descriptor, visible);
+        if (descriptor.equals(SpringConstant.RequestMappingAnno)) {
+            this.pathAnnoAdapter = new SpringPathAnnoAdapter(Opcodes.ASM9, av);
+            return this.pathAnnoAdapter;
+        }
+        return av;
     }
 
     @Override
@@ -42,6 +54,11 @@ public class SpringClassVisitor extends ClassVisitor {
             currentController.setClassReference(classMap.get(new ClassReference.Handle(name)));
             currentController.setClassName(new ClassReference.Handle(name));
             currentController.setRest(!annotations.contains(SpringConstant.ControllerAnno));
+            if (pathAnnoAdapter != null) {
+                if (!pathAnnoAdapter.getResults().isEmpty()) {
+                    currentController.setBasePath(pathAnnoAdapter.getResults().get(0));
+                }
+            }
         }
         super.visit(version, access, name, signature, superName, interfaces);
     }
@@ -53,6 +70,11 @@ public class SpringClassVisitor extends ClassVisitor {
         if (this.isSpring) {
             if (this.name.equals("<init>") || this.name.equals("<clinit>")) {
                 return mv;
+            }
+            if (pathAnnoAdapter != null) {
+                if (!pathAnnoAdapter.getResults().isEmpty()) {
+                    currentController.setBasePath(pathAnnoAdapter.getResults().get(0));
+                }
             }
             return new SpringMethodAdapter(name, descriptor, this.name, Opcodes.ASM9, mv,
                     currentController, this.methodMap);

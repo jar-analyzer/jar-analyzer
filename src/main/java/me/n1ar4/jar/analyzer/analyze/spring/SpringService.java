@@ -25,6 +25,7 @@ public class SpringService {
                 ClassReader cr = new ClassReader(file.getFile());
                 cr.accept(mcv, ClassReader.EXPAND_FRAMES);
             } catch (Exception e) {
+                e.printStackTrace();
                 logger.error("error: {}", e.getMessage());
             }
         }

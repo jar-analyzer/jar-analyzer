@@ -30,7 +30,7 @@ jobs:
 
       - name: restore cygwin installer from cache
         id: cygwin-installer
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/cygwin/setup-x86_64.exe
           key: cygwin-installer
@@ -43,7 +43,7 @@ jobs:
 
       - name: restore cygwin packages from cache
         id: cygwin
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/cygwin/packages
           key: cygwin-packages-${{ runner.os }}-v1

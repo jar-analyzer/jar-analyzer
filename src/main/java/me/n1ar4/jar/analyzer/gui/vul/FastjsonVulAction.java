@@ -60,8 +60,6 @@ public class FastjsonVulAction {
             conditions.add(fjc);
 
             new Thread(() -> CoreHelper.refreshCallSearchList(conditions)).start();
-
-            MainForm.getInstance().getTabbedPanel().setSelectedIndex(1);
         });
     }
 }

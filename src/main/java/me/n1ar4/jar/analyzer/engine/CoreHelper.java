@@ -131,11 +131,14 @@ public class CoreHelper {
         if (methodsList.isEmpty() || methodsList.size() == 0) {
             JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                     "result is null");
+            return;
         }
 
         MainForm.getInstance().getSearchList().setModel(methodsList);
         MainForm.getInstance().getSearchList().repaint();
         MainForm.getInstance().getSearchList().revalidate();
+
+        MainForm.getInstance().getTabbedPanel().setSelectedIndex(1);
     }
 
     public static void refreshCallSearchList(List<SearchCondition> conditions) {

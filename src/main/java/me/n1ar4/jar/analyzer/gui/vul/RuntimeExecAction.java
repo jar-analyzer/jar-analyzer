@@ -17,8 +17,6 @@ public class RuntimeExecAction {
 
             new Thread(() -> CoreHelper.refreshCallSearch(
                     className, methodName, null)).start();
-
-            MainForm.getInstance().getTabbedPanel().setSelectedIndex(1);
         });
     }
 }

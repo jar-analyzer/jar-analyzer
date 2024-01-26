@@ -18,8 +18,6 @@ public class BCELVulAction {
 
             new Thread(() -> CoreHelper.refreshCallSearch(
                     className, methodName, methodDesc)).start();
-
-            MainForm.getInstance().getTabbedPanel().setSelectedIndex(1);
         });
     }
 }

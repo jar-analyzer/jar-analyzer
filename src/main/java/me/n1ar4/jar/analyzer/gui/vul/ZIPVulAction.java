@@ -29,8 +29,6 @@ public class ZIPVulAction {
             conditions.add(zg);
 
             new Thread(() -> CoreHelper.refreshCallSearchList(conditions)).start();
-
-            MainForm.getInstance().getTabbedPanel().setSelectedIndex(1);
         });
     }
 }

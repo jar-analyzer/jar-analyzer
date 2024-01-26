@@ -37,8 +37,6 @@ public class HessianAction {
             conditions.add(h2r);
 
             new Thread(() -> CoreHelper.refreshCallSearchList(conditions)).start();
-
-            MainForm.getInstance().getTabbedPanel().setSelectedIndex(1);
         });
     }
 }

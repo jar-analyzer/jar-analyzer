@@ -17,8 +17,6 @@ public class DefineClassAction {
 
             new Thread(() -> CoreHelper.refreshCallSearch(
                     null, methodName, methodDesc)).start();
-
-            MainForm.getInstance().getTabbedPanel().setSelectedIndex(1);
         });
     }
 }

@@ -23,10 +23,24 @@ public class MenuUtil {
     private static final Logger logger = LogManager.getLogger();
     private static final JCheckBoxMenuItem showInnerConfig = new JCheckBoxMenuItem("show inner class");
     private static final JCheckBoxMenuItem fixClassPathConfig = new JCheckBoxMenuItem("fix class path");
+    private static final JCheckBoxMenuItem sortedByMethodConfig = new JCheckBoxMenuItem("sort results by method name");
+    private static final JCheckBoxMenuItem sortedByClassConfig = new JCheckBoxMenuItem("sort results by class name");
 
     static {
         showInnerConfig.setState(false);
         fixClassPathConfig.setState(false);
+        sortedByMethodConfig.setState(false);
+        sortedByClassConfig.setState(true);
+
+        sortedByMethodConfig.addActionListener(e->{
+            sortedByMethodConfig.setState(sortedByMethodConfig.getState());
+            sortedByClassConfig.setState(!sortedByMethodConfig.getState());
+        });
+
+        sortedByClassConfig.addActionListener(e->{
+            sortedByClassConfig.setState(sortedByClassConfig.getState());
+            sortedByMethodConfig.setState(!sortedByClassConfig.getState());
+        });
     }
 
     public static JCheckBoxMenuItem getShowInnerConfig() {
@@ -35,6 +49,14 @@ public class MenuUtil {
 
     public static JCheckBoxMenuItem getFixClassPathConfig() {
         return fixClassPathConfig;
+    }
+
+    public static boolean sortedByMethod() {
+        return sortedByMethodConfig.getState();
+    }
+
+    public static boolean sortedByClass() {
+        return sortedByClassConfig.getState();
     }
 
     public static JMenuBar createMenuBar() {
@@ -50,7 +72,7 @@ public class MenuUtil {
         try {
             JMenu configMenu = new JMenu("tomcat-analyzer");
             JMenuItem start = new JMenuItem("start");
-            start.addActionListener(e-> ShellForm.start0());
+            start.addActionListener(e -> ShellForm.start0());
             configMenu.add(start);
             return configMenu;
         } catch (Exception ex) {
@@ -64,6 +86,8 @@ public class MenuUtil {
             JMenu configMenu = new JMenu("config");
             configMenu.add(showInnerConfig);
             configMenu.add(fixClassPathConfig);
+            configMenu.add(sortedByMethodConfig);
+            configMenu.add(sortedByClassConfig);
             return configMenu;
         } catch (Exception ex) {
             logger.error("error: {}", ex.toString());

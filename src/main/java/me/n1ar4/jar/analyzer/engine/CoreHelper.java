@@ -5,6 +5,7 @@ import me.n1ar4.jar.analyzer.entity.MethodResult;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.render.AllMethodsRender;
 import me.n1ar4.jar.analyzer.gui.util.ListParser;
+import me.n1ar4.jar.analyzer.gui.util.MenuUtil;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -33,7 +34,13 @@ public class CoreHelper {
 
     public static void refreshCallers(String className, String methodName, String methodDesc) {
         ArrayList<MethodResult> results = MainForm.getEngine().getCallers(className, methodName, methodDesc);
-        results.sort(Comparator.comparing(MethodResult::getMethodName));
+        if (MenuUtil.sortedByMethod()) {
+            results.sort(Comparator.comparing(MethodResult::getMethodName));
+        } else if (MenuUtil.sortedByClass()) {
+            results.sort(Comparator.comparing(MethodResult::getClassName));
+        } else {
+            throw new RuntimeException("invalid sort");
+        }
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
         for (MethodResult result : results) {
             methodsList.addElement(result);
@@ -45,7 +52,13 @@ public class CoreHelper {
 
     public static void refreshImpls(String className, String methodName, String methodDesc) {
         ArrayList<MethodResult> results = MainForm.getEngine().getImpls(className, methodName, methodDesc);
-        results.sort(Comparator.comparing(MethodResult::getMethodName));
+        if (MenuUtil.sortedByMethod()) {
+            results.sort(Comparator.comparing(MethodResult::getMethodName));
+        } else if (MenuUtil.sortedByClass()) {
+            results.sort(Comparator.comparing(MethodResult::getClassName));
+        } else {
+            throw new RuntimeException("invalid sort");
+        }
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
         for (MethodResult result : results) {
             methodsList.addElement(result);
@@ -57,7 +70,13 @@ public class CoreHelper {
 
     public static void refreshSuperImpls(String className, String methodName, String methodDesc) {
         ArrayList<MethodResult> results = MainForm.getEngine().getSuperImpls(className, methodName, methodDesc);
-        results.sort(Comparator.comparing(MethodResult::getMethodName));
+        if (MenuUtil.sortedByMethod()) {
+            results.sort(Comparator.comparing(MethodResult::getMethodName));
+        } else if (MenuUtil.sortedByClass()) {
+            results.sort(Comparator.comparing(MethodResult::getClassName));
+        } else {
+            throw new RuntimeException("invalid sort");
+        }
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
         for (MethodResult result : results) {
             methodsList.addElement(result);
@@ -69,7 +88,13 @@ public class CoreHelper {
 
     public static void refreshCallee(String className, String methodName, String methodDesc) {
         ArrayList<MethodResult> results = MainForm.getEngine().getCallee(className, methodName, methodDesc);
-        results.sort(Comparator.comparing(MethodResult::getMethodName));
+        if (MenuUtil.sortedByMethod()) {
+            results.sort(Comparator.comparing(MethodResult::getMethodName));
+        } else if (MenuUtil.sortedByClass()) {
+            results.sort(Comparator.comparing(MethodResult::getClassName));
+        } else {
+            throw new RuntimeException("invalid sort");
+        }
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
         for (MethodResult result : results) {
             methodsList.addElement(result);
@@ -122,7 +147,14 @@ public class CoreHelper {
             }
         }
 
-        newReulst.sort(Comparator.comparing(MethodResult::getMethodName));
+        if (MenuUtil.sortedByMethod()) {
+            newReulst.sort(Comparator.comparing(MethodResult::getMethodName));
+        } else if (MenuUtil.sortedByClass()) {
+            newReulst.sort(Comparator.comparing(MethodResult::getClassName));
+        } else {
+            throw new RuntimeException("invalid sort");
+        }
+
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
         for (MethodResult result : newReulst) {
             methodsList.addElement(result);
@@ -173,7 +205,14 @@ public class CoreHelper {
             }
         }
 
-        newReulst.sort(Comparator.comparing(MethodResult::getMethodName));
+        if (MenuUtil.sortedByMethod()) {
+            newReulst.sort(Comparator.comparing(MethodResult::getMethodName));
+        } else if (MenuUtil.sortedByClass()) {
+            newReulst.sort(Comparator.comparing(MethodResult::getClassName));
+        } else {
+            throw new RuntimeException("invalid sort");
+        }
+
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
         for (MethodResult result : newReulst) {
             methodsList.addElement(result);
@@ -218,7 +257,14 @@ public class CoreHelper {
             }
         }
 
-        newReulst.sort(Comparator.comparing(MethodResult::getMethodName));
+        if (MenuUtil.sortedByMethod()) {
+            newReulst.sort(Comparator.comparing(MethodResult::getMethodName));
+        } else if (MenuUtil.sortedByClass()) {
+            newReulst.sort(Comparator.comparing(MethodResult::getClassName));
+        } else {
+            throw new RuntimeException("invalid sort");
+        }
+
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
         for (MethodResult result : newReulst) {
             methodsList.addElement(result);
@@ -259,7 +305,14 @@ public class CoreHelper {
             }
         }
 
-        newReulst.sort(Comparator.comparing(MethodResult::getMethodName));
+        if (MenuUtil.sortedByMethod()) {
+            newReulst.sort(Comparator.comparing(MethodResult::getMethodName));
+        } else if (MenuUtil.sortedByClass()) {
+            newReulst.sort(Comparator.comparing(MethodResult::getClassName));
+        } else {
+            throw new RuntimeException("invalid sort");
+        }
+
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
         for (MethodResult result : newReulst) {
             methodsList.addElement(result);
@@ -315,7 +368,14 @@ public class CoreHelper {
             }
         }
 
-        newReulst.sort(Comparator.comparing(MethodResult::getMethodName));
+        if (MenuUtil.sortedByMethod()) {
+            newReulst.sort(Comparator.comparing(MethodResult::getMethodName));
+        } else if (MenuUtil.sortedByClass()) {
+            newReulst.sort(Comparator.comparing(MethodResult::getClassName));
+        } else {
+            throw new RuntimeException("invalid sort");
+        }
+
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
         for (MethodResult result : newReulst) {
             methodsList.addElement(result);
@@ -360,7 +420,14 @@ public class CoreHelper {
             }
         }
 
-        newReulst.sort(Comparator.comparing(MethodResult::getMethodName));
+        if (MenuUtil.sortedByMethod()) {
+            newReulst.sort(Comparator.comparing(MethodResult::getMethodName));
+        } else if (MenuUtil.sortedByClass()) {
+            newReulst.sort(Comparator.comparing(MethodResult::getClassName));
+        } else {
+            throw new RuntimeException("invalid sort");
+        }
+
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
         for (MethodResult result : newReulst) {
             methodsList.addElement(result);

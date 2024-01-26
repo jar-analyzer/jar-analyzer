@@ -1,9 +1,10 @@
 package org.sqlite.jdbc4;
 
-import java.sql.SQLException;
-import java.sql.Statement;
 import org.sqlite.SQLiteConnection;
 import org.sqlite.jdbc3.JDBC3Statement;
+
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class JDBC4Statement extends JDBC3Statement implements Statement {
     public JDBC4Statement(SQLiteConnection conn) {

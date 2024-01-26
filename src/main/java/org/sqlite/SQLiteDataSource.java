@@ -24,14 +24,15 @@
 // --------------------------------------
 package org.sqlite;
 
+import org.sqlite.SQLiteConfig.*;
+
+import javax.sql.DataSource;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.util.Properties;
 import java.util.logging.Logger;
-import javax.sql.DataSource;
-import org.sqlite.SQLiteConfig.*;
 
 /**
  * Provides {@link DataSource} API for configuring SQLite database connection

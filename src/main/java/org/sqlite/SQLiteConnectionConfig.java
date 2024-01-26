@@ -1,12 +1,13 @@
 package org.sqlite;
 
-import static org.sqlite.SQLiteConfig.DEFAULT_DATE_STRING_FORMAT;
+import org.sqlite.date.FastDateFormat;
 
 import java.sql.Connection;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Properties;
-import org.sqlite.date.FastDateFormat;
+
+import static org.sqlite.SQLiteConfig.DEFAULT_DATE_STRING_FORMAT;
 
 /** Connection local configurations */
 public class SQLiteConnectionConfig implements Cloneable {

@@ -16,17 +16,13 @@
 
 package org.sqlite.core;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.sqlite.*;
+
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.sqlite.BusyHandler;
-import org.sqlite.Collation;
-import org.sqlite.Function;
-import org.sqlite.ProgressHandler;
-import org.sqlite.SQLiteConfig;
-import org.sqlite.SQLiteJDBCLoader;
 
 /** This class provides a thin JNI layer over the SQLite3 C API. */
 public final class NativeDB extends DB {

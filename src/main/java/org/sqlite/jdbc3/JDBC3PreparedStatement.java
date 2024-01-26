@@ -1,30 +1,17 @@
 package org.sqlite.jdbc3;
 
+import org.sqlite.SQLiteConnection;
+import org.sqlite.core.CorePreparedStatement;
+import org.sqlite.core.DB;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URL;
-import java.sql.Array;
-import java.sql.Blob;
-import java.sql.Clob;
-import java.sql.Date;
-import java.sql.JDBCType;
-import java.sql.ParameterMetaData;
-import java.sql.Ref;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.SQLFeatureNotSupportedException;
-import java.sql.Statement;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.sql.Types;
+import java.sql.*;
 import java.util.Calendar;
-import org.sqlite.SQLiteConnection;
-import org.sqlite.core.CorePreparedStatement;
-import org.sqlite.core.DB;
 
 public abstract class JDBC3PreparedStatement extends CorePreparedStatement {
 

@@ -1,11 +1,12 @@
 package org.sqlite.jdbc4;
 
+import org.sqlite.SQLiteConnection;
+import org.sqlite.jdbc3.JDBC3DatabaseMetaData;
+
 import java.sql.ResultSet;
 import java.sql.RowIdLifetime;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
-import org.sqlite.SQLiteConnection;
-import org.sqlite.jdbc3.JDBC3DatabaseMetaData;
 
 public class JDBC4DatabaseMetaData extends JDBC3DatabaseMetaData {
     public JDBC4DatabaseMetaData(SQLiteConnection conn) {

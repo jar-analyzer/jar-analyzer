@@ -13,38 +13,25 @@
  *--------------------------------------------------------------------------*/
 package org.sqlite.javax;
 
+import org.sqlite.SQLiteConnection;
+import org.sqlite.core.DB;
+import org.sqlite.jdbc4.JDBC4PooledConnection;
+import org.sqlite.jdbc4.JDBC4PreparedStatement;
+import org.sqlite.jdbc4.JDBC4Statement;
+
+import javax.sql.ConnectionEvent;
+import javax.sql.ConnectionEventListener;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.sql.Array;
-import java.sql.Blob;
-import java.sql.CallableStatement;
-import java.sql.Clob;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.NClob;
-import java.sql.PreparedStatement;
-import java.sql.SQLClientInfoException;
-import java.sql.SQLException;
-import java.sql.SQLWarning;
-import java.sql.SQLXML;
-import java.sql.Savepoint;
-import java.sql.Statement;
-import java.sql.Struct;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicBoolean;
-import javax.sql.ConnectionEvent;
-import javax.sql.ConnectionEventListener;
-import org.sqlite.SQLiteConnection;
-import org.sqlite.core.DB;
-import org.sqlite.jdbc4.JDBC4PooledConnection;
-import org.sqlite.jdbc4.JDBC4PreparedStatement;
-import org.sqlite.jdbc4.JDBC4Statement;
 
 public class SQLitePooledConnection extends JDBC4PooledConnection {
 

@@ -16,11 +16,12 @@
 
 package org.sqlite;
 
+import org.slf4j.LoggerFactory;
+import org.sqlite.jdbc4.JDBC4Connection;
+
 import java.sql.*;
 import java.util.Properties;
 import java.util.logging.Logger;
-import org.slf4j.LoggerFactory;
-import org.sqlite.jdbc4.JDBC4Connection;
 
 public class JDBC implements Driver {
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(JDBC.class);

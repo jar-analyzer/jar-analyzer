@@ -1,17 +1,9 @@
 package org.sqlite.jdbc4;
 
-import java.sql.Array;
-import java.sql.Blob;
-import java.sql.Clob;
-import java.sql.NClob;
-import java.sql.PreparedStatement;
-import java.sql.SQLClientInfoException;
-import java.sql.SQLException;
-import java.sql.SQLFeatureNotSupportedException;
-import java.sql.SQLXML;
-import java.sql.Statement;
-import java.util.Properties;
 import org.sqlite.jdbc3.JDBC3Connection;
+
+import java.sql.*;
+import java.util.Properties;
 
 public class JDBC4Connection extends JDBC3Connection {
 

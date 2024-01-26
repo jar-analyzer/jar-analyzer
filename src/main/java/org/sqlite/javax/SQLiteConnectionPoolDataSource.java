@@ -13,10 +13,11 @@
  *--------------------------------------------------------------------------*/
 package org.sqlite.javax;
 
-import java.sql.SQLException;
-import javax.sql.PooledConnection;
 import org.sqlite.SQLiteConfig;
 import org.sqlite.SQLiteDataSource;
+
+import javax.sql.PooledConnection;
+import java.sql.SQLException;
 
 public class SQLiteConnectionPoolDataSource extends SQLiteDataSource
         implements javax.sql.ConnectionPoolDataSource {

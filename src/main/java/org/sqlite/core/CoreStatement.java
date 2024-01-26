@@ -15,12 +15,13 @@
  */
 package org.sqlite.core;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import org.sqlite.SQLiteConnection;
 import org.sqlite.SQLiteConnectionConfig;
 import org.sqlite.jdbc3.JDBC3Connection;
 import org.sqlite.jdbc4.JDBC4ResultSet;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public abstract class CoreStatement implements Codes {
     public final SQLiteConnection conn;

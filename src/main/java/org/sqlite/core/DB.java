@@ -15,21 +15,14 @@
  */
 package org.sqlite.core;
 
+import org.sqlite.*;
+
 import java.sql.BatchUpdateException;
 import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
-import org.sqlite.BusyHandler;
-import org.sqlite.Collation;
-import org.sqlite.Function;
-import org.sqlite.ProgressHandler;
-import org.sqlite.SQLiteCommitListener;
-import org.sqlite.SQLiteConfig;
-import org.sqlite.SQLiteErrorCode;
-import org.sqlite.SQLiteException;
-import org.sqlite.SQLiteUpdateListener;
 
 /*
  * This class is the interface to SQLite. It provides some helper functions

@@ -24,6 +24,12 @@
 // --------------------------------------
 package org.sqlite;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.sqlite.util.LibraryLoaderUtil;
+import org.sqlite.util.OSInfo;
+import org.sqlite.util.StringUtils;
+
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
@@ -39,11 +45,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
 import java.util.stream.Stream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.sqlite.util.LibraryLoaderUtil;
-import org.sqlite.util.OSInfo;
-import org.sqlite.util.StringUtils;
 
 /**
  * Set the system properties, org.sqlite.lib.path, org.sqlite.lib.name, appropriately so that the

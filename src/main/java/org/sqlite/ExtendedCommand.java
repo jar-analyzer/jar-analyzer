@@ -9,10 +9,11 @@
 // --------------------------------------
 package org.sqlite;
 
+import org.sqlite.core.DB;
+
 import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.sqlite.core.DB;
 
 /**
  * parsing SQLite specific extension of SQL command

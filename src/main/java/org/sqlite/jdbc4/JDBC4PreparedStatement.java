@@ -1,17 +1,12 @@
 package org.sqlite.jdbc4;
 
-import java.io.InputStream;
-import java.io.Reader;
-import java.sql.NClob;
-import java.sql.ParameterMetaData;
-import java.sql.PreparedStatement;
-import java.sql.RowId;
-import java.sql.SQLException;
-import java.sql.SQLFeatureNotSupportedException;
-import java.sql.SQLXML;
-import java.util.Arrays;
 import org.sqlite.SQLiteConnection;
 import org.sqlite.jdbc3.JDBC3PreparedStatement;
+
+import java.io.InputStream;
+import java.io.Reader;
+import java.sql.*;
+import java.util.Arrays;
 
 public class JDBC4PreparedStatement extends JDBC3PreparedStatement
         implements PreparedStatement, ParameterMetaData {

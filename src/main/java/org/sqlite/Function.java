@@ -15,10 +15,11 @@
  */
 package org.sqlite;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import org.sqlite.core.Codes;
 import org.sqlite.core.DB;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 
 /**
  * Provides an interface for creating SQLite user-defined functions.

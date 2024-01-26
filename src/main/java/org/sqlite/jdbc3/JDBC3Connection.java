@@ -1,22 +1,15 @@
 package org.sqlite.jdbc3;
 
-import java.sql.CallableStatement;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.SQLFeatureNotSupportedException;
-import java.sql.SQLWarning;
-import java.sql.Savepoint;
-import java.sql.Statement;
-import java.sql.Struct;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-import java.util.concurrent.atomic.AtomicInteger;
 import org.sqlite.SQLiteConfig;
 import org.sqlite.SQLiteConfig.TransactionMode;
 import org.sqlite.SQLiteConnection;
 import org.sqlite.SQLiteOpenMode;
+
+import java.sql.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class JDBC3Connection extends SQLiteConnection {
     private final AtomicInteger savePoint = new AtomicInteger(0);

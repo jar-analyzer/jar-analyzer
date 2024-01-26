@@ -1,8 +1,6 @@
 package me.n1ar4.jar.analyzer.utils;
 
 import me.n1ar4.jar.analyzer.starter.Const;
-import me.n1ar4.log.LogManager;
-import me.n1ar4.log.Logger;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -16,7 +14,6 @@ import java.nio.file.Paths;
  * JNI Utils
  */
 public class JNIUtil {
-    private static final Logger logger = LogManager.getLogger();
     private static final String lib = "java.library.path";
 
     /**
@@ -32,7 +29,7 @@ public class JNIUtil {
             sysPathsField.set(null, null);
             return true;
         } catch (Exception ex) {
-            logger.error("delete classloader sys_paths error: {}", ex.toString());
+            System.out.printf("[-] delete classloader sys_paths error: %s\n", ex.toString());
         }
         return false;
     }
@@ -46,11 +43,11 @@ public class JNIUtil {
     public static boolean loadLib(String path) {
         Path p = Paths.get(path);
         if (!Files.exists(p)) {
-            logger.error("load lib error: file not found");
+            System.out.println("[-] load lib error: file not found");
             return false;
         }
         if (Files.isDirectory(p)) {
-            logger.error("load lib error: input file is a dir");
+            System.out.println("[-] load lib error: input file is a dir");
             return false;
         }
         String os = System.getProperty("os.name").toLowerCase();
@@ -64,19 +61,19 @@ public class JNIUtil {
             }
             String dll = p.toFile().getName().toLowerCase();
             if (!dll.endsWith(".dll")) {
-                logger.error("load lib error: must be a dll file");
+                System.out.println("[-] load lib error: must be a dll file");
                 return false;
             }
-            logger.info("load library: " + dll);
+            System.out.println("[*] load library: " + dll);
             System.load(p.toFile().getAbsolutePath());
         } else {
             String so = p.toFile().getAbsolutePath();
             if (!so.endsWith(".so")) {
-                logger.error("must be a so file");
+                System.out.println("[-] must be a so file");
                 return false;
             }
             String outputName = p.toFile().getName().split("\\.so")[0].trim();
-            logger.info("load library: " + outputName);
+            System.out.println("[*] load library: " + outputName);
             System.load(so);
         }
         return true;
@@ -92,7 +89,7 @@ public class JNIUtil {
         try {
             is = JNIUtil.class.getClassLoader().getResourceAsStream(filename);
             if (is == null) {
-                logger.error("error dll name");
+                System.out.println("[-] error dll name");
                 return;
             }
             if (dir == null || dir.isEmpty()) {
@@ -116,22 +113,22 @@ public class JNIUtil {
                     buffer.write(data, 0, nRead);
                 }
                 Files.write(outputFile, buffer.toByteArray());
-                logger.info("write file: " + outputFile.toAbsolutePath());
+                System.out.println("[*] write file: " + outputFile.toAbsolutePath());
             }
             if (load) {
                 boolean success = loadLib(outputFile.toAbsolutePath().toString());
                 if (!success) {
-                    logger.error("load lib failed");
+                    System.out.println("[-] load lib failed");
                 }
             }
         } catch (Exception ex) {
-            logger.error("extract file error: {}", ex.toString());
+            System.out.printf("[-] extract file error: %s", ex);
         } finally {
             if (is != null) {
                 try {
                     is.close();
                 } catch (IOException e) {
-                    logger.error("close stream error: {}", e.toString());
+                    System.out.printf("[-] close stream error: %s", e);
                 }
             }
         }

@@ -37,6 +37,10 @@ Note:
 - Do not double-click to start on `Windows`, please use `java -jar` or double-click the `bat` script
 - If using `java -jar` causes garbled text, add `-Dfile.encoding=UTF-8` parameter
 
+If it can not display completely on `Mac` please check `More Space` in the monitor settings
+
+![](../img/mac.png)
+
 ## Some Screenshots
 
 Instruction Analysis

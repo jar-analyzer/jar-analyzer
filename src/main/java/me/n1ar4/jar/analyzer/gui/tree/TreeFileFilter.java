@@ -7,6 +7,7 @@ import java.io.File;
 public class TreeFileFilter {
     private static final String INNER = "$";
     private static final String DECOMPILE_DIR = "jar-analyzer-decompile";
+    private static final String CONSOLE_DLL = "console.dll";
     private final File file;
     private final boolean showFiles;
     private final boolean showHiddenFiles;
@@ -32,6 +33,9 @@ public class TreeFileFilter {
             return true;
         }
         if (file.getName().equals(DECOMPILE_DIR)) {
+            return true;
+        }
+        if (file.getName().equals(CONSOLE_DLL)) {
             return true;
         }
         return false;

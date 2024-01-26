@@ -6,7 +6,7 @@ import java.util.Set;
 
 public interface IGraph {
 
-  List<? extends IGraphNode> getReversePostOrderList();
+    List<? extends IGraphNode> getReversePostOrderList();
 
-  Set<? extends IGraphNode> getRoots();
+    Set<? extends IGraphNode> getRoots();
 }

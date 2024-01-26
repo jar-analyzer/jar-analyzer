@@ -13,66 +13,65 @@ import java.util.Set;
 
 public class MonitorExprent extends Exprent {
 
-  public static final int MONITOR_ENTER = 0;
-  public static final int MONITOR_EXIT = 1;
+    public static final int MONITOR_ENTER = 0;
+    public static final int MONITOR_EXIT = 1;
 
-  private final int monType;
-  private Exprent value;
+    private final int monType;
+    private Exprent value;
 
-  public MonitorExprent(int monType, Exprent value, Set<Integer> bytecodeOffsets) {
-    super(EXPRENT_MONITOR);
-    this.monType = monType;
-    this.value = value;
+    public MonitorExprent(int monType, Exprent value, Set<Integer> bytecodeOffsets) {
+        super(EXPRENT_MONITOR);
+        this.monType = monType;
+        this.value = value;
 
-    addBytecodeOffsets(bytecodeOffsets);
-  }
-
-  @Override
-  public Exprent copy() {
-    return new MonitorExprent(monType, value.copy(), bytecode);
-  }
-
-  @Override
-  public List<Exprent> getAllExprents() {
-    List<Exprent> lst = new ArrayList<>();
-    lst.add(value);
-    return lst;
-  }
-
-  @Override
-  public TextBuffer toJava(int indent, BytecodeMappingTracer tracer) {
-    tracer.addMapping(bytecode);
-
-    if (monType == MONITOR_ENTER) {
-      return value.toJava(indent, tracer).enclose("synchronized(", ")");
+        addBytecodeOffsets(bytecodeOffsets);
     }
-    else {
-      return new TextBuffer();
+
+    @Override
+    public Exprent copy() {
+        return new MonitorExprent(monType, value.copy(), bytecode);
     }
-  }
 
-  @Override
-  public void replaceExprent(Exprent oldExpr, Exprent newExpr) {
-    if (oldExpr == value) {
-      value = newExpr;
+    @Override
+    public List<Exprent> getAllExprents() {
+        List<Exprent> lst = new ArrayList<>();
+        lst.add(value);
+        return lst;
     }
-  }
 
-  @Override
-  public boolean equals(Object o) {
-    if (o == this) return true;
-    if (!(o instanceof MonitorExprent)) return false;
+    @Override
+    public TextBuffer toJava(int indent, BytecodeMappingTracer tracer) {
+        tracer.addMapping(bytecode);
 
-    MonitorExprent me = (MonitorExprent)o;
-    return monType == me.getMonType() &&
-           InterpreterUtil.equalObjects(value, me.getValue());
-  }
+        if (monType == MONITOR_ENTER) {
+            return value.toJava(indent, tracer).enclose("synchronized(", ")");
+        } else {
+            return new TextBuffer();
+        }
+    }
 
-  public int getMonType() {
-    return monType;
-  }
+    @Override
+    public void replaceExprent(Exprent oldExpr, Exprent newExpr) {
+        if (oldExpr == value) {
+            value = newExpr;
+        }
+    }
 
-  public Exprent getValue() {
-    return value;
-  }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) return true;
+        if (!(o instanceof MonitorExprent)) return false;
+
+        MonitorExprent me = (MonitorExprent) o;
+        return monType == me.getMonType() &&
+                InterpreterUtil.equalObjects(value, me.getValue());
+    }
+
+    public int getMonType() {
+        return monType;
+    }
+
+    public Exprent getValue() {
+        return value;
+    }
 }

@@ -93,8 +93,8 @@ public class SQLiteJDBCLoader {
                             path ->
                                     !path.getFileName().toString().endsWith(LOCK_EXT)
                                             && path.getFileName()
-                                                    .toString()
-                                                    .startsWith(searchPattern))
+                                            .toString()
+                                            .startsWith(searchPattern))
                     .forEach(
                             nativeLib -> {
                                 Path lckFile = Paths.get(nativeLib + LOCK_EXT);
@@ -136,7 +136,8 @@ public class SQLiteJDBCLoader {
         try {
             MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
             DigestInputStream digestInputStream = new DigestInputStream(in, digest);
-            for (; digestInputStream.read() >= 0; ) {}
+            for (; digestInputStream.read() >= 0; ) {
+            }
 
             ByteArrayOutputStream md5out = new ByteArrayOutputStream();
             md5out.write(digest.digest());
@@ -172,8 +173,8 @@ public class SQLiteJDBCLoader {
      * Extracts and loads the specified library file to the target folder
      *
      * @param libFolderForCurrentOS Library path.
-     * @param libraryFileName Library name.
-     * @param targetFolder Target folder.
+     * @param libraryFileName       Library name.
+     * @param targetFolder          Target folder.
      * @return
      */
     private static boolean extractAndLoadLibraryFile(
@@ -212,7 +213,7 @@ public class SQLiteJDBCLoader {
             // Check whether the contents are properly copied from the resource folder
             {
                 try (InputStream nativeIn = getResourceAsStream(nativeLibraryFilePath);
-                        InputStream extractedLibIn = Files.newInputStream(extractedLibFile)) {
+                     InputStream extractedLibIn = Files.newInputStream(extractedLibFile)) {
                     if (!contentsEquals(nativeIn, extractedLibIn)) {
                         throw new FileException(
                                 String.format(
@@ -372,19 +373,25 @@ public class SQLiteJDBCLoader {
         String archName = OSInfo.getArchName();
     }
 
-    /** @return The major version of the SQLite JDBC driver. */
+    /**
+     * @return The major version of the SQLite JDBC driver.
+     */
     public static int getMajorVersion() {
         String[] c = getVersion().split("\\.");
         return (c.length > 0) ? Integer.parseInt(c[0]) : 1;
     }
 
-    /** @return The minor version of the SQLite JDBC driver. */
+    /**
+     * @return The minor version of the SQLite JDBC driver.
+     */
     public static int getMinorVersion() {
         String[] c = getVersion().split("\\.");
         return (c.length > 1) ? Integer.parseInt(c[1]) : 0;
     }
 
-    /** @return The version of the SQLite JDBC driver. */
+    /**
+     * @return The version of the SQLite JDBC driver.
+     */
     public static String getVersion() {
         return VersionHolder.VERSION;
     }

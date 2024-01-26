@@ -43,7 +43,9 @@ public abstract class JDBC3ResultSet extends CoreResultSet {
         throw new SQLException("no such column: '" + col + "'");
     }
 
-    /** @see java.sql.ResultSet#next() */
+    /**
+     * @see java.sql.ResultSet#next()
+     */
     public boolean next() throws SQLException {
         if (!open || emptyResultSet || pastLastRow) {
             return false; // finished ResultSet
@@ -77,17 +79,23 @@ public abstract class JDBC3ResultSet extends CoreResultSet {
         }
     }
 
-    /** @see java.sql.ResultSet#getType() */
+    /**
+     * @see java.sql.ResultSet#getType()
+     */
     public int getType() {
         return ResultSet.TYPE_FORWARD_ONLY;
     }
 
-    /** @see java.sql.ResultSet#getFetchSize() */
+    /**
+     * @see java.sql.ResultSet#getFetchSize()
+     */
     public int getFetchSize() {
         return limitRows;
     }
 
-    /** @see java.sql.ResultSet#setFetchSize(int) */
+    /**
+     * @see java.sql.ResultSet#setFetchSize(int)
+     */
     public void setFetchSize(int rows) throws SQLException {
         if (0 > rows || (maxRows != 0 && rows > maxRows)) {
             throw new SQLException("fetch size " + rows + " out of bounds " + maxRows);
@@ -95,56 +103,74 @@ public abstract class JDBC3ResultSet extends CoreResultSet {
         limitRows = rows;
     }
 
-    /** @see java.sql.ResultSet#getFetchDirection() */
+    /**
+     * @see java.sql.ResultSet#getFetchDirection()
+     */
     public int getFetchDirection() throws SQLException {
         checkOpen();
         return ResultSet.FETCH_FORWARD;
     }
 
-    /** @see java.sql.ResultSet#setFetchDirection(int) */
+    /**
+     * @see java.sql.ResultSet#setFetchDirection(int)
+     */
     public void setFetchDirection(int d) throws SQLException {
         checkOpen();
         // Only FORWARD_ONLY ResultSets exist in SQLite, so only FETCH_FORWARD is permitted
         if (
-        /*getType() == ResultSet.TYPE_FORWARD_ONLY &&*/
-        d != ResultSet.FETCH_FORWARD) {
+            /*getType() == ResultSet.TYPE_FORWARD_ONLY &&*/
+                d != ResultSet.FETCH_FORWARD) {
             throw new SQLException("only FETCH_FORWARD direction supported");
         }
     }
 
-    /** @see java.sql.ResultSet#isAfterLast() */
+    /**
+     * @see java.sql.ResultSet#isAfterLast()
+     */
     public boolean isAfterLast() {
         return pastLastRow && !emptyResultSet;
     }
 
-    /** @see java.sql.ResultSet#isBeforeFirst() */
+    /**
+     * @see java.sql.ResultSet#isBeforeFirst()
+     */
     public boolean isBeforeFirst() {
         return !emptyResultSet && open && row == 0;
     }
 
-    /** @see java.sql.ResultSet#isFirst() */
+    /**
+     * @see java.sql.ResultSet#isFirst()
+     */
     public boolean isFirst() {
         return row == 1;
     }
 
-    /** @see java.sql.ResultSet#isLast() */
+    /**
+     * @see java.sql.ResultSet#isLast()
+     */
     public boolean isLast() throws SQLException {
         throw new SQLFeatureNotSupportedException("not supported by sqlite");
     }
 
-    /** @see java.sql.ResultSet#getRow() */
+    /**
+     * @see java.sql.ResultSet#getRow()
+     */
     public int getRow() {
         return row;
     }
 
-    /** @see java.sql.ResultSet#wasNull() */
+    /**
+     * @see java.sql.ResultSet#wasNull()
+     */
     public boolean wasNull() throws SQLException {
         return safeGetColumnType(markCol(lastCol)) == SQLITE_NULL;
     }
 
     // DATA ACCESS FUNCTIONS ////////////////////////////////////////
 
-    /** @see java.sql.ResultSet#getBigDecimal(int) */
+    /**
+     * @see java.sql.ResultSet#getBigDecimal(int)
+     */
     public BigDecimal getBigDecimal(int col) throws SQLException {
         switch (safeGetColumnType(checkCol(col))) {
             case SQLITE_NULL:
@@ -163,22 +189,30 @@ public abstract class JDBC3ResultSet extends CoreResultSet {
         }
     }
 
-    /** @see java.sql.ResultSet#getBigDecimal(java.lang.String) */
+    /**
+     * @see java.sql.ResultSet#getBigDecimal(java.lang.String)
+     */
     public BigDecimal getBigDecimal(String col) throws SQLException {
         return getBigDecimal(findColumn(col));
     }
 
-    /** @see java.sql.ResultSet#getBoolean(int) */
+    /**
+     * @see java.sql.ResultSet#getBoolean(int)
+     */
     public boolean getBoolean(int col) throws SQLException {
         return getInt(col) != 0;
     }
 
-    /** @see java.sql.ResultSet#getBoolean(java.lang.String) */
+    /**
+     * @see java.sql.ResultSet#getBoolean(java.lang.String)
+     */
     public boolean getBoolean(String col) throws SQLException {
         return getBoolean(findColumn(col));
     }
 
-    /** @see java.sql.ResultSet#getBinaryStream(int) */
+    /**
+     * @see java.sql.ResultSet#getBinaryStream(int)
+     */
     public InputStream getBinaryStream(int col) throws SQLException {
         byte[] bytes = getBytes(col);
         if (bytes != null) {
@@ -188,43 +222,59 @@ public abstract class JDBC3ResultSet extends CoreResultSet {
         }
     }
 
-    /** @see java.sql.ResultSet#getBinaryStream(java.lang.String) */
+    /**
+     * @see java.sql.ResultSet#getBinaryStream(java.lang.String)
+     */
     public InputStream getBinaryStream(String col) throws SQLException {
         return getBinaryStream(findColumn(col));
     }
 
-    /** @see java.sql.ResultSet#getByte(int) */
+    /**
+     * @see java.sql.ResultSet#getByte(int)
+     */
     public byte getByte(int col) throws SQLException {
         return (byte) getInt(col);
     }
 
-    /** @see java.sql.ResultSet#getByte(java.lang.String) */
+    /**
+     * @see java.sql.ResultSet#getByte(java.lang.String)
+     */
     public byte getByte(String col) throws SQLException {
         return getByte(findColumn(col));
     }
 
-    /** @see java.sql.ResultSet#getBytes(int) */
+    /**
+     * @see java.sql.ResultSet#getBytes(int)
+     */
     public byte[] getBytes(int col) throws SQLException {
         return stmt.pointer.safeRun((db, ptr) -> db.column_blob(ptr, markCol(col)));
     }
 
-    /** @see java.sql.ResultSet#getBytes(java.lang.String) */
+    /**
+     * @see java.sql.ResultSet#getBytes(java.lang.String)
+     */
     public byte[] getBytes(String col) throws SQLException {
         return getBytes(findColumn(col));
     }
 
-    /** @see java.sql.ResultSet#getCharacterStream(int) */
+    /**
+     * @see java.sql.ResultSet#getCharacterStream(int)
+     */
     public Reader getCharacterStream(int col) throws SQLException {
         String string = getString(col);
         return string == null ? null : new StringReader(string);
     }
 
-    /** @see java.sql.ResultSet#getCharacterStream(java.lang.String) */
+    /**
+     * @see java.sql.ResultSet#getCharacterStream(java.lang.String)
+     */
     public Reader getCharacterStream(String col) throws SQLException {
         return getCharacterStream(findColumn(col));
     }
 
-    /** @see java.sql.ResultSet#getDate(int) */
+    /**
+     * @see java.sql.ResultSet#getDate(int)
+     */
     public Date getDate(int col) throws SQLException {
         switch (safeGetColumnType(markCol(col))) {
             case SQLITE_NULL:
@@ -250,7 +300,9 @@ public abstract class JDBC3ResultSet extends CoreResultSet {
         }
     }
 
-    /** @see java.sql.ResultSet#getDate(int, java.util.Calendar) */
+    /**
+     * @see java.sql.ResultSet#getDate(int, java.util.Calendar)
+     */
     public Date getDate(int col, Calendar cal) throws SQLException {
         requireCalendarNotNull(cal);
         switch (safeGetColumnType(markCol(col))) {
@@ -282,17 +334,23 @@ public abstract class JDBC3ResultSet extends CoreResultSet {
         }
     }
 
-    /** @see java.sql.ResultSet#getDate(java.lang.String) */
+    /**
+     * @see java.sql.ResultSet#getDate(java.lang.String)
+     */
     public Date getDate(String col) throws SQLException {
         return getDate(findColumn(col), Calendar.getInstance());
     }
 
-    /** @see java.sql.ResultSet#getDate(java.lang.String, java.util.Calendar) */
+    /**
+     * @see java.sql.ResultSet#getDate(java.lang.String, java.util.Calendar)
+     */
     public Date getDate(String col, Calendar cal) throws SQLException {
         return getDate(findColumn(col), cal);
     }
 
-    /** @see java.sql.ResultSet#getDouble(int) */
+    /**
+     * @see java.sql.ResultSet#getDouble(int)
+     */
     public double getDouble(int col) throws SQLException {
         if (safeGetColumnType(markCol(col)) == SQLITE_NULL) {
             return 0;
@@ -300,12 +358,16 @@ public abstract class JDBC3ResultSet extends CoreResultSet {
         return safeGetDoubleCol(col);
     }
 
-    /** @see java.sql.ResultSet#getDouble(java.lang.String) */
+    /**
+     * @see java.sql.ResultSet#getDouble(java.lang.String)
+     */
     public double getDouble(String col) throws SQLException {
         return getDouble(findColumn(col));
     }
 
-    /** @see java.sql.ResultSet#getFloat(int) */
+    /**
+     * @see java.sql.ResultSet#getFloat(int)
+     */
     public float getFloat(int col) throws SQLException {
         if (safeGetColumnType(markCol(col)) == SQLITE_NULL) {
             return 0;
@@ -313,52 +375,72 @@ public abstract class JDBC3ResultSet extends CoreResultSet {
         return (float) safeGetDoubleCol(col);
     }
 
-    /** @see java.sql.ResultSet#getFloat(java.lang.String) */
+    /**
+     * @see java.sql.ResultSet#getFloat(java.lang.String)
+     */
     public float getFloat(String col) throws SQLException {
         return getFloat(findColumn(col));
     }
 
-    /** @see java.sql.ResultSet#getInt(int) */
+    /**
+     * @see java.sql.ResultSet#getInt(int)
+     */
     public int getInt(int col) throws SQLException {
         return stmt.pointer.safeRunInt((db, ptr) -> db.column_int(ptr, markCol(col)));
     }
 
-    /** @see java.sql.ResultSet#getInt(java.lang.String) */
+    /**
+     * @see java.sql.ResultSet#getInt(java.lang.String)
+     */
     public int getInt(String col) throws SQLException {
         return getInt(findColumn(col));
     }
 
-    /** @see java.sql.ResultSet#getLong(int) */
+    /**
+     * @see java.sql.ResultSet#getLong(int)
+     */
     public long getLong(int col) throws SQLException {
         return safeGetLongCol(col);
     }
 
-    /** @see java.sql.ResultSet#getLong(java.lang.String) */
+    /**
+     * @see java.sql.ResultSet#getLong(java.lang.String)
+     */
     public long getLong(String col) throws SQLException {
         return getLong(findColumn(col));
     }
 
-    /** @see java.sql.ResultSet#getShort(int) */
+    /**
+     * @see java.sql.ResultSet#getShort(int)
+     */
     public short getShort(int col) throws SQLException {
         return (short) getInt(col);
     }
 
-    /** @see java.sql.ResultSet#getShort(java.lang.String) */
+    /**
+     * @see java.sql.ResultSet#getShort(java.lang.String)
+     */
     public short getShort(String col) throws SQLException {
         return getShort(findColumn(col));
     }
 
-    /** @see java.sql.ResultSet#getString(int) */
+    /**
+     * @see java.sql.ResultSet#getString(int)
+     */
     public String getString(int col) throws SQLException {
         return safeGetColumnText(col);
     }
 
-    /** @see java.sql.ResultSet#getString(java.lang.String) */
+    /**
+     * @see java.sql.ResultSet#getString(java.lang.String)
+     */
     public String getString(String col) throws SQLException {
         return getString(findColumn(col));
     }
 
-    /** @see java.sql.ResultSet#getTime(int) */
+    /**
+     * @see java.sql.ResultSet#getTime(int)
+     */
     public Time getTime(int col) throws SQLException {
         switch (safeGetColumnType(markCol(col))) {
             case SQLITE_NULL:
@@ -384,7 +466,9 @@ public abstract class JDBC3ResultSet extends CoreResultSet {
         }
     }
 
-    /** @see java.sql.ResultSet#getTime(int, java.util.Calendar) */
+    /**
+     * @see java.sql.ResultSet#getTime(int, java.util.Calendar)
+     */
     public Time getTime(int col, Calendar cal) throws SQLException {
         requireCalendarNotNull(cal);
         switch (safeGetColumnType(markCol(col))) {
@@ -416,17 +500,23 @@ public abstract class JDBC3ResultSet extends CoreResultSet {
         }
     }
 
-    /** @see java.sql.ResultSet#getTime(java.lang.String) */
+    /**
+     * @see java.sql.ResultSet#getTime(java.lang.String)
+     */
     public Time getTime(String col) throws SQLException {
         return getTime(findColumn(col));
     }
 
-    /** @see java.sql.ResultSet#getTime(java.lang.String, java.util.Calendar) */
+    /**
+     * @see java.sql.ResultSet#getTime(java.lang.String, java.util.Calendar)
+     */
     public Time getTime(String col, Calendar cal) throws SQLException {
         return getTime(findColumn(col), cal);
     }
 
-    /** @see java.sql.ResultSet#getTimestamp(int) */
+    /**
+     * @see java.sql.ResultSet#getTimestamp(int)
+     */
     public Timestamp getTimestamp(int col) throws SQLException {
         switch (safeGetColumnType(markCol(col))) {
             case SQLITE_NULL:
@@ -453,7 +543,9 @@ public abstract class JDBC3ResultSet extends CoreResultSet {
         }
     }
 
-    /** @see java.sql.ResultSet#getTimestamp(int, java.util.Calendar) */
+    /**
+     * @see java.sql.ResultSet#getTimestamp(int, java.util.Calendar)
+     */
     public Timestamp getTimestamp(int col, Calendar cal) throws SQLException {
         requireCalendarNotNull(cal);
         switch (safeGetColumnType(markCol(col))) {
@@ -486,17 +578,23 @@ public abstract class JDBC3ResultSet extends CoreResultSet {
         }
     }
 
-    /** @see java.sql.ResultSet#getTimestamp(java.lang.String) */
+    /**
+     * @see java.sql.ResultSet#getTimestamp(java.lang.String)
+     */
     public Timestamp getTimestamp(String col) throws SQLException {
         return getTimestamp(findColumn(col));
     }
 
-    /** @see java.sql.ResultSet#getTimestamp(java.lang.String, java.util.Calendar) */
+    /**
+     * @see java.sql.ResultSet#getTimestamp(java.lang.String, java.util.Calendar)
+     */
     public Timestamp getTimestamp(String c, Calendar ca) throws SQLException {
         return getTimestamp(findColumn(c), ca);
     }
 
-    /** @see java.sql.ResultSet#getObject(int) */
+    /**
+     * @see java.sql.ResultSet#getObject(int)
+     */
     public Object getObject(int col) throws SQLException {
         switch (safeGetColumnType(markCol(col))) {
             case SQLITE_INTEGER:
@@ -518,35 +616,50 @@ public abstract class JDBC3ResultSet extends CoreResultSet {
         }
     }
 
-    /** @see java.sql.ResultSet#getObject(java.lang.String) */
+    /**
+     * @see java.sql.ResultSet#getObject(java.lang.String)
+     */
     public Object getObject(String col) throws SQLException {
         return getObject(findColumn(col));
     }
 
-    /** @see java.sql.ResultSet#getStatement() */
+    /**
+     * @see java.sql.ResultSet#getStatement()
+     */
     public Statement getStatement() {
         return (Statement) stmt;
     }
 
-    /** @see java.sql.ResultSet#getCursorName() */
+    /**
+     * @see java.sql.ResultSet#getCursorName()
+     */
     public String getCursorName() {
         return null;
     }
 
-    /** @see java.sql.ResultSet#getWarnings() */
+    /**
+     * @see java.sql.ResultSet#getWarnings()
+     */
     public SQLWarning getWarnings() {
         return null;
     }
 
-    /** @see java.sql.ResultSet#clearWarnings() */
-    public void clearWarnings() {}
+    /**
+     * @see java.sql.ResultSet#clearWarnings()
+     */
+    public void clearWarnings() {
+    }
 
     // ResultSetMetaData Functions //////////////////////////////////
 
-    /** Pattern used to extract the column type name from table column definition. */
+    /**
+     * Pattern used to extract the column type name from table column definition.
+     */
     protected static final Pattern COLUMN_TYPENAME = Pattern.compile("([^\\(]*)");
 
-    /** Pattern used to extract the column type name from a cast(col as type) */
+    /**
+     * Pattern used to extract the column type name from a cast(col as type)
+     */
     protected static final Pattern COLUMN_TYPECAST =
             Pattern.compile("cast\\(.*?\\s+as\\s+(.*?)\\s*\\)");
 
@@ -558,17 +671,23 @@ public abstract class JDBC3ResultSet extends CoreResultSet {
     // we do not need to check the RS is open, only that colsMeta
     // is not null, done with checkCol(int).
 
-    /** @see java.sql.ResultSet#getMetaData() */
+    /**
+     * @see java.sql.ResultSet#getMetaData()
+     */
     public ResultSetMetaData getMetaData() {
         return (ResultSetMetaData) this;
     }
 
-    /** @see java.sql.ResultSetMetaData#getCatalogName(int) */
+    /**
+     * @see java.sql.ResultSetMetaData#getCatalogName(int)
+     */
     public String getCatalogName(int col) throws SQLException {
         return safeGetColumnTableName(col);
     }
 
-    /** @see java.sql.ResultSetMetaData#getColumnClassName(int) */
+    /**
+     * @see java.sql.ResultSetMetaData#getColumnClassName(int)
+     */
     public String getColumnClassName(int col) throws SQLException {
         switch (safeGetColumnType(markCol(col))) {
             case SQLITE_INTEGER:
@@ -589,28 +708,38 @@ public abstract class JDBC3ResultSet extends CoreResultSet {
         }
     }
 
-    /** @see java.sql.ResultSetMetaData#getColumnCount() */
+    /**
+     * @see java.sql.ResultSetMetaData#getColumnCount()
+     */
     public int getColumnCount() throws SQLException {
         checkCol(1);
         return colsMeta.length;
     }
 
-    /** @see java.sql.ResultSetMetaData#getColumnDisplaySize(int) */
+    /**
+     * @see java.sql.ResultSetMetaData#getColumnDisplaySize(int)
+     */
     public int getColumnDisplaySize(int col) {
         return Integer.MAX_VALUE;
     }
 
-    /** @see java.sql.ResultSetMetaData#getColumnLabel(int) */
+    /**
+     * @see java.sql.ResultSetMetaData#getColumnLabel(int)
+     */
     public String getColumnLabel(int col) throws SQLException {
         return getColumnName(col);
     }
 
-    /** @see java.sql.ResultSetMetaData#getColumnName(int) */
+    /**
+     * @see java.sql.ResultSetMetaData#getColumnName(int)
+     */
     public String getColumnName(int col) throws SQLException {
         return safeGetColumnName(col);
     }
 
-    /** @see java.sql.ResultSetMetaData#getColumnType(int) */
+    /**
+     * @see java.sql.ResultSetMetaData#getColumnType(int)
+     */
     public int getColumnType(int col) throws SQLException {
         String typeName = getColumnTypeName(col);
         int valueType = safeGetColumnType(checkCol(col));
@@ -721,7 +850,7 @@ public abstract class JDBC3ResultSet extends CoreResultSet {
 
     /**
      * @return The data type from either the 'create table' statement, or CAST(expr AS TYPE)
-     *     otherwise sqlite3_value_type.
+     * otherwise sqlite3_value_type.
      * @see java.sql.ResultSetMetaData#getColumnTypeName(int)
      */
     public String getColumnTypeName(int col) throws SQLException {
@@ -749,7 +878,9 @@ public abstract class JDBC3ResultSet extends CoreResultSet {
         }
     }
 
-    /** @see java.sql.ResultSetMetaData#getPrecision(int) */
+    /**
+     * @see java.sql.ResultSetMetaData#getPrecision(int)
+     */
     public int getPrecision(int col) throws SQLException {
         String declType = getColumnDeclType(col);
 
@@ -773,7 +904,9 @@ public abstract class JDBC3ResultSet extends CoreResultSet {
         return declType;
     }
 
-    /** @see java.sql.ResultSetMetaData#getScale(int) */
+    /**
+     * @see java.sql.ResultSetMetaData#getScale(int)
+     */
     public int getScale(int col) throws SQLException {
         String declType = getColumnDeclType(col);
 
@@ -792,12 +925,16 @@ public abstract class JDBC3ResultSet extends CoreResultSet {
         return 0;
     }
 
-    /** @see java.sql.ResultSetMetaData#getSchemaName(int) */
+    /**
+     * @see java.sql.ResultSetMetaData#getSchemaName(int)
+     */
     public String getSchemaName(int col) {
         return "";
     }
 
-    /** @see java.sql.ResultSetMetaData#getTableName(int) */
+    /**
+     * @see java.sql.ResultSetMetaData#getTableName(int)
+     */
     public String getTableName(int col) throws SQLException {
         final String tableName = safeGetColumnTableName(col);
         if (tableName == null) {
@@ -807,7 +944,9 @@ public abstract class JDBC3ResultSet extends CoreResultSet {
         return tableName;
     }
 
-    /** @see java.sql.ResultSetMetaData#isNullable(int) */
+    /**
+     * @see java.sql.ResultSetMetaData#isNullable(int)
+     */
     public int isNullable(int col) throws SQLException {
         checkMeta();
         return meta[checkCol(col)][0]
@@ -815,70 +954,96 @@ public abstract class JDBC3ResultSet extends CoreResultSet {
                 : ResultSetMetaData.columnNullable;
     }
 
-    /** @see java.sql.ResultSetMetaData#isAutoIncrement(int) */
+    /**
+     * @see java.sql.ResultSetMetaData#isAutoIncrement(int)
+     */
     public boolean isAutoIncrement(int col) throws SQLException {
         checkMeta();
         return meta[checkCol(col)][2];
     }
 
-    /** @see java.sql.ResultSetMetaData#isCaseSensitive(int) */
+    /**
+     * @see java.sql.ResultSetMetaData#isCaseSensitive(int)
+     */
     public boolean isCaseSensitive(int col) {
         return true;
     }
 
-    /** @see java.sql.ResultSetMetaData#isCurrency(int) */
+    /**
+     * @see java.sql.ResultSetMetaData#isCurrency(int)
+     */
     public boolean isCurrency(int col) {
         return false;
     }
 
-    /** @see java.sql.ResultSetMetaData#isDefinitelyWritable(int) */
+    /**
+     * @see java.sql.ResultSetMetaData#isDefinitelyWritable(int)
+     */
     public boolean isDefinitelyWritable(int col) {
         return true;
     } // FIXME: check db file constraints?
 
-    /** @see java.sql.ResultSetMetaData#isReadOnly(int) */
+    /**
+     * @see java.sql.ResultSetMetaData#isReadOnly(int)
+     */
     public boolean isReadOnly(int col) {
         return false;
     }
 
-    /** @see java.sql.ResultSetMetaData#isSearchable(int) */
+    /**
+     * @see java.sql.ResultSetMetaData#isSearchable(int)
+     */
     public boolean isSearchable(int col) {
         return true;
     }
 
-    /** @see java.sql.ResultSetMetaData#isSigned(int) */
+    /**
+     * @see java.sql.ResultSetMetaData#isSigned(int)
+     */
     public boolean isSigned(int col) throws SQLException {
         String typeName = getColumnTypeName(col);
 
         return "NUMERIC".equals(typeName) || "INTEGER".equals(typeName) || "REAL".equals(typeName);
     }
 
-    /** @see java.sql.ResultSetMetaData#isWritable(int) */
+    /**
+     * @see java.sql.ResultSetMetaData#isWritable(int)
+     */
     public boolean isWritable(int col) {
         return true;
     }
 
-    /** @see java.sql.ResultSet#getConcurrency() */
+    /**
+     * @see java.sql.ResultSet#getConcurrency()
+     */
     public int getConcurrency() {
         return ResultSet.CONCUR_READ_ONLY;
     }
 
-    /** @see java.sql.ResultSet#rowDeleted() */
+    /**
+     * @see java.sql.ResultSet#rowDeleted()
+     */
     public boolean rowDeleted() {
         return false;
     }
 
-    /** @see java.sql.ResultSet#rowInserted() */
+    /**
+     * @see java.sql.ResultSet#rowInserted()
+     */
     public boolean rowInserted() {
         return false;
     }
 
-    /** @see java.sql.ResultSet#rowUpdated() */
+    /**
+     * @see java.sql.ResultSet#rowUpdated()
+     */
     public boolean rowUpdated() {
         return false;
     }
 
-    /** Transforms a Julian Date to java.util.Calendar object. */
+    /**
+     * Transforms a Julian Date to java.util.Calendar object.
+     */
     private Calendar julianDateToCalendar(Double jd) {
         return julianDateToCalendar(jd, Calendar.getInstance());
     }

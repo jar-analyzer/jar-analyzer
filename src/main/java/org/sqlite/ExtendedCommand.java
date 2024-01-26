@@ -29,10 +29,10 @@ public class ExtendedCommand {
      * Parses extended commands of "backup" or "restore" for SQLite database.
      *
      * @param sql One of the extended commands:<br>
-     *     backup sourceDatabaseName to destinationFileName OR restore targetDatabaseName from
-     *     sourceFileName
+     *            backup sourceDatabaseName to destinationFileName OR restore targetDatabaseName from
+     *            sourceFileName
      * @return BackupCommand object if the argument is a backup command; RestoreCommand object if
-     *     the argument is a restore command;
+     * the argument is a restore command;
      * @throws SQLException
      */
     public static SQLExtension parse(String sql) throws SQLException {
@@ -66,7 +66,7 @@ public class ExtendedCommand {
         /**
          * Constructs a BackupCommand instance that backup the database to a target file.
          *
-         * @param srcDB Source database name.
+         * @param srcDB    Source database name.
          * @param destFile Target file name.
          */
         public BackupCommand(String srcDB, String destFile) {
@@ -121,7 +121,7 @@ public class ExtendedCommand {
          * Constructs a RestoreCommand instance that restores the database from a given source file.
          *
          * @param targetDB Target database name
-         * @param srcFile Source file name
+         * @param srcFile  Source file name
          */
         public RestoreCommand(String targetDB, String srcFile) {
             this.targetDB = targetDB;
@@ -148,7 +148,9 @@ public class ExtendedCommand {
             throw new SQLException("syntax error: " + sql);
         }
 
-        /** @see org.sqlite.ExtendedCommand.SQLExtension#execute(org.sqlite.core.DB) */
+        /**
+         * @see org.sqlite.ExtendedCommand.SQLExtension#execute(org.sqlite.core.DB)
+         */
         public void execute(DB db) throws SQLException {
             int rc = db.restore(targetDB, srcFile, null);
 

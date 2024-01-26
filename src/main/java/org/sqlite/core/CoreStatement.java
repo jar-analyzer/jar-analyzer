@@ -47,7 +47,9 @@ public abstract class CoreStatement implements Codes {
         return conn.getConnectionConfig();
     }
 
-    /** @throws SQLException If the database is not opened. */
+    /**
+     * @throws SQLException If the database is not opened.
+     */
     protected final void checkOpen() throws SQLException {
         if (pointer.isClosed()) throw new SQLException("statement is not executing");
     }

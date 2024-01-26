@@ -3,7 +3,7 @@ package org.jetbrains.java.decompiler.struct;
 
 public interface IDecompiledData {
 
-  String getClassEntryName(StructClass cl, String entryname);
+    String getClassEntryName(StructClass cl, String entryname);
 
-  String getClassContent(StructClass cl);
+    String getClassContent(StructClass cl);
 }

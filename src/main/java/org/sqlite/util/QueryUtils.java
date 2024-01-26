@@ -7,7 +7,7 @@ public class QueryUtils {
     /**
      * Build a SQLite query using the VALUES clause to return arbitrary values.
      *
-     * @param columns list of column names
+     * @param columns    list of column names
      * @param valuesList values to return as rows
      * @return SQL query as string
      */
@@ -22,20 +22,20 @@ public class QueryUtils {
                 + String.join(",", columns)
                 + ") as (values "
                 + valuesList.stream()
-                        .map(
-                                (values) ->
-                                        "("
-                                                + values.stream()
-                                                        .map(
-                                                                (o -> {
-                                                                    if (o instanceof String)
-                                                                        return "'" + o + "'";
-                                                                    if (o == null) return "null";
-                                                                    return o.toString();
-                                                                }))
-                                                        .collect(Collectors.joining(","))
-                                                + ")")
-                        .collect(Collectors.joining(","))
+                .map(
+                        (values) ->
+                                "("
+                                        + values.stream()
+                                        .map(
+                                                (o -> {
+                                                    if (o instanceof String)
+                                                        return "'" + o + "'";
+                                                    if (o == null) return "null";
+                                                    return o.toString();
+                                                }))
+                                        .collect(Collectors.joining(","))
+                                        + ")")
+                .collect(Collectors.joining(","))
                 + ") select * from cte";
     }
 }

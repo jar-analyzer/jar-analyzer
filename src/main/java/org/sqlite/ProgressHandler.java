@@ -3,14 +3,16 @@ package org.sqlite;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-/** https://www.sqlite.org/c3ref/progress_handler.html */
+/**
+ * https://www.sqlite.org/c3ref/progress_handler.html
+ */
 public abstract class ProgressHandler {
     /**
      * Sets a progress handler for the connection.
      *
-     * @param conn the SQLite connection
-     * @param vmCalls the approximate number of virtual machine instructions that are evaluated
-     *     between successive invocations of the progressHandler
+     * @param conn            the SQLite connection
+     * @param vmCalls         the approximate number of virtual machine instructions that are evaluated
+     *                        between successive invocations of the progressHandler
      * @param progressHandler the progressHandler
      * @throws SQLException
      */

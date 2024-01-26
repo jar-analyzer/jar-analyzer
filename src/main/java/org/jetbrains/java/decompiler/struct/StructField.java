@@ -17,33 +17,33 @@ import java.io.IOException;
 */
 public class StructField extends StructMember {
 
-  private final String name;
-  private final String descriptor;
+    private final String name;
+    private final String descriptor;
 
 
-  public StructField(DataInputFullStream in, StructClass clStruct) throws IOException {
-    accessFlags = in.readUnsignedShort();
-    int nameIndex = in.readUnsignedShort();
-    int descriptorIndex = in.readUnsignedShort();
+    public StructField(DataInputFullStream in, StructClass clStruct) throws IOException {
+        accessFlags = in.readUnsignedShort();
+        int nameIndex = in.readUnsignedShort();
+        int descriptorIndex = in.readUnsignedShort();
 
-    ConstantPool pool = clStruct.getPool();
-    String[] values = pool.getClassElement(ConstantPool.FIELD, clStruct.qualifiedName, nameIndex, descriptorIndex);
-    name = values[0];
-    descriptor = values[1];
+        ConstantPool pool = clStruct.getPool();
+        String[] values = pool.getClassElement(ConstantPool.FIELD, clStruct.qualifiedName, nameIndex, descriptorIndex);
+        name = values[0];
+        descriptor = values[1];
 
-    attributes = readAttributes(in, pool);
-  }
+        attributes = readAttributes(in, pool);
+    }
 
-  public String getName() {
-    return name;
-  }
+    public String getName() {
+        return name;
+    }
 
-  public String getDescriptor() {
-    return descriptor;
-  }
+    public String getDescriptor() {
+        return descriptor;
+    }
 
-  @Override
-  public String toString() {
-    return name;
-  }
+    @Override
+    public String toString() {
+        return name;
+    }
 }

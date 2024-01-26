@@ -4,5 +4,5 @@ package org.jetbrains.java.decompiler.main.extern;
 import java.io.IOException;
 
 public interface IBytecodeProvider {
-  byte[] getBytecode(String externalPath, String internalPath) throws IOException;
+    byte[] getBytecode(String externalPath, String internalPath) throws IOException;
 }

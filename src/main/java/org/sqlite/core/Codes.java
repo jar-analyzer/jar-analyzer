@@ -16,82 +16,134 @@
 package org.sqlite.core;
 
 public interface Codes {
-    /** Successful result */
+    /**
+     * Successful result
+     */
     public static final int SQLITE_OK = 0;
 
-    /** SQL error or missing database */
+    /**
+     * SQL error or missing database
+     */
     public static final int SQLITE_ERROR = 1;
 
-    /** An internal logic error in SQLite */
+    /**
+     * An internal logic error in SQLite
+     */
     public static final int SQLITE_INTERNAL = 2;
 
-    /** Access permission denied */
+    /**
+     * Access permission denied
+     */
     public static final int SQLITE_PERM = 3;
 
-    /** Callback routine requested an abort */
+    /**
+     * Callback routine requested an abort
+     */
     public static final int SQLITE_ABORT = 4;
 
-    /** The database file is locked */
+    /**
+     * The database file is locked
+     */
     public static final int SQLITE_BUSY = 5;
 
-    /** A table in the database is locked */
+    /**
+     * A table in the database is locked
+     */
     public static final int SQLITE_LOCKED = 6;
 
-    /** A malloc() failed */
+    /**
+     * A malloc() failed
+     */
     public static final int SQLITE_NOMEM = 7;
 
-    /** Attempt to write a readonly database */
+    /**
+     * Attempt to write a readonly database
+     */
     public static final int SQLITE_READONLY = 8;
 
-    /** Operation terminated by sqlite_interrupt() */
+    /**
+     * Operation terminated by sqlite_interrupt()
+     */
     public static final int SQLITE_INTERRUPT = 9;
 
-    /** Some kind of disk I/O error occurred */
+    /**
+     * Some kind of disk I/O error occurred
+     */
     public static final int SQLITE_IOERR = 10;
 
-    /** The database disk image is malformed */
+    /**
+     * The database disk image is malformed
+     */
     public static final int SQLITE_CORRUPT = 11;
 
-    /** (Internal Only) Table or record not found */
+    /**
+     * (Internal Only) Table or record not found
+     */
     public static final int SQLITE_NOTFOUND = 12;
 
-    /** Insertion failed because database is full */
+    /**
+     * Insertion failed because database is full
+     */
     public static final int SQLITE_FULL = 13;
 
-    /** Unable to open the database file */
+    /**
+     * Unable to open the database file
+     */
     public static final int SQLITE_CANTOPEN = 14;
 
-    /** Database lock protocol error */
+    /**
+     * Database lock protocol error
+     */
     public static final int SQLITE_PROTOCOL = 15;
 
-    /** (Internal Only) Database table is empty */
+    /**
+     * (Internal Only) Database table is empty
+     */
     public static final int SQLITE_EMPTY = 16;
 
-    /** The database schema changed */
+    /**
+     * The database schema changed
+     */
     public static final int SQLITE_SCHEMA = 17;
 
-    /** Too much data for one row of a table */
+    /**
+     * Too much data for one row of a table
+     */
     public static final int SQLITE_TOOBIG = 18;
 
-    /** Abort due to constraint violation */
+    /**
+     * Abort due to constraint violation
+     */
     public static final int SQLITE_CONSTRAINT = 19;
 
-    /** Data type mismatch */
+    /**
+     * Data type mismatch
+     */
     public static final int SQLITE_MISMATCH = 20;
 
-    /** Library used incorrectly */
+    /**
+     * Library used incorrectly
+     */
     public static final int SQLITE_MISUSE = 21;
 
-    /** Uses OS features not supported on host */
+    /**
+     * Uses OS features not supported on host
+     */
     public static final int SQLITE_NOLFS = 22;
 
-    /** Authorization denied */
+    /**
+     * Authorization denied
+     */
     public static final int SQLITE_AUTH = 23;
 
-    /** sqlite_step() has another row ready */
+    /**
+     * sqlite_step() has another row ready
+     */
     public static final int SQLITE_ROW = 100;
 
-    /** sqlite_step() has finished executing */
+    /**
+     * sqlite_step() has finished executing
+     */
     public static final int SQLITE_DONE = 101;
 
     // types returned by sqlite3_column_type()

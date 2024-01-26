@@ -8,74 +8,73 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ExceptionRangeCFG {
-  private final List<BasicBlock> protectedRange; // FIXME: replace with set
-  private BasicBlock handler;
-  private List<String> exceptionTypes;
+    private final List<BasicBlock> protectedRange; // FIXME: replace with set
+    private BasicBlock handler;
+    private List<String> exceptionTypes;
 
-  public ExceptionRangeCFG(List<BasicBlock> protectedRange, BasicBlock handler, List<String> exceptionType) {
-    this.protectedRange = protectedRange;
-    this.handler = handler;
+    public ExceptionRangeCFG(List<BasicBlock> protectedRange, BasicBlock handler, List<String> exceptionType) {
+        this.protectedRange = protectedRange;
+        this.handler = handler;
 
-    if (exceptionType != null) {
-      this.exceptionTypes = new ArrayList<>(exceptionType);
-    }
-  }
-
-  public boolean isCircular() {
-    return protectedRange.contains(handler);
-  }
-
-  @Override
-  public String toString() {
-    String new_line_separator = DecompilerContext.getNewLineSeparator();
-    StringBuilder buf = new StringBuilder();
-
-    buf.append("exceptionType:");
-    for (String exception_type : exceptionTypes) {
-      buf.append(" ").append(exception_type);
-    }
-    buf.append(new_line_separator);
-
-    buf.append("handler: ").append(handler.id).append(new_line_separator);
-    buf.append("range: ");
-    for (BasicBlock block : protectedRange) {
-      buf.append(block.id).append(" ");
-    }
-    buf.append(new_line_separator);
-
-    return buf.toString();
-  }
-
-  public BasicBlock getHandler() {
-    return handler;
-  }
-
-  public void setHandler(BasicBlock handler) {
-    this.handler = handler;
-  }
-
-  public List<BasicBlock> getProtectedRange() {
-    return protectedRange;
-  }
-
-  public List<String> getExceptionTypes() {
-    return this.exceptionTypes;
-  }
-
-  public void addExceptionType(String exceptionType) {
-    if (this.exceptionTypes == null) {
-      return;
+        if (exceptionType != null) {
+            this.exceptionTypes = new ArrayList<>(exceptionType);
+        }
     }
 
-    if (exceptionType == null) {
-      this.exceptionTypes = null;
+    public boolean isCircular() {
+        return protectedRange.contains(handler);
     }
-    else {
-      this.exceptionTypes.add(exceptionType);
-    }
-  }
 
-  public String getUniqueExceptionsString() {
-    return exceptionTypes != null ? exceptionTypes.stream().distinct().collect(Collectors.joining(":")) : null;
-  }
+    @Override
+    public String toString() {
+        String new_line_separator = DecompilerContext.getNewLineSeparator();
+        StringBuilder buf = new StringBuilder();
+
+        buf.append("exceptionType:");
+        for (String exception_type : exceptionTypes) {
+            buf.append(" ").append(exception_type);
+        }
+        buf.append(new_line_separator);
+
+        buf.append("handler: ").append(handler.id).append(new_line_separator);
+        buf.append("range: ");
+        for (BasicBlock block : protectedRange) {
+            buf.append(block.id).append(" ");
+        }
+        buf.append(new_line_separator);
+
+        return buf.toString();
+    }
+
+    public BasicBlock getHandler() {
+        return handler;
+    }
+
+    public void setHandler(BasicBlock handler) {
+        this.handler = handler;
+    }
+
+    public List<BasicBlock> getProtectedRange() {
+        return protectedRange;
+    }
+
+    public List<String> getExceptionTypes() {
+        return this.exceptionTypes;
+    }
+
+    public void addExceptionType(String exceptionType) {
+        if (this.exceptionTypes == null) {
+            return;
+        }
+
+        if (exceptionType == null) {
+            this.exceptionTypes = null;
+        } else {
+            this.exceptionTypes.add(exceptionType);
+        }
+    }
+
+    public String getUniqueExceptionsString() {
+        return exceptionTypes != null ? exceptionTypes.stream().distinct().collect(Collectors.joining(":")) : null;
+    }
 }

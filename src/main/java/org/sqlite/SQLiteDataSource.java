@@ -47,7 +47,9 @@ public class SQLiteDataSource implements DataSource {
     private String url = JDBC.PREFIX; // use memory database in default
     private String databaseName = ""; // the name of the current database
 
-    /** Default constructor. */
+    /**
+     * Default constructor.
+     */
     public SQLiteDataSource() {
         this.config = new SQLiteConfig(); // default configuration
     }
@@ -70,7 +72,9 @@ public class SQLiteDataSource implements DataSource {
         this.config = config;
     }
 
-    /** @return The configuration for the data source. */
+    /**
+     * @return The configuration for the data source.
+     */
     public SQLiteConfig getConfig() {
         return config;
     }
@@ -84,7 +88,9 @@ public class SQLiteDataSource implements DataSource {
         this.url = url;
     }
 
-    /** @return The location of the database file. */
+    /**
+     * @return The location of the database file.
+     */
     public String getUrl() {
         return url;
     }
@@ -112,7 +118,7 @@ public class SQLiteDataSource implements DataSource {
      *
      * @param enable True to enable; false to disable.
      * @see <a
-     *     href="https://www.sqlite.org/c3ref/enable_shared_cache.html">https://www.sqlite.org/c3ref/enable_shared_cache.html</a>
+     * href="https://www.sqlite.org/c3ref/enable_shared_cache.html">https://www.sqlite.org/c3ref/enable_shared_cache.html</a>
      */
     public void setSharedCache(boolean enable) {
         config.setSharedCache(enable);
@@ -123,7 +129,7 @@ public class SQLiteDataSource implements DataSource {
      *
      * @param enable True to enable; false to disable.
      * @see <a
-     *     href="https://www.sqlite.org/c3ref/load_extension.html">https://www.sqlite.org/c3ref/load_extension.html</a>
+     * href="https://www.sqlite.org/c3ref/load_extension.html">https://www.sqlite.org/c3ref/load_extension.html</a>
      */
     public void setLoadExtension(boolean enable) {
         config.enableLoadExtension(enable);
@@ -134,7 +140,7 @@ public class SQLiteDataSource implements DataSource {
      *
      * @param readOnly True to enable; false to disable.
      * @see <a
-     *     href="https://www.sqlite.org/c3ref/c_open_autoproxy.html">https://www.sqlite.org/c3ref/c_open_autoproxy.html</a>
+     * href="https://www.sqlite.org/c3ref/c_open_autoproxy.html">https://www.sqlite.org/c3ref/c_open_autoproxy.html</a>
      */
     public void setReadOnly(boolean readOnly) {
         config.setReadOnly(readOnly);
@@ -145,7 +151,7 @@ public class SQLiteDataSource implements DataSource {
      *
      * @param milliseconds The number of milliseconds to wait.
      * @see <a
-     *     href="https://www.sqlite.org/pragma.html#pragma_busy_timeout">https://www.sqlite.org/pragma.html#pragma_busy_timeout</a>
+     * href="https://www.sqlite.org/pragma.html#pragma_busy_timeout">https://www.sqlite.org/pragma.html#pragma_busy_timeout</a>
      */
     public void setBusyTimeout(int milliseconds) {
         config.setBusyTimeout(milliseconds);
@@ -157,7 +163,7 @@ public class SQLiteDataSource implements DataSource {
      *
      * @param numberOfPages The number of database disk pages.
      * @see <a
-     *     href="https://www.sqlite.org/pragma.html#pragma_cache_size">https://www.sqlite.org/pragma.html#pragma_cache_size</a>
+     * href="https://www.sqlite.org/pragma.html#pragma_cache_size">https://www.sqlite.org/pragma.html#pragma_cache_size</a>
      */
     public void setCacheSize(int numberOfPages) {
         config.setCacheSize(numberOfPages);
@@ -168,7 +174,7 @@ public class SQLiteDataSource implements DataSource {
      *
      * @param enable True to enable; false to disable.
      * @see <a
-     *     href="https://www.sqlite.org/compile.html#case_sensitive_like">https://www.sqlite.org/compile.html#case_sensitive_like</a>
+     * href="https://www.sqlite.org/compile.html#case_sensitive_like">https://www.sqlite.org/compile.html#case_sensitive_like</a>
      */
     public void setCaseSensitiveLike(boolean enable) {
         config.enableCaseSensitiveLike(enable);
@@ -180,7 +186,7 @@ public class SQLiteDataSource implements DataSource {
      *
      * @param enable True to enable; false to disable.
      * @see <a
-     *     href="https://www.sqlite.org/pragma.html#pragma_count_changes">https://www.sqlite.org/pragma.html#pragma_count_changes</a>
+     * href="https://www.sqlite.org/pragma.html#pragma_count_changes">https://www.sqlite.org/pragma.html#pragma_count_changes</a>
      */
     public void setCountChanges(boolean enable) {
         config.enableCountChanges(enable);
@@ -192,7 +198,7 @@ public class SQLiteDataSource implements DataSource {
      *
      * @param numberOfPages The default suggested cache size.
      * @see <a
-     *     href="https://www.sqlite.org/pragma.html#pragma_cache_size">https://www.sqlite.org/pragma.html#pragma_cache_size</a>
+     * href="https://www.sqlite.org/pragma.html#pragma_cache_size">https://www.sqlite.org/pragma.html#pragma_cache_size</a>
      */
     public void setDefaultCacheSize(int numberOfPages) {
         config.setDefaultCacheSize(numberOfPages);
@@ -202,9 +208,9 @@ public class SQLiteDataSource implements DataSource {
      * Sets the text encoding used by the main database.
      *
      * @param encoding One of "UTF-8", "UTF-16le" (little-endian UTF-16) or "UTF-16be" (big-endian
-     *     UTF-16).
+     *                 UTF-16).
      * @see <a href="https://www.sqlite.org/pragma.html#pragma_encoding">
-     *     https://www.sqlite.org/pragma.html#pragma_encoding</a>
+     * https://www.sqlite.org/pragma.html#pragma_encoding</a>
      */
     public void setEncoding(String encoding) {
         config.setEncoding(Encoding.getEncoding(encoding));
@@ -215,7 +221,7 @@ public class SQLiteDataSource implements DataSource {
      *
      * @param enforce True to enable; false to disable.
      * @see <a href="https://www.sqlite.org/pragma.html#pragma_foreign_keys">
-     *     https://www.sqlite.org/pragma.html#pragma_foreign_keys</a>
+     * https://www.sqlite.org/pragma.html#pragma_foreign_keys</a>
      */
     public void setEnforceForeignKeys(boolean enforce) {
         config.enforceForeignKeys(enforce);
@@ -228,7 +234,7 @@ public class SQLiteDataSource implements DataSource {
      *
      * @param enable True to enable; false to disable.
      * @see <a
-     *     href="https://www.sqlite.org/pragma.html#pragma_full_column_names">https://www.sqlite.org/pragma.html#pragma_full_column_names</a>
+     * href="https://www.sqlite.org/pragma.html#pragma_full_column_names">https://www.sqlite.org/pragma.html#pragma_full_column_names</a>
      */
     public void setFullColumnNames(boolean enable) {
         config.enableFullColumnNames(enable);
@@ -240,7 +246,7 @@ public class SQLiteDataSource implements DataSource {
      *
      * @param enable True to enable; false to disable.
      * @see <a
-     *     href="https://www.sqlite.org/pragma.html#pragma_fullfsync">https://www.sqlite.org/pragma.html#pragma_fullfsync</a>
+     * href="https://www.sqlite.org/pragma.html#pragma_fullfsync">https://www.sqlite.org/pragma.html#pragma_fullfsync</a>
      */
     public void setFullSync(boolean enable) {
         config.enableFullSync(enable);
@@ -252,7 +258,7 @@ public class SQLiteDataSource implements DataSource {
      *
      * @param numberOfPagesToBeRemoved
      * @see <a href="https://www.sqlite.org/pragma.html#pragma_incremental_vacuum">
-     *     https://www.sqlite.org/pragma.html#pragma_incremental_vacuum</a>
+     * https://www.sqlite.org/pragma.html#pragma_incremental_vacuum</a>
      */
     public void setIncrementalVacuum(int numberOfPagesToBeRemoved) {
         config.incrementalVacuum(numberOfPagesToBeRemoved);
@@ -263,7 +269,7 @@ public class SQLiteDataSource implements DataSource {
      *
      * @param mode One of DELETE, TRUNCATE, PERSIST, MEMORY, WAL or OFF.
      * @see <a href="https://www.sqlite.org/pragma.html#pragma_journal_mode">
-     *     https://www.sqlite.org/pragma.html#pragma_journal_mode</a>
+     * https://www.sqlite.org/pragma.html#pragma_journal_mode</a>
      */
     public void setJournalMode(String mode) {
         config.setJournalMode(JournalMode.valueOf(mode));
@@ -275,7 +281,7 @@ public class SQLiteDataSource implements DataSource {
      *
      * @param limit The default journal size limit is -1 (no limit).
      * @see <a href="https://www.sqlite.org/pragma.html#pragma_journal_size_limit">
-     *     https://www.sqlite.org/pragma.html#pragma_journal_size_limit</a>
+     * https://www.sqlite.org/pragma.html#pragma_journal_size_limit</a>
      */
     public void setJournalSizeLimit(int limit) {
         config.setJournalSizeLimit(limit);
@@ -289,7 +295,7 @@ public class SQLiteDataSource implements DataSource {
      *
      * @param use True to turn on; false to turn off.
      * @see <a
-     *     href="https://www.sqlite.org/pragma.html#pragma_legacy_file_format">https://www.sqlite.org/pragma.html#pragma_legacy_file_format</a>
+     * href="https://www.sqlite.org/pragma.html#pragma_legacy_file_format">https://www.sqlite.org/pragma.html#pragma_legacy_file_format</a>
      */
     public void setLegacyFileFormat(boolean use) {
         config.useLegacyFileFormat(use);
@@ -313,7 +319,7 @@ public class SQLiteDataSource implements DataSource {
      *
      * @param mode Either NORMAL or EXCLUSIVE.
      * @see <a href="https://www.sqlite.org/pragma.html#pragma_locking_mode">
-     *     https://www.sqlite.org/pragma.html#pragma_locking_mode</a>
+     * https://www.sqlite.org/pragma.html#pragma_locking_mode</a>
      */
     public void setLockingMode(String mode) {
         config.setLockingMode(LockingMode.valueOf(mode));
@@ -324,7 +330,7 @@ public class SQLiteDataSource implements DataSource {
      *
      * @param numBytes The page size must be a power of two between 512 and 65536 inclusive.
      * @see <a href="https://www.sqlite.org/pragma.html#pragma_page_size">
-     *     https://www.sqlite.org/pragma.html#pragma_page_size</a>
+     * https://www.sqlite.org/pragma.html#pragma_page_size</a>
      */
     public void setPageSize(int numBytes) {
         config.setPageSize(numBytes);
@@ -335,7 +341,7 @@ public class SQLiteDataSource implements DataSource {
      *
      * @param numPages The maximum page count cannot be reduced below the current database size.
      * @see <a href="https://www.sqlite.org/pragma.html#pragma_max_page_count">
-     *     https://www.sqlite.org/pragma.html#pragma_max_page_count</a>
+     * https://www.sqlite.org/pragma.html#pragma_max_page_count</a>
      */
     public void setMaxPageCount(int numPages) {
         config.setMaxPageCount(numPages);
@@ -346,7 +352,7 @@ public class SQLiteDataSource implements DataSource {
      *
      * @param useReadUncommittedIsolationMode True to turn on; false to turn off.
      * @see <a
-     *     href="https://www.sqlite.org/pragma.html#pragma_read_uncommitted">https://www.sqlite.org/pragma.html#pragma_read_uncommitted</a>
+     * href="https://www.sqlite.org/pragma.html#pragma_read_uncommitted">https://www.sqlite.org/pragma.html#pragma_read_uncommitted</a>
      */
     public void setReadUncommitted(boolean useReadUncommittedIsolationMode) {
         config.setReadUncommitted(useReadUncommittedIsolationMode);
@@ -359,7 +365,7 @@ public class SQLiteDataSource implements DataSource {
      *
      * @param enable True to enable; false to disable.
      * @see <a
-     *     href="https://www.sqlite.org/pragma.html#pragma_recursive_triggers">https://www.sqlite.org/pragma.html#pragma_recursive_triggers</a>
+     * href="https://www.sqlite.org/pragma.html#pragma_recursive_triggers">https://www.sqlite.org/pragma.html#pragma_recursive_triggers</a>
      */
     public void setRecursiveTriggers(boolean enable) {
         config.enableRecursiveTriggers(enable);
@@ -372,7 +378,7 @@ public class SQLiteDataSource implements DataSource {
      *
      * @param enable True to enable; false to disable.
      * @see <a
-     *     href="https://www.sqlite.org/pragma.html#pragma_reverse_unordered_selects">https://www.sqlite.org/pragma.html#pragma_reverse_unordered_selects</a>
+     * href="https://www.sqlite.org/pragma.html#pragma_reverse_unordered_selects">https://www.sqlite.org/pragma.html#pragma_reverse_unordered_selects</a>
      */
     public void setReverseUnorderedSelects(boolean enable) {
         config.enableReverseUnorderedSelects(enable);
@@ -384,9 +390,9 @@ public class SQLiteDataSource implements DataSource {
      *
      * @param enable True to enable; false to disable.
      * @see <a
-     *     href="https://www.sqlite.org/pragma.html#pragma_short_column_names">https://www.sqlite.org/pragma.html#pragma_short_column_names</a>
+     * href="https://www.sqlite.org/pragma.html#pragma_short_column_names">https://www.sqlite.org/pragma.html#pragma_short_column_names</a>
      * @see <a
-     *     href="https://www.sqlite.org/pragma.html#pragma_fullfsync">https://www.sqlite.org/pragma.html#pragma_fullfsync</a>
+     * href="https://www.sqlite.org/pragma.html#pragma_fullfsync">https://www.sqlite.org/pragma.html#pragma_fullfsync</a>
      */
     public void setShortColumnNames(boolean enable) {
         config.enableShortColumnNames(enable);
@@ -397,7 +403,7 @@ public class SQLiteDataSource implements DataSource {
      *
      * @param mode One of OFF, NORMAL or FULL;
      * @see <a href="https://www.sqlite.org/pragma.html#pragma_synchronous">
-     *     https://www.sqlite.org/pragma.html#pragma_synchronous</a>
+     * https://www.sqlite.org/pragma.html#pragma_synchronous</a>
      */
     public void setSynchronous(String mode) {
         config.setSynchronous(SynchronousMode.valueOf(mode));
@@ -409,7 +415,7 @@ public class SQLiteDataSource implements DataSource {
      *
      * @param storeType One of "DEFAULT", "FILE", "MEMORY"
      * @see <a
-     *     href="https://www.sqlite.org/pragma.html#pragma_temp_store">https://www.sqlite.org/pragma.html#pragma_temp_store</a>
+     * href="https://www.sqlite.org/pragma.html#pragma_temp_store">https://www.sqlite.org/pragma.html#pragma_temp_store</a>
      */
     public void setTempStore(String storeType) {
         config.setTempStore(TempStore.valueOf(storeType));
@@ -421,7 +427,7 @@ public class SQLiteDataSource implements DataSource {
      *
      * @param directoryName The temporary directory name.
      * @see <a
-     *     href="https://www.sqlite.org/pragma.html#pragma_temp_store_directory">https://www.sqlite.org/pragma.html#pragma_temp_store_directory</a>
+     * href="https://www.sqlite.org/pragma.html#pragma_temp_store_directory">https://www.sqlite.org/pragma.html#pragma_temp_store_directory</a>
      */
     public void setTempStoreDirectory(String directoryName) {
         config.setTempStoreDirectory(directoryName);
@@ -432,7 +438,7 @@ public class SQLiteDataSource implements DataSource {
      *
      * @param transactionMode One of DEFERRED, IMMEDIATE or EXCLUSIVE.
      * @see <a
-     *     href="https://www.sqlite.org/lang_transaction.html">https://www.sqlite.org/lang_transaction.html</a>
+     * href="https://www.sqlite.org/lang_transaction.html">https://www.sqlite.org/lang_transaction.html</a>
      */
     public void setTransactionMode(String transactionMode) {
         config.setTransactionMode(transactionMode);
@@ -444,7 +450,7 @@ public class SQLiteDataSource implements DataSource {
      *
      * @param version
      * @see <a
-     *     href="https://www.sqlite.org/pragma.html#pragma_schema_version">https://www.sqlite.org/pragma.html#pragma_schema_version</a>
+     * href="https://www.sqlite.org/pragma.html#pragma_schema_version">https://www.sqlite.org/pragma.html#pragma_schema_version</a>
      */
     public void setUserVersion(int version) {
         config.setUserVersion(version);
@@ -452,12 +458,16 @@ public class SQLiteDataSource implements DataSource {
 
     // codes for the DataSource interface
 
-    /** @see javax.sql.DataSource#getConnection() */
+    /**
+     * @see javax.sql.DataSource#getConnection()
+     */
     public Connection getConnection() throws SQLException {
         return getConnection(null, null);
     }
 
-    /** @see javax.sql.DataSource#getConnection(java.lang.String, java.lang.String) */
+    /**
+     * @see javax.sql.DataSource#getConnection(java.lang.String, java.lang.String)
+     */
     public SQLiteConnection getConnection(String username, String password) throws SQLException {
         Properties p = config.toProperties();
         if (username != null) p.put("user", username);
@@ -465,12 +475,16 @@ public class SQLiteDataSource implements DataSource {
         return JDBC.createConnection(url, p);
     }
 
-    /** @see javax.sql.DataSource#getLogWriter() */
+    /**
+     * @see javax.sql.DataSource#getLogWriter()
+     */
     public PrintWriter getLogWriter() throws SQLException {
         return logger;
     }
 
-    /** @see javax.sql.DataSource#getLoginTimeout() */
+    /**
+     * @see javax.sql.DataSource#getLoginTimeout()
+     */
     public int getLoginTimeout() throws SQLException {
         return loginTimeout;
     }
@@ -479,12 +493,16 @@ public class SQLiteDataSource implements DataSource {
         throw new SQLFeatureNotSupportedException("getParentLogger");
     }
 
-    /** @see javax.sql.DataSource#setLogWriter(java.io.PrintWriter) */
+    /**
+     * @see javax.sql.DataSource#setLogWriter(java.io.PrintWriter)
+     */
     public void setLogWriter(PrintWriter out) throws SQLException {
         this.logger = out;
     }
 
-    /** @see javax.sql.DataSource#setLoginTimeout(int) */
+    /**
+     * @see javax.sql.DataSource#setLoginTimeout(int)
+     */
     public void setLoginTimeout(int seconds) throws SQLException {
         loginTimeout = seconds;
     }

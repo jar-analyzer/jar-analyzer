@@ -9,32 +9,32 @@ import java.io.IOException;
 
 public class StructEnclosingMethodAttribute extends StructGeneralAttribute {
 
-  private String className;
-  private String methodName;
-  private String methodDescriptor;
+    private String className;
+    private String methodName;
+    private String methodDescriptor;
 
-  @Override
-  public void initContent(DataInputFullStream data, ConstantPool pool) throws IOException {
-    int classIndex = data.readUnsignedShort();
-    int methodIndex = data.readUnsignedShort();
+    @Override
+    public void initContent(DataInputFullStream data, ConstantPool pool) throws IOException {
+        int classIndex = data.readUnsignedShort();
+        int methodIndex = data.readUnsignedShort();
 
-    className = pool.getPrimitiveConstant(classIndex).getString();
-    if (methodIndex != 0) {
-      LinkConstant lk = pool.getLinkConstant(methodIndex);
-      methodName = lk.elementname;
-      methodDescriptor = lk.descriptor;
+        className = pool.getPrimitiveConstant(classIndex).getString();
+        if (methodIndex != 0) {
+            LinkConstant lk = pool.getLinkConstant(methodIndex);
+            methodName = lk.elementname;
+            methodDescriptor = lk.descriptor;
+        }
     }
-  }
 
-  public String getClassName() {
-    return className;
-  }
+    public String getClassName() {
+        return className;
+    }
 
-  public String getMethodDescriptor() {
-    return methodDescriptor;
-  }
+    public String getMethodDescriptor() {
+        return methodDescriptor;
+    }
 
-  public String getMethodName() {
-    return methodName;
-  }
+    public String getMethodName() {
+        return methodName;
+    }
 }

@@ -5,18 +5,18 @@ import org.jetbrains.java.decompiler.util.VBStyleCollection;
 
 public class SimpleInstructionSequence extends InstructionSequence {
 
-  public SimpleInstructionSequence() {
-  }
+    public SimpleInstructionSequence() {
+    }
 
-  public SimpleInstructionSequence(VBStyleCollection<Instruction, Integer> collinstr) {
-    super(collinstr);
-  }
+    public SimpleInstructionSequence(VBStyleCollection<Instruction, Integer> collinstr) {
+        super(collinstr);
+    }
 
-  @Override
-  public SimpleInstructionSequence clone() {
-    SimpleInstructionSequence newseq = new SimpleInstructionSequence(collinstr.clone());
-    newseq.setPointer(this.getPointer());
+    @Override
+    public SimpleInstructionSequence clone() {
+        SimpleInstructionSequence newseq = new SimpleInstructionSequence(collinstr.clone());
+        newseq.setPointer(this.getPointer());
 
-    return newseq;
-  }
+        return newseq;
+    }
 }

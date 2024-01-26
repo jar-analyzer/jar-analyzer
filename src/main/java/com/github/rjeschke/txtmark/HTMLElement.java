@@ -20,8 +20,7 @@ package com.github.rjeschke.txtmark;
  *
  * @author René Jeschke <rene_jeschke@yahoo.de>
  */
-enum HTMLElement
-{
+enum HTMLElement {
     // TODO add new HTML5 elements
     NONE,
     a, abbr, acronym, address, applet, area,

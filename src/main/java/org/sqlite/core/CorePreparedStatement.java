@@ -36,7 +36,7 @@ public abstract class CorePreparedStatement extends JDBC4Statement {
      * Constructs a prepared statement on a provided connection.
      *
      * @param conn Connection on which to create the prepared statement.
-     * @param sql The SQL script to prepare.
+     * @param sql  The SQL script to prepare.
      * @throws SQLException
      */
     protected CorePreparedStatement(SQLiteConnection conn, String sql) throws SQLException {
@@ -53,17 +53,21 @@ public abstract class CorePreparedStatement extends JDBC4Statement {
         batchPos = 0;
     }
 
-    /** @see org.sqlite.jdbc3.JDBC3Statement#executeBatch() */
+    /**
+     * @see org.sqlite.jdbc3.JDBC3Statement#executeBatch()
+     */
     @Override
     public int[] executeBatch() throws SQLException {
         return Arrays.stream(executeLargeBatch()).mapToInt(l -> (int) l).toArray();
     }
 
-    /** @see org.sqlite.jdbc3.JDBC3Statement#executeLargeBatch() */
+    /**
+     * @see org.sqlite.jdbc3.JDBC3Statement#executeLargeBatch()
+     */
     @Override
     public long[] executeLargeBatch() throws SQLException {
         if (batchQueryCount == 0) {
-            return new long[] {};
+            return new long[]{};
         }
 
         if (this.conn instanceof JDBC3Connection) {
@@ -82,7 +86,9 @@ public abstract class CorePreparedStatement extends JDBC4Statement {
                 });
     }
 
-    /** @see org.sqlite.jdbc3.JDBC3Statement#clearBatch() () */
+    /**
+     * @see org.sqlite.jdbc3.JDBC3Statement#clearBatch() ()
+     */
     @Override
     public void clearBatch() throws SQLException {
         super.clearBatch();
@@ -106,7 +112,9 @@ public abstract class CorePreparedStatement extends JDBC4Statement {
         batch[batchPos + pos - 1] = value;
     }
 
-    /** Store the date in the user's preferred format (text, int, or real) */
+    /**
+     * Store the date in the user's preferred format (text, int, or real)
+     */
     protected void setDateByMilliseconds(int pos, Long value, Calendar calendar)
             throws SQLException {
         SQLiteConnectionConfig config = conn.getConnectionConfig();

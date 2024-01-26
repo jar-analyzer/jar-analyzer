@@ -18,39 +18,38 @@ import java.util.List;
   } parameters[parameters_count];
 */
 public class StructMethodParametersAttribute extends StructGeneralAttribute {
-  private List<Entry> myEntries;
+    private List<Entry> myEntries;
 
-  @Override
-  public void initContent(DataInputFullStream data, ConstantPool pool) throws IOException {
-    int len = data.readUnsignedByte();
-    List<Entry> entries;
-    if (len > 0) {
-      entries = new ArrayList<>(len);
+    @Override
+    public void initContent(DataInputFullStream data, ConstantPool pool) throws IOException {
+        int len = data.readUnsignedByte();
+        List<Entry> entries;
+        if (len > 0) {
+            entries = new ArrayList<>(len);
 
-      for (int i = 0; i < len; i++) {
-        int nameIndex = data.readUnsignedShort();
-        String name = nameIndex != 0 ? pool.getPrimitiveConstant(nameIndex).getString() : null;
-        int access_flags = data.readUnsignedShort();
-        entries.add(new Entry(name, access_flags));
-      }
+            for (int i = 0; i < len; i++) {
+                int nameIndex = data.readUnsignedShort();
+                String name = nameIndex != 0 ? pool.getPrimitiveConstant(nameIndex).getString() : null;
+                int access_flags = data.readUnsignedShort();
+                entries.add(new Entry(name, access_flags));
+            }
+        } else {
+            entries = Collections.emptyList();
+        }
+        myEntries = Collections.unmodifiableList(entries);
     }
-    else {
-      entries = Collections.emptyList();
+
+    public List<Entry> getEntries() {
+        return myEntries;
     }
-    myEntries = Collections.unmodifiableList(entries);
-  }
 
-  public List<Entry> getEntries() {
-    return myEntries;
-  }
+    public static class Entry {
+        public final String myName;
+        public final int myAccessFlags;
 
-  public static class Entry {
-    public final String myName;
-    public final int myAccessFlags;
-
-    public Entry(String name, int accessFlags) {
-      myName = name;
-      myAccessFlags = accessFlags;
+        public Entry(String name, int accessFlags) {
+            myName = name;
+            myAccessFlags = accessFlags;
+        }
     }
-  }
 }

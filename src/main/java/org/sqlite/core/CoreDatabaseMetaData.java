@@ -55,19 +55,23 @@ public abstract class CoreDatabaseMetaData implements DatabaseMetaData {
 
     /**
      * @deprecated Not exactly sure what this function does, as it is not implementing any
-     *     interface, and is not used anywhere in the code. Deprecated since 3.43.0.0.
+     * interface, and is not used anywhere in the code. Deprecated since 3.43.0.0.
      */
     @Deprecated
     public abstract ResultSet getGeneratedKeys() throws SQLException;
 
-    /** @throws SQLException */
+    /**
+     * @throws SQLException
+     */
     protected void checkOpen() throws SQLException {
         if (conn == null) {
             throw new SQLException("connection closed");
         }
     }
 
-    /** @throws SQLException */
+    /**
+     * @throws SQLException
+     */
     public synchronized void close() throws SQLException {
         if (conn == null) {
             return;
@@ -185,19 +189,25 @@ public abstract class CoreDatabaseMetaData implements DatabaseMetaData {
 
     // inner classes
 
-    /** Pattern used to extract column order for an unnamed primary key. */
+    /**
+     * Pattern used to extract column order for an unnamed primary key.
+     */
     protected static final Pattern PK_UNNAMED_PATTERN =
             Pattern.compile(
                     ".*\\sPRIMARY\\s+KEY\\s+\\((.*?,+.*?)\\).*",
                     Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
 
-    /** Pattern used to extract a named primary key. */
+    /**
+     * Pattern used to extract a named primary key.
+     */
     protected static final Pattern PK_NAMED_PATTERN =
             Pattern.compile(
                     ".*\\sCONSTRAINT\\s+(.*?)\\s+PRIMARY\\s+KEY\\s+\\((.*?)\\).*",
                     Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
 
-    /** @see java.lang.Object#finalize() */
+    /**
+     * @see java.lang.Object#finalize()
+     */
     protected void finalize() throws Throwable {
         close();
     }

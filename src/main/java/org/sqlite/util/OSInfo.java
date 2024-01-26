@@ -210,12 +210,12 @@ public class OSInfo {
                 int exitCode = Runtime.getRuntime().exec("which readelf").waitFor();
                 if (exitCode == 0) {
                     String[] cmdarray = {
-                        "/bin/sh",
-                        "-c",
-                        "find '"
-                                + javaHome
-                                + "' -name 'libjvm.so' | head -1 | xargs readelf -A | "
-                                + "grep 'Tag_ABI_VFP_args: VFP registers'"
+                            "/bin/sh",
+                            "-c",
+                            "find '"
+                                    + javaHome
+                                    + "' -name 'libjvm.so' | head -1 | xargs readelf -A | "
+                                    + "grep 'Tag_ABI_VFP_args: VFP registers'"
                     };
                     exitCode = Runtime.getRuntime().exec(cmdarray).waitFor();
                     if (exitCode == 0) {

@@ -16,7 +16,9 @@ public class LibraryLoaderUtil {
                 "/%s/native/%s", packagePath, OSInfo.getNativeLibFolderPathForCurrentOS());
     }
 
-    /** Get the OS-specific name of the sqlitejdbc native library. */
+    /**
+     * Get the OS-specific name of the sqlitejdbc native library.
+     */
     public static String getNativeLibName() {
         return System.mapLibraryName(NATIVE_LIB_BASE_NAME);
     }

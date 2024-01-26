@@ -20,44 +20,55 @@ package com.github.rjeschke.txtmark;
  *
  * @author René Jeschke <rene_jeschke@yahoo.de>
  */
-class Block
-{
-    /** This block's type. */
-    public BlockType type    = BlockType.NONE;
-    /** Head and tail of linked lines. */
-    public Line      lines   = null, lineTail = null;
-    /** Head and tail of child blocks. */
-    public Block     blocks  = null, blockTail = null;
-    /** Next block. */
-    public Block     next    = null;
-    /** Depth of headline BlockType. */
-    public int       hlDepth = 0;
-    /** ID for headlines and list items */
-    public String    id      = null;
-    /** Block meta information */
-    public String    meta    = "";
+class Block {
+    /**
+     * This block's type.
+     */
+    public BlockType type = BlockType.NONE;
+    /**
+     * Head and tail of linked lines.
+     */
+    public Line lines = null, lineTail = null;
+    /**
+     * Head and tail of child blocks.
+     */
+    public Block blocks = null, blockTail = null;
+    /**
+     * Next block.
+     */
+    public Block next = null;
+    /**
+     * Depth of headline BlockType.
+     */
+    public int hlDepth = 0;
+    /**
+     * ID for headlines and list items
+     */
+    public String id = null;
+    /**
+     * Block meta information
+     */
+    public String meta = "";
 
-    /** Constructor. */
-    public Block()
-    {
+    /**
+     * Constructor.
+     */
+    public Block() {
         //
     }
 
     /**
      * @return <code>true</code> if this block contains lines.
      */
-    public boolean hasLines()
-    {
+    public boolean hasLines() {
         return this.lines != null;
     }
 
     /**
      * Removes leading and trailing empty lines.
      */
-    public void removeSurroundingEmptyLines()
-    {
-        if (this.lines != null)
-        {
+    public void removeSurroundingEmptyLines() {
+        if (this.lines != null) {
             this.removeTrailingEmptyLines();
             this.removeLeadingEmptyLines();
         }
@@ -66,41 +77,31 @@ class Block
     /**
      * Sets <code>hlDepth</code> and takes care of '#' chars.
      */
-    public void transfromHeadline()
-    {
-        if (this.hlDepth > 0)
-        {
+    public void transfromHeadline() {
+        if (this.hlDepth > 0) {
             return;
         }
         int level = 0;
         final Line line = this.lines;
-        if (line.isEmpty)
-        {
+        if (line.isEmpty) {
             return;
         }
         int start = line.leading;
-        while (start < line.value.length() && line.value.charAt(start) == '#')
-        {
+        while (start < line.value.length() && line.value.charAt(start) == '#') {
             level++;
             start++;
         }
-        while (start < line.value.length() && line.value.charAt(start) == ' ')
-        {
+        while (start < line.value.length() && line.value.charAt(start) == ' ') {
             start++;
         }
-        if (start >= line.value.length())
-        {
+        if (start >= line.value.length()) {
             line.setEmpty();
-        }
-        else
-        {
+        } else {
             int end = line.value.length() - line.trailing - 1;
-            while (line.value.charAt(end) == '#')
-            {
+            while (line.value.charAt(end) == '#') {
                 end--;
             }
-            while (line.value.charAt(end) == ' ')
-            {
+            while (line.value.charAt(end) == ' ') {
                 end--;
             }
             line.value = line.value.substring(start, end + 1);
@@ -112,28 +113,22 @@ class Block
     /**
      * Used for nested lists. Removes list markers and up to 4 leading spaces.
      *
-     * @param configuration
-     *            txtmark configuration
-     *
+     * @param configuration txtmark configuration
      */
-    public void removeListIndent(final Configuration configuration)
-    {
+    public void removeListIndent(final Configuration configuration) {
         Line line = this.lines;
-        while (line != null)
-        {
-            if (!line.isEmpty)
-            {
-                switch (line.getLineType(configuration))
-                {
-                case ULIST:
-                    line.value = line.value.substring(line.leading + 2);
-                    break;
-                case OLIST:
-                    line.value = line.value.substring(line.value.indexOf('.') + 2);
-                    break;
-                default:
-                    line.value = line.value.substring(Math.min(line.leading, 4));
-                    break;
+        while (line != null) {
+            if (!line.isEmpty) {
+                switch (line.getLineType(configuration)) {
+                    case ULIST:
+                        line.value = line.value.substring(line.leading + 2);
+                        break;
+                    case OLIST:
+                        line.value = line.value.substring(line.value.indexOf('.') + 2);
+                        break;
+                    default:
+                        line.value = line.value.substring(Math.min(line.leading, 4));
+                        break;
                 }
                 line.initLeading();
             }
@@ -144,18 +139,13 @@ class Block
     /**
      * Used for nested block quotes. Removes '>' char.
      */
-    public void removeBlockQuotePrefix()
-    {
+    public void removeBlockQuotePrefix() {
         Line line = this.lines;
-        while (line != null)
-        {
-            if (!line.isEmpty)
-            {
-                if (line.value.charAt(line.leading) == '>')
-                {
+        while (line != null) {
+            if (!line.isEmpty) {
+                if (line.value.charAt(line.leading) == '>') {
                     int rem = line.leading + 1;
-                    if (line.leading + 1 < line.value.length() && line.value.charAt(line.leading + 1) == ' ')
-                    {
+                    if (line.leading + 1 < line.value.length() && line.value.charAt(line.leading + 1) == ' ') {
                         rem++;
                     }
                     line.value = line.value.substring(rem);
@@ -171,12 +161,10 @@ class Block
      *
      * @return <code>true</code> if an empty line was removed.
      */
-    public boolean removeLeadingEmptyLines()
-    {
+    public boolean removeLeadingEmptyLines() {
         boolean wasEmpty = false;
         Line line = this.lines;
-        while (line != null && line.isEmpty)
-        {
+        while (line != null && line.isEmpty) {
             this.removeLine(line);
             line = this.lines;
             wasEmpty = true;
@@ -187,11 +175,9 @@ class Block
     /**
      * Removes trailing empty lines.
      */
-    public void removeTrailingEmptyLines()
-    {
+    public void removeTrailingEmptyLines() {
         Line line = this.lineTail;
-        while (line != null && line.isEmpty)
-        {
+        while (line != null && line.isEmpty) {
             this.removeLine(line);
             line = this.lineTail;
         }
@@ -201,33 +187,25 @@ class Block
      * Splits this block's lines, creating a new child block having 'line' as
      * it's lineTail.
      *
-     * @param line
-     *            The line to split from.
+     * @param line The line to split from.
      * @return The newly created Block.
      */
-    public Block split(final Line line)
-    {
+    public Block split(final Line line) {
         final Block block = new Block();
 
         block.lines = this.lines;
         block.lineTail = line;
         this.lines = line.next;
         line.next = null;
-        if (this.lines == null)
-        {
+        if (this.lines == null) {
             this.lineTail = null;
-        }
-        else
-        {
+        } else {
             this.lines.previous = null;
         }
 
-        if (this.blocks == null)
-        {
+        if (this.blocks == null) {
             this.blocks = this.blockTail = block;
-        }
-        else
-        {
+        } else {
             this.blockTail.next = block;
             this.blockTail = block;
         }
@@ -238,25 +216,17 @@ class Block
     /**
      * Removes the given line from this block.
      *
-     * @param line
-     *            Line to remove.
+     * @param line Line to remove.
      */
-    public void removeLine(final Line line)
-    {
-        if (line.previous == null)
-        {
+    public void removeLine(final Line line) {
+        if (line.previous == null) {
             this.lines = line.next;
-        }
-        else
-        {
+        } else {
             line.previous.next = line.next;
         }
-        if (line.next == null)
-        {
+        if (line.next == null) {
             this.lineTail = line.previous;
-        }
-        else
-        {
+        } else {
             line.next.previous = line.previous;
         }
         line.previous = line.next = null;
@@ -265,17 +235,12 @@ class Block
     /**
      * Appends the given line to this block.
      *
-     * @param line
-     *            Line to append.
+     * @param line Line to append.
      */
-    public void appendLine(final Line line)
-    {
-        if (this.lineTail == null)
-        {
+    public void appendLine(final Line line) {
+        if (this.lineTail == null) {
             this.lines = this.lineTail = line;
-        }
-        else
-        {
+        } else {
             this.lineTail.nextEmpty = line.isEmpty;
             line.prevEmpty = this.lineTail.isEmpty;
             line.previous = this.lineTail;
@@ -288,23 +253,17 @@ class Block
      * Changes all Blocks of type <code>NONE</code> to <code>PARAGRAPH</code> if
      * this Block is a List and any of the ListItems contains a paragraph.
      */
-    public void expandListParagraphs()
-    {
-        if (this.type != BlockType.ORDERED_LIST && this.type != BlockType.UNORDERED_LIST)
-        {
+    public void expandListParagraphs() {
+        if (this.type != BlockType.ORDERED_LIST && this.type != BlockType.UNORDERED_LIST) {
             return;
         }
         Block outer = this.blocks, inner;
         boolean hasParagraph = false;
-        while (outer != null && !hasParagraph)
-        {
-            if (outer.type == BlockType.LIST_ITEM)
-            {
+        while (outer != null && !hasParagraph) {
+            if (outer.type == BlockType.LIST_ITEM) {
                 inner = outer.blocks;
-                while (inner != null && !hasParagraph)
-                {
-                    if (inner.type == BlockType.PARAGRAPH)
-                    {
+                while (inner != null && !hasParagraph) {
+                    if (inner.type == BlockType.PARAGRAPH) {
                         hasParagraph = true;
                     }
                     inner = inner.next;
@@ -312,18 +271,13 @@ class Block
             }
             outer = outer.next;
         }
-        if (hasParagraph)
-        {
+        if (hasParagraph) {
             outer = this.blocks;
-            while (outer != null)
-            {
-                if (outer.type == BlockType.LIST_ITEM)
-                {
+            while (outer != null) {
+                if (outer.type == BlockType.LIST_ITEM) {
                     inner = outer.blocks;
-                    while (inner != null)
-                    {
-                        if (inner.type == BlockType.NONE)
-                        {
+                    while (inner != null) {
+                        if (inner.type == BlockType.NONE) {
                             inner.type = BlockType.PARAGRAPH;
                         }
                         inner = inner.next;

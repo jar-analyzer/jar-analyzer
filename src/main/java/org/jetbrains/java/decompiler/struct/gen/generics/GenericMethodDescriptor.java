@@ -5,25 +5,25 @@ import java.util.Collections;
 import java.util.List;
 
 public class GenericMethodDescriptor {
-  public final List<String> typeParameters;
-  public final List<List<GenericType>> typeParameterBounds;
-  public final List<GenericType> parameterTypes;
-  public final GenericType returnType;
-  public final List<GenericType> exceptionTypes;
+    public final List<String> typeParameters;
+    public final List<List<GenericType>> typeParameterBounds;
+    public final List<GenericType> parameterTypes;
+    public final GenericType returnType;
+    public final List<GenericType> exceptionTypes;
 
-  public GenericMethodDescriptor(List<String> typeParameters,
-                                 List<List<GenericType>> typeParameterBounds,
-                                 List<GenericType> parameterTypes,
-                                 GenericType returnType,
-                                 List<GenericType> exceptionTypes) {
-    this.typeParameters = substitute(typeParameters);
-    this.typeParameterBounds = substitute(typeParameterBounds);
-    this.parameterTypes = substitute(parameterTypes);
-    this.returnType = returnType;
-    this.exceptionTypes = substitute(exceptionTypes);
-  }
+    public GenericMethodDescriptor(List<String> typeParameters,
+                                   List<List<GenericType>> typeParameterBounds,
+                                   List<GenericType> parameterTypes,
+                                   GenericType returnType,
+                                   List<GenericType> exceptionTypes) {
+        this.typeParameters = substitute(typeParameters);
+        this.typeParameterBounds = substitute(typeParameterBounds);
+        this.parameterTypes = substitute(parameterTypes);
+        this.returnType = returnType;
+        this.exceptionTypes = substitute(exceptionTypes);
+    }
 
-  private static <T> List<T> substitute(List<T> list) {
-    return list.isEmpty() ? Collections.emptyList() : list;
-  }
+    private static <T> List<T> substitute(List<T> list) {
+        return list.isEmpty() ? Collections.emptyList() : list;
+    }
 }

@@ -8,14 +8,14 @@ import java.io.IOException;
 
 public class StructConstantValueAttribute extends StructGeneralAttribute {
 
-  private int index;
+    private int index;
 
-  @Override
-  public void initContent(DataInputFullStream data, ConstantPool pool) throws IOException {
-    index = data.readUnsignedShort();
-  }
+    @Override
+    public void initContent(DataInputFullStream data, ConstantPool pool) throws IOException {
+        index = data.readUnsignedShort();
+    }
 
-  public int getIndex() {
-    return index;
-  }
+    public int getIndex() {
+        return index;
+    }
 }

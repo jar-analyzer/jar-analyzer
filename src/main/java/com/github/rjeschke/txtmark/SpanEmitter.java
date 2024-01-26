@@ -21,15 +21,12 @@ package com.github.rjeschke.txtmark;
  *
  * @author René Jeschke (rene_jeschke@yahoo.de)
  */
-public interface SpanEmitter
-{
+public interface SpanEmitter {
     /**
      * Emits a span element.
      *
-     * @param out
-     *            The StringBuilder to append to.
-     * @param content
-     *            The span's content.
+     * @param out     The StringBuilder to append to.
+     * @param content The span's content.
      */
     public void emitSpan(StringBuilder out, String content);
 }

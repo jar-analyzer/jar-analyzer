@@ -5,15 +5,15 @@ import java.util.Collections;
 import java.util.List;
 
 public class ExceptionTable {
-  public static final ExceptionTable EMPTY = new ExceptionTable(Collections.emptyList());
+    public static final ExceptionTable EMPTY = new ExceptionTable(Collections.emptyList());
 
-  private final List<ExceptionHandler> handlers;
+    private final List<ExceptionHandler> handlers;
 
-  public ExceptionTable(List<ExceptionHandler> handlers) {
-    this.handlers = handlers;
-  }
+    public ExceptionTable(List<ExceptionHandler> handlers) {
+        this.handlers = handlers;
+    }
 
-  public List<ExceptionHandler> getHandlers() {
-    return handlers;
-  }
+    public List<ExceptionHandler> getHandlers() {
+        return handlers;
+    }
 }

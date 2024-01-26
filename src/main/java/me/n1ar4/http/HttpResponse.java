@@ -74,7 +74,7 @@ public class HttpResponse {
             while ((bytesRead = is.read(buffer)) != -1) {
                 bodyBuffer.write(buffer, 0, bytesRead);
             }
-        }catch (Exception ignored){
+        } catch (Exception ignored) {
         }
     }
 

@@ -22,7 +22,9 @@ import java.sql.SQLException;
 public class SQLiteConnectionPoolDataSource extends SQLiteDataSource
         implements javax.sql.ConnectionPoolDataSource {
 
-    /** Default constructor. */
+    /**
+     * Default constructor.
+     */
     public SQLiteConnectionPoolDataSource() {
         super();
     }
@@ -36,14 +38,16 @@ public class SQLiteConnectionPoolDataSource extends SQLiteDataSource
         super(config);
     }
 
-    /** @see javax.sql.ConnectionPoolDataSource#getPooledConnection() */
+    /**
+     * @see javax.sql.ConnectionPoolDataSource#getPooledConnection()
+     */
     public PooledConnection getPooledConnection() throws SQLException {
         return getPooledConnection(null, null);
     }
 
     /**
      * @see javax.sql.ConnectionPoolDataSource#getPooledConnection(java.lang.String,
-     *     java.lang.String)
+     * java.lang.String)
      */
     public PooledConnection getPooledConnection(String user, String password) throws SQLException {
         return new SQLitePooledConnection(getConnection(user, password));

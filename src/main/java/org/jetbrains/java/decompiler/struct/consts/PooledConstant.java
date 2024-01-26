@@ -4,11 +4,12 @@ package org.jetbrains.java.decompiler.struct.consts;
 import org.jetbrains.java.decompiler.code.CodeConstants;
 
 public class PooledConstant implements CodeConstants {
-  public final int type;
+    public final int type;
 
-  public PooledConstant(int type) {
-    this.type = type;
-  }
+    public PooledConstant(int type) {
+        this.type = type;
+    }
 
-  public void resolveConstant(ConstantPool pool) { }
+    public void resolveConstant(ConstantPool pool) {
+    }
 }

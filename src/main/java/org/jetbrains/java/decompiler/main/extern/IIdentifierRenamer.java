@@ -3,13 +3,13 @@ package org.jetbrains.java.decompiler.main.extern;
 
 public interface IIdentifierRenamer {
 
-  enum Type {ELEMENT_CLASS, ELEMENT_FIELD, ELEMENT_METHOD}
+    enum Type {ELEMENT_CLASS, ELEMENT_FIELD, ELEMENT_METHOD}
 
-  boolean toBeRenamed(Type elementType, String className, String element, String descriptor);
+    boolean toBeRenamed(Type elementType, String className, String element, String descriptor);
 
-  String getNextClassName(String fullName, String shortName);
+    String getNextClassName(String fullName, String shortName);
 
-  String getNextFieldName(String className, String field, String descriptor);
+    String getNextFieldName(String className, String field, String descriptor);
 
-  String getNextMethodName(String className, String method, String descriptor);
+    String getNextMethodName(String className, String method, String descriptor);
 }

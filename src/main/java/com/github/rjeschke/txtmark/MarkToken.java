@@ -20,56 +20,105 @@ package com.github.rjeschke.txtmark;
  *
  * @author René Jeschke <rene_jeschke@yahoo.de>
  */
-enum MarkToken
-{
-    /** No token. */
+enum MarkToken {
+    /**
+     * No token.
+     */
     NONE,
-    /** &#x2a; */
+    /**
+     * &#x2a;
+     */
     EM_STAR,            // x*x
-    /** _ */
+    /**
+     * _
+     */
     EM_UNDERSCORE,      // x_x
-    /** &#x2a;&#x2a; */
+    /**
+     * &#x2a;&#x2a;
+     */
     STRONG_STAR,        // x**x
-    /** __ */
+    /**
+     * __
+     */
     STRONG_UNDERSCORE,  // x__x
-    /** ` */
+    /**
+     * `
+     */
     CODE_SINGLE,        // `
-    /** `` */
+    /**
+     * ``
+     */
     CODE_DOUBLE,        // ``
-    /** [ */
+    /**
+     * [
+     */
     LINK,               // [
-    /** &lt; */
+    /**
+     * &lt;
+     */
     HTML,               // <
-    /** ![ */
+    /**
+     * ![
+     */
     IMAGE,              // ![
-    /** &amp; */
+    /**
+     * &amp;
+     */
     ENTITY,             // &
-    /** \ */
+    /**
+     * \
+     */
     ESCAPE,             // \x
-    /** Extended: ^ */
+    /**
+     * Extended: ^
+     */
     SUPER,              // ^
-    /** Extended: (C) */
+    /**
+     * Extended: (C)
+     */
     X_COPY,             // (C)
-    /** Extended: (R) */
+    /**
+     * Extended: (R)
+     */
     X_REG,              // (R)
-    /** Extended: (TM) */
+    /**
+     * Extended: (TM)
+     */
     X_TRADE,            // (TM)
-    /** Extended: &lt;&lt; */
+    /**
+     * Extended: &lt;&lt;
+     */
     X_LAQUO,            // <<
-    /** Extended: >> */
+    /**
+     * Extended: >>
+     */
     X_RAQUO,            // >>
-    /** Extended: -- */
+    /**
+     * Extended: --
+     */
     X_NDASH,            // --
-    /** Extended: --- */
+    /**
+     * Extended: ---
+     */
     X_MDASH,            // ---
-    /** Extended: &#46;&#46;&#46; */
+    /**
+     * Extended: &#46;&#46;&#46;
+     */
     X_HELLIP,           // ...
-    /** Extended: "x */
+    /**
+     * Extended: "x
+     */
     X_RDQUO,            // "
-    /** Extended: x" */
+    /**
+     * Extended: x"
+     */
     X_LDQUO,            // "
-    /** [[ */
+    /**
+     * [[
+     */
     X_LINK_OPEN,        // [[
-    /** ]] */
+    /**
+     * ]]
+     */
     X_LINK_CLOSE,       // ]]
 }

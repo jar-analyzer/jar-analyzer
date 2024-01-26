@@ -13,116 +13,116 @@ import java.util.*;
 import java.util.Map.Entry;
 
 public class VarProcessor {
-  private final VarNamesCollector varNamesCollector = new VarNamesCollector();
-  private final StructMethod method;
-  private final MethodDescriptor methodDescriptor;
-  private Map<VarVersionPair, String> mapVarNames = new HashMap<>();
-  private VarVersionsProcessor varVersions;
-  private final Map<VarVersionPair, String> thisVars = new HashMap<>();
-  private final Set<VarVersionPair> externalVars = new HashSet<>();
+    private final VarNamesCollector varNamesCollector = new VarNamesCollector();
+    private final StructMethod method;
+    private final MethodDescriptor methodDescriptor;
+    private Map<VarVersionPair, String> mapVarNames = new HashMap<>();
+    private VarVersionsProcessor varVersions;
+    private final Map<VarVersionPair, String> thisVars = new HashMap<>();
+    private final Set<VarVersionPair> externalVars = new HashSet<>();
 
-  public VarProcessor(StructMethod mt, MethodDescriptor md) {
-    method = mt;
-    methodDescriptor = md;
-  }
-
-  public void setVarVersions(RootStatement root) {
-    VarVersionsProcessor oldProcessor = varVersions;
-    varVersions = new VarVersionsProcessor(method, methodDescriptor);
-    varVersions.setVarVersions(root, oldProcessor);
-  }
-
-  public void setVarDefinitions(Statement root) {
-    mapVarNames = new HashMap<>();
-    new VarDefinitionHelper(root, method, this).setVarDefinitions();
-  }
-
-  public void setDebugVarNames(Map<Integer, String> mapDebugVarNames) {
-    if (varVersions == null) {
-      return;
+    public VarProcessor(StructMethod mt, MethodDescriptor md) {
+        method = mt;
+        methodDescriptor = md;
     }
 
-    Map<Integer, Integer> mapOriginalVarIndices = varVersions.getMapOriginalVarIndices();
+    public void setVarVersions(RootStatement root) {
+        VarVersionsProcessor oldProcessor = varVersions;
+        varVersions = new VarVersionsProcessor(method, methodDescriptor);
+        varVersions.setVarVersions(root, oldProcessor);
+    }
 
-    List<VarVersionPair> listVars = new ArrayList<>(mapVarNames.keySet());
-    listVars.sort(Comparator.comparingInt(o -> o.var));
+    public void setVarDefinitions(Statement root) {
+        mapVarNames = new HashMap<>();
+        new VarDefinitionHelper(root, method, this).setVarDefinitions();
+    }
 
-    Map<String, Integer> mapNames = new HashMap<>();
-
-    for (VarVersionPair pair : listVars) {
-      String name = mapVarNames.get(pair);
-
-      Integer index = mapOriginalVarIndices.get(pair.var);
-      if (index != null) {
-        String debugName = mapDebugVarNames.get(index);
-        if (debugName != null && TextUtil.isValidIdentifier(debugName, method.getClassStruct().getBytecodeVersion())) {
-          name = debugName;
+    public void setDebugVarNames(Map<Integer, String> mapDebugVarNames) {
+        if (varVersions == null) {
+            return;
         }
-      }
 
-      Integer counter = mapNames.get(name);
-      mapNames.put(name, counter == null ? counter = 0 : ++counter);
+        Map<Integer, Integer> mapOriginalVarIndices = varVersions.getMapOriginalVarIndices();
 
-      if (counter > 0) {
-        name += String.valueOf(counter);
-      }
+        List<VarVersionPair> listVars = new ArrayList<>(mapVarNames.keySet());
+        listVars.sort(Comparator.comparingInt(o -> o.var));
 
-      mapVarNames.put(pair, name);
+        Map<String, Integer> mapNames = new HashMap<>();
+
+        for (VarVersionPair pair : listVars) {
+            String name = mapVarNames.get(pair);
+
+            Integer index = mapOriginalVarIndices.get(pair.var);
+            if (index != null) {
+                String debugName = mapDebugVarNames.get(index);
+                if (debugName != null && TextUtil.isValidIdentifier(debugName, method.getClassStruct().getBytecodeVersion())) {
+                    name = debugName;
+                }
+            }
+
+            Integer counter = mapNames.get(name);
+            mapNames.put(name, counter == null ? counter = 0 : ++counter);
+
+            if (counter > 0) {
+                name += String.valueOf(counter);
+            }
+
+            mapVarNames.put(pair, name);
+        }
     }
-  }
 
-  public Integer getVarOriginalIndex(int index) {
-    if (varVersions == null) {
-      return null;
+    public Integer getVarOriginalIndex(int index) {
+        if (varVersions == null) {
+            return null;
+        }
+
+        return varVersions.getMapOriginalVarIndices().get(index);
     }
 
-    return varVersions.getMapOriginalVarIndices().get(index);
-  }
-
-  public void refreshVarNames(VarNamesCollector vc) {
-    Map<VarVersionPair, String> tempVarNames = new HashMap<>(mapVarNames);
-    for (Entry<VarVersionPair, String> ent : tempVarNames.entrySet()) {
-      mapVarNames.put(ent.getKey(), vc.getFreeName(ent.getValue()));
+    public void refreshVarNames(VarNamesCollector vc) {
+        Map<VarVersionPair, String> tempVarNames = new HashMap<>(mapVarNames);
+        for (Entry<VarVersionPair, String> ent : tempVarNames.entrySet()) {
+            mapVarNames.put(ent.getKey(), vc.getFreeName(ent.getValue()));
+        }
     }
-  }
 
-  public VarNamesCollector getVarNamesCollector() {
-    return varNamesCollector;
-  }
+    public VarNamesCollector getVarNamesCollector() {
+        return varNamesCollector;
+    }
 
-  public VarType getVarType(VarVersionPair pair) {
-    return varVersions == null ? null : varVersions.getVarType(pair);
-  }
+    public VarType getVarType(VarVersionPair pair) {
+        return varVersions == null ? null : varVersions.getVarType(pair);
+    }
 
-  public void setVarType(VarVersionPair pair, VarType type) {
-    varVersions.setVarType(pair, type);
-  }
+    public void setVarType(VarVersionPair pair, VarType type) {
+        varVersions.setVarType(pair, type);
+    }
 
-  public String getVarName(VarVersionPair pair) {
-    return mapVarNames == null ? null : mapVarNames.get(pair);
-  }
+    public String getVarName(VarVersionPair pair) {
+        return mapVarNames == null ? null : mapVarNames.get(pair);
+    }
 
-  public void setVarName(VarVersionPair pair, String name) {
-    mapVarNames.put(pair, name);
-  }
+    public void setVarName(VarVersionPair pair, String name) {
+        mapVarNames.put(pair, name);
+    }
 
-  public Collection<String> getVarNames() {
-    return mapVarNames != null ? mapVarNames.values() : Collections.emptySet();
-  }
+    public Collection<String> getVarNames() {
+        return mapVarNames != null ? mapVarNames.values() : Collections.emptySet();
+    }
 
-  public int getVarFinal(VarVersionPair pair) {
-    return varVersions == null ? VarTypeProcessor.VAR_FINAL : varVersions.getVarFinal(pair);
-  }
+    public int getVarFinal(VarVersionPair pair) {
+        return varVersions == null ? VarTypeProcessor.VAR_FINAL : varVersions.getVarFinal(pair);
+    }
 
-  public void setVarFinal(VarVersionPair pair, int finalType) {
-    varVersions.setVarFinal(pair, finalType);
-  }
+    public void setVarFinal(VarVersionPair pair, int finalType) {
+        varVersions.setVarFinal(pair, finalType);
+    }
 
-  public Map<VarVersionPair, String> getThisVars() {
-    return thisVars;
-  }
+    public Map<VarVersionPair, String> getThisVars() {
+        return thisVars;
+    }
 
-  public Set<VarVersionPair> getExternalVars() {
-    return externalVars;
-  }
+    public Set<VarVersionPair> getExternalVars() {
+        return externalVars;
+    }
 }

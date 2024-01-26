@@ -6,15 +6,15 @@ import java.io.DataInputStream;
 import java.io.IOException;
 
 public class DataInputFullStream extends DataInputStream {
-  public DataInputFullStream(byte[] bytes) {
-    super(new ByteArrayInputStream(bytes));
-  }
+    public DataInputFullStream(byte[] bytes) {
+        super(new ByteArrayInputStream(bytes));
+    }
 
-  public byte[] read(int n) throws IOException {
-    return InterpreterUtil.readBytes(this, n);
-  }
+    public byte[] read(int n) throws IOException {
+        return InterpreterUtil.readBytes(this, n);
+    }
 
-  public void discard(int n) throws IOException {
-    InterpreterUtil.discardBytes(this, n);
-  }
+    public void discard(int n) throws IOException {
+        InterpreterUtil.discardBytes(this, n);
+    }
 }

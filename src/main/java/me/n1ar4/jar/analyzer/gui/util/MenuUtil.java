@@ -32,12 +32,12 @@ public class MenuUtil {
         sortedByMethodConfig.setState(false);
         sortedByClassConfig.setState(true);
 
-        sortedByMethodConfig.addActionListener(e->{
+        sortedByMethodConfig.addActionListener(e -> {
             sortedByMethodConfig.setState(sortedByMethodConfig.getState());
             sortedByClassConfig.setState(!sortedByMethodConfig.getState());
         });
 
-        sortedByClassConfig.addActionListener(e->{
+        sortedByClassConfig.addActionListener(e -> {
             sortedByClassConfig.setState(sortedByClassConfig.getState());
             sortedByMethodConfig.setState(!sortedByClassConfig.getState());
         });

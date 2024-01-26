@@ -8,28 +8,28 @@ import java.util.List;
 
 public class PrimitiveExprsList {
 
-  private final List<Exprent> lstExprents = new ArrayList<>();
+    private final List<Exprent> lstExprents = new ArrayList<>();
 
-  private ExprentStack stack = new ExprentStack();
+    private ExprentStack stack = new ExprentStack();
 
-  public PrimitiveExprsList() {
-  }
+    public PrimitiveExprsList() {
+    }
 
-  public PrimitiveExprsList copyStack() {
-    PrimitiveExprsList prlst = new PrimitiveExprsList();
-    prlst.setStack(stack.clone());
-    return prlst;
-  }
+    public PrimitiveExprsList copyStack() {
+        PrimitiveExprsList prlst = new PrimitiveExprsList();
+        prlst.setStack(stack.clone());
+        return prlst;
+    }
 
-  public List<Exprent> getLstExprents() {
-    return lstExprents;
-  }
+    public List<Exprent> getLstExprents() {
+        return lstExprents;
+    }
 
-  public ExprentStack getStack() {
-    return stack;
-  }
+    public ExprentStack getStack() {
+        return stack;
+    }
 
-  public void setStack(ExprentStack stack) {
-    this.stack = stack;
-  }
+    public void setStack(ExprentStack stack) {
+        this.stack = stack;
+    }
 }

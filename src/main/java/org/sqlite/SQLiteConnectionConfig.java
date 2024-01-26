@@ -9,7 +9,9 @@ import java.util.Properties;
 
 import static org.sqlite.SQLiteConfig.DEFAULT_DATE_STRING_FORMAT;
 
-/** Connection local configurations */
+/**
+ * Connection local configurations
+ */
 public class SQLiteConnectionConfig implements Cloneable {
     private SQLiteConfig.DateClass dateClass = SQLiteConfig.DateClass.INTEGER;
     private SQLiteConfig.DatePrecision datePrecision =

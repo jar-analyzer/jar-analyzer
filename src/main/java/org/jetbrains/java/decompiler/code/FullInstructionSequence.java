@@ -6,19 +6,19 @@ import org.jetbrains.java.decompiler.util.VBStyleCollection;
 
 public class FullInstructionSequence extends InstructionSequence {
 
-  // *****************************************************************************
-  // constructors
-  // *****************************************************************************
+    // *****************************************************************************
+    // constructors
+    // *****************************************************************************
 
-  public FullInstructionSequence(VBStyleCollection<Instruction, Integer> collinstr, ExceptionTable extable) {
-    super(collinstr);
-    this.exceptionTable = extable;
+    public FullInstructionSequence(VBStyleCollection<Instruction, Integer> collinstr, ExceptionTable extable) {
+        super(collinstr);
+        this.exceptionTable = extable;
 
-    // translate raw exception handlers to instr
-    for (ExceptionHandler handler : extable.getHandlers()) {
-      handler.from_instr = this.getPointerByAbsOffset(handler.from);
-      handler.to_instr = this.getPointerByAbsOffset(handler.to);
-      handler.handler_instr = this.getPointerByAbsOffset(handler.handler);
+        // translate raw exception handlers to instr
+        for (ExceptionHandler handler : extable.getHandlers()) {
+            handler.from_instr = this.getPointerByAbsOffset(handler.from);
+            handler.to_instr = this.getPointerByAbsOffset(handler.to);
+            handler.handler_instr = this.getPointerByAbsOffset(handler.handler);
+        }
     }
-  }
 }

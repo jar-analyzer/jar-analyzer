@@ -22,30 +22,48 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Implements a JDBC ResultSet. */
+/**
+ * Implements a JDBC ResultSet.
+ */
 public abstract class CoreResultSet implements Codes {
     protected final CoreStatement stmt;
 
-    /** If the result set does not have any rows. */
+    /**
+     * If the result set does not have any rows.
+     */
     public boolean emptyResultSet = false;
-    /** If the result set is open. Doesn't mean it has results. */
+    /**
+     * If the result set is open. Doesn't mean it has results.
+     */
     public boolean open = false;
-    /** Maximum number of rows as set by a Statement */
+    /**
+     * Maximum number of rows as set by a Statement
+     */
     public long maxRows;
-    /** if null, the RS is closed() */
+    /**
+     * if null, the RS is closed()
+     */
     public String[] cols = null;
-    /** same as cols, but used by Meta interface */
+    /**
+     * same as cols, but used by Meta interface
+     */
     public String[] colsMeta = null;
 
     protected boolean[][] meta = null;
 
-    /** 0 means no limit, must check against maxRows */
+    /**
+     * 0 means no limit, must check against maxRows
+     */
     protected int limitRows;
-    /** number of current row, starts at 1 (0 is for before loading data) */
+    /**
+     * number of current row, starts at 1 (0 is for before loading data)
+     */
     protected int row = 0;
 
     protected boolean pastLastRow = false;
-    /** last column accessed, for wasNull(). -1 if none */
+    /**
+     * last column accessed, for wasNull(). -1 if none
+     */
     protected int lastCol;
 
     public boolean closeStmt;
@@ -79,7 +97,9 @@ public abstract class CoreResultSet implements Codes {
         return open;
     }
 
-    /** @throws SQLException if ResultSet is not open. */
+    /**
+     * @throws SQLException if ResultSet is not open.
+     */
     protected void checkOpen() throws SQLException {
         if (!open) {
             throw new SQLException("ResultSet closed");
@@ -116,7 +136,9 @@ public abstract class CoreResultSet implements Codes {
         return --col;
     }
 
-    /** @throws SQLException */
+    /**
+     * @throws SQLException
+     */
     public void checkMeta() throws SQLException {
         checkCol(1);
         if (meta == null) {

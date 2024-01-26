@@ -10,49 +10,49 @@ import java.util.HashSet;
 
 public class GeneralStatement extends Statement {
 
-  // *****************************************************************************
-  // constructors
-  // *****************************************************************************
+    // *****************************************************************************
+    // constructors
+    // *****************************************************************************
 
-  private GeneralStatement() {
-    type = Statement.TYPE_GENERAL;
-  }
-
-  public GeneralStatement(Statement head, Collection<? extends Statement> statements, Statement post) {
-
-    this();
-
-    first = head;
-    stats.addWithKey(head, head.id);
-
-    HashSet<Statement> set = new HashSet<>(statements);
-    set.remove(head);
-
-    for (Statement st : set) {
-      stats.addWithKey(st, st.id);
+    private GeneralStatement() {
+        type = Statement.TYPE_GENERAL;
     }
 
-    this.post = post;
-  }
+    public GeneralStatement(Statement head, Collection<? extends Statement> statements, Statement post) {
 
-  // *****************************************************************************
-  // public methods
-  // *****************************************************************************
+        this();
 
-  @Override
-  public TextBuffer toJava(int indent, BytecodeMappingTracer tracer) {
-    TextBuffer buf = new TextBuffer();
+        first = head;
+        stats.addWithKey(head, head.id);
 
-    if (isLabeled()) {
-      buf.appendIndent(indent).append("label").append(this.id.toString()).append(":").appendLineSeparator();
+        HashSet<Statement> set = new HashSet<>(statements);
+        set.remove(head);
+
+        for (Statement st : set) {
+            stats.addWithKey(st, st.id);
+        }
+
+        this.post = post;
     }
 
-    buf.appendIndent(indent).append("abstract statement {").appendLineSeparator();
-    for (Statement stat : stats) {
-      buf.append(stat.toJava(indent + 1, tracer));
-    }
-    buf.appendIndent(indent).append("}");
+    // *****************************************************************************
+    // public methods
+    // *****************************************************************************
 
-    return buf;
-  }
+    @Override
+    public TextBuffer toJava(int indent, BytecodeMappingTracer tracer) {
+        TextBuffer buf = new TextBuffer();
+
+        if (isLabeled()) {
+            buf.appendIndent(indent).append("label").append(this.id.toString()).append(":").appendLineSeparator();
+        }
+
+        buf.appendIndent(indent).append("abstract statement {").appendLineSeparator();
+        for (Statement stat : stats) {
+            buf.append(stat.toJava(indent + 1, tracer));
+        }
+        buf.appendIndent(indent).append("}");
+
+        return buf;
+    }
 }

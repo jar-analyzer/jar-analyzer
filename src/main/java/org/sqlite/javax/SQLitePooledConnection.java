@@ -52,7 +52,10 @@ public class SQLitePooledConnection extends JDBC4PooledConnection {
     public SQLiteConnection getPhysicalConn() {
         return physicalConn;
     }
-    /** @see javax.sql.PooledConnection#close() */
+
+    /**
+     * @see javax.sql.PooledConnection#close()
+     */
     public void close() throws SQLException {
         if (handleConn != null) {
             listeners.clear();
@@ -68,7 +71,9 @@ public class SQLitePooledConnection extends JDBC4PooledConnection {
         }
     }
 
-    /** @see javax.sql.PooledConnection#getConnection() */
+    /**
+     * @see javax.sql.PooledConnection#getConnection()
+     */
     public Connection getConnection() throws SQLException {
         if (handleConn != null) handleConn.close();
 
@@ -76,7 +81,7 @@ public class SQLitePooledConnection extends JDBC4PooledConnection {
                 (Connection)
                         Proxy.newProxyInstance(
                                 getClass().getClassLoader(),
-                                new Class[] {Connection.class},
+                                new Class[]{Connection.class},
                                 new InvocationHandler() {
                                     boolean isClosed;
 
@@ -104,9 +109,9 @@ public class SQLitePooledConnection extends JDBC4PooledConnection {
                                                 if (!isClosed)
                                                     isClosed =
                                                             ((Boolean)
-                                                                            method.invoke(
-                                                                                    physicalConn,
-                                                                                    args))
+                                                                    method.invoke(
+                                                                            physicalConn,
+                                                                            args))
                                                                     .booleanValue();
 
                                                 return isClosed;
@@ -147,8 +152,7 @@ public class SQLitePooledConnection extends JDBC4PooledConnection {
     }
 
     /**
-     * @see
-     *     javax.sql.PooledConnection#removeConnectionEventListener(javax.sql.ConnectionEventListener)
+     * @see javax.sql.PooledConnection#removeConnectionEventListener(javax.sql.ConnectionEventListener)
      */
     public void removeConnectionEventListener(ConnectionEventListener listener) {
         listeners.remove(listener);
@@ -189,7 +193,8 @@ class SQLitePooledConnectionHandle extends SQLiteConnection {
     }
 
     @Override
-    public void setAutoCommit(boolean autoCommit) throws SQLException {}
+    public void setAutoCommit(boolean autoCommit) throws SQLException {
+    }
 
     @Override
     public boolean getAutoCommit() throws SQLException {
@@ -197,10 +202,12 @@ class SQLitePooledConnectionHandle extends SQLiteConnection {
     }
 
     @Override
-    public void commit() throws SQLException {}
+    public void commit() throws SQLException {
+    }
 
     @Override
-    public void rollback() throws SQLException {}
+    public void rollback() throws SQLException {
+    }
 
     @Override
     public void close() throws SQLException {
@@ -229,7 +236,8 @@ class SQLitePooledConnectionHandle extends SQLiteConnection {
     }
 
     @Override
-    public void setReadOnly(boolean readOnly) throws SQLException {}
+    public void setReadOnly(boolean readOnly) throws SQLException {
+    }
 
     @Override
     public boolean isReadOnly() throws SQLException {
@@ -237,7 +245,8 @@ class SQLitePooledConnectionHandle extends SQLiteConnection {
     }
 
     @Override
-    public void setCatalog(String catalog) throws SQLException {}
+    public void setCatalog(String catalog) throws SQLException {
+    }
 
     @Override
     public String getCatalog() throws SQLException {
@@ -245,7 +254,8 @@ class SQLitePooledConnectionHandle extends SQLiteConnection {
     }
 
     @Override
-    public void setTransactionIsolation(int level) throws SQLException {}
+    public void setTransactionIsolation(int level) throws SQLException {
+    }
 
     @Override
     public int getTransactionIsolation() {
@@ -258,7 +268,8 @@ class SQLitePooledConnectionHandle extends SQLiteConnection {
     }
 
     @Override
-    public void clearWarnings() throws SQLException {}
+    public void clearWarnings() throws SQLException {
+    }
 
     @Override
     public Statement createStatement(int resultSetType, int resultSetConcurrency)
@@ -284,10 +295,12 @@ class SQLitePooledConnectionHandle extends SQLiteConnection {
     }
 
     @Override
-    public void setTypeMap(Map<String, Class<?>> map) throws SQLException {}
+    public void setTypeMap(Map<String, Class<?>> map) throws SQLException {
+    }
 
     @Override
-    public void setHoldability(int holdability) throws SQLException {}
+    public void setHoldability(int holdability) throws SQLException {
+    }
 
     @Override
     public int getHoldability() throws SQLException {
@@ -305,10 +318,12 @@ class SQLitePooledConnectionHandle extends SQLiteConnection {
     }
 
     @Override
-    public void rollback(Savepoint savepoint) throws SQLException {}
+    public void rollback(Savepoint savepoint) throws SQLException {
+    }
 
     @Override
-    public void releaseSavepoint(Savepoint savepoint) throws SQLException {}
+    public void releaseSavepoint(Savepoint savepoint) throws SQLException {
+    }
 
     @Override
     public Statement createStatement(
@@ -374,10 +389,12 @@ class SQLitePooledConnectionHandle extends SQLiteConnection {
     }
 
     @Override
-    public void setClientInfo(String name, String value) throws SQLClientInfoException {}
+    public void setClientInfo(String name, String value) throws SQLClientInfoException {
+    }
 
     @Override
-    public void setClientInfo(Properties properties) throws SQLClientInfoException {}
+    public void setClientInfo(Properties properties) throws SQLClientInfoException {
+    }
 
     @Override
     public String getClientInfo(String name) throws SQLException {
@@ -400,7 +417,8 @@ class SQLitePooledConnectionHandle extends SQLiteConnection {
     }
 
     @Override
-    public void setSchema(String schema) throws SQLException {}
+    public void setSchema(String schema) throws SQLException {
+    }
 
     @Override
     public String getSchema() throws SQLException {
@@ -408,10 +426,12 @@ class SQLitePooledConnectionHandle extends SQLiteConnection {
     }
 
     @Override
-    public void abort(Executor executor) throws SQLException {}
+    public void abort(Executor executor) throws SQLException {
+    }
 
     @Override
-    public void setNetworkTimeout(Executor executor, int milliseconds) throws SQLException {}
+    public void setNetworkTimeout(Executor executor, int milliseconds) throws SQLException {
+    }
 
     @Override
     public int getNetworkTimeout() throws SQLException {
@@ -434,7 +454,8 @@ class SQLitePooledConnectionHandle extends SQLiteConnection {
     }
 
     @Override
-    public void setBusyTimeout(int timeoutMillis) {}
+    public void setBusyTimeout(int timeoutMillis) {
+    }
 
     @Override
     public DB getDatabase() {

@@ -27,7 +27,10 @@ public class JDBC4Connection extends JDBC3Connection {
     }
 
     // JDBC 4
-    /** @see java.sql.Connection#isClosed() */
+
+    /**
+     * @see java.sql.Connection#isClosed()
+     */
     public boolean isClosed() throws SQLException {
         return super.isClosed();
     }

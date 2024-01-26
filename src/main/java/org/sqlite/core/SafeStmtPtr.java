@@ -23,8 +23,8 @@ public class SafeStmtPtr {
     /**
      * Construct a new Safe Pointer Wrapper to ensure a pointer is properly handled
      *
-     * @param db the database that made this pointer. Always locked before any safe run function is
-     *     executed to avoid deadlocks
+     * @param db  the database that made this pointer. Always locked before any safe run function is
+     *            executed to avoid deadlocks
      * @param ptr the raw pointer
      */
     public SafeStmtPtr(DB db, long ptr) {
@@ -46,7 +46,7 @@ public class SafeStmtPtr {
      *
      * @return the return code of the close callback function
      * @throws SQLException if the close callback throws an SQLException, or the pointer is locked
-     *     elsewhere
+     *                      elsewhere
      */
     public int close() throws SQLException {
         synchronized (db) {

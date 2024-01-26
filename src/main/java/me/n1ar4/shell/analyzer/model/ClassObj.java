@@ -6,8 +6,8 @@ public class ClassObj {
 
     private String type;
 
-    public ClassObj(String name,String type){
-        this.className= name;
+    public ClassObj(String name, String type) {
+        this.className = name;
         this.type = type;
     }
 

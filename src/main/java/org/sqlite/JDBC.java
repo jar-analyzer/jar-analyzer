@@ -35,17 +35,23 @@ public class JDBC implements Driver {
         }
     }
 
-    /** @see java.sql.Driver#getMajorVersion() */
+    /**
+     * @see java.sql.Driver#getMajorVersion()
+     */
     public int getMajorVersion() {
         return SQLiteJDBCLoader.getMajorVersion();
     }
 
-    /** @see java.sql.Driver#getMinorVersion() */
+    /**
+     * @see java.sql.Driver#getMinorVersion()
+     */
     public int getMinorVersion() {
         return SQLiteJDBCLoader.getMinorVersion();
     }
 
-    /** @see java.sql.Driver#jdbcCompliant() */
+    /**
+     * @see java.sql.Driver#jdbcCompliant()
+     */
     public boolean jdbcCompliant() {
         return false;
     }
@@ -55,7 +61,9 @@ public class JDBC implements Driver {
         return null;
     }
 
-    /** @see java.sql.Driver#acceptsURL(java.lang.String) */
+    /**
+     * @see java.sql.Driver#acceptsURL(java.lang.String)
+     */
     public boolean acceptsURL(String url) {
         return isValidURL(url);
     }
@@ -70,12 +78,16 @@ public class JDBC implements Driver {
         return url != null && url.toLowerCase().startsWith(PREFIX);
     }
 
-    /** @see java.sql.Driver#getPropertyInfo(java.lang.String, java.util.Properties) */
+    /**
+     * @see java.sql.Driver#getPropertyInfo(java.lang.String, java.util.Properties)
+     */
     public DriverPropertyInfo[] getPropertyInfo(String url, Properties info) throws SQLException {
         return SQLiteConfig.getDriverPropertyInfo();
     }
 
-    /** @see java.sql.Driver#connect(java.lang.String, java.util.Properties) */
+    /**
+     * @see java.sql.Driver#connect(java.lang.String, java.util.Properties)
+     */
     public Connection connect(String url, Properties info) throws SQLException {
         return createConnection(url, info);
     }
@@ -93,7 +105,7 @@ public class JDBC implements Driver {
     /**
      * Creates a new database connection to a given URL.
      *
-     * @param url the URL
+     * @param url  the URL
      * @param prop the properties
      * @return a Connection object that represents a connection to the URL
      * @throws SQLException

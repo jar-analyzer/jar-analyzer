@@ -50,7 +50,7 @@ public abstract class Collation {
      *
      * @param conn The connection.
      * @param name The name of the collation.
-     * @param f The collation to register.
+     * @param f    The collation to register.
      */
     public static final void create(Connection conn, String name, Collation f) throws SQLException {
         if (conn == null || !(conn instanceof SQLiteConnection)) {
@@ -88,7 +88,7 @@ public abstract class Collation {
      * @param str1 the first string in the comparison
      * @param str2 the second string in the comparison
      * @return an integer that is negative, zero, or positive if the first string is less than,
-     *     equal to, or greater than the second, respectively
+     * equal to, or greater than the second, respectively
      */
     protected abstract int xCompare(String str1, String str2);
 }

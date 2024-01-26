@@ -65,7 +65,7 @@ public abstract class Function {
      *
      * @param conn The connection.
      * @param name The name of the function.
-     * @param f The function to register.
+     * @param f    The function to register.
      */
     public static void create(Connection conn, String name, Function f) throws SQLException {
         create(conn, name, f, 0);
@@ -74,9 +74,9 @@ public abstract class Function {
     /**
      * Registers a given function with the connection.
      *
-     * @param conn The connection.
-     * @param name The name of the function.
-     * @param f The function to register.
+     * @param conn  The connection.
+     * @param name  The name of the function.
+     * @param f     The function to register.
      * @param flags Extra flags to pass, such as {@link #FLAG_DETERMINISTIC}
      */
     public static void create(Connection conn, String name, Function f, int flags)
@@ -87,9 +87,9 @@ public abstract class Function {
     /**
      * Registers a given function with the connection.
      *
-     * @param conn The connection.
-     * @param name The name of the function.
-     * @param f The function to register.
+     * @param conn  The connection.
+     * @param name  The name of the function.
+     * @param f     The function to register.
      * @param nArgs The number of arguments that the function takes.
      * @param flags Extra flags to pass, such as {@link #FLAG_DETERMINISTIC}
      */
@@ -117,8 +117,8 @@ public abstract class Function {
     /**
      * Removes a named function from the given connection.
      *
-     * @param conn The connection to remove the function from.
-     * @param name The name of the function.
+     * @param conn  The connection to remove the function from.
+     * @param name  The name of the function.
      * @param nArgs Ignored.
      * @throws SQLException
      */
@@ -195,7 +195,9 @@ public abstract class Function {
         db.result_long(context, value);
     }
 
-    /** Called by <tt>xFunc</tt> to return a value. */
+    /**
+     * Called by <tt>xFunc</tt> to return a value.
+     */
     protected final synchronized void result() throws SQLException {
         checkContext();
         db.result_null(context);
@@ -281,7 +283,9 @@ public abstract class Function {
         return db.value_type(this, arg);
     }
 
-    /** @throws SQLException */
+    /**
+     * @throws SQLException
+     */
     private void checkContext() throws SQLException {
         if (conn == null || conn.getDatabase() == null || context == 0) {
             throw new SQLException("no context, not allowed to read value");
@@ -307,15 +311,18 @@ public abstract class Function {
      * @see Function
      */
     public abstract static class Aggregate extends Function implements Cloneable {
-        /** @see org.sqlite.Function#xFunc() */
-        protected final void xFunc() {}
+        /**
+         * @see org.sqlite.Function#xFunc()
+         */
+        protected final void xFunc() {
+        }
 
         /**
          * Defines the abstract aggregate callback function
          *
          * @throws SQLException
          * @see <a
-         *     href="https://www.sqlite.org/c3ref/aggregate_context.html">https://www.sqlite.org/c3ref/aggregate_context.html</a>
+         * href="https://www.sqlite.org/c3ref/aggregate_context.html">https://www.sqlite.org/c3ref/aggregate_context.html</a>
          */
         protected abstract void xStep() throws SQLException;
 
@@ -324,11 +331,13 @@ public abstract class Function {
          *
          * @throws SQLException
          * @see <a
-         *     href="https://www.sqlite.org/c3ref/aggregate_context.html">https://www.sqlite.org/c3ref/aggregate_context.html</a>
+         * href="https://www.sqlite.org/c3ref/aggregate_context.html">https://www.sqlite.org/c3ref/aggregate_context.html</a>
          */
         protected abstract void xFinal() throws SQLException;
 
-        /** @see java.lang.Object#clone() */
+        /**
+         * @see java.lang.Object#clone()
+         */
         public Object clone() throws CloneNotSupportedException {
             return super.clone();
         }
@@ -345,7 +354,7 @@ public abstract class Function {
          *
          * @throws SQLException
          * @see <a
-         *     href="https://www.sqlite.org/windowfunctions.html#user_defined_aggregate_window_functions">https://www.sqlite.org/windowfunctions.html#user_defined_aggregate_window_functions</a>
+         * href="https://www.sqlite.org/windowfunctions.html#user_defined_aggregate_window_functions">https://www.sqlite.org/windowfunctions.html#user_defined_aggregate_window_functions</a>
          */
         protected abstract void xInverse() throws SQLException;
 
@@ -354,7 +363,7 @@ public abstract class Function {
          *
          * @throws SQLException
          * @see <a
-         *     href="https://www.sqlite.org/windowfunctions.html#user_defined_aggregate_window_functions">https://www.sqlite.org/windowfunctions.html#user_defined_aggregate_window_functions</a>
+         * href="https://www.sqlite.org/windowfunctions.html#user_defined_aggregate_window_functions">https://www.sqlite.org/windowfunctions.html#user_defined_aggregate_window_functions</a>
          */
         protected abstract void xValue() throws SQLException;
     }

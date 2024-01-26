@@ -8,15 +8,15 @@ import java.io.IOException;
 
 public class StructGenericSignatureAttribute extends StructGeneralAttribute {
 
-  private String signature;
+    private String signature;
 
-  @Override
-  public void initContent(DataInputFullStream data, ConstantPool pool) throws IOException {
-    int index = data.readUnsignedShort();
-    signature = pool.getPrimitiveConstant(index).getString();
-  }
+    @Override
+    public void initContent(DataInputFullStream data, ConstantPool pool) throws IOException {
+        int index = data.readUnsignedShort();
+        signature = pool.getPrimitiveConstant(index).getString();
+    }
 
-  public String getSignature() {
-    return signature;
-  }
+    public String getSignature() {
+        return signature;
+    }
 }

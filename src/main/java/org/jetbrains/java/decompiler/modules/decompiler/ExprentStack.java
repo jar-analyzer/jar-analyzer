@@ -6,22 +6,22 @@ import org.jetbrains.java.decompiler.util.ListStack;
 
 public class ExprentStack extends ListStack<Exprent> {
 
-  public ExprentStack() {
-  }
+    public ExprentStack() {
+    }
 
-  public ExprentStack(ListStack<Exprent> list) {
-    super(list);
-    pointer = list.getPointer();
-  }
+    public ExprentStack(ListStack<Exprent> list) {
+        super(list);
+        pointer = list.getPointer();
+    }
 
-  @Override
-  public Exprent pop() {
+    @Override
+    public Exprent pop() {
 
-    return this.remove(--pointer);
-  }
+        return this.remove(--pointer);
+    }
 
-  @Override
-  public ExprentStack clone() {
-    return new ExprentStack(this);
-  }
+    @Override
+    public ExprentStack clone() {
+        return new ExprentStack(this);
+    }
 }

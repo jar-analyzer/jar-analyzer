@@ -11,37 +11,37 @@ import java.util.Map;
 
 @SuppressWarnings("unused")
 public class BaseDecompiler {
-  private final Fernflower engine;
+    private final Fernflower engine;
 
-  public BaseDecompiler(IBytecodeProvider provider, IResultSaver saver, Map<String, Object> options, IFernflowerLogger logger) {
-    engine = new Fernflower(provider, saver, options, logger);
-  }
-
-  public void addSource(File source) {
-    engine.addSource(source);
-  }
-
-  public void addLibrary(File library) {
-    engine.addLibrary(library);
-  }
-
-  /** @deprecated use {@link #addSource(File)} / {@link #addLibrary(File)} instead */
-  @Deprecated
-  public void addSpace(File file, boolean own) {
-    if (own) {
-      addSource(file);
+    public BaseDecompiler(IBytecodeProvider provider, IResultSaver saver, Map<String, Object> options, IFernflowerLogger logger) {
+        engine = new Fernflower(provider, saver, options, logger);
     }
-    else {
-      addLibrary(file);
-    }
-  }
 
-  public void decompileContext() {
-    try {
-      engine.decompileContext();
+    public void addSource(File source) {
+        engine.addSource(source);
     }
-    finally {
-      engine.clearContext();
+
+    public void addLibrary(File library) {
+        engine.addLibrary(library);
     }
-  }
+
+    /**
+     * @deprecated use {@link #addSource(File)} / {@link #addLibrary(File)} instead
+     */
+    @Deprecated
+    public void addSpace(File file, boolean own) {
+        if (own) {
+            addSource(file);
+        } else {
+            addLibrary(file);
+        }
+    }
+
+    public void decompileContext() {
+        try {
+            engine.decompileContext();
+        } finally {
+            engine.clearContext();
+        }
+    }
 }

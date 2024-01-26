@@ -2,21 +2,21 @@
 package org.jetbrains.java.decompiler.code;
 
 public class JumpInstruction extends Instruction {
-  public int destination;
+    public int destination;
 
-  public JumpInstruction(int opcode, int group, boolean wide, int bytecodeVersion, int[] operands) {
-    super(opcode, group, wide, bytecodeVersion, operands);
-  }
+    public JumpInstruction(int opcode, int group, boolean wide, int bytecodeVersion, int[] operands) {
+        super(opcode, group, wide, bytecodeVersion, operands);
+    }
 
-  @Override
-  public void initInstruction(InstructionSequence seq) {
-    destination = seq.getPointerByRelOffset(this.operand(0));
-  }
+    @Override
+    public void initInstruction(InstructionSequence seq) {
+        destination = seq.getPointerByRelOffset(this.operand(0));
+    }
 
-  @Override
-  public JumpInstruction clone() {
-    JumpInstruction copy = (JumpInstruction)super.clone();
-    copy.destination = destination;
-    return copy;
-  }
+    @Override
+    public JumpInstruction clone() {
+        JumpInstruction copy = (JumpInstruction) super.clone();
+        copy.destination = destination;
+        return copy;
+    }
 }

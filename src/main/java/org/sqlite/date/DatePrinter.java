@@ -58,7 +58,7 @@ public interface DatePrinter {
      * Formats a millisecond {@code long} value into the supplied {@code StringBuffer}.
      *
      * @param millis the millisecond value to format
-     * @param buf the buffer to format into
+     * @param buf    the buffer to format into
      * @return the specified string buffer
      */
     StringBuffer format(long millis, StringBuffer buf);
@@ -68,7 +68,7 @@ public interface DatePrinter {
      * GregorianCalendar}.
      *
      * @param date the date to format
-     * @param buf the buffer to format into
+     * @param buf  the buffer to format into
      * @return the specified string buffer
      */
     StringBuffer format(Date date, StringBuffer buf);
@@ -77,13 +77,14 @@ public interface DatePrinter {
      * Formats a {@code Calendar} object into the supplied {@code StringBuffer}.
      *
      * @param calendar the calendar to format
-     * @param buf the buffer to format into
+     * @param buf      the buffer to format into
      * @return the specified string buffer
      */
     StringBuffer format(Calendar calendar, StringBuffer buf);
 
     // Accessors
     // -----------------------------------------------------------------------
+
     /**
      * Gets the pattern used by this printer.
      *
@@ -111,9 +112,9 @@ public interface DatePrinter {
      * Formats a {@code Date}, {@code Calendar} or {@code Long} (milliseconds) object. See {@link
      * java.text.DateFormat#format(Object, StringBuffer, FieldPosition)}
      *
-     * @param obj the object to format
+     * @param obj        the object to format
      * @param toAppendTo the buffer to append to
-     * @param pos the position - ignored
+     * @param pos        the position - ignored
      * @return the buffer passed in
      */
     StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos);

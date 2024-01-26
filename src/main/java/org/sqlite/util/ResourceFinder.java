@@ -35,8 +35,8 @@ public class ResourceFinder {
     /**
      * Gets the {@link URL} of the file resource
      *
-     * @param referenceClass the base class for finding resources files. This method will search the
-     *     package containing the given referenceClass.
+     * @param referenceClass   the base class for finding resources files. This method will search the
+     *                         package containing the given referenceClass.
      * @param resourceFileName the resource file name relative to the package of the referenceClass
      * @return the URL of the file resource
      */
@@ -47,7 +47,7 @@ public class ResourceFinder {
     /**
      * Finds the {@link URL} of the resource
      *
-     * @param basePackage the base package to find the resource
+     * @param basePackage      the base package to find the resource
      * @param resourceFileName the resource file name relative to the package folder
      * @return the URL of the specified resource
      */
@@ -58,7 +58,7 @@ public class ResourceFinder {
     /**
      * Finds the {@link URL} of the resource
      *
-     * @param packageName the base package name to find the resource
+     * @param packageName      the base package name to find the resource
      * @param resourceFileName the resource file name relative to the package folder
      * @return the URL of the specified resource
      */

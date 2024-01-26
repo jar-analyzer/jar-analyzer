@@ -28,13 +28,15 @@ import java.util.concurrent.ConcurrentMap;
 /**
  * FormatCache is a cache and factory for {@link Format}s.
  *
- * @since 3.0
  * @version $Id: FormatCache 892161 2009-12-18 07:21:10Z $
+ * @since 3.0
  */
 // TODO: Before making public move from getDateTimeInstance(Integer,...) to int; or some other
 // approach.
 abstract class FormatCache<F extends Format> {
-    /** No date or no time. Used in same parameters as DateFormat.SHORT or DateFormat.LONG */
+    /**
+     * No date or no time. Used in same parameters as DateFormat.SHORT or DateFormat.LONG
+     */
     static final int NONE = -1;
 
     private final ConcurrentMap<MultipartKey, F> cInstanceCache =
@@ -56,9 +58,9 @@ abstract class FormatCache<F extends Format> {
     /**
      * Gets a formatter instance using the specified pattern, time zone and locale.
      *
-     * @param pattern {@link java.text.SimpleDateFormat} compatible pattern, non-null
+     * @param pattern  {@link java.text.SimpleDateFormat} compatible pattern, non-null
      * @param timeZone the time zone, null means use the default TimeZone
-     * @param locale the locale, null means use the default Locale
+     * @param locale   the locale, null means use the default Locale
      * @return a pattern based date/time formatter
      * @throws IllegalArgumentException if pattern is invalid or <code>null</code>
      */
@@ -89,9 +91,9 @@ abstract class FormatCache<F extends Format> {
     /**
      * Create a format instance using the specified pattern, time zone and locale.
      *
-     * @param pattern {@link java.text.SimpleDateFormat} compatible pattern, this will not be null.
+     * @param pattern  {@link java.text.SimpleDateFormat} compatible pattern, this will not be null.
      * @param timeZone time zone, this will not be null.
-     * @param locale locale, this will not be null.
+     * @param locale   locale, this will not be null.
      * @return a pattern based date/time formatter
      * @throws IllegalArgumentException if pattern is invalid or <code>null</code>
      */
@@ -102,9 +104,9 @@ abstract class FormatCache<F extends Format> {
      *
      * @param dateStyle date style: FULL, LONG, MEDIUM, or SHORT, null indicates no date in format
      * @param timeStyle time style: FULL, LONG, MEDIUM, or SHORT, null indicates no time in format
-     * @param timeZone optional time zone, overrides time zone of formatted date, null means use
-     *     default Locale
-     * @param locale optional locale, overrides system locale
+     * @param timeZone  optional time zone, overrides time zone of formatted date, null means use
+     *                  default Locale
+     * @param locale    optional locale, overrides system locale
      * @return a localized standard date/time formatter
      * @throws IllegalArgumentException if the Locale has no date/time pattern defined
      */
@@ -126,9 +128,9 @@ abstract class FormatCache<F extends Format> {
      *
      * @param dateStyle date style: FULL, LONG, MEDIUM, or SHORT
      * @param timeStyle time style: FULL, LONG, MEDIUM, or SHORT
-     * @param timeZone optional time zone, overrides time zone of formatted date, null means use
-     *     default Locale
-     * @param locale optional locale, overrides system locale
+     * @param timeZone  optional time zone, overrides time zone of formatted date, null means use
+     *                  default Locale
+     * @param locale    optional locale, overrides system locale
      * @return a localized standard date/time formatter
      * @throws IllegalArgumentException if the Locale has no date/time pattern defined
      */
@@ -146,9 +148,9 @@ abstract class FormatCache<F extends Format> {
      * Gets a date formatter instance using the specified style, time zone and locale.
      *
      * @param dateStyle date style: FULL, LONG, MEDIUM, or SHORT
-     * @param timeZone optional time zone, overrides time zone of formatted date, null means use
-     *     default Locale
-     * @param locale optional locale, overrides system locale
+     * @param timeZone  optional time zone, overrides time zone of formatted date, null means use
+     *                  default Locale
+     * @param locale    optional locale, overrides system locale
      * @return a localized standard date/time formatter
      * @throws IllegalArgumentException if the Locale has no date/time pattern defined
      */
@@ -161,9 +163,9 @@ abstract class FormatCache<F extends Format> {
      * Gets a time formatter instance using the specified style, time zone and locale.
      *
      * @param timeStyle time style: FULL, LONG, MEDIUM, or SHORT
-     * @param timeZone optional time zone, overrides time zone of formatted date, null means use
-     *     default Locale
-     * @param locale optional locale, overrides system locale
+     * @param timeZone  optional time zone, overrides time zone of formatted date, null means use
+     *                  default Locale
+     * @param locale    optional locale, overrides system locale
      * @return a localized standard date/time formatter
      * @throws IllegalArgumentException if the Locale has no date/time pattern defined
      */
@@ -177,7 +179,7 @@ abstract class FormatCache<F extends Format> {
      *
      * @param dateStyle date style: FULL, LONG, MEDIUM, or SHORT, null indicates no date in format
      * @param timeStyle time style: FULL, LONG, MEDIUM, or SHORT, null indicates no time in format
-     * @param locale The non-null locale of the desired format
+     * @param locale    The non-null locale of the desired format
      * @return a localized standard date/time format
      * @throws IllegalArgumentException if the Locale has no date/time pattern defined
      */
@@ -215,7 +217,10 @@ abstract class FormatCache<F extends Format> {
     }
 
     // ----------------------------------------------------------------------
-    /** Helper class to hold multi-part Map keys */
+
+    /**
+     * Helper class to hold multi-part Map keys
+     */
     private static class MultipartKey {
         private final Object[] keys;
         private int hashCode;
@@ -229,7 +234,9 @@ abstract class FormatCache<F extends Format> {
             this.keys = keys;
         }
 
-        /** {@inheritDoc} */
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public boolean equals(final Object obj) {
             // Eliminate the usual boilerplate because
@@ -238,7 +245,9 @@ abstract class FormatCache<F extends Format> {
             return Arrays.equals(keys, ((MultipartKey) obj).keys);
         }
 
-        /** {@inheritDoc} */
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public int hashCode() {
             if (hashCode == 0) {

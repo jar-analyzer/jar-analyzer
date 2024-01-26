@@ -20,28 +20,49 @@ package com.github.rjeschke.txtmark;
  *
  * @author René Jeschke <rene_jeschke@yahoo.de>
  */
-enum BlockType
-{
-    /** Unspecified. Used for root block and list items without paragraphs. */
+enum BlockType {
+    /**
+     * Unspecified. Used for root block and list items without paragraphs.
+     */
     NONE,
-    /** A block quote. */
+    /**
+     * A block quote.
+     */
     BLOCKQUOTE,
-    /** A code block. */
+    /**
+     * A code block.
+     */
     CODE,
-    /** A fenced code block. */
+    /**
+     * A fenced code block.
+     */
     FENCED_CODE,
-    /** A headline. */
+    /**
+     * A headline.
+     */
     HEADLINE,
-    /** A list item. */
+    /**
+     * A list item.
+     */
     LIST_ITEM,
-    /** An ordered list. */
+    /**
+     * An ordered list.
+     */
     ORDERED_LIST,
-    /** A paragraph. */
+    /**
+     * A paragraph.
+     */
     PARAGRAPH,
-    /** A horizontal ruler. */
+    /**
+     * A horizontal ruler.
+     */
     RULER,
-    /** An unordered list. */
+    /**
+     * An unordered list.
+     */
     UNORDERED_LIST,
-    /** A XML block. */
+    /**
+     * A XML block.
+     */
     XML
 }

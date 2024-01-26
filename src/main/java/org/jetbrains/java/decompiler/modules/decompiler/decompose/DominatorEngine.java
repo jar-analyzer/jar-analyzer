@@ -9,106 +9,103 @@ import java.util.List;
 
 public class DominatorEngine {
 
-  private final Statement statement;
+    private final Statement statement;
 
-  private final VBStyleCollection<Integer, Integer> colOrderedIDoms = new VBStyleCollection<>();
+    private final VBStyleCollection<Integer, Integer> colOrderedIDoms = new VBStyleCollection<>();
 
 
-  public DominatorEngine(Statement statement) {
-    this.statement = statement;
-  }
-
-  public void initialize() {
-    calcIDoms();
-  }
-
-  private void orderStatements() {
-
-    for (Statement stat : statement.getReversePostOrderList()) {
-      colOrderedIDoms.addWithKey(null, stat.id);
-    }
-  }
-
-  private static Integer getCommonIDom(Integer key1, Integer key2, VBStyleCollection<Integer, Integer> orderedIDoms) {
-
-    if (key1 == null) {
-      return key2;
-    }
-    else if (key2 == null) {
-      return key1;
+    public DominatorEngine(Statement statement) {
+        this.statement = statement;
     }
 
-    int index1 = orderedIDoms.getIndexByKey(key1);
-    int index2 = orderedIDoms.getIndexByKey(key2);
-
-    while (index1 != index2) {
-      if (index1 > index2) {
-        key1 = orderedIDoms.getWithKey(key1);
-        index1 = orderedIDoms.getIndexByKey(key1);
-      }
-      else {
-        key2 = orderedIDoms.getWithKey(key2);
-        index2 = orderedIDoms.getIndexByKey(key2);
-      }
+    public void initialize() {
+        calcIDoms();
     }
 
-    return key1;
-  }
+    private void orderStatements() {
 
-  private void calcIDoms() {
+        for (Statement stat : statement.getReversePostOrderList()) {
+            colOrderedIDoms.addWithKey(null, stat.id);
+        }
+    }
 
-    orderStatements();
+    private static Integer getCommonIDom(Integer key1, Integer key2, VBStyleCollection<Integer, Integer> orderedIDoms) {
 
-    colOrderedIDoms.putWithKey(statement.getFirst().id, statement.getFirst().id);
-
-    // exclude first statement
-    List<Integer> lstIds = colOrderedIDoms.getLstKeys().subList(1, colOrderedIDoms.getLstKeys().size());
-
-    while (true) {
-
-      boolean changed = false;
-
-      for (Integer id : lstIds) {
-
-        Statement stat = statement.getStats().getWithKey(id);
-        Integer idom = null;
-
-        for (StatEdge edge : stat.getAllPredecessorEdges()) {
-          if (colOrderedIDoms.getWithKey(edge.getSource().id) != null) {
-            idom = getCommonIDom(idom, edge.getSource().id, colOrderedIDoms);
-          }
+        if (key1 == null) {
+            return key2;
+        } else if (key2 == null) {
+            return key1;
         }
 
-        Integer oldidom = colOrderedIDoms.putWithKey(idom, id);
-        if (!idom.equals(oldidom)) {
-          changed = true;
+        int index1 = orderedIDoms.getIndexByKey(key1);
+        int index2 = orderedIDoms.getIndexByKey(key2);
+
+        while (index1 != index2) {
+            if (index1 > index2) {
+                key1 = orderedIDoms.getWithKey(key1);
+                index1 = orderedIDoms.getIndexByKey(key1);
+            } else {
+                key2 = orderedIDoms.getWithKey(key2);
+                index2 = orderedIDoms.getIndexByKey(key2);
+            }
         }
-      }
 
-      if (!changed) {
-        break;
-      }
-    }
-  }
-
-  public VBStyleCollection<Integer, Integer> getOrderedIDoms() {
-    return colOrderedIDoms;
-  }
-
-  public boolean isDominator(Integer node, Integer dom) {
-
-    while (!node.equals(dom)) {
-
-      Integer idom = colOrderedIDoms.getWithKey(node);
-
-      if (idom.equals(node)) {
-        return false; // root node
-      }
-      else {
-        node = idom;
-      }
+        return key1;
     }
 
-    return true;
-  }
+    private void calcIDoms() {
+
+        orderStatements();
+
+        colOrderedIDoms.putWithKey(statement.getFirst().id, statement.getFirst().id);
+
+        // exclude first statement
+        List<Integer> lstIds = colOrderedIDoms.getLstKeys().subList(1, colOrderedIDoms.getLstKeys().size());
+
+        while (true) {
+
+            boolean changed = false;
+
+            for (Integer id : lstIds) {
+
+                Statement stat = statement.getStats().getWithKey(id);
+                Integer idom = null;
+
+                for (StatEdge edge : stat.getAllPredecessorEdges()) {
+                    if (colOrderedIDoms.getWithKey(edge.getSource().id) != null) {
+                        idom = getCommonIDom(idom, edge.getSource().id, colOrderedIDoms);
+                    }
+                }
+
+                Integer oldidom = colOrderedIDoms.putWithKey(idom, id);
+                if (!idom.equals(oldidom)) {
+                    changed = true;
+                }
+            }
+
+            if (!changed) {
+                break;
+            }
+        }
+    }
+
+    public VBStyleCollection<Integer, Integer> getOrderedIDoms() {
+        return colOrderedIDoms;
+    }
+
+    public boolean isDominator(Integer node, Integer dom) {
+
+        while (!node.equals(dom)) {
+
+            Integer idom = colOrderedIDoms.getWithKey(node);
+
+            if (idom.equals(node)) {
+                return false; // root node
+            } else {
+                node = idom;
+            }
+        }
+
+        return true;
+    }
 }

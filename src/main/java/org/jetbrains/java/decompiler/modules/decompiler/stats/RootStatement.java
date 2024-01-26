@@ -6,24 +6,24 @@ import org.jetbrains.java.decompiler.modules.decompiler.ExprProcessor;
 import org.jetbrains.java.decompiler.util.TextBuffer;
 
 public class RootStatement extends Statement {
-  private final DummyExitStatement dummyExit;
+    private final DummyExitStatement dummyExit;
 
-  public RootStatement(Statement head, DummyExitStatement dummyExit) {
-    type = Statement.TYPE_ROOT;
+    public RootStatement(Statement head, DummyExitStatement dummyExit) {
+        type = Statement.TYPE_ROOT;
 
-    first = head;
-    this.dummyExit = dummyExit;
+        first = head;
+        this.dummyExit = dummyExit;
 
-    stats.addWithKey(first, first.id);
-    first.setParent(this);
-  }
+        stats.addWithKey(first, first.id);
+        first.setParent(this);
+    }
 
-  @Override
-  public TextBuffer toJava(int indent, BytecodeMappingTracer tracer) {
-    return ExprProcessor.listToJava(varDefinitions, indent, tracer).append(first.toJava(indent, tracer));
-  }
+    @Override
+    public TextBuffer toJava(int indent, BytecodeMappingTracer tracer) {
+        return ExprProcessor.listToJava(varDefinitions, indent, tracer).append(first.toJava(indent, tracer));
+    }
 
-  public DummyExitStatement getDummyExit() {
-    return dummyExit;
-  }
+    public DummyExitStatement getDummyExit() {
+        return dummyExit;
+    }
 }

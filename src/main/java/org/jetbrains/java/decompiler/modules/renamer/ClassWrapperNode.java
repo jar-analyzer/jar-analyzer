@@ -7,22 +7,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClassWrapperNode {
-  private final StructClass classStruct;
-  private final List<ClassWrapperNode> subclasses = new ArrayList<>();
+    private final StructClass classStruct;
+    private final List<ClassWrapperNode> subclasses = new ArrayList<>();
 
-  public ClassWrapperNode(StructClass cl) {
-    this.classStruct = cl;
-  }
+    public ClassWrapperNode(StructClass cl) {
+        this.classStruct = cl;
+    }
 
-  public void addSubclass(ClassWrapperNode node) {
-    subclasses.add(node);
-  }
+    public void addSubclass(ClassWrapperNode node) {
+        subclasses.add(node);
+    }
 
-  public StructClass getClassStruct() {
-    return classStruct;
-  }
+    public StructClass getClassStruct() {
+        return classStruct;
+    }
 
-  public List<ClassWrapperNode> getSubclasses() {
-    return subclasses;
-  }
+    public List<ClassWrapperNode> getSubclasses() {
+        return subclasses;
+    }
 }

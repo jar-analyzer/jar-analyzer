@@ -16,19 +16,19 @@ import java.io.IOException;
     } local_variable_type_table[local_variable_type_table_length];
 */
 public class StructLocalVariableTypeTableAttribute extends StructGeneralAttribute {
-  // store signature instead of descriptor
-  private final StructLocalVariableTableAttribute backingAttribute = new StructLocalVariableTableAttribute();
+    // store signature instead of descriptor
+    private final StructLocalVariableTableAttribute backingAttribute = new StructLocalVariableTableAttribute();
 
-  @Override
-  public void initContent(DataInputFullStream data, ConstantPool pool) throws IOException {
-    backingAttribute.initContent(data, pool);
-  }
+    @Override
+    public void initContent(DataInputFullStream data, ConstantPool pool) throws IOException {
+        backingAttribute.initContent(data, pool);
+    }
 
-  public void add(StructLocalVariableTypeTableAttribute attr) {
-    backingAttribute.add(attr.backingAttribute);
-  }
+    public void add(StructLocalVariableTypeTableAttribute attr) {
+        backingAttribute.add(attr.backingAttribute);
+    }
 
-  public String getSignature(int index, int visibleOffset) {
-    return backingAttribute.getDescriptor(index, visibleOffset);
-  }
+    public String getSignature(int index, int visibleOffset) {
+        return backingAttribute.getDescriptor(index, visibleOffset);
+    }
 }

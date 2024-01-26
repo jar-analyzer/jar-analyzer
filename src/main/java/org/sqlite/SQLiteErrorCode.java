@@ -29,7 +29,7 @@ package org.sqlite;
  *
  * @author leo
  * @see <a
- *     href="https://www.sqlite.org/c3ref/c_abort.html">https://www.sqlite.org/c3ref/c_abort.html</a>
+ * href="https://www.sqlite.org/c3ref/c_abort.html">https://www.sqlite.org/c3ref/c_abort.html</a>
  */
 public enum SQLiteErrorCode {
     UNKNOWN_ERROR(-1, "unknown error"),
@@ -190,7 +190,7 @@ public enum SQLiteErrorCode {
     /**
      * Constructor that applies error code and message.
      *
-     * @param code Error code.
+     * @param code    Error code.
      * @param message Message for the error.
      */
     SQLiteErrorCode(int code, String message) {
@@ -209,7 +209,9 @@ public enum SQLiteErrorCode {
         return UNKNOWN_ERROR;
     }
 
-    /** @see java.lang.Enum#toString() */
+    /**
+     * @see java.lang.Enum#toString()
+     */
     @Override
     public String toString() {
         return String.format("[%s] %s", this.name(), message);

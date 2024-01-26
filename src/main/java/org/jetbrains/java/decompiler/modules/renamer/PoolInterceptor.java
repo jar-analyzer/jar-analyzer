@@ -5,19 +5,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PoolInterceptor {
-  private final Map<String, String> mapOldToNewNames = new HashMap<>();
-  private final Map<String, String> mapNewToOldNames = new HashMap<>();
+    private final Map<String, String> mapOldToNewNames = new HashMap<>();
+    private final Map<String, String> mapNewToOldNames = new HashMap<>();
 
-  public void addName(String oldName, String newName) {
-    mapOldToNewNames.put(oldName, newName);
-    mapNewToOldNames.put(newName, oldName);
-  }
+    public void addName(String oldName, String newName) {
+        mapOldToNewNames.put(oldName, newName);
+        mapNewToOldNames.put(newName, oldName);
+    }
 
-  public String getName(String oldName) {
-    return mapOldToNewNames.get(oldName);
-  }
+    public String getName(String oldName) {
+        return mapOldToNewNames.get(oldName);
+    }
 
-  public String getOldName(String newName) {
-    return mapNewToOldNames.get(newName);
-  }
+    public String getOldName(String newName) {
+        return mapNewToOldNames.get(newName);
+    }
 }

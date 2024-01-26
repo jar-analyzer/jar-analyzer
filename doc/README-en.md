@@ -159,16 +159,7 @@ Located in `me.n1ar4.log`, this is a logging library mimicking `Log4j2 API`
 
 ## How to Build
 
-Building is generally based on `Java 8`
-- Download `JDK 8`
-- Use `Maven` (https://maven.apache.org/download.cgi)
-- Use `Python 3` for assistance (https://www.python.org/downloads/)
-
-Steps:
-
-1. mvn -B package -DskipTests --file pom.xml
-2. python build.py
-3. Copy JRE to embed version
+Refer to `Github Actions` code: [build](https://github.com/jar-analyzer/jar-analyzer/blob/master/.github/workflows/build.yml)
 
 ## Other
 

@@ -183,24 +183,7 @@ java -jar jar-analyzer.jar build --jar 1.jar --del-cache --del-exist
 
 ## 如何构建
 
-请使用 `Java 8`
-- 下载 `JDK 8`
-- 使用 `Maven` (https://maven.apache.org/download.cgi)
-- 使用 `Python 3` 辅助 (https://www.python.org/downloads/)
-
-步骤：
-
-(1) package.bat
-
-(2) cd agent
-
-(3) package.bat
-
-(4) cd ..
-
-(5) python build.py
-
-(6) 复制 JRE 到 embed 版
+请参考 `Github Actions` 代码：[build](https://github.com/jar-analyzer/jar-analyzer/blob/master/.github/workflows/build.yml)
 
 ## 其他
 

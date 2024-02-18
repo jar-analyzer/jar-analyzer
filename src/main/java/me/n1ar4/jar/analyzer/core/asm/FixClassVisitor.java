@@ -1,7 +1,7 @@
 package me.n1ar4.jar.analyzer.core.asm;
 
+import me.n1ar4.jar.analyzer.starter.Const;
 import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.Opcodes;
 
 public class FixClassVisitor extends ClassVisitor {
     private String name;
@@ -11,7 +11,7 @@ public class FixClassVisitor extends ClassVisitor {
     }
 
     public FixClassVisitor() {
-        super(Opcodes.ASM9);
+        super(Const.ASMVersion);
     }
 
     @Override

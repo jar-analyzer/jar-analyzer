@@ -2,6 +2,7 @@ package me.n1ar4.jar.analyzer.core.asm;
 
 import me.n1ar4.jar.analyzer.core.ClassReference;
 import me.n1ar4.jar.analyzer.core.MethodReference;
+import me.n1ar4.jar.analyzer.starter.Const;
 import org.objectweb.asm.*;
 
 import java.util.*;
@@ -21,7 +22,7 @@ public class DiscoveryClassVisitor extends ClassVisitor {
     public DiscoveryClassVisitor(Set<ClassReference> discoveredClasses,
                                  Set<MethodReference> discoveredMethods,
                                  String jarName) {
-        super(Opcodes.ASM9);
+        super(Const.ASMVersion);
         this.discoveredClasses = discoveredClasses;
         this.discoveredMethods = discoveredMethods;
         this.jar = jarName;
@@ -73,7 +74,7 @@ public class DiscoveryClassVisitor extends ClassVisitor {
                 isStatic,
                 mAnno, access));
         MethodVisitor mv = super.visitMethod(access, name, desc, signature, exceptions);
-        return new DiscoveryMethodAdapter(Opcodes.ASM9, mv, mAnno);
+        return new DiscoveryMethodAdapter(Const.ASMVersion, mv, mAnno);
     }
 
     @Override

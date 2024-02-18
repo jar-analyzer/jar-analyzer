@@ -4,10 +4,10 @@ import me.n1ar4.jar.analyzer.analyze.spring.SpringConstant;
 import me.n1ar4.jar.analyzer.analyze.spring.SpringController;
 import me.n1ar4.jar.analyzer.core.ClassReference;
 import me.n1ar4.jar.analyzer.core.MethodReference;
+import me.n1ar4.jar.analyzer.starter.Const;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
 
 import java.util.List;
 import java.util.Map;
@@ -25,7 +25,7 @@ public class SpringClassVisitor extends ClassVisitor {
     public SpringClassVisitor(List<SpringController> controllers,
                               Map<ClassReference.Handle, ClassReference> classMap,
                               Map<MethodReference.Handle, MethodReference> methodMap) {
-        super(Opcodes.ASM9);
+        super(Const.ASMVersion);
         this.methodMap = methodMap;
         this.controllers = controllers;
         this.classMap = classMap;
@@ -35,7 +35,7 @@ public class SpringClassVisitor extends ClassVisitor {
     public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
         AnnotationVisitor av = super.visitAnnotation(descriptor, visible);
         if (descriptor.equals(SpringConstant.RequestMappingAnno)) {
-            this.pathAnnoAdapter = new SpringPathAnnoAdapter(Opcodes.ASM9, av);
+            this.pathAnnoAdapter = new SpringPathAnnoAdapter(Const.ASMVersion, av);
             return this.pathAnnoAdapter;
         }
         return av;
@@ -76,7 +76,7 @@ public class SpringClassVisitor extends ClassVisitor {
                     currentController.setBasePath(pathAnnoAdapter.getResults().get(0));
                 }
             }
-            return new SpringMethodAdapter(name, descriptor, this.name, Opcodes.ASM9, mv,
+            return new SpringMethodAdapter(name, descriptor, this.name, Const.ASMVersion, mv,
                     currentController, this.methodMap);
         } else {
             return mv;

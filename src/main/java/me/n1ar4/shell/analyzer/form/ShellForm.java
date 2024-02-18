@@ -580,8 +580,8 @@ public class ShellForm {
                     "<html>" +
                             "only support jdk8/windows<br>" +
                             "目前只支持 jdk8/windows 系统<br>" +
-                            "更多信息参考原始项目地址：<br>"+
-                            "https://github.com/4ra1n/shell-analyzer"+
+                            "更多信息参考原始项目地址：<br>" +
+                            "https://github.com/4ra1n/shell-analyzer" +
                             "</html>");
             return;
         }

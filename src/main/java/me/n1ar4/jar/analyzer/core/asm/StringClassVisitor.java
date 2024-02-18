@@ -2,9 +2,9 @@ package me.n1ar4.jar.analyzer.core.asm;
 
 import me.n1ar4.jar.analyzer.core.ClassReference;
 import me.n1ar4.jar.analyzer.core.MethodReference;
+import me.n1ar4.jar.analyzer.starter.Const;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
 
 import java.util.List;
 import java.util.Map;
@@ -18,7 +18,7 @@ public class StringClassVisitor extends ClassVisitor {
     public StringClassVisitor(Map<MethodReference.Handle, List<String>> strMap,
                               Map<ClassReference.Handle, ClassReference> classMap,
                               Map<MethodReference.Handle, MethodReference> methodMap) {
-        super(Opcodes.ASM9);
+        super(Const.ASMVersion);
         this.strMap = strMap;
         this.classMap = classMap;
         this.methodMap = methodMap;

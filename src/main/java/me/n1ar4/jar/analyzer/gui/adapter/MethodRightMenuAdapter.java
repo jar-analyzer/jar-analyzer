@@ -6,7 +6,10 @@ import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
-import org.objectweb.asm.*;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
@@ -28,7 +31,7 @@ public class MethodRightMenuAdapter extends MouseAdapter {
             Path finalFile = Paths.get(Const.tempDir).resolve(Paths.get(className + ".class"));
             ClassReader classReader = new ClassReader(Files.readAllBytes(finalFile));
             ClassWriter classWriter = new ClassWriter(classReader, 0);
-            ClassVisitor classVisitor = new ClassVisitor(Opcodes.ASM9, classWriter) {
+            ClassVisitor classVisitor = new ClassVisitor(Const.ASMVersion, classWriter) {
                 @Override
                 public MethodVisitor visitMethod(int access, String name, String desc,
                                                  String signature, String[] exceptions) {

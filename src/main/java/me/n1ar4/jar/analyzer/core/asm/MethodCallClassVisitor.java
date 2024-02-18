@@ -1,9 +1,9 @@
 package me.n1ar4.jar.analyzer.core.asm;
 
 import me.n1ar4.jar.analyzer.core.MethodReference;
+import me.n1ar4.jar.analyzer.starter.Const;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,7 +15,7 @@ public class MethodCallClassVisitor extends ClassVisitor {
 
     public MethodCallClassVisitor(HashMap<MethodReference.Handle,
             HashSet<MethodReference.Handle>> methodCalls) {
-        super(Opcodes.ASM9);
+        super(Const.ASMVersion);
         this.methodCalls = methodCalls;
     }
 

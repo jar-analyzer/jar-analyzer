@@ -1,6 +1,9 @@
 package me.n1ar4.jar.analyzer.starter;
 
+import org.objectweb.asm.Opcodes;
+
 public interface Const {
+    int ASMVersion = Opcodes.ASM9;
     String app = "Jar Analyzer V2 - 4ra1n";
     String version = "2.10";
     String checkUpdateUrl = "http://47.97.182.120/version.txt";

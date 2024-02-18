@@ -1,5 +1,6 @@
 package me.n1ar4.jar.analyzer.analyze.cfg;
 
+import me.n1ar4.jar.analyzer.starter.Const;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -14,7 +15,7 @@ public class ControlFlowGraphEngine {
     public static void start(InputStream is, String methodName, String methodDesc, StringBuilder builder) throws Exception {
         ClassReader cr = new ClassReader(is);
         ClassNode cn = new ClassNode();
-        int parsingOptions = ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES;
+        int parsingOptions = Const.GlobalASMOptions;
         cr.accept(cn, parsingOptions);
         MethodNode targetNode = null;
         for (MethodNode mn : cn.methods) {

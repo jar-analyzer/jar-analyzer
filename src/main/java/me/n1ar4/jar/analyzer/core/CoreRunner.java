@@ -86,7 +86,7 @@ public class CoreRunner {
                 Path parPath = Paths.get(Const.tempDir);
                 FixClassVisitor cv = new FixClassVisitor();
                 ClassReader cr = new ClassReader(cf.getFile());
-                cr.accept(cv, ClassReader.EXPAND_FRAMES);
+                cr.accept(cv, Const.AnalyzeASMOptions);
                 // get actual class name
                 Path path = parPath.resolve(Paths.get(cv.getName()));
                 File file = path.toFile();
@@ -160,7 +160,7 @@ public class CoreRunner {
             try {
                 StringClassVisitor dcv = new StringClassVisitor(AnalyzeEnv.strMap, AnalyzeEnv.classMap, AnalyzeEnv.methodMap);
                 ClassReader cr = new ClassReader(file.getFile());
-                cr.accept(dcv, ClassReader.EXPAND_FRAMES);
+                cr.accept(dcv, Const.AnalyzeASMOptions);
             } catch (Exception ex) {
                 logger.error("string analyze error: {}", ex.toString());
             }

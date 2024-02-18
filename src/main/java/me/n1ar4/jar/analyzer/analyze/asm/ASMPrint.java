@@ -1,5 +1,6 @@
 package me.n1ar4.jar.analyzer.analyze.asm;
 
+import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 import org.objectweb.asm.ClassReader;
@@ -17,7 +18,7 @@ public class ASMPrint {
 
     public static String getPrint(InputStream is, boolean flag) {
         try {
-            int parsingOptions = ClassReader.SKIP_FRAMES | ClassReader.SKIP_DEBUG;
+            int parsingOptions = Const.GlobalASMOptions;
             Printer printer = flag ? new ASMifier() : new Textifier();
             ByteArrayOutputStream bao = new ByteArrayOutputStream();
             PrintWriter printWriter = new PrintWriter(bao, true);

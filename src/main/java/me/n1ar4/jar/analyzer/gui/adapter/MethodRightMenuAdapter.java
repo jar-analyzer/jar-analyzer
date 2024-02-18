@@ -44,6 +44,7 @@ public class MethodRightMenuAdapter extends MouseAdapter {
             classReader.accept(classVisitor, 0);
             return classWriter.toByteArray();
         } catch (Exception ex) {
+            logger.error("rename method error: {}", ex.toString());
             return new byte[]{};
         }
     }

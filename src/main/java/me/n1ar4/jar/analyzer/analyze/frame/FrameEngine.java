@@ -1,6 +1,7 @@
 package me.n1ar4.jar.analyzer.analyze.frame;
 
 import me.n1ar4.jar.analyzer.gui.MainForm;
+import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 import org.objectweb.asm.ClassReader;
@@ -27,7 +28,7 @@ public class FrameEngine {
                                StringBuilder builder) throws Exception {
         ClassReader cr = new ClassReader(is);
         ClassNode cn = new ClassNode();
-        cr.accept(cn, ClassReader.SKIP_FRAMES | ClassReader.SKIP_DEBUG);
+        cr.accept(cn, Const.GlobalASMOptions);
         String owner = cn.name;
         List<MethodNode> methods = cn.methods;
         MethodNode method = null;

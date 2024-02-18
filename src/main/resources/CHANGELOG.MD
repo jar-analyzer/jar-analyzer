@@ -4,6 +4,7 @@
 
 更新日志：
 
+- [优化] 非`windows`打开`tomcat-analyzer`给出警告
 - [其他] 升级`actions/cache`到`v4`版本
 
 感谢以下用户的贡献:

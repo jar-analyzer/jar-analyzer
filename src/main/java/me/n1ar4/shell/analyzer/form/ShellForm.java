@@ -4,6 +4,8 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.sun.tools.attach.VirtualMachine;
 import com.sun.tools.attach.VirtualMachineDescriptor;
+import me.n1ar4.jar.analyzer.gui.MainForm;
+import me.n1ar4.jar.analyzer.utils.OSUtil;
 import me.n1ar4.shell.analyzer.model.ClassObj;
 import me.n1ar4.shell.analyzer.model.ProcessObj;
 import me.n1ar4.shell.analyzer.start.SocketHelper;
@@ -571,6 +573,19 @@ public class ShellForm {
     }
 
     public static void start0() {
+        // check windows
+        // 目前该功能仅给 Windows 使用
+        if (!OSUtil.isWindows()) {
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                    "<html>" +
+                            "only support jdk8/windows<br>" +
+                            "目前只支持 jdk8/windows 系统<br>" +
+                            "更多信息参考原始项目地址：<br>"+
+                            "https://github.com/4ra1n/shell-analyzer"+
+                            "</html>");
+            return;
+        }
+
         JFrame frame = new JFrame("tomcat-analyzer by 4ra1n");
         instance = new ShellForm();
         frame.setContentPane(instance.shellPanel);

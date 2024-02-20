@@ -22,7 +22,7 @@
     <properties>
         <!-- Dependencies Version -->
         <asm.version>9.6</asm.version>
-        <flatlaf.version>3.3</flatlaf.version>
+        <flatlaf.version>3.4</flatlaf.version>
         <idea.forms.version>7.0.3</idea.forms.version>
         <syntax.version>3.4.0</syntax.version>
         <slf4j.api.version>2.0.12</slf4j.api.version>

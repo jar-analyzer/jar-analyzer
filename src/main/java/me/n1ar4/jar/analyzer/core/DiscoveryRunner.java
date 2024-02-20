@@ -2,6 +2,7 @@ package me.n1ar4.jar.analyzer.core;
 
 import me.n1ar4.jar.analyzer.core.asm.DiscoveryClassVisitor;
 import me.n1ar4.jar.analyzer.entity.ClassFileEntity;
+import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 import org.objectweb.asm.ClassReader;
@@ -23,7 +24,7 @@ public class DiscoveryRunner {
                 DiscoveryClassVisitor dcv = new DiscoveryClassVisitor(discoveredClasses,
                         discoveredMethods, file.getJarName());
                 ClassReader cr = new ClassReader(file.getFile());
-                cr.accept(dcv, ClassReader.EXPAND_FRAMES);
+                cr.accept(dcv, Const.AnalyzeASMOptions);
             } catch (Exception e) {
                 logger.error("discovery error: {}", e.toString());
             }

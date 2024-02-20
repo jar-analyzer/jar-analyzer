@@ -4,6 +4,7 @@ import me.n1ar4.jar.analyzer.analyze.spring.asm.SpringClassVisitor;
 import me.n1ar4.jar.analyzer.core.ClassReference;
 import me.n1ar4.jar.analyzer.core.MethodReference;
 import me.n1ar4.jar.analyzer.entity.ClassFileEntity;
+import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 import org.objectweb.asm.ClassReader;
@@ -23,9 +24,8 @@ public class SpringService {
             try {
                 SpringClassVisitor mcv = new SpringClassVisitor(controllers, classMap, methodMap);
                 ClassReader cr = new ClassReader(file.getFile());
-                cr.accept(mcv, ClassReader.EXPAND_FRAMES);
+                cr.accept(mcv, Const.AnalyzeASMOptions);
             } catch (Exception e) {
-                e.printStackTrace();
                 logger.error("error: {}", e.getMessage());
             }
         }

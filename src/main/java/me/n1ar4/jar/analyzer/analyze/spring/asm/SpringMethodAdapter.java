@@ -6,9 +6,9 @@ import me.n1ar4.jar.analyzer.analyze.spring.SpringMapping;
 import me.n1ar4.jar.analyzer.analyze.spring.SpringParam;
 import me.n1ar4.jar.analyzer.core.ClassReference;
 import me.n1ar4.jar.analyzer.core.MethodReference;
+import me.n1ar4.jar.analyzer.starter.Const;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
 import java.util.ArrayList;
@@ -53,7 +53,7 @@ public class SpringMethodAdapter extends MethodVisitor {
             currentMapping.setController(controller);
             currentMapping.setMethodReference(methodMap.get(currentMapping.getMethodName()));
             currentMapping.setParamMap(this.requestParam);
-            pathAnnoAdapter = new SpringPathAnnoAdapter(Opcodes.ASM9, av);
+            pathAnnoAdapter = new SpringPathAnnoAdapter(Const.ASMVersion, av);
             av = pathAnnoAdapter;
         }
         if (descriptor.equals(SpringConstant.ResponseBodyAnno)) {
@@ -92,7 +92,7 @@ public class SpringMethodAdapter extends MethodVisitor {
     public AnnotationVisitor visitParameterAnnotation(int parameter, String descriptor, boolean visible) {
         AnnotationVisitor av = super.visitParameterAnnotation(parameter, descriptor, visible);
         if (descriptor.equals(SpringConstant.RequestParamAnno)) {
-            return new SpringAnnoAdapter(Opcodes.ASM9, av, requestParam, parameter);
+            return new SpringAnnoAdapter(Const.ASMVersion, av, requestParam, parameter);
         }
         return av;
     }

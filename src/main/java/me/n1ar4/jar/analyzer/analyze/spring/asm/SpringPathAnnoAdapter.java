@@ -1,7 +1,7 @@
 package me.n1ar4.jar.analyzer.analyze.spring.asm;
 
+import me.n1ar4.jar.analyzer.starter.Const;
 import org.objectweb.asm.AnnotationVisitor;
-import org.objectweb.asm.Opcodes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ public class SpringPathAnnoAdapter extends AnnotationVisitor {
     @Override
     public AnnotationVisitor visitArray(String name) {
         AnnotationVisitor av = super.visitArray(name);
-        return new ArrayVisitor(Opcodes.ASM6, av, results);
+        return new ArrayVisitor(Const.ASMVersion, av, results);
     }
 
     static class ArrayVisitor extends AnnotationVisitor {

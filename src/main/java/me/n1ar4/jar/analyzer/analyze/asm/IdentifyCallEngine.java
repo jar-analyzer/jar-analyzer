@@ -1,6 +1,7 @@
 package me.n1ar4.jar.analyzer.analyze.asm;
 
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
+import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 import org.objectweb.asm.ClassReader;
@@ -23,7 +24,7 @@ public class IdentifyCallEngine {
         Class<?> me = MethodHandles.lookup().lookupClass();
         ClassReader r = new ClassReader(Files.readAllBytes(Paths.get(absPath)));
         ClassNode cn = new ClassNode();
-        r.accept(cn, ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
+        r.accept(cn, Const.GlobalASMOptions);
         MethodNode toAnalyze = null;
         for (MethodNode mn : cn.methods) {
             if (mn.name.equals(methodName) && mn.desc.equals(methodDesc)) {

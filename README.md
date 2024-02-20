@@ -20,7 +20,7 @@
 - 一键生成方法的 `Stack Frame` 分析结果
 - 远程分析 `Tomcat` 中的 `Servlet` 等组件
 - 自定义 `SQL` 语句进行高级分析
-- 支持运行基于 `Java` 的脚本语言 `Y4 Lang`
+- 允许从字节码层面直接修改方法名（测试功能）
 
 更多的功能正在开发中
 
@@ -37,6 +37,12 @@
 - 场景6：你需要深入地分析某个方法中 `JVM` 指令和栈帧的状态（带有图形界面）
 - 场景7：你需要深入地分析某个方法的 `Control Flow Graph` （带有图形界面）
 - 场景8：你有一个 `Tomcat` 需要远程分析其中的 `Servlet/Filter/Listener` 信息
+
+相关推荐：
+- 传统的反编译工具 `JD-GUI` 项目：https://github.com/java-decompiler/jd-gui
+- 强大的反编译工具 `JADX` 项目：https://github.com/skylot/jadx
+- 闭源 `GDA` 工具：https://github.com/charles2gan/GDA-android-reversing-Tool
+- 直接编辑字节码的工具：https://github.com/Col-E/Recaf
 
 ## 一些截图
 

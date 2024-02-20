@@ -4,6 +4,7 @@ import com.github.rjeschke.txtmark.Processor;
 import me.n1ar4.http.HttpResponse;
 import me.n1ar4.http.Y4Client;
 import me.n1ar4.jar.analyzer.gui.ChangeLogForm;
+import me.n1ar4.jar.analyzer.gui.GlobalOptions;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.log.LogManager;
@@ -25,12 +26,40 @@ public class MenuUtil {
     private static final JCheckBoxMenuItem fixClassPathConfig = new JCheckBoxMenuItem("fix class path");
     private static final JCheckBoxMenuItem sortedByMethodConfig = new JCheckBoxMenuItem("sort results by method name");
     private static final JCheckBoxMenuItem sortedByClassConfig = new JCheckBoxMenuItem("sort results by class name");
+    private static final JCheckBoxMenuItem chineseConfig = new JCheckBoxMenuItem("Chinese");
+    private static final JCheckBoxMenuItem englishConfig = new JCheckBoxMenuItem("English");
 
     static {
         showInnerConfig.setState(false);
         fixClassPathConfig.setState(false);
         sortedByMethodConfig.setState(false);
         sortedByClassConfig.setState(true);
+        englishConfig.setState(true);
+        chineseConfig.setState(false);
+
+        chineseConfig.addActionListener(e -> {
+            chineseConfig.setState(chineseConfig.getState());
+            englishConfig.setState(!chineseConfig.getState());
+            if (chineseConfig.getState()) {
+                logger.info("use chinese language");
+                GlobalOptions.setLang(GlobalOptions.CHINESE);
+                MainForm.refreshLang();
+                JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                        "已切换到中文");
+            }
+        });
+
+        englishConfig.addActionListener(e -> {
+            englishConfig.setState(englishConfig.getState());
+            chineseConfig.setState(!englishConfig.getState());
+            if (englishConfig.getState()) {
+                logger.info("use english language");
+                GlobalOptions.setLang(GlobalOptions.ENGLISH);
+                MainForm.refreshLang();
+                JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                        "use english language");
+            }
+        });
 
         sortedByMethodConfig.addActionListener(e -> {
             sortedByMethodConfig.setState(sortedByMethodConfig.getState());
@@ -64,8 +93,21 @@ public class MenuUtil {
         menuBar.add(createAboutMenu());
         menuBar.add(createVersionMenu());
         menuBar.add(createConfigMenu());
+        menuBar.add(language());
         menuBar.add(createShellAnalyzer());
         return menuBar;
+    }
+
+    private static JMenu language() {
+        try {
+            JMenu configMenu = new JMenu("language");
+            configMenu.add(chineseConfig);
+            configMenu.add(englishConfig);
+            return configMenu;
+        } catch (Exception ex) {
+            logger.error("error: {}", ex.toString());
+        }
+        return null;
     }
 
     private static JMenu createShellAnalyzer() {

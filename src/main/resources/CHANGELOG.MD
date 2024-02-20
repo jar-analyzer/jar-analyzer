@@ -4,11 +4,13 @@
 
 更新日志：
 
+- [功能] 支持中英文界面切换
 - [优化] 非`windows`打开`tomcat-analyzer`给出警告
 - [优化] 所有代码使用统一的`ASM9`版本
 - [优化] 所有代码使用统一的`ASN Flags`设置
 - [其他] 升级`rsyntaxtextarea`和`slf4j`版本
 - [其他] 升级`actions/cache`到`v4`版本
+- [其他] 拼写错误
 
 感谢以下用户的贡献:
 

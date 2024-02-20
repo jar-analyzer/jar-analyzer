@@ -683,6 +683,206 @@ public class MainForm {
         instance.historyList.addMouseListener(new CommonMouseAdapter());
         instance.springCList.addMouseListener(new ControllerMouseAdapter());
         instance.springMList.addMouseListener(new CommonMouseAdapter());
+
+        refreshLang();
+    }
+
+    public static void refreshLang() {
+        try {
+            if (GlobalOptions.getLang() == GlobalOptions.CHINESE) {
+                instance.codePanel.setBorder(
+                        BorderFactory.createTitledBorder(null,
+                                "Java 反编译代码",
+                                TitledBorder.DEFAULT_JUSTIFICATION,
+                                TitledBorder.DEFAULT_POSITION,
+                                null, null));
+
+                int c = instance.tabbedPanel.getTabCount();
+                if (c != 7) {
+                    throw new RuntimeException("tabbed panel error");
+                }
+                instance.tabbedPanel.setTitleAt(0, "开始");
+                instance.tabbedPanel.setTitleAt(1, "搜索");
+                instance.tabbedPanel.setTitleAt(2, "调用");
+                instance.tabbedPanel.setTitleAt(3, "实现");
+                instance.tabbedPanel.setTitleAt(4, "spring");
+                instance.tabbedPanel.setTitleAt(5, "历史");
+                instance.tabbedPanel.setTitleAt(6, "高级");
+
+                instance.chosePanel.setBorder(
+                        BorderFactory.createTitledBorder(null,
+                                "启动器",
+                                TitledBorder.DEFAULT_JUSTIFICATION,
+                                TitledBorder.DEFAULT_POSITION,
+                                null, null));
+                instance.choseBtn.setText("选择文件/目录");
+                instance.dbPathLabel.setText("数据库路径");
+                instance.jreRuntimeLabel.setText("JRE 环境路径");
+                instance.classBlackListLabel.setText("类黑名单");
+                instance.resolveJarsInJarCheckBox.setText("解决内嵌JAR问题");
+                instance.autoSaveCheckBox.setText("自动保存");
+                instance.deleteTempCheckBox.setText("删除缓存");
+                instance.autoFindRtJarCheckBox.setText("自动搜索RT.JAR");
+                instance.addRtJarWhenCheckBox.setText("分析时添加RT.JAR");
+                instance.startEngineButton.setText("启动引擎");
+
+                instance.infoPanel.setBorder(
+                        BorderFactory.createTitledBorder(null,
+                                "基本信息",
+                                TitledBorder.DEFAULT_JUSTIFICATION,
+                                TitledBorder.DEFAULT_POSITION,
+                                null, null));
+                instance.engineLabel.setText("引擎状态");
+                instance.databaseSizeLabel.setText("数据库");
+                instance.totalJarLabel.setText("JAR数量");
+                instance.totalClassLabel.setText("类数量");
+                instance.totalMethodLabel.setText("方法数量");
+
+                instance.decompilerPanel.setBorder(
+                        BorderFactory.createTitledBorder(null,
+                                "反编译相关",
+                                TitledBorder.DEFAULT_JUSTIFICATION,
+                                TitledBorder.DEFAULT_POSITION,
+                                null, null));
+                instance.opcodeBtn.setText("显示方法字节码指令");
+                instance.javaAsmBtn.setText("显示JAVA ASM代码");
+                instance.fernRadio.setText("FernFlower (来自 jetbrains 的 IDEA 项目)");
+
+                instance.analysis.setBorder(BorderFactory.createTitledBorder(null,
+                        "深入分析",
+                        TitledBorder.DEFAULT_JUSTIFICATION,
+                        TitledBorder.DEFAULT_POSITION,
+                        null, null));
+                instance.cfgLabel.setText("控制流图分析");
+                instance.cfgBtn.setText("展示控制流图");
+                instance.frameLabel.setText("JVM栈帧分析");
+                instance.frameBtn.setText("完整栈帧");
+                instance.simpleFrameButton.setText("简易栈帧");
+
+                instance.showStringListButton.setText("所有字符串");
+                instance.cleanButton.setText("清除缓存");
+
+                instance.curPanel.setBorder(BorderFactory.createTitledBorder(
+                        null,
+                        "当前",
+                        TitledBorder.DEFAULT_JUSTIFICATION,
+                        TitledBorder.DEFAULT_POSITION,
+                        null, null));
+                instance.curJarLabel.setText("当前JAR");
+                instance.curClassLabel.setText("当前类");
+                instance.curMethodLabel.setText("当前方法");
+
+                instance.classBlackLabel.setText("类名黑名单 (使用 ; 和 \\n 分割)");
+                instance.startSearchButton.setText("开始搜索");
+                instance.springLabel.setText("分析 JAR/JARS 中的 Spring Controller/Mapping 信息");
+                instance.refreshButton.setText("刷新");
+                instance.javaVulLabel.setText("快速搜索通用 JAVA 漏洞相关");
+
+                instance.chatGPTLabel.setText("一个 ChatGPT 工具");
+                instance.sqliteLabel.setText("一个 SQLITE 查询工具");
+                instance.encoderLabel.setText("一个编码解码加密解密工具");
+                instance.repeaterLabel.setText("一个 HTTP 发送工具");
+                instance.listenerLabel.setText("一个 SOCKET 监听工具");
+            } else if (GlobalOptions.getLang() == GlobalOptions.ENGLISH) {
+                instance.codePanel.setBorder(
+                        BorderFactory.createTitledBorder(null,
+                                "Java Decompile Code",
+                                TitledBorder.DEFAULT_JUSTIFICATION,
+                                TitledBorder.DEFAULT_POSITION,
+                                null, null));
+
+                int c = instance.tabbedPanel.getTabCount();
+                if (c != 7) {
+                    throw new RuntimeException("tabbed panel error");
+                }
+                instance.tabbedPanel.setTitleAt(0, "start");
+                instance.tabbedPanel.setTitleAt(1, "search");
+                instance.tabbedPanel.setTitleAt(2, "call");
+                instance.tabbedPanel.setTitleAt(3, "impl");
+                instance.tabbedPanel.setTitleAt(4, "spring");
+                instance.tabbedPanel.setTitleAt(5, "history");
+                instance.tabbedPanel.setTitleAt(6, "advance");
+
+                instance.chosePanel.setBorder(
+                        BorderFactory.createTitledBorder(null,
+                                "Starter",
+                                TitledBorder.DEFAULT_JUSTIFICATION,
+                                TitledBorder.DEFAULT_POSITION,
+                                null, null));
+                instance.choseBtn.setText("Chose File / Dir");
+                instance.dbPathLabel.setText("Database Path");
+                instance.jreRuntimeLabel.setText("JRE Runtime");
+                instance.classBlackListLabel.setText("Class Black List");
+                instance.resolveJarsInJarCheckBox.setText("Resolve Jars in Jar");
+                instance.autoSaveCheckBox.setText("Auto Save");
+                instance.deleteTempCheckBox.setText("Delete Temp");
+                instance.autoFindRtJarCheckBox.setText("Auto Find rt.jar");
+                instance.addRtJarWhenCheckBox.setText("Add rt.jar to Analyze");
+                instance.startEngineButton.setText("Start Engine");
+
+                instance.infoPanel.setBorder(
+                        BorderFactory.createTitledBorder(null,
+                                "Information",
+                                TitledBorder.DEFAULT_JUSTIFICATION,
+                                TitledBorder.DEFAULT_POSITION,
+                                null, null));
+                instance.engineLabel.setText("Engine State");
+                instance.databaseSizeLabel.setText("Database");
+                instance.totalJarLabel.setText("Total Jar");
+                instance.totalClassLabel.setText("Total Class");
+                instance.totalMethodLabel.setText("Total Method");
+
+                instance.decompilerPanel.setBorder(
+                        BorderFactory.createTitledBorder(null,
+                                "Decompiler",
+                                TitledBorder.DEFAULT_JUSTIFICATION,
+                                TitledBorder.DEFAULT_POSITION,
+                                null, null));
+                instance.opcodeBtn.setText("Show Method Opcode");
+                instance.javaAsmBtn.setText("Java ASM Code");
+                instance.fernRadio.setText(" FernFlower (from jetbrains/intellij-community)");
+
+                instance.analysis.setBorder(BorderFactory.createTitledBorder(null,
+                        "Analysis",
+                        TitledBorder.DEFAULT_JUSTIFICATION,
+                        TitledBorder.DEFAULT_POSITION,
+                        null, null));
+                instance.cfgLabel.setText("Control Flow Graph Analysis");
+                instance.cfgBtn.setText("Show CFG");
+                instance.frameLabel.setText("Java Stack Frame Analysis");
+                instance.frameBtn.setText("Full Frame");
+                instance.simpleFrameButton.setText("Simple Frame");
+
+                instance.showStringListButton.setText("All Strings");
+                instance.cleanButton.setText("Clean");
+
+                instance.curPanel.setBorder(BorderFactory.createTitledBorder(
+                        null,
+                        "Current",
+                        TitledBorder.DEFAULT_JUSTIFICATION,
+                        TitledBorder.DEFAULT_POSITION,
+                        null, null));
+                instance.curJarLabel.setText("Jar");
+                instance.curClassLabel.setText("Class");
+                instance.curMethodLabel.setText("Method");
+
+                instance.classBlackLabel.setText("Class Name Black List (split by ; and \\n)");
+                instance.startSearchButton.setText("Start Search");
+                instance.springLabel.setText(" Analyze Spring Controllers and Mappings in Jar/Jars");
+                instance.refreshButton.setText("Refresh");
+                instance.javaVulLabel.setText("Quickly Search Commons Java Vulnerabilities Call");
+
+                instance.chatGPTLabel.setText("A tool for ChatGPT Tool");
+                instance.sqliteLabel.setText("A tool for run custom query in SQLite database");
+                instance.encoderLabel.setText("A tool for encode/decode encrypt/decrypt operations");
+                instance.repeaterLabel.setText("A tool for sending http request and get response");
+                instance.listenerLabel.setText("A tool for listening port and send by socket");
+            } else {
+                throw new RuntimeException("invalid language");
+            }
+        } catch (Exception ex) {
+            logger.error("error: {}", ex);
+        }
     }
 
     public static void start() {
@@ -854,7 +1054,7 @@ public class MainForm {
         cfgBtn.setText("Show CFG");
         analysis.add(cfgBtn, new GridConstraints(0, 1, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, new Dimension(150, -1), 0, false));
         cfgLabel = new JLabel();
-        cfgLabel.setText("Control Flow Gragh Analysis");
+        cfgLabel.setText("Control Flow Graph Analysis");
         analysis.add(cfgLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         frameLabel = new JLabel();
         frameLabel.setText("Java Stack Frame Analysis");

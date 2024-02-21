@@ -9,21 +9,22 @@
     </resultMap>
     <insert id="insertClass" parameterType="ClassEntity">
         INSERT INTO class_table
-            (jar_name, class_name, super_class_name, is_interface)
+        (jar_name, class_name, super_class_name, is_interface)
         VALUES
         <foreach collection="list" separator="," item="item">
             (#{item.jarName}, #{item.className}, #{item.superClassName}, #{item.isInterface})
         </foreach>
     </insert>
     <select id="selectClassByClassName" resultMap="classMap">
-        SELECT DISTINCT
-            c.class_name, c.super_class_name, c.jar_name, c.is_interface
+        SELECT DISTINCT c.class_name,
+                        c.super_class_name,
+                        c.jar_name,
+                        c.is_interface
         FROM class_table c
         WHERE c.class_name = #{className}
     </select>
     <select id="selectJarByClass">
-        SELECT DISTINCT
-            jar_name
+        SELECT DISTINCT jar_name
         FROM class_table
         WHERE class_name = #{className}
     </select>

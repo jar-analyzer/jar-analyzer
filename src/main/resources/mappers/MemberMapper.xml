@@ -3,7 +3,7 @@
 <mapper namespace="me.n1ar4.jar.analyzer.core.mapper.MemberMapper">
     <insert id="insertMember" parameterType="MemberEntity">
         INSERT INTO member_table
-            (member_name, modifiers, type_class_name, class_name)
+        (member_name, modifiers, type_class_name, class_name)
         VALUES
         <foreach collection="list" separator="," item="item">
             (#{item.memberName}, #{item.modifiers}, #{item.typeClassName}, #{item.className})

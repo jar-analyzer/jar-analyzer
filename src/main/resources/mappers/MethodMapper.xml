@@ -32,8 +32,8 @@
     <select id="selectMethods" resultMap="methodMap">
         SELECT DISTINCT cf.jar_name, m.method_name, m.class_name, m.method_desc, m.is_static, m.access
         FROM method_table m
-                 INNER JOIN class_file_table cf ON
-            substr(cf.class_name, 1, length(cf.class_name) - 6) = m.class_name
+        INNER JOIN class_file_table cf ON
+        substr(cf.class_name, 1, length(cf.class_name) - 6) = m.class_name
         <where>
             <if test="methodName != null and methodName != ''">
                 AND m.method_name = #{methodName}
@@ -66,6 +66,8 @@
     <update id="updateMethod">
         UPDATE method_table
         SET method_name = #{newItem}
-        WHERE class_name = #{className} AND method_name = #{methodName} AND method_desc = #{methodDesc}
+        WHERE class_name = #{className}
+          AND method_name = #{methodName}
+          AND method_desc = #{methodDesc}
     </update>
 </mapper>

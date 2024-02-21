@@ -30,6 +30,7 @@
         <mybatis.version>3.5.15</mybatis.version>
         <commons.dhcp.version>2.11.0</commons.dhcp.version>
         <jcommander.version>1.82</jcommander.version>
+        <dom4j.version>2.1.4</dom4j.version>
         <!-- Maven Build Version -->
         <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-resources-plugin -->
         <maven.resources.version>3.3.1</maven.resources.version>
@@ -49,6 +50,11 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+            <version>${dom4j.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.beust</groupId>
             <artifactId>jcommander</artifactId>

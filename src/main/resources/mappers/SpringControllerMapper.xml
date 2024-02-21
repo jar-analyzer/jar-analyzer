@@ -13,6 +13,7 @@
         </foreach>
     </insert>
     <select id="selectAllSpringC" resultMap="classMap">
-        SELECT DISTINCT class_name FROM spring_controller_table
+        SELECT DISTINCT class_name
+        FROM spring_controller_table
     </select>
 </mapper>

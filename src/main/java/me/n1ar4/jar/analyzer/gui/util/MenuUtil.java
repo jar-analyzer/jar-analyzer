@@ -1,6 +1,7 @@
 package me.n1ar4.jar.analyzer.gui.util;
 
 import com.github.rjeschke.txtmark.Processor;
+import me.n1ar4.flappy.FBMainFrame;
 import me.n1ar4.http.HttpResponse;
 import me.n1ar4.http.Y4Client;
 import me.n1ar4.jar.analyzer.gui.ChangeLogForm;
@@ -9,6 +10,7 @@ import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
+import me.n1ar4.pocker.Main;
 import me.n1ar4.shell.analyzer.form.ShellForm;
 
 import javax.imageio.ImageIO;
@@ -95,7 +97,38 @@ public class MenuUtil {
         menuBar.add(createConfigMenu());
         menuBar.add(language());
         menuBar.add(createShellAnalyzer());
+        menuBar.add(createGames());
         return menuBar;
+    }
+
+    private static JMenu createGames() {
+        try {
+            JMenu gameMenu = new JMenu("games");
+            JMenuItem flappyItem = new JMenuItem("Flappy Bird");
+            InputStream is = MainForm.class.getClassLoader().getResourceAsStream(
+                    "game/flappy/flappy_bird/bird1_0.png");
+            if (is == null) {
+                return null;
+            }
+            ImageIcon flappyIcon = new ImageIcon(ImageIO.read(is));
+            flappyItem.setIcon(flappyIcon);
+            flappyItem.addActionListener(e -> new FBMainFrame().startGame());
+            JMenuItem pokerItem = new JMenuItem("斗地主");
+            is = MainForm.class.getClassLoader().getResourceAsStream(
+                    "game/pocker/images/logo.png");
+            if (is == null) {
+                return null;
+            }
+            ImageIcon pokerIcon = new ImageIcon(ImageIO.read(is));
+            pokerItem.setIcon(pokerIcon);
+            pokerItem.addActionListener(e -> new Thread(Main::new).start());
+            gameMenu.add(flappyItem);
+            gameMenu.add(pokerItem);
+            return gameMenu;
+        } catch (Exception ex) {
+            logger.error("error: {}", ex.toString());
+        }
+        return null;
     }
 
     private static JMenu language() {

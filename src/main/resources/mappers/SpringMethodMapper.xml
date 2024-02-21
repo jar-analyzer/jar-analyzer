@@ -5,7 +5,7 @@
         <result column="method_name" property="methodName"/>
         <result column="class_name" property="className"/>
         <result column="method_desc" property="methodDesc"/>
-        <result column="path" property="path" />
+        <result column="path" property="path"/>
     </resultMap>
     <insert id="insertMappings">
         INSERT INTO spring_method_table

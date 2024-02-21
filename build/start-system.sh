@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # set file name
-jar_analyzer="jar-analyzer-2.10.jar"
+jar_analyzer="jar-analyzer-2.11.jar"
 
 # env
 command="free -m | awk 'NR==2{print \$7}'"

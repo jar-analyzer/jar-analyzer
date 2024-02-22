@@ -9,4 +9,14 @@
             (#{item.annoName}, #{item.methodName}, #{item.className})
         </foreach>
     </insert>
+    <select id="selectAnnoByClassName">
+        SELECT DISTINCT anno_name
+        FROM anno_table
+        WHERE class_name = #{className}
+    </select>
+    <select id="selectAnnoByClassAndMethod">
+        SELECT DISTINCT anno_name
+        FROM anno_table
+        WHERE class_name = #{className} AND method_name = #{methodName}
+    </select>
 </mapper>

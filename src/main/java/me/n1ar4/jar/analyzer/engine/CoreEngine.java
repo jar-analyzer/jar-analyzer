@@ -1,9 +1,12 @@
 package me.n1ar4.jar.analyzer.engine;
 
 import me.n1ar4.jar.analyzer.config.ConfigFile;
+import me.n1ar4.jar.analyzer.core.ClassReference;
+import me.n1ar4.jar.analyzer.core.MethodReference;
 import me.n1ar4.jar.analyzer.core.SqlSessionFactoryUtil;
 import me.n1ar4.jar.analyzer.core.mapper.*;
 import me.n1ar4.jar.analyzer.entity.ClassResult;
+import me.n1ar4.jar.analyzer.entity.MemberEntity;
 import me.n1ar4.jar.analyzer.entity.MethodResult;
 import me.n1ar4.jar.analyzer.utils.StringUtil;
 import me.n1ar4.log.LogManager;
@@ -14,9 +17,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class CoreEngine {
     private static final Logger logger = LogManager.getLogger();
@@ -199,5 +200,91 @@ public class CoreEngine {
         int res = methodMapper.updateMethod(className, methodName, methodDesc, newItem);
         session.close();
         return res;
+    }
+
+    public Set<ClassReference.Handle> getSuperClasses(ClassReference.Handle ch) {
+        SqlSession session = factory.openSession(true);
+        ClassMapper classMapper = session.getMapper(ClassMapper.class);
+        List<String> tempRes = classMapper.selectSuperClassesByClassName(ch.getName());
+        Set<ClassReference.Handle> set = new HashSet<>();
+        for (String temp : tempRes) {
+            List<ClassResult> cl = classMapper.selectClassByClassName(temp);
+            for (ClassResult cr : cl) {
+                set.add(new ClassReference.Handle(cr.getClassName()));
+            }
+        }
+        session.close();
+        return set;
+    }
+
+    public Set<ClassReference.Handle> getSubClasses(ClassReference.Handle ch) {
+        SqlSession session = factory.openSession(true);
+        ClassMapper classMapper = session.getMapper(ClassMapper.class);
+        List<String> tempRes = classMapper.selectSubClassesByClassName(ch.getName());
+        Set<ClassReference.Handle> set = new HashSet<>();
+        for (String temp : tempRes) {
+            List<ClassResult> cl = classMapper.selectClassByClassName(temp);
+            for (ClassResult cr : cl) {
+                set.add(new ClassReference.Handle(cr.getClassName()));
+            }
+        }
+        session.close();
+        return set;
+    }
+
+    public ClassReference getClassRef(ClassReference.Handle ch) {
+        SqlSession session = factory.openSession(true);
+        ClassMapper classMapper = session.getMapper(ClassMapper.class);
+        InterfaceMapper interfaceMapper = session.getMapper(InterfaceMapper.class);
+        AnnoMapper annoMapper = session.getMapper(AnnoMapper.class);
+        MemberMapper memberMapper = session.getMapper(MemberMapper.class);
+
+        ArrayList<ClassResult> results = new ArrayList<>(classMapper.selectClassByClassName(ch.getName()));
+        ClassResult cr = results.get(0);
+
+        ArrayList<String> interfaces = interfaceMapper.selectInterfacesByClass(ch.getName());
+        ArrayList<String> anno = annoMapper.selectAnnoByClassName(ch.getName());
+        ArrayList<MemberEntity> memberEntities = memberMapper.selectMembersByClass(ch.getName());
+        ArrayList<ClassReference.Member> members = new ArrayList<>();
+        for (MemberEntity me : memberEntities) {
+            ClassReference.Member member = new ClassReference.Member
+                    (me.getMemberName(), me.getModifiers(),
+                            new ClassReference.Handle(me.getTypeClassName()));
+            members.add(member);
+        }
+
+        session.close();
+        return new ClassReference(
+                cr.getClassName(),
+                cr.getSuperClassName(),
+                interfaces,
+                cr.getIsInterfaceInt() == 1,
+                members,
+                new HashSet<>(anno),
+                "none");
+    }
+
+    public ArrayList<MethodReference> getAllMethodRef() {
+        SqlSession session = factory.openSession(true);
+        MethodMapper methodMapper = session.getMapper(MethodMapper.class);
+        AnnoMapper annoMapper = session.getMapper(AnnoMapper.class);
+        ArrayList<MethodResult> results = new ArrayList<>(methodMapper.selectAllMethods());
+        results.sort(Comparator.comparing(MethodResult::getMethodName));
+        ArrayList<MethodReference> list = new ArrayList<>();
+        for (MethodResult result : results) {
+            MethodReference.Handle mh = new MethodReference.Handle(
+                    new ClassReference.Handle(result.getClassName()),
+                    result.getMethodName(),
+                    result.getMethodDesc());
+            ArrayList<String> ma = annoMapper.selectAnnoByClassAndMethod(
+                    mh.getClassReference().getName(), mh.getName());
+            MethodReference mr = new MethodReference(mh.getClassReference(),
+                    mh.getName(), mh.getDesc(),
+                    result.getIsStaticInt() == 1,
+                    new HashSet<>(ma), result.getAccessInt());
+            list.add(mr);
+        }
+        session.close();
+        return list;
     }
 }

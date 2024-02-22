@@ -9,6 +9,10 @@ import java.util.List;
 public interface ClassMapper {
     int insertClass(List<ClassEntity> c);
 
+    List<String> selectSuperClassesByClassName(@Param("className") String className);
+
+    List<String> selectSubClassesByClassName(@Param("className") String className);
+
     List<ClassResult> selectClassByClassName(@Param("className") String className);
 
     String selectJarByClass(@Param("className") String className);

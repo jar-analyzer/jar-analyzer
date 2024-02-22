@@ -9,4 +9,9 @@
             (#{item.interfaceName}, #{item.className})
         </foreach>
     </insert>
+    <select id="selectInterfacesByClass">
+        SELECT DISTINCT interface_name
+        FROM interface_table
+        WHERE class_name = #{className}
+    </select>
 </mapper>

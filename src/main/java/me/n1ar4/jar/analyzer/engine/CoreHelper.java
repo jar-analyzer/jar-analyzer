@@ -1,5 +1,6 @@
 package me.n1ar4.jar.analyzer.engine;
 
+import me.n1ar4.jar.analyzer.el.ResObj;
 import me.n1ar4.jar.analyzer.entity.ClassResult;
 import me.n1ar4.jar.analyzer.entity.MethodResult;
 import me.n1ar4.jar.analyzer.gui.MainForm;
@@ -439,6 +440,30 @@ public class CoreHelper {
             return;
         }
 
+        MainForm.getInstance().getSearchList().setModel(methodsList);
+        MainForm.getInstance().getSearchList().repaint();
+        MainForm.getInstance().getSearchList().revalidate();
+
+        MainForm.getInstance().getTabbedPanel().setSelectedIndex(1);
+
+        JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                String.format("result number: %d", methodsList.size()));
+    }
+
+    public static void refreshMethods(List<ResObj> methods) {
+        DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
+        for (ResObj result : methods) {
+            MethodResult mr = new MethodResult();
+            mr.setClassName(result.getClassName());
+            mr.setMethodName(result.getMethod().getName());
+            mr.setMethodDesc(result.getMethod().getDesc());
+            methodsList.addElement(mr);
+        }
+        if (methodsList.isEmpty() || methodsList.size() == 0) {
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                    "result is null");
+            return;
+        }
         MainForm.getInstance().getSearchList().setModel(methodsList);
         MainForm.getInstance().getSearchList().repaint();
         MainForm.getInstance().getSearchList().revalidate();

@@ -25,4 +25,6 @@ public interface MethodMapper {
                      @Param("methodName") String methodName,
                      @Param("methodDesc") String methodDesc,
                      @Param("newItem") String newItem);
+
+    List<MethodResult> selectAllMethods();
 }

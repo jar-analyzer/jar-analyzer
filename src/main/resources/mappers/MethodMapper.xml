@@ -29,6 +29,10 @@
         FROM method_table m
         WHERE m.class_name = #{className}
     </select>
+    <select id="selectAllMethods" resultMap="methodMap">
+        SELECT m.method_name, m.class_name, m.method_desc, m.is_static, m.access
+        FROM method_table m
+    </select>
     <select id="selectMethods" resultMap="methodMap">
         SELECT DISTINCT cf.jar_name, m.method_name, m.class_name, m.method_desc, m.is_static, m.access
         FROM method_table m

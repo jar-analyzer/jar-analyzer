@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="me.n1ar4.jar.analyzer.core.mapper.MemberMapper">
+    <resultMap id="memberMap" type="me.n1ar4.jar.analyzer.entity.MemberEntity">
+        <result column="type_class_name" property="typeClassName"/>
+        <result column="member_name" property="memberName"/>
+        <result column="modifiers" property="modifiers"/>
+    </resultMap>
     <insert id="insertMember" parameterType="MemberEntity">
         INSERT INTO member_table
         (member_name, modifiers, type_class_name, class_name)
@@ -9,4 +14,9 @@
             (#{item.memberName}, #{item.modifiers}, #{item.typeClassName}, #{item.className})
         </foreach>
     </insert>
+    <select id="selectMembersByClass" resultMap="memberMap">
+        SELECT DISTINCT member_name, modifiers, type_class_name
+        FROM member_table
+        WHERE class_name = #{className}
+    </select>
 </mapper>

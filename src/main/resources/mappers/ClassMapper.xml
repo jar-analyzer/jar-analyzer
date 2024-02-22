@@ -23,6 +23,16 @@
         FROM class_table c
         WHERE c.class_name = #{className}
     </select>
+    <select id="selectSuperClassesByClassName">
+        SELECT DISTINCT c.super_class_name
+        FROM class_table c
+        WHERE c.class_name = #{className}
+    </select>
+    <select id="selectSubClassesByClassName">
+        SELECT DISTINCT c.class_name
+        FROM class_table c
+        WHERE c.super_class_name = #{className}
+    </select>
     <select id="selectJarByClass">
         SELECT DISTINCT jar_name
         FROM class_table

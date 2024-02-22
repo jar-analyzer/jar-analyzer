@@ -86,6 +86,8 @@ public class ELForm {
                 ctx.setVariable("method", m);
                 value = exp.getValue(ctx);
             } catch (Exception ex) {
+                ELForm.setVal(100);
+                searchButton.setEnabled(true);
                 JOptionPane.showMessageDialog(this.jTextArea, "语法错误");
                 return;
             }
@@ -111,6 +113,8 @@ public class ELForm {
                     processor.process();
                 }
                 if (searchList.isEmpty()) {
+                    setVal(100);
+                    searchButton.setEnabled(true);
                     JOptionPane.showMessageDialog(this.jTextArea, "没有找到结果");
                     return;
                 } else {

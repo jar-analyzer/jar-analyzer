@@ -103,9 +103,6 @@ jobs:
           "jar-analyzer-${{ env.VERSION }}-windows-full.zip"
           jar-analyzer-${{ env.VERSION }}-windows-full;
           zip -r9
-          "jar-analyzer-${{ env.VERSION }}-linux.zip"
-          jar-analyzer-${{ env.VERSION }}-linux;
-          zip -r9
           "jar-analyzer-${{ env.VERSION }}.zip"
           jar-analyzer-${{ env.VERSION }};
         working-directory: jar-analyzer/release
@@ -117,5 +114,4 @@ jobs:
           path: |
             jar-analyzer/release/jar-analyzer-${{ env.VERSION }}-windows-full.zip
             jar-analyzer/release/jar-analyzer-${{ env.VERSION }}-windows-system.zip
-            jar-analyzer/release/jar-analyzer-${{ env.VERSION }}-linux.zip
             jar-analyzer/release/jar-analyzer-${{ env.VERSION }}.zip

@@ -285,13 +285,6 @@ java -jar jar-analyzer.jar build --jar 1.jar --del-cache --del-exist
 
 All downloadable files are built by `Github Actions` and provide the following four types:
 
-- Recommended `embed` version with embedded `JRE 8` startup script (**no need to install separately, one-click start**)
-- `system` version using system `JDK` startup script (requires installation of `JDK` separately)
-- `linux` version with built-in `shell` startup script (requires installation of `JDK/JRE` separately)
-- Simple `jar` file without startup script (start with `java -jar`)
-
-The `embed` version is recommended, extensively tested, and fully supports the `tomcat-analyzer` module
-
 As this tool has been tested only in `Windows` and `Java 8`, there may be unknown issues in other environments, please feel free to raise an issue
 
 ## Subprojects

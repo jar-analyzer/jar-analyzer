@@ -19,7 +19,6 @@
 
 - `windows-full` 版内置 `JRE 8` 环境 (**完整功能版本**)
 - `windows-system` 版使用系统 `JDK` 的启动脚本 (需要自行安装 `JRE`)
-- `linux` 版内置 `shell` 启动脚本 (需要自行安装 `JRE`)
 - `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
 
 推荐使用 `windows-full` 版，功能齐全，其他版本某些功能可能不可用

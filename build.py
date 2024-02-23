@@ -53,7 +53,6 @@ if __name__ == '__main__':
     print("[*] make new release dir: {}".format(VERSION))
     release_win_system_dir = "jar-analyzer-{}-windows-system".format(VERSION)
     release_win_full_dir = "jar-analyzer-{}-windows-full".format(VERSION)
-    release_linux_dir = "jar-analyzer-{}-linux".format(VERSION)
     release_zip_dir = "jar-analyzer-{}".format(VERSION)
 
     print("[*] make dirs")
@@ -61,36 +60,29 @@ if __name__ == '__main__':
     subprocess.run("mkdir {}\\{}".format(release_win_system_dir, "lib"), shell=True, cwd=target_directory)
     subprocess.run("mkdir {}".format(release_win_full_dir), shell=True, cwd=target_directory)
     subprocess.run("mkdir {}\\{}".format(release_win_full_dir, "lib"), shell=True, cwd=target_directory)
-    subprocess.run("mkdir {}".format(release_linux_dir), shell=True, cwd=target_directory)
-    subprocess.run("mkdir {}\\{}".format(release_linux_dir, "lib"), shell=True, cwd=target_directory)
     subprocess.run("mkdir {}".format(release_zip_dir), shell=True, cwd=target_directory)
     subprocess.run("mkdir {}\\{}".format(release_zip_dir, "lib"), shell=True, cwd=target_directory)
 
     print("[*] copy file")
     copy_jar_files(java_target_directory, "{}/{}/{}".format(target_directory, release_win_system_dir, "lib"))
     copy_jar_files(java_target_directory, "{}/{}/{}".format(target_directory, release_win_full_dir, "lib"))
-    copy_jar_files(java_target_directory, "{}/{}/{}".format(target_directory, release_linux_dir, "lib"))
     copy_jar_files(java_target_directory, "{}/{}/{}".format(target_directory, release_zip_dir, "lib"))
 
     copy_rasp_files("{}/{}/{}".format(target_directory, release_win_system_dir, "lib"))
     copy_rasp_files("{}/{}/{}".format(target_directory, release_win_full_dir, "lib"))
-    copy_rasp_files("{}/{}/{}".format(target_directory, release_linux_dir, "lib"))
     copy_rasp_files("{}/{}/{}".format(target_directory, release_zip_dir, "lib"))
 
     copy_config_files("{}/{}".format(target_directory, release_win_system_dir))
     copy_config_files("{}/{}".format(target_directory, release_win_full_dir))
-    copy_config_files("{}/{}".format(target_directory, release_linux_dir))
     copy_config_files("{}/{}".format(target_directory, release_zip_dir))
 
     print("[*] build start scripts")
     copy_file("build\\start-system.bat", "release\\" + release_win_system_dir + "\\start.bat")
     copy_file("build\\start-full.bat", "release\\" + release_win_full_dir + "\\start.bat")
-    copy_file("build\\start-system.sh", "release\\" + release_linux_dir + "\\start.sh")
 
     print("[*] build license")
     copy_file("LICENSE", "release\\" + release_win_system_dir + "\\LICENSE")
     copy_file("LICENSE", "release\\" + release_win_full_dir + "\\LICENSE")
-    copy_file("LICENSE", "release\\" + release_linux_dir + "\\LICENSE")
     copy_file("LICENSE", "release\\" + release_zip_dir + "\\LICENSE")
 
     print("[*] build version")
@@ -99,8 +91,6 @@ if __name__ == '__main__':
     subprocess.run("echo {} > {}".format(VERSION, "VERSION.txt"), shell=True,
                    cwd="{}/{}".format(target_directory, release_win_full_dir))
     subprocess.run("echo {} > {}".format(VERSION, "VERSION.txt"), shell=True,
-                   cwd="{}/{}".format(target_directory, release_linux_dir))
-    subprocess.run("echo {} > {}".format(VERSION, "VERSION.txt"), shell=True,
                    cwd="{}/{}".format(target_directory, release_zip_dir))
 
     print("[*] build about")
@@ -108,8 +98,6 @@ if __name__ == '__main__':
                    cwd="{}/{}".format(target_directory, release_win_system_dir))
     subprocess.run("echo {} > {}".format(PROJECT, "ABOUT.txt"), shell=True,
                    cwd="{}/{}".format(target_directory, release_win_full_dir))
-    subprocess.run("echo {} > {}".format(PROJECT, "ABOUT.txt"), shell=True,
-                   cwd="{}/{}".format(target_directory, release_linux_dir))
     subprocess.run("echo {} > {}".format(PROJECT, "ABOUT.txt"), shell=True,
                    cwd="{}/{}".format(target_directory, release_zip_dir))
 
@@ -122,10 +110,12 @@ if __name__ == '__main__':
     print("[*] copy windows agent.jar")
     copy_file("lib\\agent.jar", "release\\" + release_win_system_dir + "\\lib\\agent.jar")
     copy_file("lib\\agent.jar", "release\\" + release_win_full_dir + "\\lib\\agent.jar")
+    copy_file("lib\\agent.jar", "release\\" + release_zip_dir + "\\lib\\agent.jar")
 
     print("[*] copy windows tools.jar")
     copy_file("lib\\tools.jar", "release\\" + release_win_system_dir + "\\lib\\tools.jar")
     copy_file("lib\\tools.jar", "release\\" + release_win_full_dir + "\\lib\\tools.jar")
+    copy_file("lib\\tools.jar", "release\\" + release_zip_dir + "\\lib\\tools.jar")
 
     print("[*] copy windows attach.dll")
     subprocess.run("mkdir {}\\jre\\bin".format(release_win_full_dir), shell=True, cwd=target_directory)

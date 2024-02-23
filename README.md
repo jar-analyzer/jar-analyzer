@@ -78,88 +78,11 @@
 
 ![](img/0004.png)
 
-## 注意事项
-
-### 显示问题
-
-如果 `Mac` 无法显示完全，请在显示器设置中勾选 `更多空间`
-
-![](img/mac.png)
-
-### 乱码问题
-
-注意：
-- 在 `Windows` 下请勿双击启动，请使用 `java -jar` 或双击 `bat` 脚本启动
-- 如果使用 `java -jar` 启动乱码，请加入 `-Dfile.encoding=UTF-8` 参数
-
-### 显示问题
-
-本工具已经根据 `1080P` 适配 （考虑到绝大多数机器应该大于等于这个分辨率）
-
-如果你的电脑在 `1080P` 下无法正常显示，请调整缩放到 `100%`
-
-以 `Windows 11` 为例：右键显示设置
-
-![](img/0010.png)
-
-### 原理相关
-
-本工具的基本原理：
-- 解压所有 `Jar` 文件到 `jar-analyzer-temp` 目录
-- 在当前目录构建数据库 `jar-analyzer.db` 文件
-- 在当前目录新建文件 `.jar-analyzer` 记录状态
-
-![](img/0001.png)
-
-注意：当 `Jar` 数量较多或巨大时**可能导致临时目录和数据库文件巨大**
-
-### 命令行使用
-
-如果你不想使用 `GUI` 版本，本项目也支持命令行方式:
-
-```text
-Usage: java -jar jar-analyzer.jar [command] [command options]
-  Commands:
-    build      build database
-      Usage: build [options]
-        Options:
-          --del-cache
-            delete old cache
-            Default: false
-          --del-exist
-            delete old database
-            Default: false
-          -j, --jar
-            jar file/dir
-
-    gui      start jar-analyzer gui
-      Usage: gui
-```
-
-示例：对当前目录的 `test.jar` 进行分析和构建数据库，并删除缓存和当前目录旧数据库
-
-```shell
-java -jar jar-analyzer.jar build --jar 1.jar --del-cache --del-exist
-```
-
-### 视频演示
-
-[B站视频教程](https://www.bilibili.com/video/BV1ac411S7q4/)
-
-## Release 说明
-
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
-
-- 推荐 `embed` 版内置 `JRE 8` 的启动脚本 (**无需另外安装一键启动**)
-- `system` 使用系统 `JDK` 的启动脚本 (需要自行安装 `JDK`)
-- `linux` 内置 `shell` 启动脚本 (需要自行安装 `JDK/JRE`)
-- 简单的 `jar` 文件，不提供启动脚本 (使用 `java -jar` 启动)
-
-推荐使用 `embed` 版，经过了较多测试，完善支持 `tomcat-analyzer` 模块
-
-由于本工具仅在 `Windows` 和 `Java 8` 中测试，其他环境可能有未知的问题，欢迎提 `issue`
-
 ## 表达式搜索
+
+表达式搜索位于 `Advance` 的 `Plugins` 部分
+
+![](img/0028.png)
 
 在 `2.12` 版本以后支持超强的表达式搜索，可以随意组合以搜索你想要的信息
 
@@ -263,7 +186,7 @@ java -jar jar-analyzer.jar build --jar 1.jar --del-cache --del-exist
 
 ### 4.实际案例
 
-现在有一个 `Spring Controller` 
+现在有一个 `Spring Controller`
 
 我想搜索某个 `Controller` 中包含 `userService` 字段且是 `GetMapping` 的方法
 
@@ -295,6 +218,87 @@ public class sqlcontroller {
 参考图片
 
 ![](img/0027.png)
+
+## 注意事项
+
+### 显示问题
+
+如果 `Mac` 无法显示完全，请在显示器设置中勾选 `更多空间`
+
+![](img/mac.png)
+
+### 乱码问题
+
+注意：
+- 在 `Windows` 下请勿双击启动，请使用 `java -jar` 或双击 `bat` 脚本启动
+- 如果使用 `java -jar` 启动乱码，请加入 `-Dfile.encoding=UTF-8` 参数
+
+### 显示问题
+
+本工具已经根据 `1080P` 适配 （考虑到绝大多数机器应该大于等于这个分辨率）
+
+如果你的电脑在 `1080P` 下无法正常显示，请调整缩放到 `100%`
+
+以 `Windows 11` 为例：右键显示设置
+
+![](img/0010.png)
+
+### 原理相关
+
+本工具的基本原理：
+- 解压所有 `Jar` 文件到 `jar-analyzer-temp` 目录
+- 在当前目录构建数据库 `jar-analyzer.db` 文件
+- 在当前目录新建文件 `.jar-analyzer` 记录状态
+
+![](img/0001.png)
+
+注意：当 `Jar` 数量较多或巨大时**可能导致临时目录和数据库文件巨大**
+
+### 命令行使用
+
+如果你不想使用 `GUI` 版本，本项目也支持命令行方式:
+
+```text
+Usage: java -jar jar-analyzer.jar [command] [command options]
+  Commands:
+    build      build database
+      Usage: build [options]
+        Options:
+          --del-cache
+            delete old cache
+            Default: false
+          --del-exist
+            delete old database
+            Default: false
+          -j, --jar
+            jar file/dir
+
+    gui      start jar-analyzer gui
+      Usage: gui
+```
+
+示例：对当前目录的 `test.jar` 进行分析和构建数据库，并删除缓存和当前目录旧数据库
+
+```shell
+java -jar jar-analyzer.jar build --jar 1.jar --del-cache --del-exist
+```
+
+### 视频演示
+
+[B站视频教程](https://www.bilibili.com/video/BV1ac411S7q4/)
+
+## Release 说明
+
+所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
+
+- 推荐 `embed` 版内置 `JRE 8` 的启动脚本 (**无需另外安装一键启动**)
+- `system` 使用系统 `JDK` 的启动脚本 (需要自行安装 `JDK`)
+- `linux` 内置 `shell` 启动脚本 (需要自行安装 `JDK/JRE`)
+- 简单的 `jar` 文件，不提供启动脚本 (使用 `java -jar` 启动)
+
+推荐使用 `embed` 版，经过了较多测试，完善支持 `tomcat-analyzer` 模块
+
+由于本工具仅在 `Windows` 和 `Java 8` 中测试，其他环境可能有未知的问题，欢迎提 `issue`
 
 ## 子项目
 

@@ -12,6 +12,14 @@ import me.n1ar4.jar.analyzer.starter.Const;
 import javax.swing.*;
 
 public class PluginsAction {
+    public static void startELForm() {
+        JFrame frame = new JFrame(Const.SPELSearch);
+        frame.setContentPane(new ELForm().elPanel);
+        frame.pack();
+        frame.setResizable(false);
+        frame.setVisible(true);
+    }
+
     public static void run() {
         MainForm.getInstance().getGptButton().addActionListener(e -> ChatGPTForm.start());
 
@@ -23,12 +31,8 @@ public class PluginsAction {
 
         MainForm.getInstance().getListenerBtn().addActionListener(e -> ListenUtilForm.start());
 
-        MainForm.getInstance().getSpringELButton().addActionListener(e -> {
-            JFrame frame = new JFrame(Const.SPELSearch);
-            frame.setContentPane(new ELForm().elPanel);
-            frame.pack();
-            frame.setResizable(false);
-            frame.setVisible(true);
-        });
+        MainForm.getInstance().getSpringELButton().addActionListener(e -> startELForm());
+
+        MainForm.getInstance().getStartELSearchButton().addActionListener(e -> startELForm());
     }
 }

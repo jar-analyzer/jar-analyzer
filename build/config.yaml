@@ -1,5 +1,5 @@
 block: true
-debug: true
+debug: false
 hooks:
 - className: java/lang/ProcessBuilder
   methodDesc: ()Ljava/lang/Process;

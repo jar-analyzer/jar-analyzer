@@ -5,6 +5,7 @@ import me.n1ar4.rasp.agent.ent.UploadMessage;
 import me.n1ar4.rasp.agent.ent.Vul;
 import me.n1ar4.rasp.agent.utils.Log;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -70,6 +71,11 @@ public class Upload {
             Files.write(finalPath, json.getBytes(), StandardOpenOption.APPEND);
 
         } catch (Exception e) {
+            try {
+                Files.write(Paths.get("err.log"), e.toString().getBytes());
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
             Log.warn("上传信息失败: %s", e.toString());
         }
     }

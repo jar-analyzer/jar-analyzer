@@ -33,7 +33,8 @@ public class CoreTransformer implements ClassFileTransformer {
             if (className.equals(Const.InitialContext)) {
                 return transformASM(className, ContextClassVisitor.class);
             }
-        } catch (ClassCircularityError | Exception ignored) {
+        } catch (ClassCircularityError | Exception ex) {
+            Log.error(ex.toString());
             return classfileBuffer;
         }
         return classfileBuffer;
@@ -61,7 +62,7 @@ public class CoreTransformer implements ClassFileTransformer {
         return null;
     }
 
-    private static byte[] getBytes(String className, Class<?> cvClass) throws IOException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+    private static byte[] getBytes(String className, Class<?> cvClass) throws Exception {
         ClassReader classReader = new ClassReader(className);
         ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
 
@@ -71,7 +72,6 @@ public class CoreTransformer implements ClassFileTransformer {
                 Opcodes.ASM9, classWriter, className);
 
         classReader.accept(cv, ClassReader.EXPAND_FRAMES);
-        byte[] b = classWriter.toByteArray();
-        return b;
+        return classWriter.toByteArray();
     }
 }

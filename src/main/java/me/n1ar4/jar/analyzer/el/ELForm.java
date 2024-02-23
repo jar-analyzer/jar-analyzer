@@ -6,6 +6,8 @@ import me.n1ar4.jar.analyzer.core.ClassReference;
 import me.n1ar4.jar.analyzer.core.MethodReference;
 import me.n1ar4.jar.analyzer.engine.CoreHelper;
 import me.n1ar4.jar.analyzer.gui.MainForm;
+import me.n1ar4.log.LogManager;
+import me.n1ar4.log.Logger;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
@@ -18,8 +20,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.*;
 
 public class ELForm {
+    private static final Logger logger = LogManager.getLogger();
     public JPanel elPanel;
     private JTextArea jTextArea;
     private JButton checkButton;
@@ -72,6 +76,7 @@ public class ELForm {
         });
 
         searchButton.addActionListener(e -> new Thread(() -> {
+            logger.info("start el process");
             searchButton.setEnabled(false);
             ELForm.setVal(0);
 
@@ -93,25 +98,50 @@ public class ELForm {
             }
 
             ELForm.setVal(3);
+            logger.info("parse el success");
 
             if (value instanceof MethodEL) {
+                int cpuCoreCount = Runtime.getRuntime().availableProcessors();
+                int maximumPoolSize = cpuCoreCount * 2;
+                logger.info("pool size: {}", maximumPoolSize);
+                long keepAliveTime = 1;
+                TimeUnit timeUnit = TimeUnit.MINUTES;
+                BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<>(50);
+                ThreadFactory threadFactory = Executors.defaultThreadFactory();
+                RejectedExecutionHandler handler = new ThreadPoolExecutor.CallerRunsPolicy();
+                ThreadPoolExecutor executor = new ThreadPoolExecutor(
+                        maximumPoolSize,
+                        maximumPoolSize,
+                        keepAliveTime,
+                        timeUnit,
+                        workQueue,
+                        threadFactory,
+                        handler
+                );
+
                 MethodEL condition = (MethodEL) value;
                 DefaultListModel<ResObj> searchList = new DefaultListModel<>();
                 List<MethodReference> mrs = MainForm.getEngine().getAllMethodRef();
+
+                logger.info("get all methods info finish");
+                logger.info("methods length: {}", mrs.size());
+
+                int part = mrs.size() / 80;
                 ELForm.setVal(10);
                 int index = 0;
                 int tempVal = 11;
                 for (MethodReference mr : mrs) {
                     index++;
-                    if (index % 500 == 0) {
-                        if (tempVal < 80) {
+                    if (index % part == 0) {
+                        if (tempVal < 90) {
                             ELForm.setVal(tempVal++);
                         }
                     }
                     ClassReference.Handle ch = mr.getClassReference();
                     MethodELProcessor processor = new MethodELProcessor(ch, mr, searchList, condition);
-                    processor.process();
+                    executor.submit(processor::process);
                 }
+                executor.shutdown();
                 if (searchList.isEmpty()) {
                     setVal(100);
                     searchButton.setEnabled(true);
@@ -120,7 +150,7 @@ public class ELForm {
                 } else {
                     JOptionPane.showMessageDialog(this.jTextArea, "搜索成功");
                 }
-                setVal(90);
+                setVal(95);
                 ArrayList<ResObj> resObjList = new ArrayList<>();
                 for (int i = 0; i < searchList.size(); i++) {
                     resObjList.add(searchList.get(i));
@@ -133,6 +163,7 @@ public class ELForm {
 
             ELForm.setVal(100);
             searchButton.setEnabled(true);
+            logger.info("el process finish");
         }).start());
 
         elInstance = this;

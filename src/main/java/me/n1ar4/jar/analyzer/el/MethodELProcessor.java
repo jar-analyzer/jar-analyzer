@@ -72,13 +72,15 @@ public class MethodELProcessor {
             ab = mr.getName().contains(mnCon);
         }
 
+        ClassReference cr = MainForm.getEngine().getClassRef(ch);
+
         if (classAnno != null && !classAnno.isEmpty()) {
-            if (MainForm.getEngine().getClassRef(ch).getAnnotations() == null ||
-                    MainForm.getEngine().getClassRef(ch).getAnnotations().isEmpty()) {
+            if (cr.getAnnotations() == null ||
+                    cr.getAnnotations().isEmpty()) {
                 ag = false;
             } else {
                 boolean fc = false;
-                for (String a : MainForm.getEngine().getClassRef(ch).getAnnotations()) {
+                for (String a : cr.getAnnotations()) {
                     if (a.contains(classAnno)) {
                         fc = true;
                         break;
@@ -117,7 +119,7 @@ public class MethodELProcessor {
 
         if (hasField != null && !hasField.isEmpty()) {
             boolean ff = false;
-            for (ClassReference.Member m : MainForm.getEngine().getClassRef(ch).getMembers()) {
+            for (ClassReference.Member m : cr.getMembers()) {
                 if (m.getName().contains(hasField)) {
                     ff = true;
                     break;

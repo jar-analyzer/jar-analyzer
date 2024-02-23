@@ -15,12 +15,12 @@
 
 所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
 
-- 推荐 `embed` 版内置 `JRE 8` 的启动脚本 (**无需另外安装一键启动**)
-- `system` 使用系统 `JDK` 的启动脚本 (需要自行安装 `JDK`)
-- `linux` 内置 `shell` 启动脚本 (需要自行安装 `JDK/JRE`)
-- 简单的 `jar` 文件，不提供启动脚本 (使用 `java -jar` 启动)
+- `windows-full` 版内置 `JRE 8` 环境 (**完整功能版本**)
+- `windows-system` 版使用系统 `JDK` 的启动脚本 (需要自行安装 `JRE`)
+- `linux` 版内置 `shell` 启动脚本 (需要自行安装 `JRE`)
+- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
 
-推荐使用 `embed` 版，经过了较多测试，完善支持 `tomcat-analyzer` 模块
+推荐使用 `windows-full` 版，功能齐全，其他版本某些功能可能不可用
 
 ## 2.11
 

@@ -83,7 +83,7 @@ jobs:
         run: >
           dir ;
           $env:Path = "$HOME\cygwin\cygwin64\bin;$env:Path" ;
-          unzip jre.zip -d release\jar-analyzer-${{ env.VERSION }}-windows-embed\
+          unzip jre.zip -d release\jar-analyzer-${{ env.VERSION }}-windows-full\
         working-directory: jar-analyzer
 
       - name: zip release
@@ -94,11 +94,14 @@ jobs:
           "jar-analyzer-${{ env.VERSION }}-windows-system.zip"
           jar-analyzer-${{ env.VERSION }}-windows-system;
           zip -r9
-          "jar-analyzer-${{ env.VERSION }}-windows-embed.zip"
-          jar-analyzer-${{ env.VERSION }}-windows-embed;
+          "jar-analyzer-${{ env.VERSION }}-windows-full.zip"
+          jar-analyzer-${{ env.VERSION }}-windows-full;
           zip -r9
           "jar-analyzer-${{ env.VERSION }}-linux.zip"
           jar-analyzer-${{ env.VERSION }}-linux;
+          zip -r9
+          "jar-analyzer-${{ env.VERSION }}.zip"
+          jar-analyzer-${{ env.VERSION }};
         working-directory: jar-analyzer/release
 
       - name: upload artifact
@@ -106,7 +109,7 @@ jobs:
         with:
           name: jar-analyzer
           path: |
-            jar-analyzer/release/jar-analyzer-${{ env.VERSION }}-windows-embed.zip
+            jar-analyzer/release/jar-analyzer-${{ env.VERSION }}-windows-full.zip
             jar-analyzer/release/jar-analyzer-${{ env.VERSION }}-windows-system.zip
             jar-analyzer/release/jar-analyzer-${{ env.VERSION }}-linux.zip
-            jar-analyzer/release/jar-analyzer-${{ env.VERSION }}.jar
+            jar-analyzer/release/jar-analyzer-${{ env.VERSION }}.zip

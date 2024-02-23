@@ -28,6 +28,6 @@ set "main_class=me.n1ar4.jar.analyzer.starter.Application"
 set "java_agent=-javaagent:lib\jar-analyzer-rasp-agent-jar-with-dependencies.jar"
 
 rem start jar
-%jre_bin_abs% %java_agent% %java_args% -cp %java_cp% %main_class% gui
+java %java_agent% %java_args% -cp %java_cp% %main_class% gui
 
 endlocal

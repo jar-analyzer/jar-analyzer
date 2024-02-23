@@ -47,6 +47,7 @@ public class Card extends JLabel implements MouseListener {
             ex.printStackTrace();
         }
     }
+
     @Override
     public void mouseClicked(MouseEvent e) {
     }

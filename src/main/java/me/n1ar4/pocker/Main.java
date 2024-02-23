@@ -29,9 +29,11 @@ public class Main extends JFrame implements ActionListener {
     JTextField[] time = new JTextField[3];
     Time t;
     boolean nextPlayer = false;
+
     public static boolean closed() {
         return stopAll;
     }
+
     public void SetMenu() {
         landlord[0] = new JButton("抢地主");
         landlord[1] = new JButton("不抢");

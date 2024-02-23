@@ -500,7 +500,7 @@ public class Time extends Thread {
     }
 
     public boolean win() {
-        if(Main.closed()){
+        if (Main.closed()) {
             return true;
         }
         for (int i = 0; i < 3; i++) {

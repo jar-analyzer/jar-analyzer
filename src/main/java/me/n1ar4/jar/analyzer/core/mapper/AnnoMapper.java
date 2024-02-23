@@ -12,5 +12,5 @@ public interface AnnoMapper {
     ArrayList<String> selectAnnoByClassName(@Param("className") String className);
 
     ArrayList<String> selectAnnoByClassAndMethod(@Param("className") String className,
-                                            @Param("methodName") String methodName);
+                                                 @Param("methodName") String methodName);
 }

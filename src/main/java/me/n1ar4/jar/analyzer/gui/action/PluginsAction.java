@@ -22,7 +22,7 @@ public class PluginsAction {
 
         MainForm.getInstance().getListenerBtn().addActionListener(e -> ListenUtilForm.start());
 
-        MainForm.getInstance().getSpringELButton().addActionListener(e->{
+        MainForm.getInstance().getSpringELButton().addActionListener(e -> {
             JFrame frame = new JFrame("SPEL Search - Jar Analyzer V2");
             frame.setContentPane(new ELForm().elPanel);
             frame.pack();

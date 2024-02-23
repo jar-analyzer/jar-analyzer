@@ -25,6 +25,12 @@ def copy_rasp_files(target_dir):
     shutil.copy(source_path, target_path)
 
 
+def copy_config_files(target_dir):
+    source_path = os.path.join("build", "config.yaml")
+    target_path = os.path.join(target_dir, source_path)
+    shutil.copy(source_path, target_path)
+
+
 def copy_file(source_path, destination_path):
     try:
         shutil.copy2(source_path, destination_path)
@@ -71,6 +77,11 @@ if __name__ == '__main__':
     copy_rasp_files("{}/{}/{}".format(target_directory, release_linux_dir, "lib"))
     copy_rasp_files("{}/{}/{}".format(target_directory, release_zip_dir, "lib"))
 
+    copy_config_files("{}/{}".format(target_directory, release_win_system_dir))
+    copy_config_files("{}/{}".format(target_directory, release_win_full_dir))
+    copy_config_files("{}/{}".format(target_directory, release_linux_dir))
+    copy_config_files("{}/{}".format(target_directory, release_zip_dir))
+
     print("[*] build start scripts")
     copy_file("build\\start-system.bat", "release\\" + release_win_system_dir + "\\start.bat")
     copy_file("build\\start-full.bat", "release\\" + release_win_full_dir + "\\start.bat")
@@ -101,6 +112,9 @@ if __name__ == '__main__':
                    cwd="{}/{}".format(target_directory, release_linux_dir))
     subprocess.run("echo {} > {}".format(PROJECT, "ABOUT.txt"), shell=True,
                    cwd="{}/{}".format(target_directory, release_zip_dir))
+
+    print("[*] build config.yaml")
+
 
     print("[*] copy build agent.jar")
     copy_file("agent-jar-with-dependencies.jar", "lib\\agent.jar")

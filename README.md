@@ -1,5 +1,7 @@
 # Jar-Analyzer V2
 
+[ENGLISH DOC](doc/README-en.md)
+
 [CHANGE LOG](src/main/resources/CHANGELOG.MD)
 
 ![](https://img.shields.io/badge/build-passing-brightgreen)

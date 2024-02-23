@@ -182,6 +182,8 @@ public class MainForm {
     private JButton springELStartButton;
     private JLabel spelLabel;
     private JButton startELSearchButton;
+    private JButton obfBtn;
+    private JLabel obfLabel;
     private static MainForm instance;
     private static ConfigFile config;
     private static CoreEngine engine;
@@ -561,6 +563,10 @@ public class MainForm {
         return startELSearchButton;
     }
 
+    public JButton getObfBtn() {
+        return obfBtn;
+    }
+
     private void resolveConfig() {
         if (config != null) {
             String temp = config.getTempPath();
@@ -796,6 +802,7 @@ public class MainForm {
                 instance.listenerLabel.setText("一个 SOCKET 监听工具");
                 instance.spelLabel.setText("一个 SPEL 表达式搜索工具");
                 instance.startELSearchButton.setText("开始表达式搜索");
+                instance.obfLabel.setText("一个 Java 序列化数据混淆工具");
             } else if (GlobalOptions.getLang() == GlobalOptions.ENGLISH) {
                 instance.codePanel.setBorder(
                         BorderFactory.createTitledBorder(null,
@@ -892,6 +899,7 @@ public class MainForm {
                 instance.listenerLabel.setText("A tool for listening port and send by socket");
                 instance.spelLabel.setText("A tool for Spring EL search");
                 instance.startELSearchButton.setText("Start EL Search");
+                instance.obfLabel.setText("A tool for obfuscate java serialization data");
             } else {
                 throw new RuntimeException("invalid language");
             }
@@ -1284,7 +1292,7 @@ public class MainForm {
         final Spacer spacer2 = new Spacer();
         advancePanel.add(spacer2, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         piPanel = new JPanel();
-        piPanel.setLayout(new GridLayoutManager(6, 2, new Insets(0, 0, 0, 0), -1, -1));
+        piPanel.setLayout(new GridLayoutManager(7, 2, new Insets(0, 0, 0, 0), -1, -1));
         advancePanel.add(piPanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         piPanel.setBorder(BorderFactory.createTitledBorder(null, "Plugins", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         encoderLabel = new JLabel();
@@ -1323,6 +1331,12 @@ public class MainForm {
         springELStartButton = new JButton();
         springELStartButton.setText("Start");
         piPanel.add(springELStartButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        obfLabel = new JLabel();
+        obfLabel.setText("A tool for obfuscate java serialization data");
+        piPanel.add(obfLabel, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        obfBtn = new JButton();
+        obfBtn.setText("Start");
+        piPanel.add(obfBtn, new GridConstraints(6, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         leftPanel = new JPanel();
         leftPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         corePanel.add(leftPanel, new GridConstraints(0, 0, 4, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));

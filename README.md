@@ -109,8 +109,6 @@
 - `isSubClassOf`和`isSuperClassOf`要求完整类名，例如`java.awt.Component`
 - `hasAnno`和`hasClassAnno`不要求完整类名，直接写即可例如`Controller`
 
-![](img/007.png)
-
 ### 1.基础搜索
 
 搜索的基础是方法，你希望搜索怎样的方法

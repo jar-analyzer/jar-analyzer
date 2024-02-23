@@ -31,6 +31,7 @@
         <commons.dhcp.version>2.11.0</commons.dhcp.version>
         <jcommander.version>1.82</jcommander.version>
         <dom4j.version>2.1.4</dom4j.version>
+        <spring.version>5.3.32</spring.version>
         <!-- Maven Build Version -->
         <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-resources-plugin -->
         <maven.resources.version>3.3.1</maven.resources.version>
@@ -53,7 +54,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-expression</artifactId>
-            <version>5.3.25</version>
+            <version>${spring.version}</version>
         </dependency>
         <dependency>
             <groupId>org.dom4j</groupId>
@@ -229,11 +230,11 @@
                 <configuration>
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
-<!--                    <debug>false</debug>-->
-<!--                    <compilerArgs>-->
-<!--                        <arg>-Xlint:none</arg>-->
-<!--                        <arg>-g:none</arg>-->
-<!--                    </compilerArgs>-->
+                    <debug>false</debug>
+                    <compilerArgs>
+                        <arg>-Xlint:none</arg>
+                        <arg>-g:none</arg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
         </plugins>

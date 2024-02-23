@@ -789,6 +789,7 @@ public class MainForm {
                 instance.encoderLabel.setText("一个编码解码加密解密工具");
                 instance.repeaterLabel.setText("一个 HTTP 发送工具");
                 instance.listenerLabel.setText("一个 SOCKET 监听工具");
+                instance.spelLabel.setText("一个 SPEL 表达式搜索工具");
             } else if (GlobalOptions.getLang() == GlobalOptions.ENGLISH) {
                 instance.codePanel.setBorder(
                         BorderFactory.createTitledBorder(null,
@@ -883,6 +884,7 @@ public class MainForm {
                 instance.encoderLabel.setText("A tool for encode/decode encrypt/decrypt operations");
                 instance.repeaterLabel.setText("A tool for sending http request and get response");
                 instance.listenerLabel.setText("A tool for listening port and send by socket");
+                instance.spelLabel.setText("A tool for Spring EL search");
             } else {
                 throw new RuntimeException("invalid language");
             }
@@ -1308,7 +1310,7 @@ public class MainForm {
         gptButton.setText("Start");
         piPanel.add(gptButton, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         spelLabel = new JLabel();
-        spelLabel.setText("A Spring EL search util");
+        spelLabel.setText("A tool for Spring EL search");
         piPanel.add(spelLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         springELStartButton = new JButton();
         springELStartButton.setText("Start");

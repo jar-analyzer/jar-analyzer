@@ -7,6 +7,7 @@ import me.n1ar4.jar.analyzer.plugins.encoder.EncodeUtilForm;
 import me.n1ar4.jar.analyzer.plugins.listener.ListenUtilForm;
 import me.n1ar4.jar.analyzer.plugins.repeater.HttpUtilForm;
 import me.n1ar4.jar.analyzer.plugins.sqlite.SQLiteForm;
+import me.n1ar4.jar.analyzer.starter.Const;
 
 import javax.swing.*;
 
@@ -23,9 +24,10 @@ public class PluginsAction {
         MainForm.getInstance().getListenerBtn().addActionListener(e -> ListenUtilForm.start());
 
         MainForm.getInstance().getSpringELButton().addActionListener(e -> {
-            JFrame frame = new JFrame("SPEL Search - Jar Analyzer V2");
+            JFrame frame = new JFrame(Const.SPELSearch);
             frame.setContentPane(new ELForm().elPanel);
             frame.pack();
+            frame.setResizable(false);
             frame.setVisible(true);
         });
     }

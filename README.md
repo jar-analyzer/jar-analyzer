@@ -72,6 +72,12 @@
 
 ![](img/0004.png)
 
+`Jar Analyzer 2.12` 版本以后使用自研 `RASP` 保护程序
+
+(Runtime Application Self-Protection)
+
+![](img/0029.png)
+
 ## 表达式搜索
 
 表达式搜索位于首页以及 `Advance` 的 `Plugins` 部分

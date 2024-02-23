@@ -6,8 +6,8 @@ import org.objectweb.asm.MethodVisitor;
 
 
 public class ProcessClassVisitor extends BaseClassVisitor {
-    public ProcessClassVisitor(int api, ClassVisitor classVisitor,String name) {
-        super(api, classVisitor,name);
+    public ProcessClassVisitor(int api, ClassVisitor classVisitor, String name) {
+        super(api, classVisitor, name);
     }
 
     @Override
@@ -17,7 +17,7 @@ public class ProcessClassVisitor extends BaseClassVisitor {
         for (HookInfo h : this.hooks) {
             String hName = h.getMethodName();
             String hDesc = h.getMethodDesc();
-            if(!h.getClassName().equals(targetClassName)){
+            if (!h.getClassName().equals(targetClassName)) {
                 continue;
             }
             if (hName.equals(name) && hDesc.equals(descriptor)) {

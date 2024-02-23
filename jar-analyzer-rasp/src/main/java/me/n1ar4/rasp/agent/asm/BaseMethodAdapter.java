@@ -6,27 +6,27 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
 
 import static org.objectweb.asm.Opcodes.*;
-import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 public class BaseMethodAdapter extends MethodVisitor {
     protected final HookInfo h;
     protected final int paramsNum;
+
     public BaseMethodAdapter(int api, MethodVisitor mv,
-                                HookInfo hook, String desc) {
+                             HookInfo hook, String desc) {
         super(api, mv);
         this.h = hook;
         Type[] argumentTypes = Type.getArgumentTypes(desc);
         this.paramsNum = argumentTypes.length;
     }
 
-    protected void invokeStack(){
+    protected void invokeStack() {
         super.visitMethodInsn(INVOKESTATIC, "java/lang/Thread", "currentThread",
                 "()Ljava/lang/Thread;", false);
         super.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Thread", "getStackTrace",
                 "()[Ljava/lang/StackTraceElement;", false);
     }
 
-    protected void resolveBlock(){
+    protected void resolveBlock() {
         if (Configuration.shouldBlock()) {
             super.visitTypeInsn(NEW, "java/lang/Exception");
             super.visitInsn(DUP);

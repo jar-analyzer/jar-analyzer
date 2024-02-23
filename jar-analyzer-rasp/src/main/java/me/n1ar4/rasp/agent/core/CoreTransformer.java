@@ -3,17 +3,14 @@ package me.n1ar4.rasp.agent.core;
 import me.n1ar4.rasp.agent.asm.ContextClassVisitor;
 import me.n1ar4.rasp.agent.asm.ProcessClassVisitor;
 import me.n1ar4.rasp.agent.ent.Const;
-import me.n1ar4.rasp.agent.utils.Log;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;

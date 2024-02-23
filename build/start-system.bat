@@ -25,8 +25,9 @@ set "no_agent_args=-XX:+DisableAttachMechanism"
 set "java_args=%gc_args% %no_agent_args% -Xmx%heapsize%M -Xms%heapsize%M %other_args%"
 set "java_cp=lib\%jar-analyzer%;lib\tools.jar"
 set "main_class=me.n1ar4.jar.analyzer.starter.Application"
+set "java_agent=-javaagent:lib\jar-analyzer-rasp-agent-jar-with-dependencies.jar"
 
 rem start jar
-java.exe %java_args% -cp %java_cp% %main_class% gui
+%jre_bin_abs% %java_agent% %java_args% -cp %java_cp% %main_class% gui
 
 endlocal

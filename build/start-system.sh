@@ -19,6 +19,7 @@ other_args="-Dfile.encoding=UTF-8"
 main_class="me.n1ar4.jar.analyzer.starter.Application"
 java_cp="lib/$jar_analyzer"
 java_args="$gc_args $no_agent_args -Xmx${heapsize}M -Xms${heapsize}M $other_args"
+java_agent="-javaagent:lib/jar-analyzer-rasp-agent-jar-with-dependencies.jar"
 
 # start jar
-java $java_args -cp $java_cp $main_class gui
+java $java_agent $java_args -cp $java_cp $main_class gui

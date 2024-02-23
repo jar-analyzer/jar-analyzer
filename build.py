@@ -19,6 +19,12 @@ def copy_jar_files(source_dir, target_dir):
                 shutil.copy(source_path, target_path)
 
 
+def copy_rasp_files(target_dir):
+    source_path = "jar-analyzer-rasp-agent-jar-with-dependencies.jar"
+    target_path = os.path.join(target_dir, source_path)
+    shutil.copy(source_path, target_path)
+
+
 def copy_file(source_path, destination_path):
     try:
         shutil.copy2(source_path, destination_path)
@@ -59,6 +65,11 @@ if __name__ == '__main__':
     copy_jar_files(java_target_directory, "{}/{}/{}".format(target_directory, release_win_full_dir, "lib"))
     copy_jar_files(java_target_directory, "{}/{}/{}".format(target_directory, release_linux_dir, "lib"))
     copy_jar_files(java_target_directory, "{}/{}/{}".format(target_directory, release_zip_dir, "lib"))
+
+    copy_rasp_files("{}/{}/{}".format(target_directory, release_win_system_dir, "lib"))
+    copy_rasp_files("{}/{}/{}".format(target_directory, release_win_full_dir, "lib"))
+    copy_rasp_files("{}/{}/{}".format(target_directory, release_linux_dir, "lib"))
+    copy_rasp_files("{}/{}/{}".format(target_directory, release_zip_dir, "lib"))
 
     print("[*] build start scripts")
     copy_file("build\\start-system.bat", "release\\" + release_win_system_dir + "\\start.bat")

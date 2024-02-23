@@ -64,6 +64,13 @@ jobs:
           .\package.bat
         working-directory: jar-analyzer
 
+      - name: build rasp
+        run: |
+          Remove-Item "jar-analyzer-rasp-agent-jar-with-dependencies.jar" -Force
+          cd jar-analyzer-rasp
+          .\package.bat
+        working-directory: jar-analyzer
+
       - name: build core
         run: |
           .\package.bat

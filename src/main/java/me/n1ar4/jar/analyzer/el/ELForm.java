@@ -120,7 +120,7 @@ public class ELForm {
                 );
 
                 MethodEL condition = (MethodEL) value;
-                DefaultListModel<ResObj> searchList = new DefaultListModel<>();
+                ConcurrentLinkedQueue<ResObj> searchList = new ConcurrentLinkedQueue<>();
                 List<MethodReference> mrs = MainForm.getEngine().getAllMethodRef();
 
                 logger.info("get all methods info finish");
@@ -153,7 +153,7 @@ public class ELForm {
                 setVal(95);
                 ArrayList<ResObj> resObjList = new ArrayList<>();
                 for (int i = 0; i < searchList.size(); i++) {
-                    resObjList.add(searchList.get(i));
+                    resObjList.add(searchList.poll());
                 }
                 new Thread(() -> CoreHelper.refreshMethods(resObjList)).start();
                 setVal(100);

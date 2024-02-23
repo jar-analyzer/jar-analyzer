@@ -8,15 +8,16 @@ import org.objectweb.asm.Type;
 import javax.swing.*;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class MethodELProcessor {
     private final ClassReference.Handle ch;
     private final MethodReference mr;
-    private final DefaultListModel<ResObj> searchList;
+    private final ConcurrentLinkedQueue<ResObj> searchList;
     private final MethodEL condition;
 
     public MethodELProcessor(ClassReference.Handle ch, MethodReference mr,
-                             DefaultListModel<ResObj> searchList, MethodEL condition) {
+                             ConcurrentLinkedQueue<ResObj> searchList, MethodEL condition) {
         this.ch = ch;
         this.mr = mr;
         this.searchList = searchList;
@@ -188,7 +189,7 @@ public class MethodELProcessor {
             }
         }
         if (aa && ab && ac && ad && ae && af && ag && ah && ai && sb && sp && sw && ew) {
-            searchList.addElement(new ResObj(mr.getHandle(), ch.getName()));
+            searchList.add(new ResObj(mr.getHandle(), ch.getName()));
         }
     }
 }

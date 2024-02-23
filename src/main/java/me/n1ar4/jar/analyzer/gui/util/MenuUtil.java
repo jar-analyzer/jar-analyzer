@@ -28,6 +28,7 @@ public class MenuUtil {
     private static final JCheckBoxMenuItem fixClassPathConfig = new JCheckBoxMenuItem("fix class path");
     private static final JCheckBoxMenuItem sortedByMethodConfig = new JCheckBoxMenuItem("sort results by method name");
     private static final JCheckBoxMenuItem sortedByClassConfig = new JCheckBoxMenuItem("sort results by class name");
+    private static final JCheckBoxMenuItem logAllSqlConfig = new JCheckBoxMenuItem("save all sql statement");
     private static final JCheckBoxMenuItem chineseConfig = new JCheckBoxMenuItem("Chinese");
     private static final JCheckBoxMenuItem englishConfig = new JCheckBoxMenuItem("English");
 
@@ -80,6 +81,10 @@ public class MenuUtil {
 
     public static JCheckBoxMenuItem getFixClassPathConfig() {
         return fixClassPathConfig;
+    }
+
+    public static JCheckBoxMenuItem getLogAllSqlConfig() {
+        return logAllSqlConfig;
     }
 
     public static boolean sortedByMethod() {
@@ -163,6 +168,7 @@ public class MenuUtil {
             configMenu.add(fixClassPathConfig);
             configMenu.add(sortedByMethodConfig);
             configMenu.add(sortedByClassConfig);
+            configMenu.add(logAllSqlConfig);
             return configMenu;
         } catch (Exception ex) {
             logger.error("error: {}", ex.toString());

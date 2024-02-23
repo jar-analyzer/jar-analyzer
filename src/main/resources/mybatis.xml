@@ -4,14 +4,12 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <properties resource="jdbc.properties"/>
-    <!--    <settings>-->
-    <!--        &lt;!&ndash; debug &ndash;&gt;-->
-    <!--        &lt;!&ndash; <setting name="logImpl" value="STDOUT_LOGGING" /> &ndash;&gt;-->
-    <!--        <setting name="logImpl" value="LOG4J2"/>-->
-    <!--    </settings>-->
     <typeAliases>
         <package name="me.n1ar4.jar.analyzer.entity"/>
     </typeAliases>
+    <plugins>
+        <plugin interceptor="me.n1ar4.jar.analyzer.mybatis.PrintSqlInterceptor"/>
+    </plugins>
     <environments default="development">
         <environment id="development">
             <transactionManager type="JDBC"/>

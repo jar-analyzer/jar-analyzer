@@ -34,7 +34,6 @@ public class CoreTransformer implements ClassFileTransformer {
                 return transformASM(className, ContextClassVisitor.class);
             }
         } catch (ClassCircularityError | Exception ex) {
-            Log.error(ex.toString());
             return classfileBuffer;
         }
         return classfileBuffer;
@@ -56,8 +55,7 @@ public class CoreTransformer implements ClassFileTransformer {
             }
 
             return b;
-        } catch (Exception ex) {
-            Log.error(ex.toString());
+        } catch (Exception ignored) {
         }
         return null;
     }

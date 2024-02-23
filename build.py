@@ -27,7 +27,7 @@ def copy_rasp_files(target_dir):
 
 def copy_config_files(target_dir):
     source_path = os.path.join("build", "config.yaml")
-    target_path = os.path.join(target_dir, source_path)
+    target_path = os.path.join(target_dir, "config.yaml")
     shutil.copy(source_path, target_path)
 
 

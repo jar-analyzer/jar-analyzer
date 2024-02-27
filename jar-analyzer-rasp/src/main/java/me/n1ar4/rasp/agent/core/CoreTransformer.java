@@ -22,7 +22,7 @@ public class CoreTransformer implements ClassFileTransformer {
                             String className,
                             Class<?> classBeingRedefined,
                             ProtectionDomain protectionDomain,
-                            byte[] classfileBuffer) {
+                            byte[] classFileBuffer) {
         try {
             if (className.equals(Const.ProcessBuilder)) {
                 return transformASM(className, ProcessClassVisitor.class);
@@ -31,9 +31,9 @@ public class CoreTransformer implements ClassFileTransformer {
                 return transformASM(className, ContextClassVisitor.class);
             }
         } catch (ClassCircularityError | Exception ex) {
-            return classfileBuffer;
+            return classFileBuffer;
         }
-        return classfileBuffer;
+        return classFileBuffer;
     }
 
     public byte[] transformASM(String className, Class<?> cvClass) {

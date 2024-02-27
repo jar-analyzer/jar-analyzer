@@ -1,11 +1,15 @@
 package me.n1ar4.jar.analyzer.utils;
 
+import me.n1ar4.log.LogManager;
+import me.n1ar4.log.Logger;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("all")
 public class DirUtil {
+    private static final Logger logger = LogManager.getLogger();
     private static final List<String> filenames = new ArrayList<>();
 
     public static List<String> GetFiles(String path) {
@@ -40,11 +44,18 @@ public class DirUtil {
                 for (String child : children) {
                     boolean success = removeDir(new File(dir, child));
                     if (!success) {
-                        return false;
+                        logger.warn("remove dir {} not success", dir.toString());
+                        // 由于 DLL 文件不能删除
+                        // 这里应该继续删除不能返回
                     }
                 }
             }
         }
-        return dir.delete();
+        if (!dir.delete()) {
+            logger.warn("remove dir {} not success", dir.toString());
+            return false;
+        } else {
+            return true;
+        }
     }
 }

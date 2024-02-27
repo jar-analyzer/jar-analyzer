@@ -7,6 +7,7 @@
 - [重要] 支持表达式搜索（用法参考 `README` 文档）
 - [重要] 使用简易版自研 `RASP` 对程序进行保护
 - [功能] 支持开启记录所有 `SQL` 语句到日志文件
+- [BUG] 修复分析新 `JAR` 时不会刷新文件树的问题
 - [优化] 使用 `ConcurrentLinkedQueue` 解决并发问题
 - [优化] 使用阻塞队列线程池加速表达式搜索
 - [其他] 修改发布 `JAR` 版本变成 `ZIP` 版本
@@ -16,6 +17,7 @@
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
+- Gauss Zhou (https://github.com/gausszhou)
 
 所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
 

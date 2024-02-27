@@ -16,7 +16,11 @@ jobs:
       uses: actions/setup-java@v3
       with:
         java-version: '8'
-        distribution: 'temurin'
+        distribution: 'zulu'
         cache: maven
-    - name: check with maven
-      run: mvn clean compile --file pom.xml
+    - name: check core maven
+      run: mvn -B clean package -DskipTests --file pom.xml --file pom.xml
+    - name: check rasp maven
+      run: cd jar-analyzer-rasp && mvn -B clean package -DskipTests --file pom.xml
+    - name: check agent maven
+      run: cd agent && mvn -B clean package -DskipTests --file pom.xml --file pom.xml

@@ -27,7 +27,7 @@
 
 有问题和建议欢迎提 `issue`
 
-[前往下载](https://github.com/jar-analyzer/jar-analyzer/releases/latest)
+[前往下载 (已提供国内下载地址)](https://github.com/jar-analyzer/jar-analyzer/releases/latest)
 
 `Jar Analyzer` 的用途
 - 场景1：从大量 `JAR` 中分析某个方法在哪个 `JAR` 里定义（精确到具体类具体方法）

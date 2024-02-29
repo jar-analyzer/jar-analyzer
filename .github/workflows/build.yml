@@ -70,6 +70,12 @@ jobs:
           .\package.bat
         working-directory: jar-analyzer
 
+      - name: build searcher
+        run: |
+          cd class-searcher
+          .\package.bat
+        working-directory: jar-analyzer
+
       - name: build core
         run: |
           .\package.bat

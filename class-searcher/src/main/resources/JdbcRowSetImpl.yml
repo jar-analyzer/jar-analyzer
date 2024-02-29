@@ -1,0 +1,14 @@
+methods:
+  - {
+    "name": "connect",
+    "calls": [
+      {
+        "classRef": "javax/naming/Context",
+        "name": "lookup"
+      },
+      {
+        "classRef": "javax/naming/InitialContext",
+        "name": "lookup"
+      }
+    ]
+  }

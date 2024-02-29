@@ -37,6 +37,10 @@ public class Application {
      * 　　＞―r￣￣~∠--|
      */
     public static void main(String[] args) {
+        if (args.length > 0 && args[0].trim().equals("class-searcher")) {
+            ClassSearcher.start(args);
+            return;
+        }
         // SET LOG LEVEL
         LogManager.setLevel(LogLevel.INFO);
         // PRINT LOGO

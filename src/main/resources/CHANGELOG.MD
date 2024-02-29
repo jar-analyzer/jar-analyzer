@@ -2,9 +2,11 @@
 
 ## 2.13 
 
+集成 `https://github.com/luelueking/ClazzSearcher` 作为 `jar-analyzer` 的命令行版本
+
 更新日志：
 
-- todo
+- [重要] 集成 [class-searcher](https://github.com/luelueking/ClazzSearcher) 项目作为命令行版本
 
 感谢以下用户的贡献:
 

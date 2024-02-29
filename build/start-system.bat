@@ -25,7 +25,7 @@ set "no_agent_args=-XX:+DisableAttachMechanism"
 set "java_args=%gc_args% %no_agent_args% -Xmx%heapsize%M -Xms%heapsize%M %other_args%"
 set "java_cp=lib\%jar-analyzer%;lib\tools.jar;lib\classpy.jar"
 set "main_class=me.n1ar4.jar.analyzer.starter.Application"
-set "agent_path=lib\jar-analyzer-rasp-agent-jar-with-dependencies.jar"
+set "agent_path=lib\rasp.jar"
 set "boot_args=-Xbootclasspath/a:%agent_path%"
 set "java_agent=-javaagent:%agent_path%"
 

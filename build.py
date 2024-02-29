@@ -20,8 +20,8 @@ def copy_jar_files(source_dir, target_dir):
 
 
 def copy_rasp_files(target_dir):
-    source_path = "jar-analyzer-rasp-agent-jar-with-dependencies.jar"
-    target_path = os.path.join(target_dir, source_path)
+    source_path = "rasp-jar-with-dependencies.jar"
+    target_path = os.path.join(target_dir, "rasp.jar")
     shutil.copy(source_path, target_path)
 
 

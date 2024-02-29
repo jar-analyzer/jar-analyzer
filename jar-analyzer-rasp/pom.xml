@@ -122,6 +122,7 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
                     <outputDirectory>../</outputDirectory>
+                    <finalName>rasp</finalName>
                     <appendAssemblyId>true</appendAssemblyId>
                     <archive>
                         <manifest>

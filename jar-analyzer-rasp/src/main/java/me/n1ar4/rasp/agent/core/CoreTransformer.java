@@ -1,6 +1,7 @@
 package me.n1ar4.rasp.agent.core;
 
 import me.n1ar4.rasp.agent.asm.ContextClassVisitor;
+import me.n1ar4.rasp.agent.asm.OisClassVisitor;
 import me.n1ar4.rasp.agent.asm.ProcessClassVisitor;
 import me.n1ar4.rasp.agent.ent.Const;
 import org.objectweb.asm.ClassReader;
@@ -29,6 +30,9 @@ public class CoreTransformer implements ClassFileTransformer {
             }
             if (className.equals(Const.InitialContext)) {
                 return transformASM(className, ContextClassVisitor.class);
+            }
+            if (className.equals(Const.ObjectInputStream)) {
+                return transformASM(className, OisClassVisitor.class);
             }
         } catch (ClassCircularityError | Exception ex) {
             return classFileBuffer;

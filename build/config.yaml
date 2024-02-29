@@ -1,11 +1,15 @@
 block: true
 debug: false
 hooks:
-- className: java/lang/ProcessBuilder
-  methodDesc: ()Ljava/lang/Process;
-  methodName: start
-  vulTYpe: 1
-- className: javax/naming/InitialContext
-  methodDesc: (Ljava/lang/String;)Ljava/lang/Object;
-  methodName: lookup
-  vulTYpe: 2
+  - className: java/lang/ProcessBuilder
+    methodDesc: ()Ljava/lang/Process;
+    methodName: start
+    vulTYpe: RCE
+  - className: javax/naming/InitialContext
+    methodDesc: (Ljava/lang/String;)Ljava/lang/Object;
+    methodName: lookup
+    vulTYpe: JNDI
+  - className: java/io/ObjectInputStream
+    methodDesc: ()Ljava/lang/Object;
+    methodName: readObject
+    vulTYpe: Deserialization

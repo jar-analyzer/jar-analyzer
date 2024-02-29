@@ -98,11 +98,18 @@ public class Configuration {
         hook1.setVulTYpe("RCE");
         hooks.add(hook1);
 
+        HookInfo hook2 = new HookInfo();
+        hook2.setClassName("javax/naming/InitialContext");
+        hook2.setMethodName("lookup");
+        hook2.setMethodDesc("(Ljava/lang/String;)Ljava/lang/Object;");
+        hook2.setVulTYpe("JNDI");
+        hooks.add(hook2);
+
         HookInfo hook3 = new HookInfo();
-        hook3.setClassName("javax/naming/InitialContext");
-        hook3.setMethodName("lookup");
-        hook3.setMethodDesc("(Ljava/lang/String;)Ljava/lang/Object;");
-        hook3.setVulTYpe("RCE");
+        hook3.setClassName("java/io/ObjectInputStream");
+        hook3.setMethodName("readObject");
+        hook3.setMethodDesc("()Ljava/lang/Object;");
+        hook3.setVulTYpe("Deserialization");
         hooks.add(hook3);
 
         c.setHooks(hooks);

@@ -77,7 +77,7 @@
 
 (Runtime Application Self-Protection)
 
-![](img/0029.png)
+![](img/0032.png)
 
 ## 命令行版本
 

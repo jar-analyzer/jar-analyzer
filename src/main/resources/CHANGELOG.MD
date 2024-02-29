@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 2.13 
+## 2.13
 
 集成 `https://github.com/luelueking/ClazzSearcher` 作为 `jar-analyzer` 的命令行版本，未来版本可能会完善和修复；
 集成 `https://github.com/zxh0/classpy` 项目作为字节码细节部分的查看分析工具，和本工具之间做一个补充；
@@ -10,6 +10,12 @@
 - [重要] 集成 [clazz-searcher](https://github.com/luelueking/ClazzSearcher) 项目作为命令行版本
 - [重要] 集成 [classpy](https://github.com/zxh0/classpy) 项目作为字节码查看分析工具
 - [其他] 升级 `JRE` 到带有 `OpenJFX` 的版本
+
+考虑到新版本体积越来越大，需要加入国内下载地址（自费购买`OSS`大家省着点用）
+
+- [jar-analyzer-2.13.zip](https://jar-analyzer.oss-cn-hangzhou.aliyuncs.com/2.13/jar-analyzer-2.13.zip)
+- [jar-analyzer-2.13-windows-full.zip](https://jar-analyzer.oss-cn-hangzhou.aliyuncs.com/2.13/jar-analyzer-2.13-windows-full.zip)
+- [jar-analyzer-2.13-windows-system.zip](https://jar-analyzer.oss-cn-hangzhou.aliyuncs.com/2.13/jar-analyzer-2.13-windows-system.zip)
 
 感谢以下用户的贡献:
 
@@ -43,6 +49,12 @@
 - [其他] 更新内置 `JRE` 版本为 `zulu-8u402`
 - [其他] 更新发布类型（删除 `linux` 版增加 `zip` 版）
 - [其他] 完善 `CI` 对所有子项目进行测试
+
+考虑到新版本体积越来越大，需要加入国内下载地址（自费购买`OSS`大家省着点用）
+
+- [jar-analyzer-2.12.zip](https://jar-analyzer.oss-cn-hangzhou.aliyuncs.com/2.12/jar-analyzer-2.12.zip)
+- [jar-analyzer-2.12-windows-full.zip](https://jar-analyzer.oss-cn-hangzhou.aliyuncs.com/2.12/jar-analyzer-2.12-windows-full.zip)
+- [jar-analyzer-2.12-windows-system.zip](https://jar-analyzer.oss-cn-hangzhou.aliyuncs.com/2.12/jar-analyzer-2.12-windows-system.zip)
 
 感谢以下用户的贡献:
 
@@ -288,7 +300,7 @@
 感谢以下用户的帮助和贡献：
 
 - whwlsfb
-- wouijvziqy 
+- wouijvziqy
 
 ## 2.3-beta
 

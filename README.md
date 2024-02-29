@@ -20,6 +20,7 @@
 - 一键生成方法的 `Stack Frame` 分析结果
 - 远程分析 `Tomcat` 中的 `Servlet` 等组件
 - 自定义 `SQL` 语句进行高级分析
+- 集成 `ClazzSearcher` 项目作为命令行分析版本
 - 允许从字节码层面直接修改方法名（测试功能）
 
 更多的功能正在开发中
@@ -77,6 +78,28 @@
 (Runtime Application Self-Protection)
 
 ![](img/0029.png)
+
+## 命令行版本
+
+集成 `https://github.com/luelueking/ClazzSearcher` 作为 `jar-analyzer` 的命令行版本
+
+未来版本如果有精力，将会尝试补全和完善 `ClazzSearcher` 项目
+
+使用方式：
+
+```shell
+java -jar jar-analyzer-*.jar class-researcer [其他参数]
+```
+
+具体参数和配置文件参考：[README](class-searcher/README.md)
+
+示例：
+
+```shell
+java -jar .\jar-analyzer-2.12.jar class-searcher --onlyJDK --f field.yml
+```
+
+![](img/0030.png)
 
 ## 表达式搜索
 

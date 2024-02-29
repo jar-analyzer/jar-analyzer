@@ -2,11 +2,11 @@
 
 ## 2.13 
 
-集成 `https://github.com/luelueking/ClazzSearcher` 作为 `jar-analyzer` 的命令行版本
+集成 `https://github.com/luelueking/ClazzSearcher` 作为 `jar-analyzer` 的命令行版本，未来版本可能会完善和修复；
 
 更新日志：
 
-- [重要] 集成 [class-searcher](https://github.com/luelueking/ClazzSearcher) 项目作为命令行版本
+- [重要] 集成 [clazz-searcher](https://github.com/luelueking/ClazzSearcher) 项目作为命令行版本
 
 感谢以下用户的贡献:
 

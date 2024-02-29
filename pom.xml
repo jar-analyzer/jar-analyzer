@@ -19,6 +19,13 @@
         </developer>
     </developers>
 
+    <contributors>
+        <contributor>
+            <name>whw1sfb</name>
+            <url>https://github.com/whwlsfb</url>
+        </contributor>
+    </contributors>
+
     <properties>
         <!-- Dependencies Version -->
         <asm.version>9.6</asm.version>

@@ -4,13 +4,13 @@ public class HookInfo implements Vul {
     private String className;
     private String methodName;
     private String methodDesc;
-    private int vulTYpe;
+    private String vulTYpe;
 
-    public int getVulTYpe() {
+    public String getVulTYpe() {
         return vulTYpe;
     }
 
-    public void setVulTYpe(int vulTYpe) {
+    public void setVulTYpe(String vulTYpe) {
         this.vulTYpe = vulTYpe;
     }
 

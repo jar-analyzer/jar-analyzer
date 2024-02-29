@@ -3,7 +3,6 @@ package me.n1ar4.rasp.agent.ent;
 import java.util.List;
 
 public class Config {
-    private String version;
     private boolean debug;
     private boolean block;
 
@@ -23,14 +22,6 @@ public class Config {
 
     public void setDebug(boolean debug) {
         this.debug = debug;
-    }
-
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
     }
 
     public List<HookInfo> getHooks() {

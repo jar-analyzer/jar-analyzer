@@ -11,29 +11,29 @@ public class Log {
     }
 
     public static void info(String message) {
-        System.out.printf("[info] [%s] %s\n", getTime(), message);
+        System.out.printf("[RASP-INFO] [%s] %s\n", getTime(), message);
     }
 
     public static void warn(String message) {
-        System.out.printf("[warn] [%s] %s\n", getTime(), message);
+        System.out.printf("[RASP-WARN] [%s] %s\n", getTime(), message);
     }
 
     public static void error(String message) {
-        System.out.printf("[error] [%s] %s\n", getTime(), message);
+        System.out.printf("[RASP-ERROR] [%s] %s\n", getTime(), message);
     }
 
     public static void info(String message, Object... params) {
         String finalStr = String.format(message, params);
-        System.out.printf("[info] [%s] %s\n", getTime(), finalStr);
+        System.out.printf("[RASP-INFO] [%s] %s\n", getTime(), finalStr);
     }
 
     public static void warn(String message, Object... params) {
         String finalStr = String.format(message, params);
-        System.out.printf("[warn] [%s] %s\n", getTime(), finalStr);
+        System.out.printf("[RASP-WARN] [%s] %s\n", getTime(), finalStr);
     }
 
     public static void error(String message, Object... params) {
         String finalStr = String.format(message, params);
-        System.out.printf("[error] [%s] %s\n", getTime(), finalStr);
+        System.out.printf("[RASP-ERROR] [%s] %s\n", getTime(), finalStr);
     }
 }

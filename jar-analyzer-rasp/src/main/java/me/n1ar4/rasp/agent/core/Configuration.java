@@ -2,7 +2,6 @@ package me.n1ar4.rasp.agent.core;
 
 import me.n1ar4.rasp.agent.ent.Config;
 import me.n1ar4.rasp.agent.ent.HookInfo;
-import me.n1ar4.rasp.agent.ent.Vul;
 import me.n1ar4.rasp.agent.utils.Log;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
@@ -88,23 +87,22 @@ public class Configuration {
 
     private static Config getConfig() {
         Config c = new Config();
-        c.setDebug(true);
-        c.setVersion("0.1");
-        c.setBlock(false);
+        c.setDebug(false);
+        c.setBlock(true);
         List<HookInfo> hooks = new ArrayList<>();
 
         HookInfo hook1 = new HookInfo();
         hook1.setClassName("java/lang/ProcessBuilder");
         hook1.setMethodName("start");
         hook1.setMethodDesc("()Ljava/lang/Process;");
-        hook1.setVulTYpe(Vul.ProcessExec);
+        hook1.setVulTYpe("RCE");
         hooks.add(hook1);
 
         HookInfo hook3 = new HookInfo();
         hook3.setClassName("javax/naming/InitialContext");
         hook3.setMethodName("lookup");
         hook3.setMethodDesc("(Ljava/lang/String;)Ljava/lang/Object;");
-        hook3.setVulTYpe(Vul.JNDILookup);
+        hook3.setVulTYpe("RCE");
         hooks.add(hook3);
 
         c.setHooks(hooks);

@@ -322,6 +322,12 @@ java -jar jar-analyzer.jar build --jar 1.jar --del-cache --del-exist
 
 ## 子项目
 
+### Bytecode Viewer
+
+使用 `https://github.com/zxh0/classpy` 项目作为字节码查看器
+
+![](img/0031.png)
+
 ### Tomcat Analyzer
 
 该项目位于`me.n1ar4.shell.analyzer`中，这是一个分析`Tomcat`内存马的工具

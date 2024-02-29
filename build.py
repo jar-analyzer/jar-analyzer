@@ -32,8 +32,8 @@ def copy_searcher_files(target_dir):
 
 
 def copy_classpy_files(target_dir):
-    source_path = "classpy.jar"
-    target_path = os.path.join(target_dir, source_path)
+    source_path = os.path.join("bytecode-viewer", "classpy.jar")
+    target_path = os.path.join(target_dir, "classpy.jar")
     shutil.copy(source_path, target_path)
 
 

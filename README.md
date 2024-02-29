@@ -81,7 +81,7 @@
 
 ## 命令行版本
 
-集成 `https://github.com/luelueking/ClazzSearcher` 作为 `jar-analyzer` 的命令行版本
+`2.13` 版本集成 `https://github.com/luelueking/ClazzSearcher` 作为 `jar-analyzer` 的命令行版本
 
 未来版本如果有精力，将会尝试补全和完善 `ClazzSearcher` 项目
 

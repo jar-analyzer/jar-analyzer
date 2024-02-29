@@ -1,6 +1,6 @@
 package me.n1ar4.rasp.agent.ent;
 
-public class HookInfo implements Vul {
+public class HookInfo {
     private String className;
     private String methodName;
     private String methodDesc;

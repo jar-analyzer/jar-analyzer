@@ -35,7 +35,8 @@ public class Upload {
             }
 
             System.out.println("### rasp found vulnerability ###");
-            System.out.println(um.getStacks().get(um.getStacks().size() - 1));
+            System.out.println("sink: " + um.getStacks().get(um.getStacks().size() - 1));
+            System.out.println("input: " + um.getInput());
             System.out.println("### details are in logs/rasp.log ###");
 
             Files.write(finalPath, json.getBytes(), StandardOpenOption.APPEND);

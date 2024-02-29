@@ -3,10 +3,12 @@
 ## 2.13 
 
 集成 `https://github.com/luelueking/ClazzSearcher` 作为 `jar-analyzer` 的命令行版本，未来版本可能会完善和修复；
+集成 `https://github.com/zxh0/classpy` 项目作为字节码细节部分的查看分析工具，和本工具之间做一个补充；
 
 更新日志：
 
 - [重要] 集成 [clazz-searcher](https://github.com/luelueking/ClazzSearcher) 项目作为命令行版本
+- [重要] 集成 [classpy](https://github.com/zxh0/classpy) 项目作为字节码查看分析工具
 
 感谢以下用户的贡献:
 

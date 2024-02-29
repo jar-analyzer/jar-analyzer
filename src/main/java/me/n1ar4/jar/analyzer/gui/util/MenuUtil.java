@@ -101,6 +101,7 @@ public class MenuUtil {
         menuBar.add(createVersionMenu());
         menuBar.add(createConfigMenu());
         menuBar.add(language());
+        menuBar.add(createBytecodeViewer());
         menuBar.add(createShellAnalyzer());
         menuBar.add(createGames());
         return menuBar;
@@ -153,6 +154,28 @@ public class MenuUtil {
             JMenu configMenu = new JMenu("tomcat-analyzer");
             JMenuItem start = new JMenuItem("start");
             start.addActionListener(e -> ShellForm.start0());
+            configMenu.add(start);
+            return configMenu;
+        } catch (Exception ex) {
+            logger.error("error: {}", ex.toString());
+        }
+        return null;
+    }
+
+    private static JMenu createBytecodeViewer() {
+        try {
+            JMenu configMenu = new JMenu("bytecode-viewer");
+            JMenuItem start = new JMenuItem("start");
+            start.addActionListener(e -> {
+                new Thread(() -> {
+                    try {
+                        Class<?> c = Class.forName("com.github.zxh.classpy.gui.ClasspyApp");
+                        c.getMethod("main", String[].class).invoke(null, (Object) null);
+                    } catch (Exception ex) {
+                        logger.error("start bytecode-viewer error: {}", ex.toString());
+                    }
+                }).start();
+            });
             configMenu.add(start);
             return configMenu;
         } catch (Exception ex) {

@@ -112,6 +112,13 @@
             <version>${slf4j.simple.version}</version>
         </dependency>
         <dependency>
+            <groupId>classpy</groupId>
+            <artifactId>classpy</artifactId>
+            <version>0.0.1</version>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/bytecode-viewer/classpy.jar</systemPath>
+        </dependency>
+        <dependency>
             <groupId>tools</groupId>
             <artifactId>tools</artifactId>
             <version>0.0.1</version>

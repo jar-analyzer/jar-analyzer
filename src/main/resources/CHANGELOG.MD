@@ -9,6 +9,7 @@
 
 - [重要] 集成 [clazz-searcher](https://github.com/luelueking/ClazzSearcher) 项目作为命令行版本
 - [重要] 集成 [classpy](https://github.com/zxh0/classpy) 项目作为字节码查看分析工具
+- [其他] 升级 `JRE` 到带有 `OpenJFX` 的版本
 
 感谢以下用户的贡献:
 

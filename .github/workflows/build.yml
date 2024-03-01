@@ -28,35 +28,6 @@ jobs:
         with:
           python-version: '3.8'
 
-      - name: restore cygwin installer from cache
-        id: cygwin-installer
-        uses: actions/cache@v4
-        with:
-          path: ~/cygwin/setup-x86_64.exe
-          key: cygwin-installer
-
-      - name: download cygwin installer
-        run: |
-          New-Item -Force -ItemType directory -Path "$HOME\cygwin"
-          & curl -L "https://www.cygwin.com/setup-x86_64.exe" -o "$HOME/cygwin/setup-x86_64.exe"
-        if: steps.cygwin-installer.outputs.cache-hit != 'true'
-
-      - name: restore cygwin packages from cache
-        id: cygwin
-        uses: actions/cache@v4
-        with:
-          path: ~/cygwin/packages
-          key: cygwin-packages-${{ runner.os }}-v1
-
-      - name: install cygwin
-        run: |
-          Start-Process -FilePath "$HOME\cygwin\setup-x86_64.exe" -ArgumentList "--quiet-mode --packages zip,unzip --root $HOME\cygwin\cygwin64 --local-package-dir $HOME\cygwin\packages --site http://mirrors.kernel.org/sourceware/cygwin --no-desktop --no-shortcuts --no-startmenu --no-admin" -Wait -NoNewWindow
-
-      - name: download jre
-        run: |
-            curl -L "https://github.com/jar-analyzer/workflow_jre/releases/download/zulu-8u402-fx/8u402-fx.zip" -o "jre.zip"
-        working-directory: jar-analyzer
-
       - name: build agent
         run: |
           Remove-Item "lib\agent.jar" -Force
@@ -99,19 +70,14 @@ jobs:
         working-directory: jar-analyzer
 
       - name: zip release
-        run: >
-          dir ;
-          $env:Path = "$HOME\cygwin\cygwin64\bin;$env:Path" ;
-          zip -r9
-          "jar-analyzer-${{ env.VERSION }}-windows-system.zip"
-          jar-analyzer-${{ env.VERSION }}-windows-system;
-          zip -r9
-          "jar-analyzer-${{ env.VERSION }}-windows-full.zip"
-          jar-analyzer-${{ env.VERSION }}-windows-full;
-          zip -r9
-          "jar-analyzer-${{ env.VERSION }}.zip"
-          jar-analyzer-${{ env.VERSION }};
+        run: |
+          dir
+          Compress-Archive -Path "jar-analyzer-${{ env.VERSION }}-windows-system\*" -DestinationPath "jar-analyzer-${{ env.VERSION }}-windows-system.zip" -CompressionLevel Optimal
+          Compress-Archive -Path "jar-analyzer-${{ env.VERSION }}-windows-full\*" -DestinationPath "jar-analyzer-${{ env.VERSION }}-windows-full.zip" -CompressionLevel Optimal
+          Compress-Archive -Path "jar-analyzer-${{ env.VERSION }}\*" -DestinationPath "jar-analyzer-${{ env.VERSION }}.zip" -CompressionLevel Optimal
         working-directory: jar-analyzer/release
+        shell: pwsh
+
 
       - name: upload artifact
         uses: actions/upload-artifact@v4

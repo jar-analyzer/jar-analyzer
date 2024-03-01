@@ -1,23 +1,17 @@
 @echo off
-set "TARGET_DIR=release"
 
-echo delete files...
-for /r "%TARGET_DIR%" %%F in (*) do (
-    if not "%%~nxF"=="RELEASE.md" (
-        if not "%%~nxF"==".gitkeep" (
-            echo delete "%%F"
-            del "%%F" /q
-        )
-    )
-)
+call mvn clean
 
-echo delete dirs...
-for /f "delims=" %%D in ('dir /ad /b /s "%TARGET_DIR%" ^| sort /r') do (
-    rd "%%D" 2>nul
-)
+cd agent
+call mvn clean
+cd ..
 
-echo delete build files...
+cd class-searcher
+call mvn clean
+cd ..
 
-del "agent-jar-with-dependencies.jar" /q
+cd jar-analyzer-rasp
+call mvn clean
+cd ..
 
 echo clean finish

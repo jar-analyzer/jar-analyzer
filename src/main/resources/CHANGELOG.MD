@@ -10,6 +10,7 @@
 - [重要] 集成 [clazz-searcher](https://github.com/luelueking/ClazzSearcher) 项目作为命令行版本
 - [重要] 集成 [classpy](https://github.com/zxh0/classpy) 项目作为字节码查看分析工具
 - [其他] 升级 `JRE` 到带有 `OpenJFX` 的版本
+- [其他] 完善和优化 `README` 文档
 - [RASP] 优化 `RASP` 相关的功能和文件名长度
 
 考虑到新版本体积越来越大，需要加入国内下载地址（自费购买`OSS`大家省着点用）

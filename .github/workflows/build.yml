@@ -62,10 +62,13 @@ jobs:
           Copy-Item "target\jar-analyzer-${{ env.VERSION }}-jar-with-dependencies.jar" -Destination "release\jar-analyzer-${{ env.VERSION }}.jar"
         working-directory: jar-analyzer
 
+      - name: download jre
+        run: |
+          curl -L "https://github.com/jar-analyzer/workflow_jre/releases/download/zulu-8u402-fx/8u402-fx.zip" -o "jre.zip"
+        working-directory: jar-analyzer
+
       - name: unpack jre
         run: >
-          dir ;
-          $env:Path = "$HOME\cygwin\cygwin64\bin;$env:Path" ;
           unzip jre.zip -d release\jar-analyzer-${{ env.VERSION }}-windows-full\
         working-directory: jar-analyzer
 

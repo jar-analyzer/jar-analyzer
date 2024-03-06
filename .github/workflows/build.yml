@@ -75,9 +75,9 @@ jobs:
       - name: zip release
         run: |
           dir
-          Compress-Archive -Path "jar-analyzer-${{ env.VERSION }}-windows-system\*" -DestinationPath "jar-analyzer-${{ env.VERSION }}-windows-system.zip" -CompressionLevel Optimal
-          Compress-Archive -Path "jar-analyzer-${{ env.VERSION }}-windows-full\*" -DestinationPath "jar-analyzer-${{ env.VERSION }}-windows-full.zip" -CompressionLevel Optimal
-          Compress-Archive -Path "jar-analyzer-${{ env.VERSION }}\*" -DestinationPath "jar-analyzer-${{ env.VERSION }}.zip" -CompressionLevel Optimal
+          Compress-Archive -Path "jar-analyzer-${{ env.VERSION }}-windows-system\" -DestinationPath "jar-analyzer-${{ env.VERSION }}-windows-system.zip" -CompressionLevel Optimal
+          Compress-Archive -Path "jar-analyzer-${{ env.VERSION }}-windows-full\" -DestinationPath "jar-analyzer-${{ env.VERSION }}-windows-full.zip" -CompressionLevel Optimal
+          Compress-Archive -Path "jar-analyzer-${{ env.VERSION }}\" -DestinationPath "jar-analyzer-${{ env.VERSION }}.zip" -CompressionLevel Optimal
         working-directory: jar-analyzer/release
         shell: pwsh
 

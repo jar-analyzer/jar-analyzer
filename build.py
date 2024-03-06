@@ -37,6 +37,12 @@ def copy_config_files(target_dir):
     shutil.copy(source_path, target_path)
 
 
+def copy_exe_files(target_dir):
+    source_path = os.path.join("build", "start.exe")
+    target_path = os.path.join(target_dir, "start.exe")
+    shutil.copy(source_path, target_path)
+
+
 def copy_file(source_path, destination_path):
     try:
         shutil.copy2(source_path, destination_path)
@@ -85,6 +91,10 @@ if __name__ == '__main__':
     copy_config_files("{}/{}".format(target_directory, release_win_system_dir))
     copy_config_files("{}/{}".format(target_directory, release_win_full_dir))
     copy_config_files("{}/{}".format(target_directory, release_zip_dir))
+
+    copy_exe_files("{}/{}".format(target_directory, release_win_system_dir))
+    copy_exe_files("{}/{}".format(target_directory, release_win_full_dir))
+    copy_exe_files("{}/{}".format(target_directory, release_zip_dir))
 
     print("[*] build start scripts")
     copy_file("build\\start-system.bat", "release\\" + release_win_system_dir + "\\start.bat")

@@ -1,9 +1,5 @@
 ## 子项目
 
-### Bytecode Viewer
-
-使用 `https://github.com/zxh0/classpy` 项目作为字节码查看器
-
 ![](../img/0031.png)
 
 ### Tomcat Analyzer

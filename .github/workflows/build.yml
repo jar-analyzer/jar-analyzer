@@ -64,7 +64,7 @@ jobs:
 
       - name: download jre
         run: |
-          curl -L "https://github.com/jar-analyzer/workflow_jre/releases/download/zulu-8u402-fx/8u402-fx.zip" -o "jre.zip"
+          curl -L "https://github.com/jar-analyzer/workflow_jre/releases/download/zulu-8u402/jre.zip" -o "jre.zip"
         working-directory: jar-analyzer
 
       - name: unpack jre

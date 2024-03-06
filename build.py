@@ -31,12 +31,6 @@ def copy_searcher_files(target_dir):
     shutil.copy(source_path, target_path)
 
 
-def copy_classpy_files(target_dir):
-    source_path = os.path.join("bytecode-viewer", "classpy.jar")
-    target_path = os.path.join(target_dir, "classpy.jar")
-    shutil.copy(source_path, target_path)
-
-
 def copy_config_files(target_dir):
     source_path = os.path.join("build", "config.yaml")
     target_path = os.path.join(target_dir, "config.yaml")
@@ -87,10 +81,6 @@ if __name__ == '__main__':
     copy_searcher_files("{}/{}/{}".format(target_directory, release_win_system_dir, "lib"))
     copy_searcher_files("{}/{}/{}".format(target_directory, release_win_full_dir, "lib"))
     copy_searcher_files("{}/{}/{}".format(target_directory, release_zip_dir, "lib"))
-
-    copy_classpy_files("{}/{}/{}".format(target_directory, release_win_system_dir, "lib"))
-    copy_classpy_files("{}/{}/{}".format(target_directory, release_win_full_dir, "lib"))
-    copy_classpy_files("{}/{}/{}".format(target_directory, release_zip_dir, "lib"))
 
     copy_config_files("{}/{}".format(target_directory, release_win_system_dir))
     copy_config_files("{}/{}".format(target_directory, release_win_full_dir))

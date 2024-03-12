@@ -7,7 +7,6 @@
 更新日志：
 
 - [重要] 集成 [clazz-searcher](https://github.com/luelueking/ClazzSearcher) 项目作为命令行版本
-- [其他] 升级 `JRE` 到带有 `OpenJFX` 的版本
 - [功能] 提供 `Windows` 版本的启动 `EXE`
 - [其他] 完善和优化 `README` 文档
 - [RASP] 优化 `RASP` 相关的功能和文件名长度

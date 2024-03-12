@@ -11,7 +11,7 @@
 - [其他] 完善和优化 `README` 文档
 - [RASP] 优化 `RASP` 相关的功能和文件名长度
 
-考虑到新版本体积越来越大，需要加入国内下载地址（自费购买`OSS`大家省着点用）
+考虑到新版本体积越来越大，需要加入国内下载地址（自费购买`OSS`节省使用）
 
 - [jar-analyzer-2.13.zip](https://jar-analyzer.oss-cn-hangzhou.aliyuncs.com/2.13/jar-analyzer-2.13.zip)
 - [jar-analyzer-2.13-windows-full.zip](https://jar-analyzer.oss-cn-hangzhou.aliyuncs.com/2.13/jar-analyzer-2.13-windows-full.zip)
@@ -50,7 +50,7 @@
 - [其他] 更新发布类型（删除 `linux` 版增加 `zip` 版）
 - [其他] 完善 `CI` 对所有子项目进行测试
 
-考虑到新版本体积越来越大，需要加入国内下载地址（自费购买`OSS`大家省着点用）
+考虑到新版本体积越来越大，需要加入国内下载地址（自费购买`OSS`节省使用）
 
 - [jar-analyzer-2.12.zip](https://jar-analyzer.oss-cn-hangzhou.aliyuncs.com/2.12/jar-analyzer-2.12.zip)
 - [jar-analyzer-2.12-windows-full.zip](https://jar-analyzer.oss-cn-hangzhou.aliyuncs.com/2.12/jar-analyzer-2.12-windows-full.zip)

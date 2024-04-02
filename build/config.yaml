@@ -9,7 +9,3 @@ hooks:
     methodDesc: (Ljava/lang/String;)Ljava/lang/Object;
     methodName: lookup
     vulTYpe: JNDI
-  - className: java/io/ObjectInputStream
-    methodDesc: ()Ljava/lang/Object;
-    methodName: readObject
-    vulTYpe: Deserialization

@@ -2,6 +2,10 @@
 
 ## 2.14
 
+重构了 `UI` 允许放大和全屏显示
+
+安全公告：[GHSA-x5h2-78p8-w943](https://github.com/jar-analyzer/jar-analyzer/security/advisories/GHSA-x5h2-78p8-w943)
+
 更新日志：
 
 - [重要] 重构 `UI` 允许放大和全屏显示

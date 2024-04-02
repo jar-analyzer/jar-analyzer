@@ -28,7 +28,7 @@
             s.method_name = m.method_name
                 AND
             s.method_desc = m.method_desc
-        WHERE s.value LIKE '%${value}%'
+        WHERE s.value LIKE CONCAT('%', #{value}, '%')
     </select>
     <select id="selectStrings">
         SELECT DISTINCT s.value

@@ -46,10 +46,10 @@
         FROM method_call_table mc
         <where>
             <if test="calleeClassName != null and calleeClassName != ''">
-                AND mc.callee_class_name LIKE '%${calleeClassName}%'
+                AND mc.callee_class_name LIKE CONCAT('%', #{calleeClassName}, '%')
             </if>
             <if test="calleeMethodName != null and calleeMethodName != ''">
-                AND mc.callee_method_name LIKE '%${calleeMethodName}%'
+                AND mc.callee_method_name LIKE CONCAT('%', #{calleeMethodName}, '%')
             </if>
             <if test="calleeMethodDesc != null and calleeMethodDesc != ''">
                 AND mc.callee_method_desc = #{calleeMethodDesc}

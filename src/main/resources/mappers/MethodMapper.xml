@@ -57,13 +57,13 @@
         substr(cf.class_name, 1, length(cf.class_name) - 6) = m.class_name
         <where>
             <if test="methodName != null and methodName != ''">
-                AND m.method_name LIKE '%${methodName}%'
+                AND m.method_name LIKE CONCAT('%', #{methodName}, '%')
             </if>
             <if test="methodDesc != null and methodDesc != ''">
                 AND m.method_desc = #{methodDesc}
             </if>
             <if test="className != null and className != ''">
-                AND m.class_name LIKE '%${className}%'
+                AND m.class_name LIKE CONCAT('%', #{className}, '%')
             </if>
         </where>
     </select>

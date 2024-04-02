@@ -28,8 +28,8 @@
 
     <properties>
         <!-- Dependencies Version -->
-        <asm.version>9.6</asm.version>
-        <flatlaf.version>3.4</flatlaf.version>
+        <asm.version>9.7</asm.version>
+        <flatlaf.version>3.4.1</flatlaf.version>
         <idea.forms.version>7.0.3</idea.forms.version>
         <syntax.version>3.4.0</syntax.version>
         <slf4j.api.version>2.0.12</slf4j.api.version>
@@ -43,9 +43,9 @@
         <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-resources-plugin -->
         <maven.resources.version>3.3.1</maven.resources.version>
         <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-assembly-plugin -->
-        <maven.assembly.version>3.6.0</maven.assembly.version>
+        <maven.assembly.version>3.7.1</maven.assembly.version>
         <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
-        <maven.compiler.version>3.12.1</maven.compiler.version>
+        <maven.compiler.version>3.13.0</maven.compiler.version>
         <!-- https://mvnrepository.com/artifact/org.codehaus.mojo/versions-maven-plugin -->
         <maven.versions.version>2.16.2</maven.versions.version>
         <!-- Java Compiler Version -->

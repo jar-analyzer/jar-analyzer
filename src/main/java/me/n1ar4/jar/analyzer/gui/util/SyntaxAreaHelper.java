@@ -11,7 +11,7 @@ import javax.swing.*;
 
 public class SyntaxAreaHelper {
     public static void buildJava(JPanel codePanel) {
-        RSyntaxTextArea textArea = new RSyntaxTextArea(100, 100);
+        RSyntaxTextArea textArea = new RSyntaxTextArea(300, 300);
         textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
         textArea.setCodeFoldingEnabled(true);
         RTextScrollPane sp = new RTextScrollPane(textArea);

@@ -3,6 +3,7 @@ package me.n1ar4.jar.analyzer.starter;
 import com.beust.jcommander.JCommander;
 import me.n1ar4.jar.analyzer.cli.BuildCmd;
 import me.n1ar4.jar.analyzer.cli.Client;
+import me.n1ar4.jar.analyzer.cli.SearcherCmd;
 import me.n1ar4.jar.analyzer.cli.StartCmd;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.JarAnalyzerLaf;
@@ -17,8 +18,12 @@ import me.n1ar4.log.LoggingStream;
 
 public class Application {
     private static final Logger logger = LogManager.getLogger();
+    @SuppressWarnings("all")
     private static final BuildCmd buildCmd = new BuildCmd();
+    @SuppressWarnings("all")
     private static final StartCmd startCmd = new StartCmd();
+    @SuppressWarnings("all")
+    private static final SearcherCmd searcherCmd = new SearcherCmd();
 
     /**
      * Main Method
@@ -37,10 +42,6 @@ public class Application {
      * 　　＞―r￣￣~∠--|
      */
     public static void main(String[] args) {
-        if (args.length > 0 && args[0].trim().equals("class-searcher")) {
-            ClassSearcher.start(args);
-            return;
-        }
         // SET LOG LEVEL
         LogManager.setLevel(LogLevel.INFO);
         // PRINT LOGO
@@ -54,9 +55,11 @@ public class Application {
         }
 
         JCommander commander = JCommander.newBuilder()
-                .addCommand("build", buildCmd)
-                .addCommand("gui", startCmd)
+                .addCommand(BuildCmd.CMD, buildCmd)
+                .addCommand(StartCmd.CMD, startCmd)
+                .addCommand(SearcherCmd.CMD, searcherCmd)
                 .build();
+
         try {
             commander.parse(args);
         } catch (Exception ignored) {

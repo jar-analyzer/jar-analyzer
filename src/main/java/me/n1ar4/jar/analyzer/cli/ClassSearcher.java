@@ -1,6 +1,5 @@
-package me.n1ar4.jar.analyzer.starter;
+package me.n1ar4.jar.analyzer.cli;
 
-import com.sun.tools.internal.ws.wsdl.document.soap.SOAPUse;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 

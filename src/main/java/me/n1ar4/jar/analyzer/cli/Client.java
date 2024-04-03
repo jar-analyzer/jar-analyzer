@@ -21,43 +21,52 @@ public class Client {
             commander.usage();
             System.exit(-1);
         }
-        if (cmd.equals("build")) {
-            logger.info("use build command");
-            if (buildCmd.getJar() == null || buildCmd.getJar().isEmpty()) {
-                logger.error("need --jar file");
-                commander.usage();
-                System.exit(-1);
-            }
-            String jarPath = buildCmd.getJar();
-            Path jarPathPath = Paths.get(jarPath);
-            if (!Files.exists(jarPathPath)) {
-                logger.error("jar file not exist");
-                commander.usage();
-                System.exit(-1);
-            }
-            if (buildCmd.delCache()) {
-                logger.info("delete cache files");
+        switch (cmd) {
+            case SearcherCmd.CMD:
                 try {
-                    DirUtil.removeDir(new File(Const.tempDir));
-                } catch (Exception ignored) {
-                    logger.warn("delete cache files fail");
+                    ClassSearcher.start(new String[]{});
+                } catch (Exception ex) {
+                    logger.error("start class searcher error: {}", ex);
                 }
-            }
-            if (buildCmd.delExist()) {
-                logger.info("delete old db");
-                try {
-                    Files.delete(Paths.get(Const.dbFile));
-                } catch (Exception ignored) {
-                    logger.warn("delete old db fail");
+                System.exit(0);
+            case BuildCmd.CMD:
+                logger.info("use build command");
+                if (buildCmd.getJar() == null || buildCmd.getJar().isEmpty()) {
+                    logger.error("need --jar file");
+                    commander.usage();
+                    System.exit(-1);
                 }
-            }
-            CoreRunner.run(jarPathPath, null, false);
-            logger.info("write file to: {}", Const.dbFile);
-            System.exit(0);
-        } else if (cmd.equals("gui")) {
-            logger.info("run jar-analyzer gui");
-        } else {
-            throw new RuntimeException("invalid params");
+                String jarPath = buildCmd.getJar();
+                Path jarPathPath = Paths.get(jarPath);
+                if (!Files.exists(jarPathPath)) {
+                    logger.error("jar file not exist");
+                    commander.usage();
+                    System.exit(-1);
+                }
+                if (buildCmd.delCache()) {
+                    logger.info("delete cache files");
+                    try {
+                        DirUtil.removeDir(new File(Const.tempDir));
+                    } catch (Exception ignored) {
+                        logger.warn("delete cache files fail");
+                    }
+                }
+                if (buildCmd.delExist()) {
+                    logger.info("delete old db");
+                    try {
+                        Files.delete(Paths.get(Const.dbFile));
+                    } catch (Exception ignored) {
+                        logger.warn("delete old db fail");
+                    }
+                }
+                CoreRunner.run(jarPathPath, null, false);
+                logger.info("write file to: {}", Const.dbFile);
+                System.exit(0);
+            case StartCmd.CMD:
+                logger.info("run jar-analyzer gui");
+                break;
+            default:
+                throw new RuntimeException("invalid params");
         }
     }
 }

@@ -5,12 +5,17 @@ import com.beust.jcommander.Parameters;
 
 @Parameters(commandDescription = "build database")
 public class BuildCmd {
+    public static final String CMD = "build";
     @Parameter(names = {"-j", "--jar"}, description = "jar file/dir")
     private String jar;
     @Parameter(names = {"--del-exist"}, description = "delete old database")
     private boolean delExist;
     @Parameter(names = {"--del-cache"}, description = "delete old cache")
     private boolean delCache;
+
+    public BuildCmd() {
+
+    }
 
     public String getJar() {
         return jar;

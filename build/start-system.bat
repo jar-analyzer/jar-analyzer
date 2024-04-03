@@ -19,10 +19,9 @@ rem use 2/3 free memory
 set /A "heapsize = freemem * 2 / 3"
 
 rem jvm args
-set "gc_args=-XX:+PrintGC -XX:+PrintGCTimeStamps"
 set "other_args=-Dfile.encoding=UTF-8"
 set "no_agent_args=-XX:+DisableAttachMechanism"
-set "java_args=%gc_args% %no_agent_args% -Xmx%heapsize%M -Xms%heapsize%M %other_args%"
+set "java_args=%no_agent_args% -Xmx%heapsize%M -Xms%heapsize%M %other_args%"
 set "java_cp=lib\%jar-analyzer%;lib\tools.jar"
 set "main_class=me.n1ar4.jar.analyzer.starter.Application"
 set "agent_path=lib\rasp.jar"

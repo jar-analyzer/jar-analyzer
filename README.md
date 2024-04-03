@@ -41,6 +41,12 @@
 - 场景8：你有一个 `Tomcat` 需要远程分析其中的 `Servlet/Filter/Listener` 信息
 - 场景9：查实现接口 `A` 继承接口 `B` 类注解 `C` 且方法名 `test` 方法内调用 `D` 类 `a` 方法的方法
 
+## 安全
+
+漏洞公告
+- [反编译恶意的 CLASS 文件可能导致程序不可用 (GHSA-43rf-3hm4-hv5f )](https://github.com/jar-analyzer/jar-analyzer/security/advisories/GHSA-43rf-3hm4-hv5f)
+- [Jar Analyzer 2.13 版本之前存在 SQL 注入漏洞 (GHSA-x5h2-78p8-w943)](https://github.com/jar-analyzer/jar-analyzer/security/advisories/GHSA-x5h2-78p8-w943)
+
 ## 一些截图
 
 指令分析
@@ -81,11 +87,6 @@
 
 ![](img/0032.png)
 
-## 安全
-
-漏洞公告
-- [反编译恶意的 CLASS 文件可能导致程序不可用 (GHSA-43rf-3hm4-hv5f )](https://github.com/jar-analyzer/jar-analyzer/security/advisories/GHSA-43rf-3hm4-hv5f)
-- [Jar Analyzer 2.13 版本之前存在 SQL 注入漏洞 (GHSA-x5h2-78p8-w943)](https://github.com/jar-analyzer/jar-analyzer/security/advisories/GHSA-x5h2-78p8-w943)
 ## 命令行版本
 
 [文档](doc/README-cli.md)

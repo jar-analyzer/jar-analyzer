@@ -4,6 +4,7 @@
 
 更新日志：
 
+- [BUG] 启动 `logo` 拼写错误问题
 - [优化] 优化命令行参数解析和处理部分代码
 - [优化] 删除 `zip` 版本中不必要的文件
 - [其他] 更换 `UI` 界面的作者头像
@@ -17,6 +18,7 @@
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
+- xishir (https://github.com/xishir)
 
 所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
 

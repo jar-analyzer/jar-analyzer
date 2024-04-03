@@ -82,19 +82,15 @@ if __name__ == '__main__':
 
     copy_rasp_files("{}/{}/{}".format(target_directory, release_win_system_dir, "lib"))
     copy_rasp_files("{}/{}/{}".format(target_directory, release_win_full_dir, "lib"))
-    copy_rasp_files("{}/{}/{}".format(target_directory, release_zip_dir, "lib"))
 
     copy_searcher_files("{}/{}/{}".format(target_directory, release_win_system_dir, "lib"))
     copy_searcher_files("{}/{}/{}".format(target_directory, release_win_full_dir, "lib"))
-    copy_searcher_files("{}/{}/{}".format(target_directory, release_zip_dir, "lib"))
 
     copy_config_files("{}/{}".format(target_directory, release_win_system_dir))
     copy_config_files("{}/{}".format(target_directory, release_win_full_dir))
-    copy_config_files("{}/{}".format(target_directory, release_zip_dir))
 
     copy_exe_files("{}/{}".format(target_directory, release_win_system_dir))
     copy_exe_files("{}/{}".format(target_directory, release_win_full_dir))
-    copy_exe_files("{}/{}".format(target_directory, release_zip_dir))
 
     print("[*] build start scripts")
     copy_file("build\\start-system.bat", "release\\" + release_win_system_dir + "\\start.bat")
@@ -130,12 +126,10 @@ if __name__ == '__main__':
     print("[*] copy windows agent.jar")
     copy_file("lib\\agent.jar", "release\\" + release_win_system_dir + "\\lib\\agent.jar")
     copy_file("lib\\agent.jar", "release\\" + release_win_full_dir + "\\lib\\agent.jar")
-    copy_file("lib\\agent.jar", "release\\" + release_zip_dir + "\\lib\\agent.jar")
 
     print("[*] copy windows tools.jar")
     copy_file("lib\\tools.jar", "release\\" + release_win_system_dir + "\\lib\\tools.jar")
     copy_file("lib\\tools.jar", "release\\" + release_win_full_dir + "\\lib\\tools.jar")
-    copy_file("lib\\tools.jar", "release\\" + release_zip_dir + "\\lib\\tools.jar")
 
     print("[*] copy windows attach.dll")
     subprocess.run("mkdir {}\\jre\\bin".format(release_win_full_dir), shell=True, cwd=target_directory)

@@ -17,6 +17,7 @@
     <select id="selectAnnoByClassAndMethod">
         SELECT DISTINCT anno_name
         FROM anno_table
-        WHERE class_name = #{className} AND method_name = #{methodName}
+        WHERE class_name = #{className}
+          AND method_name = #{methodName}
     </select>
 </mapper>

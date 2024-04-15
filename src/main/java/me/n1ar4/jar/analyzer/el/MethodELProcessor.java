@@ -5,7 +5,6 @@ import me.n1ar4.jar.analyzer.core.MethodReference;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import org.objectweb.asm.Type;
 
-import javax.swing.*;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;

@@ -36,6 +36,6 @@ public class PluginsAction {
 
         MainForm.getInstance().getStartELSearchButton().addActionListener(e -> startELForm());
 
-        MainForm.getInstance().getObfBtn().addActionListener(e-> ObfuscateForm.start());
+        MainForm.getInstance().getObfBtn().addActionListener(e -> ObfuscateForm.start());
     }
 }

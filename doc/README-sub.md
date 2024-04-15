@@ -1,7 +1,5 @@
 ## 子项目
 
-![](../img/0031.png)
-
 ### Tomcat Analyzer
 
 该项目位于`me.n1ar4.shell.analyzer`中，这是一个分析`Tomcat`内存马的工具

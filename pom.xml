@@ -237,7 +237,6 @@
                 <configuration>
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
-                    <debug>false</debug>
                     <compilerArgs>
                         <arg>-Xlint:none</arg>
                         <arg>-g:none</arg>

@@ -23,6 +23,7 @@ public interface Const {
     String SQLiteForm = "Jar Analyzer V2 - SQLite";
     String ChatGPTForm = "Jar Analyzer V2 - ChatGPT";
     String StringForm = "Jar Analyzer V2 - String";
+    String SearchForm = "Jar Analyzer V2 - Code Search";
     String blackAreaText = "java.lang.Object;\njava.lang.Integer;\n";
     String classBlackAreaText = "com.test.a;\ncom.test.a.;\ncom.test.a.TestClass;\n";
 }

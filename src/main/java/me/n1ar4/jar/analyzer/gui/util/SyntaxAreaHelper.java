@@ -3,20 +3,75 @@ package me.n1ar4.jar.analyzer.gui.util;
 import com.intellij.uiDesigner.core.GridConstraints;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.OpcodeForm;
+import me.n1ar4.log.LogManager;
+import me.n1ar4.log.Logger;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Highlighter;
+import java.awt.*;
+import java.util.ArrayList;
 
 public class SyntaxAreaHelper {
+    private static final Logger logger = LogManager.getLogger();
+    private static RSyntaxTextArea codeArea = null;
+    private static int currentIndex = 0;
+    private static ArrayList<Integer> searchResults = null;
+
     public static void buildJava(JPanel codePanel) {
-        RSyntaxTextArea textArea = new RSyntaxTextArea(300, 300);
-        textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
-        textArea.setCodeFoldingEnabled(true);
-        RTextScrollPane sp = new RTextScrollPane(textArea);
+        codeArea = new RSyntaxTextArea(300, 300);
+        codeArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
+        codeArea.setCodeFoldingEnabled(true);
+        RTextScrollPane sp = new RTextScrollPane(codeArea);
         codePanel.add(sp, new GridConstraints());
-        MainForm.setCodeArea(textArea);
+        MainForm.setCodeArea(codeArea);
+    }
+
+    public static int addSearchAction(String text) {
+        searchResults = new ArrayList<>();
+        String content = codeArea.getText();
+
+        int index = content.indexOf(text);
+        while (index >= 0) {
+            searchResults.add(index);
+            index = content.indexOf(text, index + 1);
+        }
+        currentIndex = 0;
+        return searchResults.size();
+    }
+
+    public static void navigate(String text, boolean forward) {
+        if (searchResults == null || codeArea == null) {
+            return;
+        }
+        if (searchResults.isEmpty()) {
+            return;
+        }
+        if (forward) {
+            currentIndex = (currentIndex + 1) % searchResults.size();
+        } else {
+            currentIndex = (currentIndex - 1 + searchResults.size()) % searchResults.size();
+        }
+        highlightResult(text);
+    }
+
+    private static void highlightResult(String text) {
+        if (searchResults.isEmpty()) return;
+        int index = searchResults.get(currentIndex);
+        try {
+            Highlighter highlighter = codeArea.getHighlighter();
+            Highlighter.HighlightPainter painter =
+                    new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+            highlighter.removeAllHighlights();
+            highlighter.addHighlight(index, index + text.length(), painter);
+            codeArea.setCaretPosition(index);
+        } catch (BadLocationException ex) {
+            logger.error("bad location: {}", ex.toString());
+        }
     }
 
     public static void buildJavaOpcode(JPanel codePanel) {

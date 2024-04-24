@@ -1,6 +1,7 @@
 package me.n1ar4.jar.analyzer.gui.adapter;
 
 import me.n1ar4.jar.analyzer.gui.MainForm;
+import me.n1ar4.jar.analyzer.gui.SearchForm;
 
 import javax.swing.*;
 import java.awt.event.KeyAdapter;
@@ -18,6 +19,11 @@ public class GlobalKeyListener extends KeyAdapter {
                     return;
                 }
                 MainForm.getInstance().getTabbedPanel().setSelectedIndex(2);
+            }
+        }
+        if ((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0) {
+            if (e.getKeyCode() == KeyEvent.VK_F) {
+                SearchForm.start();
             }
         }
     }

@@ -87,6 +87,10 @@
 
 ![](img/0032.png)
 
+`Jar Analyzer 2.15` 版本以后支持代码区域的搜索
+
+![](img/0033.png)
+
 ## 命令行版本
 
 [文档](doc/README-cli.md)

@@ -111,7 +111,7 @@ public class MenuUtil {
     private static JMenu loadRemote() {
         JMenu loadRemote = new JMenu("remote");
         JMenuItem loadByHttp = new JMenuItem("load jars (http)");
-        loadByHttp.addActionListener(e-> RemoteHttp.start());
+        loadByHttp.addActionListener(e -> RemoteHttp.start());
         loadRemote.add(loadByHttp);
         return loadRemote;
     }

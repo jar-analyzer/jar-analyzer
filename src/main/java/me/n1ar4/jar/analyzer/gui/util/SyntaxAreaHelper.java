@@ -33,6 +33,7 @@ public class SyntaxAreaHelper {
 
     public static int addSearchAction(String text) {
         searchResults = new ArrayList<>();
+        currentIndex = 0;
         String content = codeArea.getText();
 
         int index = content.indexOf(text);
@@ -42,6 +43,10 @@ public class SyntaxAreaHelper {
         }
         currentIndex = 0;
         return searchResults.size();
+    }
+
+    public static int getCurrentIndex(){
+        return currentIndex;
     }
 
     public static void navigate(String text, boolean forward) {

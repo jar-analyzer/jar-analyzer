@@ -16,7 +16,10 @@ public class SearchForm {
     private JLabel searchLabel;
     private JButton prevButton;
     private JButton nextButton;
+    private JLabel resultLabel;
     private static SearchForm instance;
+    private static String searchTextGlobal = null;
+    private static int total = 0;
 
     public static void start() {
         JFrame frame = new JFrame(Const.SearchForm);
@@ -31,19 +34,39 @@ public class SearchForm {
     }
 
     private void init() {
+        resultLabel.setText("0/0");
         instance.searchBtn.addActionListener(e -> {
             String text = searchText.getText();
-            int total = SyntaxAreaHelper.addSearchAction(text);
-            JOptionPane.showMessageDialog(instance.rootPanel,
-                    "found " + total + " results");
+            searchTextGlobal = text;
+            total = SyntaxAreaHelper.addSearchAction(text);
+            if (total == 0) {
+                resultLabel.setText("0/0");
+                return;
+            }
+            int cur = SyntaxAreaHelper.getCurrentIndex();
+            resultLabel.setText(String.format("%d/%d", cur + 1, total));
         });
         instance.prevButton.addActionListener(e -> {
-            String text = searchText.getText();
-            SyntaxAreaHelper.navigate(text, true);
+            if (searchTextGlobal == null || searchTextGlobal.isEmpty()) {
+                return;
+            }
+            if (total == 0) {
+                return;
+            }
+            SyntaxAreaHelper.navigate(searchTextGlobal, false);
+            int cur = SyntaxAreaHelper.getCurrentIndex();
+            resultLabel.setText(String.format("%d/%d", cur + 1, total));
         });
         instance.nextButton.addActionListener(e -> {
-            String text = searchText.getText();
-            SyntaxAreaHelper.navigate(text, true);
+            if (searchTextGlobal == null || searchTextGlobal.isEmpty()) {
+                return;
+            }
+            if (total == 0) {
+                return;
+            }
+            SyntaxAreaHelper.navigate(searchTextGlobal, true);
+            int cur = SyntaxAreaHelper.getCurrentIndex();
+            resultLabel.setText(String.format("%d/%d", cur + 1, total));
         });
     }
 
@@ -72,17 +95,20 @@ public class SearchForm {
         searchText = new JTextField();
         rootPanel.add(searchText, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, new Dimension(250, -1), new Dimension(150, -1), null, 0, false));
         final JPanel panel1 = new JPanel();
-        panel1.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
+        panel1.setLayout(new GridLayoutManager(1, 4, new Insets(0, 0, 0, 0), -1, -1));
         rootPanel.add(panel1, new GridConstraints(1, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         searchBtn = new JButton();
         searchBtn.setText("Search");
-        panel1.add(searchBtn, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel1.add(searchBtn, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         prevButton = new JButton();
         prevButton.setText("Prev");
         panel1.add(prevButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         nextButton = new JButton();
         nextButton.setText("Next");
         panel1.add(nextButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        resultLabel = new JLabel();
+        resultLabel.setText("0");
+        panel1.add(resultLabel, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**

@@ -39,6 +39,7 @@
         <jcommander.version>1.82</jcommander.version>
         <dom4j.version>2.1.4</dom4j.version>
         <spring.version>5.3.32</spring.version>
+        <okhttp3.version>4.12.0</okhttp3.version>
         <!-- Maven Build Version -->
         <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-resources-plugin -->
         <maven.resources.version>3.3.1</maven.resources.version>
@@ -117,6 +118,11 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <version>${slf4j.simple.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>${okhttp3.version}</version>
         </dependency>
         <dependency>
             <groupId>tools</groupId>

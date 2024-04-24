@@ -1,113 +1,101 @@
 package me.n1ar4.http;
 
-import javax.net.ssl.SSLSocketFactory;
+import me.n1ar4.log.LogManager;
+import me.n1ar4.log.Logger;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
-import java.net.Socket;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class Y4Client {
-    private static final int DEFAULT_TIMEOUT = 5000;
-    private static final String HTTP = "http";
-    private static final String HTTPS = "https";
-    private static final int HTTP_PORT = 80;
-    private static final int HTTPS_PORT = 443;
-    private Proxy proxy;
-    private final int timeout;
+    private static final Logger logger = LogManager.getLogger();
+    private OkHttpClient client;
+    public static final Y4Client CLIENT = new Y4Client();
+    public static Map<String, String> baseHeaders = new HashMap<>();
+
+    static {
+        baseHeaders.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) " +
+                "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36");
+    }
 
     public static final Y4Client INSTANCE = new Y4Client();
 
+    public static void refresh() {
+        CLIENT.reConfig();
+    }
+
     public Y4Client() {
-        this(DEFAULT_TIMEOUT);
+        this.reConfig();
+    }
+
+    public void reConfig() {
+        this.client = new OkHttpClient.Builder()
+                .connectTimeout(Globals.TIMEOUT_SECOND, TimeUnit.SECONDS)
+                .readTimeout(Globals.TIMEOUT_SECOND, TimeUnit.SECONDS)
+                .writeTimeout(Globals.TIMEOUT_SECOND, TimeUnit.SECONDS)
+                .build();
     }
 
     public Y4Client(int timeout) {
-        this.timeout = timeout;
-    }
-
-    public Y4Client(String proxyHost, int proxyPort) {
-        this.timeout = DEFAULT_TIMEOUT;
-        this.proxy = new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(proxyHost, proxyPort));
+        Globals.TIMEOUT_SECOND = timeout;
+        this.reConfig();
     }
 
     public Y4Client(int timeout, String proxyHost, int proxyPort) {
-        this.timeout = timeout;
-        this.proxy = new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(proxyHost, proxyPort));
+        this(timeout);
+        Proxy.setSocks(proxyHost, String.valueOf(proxyPort));
     }
 
     public HttpResponse get(String url) {
-        URL u;
         try {
-            u = new URL(url);
+            Request.Builder requestBuilder = new Request.Builder()
+                    .url(url)
+                    .get();
+            return getHttpResponse(baseHeaders, requestBuilder);
         } catch (Exception ex) {
-            throw new RuntimeException(ex);
+            logger.error("http get error: {}", ex.toString());
+            return null;
         }
-        HttpRequest request = new HttpRequest();
-        request.setMethod(HttpMethod.GET);
-        request.setUrl(u);
-        Map<String, String> headers = new HashMap<>();
-        headers.put(HttpHeaders.Connection, "close");
-        headers.put(HttpHeaders.UserAgent, HttpRequest.DefaultUA);
-        request.setHeaders(headers);
-        return request(request);
+    }
+
+    public HttpResponse getWithHeaders(String url, Map<String, String> headers) throws IOException {
+        Request.Builder requestBuilder = new Request.Builder()
+                .url(url)
+                .get();
+        return getHttpResponse(headers, requestBuilder);
+    }
+
+    public HttpResponse post(String url, Map<String, String> headers, RequestBody body) throws IOException {
+        Request.Builder requestBuilder = new Request.Builder()
+                .url(url)
+                .post(body);
+        return getHttpResponse(headers, requestBuilder);
     }
 
     public HttpResponse request(HttpRequest request) {
-        URL u = request.getUrl();
-        String host = u.getHost();
-        int port;
-        if (u.getPort() <= 0) {
-            port = u.getProtocol().equals(HTTPS) ? HTTPS_PORT : HTTP_PORT;
-        } else {
-            port = u.getPort();
-        }
-
         try {
-            Socket socket = getSocket(u, host, port);
-            socket.setSoTimeout(this.timeout);
-
-            String rawRequest = request.buildRawRequest();
-            OutputStream outputStream = socket.getOutputStream();
-            outputStream.write(rawRequest.getBytes());
-            outputStream.flush();
-
-            InputStream is = socket.getInputStream();
-            HttpResponse resp = HttpResponse.readFromStream(is);
-            resp.setRequest(request);
-            socket.close();
-            return resp;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            Request.Builder requestBuilder = new Request.Builder()
+                    .url(request.getUrl())
+                    .method(request.getMethod(), RequestBody.create(request.getBody()));
+            return getHttpResponse(request.getHeaders(), requestBuilder);
+        } catch (Exception ex) {
+            logger.error("http request error: {}", ex.toString());
+            return null;
         }
     }
 
-    private Socket getSocket(URL u, String host, int port) throws IOException {
-        Socket socket;
-        if (u.getProtocol().equals(HTTP)) {
-            if (this.proxy == null) {
-                socket = new Socket(host, port);
-            } else {
-                socket = new Socket(this.proxy);
-                socket.connect(new InetSocketAddress(host, port));
-            }
-        } else if (u.getProtocol().equals(HTTPS)) {
-            SSLSocketFactory sslsocketfactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
-            if (this.proxy == null) {
-                socket = sslsocketfactory.createSocket(host, port);
-            } else {
-                Socket plainSocket = new Socket(this.proxy);
-                plainSocket.connect(new InetSocketAddress(host, port));
-                socket = sslsocketfactory.createSocket(
-                        plainSocket, host, port, true);
-            }
-        } else {
-            throw new RuntimeException("unknown protocol");
+    private HttpResponse getHttpResponse(Map<String, String> headers, Request.Builder requestBuilder) throws IOException {
+        headers.forEach(requestBuilder::addHeader);
+        Request request = requestBuilder.build();
+        logger.debug("http request: {}", request.url().toString());
+        try (Response response = client.newCall(request).execute()) {
+            return new HttpResponse(response.code(), response.headers(),
+                    response.body() != null ? response.body().bytes() : new byte[0]);
         }
-        return socket;
     }
 }

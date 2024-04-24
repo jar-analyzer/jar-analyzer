@@ -601,7 +601,7 @@ public class MainForm {
 
     public MainForm() {
         logger.info("init main form");
-        methodDefinitionRadioButton.setSelected(true);
+        methodCallRadioButton.setSelected(true);
         fernRadio.setSelected(true);
         fernRadio.setText(DecompileEngine.INFO);
         searchStrText.setEnabled(false);
@@ -649,7 +649,7 @@ public class MainForm {
         blackArea.setText(Const.blackAreaText);
         classBlackArea.setText(Const.classBlackAreaText);
 
-        equalsSearchRadioButton.setSelected(true);
+        likeSearchRadioButton.setSelected(true);
 
         logger.info("init main form success");
     }

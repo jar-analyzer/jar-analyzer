@@ -55,10 +55,6 @@
 | Listener | javax.servlet.ServletRequestListener | requestInitialized | 
 | Valve    | org.apache.catalina.Valve            | invoke             |
 
-### Y4-HTTP
-
-该项目位于`me.n1ar4.http`中，这是一个手动构造和解析`HTTP/1.1`协议的`HTTP`客户端库
-
 [代码](../src/main/java/me/n1ar4/http)
 
 ### Y4-JSON

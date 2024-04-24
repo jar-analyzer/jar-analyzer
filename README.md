@@ -22,6 +22,8 @@
 - 集成 `ClazzSearcher` 项目作为命令行分析版本
 - 允许从字节码层面直接修改方法名（测试功能）
 - 自从 `2.14` 版本之后支持了全屏显示的功能
+- 自从 `2.15` 版本后支持代码区域字符串搜索功能
+- 自从 `2.15` 版本后支持通过 `HTTP` 分析远程文件
 
 更多的功能正在开发中
 
@@ -47,7 +49,7 @@
 - [反编译恶意的 CLASS 文件可能导致程序不可用 (GHSA-43rf-3hm4-hv5f )](https://github.com/jar-analyzer/jar-analyzer/security/advisories/GHSA-43rf-3hm4-hv5f)
 - [Jar Analyzer 2.13 版本之前存在 SQL 注入漏洞 (GHSA-x5h2-78p8-w943)](https://github.com/jar-analyzer/jar-analyzer/security/advisories/GHSA-x5h2-78p8-w943)
 
-## 一些截图
+## 截图
 
 指令分析
 
@@ -95,15 +97,15 @@
 
 ![](img/0034.png)
 
-## 命令行版本
+## 命令行
 
 [文档](doc/README-cli.md)
 
-## 表达式搜索
+## 表达式
 
 [文档](doc/README-el.md)
 
-## 注意事项
+## 注意
 
 [文档](doc/README-note.md)
 
@@ -118,3 +120,7 @@
 ## 参考致谢
 
 [文档](doc/README-thanks.md)
+
+## 相关文章
+
+- [利用 jar-analyzer 分析 CVE-2022-42889](https://zone.huoxian.cn/d/2884-jar-analyzer-cve-2022-42889)

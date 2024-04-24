@@ -91,6 +91,10 @@
 
 ![](img/0033.png)
 
+`Jar Analyzer 2.15` 版本以后支持远程 `Jar` 文件加载
+
+![](img/0034.png)
+
 ## 命令行版本
 
 [文档](doc/README-cli.md)

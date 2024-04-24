@@ -15,6 +15,7 @@ public interface Const {
     String newIssueUrl = "https://github.com/jar-analyzer/jar-analyzer/issues/new";
     String dbFile = "jar-analyzer.db";
     String tempDir = "jar-analyzer-temp";
+    String downDir = "jar-analyzer-download";
     String OpcodeForm = "Jar Analyzer V2 - Method Opcode";
     String SPELSearch = "Jar Analyzer V2 - SPEL Search";
     String ChangeLogForm = "Jar Analyzer V2 - CHANGELOG";
@@ -24,6 +25,7 @@ public interface Const {
     String ChatGPTForm = "Jar Analyzer V2 - ChatGPT";
     String StringForm = "Jar Analyzer V2 - String";
     String SearchForm = "Jar Analyzer V2 - Code Search";
+    String RemoteForm = "Jar Analyzer V2 - Remote Load";
     String blackAreaText = "java.lang.Object;\njava.lang.Integer;\n";
     String classBlackAreaText = "com.test.a;\ncom.test.a.;\ncom.test.a.TestClass;\n";
 }

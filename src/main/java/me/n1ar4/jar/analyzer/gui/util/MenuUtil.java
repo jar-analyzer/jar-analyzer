@@ -7,6 +7,7 @@ import me.n1ar4.http.Y4Client;
 import me.n1ar4.jar.analyzer.gui.ChangeLogForm;
 import me.n1ar4.jar.analyzer.gui.GlobalOptions;
 import me.n1ar4.jar.analyzer.gui.MainForm;
+import me.n1ar4.jar.analyzer.gui.RemoteHttp;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
@@ -102,8 +103,17 @@ public class MenuUtil {
         menuBar.add(createConfigMenu());
         menuBar.add(language());
         menuBar.add(createShellAnalyzer());
+        menuBar.add(loadRemote());
         menuBar.add(createGames());
         return menuBar;
+    }
+
+    private static JMenu loadRemote() {
+        JMenu loadRemote = new JMenu("remote");
+        JMenuItem loadByHttp = new JMenuItem("load jars (http)");
+        loadByHttp.addActionListener(e-> RemoteHttp.start());
+        loadRemote.add(loadByHttp);
+        return loadRemote;
     }
 
     private static JMenu createGames() {
@@ -150,7 +160,7 @@ public class MenuUtil {
 
     private static JMenu createShellAnalyzer() {
         try {
-            JMenu configMenu = new JMenu("tomcat-analyzer");
+            JMenu configMenu = new JMenu("analyzer");
             JMenuItem start = new JMenuItem("start");
             start.addActionListener(e -> ShellForm.start0());
             configMenu.add(start);

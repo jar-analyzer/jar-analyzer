@@ -17,6 +17,7 @@ import java.nio.file.Paths;
 public class BuildAction {
     public static void start(String path) {
         Path od = Paths.get(Const.dbFile);
+        MainForm.getInstance().getFileText().setText(path);
 
         if (Files.exists(od)) {
             LogUtil.log("jar-analyzer database exist");

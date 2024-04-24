@@ -14,6 +14,8 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public class SyntaxAreaHelper {
@@ -45,7 +47,7 @@ public class SyntaxAreaHelper {
         return searchResults.size();
     }
 
-    public static int getCurrentIndex(){
+    public static int getCurrentIndex() {
         return currentIndex;
     }
 

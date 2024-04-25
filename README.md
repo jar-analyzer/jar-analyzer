@@ -97,6 +97,11 @@
 
 ![](img/0034.png)
 
+## 快捷键
+
+- `CTRL+X` 方法交叉引用 快速跳转方法 `caller` 和 `callee` 页面
+- `CTRL+F` 代码区域搜索 打开搜索面板 支持 `next` 和 `prev` 选项
+
 ## 命令行
 
 [文档](doc/README-cli.md)

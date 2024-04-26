@@ -4,10 +4,7 @@ import com.github.rjeschke.txtmark.Processor;
 import me.n1ar4.flappy.FBMainFrame;
 import me.n1ar4.http.HttpResponse;
 import me.n1ar4.http.Y4Client;
-import me.n1ar4.jar.analyzer.gui.ChangeLogForm;
-import me.n1ar4.jar.analyzer.gui.GlobalOptions;
-import me.n1ar4.jar.analyzer.gui.MainForm;
-import me.n1ar4.jar.analyzer.gui.RemoteHttp;
+import me.n1ar4.jar.analyzer.gui.*;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
@@ -104,8 +101,17 @@ public class MenuUtil {
         menuBar.add(language());
         menuBar.add(createShellAnalyzer());
         menuBar.add(loadRemote());
+        menuBar.add(createProxy());
         menuBar.add(createGames());
         return menuBar;
+    }
+
+    private static JMenu createProxy() {
+        JMenu proxy = new JMenu("proxy");
+        JMenuItem proxyItem = new JMenuItem("open proxy config");
+        proxyItem.addActionListener(e -> ProxyForm.start());
+        proxy.add(proxyItem);
+        return proxy;
     }
 
     private static JMenu loadRemote() {

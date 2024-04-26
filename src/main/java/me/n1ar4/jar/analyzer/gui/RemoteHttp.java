@@ -41,7 +41,7 @@ public class RemoteHttp {
         frame.setContentPane(instance.rootPanel);
         frame.pack();
         frame.setAlwaysOnTop(true);
-        frame.setLocationRelativeTo(null);
+        frame.setLocationRelativeTo(MainForm.getInstance().getMasterPanel());
         frame.setVisible(true);
         frame.setResizable(false);
     }

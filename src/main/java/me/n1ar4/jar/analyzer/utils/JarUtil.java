@@ -103,7 +103,26 @@ public class JarUtil {
                 JarInputStream jarInputStream = new JarInputStream(is);
                 JarEntry jarEntry;
                 while ((jarEntry = jarInputStream.getNextJarEntry()) != null) {
-                    Path fullPath = tmpDir.resolve(jarEntry.getName());
+                    // =============== 2024/04/26 修复 ZIP SLIP 漏洞 ===============
+                    String jarEntryName = jarEntry.getName();
+                    // 第一次检查是否包含 ../ ..\\ 绕过
+                    if (jarEntryName.contains("../") || jarEntryName.contains("..\\")) {
+                        logger.warn("detect zip slip vulnearbility");
+                        // 不抛出异常只跳过这个文件继续处理其他文件
+                        continue;
+                    }
+                    // 可能还有其他的绕过情况？
+                    // 先 normalize 处理 ../ 情况
+                    // 再保证 entryPath 绝对路径必须以解压临时目录 tmpDir 开头
+                    Path entryPath = tmpDir.resolve(jarEntryName).toAbsolutePath().normalize();
+                    Path tmpDirAbs = tmpDir.toAbsolutePath();
+                    if (!entryPath.toString().startsWith(tmpDirAbs.toString())) {
+                        // 不抛出异常只跳过这个文件继续处理其他文件
+                        logger.warn("detect zip slip vulnearbility");
+                        continue;
+                    }
+                    // ============================================================
+                    Path fullPath = tmpDir.resolve(jarEntryName);
                     if (!jarEntry.isDirectory()) {
                         if (!jarEntry.getName().endsWith(".class")) {
                             if (AnalyzeEnv.jarsInJar && jarEntry.getName().endsWith(".jar")) {
@@ -182,7 +201,26 @@ public class JarUtil {
             JarInputStream jarInputStream = new JarInputStream(is);
             JarEntry jarEntry;
             while ((jarEntry = jarInputStream.getNextJarEntry()) != null) {
-                Path fullPath = tmpDir.resolve(jarEntry.getName());
+                // =============== 2024/04/26 修复 ZIP SLIP 漏洞 ===============
+                String jarEntryName = jarEntry.getName();
+                // 第一次检查是否包含 ../ ..\\ 绕过
+                if (jarEntryName.contains("../") || jarEntryName.contains("..\\")) {
+                    logger.warn("detect zip slip vulnearbility");
+                    // 不抛出异常只跳过这个文件继续处理其他文件
+                    continue;
+                }
+                // 可能还有其他的绕过情况？
+                // 先 normalize 处理 ../ 情况
+                // 再保证 entryPath 绝对路径必须以解压临时目录 tmpDir 开头
+                Path entryPath = tmpDir.resolve(jarEntryName).toAbsolutePath().normalize();
+                Path tmpDirAbs = tmpDir.toAbsolutePath();
+                if (!entryPath.toString().startsWith(tmpDirAbs.toString())) {
+                    // 不抛出异常只跳过这个文件继续处理其他文件
+                    logger.warn("detect zip slip vulnearbility");
+                    continue;
+                }
+                // ============================================================
+                Path fullPath = tmpDir.resolve(jarEntryName);
                 if (!jarEntry.isDirectory()) {
                     if (!jarEntry.getName().endsWith(".class")) {
                         continue;

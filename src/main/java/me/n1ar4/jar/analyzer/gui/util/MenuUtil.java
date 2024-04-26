@@ -109,6 +109,7 @@ public class MenuUtil {
     private static JMenu createProxy() {
         JMenu proxy = new JMenu("proxy");
         JMenuItem proxyItem = new JMenuItem("open proxy config");
+        proxyItem.setIcon(IconManager.javaIcon);
         proxyItem.addActionListener(e -> ProxyForm.start());
         proxy.add(proxyItem);
         return proxy;
@@ -117,6 +118,7 @@ public class MenuUtil {
     private static JMenu loadRemote() {
         JMenu loadRemote = new JMenu("remote");
         JMenuItem loadByHttp = new JMenuItem("load jars (http)");
+        loadByHttp.setIcon(IconManager.javaIcon);
         loadByHttp.addActionListener(e -> RemoteHttp.start());
         loadRemote.add(loadByHttp);
         return loadRemote;
@@ -168,6 +170,7 @@ public class MenuUtil {
         try {
             JMenu configMenu = new JMenu("analyzer");
             JMenuItem start = new JMenuItem("start");
+            start.setIcon(IconManager.javaIcon);
             start.addActionListener(e -> ShellForm.start0());
             configMenu.add(start);
             return configMenu;

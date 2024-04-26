@@ -2,6 +2,8 @@
 
 ## 2.16
 
+安全公告：[GHSA-?](https://github.com/jar-analyzer/jar-analyzer/security/advisories/GHSA-?)
+
 更新日志：
 
 - [安全] 修复处理 `JAR` 时存在的 `ZIP SLIP` 漏洞

@@ -243,10 +243,6 @@
                 <configuration>
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
-<!--                    <compilerArgs>-->
-<!--                        <arg>-Xlint:none</arg>-->
-<!--                        <arg>-g:none</arg>-->
-<!--                    </compilerArgs>-->
                 </configuration>
             </plugin>
         </plugins>

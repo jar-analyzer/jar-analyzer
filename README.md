@@ -45,6 +45,8 @@
 
 ## 相关
 
+虽然 `Jar Analyzer` 使用了简易的 `RASP` 进行保护，但仍然可能存在安全漏洞，我们会第一时间进行修复
+
 漏洞公告
 - [\[GHSA-43rf-3hm4-hv5f\] 反编译恶意的 CLASS 文件可能导致程序不可用](https://github.com/jar-analyzer/jar-analyzer/security/advisories/GHSA-43rf-3hm4-hv5f)
 - [\[GHSA-x5h2-78p8-w943\] Jar Analyzer 2.13 版本之前存在 SQL 注入漏洞](https://github.com/jar-analyzer/jar-analyzer/security/advisories/GHSA-x5h2-78p8-w943)
@@ -65,7 +67,7 @@
 4. 构建`rasp`子项目 `mvn -B clean package -DskipTests --file jar-analyzer-rasp\pom.xml`
 5. 使用`cmake`构建`native`目录的`C`代码生成`dll`文件放入`resources`
 6. 使用`winres`和`gcc`构建启动`exe`文件和图标信息
-7. 参考`build.py`文件进行最终的文件合并和版本构建
+7. 参考`build.py`和`build.yml`文件进行最终的文件合并和版本构建
 
 ## 截图
 

@@ -53,3 +53,4 @@ jar-analyzer-lockfile
 token.txt
 cmake-*/
 *.dat
+logs/

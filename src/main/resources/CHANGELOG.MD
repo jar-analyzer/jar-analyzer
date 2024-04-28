@@ -2,7 +2,7 @@
 
 ## 2.16
 
-安全公告：[GHSA-?](https://github.com/jar-analyzer/jar-analyzer/security/advisories/GHSA-?)
+安全公告：[GHSA-jmcg-r2c5-7m29](https://github.com/jar-analyzer/jar-analyzer/security/advisories/GHSA-jmcg-r2c5-7m29)
 
 更新日志：
 

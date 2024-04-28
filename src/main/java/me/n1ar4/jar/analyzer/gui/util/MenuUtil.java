@@ -99,7 +99,6 @@ public class MenuUtil {
         menuBar.add(createVersionMenu());
         menuBar.add(createConfigMenu());
         menuBar.add(language());
-        menuBar.add(createShellAnalyzer());
         menuBar.add(loadRemote());
         menuBar.add(createProxy());
         menuBar.add(createGames());
@@ -121,6 +120,10 @@ public class MenuUtil {
         loadByHttp.setIcon(IconManager.javaIcon);
         loadByHttp.addActionListener(e -> RemoteHttp.start());
         loadRemote.add(loadByHttp);
+        JMenuItem start = new JMenuItem("start tomcat analyzer");
+        start.setIcon(IconManager.javaIcon);
+        start.addActionListener(e -> ShellForm.start0());
+        loadRemote.add(start);
         return loadRemote;
     }
 
@@ -159,20 +162,6 @@ public class MenuUtil {
             JMenu configMenu = new JMenu("language");
             configMenu.add(chineseConfig);
             configMenu.add(englishConfig);
-            return configMenu;
-        } catch (Exception ex) {
-            logger.error("error: {}", ex.toString());
-        }
-        return null;
-    }
-
-    private static JMenu createShellAnalyzer() {
-        try {
-            JMenu configMenu = new JMenu("analyzer");
-            JMenuItem start = new JMenuItem("start");
-            start.setIcon(IconManager.javaIcon);
-            start.addActionListener(e -> ShellForm.start0());
-            configMenu.add(start);
             return configMenu;
         } catch (Exception ex) {
             logger.error("error: {}", ex.toString());

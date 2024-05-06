@@ -50,9 +50,13 @@ public class RemoteHttp {
         instance.progressBar.setValue(0);
         downBtn.addActionListener(e -> new Thread(() -> {
             finish = false;
-            progressBar.setValue(1);
             OkHttpClient okHttpClient = new OkHttpClient();
             String url = urlText.getText();
+            if (url == null || url.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(instance.rootPanel, "error url");
+                return;
+            }
+            progressBar.setValue(1);
             progressBar.setValue(2);
             Request request = new Request.Builder()
                     .url(url)

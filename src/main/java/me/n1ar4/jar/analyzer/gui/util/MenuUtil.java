@@ -177,6 +177,10 @@ public class MenuUtil {
             configMenu.add(sortedByMethodConfig);
             configMenu.add(sortedByClassConfig);
             configMenu.add(logAllSqlConfig);
+            JMenuItem partitionConfig = new JMenuItem("partition config");
+            partitionConfig.setIcon(IconManager.javaIcon);
+            partitionConfig.addActionListener(e-> PartForm.start());
+            configMenu.add(partitionConfig);
             return configMenu;
         } catch (Exception ex) {
             logger.error("error: {}", ex.toString());

@@ -17,6 +17,7 @@ import java.util.*;
 
 public class DatabaseManager {
     private static final Logger logger = LogManager.getLogger();
+    public static int PART_SIZE = 100;
     private static final SqlSession session;
     private static final ClassMapper classMapper;
     private static final MemberMapper memberMapper;
@@ -90,7 +91,7 @@ public class DatabaseManager {
             classFile.setPathStr(classFile.getPath().toAbsolutePath().toString());
             list.add(classFile);
         }
-        List<List<ClassFileEntity>> partition = PartitionUtils.partition(list, 100);
+        List<List<ClassFileEntity>> partition = PartitionUtils.partition(list, PART_SIZE);
         for (List<ClassFileEntity> data : partition) {
             int a = classFileMapper.insertClassFile(data);
             if (a == 0) {
@@ -112,7 +113,7 @@ public class DatabaseManager {
             classEntity.setInterface(reference.isInterface());
             list.add(classEntity);
         }
-        List<List<ClassEntity>> partition = PartitionUtils.partition(list, 100);
+        List<List<ClassEntity>> partition = PartitionUtils.partition(list, PART_SIZE);
         for (List<ClassEntity> data : partition) {
             int a = classMapper.insertClass(data);
             if (a == 0) {
@@ -146,7 +147,7 @@ public class DatabaseManager {
                 iList.add(i);
             }
         }
-        List<List<MemberEntity>> mPartition = PartitionUtils.partition(mList, 100);
+        List<List<MemberEntity>> mPartition = PartitionUtils.partition(mList, PART_SIZE);
         for (List<MemberEntity> data : mPartition) {
             int a = memberMapper.insertMember(data);
             if (a == 0) {
@@ -158,7 +159,7 @@ public class DatabaseManager {
         saveAnno(aList);
         logger.info("save class anno success");
 
-        List<List<InterfaceEntity>> iPartition = PartitionUtils.partition(iList, 100);
+        List<List<InterfaceEntity>> iPartition = PartitionUtils.partition(iList, PART_SIZE);
         for (List<InterfaceEntity> data : iPartition) {
             int a = interfaceMapper.insertInterface(data);
             if (a == 0) {
@@ -169,7 +170,7 @@ public class DatabaseManager {
     }
 
     private static void saveAnno(List<AnnoEntity> aList) {
-        List<List<AnnoEntity>> aPartition = PartitionUtils.partition(aList, 100);
+        List<List<AnnoEntity>> aPartition = PartitionUtils.partition(aList, PART_SIZE);
         for (List<AnnoEntity> data : aPartition) {
             int a = annoMapper.insertAnno(data);
             if (a == 0) {
@@ -199,7 +200,7 @@ public class DatabaseManager {
                 aList.add(annoEntity);
             }
         }
-        List<List<MethodEntity>> mPartition = PartitionUtils.partition(mList, 100);
+        List<List<MethodEntity>> mPartition = PartitionUtils.partition(mList, PART_SIZE);
         for (List<MethodEntity> data : mPartition) {
             int a = methodMapper.insertMethod(data);
             if (a == 0) {
@@ -232,7 +233,7 @@ public class DatabaseManager {
             }
         }
 
-        List<List<MethodCallEntity>> mPartition = PartitionUtils.partition(mList, 100);
+        List<List<MethodCallEntity>> mPartition = PartitionUtils.partition(mList, PART_SIZE);
         for (List<MethodCallEntity> data : mPartition) {
             int a = methodCallMapper.insertMethodCall(data);
             if (a == 0) {
@@ -257,7 +258,7 @@ public class DatabaseManager {
                 mList.add(impl);
             }
         }
-        List<List<MethodImplEntity>> mPartition = PartitionUtils.partition(mList, 100);
+        List<List<MethodImplEntity>> mPartition = PartitionUtils.partition(mList, PART_SIZE);
         for (List<MethodImplEntity> data : mPartition) {
             int a = methodImplMapper.insertMethodImpl(data);
             if (a == 0) {
@@ -285,7 +286,7 @@ public class DatabaseManager {
                 mList.add(stringEntity);
             }
         }
-        List<List<StringEntity>> mPartition = PartitionUtils.partition(mList, 100);
+        List<List<StringEntity>> mPartition = PartitionUtils.partition(mList, PART_SIZE);
         for (List<StringEntity> data : mPartition) {
             int a = stringMapper.insertString(data);
             if (a == 0) {
@@ -311,14 +312,14 @@ public class DatabaseManager {
                 mList.add(me);
             }
         }
-        List<List<SpringControllerEntity>> cPartition = PartitionUtils.partition(cList, 100);
+        List<List<SpringControllerEntity>> cPartition = PartitionUtils.partition(cList, PART_SIZE);
         for (List<SpringControllerEntity> data : cPartition) {
             int a = springCMapper.insertControllers(data);
             if (a == 0) {
                 logger.warn("save error");
             }
         }
-        List<List<SpringMethodEntity>> mPartition = PartitionUtils.partition(mList, 100);
+        List<List<SpringMethodEntity>> mPartition = PartitionUtils.partition(mList, PART_SIZE);
 
         for (List<SpringMethodEntity> data : mPartition) {
 

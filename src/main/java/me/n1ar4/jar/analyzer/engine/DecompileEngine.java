@@ -33,6 +33,39 @@ public class DecompileEngine {
         lruCache = new LRUCache(30);
     }
 
+    public static void decompileJars(List<String> jarsPath, String outputDir) {
+        for (String jarPath : jarsPath) {
+            List<String> cmd = new ArrayList<>();
+            Path jarPathPath = Paths.get(jarPath);
+            cmd.add(jarPathPath.toAbsolutePath().toString());
+            Path path = Paths.get(outputDir);
+            try {
+                Files.createDirectories(path);
+            } catch (Exception ignored) {
+            }
+            cmd.add(path.toAbsolutePath().toString());
+
+            logger.info("decompile jar: " + jarPath);
+            LogUtil.log("decompile jar: " + jarPath);
+            logger.info("output dir: " + outputDir);
+
+            // FERN FLOWER API
+            ConsoleDecompiler.main(cmd.toArray(new String[0]));
+
+            // HACK NAME
+            String jarName = jarPathPath.getFileName().toString();
+            String zipName = jarName.replaceAll("\\.jar$", ".zip");
+            Path oldPath = path.toAbsolutePath().resolve(jarName);
+            Path newPath = path.toAbsolutePath().resolve(zipName);
+
+            try {
+                Files.move(oldPath, newPath);
+                System.out.println("file renamed to: " + newPath);
+            } catch (Exception ignored) {
+            }
+        }
+    }
+
     /**
      * Decompile Any Class
      *

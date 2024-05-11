@@ -100,6 +100,7 @@ public class MenuUtil {
         menuBar.add(createConfigMenu());
         menuBar.add(language());
         menuBar.add(loadRemote());
+        menuBar.add(exportJava());
         menuBar.add(createProxy());
         menuBar.add(createGames());
         return menuBar;
@@ -112,6 +113,15 @@ public class MenuUtil {
         proxyItem.addActionListener(e -> ProxyForm.start());
         proxy.add(proxyItem);
         return proxy;
+    }
+
+    private static JMenu exportJava() {
+        JMenu export = new JMenu("export java");
+        JMenuItem proxyItem = new JMenuItem("decompile and export");
+        proxyItem.setIcon(IconManager.javaIcon);
+        proxyItem.addActionListener(e -> ExportForm.start());
+        export.add(proxyItem);
+        return export;
     }
 
     private static JMenu loadRemote() {

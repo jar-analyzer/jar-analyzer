@@ -134,9 +134,20 @@ public class StructContext {
 
                 String name = entry.getName();
                 if (!entry.isDirectory()) {
+
+                    // HACK BUG
+                    if (name.contains("com/formdev/flatlaf/ui/StackUtilsImpl")) {
+                        continue;
+                    }
+
                     if (name.endsWith(".class")) {
                         byte[] bytes = InterpreterUtil.getBytes(archive, entry);
-                        StructClass cl = new StructClass(bytes, isOwn, loader);
+                        StructClass cl;
+                        try {
+                            cl = new StructClass(bytes, isOwn, loader);
+                        } catch (Exception ignored) {
+                            continue;
+                        }
                         classes.put(cl.qualifiedName, cl);
                         unit.addClass(cl, name);
                         loader.addClassLink(cl.qualifiedName, new LazyLoader.Link(file.getAbsolutePath(), name));

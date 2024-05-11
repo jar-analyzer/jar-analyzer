@@ -2,13 +2,17 @@
 
 ## 2.16
 
+支持通过 `export java` 菜单一键导出反编译后的 `JAVA` 代码
+
 安全公告：[GHSA-jmcg-r2c5-7m29](https://github.com/jar-analyzer/jar-analyzer/security/advisories/GHSA-jmcg-r2c5-7m29)
 
 更新日志：
 
 - [安全] 修复处理 `JAR` 时存在的 `ZIP SLIP` 漏洞
+- [功能] 支持一键导出反编译后的 `JAVA` 代码
 - [功能] 新增代理面板支持 `HTTP/SOCKS` 等代理
 - [功能] 支持根据实际情况动态设置数据库保存分区大小
+- [BUG] 忽略 `FERN FLOWER` 反编译报错终止问题
 - [BUG] 修复多屏时搜索框和远程加载框位置问题
 - [BUG] 解决输入的 `URL` 为空时报错
 - [优化] 保留编译信息允许用户进行调试

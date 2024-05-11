@@ -27,6 +27,7 @@ public interface Const {
     String SearchForm = "Jar Analyzer V2 - Code Search";
     String RemoteForm = "Jar Analyzer V2 - Remote Load";
     String PartForm = "Jar Analyzer V2 - Partition Config";
+    String ExportForm = "Jar Analyzer V2 - Export Java Code";
     String blackAreaText = "java.lang.Object;\njava.lang.Integer;\n";
     String classBlackAreaText = "com.test.a;\ncom.test.a.;\ncom.test.a.TestClass;\n";
 }

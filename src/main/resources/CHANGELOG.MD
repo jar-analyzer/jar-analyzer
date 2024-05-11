@@ -15,12 +15,6 @@
 - [优化] 补充没有 `ICON` 信息的菜单选项
 - [优化] 菜单部分的合并和优化
 
-考虑到新版本体积越来越大，需要加入国内下载地址（自费购买`OSS`节省使用）
-
-- [jar-analyzer-2.16.zip](https://jar-analyzer.oss-cn-hangzhou.aliyuncs.com/2.16/jar-analyzer-2.16.zip)
-- [jar-analyzer-2.16-windows-full.zip](https://jar-analyzer.oss-cn-hangzhou.aliyuncs.com/2.16/jar-analyzer-2.16-windows-full.zip)
-- [jar-analyzer-2.16-windows-system.zip](https://jar-analyzer.oss-cn-hangzhou.aliyuncs.com/2.16/jar-analyzer-2.16-windows-system.zip)
-
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
@@ -52,12 +46,6 @@
 - [其他] 更换 `UI` 界面的作者头像
 - [其他] 更新 `license` 时间信息
 
-考虑到新版本体积越来越大，需要加入国内下载地址（自费购买`OSS`节省使用）
-
-- [jar-analyzer-2.15.zip](https://jar-analyzer.oss-cn-hangzhou.aliyuncs.com/2.15/jar-analyzer-2.15.zip)
-- [jar-analyzer-2.15-windows-full.zip](https://jar-analyzer.oss-cn-hangzhou.aliyuncs.com/2.15/jar-analyzer-2.15-windows-full.zip)
-- [jar-analyzer-2.15-windows-system.zip](https://jar-analyzer.oss-cn-hangzhou.aliyuncs.com/2.15/jar-analyzer-2.15-windows-system.zip)
-
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
@@ -87,12 +75,6 @@
 - [其他] 更新 `flatlaf` 和 `asm` 到最新版
 - [其他] 更新 `maven` 插件到最新版
 
-考虑到新版本体积越来越大，需要加入国内下载地址（自费购买`OSS`节省使用）
-
-- [jar-analyzer-2.14.zip](https://jar-analyzer.oss-cn-hangzhou.aliyuncs.com/2.14/jar-analyzer-2.14.zip)
-- [jar-analyzer-2.14-windows-full.zip](https://jar-analyzer.oss-cn-hangzhou.aliyuncs.com/2.14/jar-analyzer-2.14-windows-full.zip)
-- [jar-analyzer-2.14-windows-system.zip](https://jar-analyzer.oss-cn-hangzhou.aliyuncs.com/2.14/jar-analyzer-2.14-windows-system.zip)
-
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
@@ -117,12 +99,6 @@
 - [功能] 提供 `Windows` 版本的启动 `EXE`
 - [其他] 完善和优化 `README` 文档
 - [RASP] 优化 `RASP` 相关的功能和文件名长度
-
-考虑到新版本体积越来越大，需要加入国内下载地址（自费购买`OSS`节省使用）
-
-- [jar-analyzer-2.13.zip](https://jar-analyzer.oss-cn-hangzhou.aliyuncs.com/2.13/jar-analyzer-2.13.zip)
-- [jar-analyzer-2.13-windows-full.zip](https://jar-analyzer.oss-cn-hangzhou.aliyuncs.com/2.13/jar-analyzer-2.13-windows-full.zip)
-- [jar-analyzer-2.13-windows-system.zip](https://jar-analyzer.oss-cn-hangzhou.aliyuncs.com/2.13/jar-analyzer-2.13-windows-system.zip)
 
 感谢以下用户的贡献:
 
@@ -156,12 +132,6 @@
 - [其他] 更新内置 `JRE` 版本为 `zulu-8u402`
 - [其他] 更新发布类型（删除 `linux` 版增加 `zip` 版）
 - [其他] 完善 `CI` 对所有子项目进行测试
-
-考虑到新版本体积越来越大，需要加入国内下载地址（自费购买`OSS`节省使用）
-
-- [jar-analyzer-2.12.zip](https://jar-analyzer.oss-cn-hangzhou.aliyuncs.com/2.12/jar-analyzer-2.12.zip)
-- [jar-analyzer-2.12-windows-full.zip](https://jar-analyzer.oss-cn-hangzhou.aliyuncs.com/2.12/jar-analyzer-2.12-windows-full.zip)
-- [jar-analyzer-2.12-windows-system.zip](https://jar-analyzer.oss-cn-hangzhou.aliyuncs.com/2.12/jar-analyzer-2.12-windows-system.zip)
 
 感谢以下用户的贡献:
 

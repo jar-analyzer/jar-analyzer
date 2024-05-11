@@ -29,7 +29,7 @@
 
 有问题和建议欢迎提 `issue`
 
-[前往下载 (已提供国内下载地址)](https://github.com/jar-analyzer/jar-analyzer/releases/latest)
+[前往下载](https://github.com/jar-analyzer/jar-analyzer/releases/latest)
 
 `Jar Analyzer` 的用途
 

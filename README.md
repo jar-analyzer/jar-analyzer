@@ -27,6 +27,8 @@
 - 自从 `2.16` 版本后支持一键导出反编译 `JAVA` 代码
 - 自从 `2.17` 版本后支持字节码级别的远程调试
 
+![](img/0035.png)
+
 更多的功能正在开发中
 
 有问题和建议欢迎提 `issue`
@@ -50,19 +52,23 @@
 虽然 `Jar Analyzer` 使用了简易的 `RASP` 进行保护，但仍然可能存在安全漏洞，我们会第一时间进行修复
 
 漏洞公告
+
 - [\[GHSA-43rf-3hm4-hv5f\] 反编译恶意的 CLASS 文件可能导致程序不可用](https://github.com/jar-analyzer/jar-analyzer/security/advisories/GHSA-43rf-3hm4-hv5f)
 - [\[GHSA-x5h2-78p8-w943\] Jar Analyzer 2.13 版本之前存在 SQL 注入漏洞](https://github.com/jar-analyzer/jar-analyzer/security/advisories/GHSA-x5h2-78p8-w943)
 - [\[GHSA-jmcg-r2c5-7m29\] Jar Analyzer 存在 ZIP SLIP 漏洞（最坏情况可导致 RCE 风险）](https://github.com/jar-analyzer/jar-analyzer/security/advisories/GHSA-jmcg-r2c5-7m29)
 
 文章
+
 - [利用 jar-analyzer 分析 CVE-2022-42889](https://zone.huoxian.cn/d/2884-jar-analyzer-cve-2022-42889)
 
 视频
+
 - [Jar Analyzer V2 教程（早期版本）](https://www.bilibili.com/video/BV1ac411S7q4)
 
 ## BUILD
 
 编译和构建过程如下：
+
 1. 构建核心项目 `mvn -B clean package -DskipTests --file pom.xml`
 2. 构建`agent`子项目 `mvn -B clean package -DskipTests --file agent\pom.xml`
 3. 构建命令行子项目 `mvn -B clean package -DskipTests --file class-searcher\pom.xml`

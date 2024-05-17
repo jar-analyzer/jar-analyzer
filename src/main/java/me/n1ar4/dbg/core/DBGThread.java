@@ -3,10 +3,10 @@ package me.n1ar4.dbg.core;
 import com.sun.jdi.*;
 import com.sun.jdi.event.*;
 import me.n1ar4.dbg.gui.TableManager;
-import me.n1ar4.dbg.log.LogManager;
-import me.n1ar4.dbg.log.Logger;
 import me.n1ar4.dbg.parser.CoreParser;
 import me.n1ar4.dbg.parser.MethodObject;
+import me.n1ar4.log.LogManager;
+import me.n1ar4.log.Logger;
 
 import java.util.ArrayList;
 import java.util.List;

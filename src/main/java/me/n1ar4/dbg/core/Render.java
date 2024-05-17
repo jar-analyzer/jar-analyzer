@@ -6,11 +6,11 @@ import com.sun.jdi.StackFrame;
 import com.sun.jdi.Value;
 import me.n1ar4.dbg.gui.MainForm;
 import me.n1ar4.dbg.gui.TableManager;
-import me.n1ar4.dbg.log.LogManager;
-import me.n1ar4.dbg.log.Logger;
 import me.n1ar4.dbg.parser.MethodObject;
 import me.n1ar4.dbg.parser.OpcodeObject;
 import me.n1ar4.dbg.utils.ASMUtil;
+import me.n1ar4.log.LogManager;
+import me.n1ar4.log.Logger;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

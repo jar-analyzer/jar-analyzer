@@ -6,8 +6,8 @@ import com.sun.jdi.request.BreakpointRequest;
 import com.sun.jdi.request.ClassPrepareRequest;
 import com.sun.jdi.request.EventRequest;
 import com.sun.jdi.request.StepRequest;
-import me.n1ar4.dbg.log.LogManager;
-import me.n1ar4.dbg.log.Logger;
+import me.n1ar4.log.LogManager;
+import me.n1ar4.log.Logger;
 
 import java.util.concurrent.LinkedBlockingQueue;
 

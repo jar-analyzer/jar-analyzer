@@ -14,7 +14,7 @@ public class MenuUtil {
             JMenu newMenu = new JMenu("new");
 
             JMenuItem connectItem = new JMenuItem("connect");
-            connectItem.addActionListener(e->{
+            connectItem.addActionListener(e -> {
                 ConnectForm.start();
             });
             newMenu.add(connectItem);

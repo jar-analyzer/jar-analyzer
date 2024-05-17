@@ -3,8 +3,8 @@ package me.n1ar4.dbg.gui;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import me.n1ar4.dbg.core.DBGRunner;
-import me.n1ar4.dbg.log.LogManager;
-import me.n1ar4.dbg.log.Logger;
+import me.n1ar4.log.LogManager;
+import me.n1ar4.log.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -64,8 +64,6 @@ public class ConnectForm {
             String ip = ipText.getText();
             String port = portText.getText();
             String main = mainClassText.getText();
-            // TODO DEBUG
-            main = "test.Demo";
             if (ip.isEmpty() || port.isEmpty()) {
                 JOptionPane.showMessageDialog(this.masterPanel,
                         "ip or port is null");

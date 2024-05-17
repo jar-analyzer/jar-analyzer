@@ -30,7 +30,7 @@ public class TableManager {
         return jumpLocation;
     }
 
-    public static void reset(){
+    public static void reset() {
         jumpLocation = -1;
         jumpRow = -1;
     }

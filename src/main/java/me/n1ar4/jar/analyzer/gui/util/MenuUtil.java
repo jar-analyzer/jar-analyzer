@@ -96,7 +96,6 @@ public class MenuUtil {
     public static JMenuBar createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(createAboutMenu());
-        menuBar.add(createVersionMenu());
         menuBar.add(createConfigMenu());
         menuBar.add(language());
         menuBar.add(loadRemote());
@@ -116,7 +115,7 @@ public class MenuUtil {
     }
 
     private static JMenu exportJava() {
-        JMenu export = new JMenu("export java");
+        JMenu export = new JMenu("export");
         JMenuItem proxyItem = new JMenuItem("decompile and export");
         proxyItem.setIcon(IconManager.javaIcon);
         proxyItem.addActionListener(e -> ExportForm.start());
@@ -240,24 +239,14 @@ public class MenuUtil {
                     logger.error("error: {}", ex.toString());
                 }
             });
-
-            return aboutMenu;
-        } catch (Exception ex) {
-            return null;
-        }
-    }
-
-    private static JMenu createVersionMenu() {
-        try {
-            JMenu verMenu = new JMenu("version");
             JMenuItem jarItem = new JMenuItem("version: " + Const.version);
-            InputStream is = MainForm.class.getClassLoader().getResourceAsStream("img/ver.png");
+            is = MainForm.class.getClassLoader().getResourceAsStream("img/ver.png");
             if (is == null) {
                 return null;
             }
-            ImageIcon imageIcon = new ImageIcon(ImageIO.read(is));
+            imageIcon = new ImageIcon(ImageIO.read(is));
             jarItem.setIcon(imageIcon);
-
+            aboutMenu.add(jarItem);
             JMenuItem updateItem = new JMenuItem("changelogs");
             is = MainForm.class.getClassLoader().getResourceAsStream("img/update.png");
             if (is == null) {
@@ -283,7 +272,7 @@ public class MenuUtil {
                     logger.error("error: {}", ex.toString());
                 }
             });
-
+            aboutMenu.add(updateItem);
             JMenuItem downItem = new JMenuItem("check update");
             is = MainForm.class.getClassLoader().getResourceAsStream("img/normal.png");
             if (is == null) {
@@ -305,14 +294,10 @@ public class MenuUtil {
                         "Latest Version", ver);
                 JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(), output);
             });
-
-            verMenu.add(jarItem);
-            verMenu.add(updateItem);
-            verMenu.add(downItem);
-            return verMenu;
+            aboutMenu.add(downItem);
+            return aboutMenu;
         } catch (Exception ex) {
-            logger.error("error: {}", ex.toString());
+            return null;
         }
-        return null;
     }
 }

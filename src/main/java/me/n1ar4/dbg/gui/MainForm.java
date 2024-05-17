@@ -114,7 +114,7 @@ public class MainForm {
 
         frame.setJMenuBar(MenuUtil.createMenuBar());
         frame.setContentPane(instance.masterPanel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         frame.pack();
         frame.setResizable(true);
         frame.setVisible(true);

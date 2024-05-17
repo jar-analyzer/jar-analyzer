@@ -97,6 +97,7 @@ public class MenuUtil {
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(createAboutMenu());
         menuBar.add(createVersionMenu());
+        menuBar.add(createDebug());
         menuBar.add(createConfigMenu());
         menuBar.add(language());
         menuBar.add(loadRemote());
@@ -104,6 +105,15 @@ public class MenuUtil {
         menuBar.add(createProxy());
         menuBar.add(createGames());
         return menuBar;
+    }
+
+    private static JMenu createDebug() {
+        JMenu proxy = new JMenu("debug");
+        JMenuItem proxyItem = new JMenuItem("open bytecode debug");
+        proxyItem.setIcon(IconManager.javaIcon);
+        proxyItem.addActionListener(e -> me.n1ar4.dbg.gui.MainForm.start());
+        proxy.add(proxyItem);
+        return proxy;
     }
 
     private static JMenu createProxy() {

@@ -84,13 +84,13 @@ public class JNIUtil {
      *
      * @param filename dll/so file name in resources
      */
-    public static void extractDllSo(String filename, String dir, boolean load) {
+    public static boolean extractDllSo(String filename, String dir, boolean load) {
         InputStream is = null;
         try {
             is = JNIUtil.class.getClassLoader().getResourceAsStream(filename);
             if (is == null) {
                 System.out.println("[-] error dll name");
-                return;
+                return false;
             }
             if (dir == null || dir.isEmpty()) {
                 dir = Const.tempDir;
@@ -114,12 +114,15 @@ public class JNIUtil {
                 }
                 Files.write(outputFile, buffer.toByteArray());
                 System.out.println("[*] write file: " + outputFile.toAbsolutePath());
+                return true;
             }
             if (load) {
                 boolean success = loadLib(outputFile.toAbsolutePath().toString());
                 if (!success) {
                     System.out.println("[-] load lib failed");
+                    return false;
                 }
+                return true;
             }
         } catch (Exception ex) {
             System.out.printf("[-] extract file error: %s", ex);
@@ -132,5 +135,6 @@ public class JNIUtil {
                 }
             }
         }
+        return false;
     }
 }

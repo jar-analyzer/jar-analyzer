@@ -49,9 +49,11 @@ public class Application {
 
         // CHECK WINDOWS
         if (OSUtil.isWindows()) {
-            JNIUtil.extractDllSo("console.dll", null, true);
-            ConsoleUtils.setWindowsColorSupport();
-            logger.info("check windows console finish");
+            boolean ok = JNIUtil.extractDllSo("console.dll", null, true);
+            if (ok) {
+                ConsoleUtils.setWindowsColorSupport();
+                logger.info("check windows console finish");
+            }
         }
 
         JCommander commander = JCommander.newBuilder()

@@ -7,6 +7,7 @@ import me.n1ar4.jar.analyzer.plugins.encoder.EncodeUtilForm;
 import me.n1ar4.jar.analyzer.plugins.listener.ListenUtilForm;
 import me.n1ar4.jar.analyzer.plugins.obfuscate.ObfuscateForm;
 import me.n1ar4.jar.analyzer.plugins.repeater.HttpUtilForm;
+import me.n1ar4.jar.analyzer.plugins.serutil.SerUtilForm;
 import me.n1ar4.jar.analyzer.plugins.sqlite.SQLiteForm;
 import me.n1ar4.jar.analyzer.starter.Const;
 
@@ -37,5 +38,7 @@ public class PluginsAction {
         MainForm.getInstance().getStartELSearchButton().addActionListener(e -> startELForm());
 
         MainForm.getInstance().getObfBtn().addActionListener(e -> ObfuscateForm.start());
+
+        MainForm.getInstance().getSerUtilBtn().addActionListener(e -> SerUtilForm.start());
     }
 }

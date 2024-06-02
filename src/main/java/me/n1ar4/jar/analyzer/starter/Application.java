@@ -51,8 +51,11 @@ public class Application {
         if (OSUtil.isWindows()) {
             boolean ok = JNIUtil.extractDllSo("console.dll", null, true);
             if (ok) {
-                ConsoleUtils.setWindowsColorSupport();
-                logger.info("check windows console finish");
+                try {
+                    ConsoleUtils.setWindowsColorSupport();
+                    logger.info("check windows console finish");
+                } catch (Exception ignored) {
+                }
             }
         }
 

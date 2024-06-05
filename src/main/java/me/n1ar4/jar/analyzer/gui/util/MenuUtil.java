@@ -281,18 +281,20 @@ public class MenuUtil {
             imageIcon = new ImageIcon(ImageIO.read(is));
             downItem.setIcon(imageIcon);
             downItem.addActionListener(e -> {
-                HttpResponse resp = Y4Client.INSTANCE.get(Const.checkUpdateUrl);
-                String body = new String(resp.getBody());
-                if (body.isEmpty()) {
-                    return;
-                }
-                String ver = body.trim();
-                LogUtil.log("latest: " + ver);
-                String output;
-                output = String.format("%s: %s\n%s: %s",
-                        "Current Version", Const.version,
-                        "Latest Version", ver);
-                JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(), output);
+                new Thread(() -> {
+                    HttpResponse resp = Y4Client.INSTANCE.get(Const.checkUpdateUrl);
+                    String body = new String(resp.getBody());
+                    if (body.isEmpty()) {
+                        return;
+                    }
+                    String ver = body.trim();
+                    LogUtil.log("latest: " + ver);
+                    String output;
+                    output = String.format("%s: %s\n%s: %s",
+                            "Current Version", Const.version,
+                            "Latest Version", ver);
+                    JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(), output);
+                }).start();
             });
             aboutMenu.add(downItem);
             return aboutMenu;

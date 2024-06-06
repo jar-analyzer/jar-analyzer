@@ -9,7 +9,7 @@ public interface Const {
     int AnalyzeASMOptions = ClassReader.EXPAND_FRAMES;
     String app = "Jar Analyzer V2 - 4ra1n";
     String version = "2.17";
-    String checkUpdateUrl = "https://jar-analyzer.oss-cn-hangzhou.aliyuncs.com/version.txt";
+    String checkUpdateUrl = "https://jar-analyzer.oss-cn-hangzhou.aliyuncs.com/jar-analyzer/version.txt";
     String authorUrl = "https://github.com/4ra1n";
     String projectUrl = "https://github.com/jar-analyzer/jar-analyzer";
     String newIssueUrl = "https://github.com/jar-analyzer/jar-analyzer/issues/new";

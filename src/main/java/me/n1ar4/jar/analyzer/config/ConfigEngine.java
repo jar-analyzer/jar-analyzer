@@ -48,10 +48,6 @@ public class ConfigEngine {
             obj.setTotalClass(properties.getProperty("total-class"));
             obj.setTotalJar(properties.getProperty("total-jar"));
             obj.setTotalMethod(properties.getProperty("total-method"));
-            obj.setGptHost(properties.getProperty("gpt-host"));
-            obj.setGptKey(properties.getProperty("gpt-key"));
-            obj.setGptProxyHost(properties.getProperty("gpt-proxy-host"));
-            obj.setGptProxyPort(properties.getProperty("gpt-proxy-port"));
             return obj;
         } catch (Exception ex) {
             logger.error("parse config error: {}", ex.toString());
@@ -70,14 +66,6 @@ public class ConfigEngine {
             properties.setProperty("total-class", configFile.getTotalClass());
             properties.setProperty("total-jar", configFile.getTotalJar());
             properties.setProperty("total-method", configFile.getTotalMethod());
-            properties.setProperty("gpt-host",
-                    configFile.getGptHost() == null ? "null" : configFile.getGptHost());
-            properties.setProperty("gpt-key",
-                    configFile.getGptKey() == null ? "null" : configFile.getGptKey());
-            properties.setProperty("gpt-proxy-host",
-                    configFile.getGptProxyHost() == null ? "null" : configFile.getGptProxyHost());
-            properties.setProperty("gpt-proxy-port",
-                    configFile.getGptProxyPort() == null ? "null" : configFile.getGptProxyPort());
             properties.store(Files.newOutputStream(configPath), null);
         } catch (Exception ex) {
             logger.error("save config error: {}", ex.toString());

@@ -161,6 +161,10 @@
 
 [文档](doc/README-thanks.md)
 
+## API
+
+[文档](doc/README-api.md)
+
 ## Thanks
 
 <img src="https://resources.jetbrains.com/storage/products/company/brand/logos/IntelliJ_IDEA.svg" alt="IntelliJ IDEA logo.">

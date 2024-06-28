@@ -44,6 +44,8 @@
         <dom4j.version>2.1.4</dom4j.version>
         <spring.version>5.3.37</spring.version>
         <okhttp3.version>4.12.0</okhttp3.version>
+        <nano.version>2.3.1</nano.version>
+        <fastjson.version>2.0.51</fastjson.version>
         <!-- Maven Build Version -->
         <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-resources-plugin -->
         <maven.resources.version>3.3.1</maven.resources.version>
@@ -124,9 +126,19 @@
             <version>${slf4j.simple.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.alibaba.fastjson2</groupId>
+            <artifactId>fastjson2</artifactId>
+            <version>${fastjson.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
             <version>${okhttp3.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.nanohttpd</groupId>
+            <artifactId>nanohttpd</artifactId>
+            <version>${nano.version}</version>
         </dependency>
         <dependency>
             <groupId>tools</groupId>

@@ -5,6 +5,8 @@ public class GlobalOptions {
     public static final int ENGLISH = 2;
     private static int LANGUAGE;
 
+    private static int SERVER_PORT = 10032;
+
     static {
         LANGUAGE = ENGLISH;
     }
@@ -18,5 +20,13 @@ public class GlobalOptions {
 
     public static int getLang() {
         return LANGUAGE;
+    }
+
+    public static int getServerPort() {
+        return SERVER_PORT;
+    }
+
+    public static void setServerPort(int serverPort) {
+        SERVER_PORT = serverPort;
     }
 }

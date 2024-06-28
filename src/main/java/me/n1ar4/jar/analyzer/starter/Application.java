@@ -5,8 +5,10 @@ import me.n1ar4.jar.analyzer.cli.BuildCmd;
 import me.n1ar4.jar.analyzer.cli.Client;
 import me.n1ar4.jar.analyzer.cli.SearcherCmd;
 import me.n1ar4.jar.analyzer.cli.StartCmd;
+import me.n1ar4.jar.analyzer.gui.GlobalOptions;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.JarAnalyzerLaf;
+import me.n1ar4.jar.analyzer.server.HttpServer;
 import me.n1ar4.jar.analyzer.utils.ConsoleUtils;
 import me.n1ar4.jar.analyzer.utils.JNIUtil;
 import me.n1ar4.jar.analyzer.utils.OSUtil;
@@ -87,6 +89,16 @@ public class Application {
             System.out.println("set y4-log io-streams");
             System.setErr(new LoggingStream(System.err, logger));
             System.err.println("set y4-log err-streams");
+
+            int port = startCmd.getPort();
+            if (port < 1 || port > 65535) {
+                port = 10032;
+            }
+            GlobalOptions.setServerPort(port);
+            logger.info("set server port {}", port);
+            // START HTTP SERVER
+            new Thread(HttpServer::start).start();
+
             // START GUI
             MainForm.start();
         } catch (Exception ex) {

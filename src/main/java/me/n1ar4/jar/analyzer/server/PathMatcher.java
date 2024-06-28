@@ -16,6 +16,9 @@ public class PathMatcher {
         handlers.put("/api/get_abs_path",new GetAbsPathHandler());
         handlers.put("/api/get_class_by_class",new GetClassByClassHandler());
         handlers.put("/api/get_methods_by_class", new GetMethodsByClassHandler());
+        handlers.put("/api/get_callers",new GetCallersHandler());
+        handlers.put("/api/get_callers_like",new GetCallersLikeHandler());
+        handlers.put("/api/get_callee",new GetCalleeHandler());
     }
 
     public static NanoHTTPD.Response handleReq(NanoHTTPD.IHTTPSession session) {

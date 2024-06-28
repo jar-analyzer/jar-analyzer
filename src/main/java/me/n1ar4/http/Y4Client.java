@@ -15,7 +15,6 @@ import java.util.concurrent.TimeUnit;
 public class Y4Client {
     private static final Logger logger = LogManager.getLogger();
     private OkHttpClient client;
-    public static final Y4Client CLIENT = new Y4Client();
     public static Map<String, String> baseHeaders = new HashMap<>();
 
     static {
@@ -24,10 +23,6 @@ public class Y4Client {
     }
 
     public static final Y4Client INSTANCE = new Y4Client();
-
-    public static void refresh() {
-        CLIENT.reConfig();
-    }
 
     public Y4Client() {
         this.reConfig();
@@ -41,16 +36,6 @@ public class Y4Client {
                 .build();
     }
 
-    public Y4Client(int timeout) {
-        Globals.TIMEOUT_SECOND = timeout;
-        this.reConfig();
-    }
-
-    public Y4Client(int timeout, String proxyHost, int proxyPort) {
-        this(timeout);
-        Proxy.setSocks(proxyHost, String.valueOf(proxyPort));
-    }
-
     public HttpResponse get(String url) {
         try {
             Request.Builder requestBuilder = new Request.Builder()
@@ -61,13 +46,6 @@ public class Y4Client {
             logger.error("http get error: {}", ex.toString());
             return null;
         }
-    }
-
-    public HttpResponse getWithHeaders(String url, Map<String, String> headers) throws IOException {
-        Request.Builder requestBuilder = new Request.Builder()
-                .url(url)
-                .get();
-        return getHttpResponse(headers, requestBuilder);
     }
 
     public HttpResponse post(String url, Map<String, String> headers, RequestBody body) throws IOException {

@@ -4,8 +4,6 @@ import java.net.URL;
 import java.util.Map;
 
 public class HttpRequest {
-    public static final String DefaultUA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) " +
-            "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36";
     private String urlString;
     private URL url;
     private Map<String, String> headers;

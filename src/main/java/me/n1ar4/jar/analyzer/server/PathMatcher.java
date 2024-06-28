@@ -1,9 +1,7 @@
 package me.n1ar4.jar.analyzer.server;
 
 import fi.iki.elonen.NanoHTTPD;
-import me.n1ar4.jar.analyzer.server.handler.GetMethodsByClassHandler;
-import me.n1ar4.jar.analyzer.server.handler.GetJarByClassHandler;
-import me.n1ar4.jar.analyzer.server.handler.GetJarListHandler;
+import me.n1ar4.jar.analyzer.server.handler.*;
 import me.n1ar4.jar.analyzer.server.handler.base.HttpHandler;
 
 import java.util.HashMap;
@@ -15,6 +13,8 @@ public class PathMatcher {
     static {
         handlers.put("/api/get_jars_list", new GetJarListHandler());
         handlers.put("/api/get_jar_by_class", new GetJarByClassHandler());
+        handlers.put("/api/get_abs_path",new GetAbsPathHandler());
+        handlers.put("/api/get_class_by_class",new GetClassByClassHandler());
         handlers.put("/api/get_methods_by_class", new GetMethodsByClassHandler());
     }
 

@@ -809,6 +809,7 @@ public class MainForm {
                 instance.spelLabel.setText("一个 SPEL 表达式搜索工具");
                 instance.startELSearchButton.setText("开始表达式搜索");
                 instance.obfLabel.setText("一个 Java 序列化数据混淆工具");
+                instance.serUtilLabel.setText("一个分析 Java 序列化数据中字节码的工具");
             } else if (GlobalOptions.getLang() == GlobalOptions.ENGLISH) {
                 instance.codePanel.setBorder(
                         BorderFactory.createTitledBorder(null,
@@ -906,6 +907,7 @@ public class MainForm {
                 instance.spelLabel.setText("A tool for Spring EL search");
                 instance.startELSearchButton.setText("Start EL Search");
                 instance.obfLabel.setText("A tool for obfuscate java serialization data");
+                instance.serUtilLabel.setText("A tool for bytecodes in Java Serialization Data");
             } else {
                 throw new RuntimeException("invalid language");
             }

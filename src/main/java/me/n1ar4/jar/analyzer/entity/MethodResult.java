@@ -1,5 +1,6 @@
 package me.n1ar4.jar.analyzer.entity;
 
+import com.alibaba.fastjson2.annotation.JSONField;
 import me.n1ar4.jar.analyzer.utils.ASMUtil;
 
 import java.nio.file.Path;
@@ -11,8 +12,10 @@ public class MethodResult {
     private String methodDesc;
     private int isStaticInt;
     private int accessInt;
+    @JSONField(serialize = false)
     private Path classPath;
     // for spring
+    @JSONField(serialize = false)
     private String path;
 
     public String getPath() {

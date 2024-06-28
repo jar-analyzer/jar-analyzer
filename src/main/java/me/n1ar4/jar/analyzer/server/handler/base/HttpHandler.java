@@ -1,4 +1,4 @@
-package me.n1ar4.jar.analyzer.server;
+package me.n1ar4.jar.analyzer.server.handler.base;
 
 import fi.iki.elonen.NanoHTTPD;
 

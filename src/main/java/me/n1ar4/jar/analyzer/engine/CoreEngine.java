@@ -32,6 +32,9 @@ public class CoreEngine {
             }
         }
         factory = SqlSessionFactoryUtil.sqlSessionFactory;
+        // 开启 二级缓存
+        // 因为数据库不涉及修改操作 仅查询 不会变化 开二级缓存没有问题
+        factory.getConfiguration().setCacheEnabled(true);
         logger.info("init core engine finish");
     }
 

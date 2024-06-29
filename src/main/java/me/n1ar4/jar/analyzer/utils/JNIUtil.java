@@ -114,7 +114,6 @@ public class JNIUtil {
                 }
                 Files.write(outputFile, buffer.toByteArray());
                 System.out.println("[*] write file: " + outputFile.toAbsolutePath());
-                return true;
             }
             if (load) {
                 boolean success = loadLib(outputFile.toAbsolutePath().toString());
@@ -122,8 +121,8 @@ public class JNIUtil {
                     System.out.println("[-] load lib failed");
                     return false;
                 }
-                return true;
             }
+            return true;
         } catch (Exception ex) {
             System.out.printf("[-] extract file error: %s", ex);
         } finally {

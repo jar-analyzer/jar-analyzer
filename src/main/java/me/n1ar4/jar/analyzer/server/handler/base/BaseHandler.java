@@ -30,18 +30,33 @@ public class BaseHandler {
         return d.get(0);
     }
 
+    public String getStr(NanoHTTPD.IHTTPSession session) {
+        List<String> d = session.getParameters().get("str");
+        if (d == null || d.isEmpty()) {
+            return "";
+        }
+        return d.get(0);
+    }
+
     public NanoHTTPD.Response buildJSON(String json) {
-        return NanoHTTPD.newFixedLengthResponse(
-                NanoHTTPD.Response.Status.OK,
-                "application/json",
-                json);
+        if (json == null || json.isEmpty()) {
+            return NanoHTTPD.newFixedLengthResponse(
+                    NanoHTTPD.Response.Status.OK,
+                    "application/json",
+                    "{}");
+        } else {
+            return NanoHTTPD.newFixedLengthResponse(
+                    NanoHTTPD.Response.Status.OK,
+                    "application/json",
+                    json);
+        }
     }
 
     public NanoHTTPD.Response error() {
         return NanoHTTPD.newFixedLengthResponse(
                 NanoHTTPD.Response.Status.INTERNAL_ERROR,
-                "text/plain",
-                "JAR ANALYZER SERVER\n" +
-                        "CORE ENGINE IS NULL");
+                "text/html",
+                "<h1>JAR ANALYZER SERVER</h1>" +
+                        "<h2>CORE ENGINE IS NULL</h2>");
     }
 }

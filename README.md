@@ -135,6 +135,8 @@
 
 `Jar Analyzer 2.18` 版本以后支持 `HTTP API`
 
+![](img/0038.png)
+
 ![](img/0037.png)
 
 ## 快捷键
@@ -167,6 +169,8 @@
 [文档](doc/README-thanks.md)
 
 ## API
+
+![](img/0038.png)
 
 [文档](doc/README-api.md)
 

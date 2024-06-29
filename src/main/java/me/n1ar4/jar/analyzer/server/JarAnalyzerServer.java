@@ -12,7 +12,7 @@ public class JarAnalyzerServer extends NanoHTTPD {
         super("0.0.0.0", GlobalOptions.getServerPort());
         try {
             start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
-            logger.info("start http server at: {}", getListeningPort());
+            System.out.println("API SERVER: http://127.0.0.1:" + GlobalOptions.getServerPort());
         } catch (Exception e) {
             logger.error("start http server failed: {}", e);
         }

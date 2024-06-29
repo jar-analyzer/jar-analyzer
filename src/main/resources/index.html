@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jar Analyzer API</title>
+    <link href="/static/boot.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h1 class="mt-5 mb-4">Jar Analyzer API</h1>
+    <p>现在 Jar Analyzer 分析完成后提供 HTTP API 方式进行查询。</p>
+    <p>默认绑定 0.0.0.0:10032 你可以通过 gui --port [port] 指定参数。</p>
+
+    <h2 class="mt-5">API 列表</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>API</th>
+            <th>参数</th>
+            <th>功能</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>/api/get_jars_list</td>
+            <td>/</td>
+            <td>查询所有输入的 JAR 文件</td>
+        </tr>
+        <tr>
+            <td>/api/get_jar_by_class</td>
+            <td>class=${class-name}</td>
+            <td>根据输入的完整类名查询归属 JAR 文件</td>
+        </tr>
+        <tr>
+            <td>/api/get_callers</td>
+            <td>class=${class-name}&method=${method}&desc=${desc}</td>
+            <td>根据方法信息找到所有调用者</td>
+        </tr>
+        <tr>
+            <td>/api/get_callers_like</td>
+            <td>class=${class-name}&method=${method}&desc=${desc}</td>
+            <td>根据方法信息模糊找到所有调用者</td>
+        </tr>
+        <tr>
+            <td>/api/get_callee</td>
+            <td>class=${class-name}&method=${method}&desc=${desc}</td>
+            <td>根据方法信息找到所有被调用者</td>
+        </tr>
+        <tr>
+            <td>/api/get_method</td>
+            <td>class=${class-name}&method=${method}&desc=${desc}</td>
+            <td>根据方法信息查询具体方法信息</td>
+        </tr>
+        <tr>
+            <td>/api/get_method_like</td>
+            <td>class=${class-name}&method=${method}&desc=${desc}</td>
+            <td>根据方法信息模糊查找方法信息</td>
+        </tr>
+        <tr>
+            <td>/api/get_methods_by_str</td>
+            <td>str=${str}</td>
+            <td>查询包含指定字符串的方法信息</td>
+        </tr>
+        <tr>
+            <td>/api/get_methods_by_class</td>
+            <td>class=${class-name}</td>
+            <td>查询 CLASS 中的所有方法</td>
+        </tr>
+        <tr>
+            <td>/api/get_impls</td>
+            <td>class=${class-name}&method=${method}&desc=${desc}</td>
+            <td>查询方法的所有子类和实现</td>
+        </tr>
+        <tr>
+            <td>/api/get_super_impls</td>
+            <td>class=${class-name}&method=${method}&desc=${desc}</td>
+            <td>查询方法的所有父类和接口</td>
+        </tr>
+        <tr>
+            <td>/api/get_all_spring_controllers</td>
+            <td>/</td>
+            <td>查询所有的 SPRING CONTROLLER</td>
+        </tr>
+        <tr>
+            <td>/api/get_spring_mappings</td>
+            <td>class=${class-name}</td>
+            <td>根据类名查询所有的 SPRING MAPPING</td>
+        </tr>
+        <tr>
+            <td>/api/get_abs_path</td>
+            <td>class=${class-name}</td>
+            <td>得到 CLASS 文件的本地绝对路径</td>
+        </tr>
+        <tr>
+            <td>/api/get_class_by_class</td>
+            <td>class=${class-name}</td>
+            <td>得到 CLASS 的详细信息</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script src="/static/boot.js"></script>
+</body>
+</html>

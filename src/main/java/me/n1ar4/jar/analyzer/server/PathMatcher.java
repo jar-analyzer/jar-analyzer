@@ -11,6 +11,13 @@ public class PathMatcher {
     public static Map<String, HttpHandler> handlers = new HashMap<>();
 
     static {
+        IndexHandler handler = new IndexHandler();
+        handlers.put("/index", handler);
+        handlers.put("/index.html", handler);
+        handlers.put("/index.jsp", handler);
+        handlers.put("/static/boot.js", new JSHandler());
+        handlers.put("/static/boot.css", new CSSHandler());
+
         handlers.put("/api/get_jars_list", new GetJarListHandler());
         handlers.put("/api/get_jar_by_class", new GetJarByClassHandler());
 
@@ -41,10 +48,7 @@ public class PathMatcher {
                 return entry.getValue().handle(session);
             }
         }
-        return NanoHTTPD.newFixedLengthResponse(
-                NanoHTTPD.Response.Status.NOT_FOUND,
-                "text/html",
-                "<h1>JAR ANALYZER SERVER</h1>" +
-                        "<h2>NOT FOUND</h2>");
+        IndexHandler handler = new IndexHandler();
+        return handler.handle(session);
     }
 }

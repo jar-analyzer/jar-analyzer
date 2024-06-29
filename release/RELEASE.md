@@ -12,4 +12,4 @@ Steps:
 - Check `build.py` VERSION
 - Check `build.yml` VERSION
 - Github build
-- Change `version.txt` on server
+- Change `version.txt` on `OSS Browser`

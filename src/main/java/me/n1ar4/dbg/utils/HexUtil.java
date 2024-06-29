@@ -12,6 +12,7 @@ public class HexUtil {
         }
         return new String(hexChars);
     }
+
     public static byte[] hexStringToBytes(String s) {
         int len = s.length();
         byte[] data = new byte[len / 2];

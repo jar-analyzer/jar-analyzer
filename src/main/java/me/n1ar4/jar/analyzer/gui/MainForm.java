@@ -891,7 +891,7 @@ public class MainForm {
                 instance.springLabel.setText(" Analyze Spring Controllers and Mappings in Jar/Jars");
                 instance.refreshButton.setText("Refresh");
                 instance.javaVulLabel.setText("Quickly Search Commons Java Vulnerabilities Call");
-                
+
                 instance.sqliteLabel.setText("A tool for run custom query in SQLite database");
                 instance.encoderLabel.setText("A tool for encode/decode encrypt/decrypt operations");
                 instance.repeaterLabel.setText("A tool for sending http request and get response");

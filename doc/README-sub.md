@@ -55,14 +55,6 @@
 | Listener | javax.servlet.ServletRequestListener | requestInitialized | 
 | Valve    | org.apache.catalina.Valve            | invoke             |
 
-[代码](../src/main/java/me/n1ar4/http)
-
-### Y4-JSON
-
-该项目位于`me.n1ar4.y4json`中，这是一个模仿`Fastjson API`定义的简单的`JSON`序列化和反序列化库
-
-[代码](../src/main/java/me/n1ar4/y4json)
-
 ### Y4-LOG
 
 该项目位于`me.n1ar4.log`中，这是一个模仿`Log4j2 API`的日志库

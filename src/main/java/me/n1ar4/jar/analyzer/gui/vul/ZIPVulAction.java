@@ -12,7 +12,7 @@ public class ZIPVulAction {
         MainForm instance = MainForm.getInstance();
 
         instance.getUnzipButton().addActionListener(e -> {
-            if (MainForm.getEngine() == null) {
+            if (MainForm.getEngine() == null || !MainForm.getEngine().isEnabled()) {
                 return;
             }
 

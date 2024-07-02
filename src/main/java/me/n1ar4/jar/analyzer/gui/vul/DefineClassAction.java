@@ -8,7 +8,7 @@ public class DefineClassAction {
         MainForm instance = MainForm.getInstance();
 
         instance.getDefineClassButton().addActionListener(e -> {
-            if (MainForm.getEngine() == null) {
+            if (MainForm.getEngine() == null|| !MainForm.getEngine().isEnabled()) {
                 return;
             }
 

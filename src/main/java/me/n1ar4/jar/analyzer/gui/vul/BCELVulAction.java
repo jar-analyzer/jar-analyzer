@@ -8,7 +8,7 @@ public class BCELVulAction {
         MainForm instance = MainForm.getInstance();
 
         instance.getBCELLoadClassButton().addActionListener(e -> {
-            if (MainForm.getEngine() == null) {
+            if (MainForm.getEngine() == null|| !MainForm.getEngine().isEnabled()) {
                 return;
             }
 

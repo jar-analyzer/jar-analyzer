@@ -589,6 +589,7 @@ public class ShellForm {
         JFrame frame = new JFrame("tomcat-analyzer by 4ra1n");
         instance = new ShellForm();
         frame.setContentPane(instance.shellPanel);
+        frame.setLocationRelativeTo(MainForm.getInstance().getMasterPanel());
         frame.pack();
 
         frame.setResizable(false);

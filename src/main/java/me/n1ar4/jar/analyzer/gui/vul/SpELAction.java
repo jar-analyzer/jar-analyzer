@@ -8,7 +8,7 @@ public class SpELAction {
         MainForm instance = MainForm.getInstance();
 
         instance.getSpELGetValueButton().addActionListener(e -> {
-            if (MainForm.getEngine() == null) {
+            if (MainForm.getEngine() == null|| !MainForm.getEngine().isEnabled()) {
                 return;
             }
 

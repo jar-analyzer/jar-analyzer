@@ -2,6 +2,7 @@ package me.n1ar4.jar.analyzer.plugins.sqlite;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
+import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.SyntaxAreaHelper;
 import me.n1ar4.jar.analyzer.starter.Const;
 
@@ -81,6 +82,7 @@ public class SQLiteForm {
         sqlArea = SyntaxAreaHelper.buildSQL(instance.sqlPanel);
         frame.setContentPane(instance.masterPanel);
         frame.setResizable(false);
+        frame.setLocationRelativeTo(MainForm.getInstance().getMasterPanel());
         frame.pack();
         frame.setVisible(true);
     }

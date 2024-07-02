@@ -8,20 +8,49 @@ import me.n1ar4.jar.analyzer.core.mapper.*;
 import me.n1ar4.jar.analyzer.entity.ClassResult;
 import me.n1ar4.jar.analyzer.entity.MemberEntity;
 import me.n1ar4.jar.analyzer.entity.MethodResult;
+import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.utils.StringUtil;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class CoreEngine {
     private static final Logger logger = LogManager.getLogger();
     private final SqlSessionFactory factory;
+
+    public boolean isEnabled() {
+        Path dbPath = Paths.get(Const.dbFile);
+        if (!Files.exists(dbPath)) {
+            return false;
+        }
+        Path tempDir = Paths.get(Const.tempDir);
+        if (!Files.exists(tempDir)) {
+            return false;
+        }
+        if (!Files.isDirectory(tempDir)) {
+            return false;
+        }
+        try (Stream<Path> stream = Files.list(tempDir)) {
+            List<Path> files = stream.collect(Collectors.toList());
+            if (files.size() == 1 && "console.dll".equals(files.get(0).getFileName().toString())) {
+                return false;
+            } else {
+                return files.size() > 1;
+            }
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+            return false;
+        }
+    }
 
     public CoreEngine(ConfigFile configFile) {
         if (StringUtil.isNull(configFile.getDbPath())) {

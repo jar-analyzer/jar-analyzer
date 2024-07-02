@@ -4,6 +4,7 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import me.n1ar4.dbg.utils.HexUtil;
+import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
@@ -88,6 +89,7 @@ public class SerUtilForm {
         JFrame frame = new JFrame(Const.SerUtilForm);
         instance = new SerUtilForm();
         frame.setContentPane(instance.masterPanel);
+        frame.setLocationRelativeTo(MainForm.getInstance().getMasterPanel());
         frame.pack();
         frame.setVisible(true);
     }

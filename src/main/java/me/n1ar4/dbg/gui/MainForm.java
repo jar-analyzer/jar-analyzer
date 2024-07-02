@@ -114,7 +114,7 @@ public class MainForm {
 
         frame.setJMenuBar(MenuUtil.createMenuBar());
         frame.setContentPane(instance.masterPanel);
-
+        frame.setLocationRelativeTo(me.n1ar4.jar.analyzer.gui.MainForm.getInstance().getMasterPanel());
         frame.pack();
         frame.setResizable(true);
         frame.setVisible(true);

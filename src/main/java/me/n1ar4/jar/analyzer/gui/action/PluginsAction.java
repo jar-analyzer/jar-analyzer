@@ -16,6 +16,7 @@ public class PluginsAction {
     public static void startELForm() {
         JFrame frame = new JFrame(Const.SPELSearch);
         frame.setContentPane(new ELForm().elPanel);
+        frame.setLocationRelativeTo(MainForm.getInstance().getMasterPanel());
         frame.pack();
         frame.setResizable(false);
         frame.setVisible(true);

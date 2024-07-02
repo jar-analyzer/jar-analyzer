@@ -8,7 +8,7 @@ public class OGNLAction {
         MainForm instance = MainForm.getInstance();
 
         instance.getOGNLGetValueButton().addActionListener(e -> {
-            if (MainForm.getEngine() == null) {
+            if (MainForm.getEngine() == null|| !MainForm.getEngine().isEnabled()) {
                 return;
             }
 

@@ -77,6 +77,21 @@ public class ELForm {
 
         searchButton.addActionListener(e -> new Thread(() -> {
             logger.info("start el process");
+
+            // 2024/07/02 FIX BUG
+            if (MainForm.getEngine() == null) {
+                logger.warn("engine is null");
+                ELForm.setVal(0);
+                return;
+            }
+            if (!MainForm.getEngine().isEnabled()) {
+                logger.warn("engine is not enabled");
+                JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                        "engine is not enabled");
+                ELForm.setVal(0);
+                return;
+            }
+
             searchButton.setEnabled(false);
             ELForm.setVal(0);
 

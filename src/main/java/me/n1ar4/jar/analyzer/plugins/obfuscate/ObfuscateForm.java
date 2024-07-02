@@ -3,6 +3,7 @@ package me.n1ar4.jar.analyzer.plugins.obfuscate;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
+import me.n1ar4.jar.analyzer.gui.MainForm;
 
 import javax.swing.*;
 import java.awt.*;
@@ -60,6 +61,7 @@ public class ObfuscateForm {
     public static void start() {
         JFrame frame = new JFrame("ObfuscateForm");
         frame.setContentPane(new ObfuscateForm().mainPanel);
+        frame.setLocationRelativeTo(MainForm.getInstance().getMasterPanel());
         frame.pack();
         frame.setVisible(true);
     }

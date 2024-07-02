@@ -2,6 +2,7 @@ package me.n1ar4.jar.analyzer.plugins.listener;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
+import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.plugins.repeater.SocketUtil;
 
 import javax.swing.*;
@@ -56,6 +57,7 @@ public class ListenUtilForm {
         JFrame frame = new JFrame("Jar Analyzer V2 - Listener");
         frame.setContentPane(new ListenUtilForm().listenUtilPanel);
         frame.setResizable(false);
+        frame.setLocationRelativeTo(MainForm.getInstance().getMasterPanel());
         frame.pack();
         frame.setVisible(true);
     }

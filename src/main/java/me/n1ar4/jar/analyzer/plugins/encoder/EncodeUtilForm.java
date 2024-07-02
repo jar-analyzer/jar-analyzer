@@ -2,6 +2,7 @@ package me.n1ar4.jar.analyzer.plugins.encoder;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
+import me.n1ar4.jar.analyzer.gui.MainForm;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -150,6 +151,7 @@ public class EncodeUtilForm {
         JFrame frame = new JFrame("Jar Analyzer V2 - Encoder");
         frame.setContentPane(new EncodeUtilForm().encodeUtilPanel);
         frame.setResizable(false);
+        frame.setLocationRelativeTo(MainForm.getInstance().getMasterPanel());
         frame.pack();
         frame.setVisible(true);
     }

@@ -45,11 +45,10 @@
 - 场景6：你需要深入地分析某个方法中 `JVM` 指令和栈帧的状态（带有图形界面）
 - 场景7：你需要深入地分析某个方法的 `Control Flow Graph` （带有图形界面）
 - 场景8：你有一个 `Tomcat` 需要远程分析其中的 `Servlet/Filter/Listener` 信息
-- 场景9：查实现接口 `A` 继承接口 `B` 类注解 `C` 且方法名 `test` 方法内调用 `D` 类 `a` 方法的方法
+- 场景9：查实现接口 `A` 继承接口 `B` 类注解 `C` 且方法名 `test` 方法内调用 `D` 类 `a` 方法的方法（表达式搜索）
+- 测试功能：字节码指令级别的调试 | 远程分析 | 一键导出反编译代码
 
 ## 相关
-
-虽然 `Jar Analyzer` 使用了简易的 `RASP` 进行保护，但仍然可能存在安全漏洞，我们会第一时间进行修复
 
 漏洞公告
 
@@ -64,18 +63,6 @@
 视频
 
 - [Jar Analyzer V2 教程（早期版本）](https://www.bilibili.com/video/BV1ac411S7q4)
-
-## BUILD
-
-编译和构建过程如下：
-
-1. 构建核心项目 `mvn -B clean package -DskipTests --file pom.xml`
-2. 构建`agent`子项目 `mvn -B clean package -DskipTests --file agent\pom.xml`
-3. 构建命令行子项目 `mvn -B clean package -DskipTests --file class-searcher\pom.xml`
-4. 构建`rasp`子项目 `mvn -B clean package -DskipTests --file jar-analyzer-rasp\pom.xml`
-5. 使用`cmake`构建`native`目录的`C`代码生成`dll`文件放入`resources`
-6. 使用`winres`和`gcc`构建启动`exe`文件和图标信息
-7. 参考`build.py`和`build.yml`文件进行最终的文件合并和版本构建
 
 ## 截图
 
@@ -170,9 +157,19 @@
 
 ## API
 
-![](img/0038.png)
-
 [文档](doc/README-api.md)
+
+## BUILD
+
+编译和构建过程如下：
+
+1. 构建核心项目 `mvn -B clean package -DskipTests --file pom.xml`
+2. 构建`agent`子项目 `mvn -B clean package -DskipTests --file agent\pom.xml`
+3. 构建命令行子项目 `mvn -B clean package -DskipTests --file class-searcher\pom.xml`
+4. 构建`rasp`子项目 `mvn -B clean package -DskipTests --file jar-analyzer-rasp\pom.xml`
+5. 使用`cmake`构建`native`目录的`C`代码生成`dll`文件放入`resources`
+6. 使用`winres`和`gcc`构建启动`exe`文件和图标信息
+7. 参考`build.py`和`build.yml`文件进行最终的文件合并和版本构建
 
 ## Thanks
 

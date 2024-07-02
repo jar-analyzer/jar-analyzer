@@ -15,7 +15,7 @@ public class GetAllSpringControllersHandler extends BaseHandler implements HttpH
     @Override
     public NanoHTTPD.Response handle(NanoHTTPD.IHTTPSession session) {
         CoreEngine engine = MainForm.getEngine();
-        if (engine == null) {
+        if (engine == null || !engine.isEnabled()) {
             return error();
         }
         ArrayList<ClassResult> cr = engine.getAllSpringC();

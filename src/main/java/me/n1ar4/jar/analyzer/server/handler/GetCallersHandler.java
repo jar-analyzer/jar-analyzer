@@ -15,7 +15,7 @@ public class GetCallersHandler extends BaseHandler implements HttpHandler {
     @Override
     public NanoHTTPD.Response handle(NanoHTTPD.IHTTPSession session) {
         CoreEngine engine = MainForm.getEngine();
-        if (engine == null) {
+        if (engine == null || !engine.isEnabled()) {
             return error();
         }
         String clazz = getClassName(session);

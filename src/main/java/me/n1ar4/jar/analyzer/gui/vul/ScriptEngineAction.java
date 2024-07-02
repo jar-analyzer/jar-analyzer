@@ -8,7 +8,7 @@ public class ScriptEngineAction {
         MainForm instance = MainForm.getInstance();
 
         instance.getScriptEngineEvalButton().addActionListener(e -> {
-            if (MainForm.getEngine() == null|| !MainForm.getEngine().isEnabled()) {
+            if (MainForm.getEngine() == null || !MainForm.getEngine().isEnabled()) {
                 return;
             }
 

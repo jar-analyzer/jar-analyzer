@@ -8,7 +8,7 @@ public class ReadObjectVulAction {
         MainForm instance = MainForm.getInstance();
 
         instance.getReadObjectButton().addActionListener(e -> {
-            if (MainForm.getEngine() == null|| !MainForm.getEngine().isEnabled()) {
+            if (MainForm.getEngine() == null || !MainForm.getEngine().isEnabled()) {
                 return;
             }
 

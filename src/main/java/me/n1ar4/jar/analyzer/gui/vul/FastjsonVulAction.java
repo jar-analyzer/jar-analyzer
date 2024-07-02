@@ -12,7 +12,7 @@ public class FastjsonVulAction {
         MainForm instance = MainForm.getInstance();
 
         instance.getFastjsonButton().addActionListener(e -> {
-            if (MainForm.getEngine() == null|| !MainForm.getEngine().isEnabled()) {
+            if (MainForm.getEngine() == null || !MainForm.getEngine().isEnabled()) {
                 return;
             }
             List<SearchCondition> conditions = new ArrayList<>();

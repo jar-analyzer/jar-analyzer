@@ -8,7 +8,7 @@ public class RuntimeExecAction {
         MainForm instance = MainForm.getInstance();
 
         instance.getRuntimeExecButton().addActionListener(e -> {
-            if (MainForm.getEngine() == null|| !MainForm.getEngine().isEnabled()) {
+            if (MainForm.getEngine() == null || !MainForm.getEngine().isEnabled()) {
                 return;
             }
 

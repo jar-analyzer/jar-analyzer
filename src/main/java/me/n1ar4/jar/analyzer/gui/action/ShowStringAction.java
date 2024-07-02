@@ -11,7 +11,7 @@ public class ShowStringAction {
     public static void run() {
         JButton showString = MainForm.getInstance().getShowStringListButton();
         showString.addActionListener(e -> {
-            if (MainForm.getEngine() == null|| !MainForm.getEngine().isEnabled()) {
+            if (MainForm.getEngine() == null || !MainForm.getEngine().isEnabled()) {
                 JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                         "please start engine first");
                 return;

@@ -1,10 +1,12 @@
 package com.n1ar4.agent.core;
 
+import com.n1ar4.agent.Agent;
 import com.n1ar4.agent.transform.*;
 import com.n1ar4.agent.util.FilterObjectInputStream;
-import com.n1ar4.agent.Agent;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;

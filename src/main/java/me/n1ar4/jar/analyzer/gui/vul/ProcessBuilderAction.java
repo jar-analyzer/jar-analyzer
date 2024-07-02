@@ -8,7 +8,7 @@ public class ProcessBuilderAction {
         MainForm instance = MainForm.getInstance();
 
         instance.getProcessBuilderStartButton().addActionListener(e -> {
-            if (MainForm.getEngine() == null|| !MainForm.getEngine().isEnabled()) {
+            if (MainForm.getEngine() == null || !MainForm.getEngine().isEnabled()) {
                 return;
             }
 

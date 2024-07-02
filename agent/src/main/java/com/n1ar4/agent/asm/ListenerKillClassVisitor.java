@@ -3,7 +3,7 @@ package com.n1ar4.agent.asm;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.RETURN;
 
 public class ListenerKillClassVisitor extends ClassVisitor {
     public ListenerKillClassVisitor(int api, ClassVisitor classVisitor) {

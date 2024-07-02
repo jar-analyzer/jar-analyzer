@@ -18,8 +18,8 @@ for /f "skip=1" %%p in ('%command%') do (
 :done
 set /A "freemem = %m% / 1024"
 
-rem use 2/3 free memory
-set /A "heapsize = freemem * 2 / 3"
+rem use 50% free memory
+set /A "heapsize = freemem / 2"
 
 rem jvm args
 set "other_args=-Dfile.encoding=UTF-8"

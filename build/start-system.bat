@@ -15,8 +15,8 @@ for /f "skip=1" %%p in ('%command%') do (
 :done
 set /A "freemem = %m% / 1024"
 
-rem use 2/3 free memory
-set /A "heapsize = freemem * 2 / 3"
+rem use %50 free memory
+set /A "heapsize = freemem / 2"
 
 rem jvm args
 set "other_args=-Dfile.encoding=UTF-8"
@@ -28,7 +28,16 @@ set "agent_path=lib\rasp.jar"
 set "boot_args=-Xbootclasspath/a:%agent_path%"
 set "java_agent=-javaagent:%agent_path%"
 
-rem start jar
-java %java_agent% %boot_args% %java_args% -cp %java_cp% %main_class% gui
+rem get java home
+if "%JAVA_HOME%"=="" (
+    echo [-] JAVA_HOME NOT SET
+    goto :end
+) else (
+    echo [*] JAVA_HOME : %JAVA_HOME%
+)
 
+rem start jar
+"%JAVA_HOME%\bin\java.exe" %java_agent% %boot_args% %java_args% -cp %java_cp% %main_class% gui
+
+:end
 endlocal

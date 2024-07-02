@@ -49,6 +49,13 @@ public class Application {
         // PRINT LOGO
         Logo.print();
 
+        // SET LOOK AND FEEL
+        if (JarAnalyzerLaf.setup()) {
+            logger.info("setup look and feel success");
+        }
+        // VERSION CHECK
+        Version.check();
+
         // CHECK WINDOWS
         if (OSUtil.isWindows()) {
             boolean ok = JNIUtil.extractDllSo("console.dll", null, true);
@@ -76,10 +83,6 @@ public class Application {
         Client.run(commander, buildCmd);
         // RUN GUI
         try {
-            // SET LOOK AND FEEL
-            if (JarAnalyzerLaf.setup()) {
-                logger.info("setup look and feel success");
-            }
             // CHECK SINGLE INSTANCE
             if (!Single.canRun()) {
                 System.exit(0);

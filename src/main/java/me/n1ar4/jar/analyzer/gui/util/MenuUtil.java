@@ -100,18 +100,8 @@ public class MenuUtil {
         menuBar.add(language());
         menuBar.add(loadRemote());
         menuBar.add(exportJava());
-        menuBar.add(createProxy());
         menuBar.add(createGames());
         return menuBar;
-    }
-
-    private static JMenu createProxy() {
-        JMenu proxy = new JMenu("proxy");
-        JMenuItem proxyItem = new JMenuItem("open proxy config");
-        proxyItem.setIcon(IconManager.javaIcon);
-        proxyItem.addActionListener(e -> ProxyForm.start());
-        proxy.add(proxyItem);
-        return proxy;
     }
 
     private static JMenu exportJava() {
@@ -137,6 +127,10 @@ public class MenuUtil {
         dbgItem.setIcon(IconManager.javaIcon);
         dbgItem.addActionListener(e -> me.n1ar4.dbg.gui.MainForm.start());
         loadRemote.add(dbgItem);
+        JMenuItem proxyItem = new JMenuItem("open proxy config");
+        proxyItem.setIcon(IconManager.javaIcon);
+        proxyItem.addActionListener(e -> ProxyForm.start());
+        loadRemote.add(proxyItem);
         return loadRemote;
     }
 

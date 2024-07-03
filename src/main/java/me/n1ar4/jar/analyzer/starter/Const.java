@@ -22,7 +22,6 @@ public interface Const {
     String CFGForm = "Jar Analyzer V2 - CFG";
     String FrameForm = "Jar Analyzer V2 - Frame";
     String SQLiteForm = "Jar Analyzer V2 - SQLite";
-    String ChatGPTForm = "Jar Analyzer V2 - ChatGPT";
     String StringForm = "Jar Analyzer V2 - String";
     String SearchForm = "Jar Analyzer V2 - Code Search";
     String RemoteForm = "Jar Analyzer V2 - Remote Load";
@@ -30,5 +29,5 @@ public interface Const {
     String SerUtilForm = "Jar Analyzer V2 - SerUtil";
     String ExportForm = "Jar Analyzer V2 - Export Java Code";
     String blackAreaText = "java.lang.Object;\njava.lang.Integer;\n";
-    String classBlackAreaText = "com.test.a;\ncom.test.a.;\ncom.test.a.TestClass;\n";
+    String classBlackAreaText = "com.test.a;\ncom.test.a.TestClass;\n";
 }

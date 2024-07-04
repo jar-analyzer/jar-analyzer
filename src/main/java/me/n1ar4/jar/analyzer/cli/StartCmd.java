@@ -11,7 +11,7 @@ public class StartCmd {
     public int port;
 
     @Parameter(names = {"-t", "--theme"},
-            description = "use theme name (default|metal|win|win-classic|motif|mac|gtk|cross)")
+            description = "use theme name (default|metal|win|win-classic|motif|mac|gtk|cross|aqua|nimbus)")
     public String theme;
 
     public StartCmd() {

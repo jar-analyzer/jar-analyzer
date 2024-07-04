@@ -79,7 +79,7 @@ public class Application {
             return;
         }
 
-        // default|metal|win|win-classic|motif|mac|gtk|cross
+        // default|metal|win|win-classic|motif|mac|gtk|cross|aqua|nimbus
         String theme = startCmd.getTheme();
         String lookAndFeel = null;
         try {
@@ -116,6 +116,14 @@ public class Application {
                     break;
                 case "cross":
                     lookAndFeel = UIManager.getCrossPlatformLookAndFeelClassName();
+                    UIManager.setLookAndFeel(lookAndFeel);
+                    break;
+                case "aqua":
+                    lookAndFeel = "com.apple.laf.AquaLookAndFeel";
+                    UIManager.setLookAndFeel(lookAndFeel);
+                    break;
+                case "nimbus":
+                    lookAndFeel = "javax.swing.plaf.nimbus.NimbusLookAndFeel";
                     UIManager.setLookAndFeel(lookAndFeel);
                     break;
                 default:

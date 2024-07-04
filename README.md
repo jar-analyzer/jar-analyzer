@@ -135,7 +135,7 @@
 ## UI 主题
 
 支持以下：
-- default (默认使用: 类似 `IDEA` 主题)
+- default (默认使用 类似 `IDEA` 主题)
 - metal
 - win (仅 `Windows` 支持)
 - win-classic (仅 `Windows` 支持)

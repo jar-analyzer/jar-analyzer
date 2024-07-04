@@ -28,6 +28,7 @@
 - 自从 `2.17` 版本后支持字节码指令级别的远程调试（参考 [示例图](img/0035.png)）
 - 自从 `2.17` 版本后支持从序列化数据一键提取恶意 `JAVA` 代码（参考 [示例图](img/0036.png)）
 - 自从 `2.18` 版本后支持 `HTTP API` 查询接口（参考 [示例图](img/0038.png)）
+- 自从 `2.19` 版本后支持启动时配置 `10` 种 `UI` 主题（`LookAndFeel`）
 
 更多的功能正在开发中
 
@@ -130,6 +131,20 @@
 
 - `CTRL+X` 方法交叉引用 快速跳转方法 `caller` 和 `callee` 页面
 - `CTRL+F` 代码区域搜索 打开搜索面板 支持 `next` 和 `prev` 选项
+
+## UI 主题
+
+支持以下：
+- default (默认使用: 类似 `IDEA` 主题)
+- metal
+- win (仅 `Windows` 支持)
+- win-classic (仅 `Windows` 支持)
+- motif
+- mac (仅 `MacOS` 支持)
+- gtk (仅某些 `Linux` 支持)
+- cross
+- aqua (仅 `MacOS` 支持)
+- nimbus
 
 ## 命令行
 

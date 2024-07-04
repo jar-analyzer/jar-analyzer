@@ -10,6 +10,10 @@ public class StartCmd {
     @Parameter(names = {"-p", "--port"}, description = "server port")
     public int port;
 
+    @Parameter(names = {"-t", "--theme"},
+            description = "use theme name (default|metal|win|win-classic|motif|mac|gtk|cross)")
+    public String theme;
+
     public StartCmd() {
 
     }
@@ -20,5 +24,13 @@ public class StartCmd {
 
     public void setPort(int port) {
         this.port = port;
+    }
+
+    public String getTheme() {
+        return theme;
+    }
+
+    public void setTheme(String theme) {
+        this.theme = theme;
     }
 }

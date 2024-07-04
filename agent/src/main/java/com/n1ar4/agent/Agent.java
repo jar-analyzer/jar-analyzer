@@ -24,7 +24,7 @@ public class Agent {
         staticClasses = (Class<?>[]) ins.getAllLoadedClasses();
         new Thread(() -> {
             try {
-                int port = 10032;
+                int port = 10033;
                 ServerSocket s = null;
                 try {
                     s = new ServerSocket(port);

@@ -8,6 +8,7 @@ import me.n1ar4.jar.analyzer.gui.*;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
+import me.n1ar4.plane.Game;
 import me.n1ar4.pocker.Main;
 import me.n1ar4.shell.analyzer.form.ShellForm;
 
@@ -155,8 +156,20 @@ public class MenuUtil {
             ImageIcon pokerIcon = new ImageIcon(ImageIO.read(is));
             pokerItem.setIcon(pokerIcon);
             pokerItem.addActionListener(e -> new Thread(Main::new).start());
+
+            JMenuItem planeItem = new JMenuItem("雷电");
+            is = MainForm.class.getClassLoader().getResourceAsStream(
+                    "game/plane/logo.png");
+            if (is == null) {
+                return null;
+            }
+            ImageIcon planeIcon = new ImageIcon(ImageIO.read(is));
+            planeItem.setIcon(planeIcon);
+            planeItem.addActionListener(e -> Game.start());
+
             gameMenu.add(flappyItem);
             gameMenu.add(pokerItem);
+            gameMenu.add(planeItem);
             return gameMenu;
         } catch (Exception ex) {
             logger.error("error: {}", ex.toString());

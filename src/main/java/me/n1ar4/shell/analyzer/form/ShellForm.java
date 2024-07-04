@@ -5,6 +5,7 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.sun.tools.attach.VirtualMachine;
 import com.sun.tools.attach.VirtualMachineDescriptor;
 import me.n1ar4.jar.analyzer.gui.MainForm;
+import me.n1ar4.jar.analyzer.starter.Version;
 import me.n1ar4.jar.analyzer.utils.OSUtil;
 import me.n1ar4.shell.analyzer.model.ClassObj;
 import me.n1ar4.shell.analyzer.model.ProcessObj;
@@ -23,6 +24,8 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -572,16 +575,40 @@ public class ShellForm {
         instance.logArea.append(text);
     }
 
+    public static boolean isPortInUse(String host, int port) {
+        boolean result = false;
+        try {
+            Socket socket = new Socket(host, port);
+            socket.close();
+            result = true;
+        } catch (UnknownHostException e) {
+            return false;
+        } catch (IOException ignored) {
+        }
+        return result;
+    }
+
     public static void start0() {
         // check windows
         // 目前该功能仅给 Windows 使用
-        if (!OSUtil.isWindows()) {
+        if (!OSUtil.isWindows() || !Version.isJava8()) {
             JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                     "<html>" +
                             "only support jdk8/windows<br>" +
                             "目前只支持 jdk8/windows 系统<br>" +
                             "更多信息参考原始项目地址：<br>" +
                             "https://github.com/4ra1n/shell-analyzer" +
+                            "</html>");
+            return;
+        }
+
+        // 检查端口 10033 端口是否被占用
+        if (isPortInUse("localhost", 10033)) {
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                    "<html>" +
+                            "10033 port in use<br>" +
+                            "10033 端口被占用<br>" +
+                            "该功能需要使用该端口" +
                             "</html>");
             return;
         }

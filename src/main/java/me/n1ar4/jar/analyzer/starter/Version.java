@@ -8,6 +8,11 @@ import javax.swing.*;
 public class Version {
     private static final Logger logger = LogManager.getLogger();
 
+    public static boolean isJava8() {
+        String version = System.getProperty("java.version");
+        return version.startsWith("1.8");
+    }
+
     public static void check() {
         String version = System.getProperty("java.version");
         if (version.startsWith("1.8")) {

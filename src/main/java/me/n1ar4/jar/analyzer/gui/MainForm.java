@@ -735,7 +735,11 @@ public class MainForm {
                 instance.choseBtn.setText("选择文件/目录");
                 instance.dbPathLabel.setText("数据库路径");
                 instance.jreRuntimeLabel.setText("JRE 环境路径");
-                instance.classBlackListLabel.setText("类黑名单");
+                instance.classBlackListLabel.setText("<html>\n" +
+                        "类黑名单<br>" +
+                        "(1) <font style=\"color: blue; font-weight: bold;\">com.a</font> package<br>" +
+                        "(2) <font style=\"color: blue; font-weight: bold;\">com.a.Test</font> full name" +
+                        "</html>");
                 instance.resolveJarsInJarCheckBox.setText("解决内嵌JAR问题");
                 instance.autoSaveCheckBox.setText("自动保存");
                 instance.deleteTempCheckBox.setText("删除缓存");
@@ -789,7 +793,7 @@ public class MainForm {
                 instance.curClassLabel.setText("当前类");
                 instance.curMethodLabel.setText("当前方法");
 
-                instance.classBlackLabel.setText("类名黑名单 (使用 ; 和 \\n 分割)");
+                instance.classBlackLabel.setText("类名黑名单 (完整类名并使用 ; 和 \\n 分割)");
                 instance.startSearchButton.setText("开始搜索");
                 instance.springLabel.setText("分析 JAR/JARS 中的 Spring Controller/Mapping 信息");
                 instance.refreshButton.setText("刷新");
@@ -832,7 +836,11 @@ public class MainForm {
                 instance.choseBtn.setText("Chose File / Dir");
                 instance.dbPathLabel.setText("Database Path");
                 instance.jreRuntimeLabel.setText("JRE Runtime");
-                instance.classBlackListLabel.setText("Class Black List");
+                instance.classBlackListLabel.setText("<html>\n" +
+                        "Class Black List<br>" +
+                        "(1) <font style=\"color: blue; font-weight: bold;\">com.a</font> package<br>" +
+                        "(2) <font style=\"color: blue; font-weight: bold;\">com.a.Test</font> full name" +
+                        "</html>");
                 instance.resolveJarsInJarCheckBox.setText("Resolve Jars in Jar");
                 instance.autoSaveCheckBox.setText("Auto Save");
                 instance.deleteTempCheckBox.setText("Delete Temp");
@@ -886,7 +894,7 @@ public class MainForm {
                 instance.curClassLabel.setText("Class");
                 instance.curMethodLabel.setText("Method");
 
-                instance.classBlackLabel.setText("Class Name Black List (split by ; and \\n)");
+                instance.classBlackLabel.setText("Class Name Black List (full class name and split by ; and \\n)");
                 instance.startSearchButton.setText("Start Search");
                 instance.springLabel.setText(" Analyze Spring Controllers and Mappings in Jar/Jars");
                 instance.refreshButton.setText("Refresh");

@@ -18,6 +18,7 @@ import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 import org.objectweb.asm.ClassReader;
 
+import javax.swing.*;
 import java.awt.*;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -33,6 +34,50 @@ public class CoreRunner {
     private static final Logger logger = LogManager.getLogger();
 
     public static void run(Path jarPath, Path rtJarPath, boolean fixClass) {
+        // 2024-07-05 不允许太大的 JAR 文件
+        long totalSize = 0;
+        if (Files.isDirectory(jarPath)) {
+            List<String> files = DirUtil.GetFiles(jarPath.toAbsolutePath().toString());
+            if (rtJarPath != null) {
+                files.add(rtJarPath.toAbsolutePath().toString());
+            }
+            for (String s : files) {
+                if (s.toLowerCase().endsWith(".jar")) {
+                    totalSize += Paths.get(s).toFile().length();
+                }
+            }
+        } else {
+            List<String> jarList = new ArrayList<>();
+            if (rtJarPath != null) {
+                jarList.add(rtJarPath.toAbsolutePath().toString());
+            }
+            jarList.add(jarPath.toAbsolutePath().toString());
+            for (String s : jarList) {
+                if (s.toLowerCase().endsWith(".jar")) {
+                    totalSize += Paths.get(s).toFile().length();
+                }
+            }
+        }
+
+        int totalM = (int) (totalSize / 1024 / 1024);
+
+        int chose;
+        if (totalM > 1024) {
+            // 对于大于 1G 的 JAR 输入进行提示
+            chose = JOptionPane.showConfirmDialog(MainForm.getInstance().getMasterPanel(),
+                    "<html>加载 JAR 总大小 <strong>" + totalM + "</strong> MB<br>" +
+                            "文件内容过大，可能产生巨大的临时文件和数据库，可能非常消耗内存<br>" +
+                            "请确认是否要继续进行分析" +
+                            "</html>");
+        } else {
+            chose = JOptionPane.showConfirmDialog(MainForm.getInstance().getMasterPanel(),
+                    "加载 JAR 总大小 " + totalM + " MB 是否继续");
+        }
+        if (chose != 0) {
+            MainForm.getInstance().getStartBuildDatabaseButton().setEnabled(true);
+            return;
+        }
+
         MainForm.getInstance().getStartBuildDatabaseButton().setEnabled(false);
 
         List<ClassFileEntity> cfs;

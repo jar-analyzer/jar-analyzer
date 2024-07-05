@@ -146,6 +146,10 @@
 - aqua (仅 `MacOS` 支持)
 - nimbus
 
+在启动时指定：`java -jar jar-analyzer.jar gui -t [theme]`
+
+例如：`java -jar jar-analyzer.jar gui -t win-classic`
+
 ## 命令行
 
 [文档](doc/README-cli.md)

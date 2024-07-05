@@ -2,8 +2,10 @@
 
 [CHANGE LOG](src/main/resources/CHANGELOG.MD)
 
-![](https://img.shields.io/badge/build-passing-brightgreen)
-![](https://img.shields.io/badge/build-Java%208-orange)
+<img alt="gitleaks badge" src="https://img.shields.io/badge/protected%20by-gitleaks-blue">
+
+![](https://github.com/jar-analyzer/jar-analyzer/workflows/maven%20check/badge.svg)
+![](https://github.com/jar-analyzer/jar-analyzer/workflows/leak%20check/badge.svg)
 ![](https://img.shields.io/github/downloads/jar-analyzer/jar-analyzer/total)
 ![](https://img.shields.io/github/v/release/jar-analyzer/jar-analyzer)
 

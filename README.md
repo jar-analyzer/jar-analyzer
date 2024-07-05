@@ -150,6 +150,12 @@
 
 例如：`java -jar jar-analyzer.jar gui -t win-classic`
 
+或者修改启动脚本的代码
+
+```shell
+set "theme_name=default"
+```
+
 ## 命令行
 
 [文档](doc/README-cli.md)

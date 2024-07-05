@@ -5,6 +5,7 @@ import me.n1ar4.flappy.FBMainFrame;
 import me.n1ar4.http.HttpResponse;
 import me.n1ar4.http.Y4Client;
 import me.n1ar4.jar.analyzer.gui.*;
+import me.n1ar4.jar.analyzer.os.SystemChart;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
@@ -102,6 +103,11 @@ public class MenuUtil {
         menuBar.add(loadRemote());
         menuBar.add(exportJava());
         menuBar.add(createGames());
+        JMenu system = new JMenu("system info");
+        JMenuItem systemItem = new JMenuItem("open");
+        systemItem.addActionListener(e-> SystemChart.start0());
+        system.add(systemItem);
+        menuBar.add(system);
         return menuBar;
     }
 

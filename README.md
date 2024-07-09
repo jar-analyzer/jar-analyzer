@@ -67,6 +67,7 @@
 视频
 
 - [Jar Analyzer V2 教程（早期版本）](https://www.bilibili.com/video/BV1ac411S7q4)
+- [Jar Analyzer V2 新版本功能介绍](https://www.bilibili.com/video/BV1Dm421G75i)
 
 注意：请勿分析数量极多或体积巨大的 `JAR` 文件，可能导致巨大的临时文件和数据库，以及高内存消耗
 

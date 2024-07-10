@@ -147,6 +147,9 @@ public class ELForm {
                 int tempVal = 11;
                 for (MethodReference mr : mrs) {
                     index++;
+                    if (part == 0) {
+                        part = 1;
+                    }
                     if (index % part == 0) {
                         if (tempVal < 90) {
                             ELForm.setVal(tempVal++);
@@ -157,25 +160,33 @@ public class ELForm {
                     executor.submit(processor::process);
                 }
                 executor.shutdown();
-                if (searchList.isEmpty()) {
-                    setVal(100);
-                    searchButton.setEnabled(true);
-                    JOptionPane.showMessageDialog(this.jTextArea, "没有找到结果");
-                    return;
-                } else {
-                    JOptionPane.showMessageDialog(this.jTextArea, "搜索成功");
+                try {
+                    // 超时 30 秒
+                    if (executor.awaitTermination(30, TimeUnit.SECONDS)) {
+                        if (searchList.isEmpty()) {
+                            setVal(100);
+                            searchButton.setEnabled(true);
+                            JOptionPane.showMessageDialog(this.jTextArea, "没有找到结果");
+                            return;
+                        } else {
+                            JOptionPane.showMessageDialog(this.jTextArea, "搜索成功：找到符合表达式的方法");
+                        }
+                        setVal(95);
+                        ArrayList<ResObj> resObjList = new ArrayList<>();
+                        Object[] array = searchList.toArray();
+                        for (Object o : array) {
+                            resObjList.add((ResObj) o);
+                        }
+                        new Thread(() -> CoreHelper.refreshMethods(resObjList)).start();
+                        setVal(100);
+                        return;
+                    }
+                } catch (InterruptedException ignored) {
                 }
-                setVal(95);
-                ArrayList<ResObj> resObjList = new ArrayList<>();
-                for (int i = 0; i < searchList.size(); i++) {
-                    resObjList.add(searchList.poll());
-                }
-                new Thread(() -> CoreHelper.refreshMethods(resObjList)).start();
-                setVal(100);
+                JOptionPane.showMessageDialog(this.jTextArea, "没有找到结果");
             } else {
                 JOptionPane.showMessageDialog(this.jTextArea, "错误的表达式");
             }
-
             ELForm.setVal(100);
             searchButton.setEnabled(true);
             logger.info("el process finish");

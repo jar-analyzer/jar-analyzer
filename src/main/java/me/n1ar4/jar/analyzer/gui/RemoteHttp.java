@@ -31,6 +31,7 @@ public class RemoteHttp {
     private JLabel urlLabel;
     private JPanel opPanel;
     private static RemoteHttp instance;
+    private static JFrame globalFrame;
     private static String filename = null;
     private static boolean finish = false;
 
@@ -40,10 +41,10 @@ public class RemoteHttp {
         instance.init();
         frame.setContentPane(instance.rootPanel);
         frame.pack();
-        frame.setAlwaysOnTop(true);
         frame.setLocationRelativeTo(MainForm.getInstance().getMasterPanel());
         frame.setVisible(true);
         frame.setResizable(false);
+        globalFrame = frame;
     }
 
     private void init() {
@@ -85,6 +86,10 @@ public class RemoteHttp {
                         long total = response.body().contentLength();
                         filename = "temp" + UUID.randomUUID() + ".jar";
                         File file = new File(Const.downDir, filename);
+                        try {
+                            Files.createDirectories(Paths.get(Const.downDir));
+                        } catch (Exception ignored) {
+                        }
                         fos = new FileOutputStream(file);
                         progressBar.setValue(4);
                         long sum = 0;
@@ -127,6 +132,7 @@ public class RemoteHttp {
                 Path finalPath = down.resolve(Paths.get(filename));
                 logger.info("load {}", finalPath.toString());
                 BuildAction.start(finalPath.toAbsolutePath().toString());
+                globalFrame.setVisible(false);
             } else {
                 JOptionPane.showMessageDialog(instance.rootPanel, "download first");
             }

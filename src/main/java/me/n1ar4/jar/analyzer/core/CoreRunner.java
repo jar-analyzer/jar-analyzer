@@ -42,7 +42,7 @@ public class CoreRunner {
                 files.add(rtJarPath.toAbsolutePath().toString());
             }
             for (String s : files) {
-                if (s.toLowerCase().endsWith(".jar")) {
+                if (s.toLowerCase().endsWith(".jar") || s.toLowerCase().endsWith(".war")) {
                     totalSize += Paths.get(s).toFile().length();
                 }
             }
@@ -53,7 +53,7 @@ public class CoreRunner {
             }
             jarList.add(jarPath.toAbsolutePath().toString());
             for (String s : jarList) {
-                if (s.toLowerCase().endsWith(".jar")) {
+                if (s.toLowerCase().endsWith(".jar") || s.toLowerCase().endsWith(".war")) {
                     totalSize += Paths.get(s).toFile().length();
                 }
             }
@@ -65,13 +65,13 @@ public class CoreRunner {
         if (totalM > 1024) {
             // 对于大于 1G 的 JAR 输入进行提示
             chose = JOptionPane.showConfirmDialog(MainForm.getInstance().getMasterPanel(),
-                    "<html>加载 JAR 总大小 <strong>" + totalM + "</strong> MB<br>" +
+                    "<html>加载 JAR/WAR 总大小 <strong>" + totalM + "</strong> MB<br>" +
                             "文件内容过大，可能产生巨大的临时文件和数据库，可能非常消耗内存<br>" +
                             "请确认是否要继续进行分析" +
                             "</html>");
         } else {
             chose = JOptionPane.showConfirmDialog(MainForm.getInstance().getMasterPanel(),
-                    "加载 JAR 总大小 " + totalM + " MB 是否继续");
+                    "加载 JAR/WAR 总大小 " + totalM + " MB 是否继续");
         }
         if (chose != 0) {
             MainForm.getInstance().getStartBuildDatabaseButton().setEnabled(true);

@@ -1,5 +1,25 @@
 # CHANGELOG
 
+## 2.21
+
+更新日志：
+
+- [其他] 修复 `CHANGELOG` 错误的描述
+
+感谢以下用户的贡献:
+
+- 4ra1n (https://github.com/4ra1n)
+
+所有可供下载的文件都由 `Github Actions` 构建，提供以下三种:
+
+- `windows-full` 版内置 `JRE 8` 环境 (**完整功能版本**)
+- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
+- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
+
+推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
+
+如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
+
 ## 2.20
 
 高亮显示已选中的字符串，优化用户体验
@@ -21,7 +41,7 @@
 
 - 4ra1n (https://github.com/4ra1n)
 
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
+所有可供下载的文件都由 `Github Actions` 构建，提供以下三种:
 
 - `windows-full` 版内置 `JRE 8` 环境 (**完整功能版本**)
 - `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
@@ -54,7 +74,7 @@
 
 - 4ra1n (https://github.com/4ra1n)
 
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
+所有可供下载的文件都由 `Github Actions` 构建，提供以下三种:
 
 - `windows-full` 版内置 `JRE 8` 环境 (**完整功能版本**)
 - `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
@@ -84,7 +104,7 @@
 
 - 4ra1n (https://github.com/4ra1n)
 
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
+所有可供下载的文件都由 `Github Actions` 构建，提供以下三种:
 
 - `windows-full` 版内置 `JRE 8` 环境 (**完整功能版本**)
 - `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
@@ -108,7 +128,7 @@
 
 - 4ra1n (https://github.com/4ra1n)
 
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
+所有可供下载的文件都由 `Github Actions` 构建，提供以下三种:
 
 - `windows-full` 版内置 `JRE 8` 环境 (**完整功能版本**)
 - `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
@@ -141,7 +161,7 @@
 
 - 4ra1n (https://github.com/4ra1n)
 
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
+所有可供下载的文件都由 `Github Actions` 构建，提供以下三种:
 
 - `windows-full` 版内置 `JRE 8` 环境 (**完整功能版本**)
 - `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
@@ -173,7 +193,7 @@
 - 4ra1n (https://github.com/4ra1n)
 - xishir (https://github.com/xishir)
 
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
+所有可供下载的文件都由 `Github Actions` 构建，提供以下三种:
 
 - `windows-full` 版内置 `JRE 8` 环境 (**完整功能版本**)
 - `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
@@ -201,7 +221,7 @@
 
 - 4ra1n (https://github.com/4ra1n)
 
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
+所有可供下载的文件都由 `Github Actions` 构建，提供以下三种:
 
 - `windows-full` 版内置 `JRE 8` 环境 (**完整功能版本**)
 - `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
@@ -226,7 +246,7 @@
 
 - 4ra1n (https://github.com/4ra1n)
 
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
+所有可供下载的文件都由 `Github Actions` 构建，提供以下三种:
 
 - `windows-full` 版内置 `JRE 8` 环境 (**完整功能版本**)
 - `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
@@ -260,7 +280,7 @@
 - 4ra1n (https://github.com/4ra1n)
 - Gauss Zhou (https://github.com/gausszhou)
 
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
+所有可供下载的文件都由 `Github Actions` 构建，提供以下三种:
 
 - `windows-full` 版内置 `JRE 8` 环境 (**完整功能版本**)
 - `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)

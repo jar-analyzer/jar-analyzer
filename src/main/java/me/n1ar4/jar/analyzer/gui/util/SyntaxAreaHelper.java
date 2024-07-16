@@ -10,6 +10,8 @@ import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.*;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
@@ -23,7 +25,30 @@ public class SyntaxAreaHelper {
     private static ArrayList<Integer> searchResults = null;
 
     public static void buildJava(JPanel codePanel) {
-        codeArea = new RSyntaxTextArea(300, 300);
+        RSyntaxTextArea rArea = new RSyntaxTextArea(300, 300);
+        rArea.addCaretListener(e -> {
+            String selectedText = rArea.getSelectedText();
+            if (selectedText == null || selectedText.isEmpty()) {
+                Highlighter highlighter = rArea.getHighlighter();
+                highlighter.removeAllHighlights();
+                return;
+            }
+            Highlighter highlighter = rArea.getHighlighter();
+            highlighter.removeAllHighlights();
+
+            String text = rArea.getText();
+            int index = 0;
+
+            while ((index = text.indexOf(selectedText, index)) >= 0) {
+                try {
+                    highlighter.addHighlight(index, index + selectedText.length(),
+                            new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW));
+                    index += selectedText.length();
+                } catch (BadLocationException ignored) {
+                }
+            }
+        });
+        codeArea = rArea;
         codeArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
         codeArea.setCodeFoldingEnabled(true);
         RTextScrollPane sp = new RTextScrollPane(codeArea);

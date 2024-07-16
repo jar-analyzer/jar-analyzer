@@ -2,7 +2,7 @@
 setlocal
 
 rem set file name
-set "jar-analyzer=jar-analyzer-2.19.jar"
+set "jar-analyzer=jar-analyzer-2.20.jar"
 
 rem env
 set "command=wmic os get freephysicalmemory"

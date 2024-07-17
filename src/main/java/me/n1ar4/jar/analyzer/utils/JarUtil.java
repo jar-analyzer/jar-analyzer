@@ -61,6 +61,11 @@ public class JarUtil {
                     }
                 }
             }
+            if (data == null || data.size() == 0) {
+                whiteDoIt = true;
+            }
+        } else {
+            whiteDoIt = true;
         }
 
         if (!whiteDoIt) {

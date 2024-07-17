@@ -37,8 +37,69 @@ public class JarUtil {
         return new ArrayList<>();
     }
 
+    private static boolean shouldRun(String whiteText, String text, String saveClass) {
+        boolean whiteDoIt = false;
+
+        if (whiteText != null && !StringUtil.isNull(whiteText)) {
+            ArrayList<String> data = ListParser.parse(whiteText);
+            String className = saveClass;
+            if (className.endsWith(".class")) {
+                className = className.substring(0, className.length() - 6);
+            }
+            for (String s : data) {
+                // PACAKGE
+                if (s.endsWith("/")) {
+                    if (className.startsWith(s)) {
+                        whiteDoIt = true;
+                        break;
+                    }
+                } else {
+                    // CLASSNAME
+                    if (className.equals(s)) {
+                        whiteDoIt = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (!whiteDoIt) {
+            return false;
+        }
+
+        boolean doIt = true;
+        if (text != null && !StringUtil.isNull(text)) {
+            ArrayList<String> data = ListParser.parse(text);
+            String className = saveClass;
+            if (className.endsWith(".class")) {
+                className = className.substring(0, className.length() - 6);
+            }
+            for (String s : data) {
+                // com.a.TestClass
+                if (className.equals(s)) {
+                    doIt = false;
+                    break;
+                }
+                // com.a.
+                if (s.endsWith("/")) {
+                    if (className.startsWith(s)) {
+                        doIt = false;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (!doIt) {
+            return false;
+        }
+
+        return true;
+    }
+
     private static void resolve(String jarPathStr, Path tmpDir) {
         String text = MainForm.getInstance().getClassBlackArea().getText();
+        String whiteText = MainForm.getInstance().getClassWhiteArea().getText();
         Path jarPath = Paths.get(jarPathStr);
         if (!Files.exists(jarPath)) {
             logger.error("jar not exist");
@@ -52,29 +113,10 @@ public class JarUtil {
                     jarPathStr = jarPathStr.substring(fileText.length() + 1);
                     String saveClass = jarPathStr.replace("\\", "/");
 
-                    boolean doIt = true;
-                    if (text != null && !StringUtil.isNull(text)) {
-                        ArrayList<String> data = ListParser.parse(text);
-                        String className = saveClass;
-                        if (className.endsWith(".class")) {
-                            className = className.substring(0, className.length() - 6);
-                        }
-                        for (String s : data) {
-                            // com.a.TestClass
-                            if (className.equals(s)) {
-                                doIt = false;
-                                break;
-                            }
-                            // com.a
-                            if (className.startsWith(s)) {
-                                doIt = false;
-                                break;
-                            }
-                        }
-                    }
-                    if (!doIt) {
+                    if (!shouldRun(whiteText, text, saveClass)) {
                         return;
                     }
+
                     ClassFileEntity classFile = new ClassFileEntity(saveClass, jarPath);
                     classFile.setJarName("class");
                     classFileSet.add(classFile);
@@ -137,33 +179,13 @@ public class JarUtil {
                                 }
                                 OutputStream outputStream = Files.newOutputStream(fullPath);
                                 IOUtil.copy(jarInputStream, outputStream);
-                                doInternal(fullPath, tmpDir, text);
+                                doInternal(fullPath, tmpDir, text, whiteText);
                                 outputStream.close();
                             }
                             continue;
                         }
 
-                        boolean doIt = true;
-                        if (text != null && !StringUtil.isNull(text)) {
-                            ArrayList<String> data = ListParser.parse(text);
-                            String className = jarEntry.getName();
-                            if (className.endsWith(".class")) {
-                                className = className.substring(0, className.length() - 6);
-                            }
-                            for (String s : data) {
-                                // com.a.TestClass
-                                if (className.equals(s)) {
-                                    doIt = false;
-                                    break;
-                                }
-                                // com.a
-                                if (className.startsWith(s)) {
-                                    doIt = false;
-                                    break;
-                                }
-                            }
-                        }
-                        if (!doIt) {
+                        if (!shouldRun(whiteText, text, jarEntry.getName())) {
                             continue;
                         }
 
@@ -195,7 +217,7 @@ public class JarUtil {
         }
     }
 
-    private static void doInternal(Path jarPath, Path tmpDir, String text) {
+    private static void doInternal(Path jarPath, Path tmpDir, String text, String whiteText) {
         try {
             InputStream is = Files.newInputStream(jarPath);
             JarInputStream jarInputStream = new JarInputStream(is);
@@ -225,27 +247,8 @@ public class JarUtil {
                     if (!jarEntry.getName().endsWith(".class")) {
                         continue;
                     }
-                    boolean doIt = true;
-                    if (text != null && !StringUtil.isNull(text)) {
-                        ArrayList<String> data = ListParser.parse(text);
-                        String className = jarEntry.getName();
-                        if (className.endsWith(".class")) {
-                            className = className.substring(0, className.length() - 6);
-                        }
-                        for (String s : data) {
-                            // com.a.TestClass
-                            if (className.equals(s)) {
-                                doIt = false;
-                                break;
-                            }
-                            // com.a
-                            if (className.startsWith(s)) {
-                                doIt = false;
-                                break;
-                            }
-                        }
-                    }
-                    if (!doIt) {
+
+                    if (!shouldRun(whiteText, text, jarEntry.getName())) {
                         continue;
                     }
 

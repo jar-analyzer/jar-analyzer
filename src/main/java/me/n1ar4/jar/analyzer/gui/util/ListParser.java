@@ -8,6 +8,9 @@ public class ListParser {
         String[] temp = text.split("\n");
         ArrayList<String> list = new ArrayList<>();
         for (String s : temp) {
+            if (s.startsWith("#")) {
+                continue;
+            }
             s = s.trim();
             if (s.contains(";")) {
                 s = s.split(";")[0];

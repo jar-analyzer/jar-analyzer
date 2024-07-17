@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="masterPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="20" y="20" width="1386" height="1101"/>
+      <xy x="20" y="20" width="1386" height="1126"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -47,7 +47,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <grid id="a1ac5" binding="chosePanel" layout-manager="GridLayoutManager" row-count="7" column-count="6" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                  <grid id="a1ac5" binding="chosePanel" layout-manager="GridLayoutManager" row-count="8" column-count="6" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -76,7 +76,7 @@
                       </component>
                       <component id="3511b" class="javax.swing.JCheckBox" binding="resolveJarsInJarCheckBox" default-binding="true">
                         <constraints>
-                          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
                           <text value="Resolve Jars in Jar"/>
@@ -84,7 +84,7 @@
                       </component>
                       <component id="d1994" class="javax.swing.JProgressBar" binding="buildBar">
                         <constraints>
-                          <grid row="6" column="0" row-span="1" col-span="6" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                          <grid row="7" column="0" row-span="1" col-span="6" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
                           <foreground color="-9524737"/>
@@ -93,7 +93,7 @@
                       </component>
                       <component id="55dbc" class="javax.swing.JCheckBox" binding="autoSaveCheckBox" default-binding="true">
                         <constraints>
-                          <grid row="4" column="1" row-span="1" col-span="4" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                          <grid row="5" column="1" row-span="1" col-span="4" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
                           <text value="Auto Save"/>
@@ -137,7 +137,7 @@
                       </component>
                       <component id="4fd1a" class="javax.swing.JCheckBox" binding="autoFindRtJarCheckBox" default-binding="true">
                         <constraints>
-                          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
                           <text value="Auto Find rt.jar"/>
@@ -145,7 +145,7 @@
                       </component>
                       <component id="3c1dc" class="javax.swing.JCheckBox" binding="addRtJarWhenCheckBox" default-binding="true">
                         <constraints>
-                          <grid row="5" column="1" row-span="1" col-span="4" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                          <grid row="6" column="1" row-span="1" col-span="4" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
                           <text value="Add rt.jar to Analyze"/>
@@ -153,7 +153,7 @@
                       </component>
                       <component id="27531" class="javax.swing.JButton" binding="startEngineButton">
                         <constraints>
-                          <grid row="5" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                          <grid row="6" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
                           <text value="Start Engine"/>
@@ -161,7 +161,7 @@
                       </component>
                       <component id="8558b" class="javax.swing.JCheckBox" binding="deleteTempCheckBox" default-binding="true">
                         <constraints>
-                          <grid row="4" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                          <grid row="5" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
                           <text value="Delete Temp"/>
@@ -169,7 +169,7 @@
                       </component>
                       <component id="6f017" class="javax.swing.JLabel" binding="classBlackListLabel">
                         <constraints>
-                          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="1" use-parent-layout="false"/>
+                          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="1" use-parent-layout="false"/>
                         </constraints>
                         <properties>
                           <text value="Class Black List"/>
@@ -177,7 +177,7 @@
                       </component>
                       <scrollpane id="89c67" binding="classBlackPanel">
                         <constraints>
-                          <grid row="3" column="1" row-span="1" col-span="5" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                          <grid row="4" column="1" row-span="1" col-span="5" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
                             <minimum-size width="-1" height="66"/>
                             <preferred-size width="-1" height="66"/>
                             <maximum-size width="-1" height="66"/>
@@ -189,6 +189,29 @@
                           <component id="f0388" class="javax.swing.JTextArea" binding="classBlackArea">
                             <constraints/>
                             <properties/>
+                          </component>
+                        </children>
+                      </scrollpane>
+                      <component id="89ed" class="javax.swing.JLabel" binding="classWhiteListLabel">
+                        <constraints>
+                          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Class White List"/>
+                        </properties>
+                      </component>
+                      <scrollpane id="85ab8" binding="classWhitePanel">
+                        <constraints>
+                          <grid row="3" column="1" row-span="1" col-span="5" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="3de4b" class="javax.swing.JTextArea" binding="classWhiteArea">
+                            <constraints/>
+                            <properties>
+                              <text value=""/>
+                            </properties>
                           </component>
                         </children>
                       </scrollpane>

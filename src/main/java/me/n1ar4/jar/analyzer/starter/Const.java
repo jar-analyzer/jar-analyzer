@@ -29,5 +29,12 @@ public interface Const {
     String SerUtilForm = "Jar Analyzer V2 - SerUtil";
     String ExportForm = "Jar Analyzer V2 - Export Java Code";
     String blackAreaText = "java.lang.Object;\njava.lang.Integer;\n";
-    String classBlackAreaText = "com.test.a;\ncom.test.a.TestClass;\n";
+    String classBlackAreaText = "# package black list\n" +
+            "com.test.a.;\n" +
+            "# class black list\n" +
+            "com.test.a.Test;\n";
+    String classWhiteAreaText = "# package white list\n" +
+            "# com.test.a.;\n" +
+            "# class white list\n" +
+            "# com.test.a.Test;\n";
 }

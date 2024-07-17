@@ -184,6 +184,9 @@ public class MainForm {
     private JLabel obfLabel;
     private JButton serUtilBtn;
     private JLabel serUtilLabel;
+    private JScrollPane classWhitePanel;
+    private JTextArea classWhiteArea;
+    private JLabel classWhiteListLabel;
     private static MainForm instance;
     private static ConfigFile config;
     private static CoreEngine engine;
@@ -487,6 +490,10 @@ public class MainForm {
         return classBlackArea;
     }
 
+    public JTextArea getClassWhiteArea() {
+        return classWhiteArea;
+    }
+
     public JButton getRefreshButton() {
         return refreshButton;
     }
@@ -643,11 +650,13 @@ public class MainForm {
         authorLabel.setIcon(IconManager.auIcon);
         authorTextLabel.setIcon(IconManager.githubIcon);
         classBlackListLabel.setIcon(IconManager.whiteIcon);
+        classWhiteListLabel.setIcon(IconManager.whiteIcon);
 
         authorTextLabel.addMouseListener(new AuthorAdapter());
 
         blackArea.setText(Const.blackAreaText);
         classBlackArea.setText(Const.classBlackAreaText);
+        classWhiteArea.setText(Const.classWhiteAreaText);
 
         likeSearchRadioButton.setSelected(true);
 
@@ -737,7 +746,12 @@ public class MainForm {
                 instance.jreRuntimeLabel.setText("JRE 环境路径");
                 instance.classBlackListLabel.setText("<html>\n" +
                         "类黑名单<br>" +
-                        "(1) <font style=\"color: blue; font-weight: bold;\">com.a</font> package<br>" +
+                        "(1) <font style=\"color: blue; font-weight: bold;\">com.a.</font> package<br>" +
+                        "(2) <font style=\"color: blue; font-weight: bold;\">com.a.Test</font> full name" +
+                        "</html>");
+                instance.classWhiteListLabel.setText("<html>\n" +
+                        "类白名单<br>" +
+                        "(1) <font style=\"color: blue; font-weight: bold;\">com.a.</font> package<br>" +
                         "(2) <font style=\"color: blue; font-weight: bold;\">com.a.Test</font> full name" +
                         "</html>");
                 instance.resolveJarsInJarCheckBox.setText("解决内嵌JAR问题");
@@ -838,7 +852,12 @@ public class MainForm {
                 instance.jreRuntimeLabel.setText("JRE Runtime");
                 instance.classBlackListLabel.setText("<html>\n" +
                         "Class Black List<br>" +
-                        "(1) <font style=\"color: blue; font-weight: bold;\">com.a</font> package<br>" +
+                        "(1) <font style=\"color: blue; font-weight: bold;\">com.a.</font> package<br>" +
+                        "(2) <font style=\"color: blue; font-weight: bold;\">com.a.Test</font> full name" +
+                        "</html>");
+                instance.classWhiteListLabel.setText("<html>\n" +
+                        "Class White List<br>" +
+                        "(1) <font style=\"color: blue; font-weight: bold;\">com.a.</font> package<br>" +
                         "(2) <font style=\"color: blue; font-weight: bold;\">com.a.Test</font> full name" +
                         "</html>");
                 instance.resolveJarsInJarCheckBox.setText("Resolve Jars in Jar");
@@ -966,7 +985,7 @@ public class MainForm {
         startPanel.setLayout(new GridLayoutManager(6, 1, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPanel.addTab("start", startPanel);
         chosePanel = new JPanel();
-        chosePanel.setLayout(new GridLayoutManager(7, 6, new Insets(0, 0, 0, 0), -1, -1));
+        chosePanel.setLayout(new GridLayoutManager(8, 6, new Insets(0, 0, 0, 0), -1, -1));
         startPanel.add(chosePanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         chosePanel.setBorder(BorderFactory.createTitledBorder(null, "Starter", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         choseBtn = new JButton();
@@ -978,14 +997,14 @@ public class MainForm {
         chosePanel.add(fileText, new GridConstraints(0, 1, 1, 5, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         resolveJarsInJarCheckBox = new JCheckBox();
         resolveJarsInJarCheckBox.setText("Resolve Jars in Jar");
-        chosePanel.add(resolveJarsInJarCheckBox, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        chosePanel.add(resolveJarsInJarCheckBox, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         buildBar = new JProgressBar();
         buildBar.setForeground(new Color(-9524737));
         buildBar.setStringPainted(true);
-        chosePanel.add(buildBar, new GridConstraints(6, 0, 1, 6, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        chosePanel.add(buildBar, new GridConstraints(7, 0, 1, 6, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         autoSaveCheckBox = new JCheckBox();
         autoSaveCheckBox.setText("Auto Save");
-        chosePanel.add(autoSaveCheckBox, new GridConstraints(4, 1, 1, 4, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        chosePanel.add(autoSaveCheckBox, new GridConstraints(5, 1, 1, 4, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         dbPathLabel = new JLabel();
         dbPathLabel.setText("Database Path");
         chosePanel.add(dbPathLabel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
@@ -1000,23 +1019,31 @@ public class MainForm {
         chosePanel.add(rtText, new GridConstraints(2, 1, 1, 5, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         autoFindRtJarCheckBox = new JCheckBox();
         autoFindRtJarCheckBox.setText("Auto Find rt.jar");
-        chosePanel.add(autoFindRtJarCheckBox, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        chosePanel.add(autoFindRtJarCheckBox, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         addRtJarWhenCheckBox = new JCheckBox();
         addRtJarWhenCheckBox.setText("Add rt.jar to Analyze");
-        chosePanel.add(addRtJarWhenCheckBox, new GridConstraints(5, 1, 1, 4, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        chosePanel.add(addRtJarWhenCheckBox, new GridConstraints(6, 1, 1, 4, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         startEngineButton = new JButton();
         startEngineButton.setText("Start Engine");
-        chosePanel.add(startEngineButton, new GridConstraints(5, 5, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        chosePanel.add(startEngineButton, new GridConstraints(6, 5, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         deleteTempCheckBox = new JCheckBox();
         deleteTempCheckBox.setText("Delete Temp");
-        chosePanel.add(deleteTempCheckBox, new GridConstraints(4, 5, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        chosePanel.add(deleteTempCheckBox, new GridConstraints(5, 5, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         classBlackListLabel = new JLabel();
         classBlackListLabel.setText("Class Black List");
-        chosePanel.add(classBlackListLabel, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
+        chosePanel.add(classBlackListLabel, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
         classBlackPanel = new JScrollPane();
-        chosePanel.add(classBlackPanel, new GridConstraints(3, 1, 1, 5, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(-1, 66), new Dimension(-1, 66), new Dimension(-1, 66), 0, false));
+        chosePanel.add(classBlackPanel, new GridConstraints(4, 1, 1, 5, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(-1, 66), new Dimension(-1, 66), new Dimension(-1, 66), 0, false));
         classBlackArea = new JTextArea();
         classBlackPanel.setViewportView(classBlackArea);
+        classWhiteListLabel = new JLabel();
+        classWhiteListLabel.setText("Class White List");
+        chosePanel.add(classWhiteListLabel, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
+        classWhitePanel = new JScrollPane();
+        chosePanel.add(classWhitePanel, new GridConstraints(3, 1, 1, 5, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        classWhiteArea = new JTextArea();
+        classWhiteArea.setText("");
+        classWhitePanel.setViewportView(classWhiteArea);
         decompilerPanel = new JPanel();
         decompilerPanel.setLayout(new GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
         startPanel.add(decompilerPanel, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));

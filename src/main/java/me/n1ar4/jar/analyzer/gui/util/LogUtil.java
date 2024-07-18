@@ -24,7 +24,7 @@ public class LogUtil {
         }
     }
 
-    public static void log(String msg) {
+    public static void info(String msg) {
         print(styleGreen,msg);
     }
 
@@ -39,7 +39,7 @@ public class LogUtil {
             head="error";
         }
         else if(style==styleGreen){
-            head="log";
+            head="info";
         }
         else {
             head="unknown";

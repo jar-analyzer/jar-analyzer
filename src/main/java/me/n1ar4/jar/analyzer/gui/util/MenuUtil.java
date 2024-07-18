@@ -301,7 +301,7 @@ public class MenuUtil {
                         return;
                     }
                     String ver = body.trim();
-                    LogUtil.log("latest: " + ver);
+                    LogUtil.info("latest: " + ver);
                     String output;
                     output = String.format("%s: %s\n%s: %s",
                             "Current Version", Const.version,

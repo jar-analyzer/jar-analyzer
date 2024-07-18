@@ -13,7 +13,7 @@ public class CommonSearchAction {
         JRadioButton binaryR = MainForm.getInstance().getBinarySearchRadioButton();
         methodCallR.addActionListener(e -> {
             if (methodCallR.isSelected()) {
-                LogUtil.log("select method call search");
+                LogUtil.info("select method call search");
                 MainForm.getInstance().getSearchClassText().setEnabled(true);
                 MainForm.getInstance().getSearchMethodText().setEnabled(true);
                 MainForm.getInstance().getSearchStrText().setText(null);
@@ -22,7 +22,7 @@ public class CommonSearchAction {
         });
         methodDefR.addActionListener(e -> {
             if (methodDefR.isSelected()) {
-                LogUtil.log("select method def search");
+                LogUtil.info("select method def search");
                 MainForm.getInstance().getSearchClassText().setEnabled(true);
                 MainForm.getInstance().getSearchMethodText().setEnabled(true);
                 MainForm.getInstance().getSearchStrText().setText(null);
@@ -31,7 +31,7 @@ public class CommonSearchAction {
         });
         strContainsR.addActionListener(e -> {
             if (strContainsR.isSelected()) {
-                LogUtil.log("select string contains search");
+                LogUtil.info("select string contains search");
                 MainForm.getInstance().getSearchClassText().setText(null);
                 MainForm.getInstance().getSearchMethodText().setText(null);
                 MainForm.getInstance().getSearchClassText().setEnabled(false);
@@ -41,7 +41,7 @@ public class CommonSearchAction {
         });
         binaryR.addActionListener(e -> {
             if (binaryR.isSelected()) {
-                LogUtil.log("select binary search");
+                LogUtil.info("select binary search");
                 MainForm.getInstance().getSearchClassText().setText(null);
                 MainForm.getInstance().getSearchMethodText().setText(null);
                 MainForm.getInstance().getSearchClassText().setEnabled(false);

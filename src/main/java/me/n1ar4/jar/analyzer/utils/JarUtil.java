@@ -173,7 +173,7 @@ public class JarUtil {
                     if (!jarEntry.isDirectory()) {
                         if (!jarEntry.getName().endsWith(".class")) {
                             if (AnalyzeEnv.jarsInJar && jarEntry.getName().endsWith(".jar")) {
-                                LogUtil.log("analyze jars in jar");
+                                LogUtil.info("analyze jars in jar");
                                 Path dirName = fullPath.getParent();
                                 if (!Files.exists(dirName)) {
                                     Files.createDirectories(dirName);

@@ -84,11 +84,11 @@ public class CoreRunner {
         MainForm.getInstance().getBuildBar().setValue(10);
         if (Files.isDirectory(jarPath)) {
             logger.info("input is a dir");
-            LogUtil.log("input is a dir");
+            LogUtil.info("input is a dir");
             List<String> files = DirUtil.GetFiles(jarPath.toAbsolutePath().toString());
             if (rtJarPath != null) {
                 files.add(rtJarPath.toAbsolutePath().toString());
-                LogUtil.log("analyze with rt.jar file");
+                LogUtil.info("analyze with rt.jar file");
             }
             MainForm.getInstance().getTotalJarVal().setText(String.valueOf(files.size()));
             for (String s : files) {
@@ -99,13 +99,13 @@ public class CoreRunner {
             cfs = CoreUtil.getAllClassesFromJars(files);
         } else {
             logger.info("input is a jar file");
-            LogUtil.log("input is a jar");
+            LogUtil.info("input is a jar");
 
             List<String> jarList = new ArrayList<>();
             if (rtJarPath != null) {
                 jarList.add(rtJarPath.toAbsolutePath().toString());
                 MainForm.getInstance().getTotalJarVal().setText("2");
-                LogUtil.log("analyze with rt.jar file");
+                LogUtil.info("analyze with rt.jar file");
             } else {
                 MainForm.getInstance().getTotalJarVal().setText("1");
             }
@@ -156,7 +156,7 @@ public class CoreRunner {
         MainForm.getInstance().getBuildBar().setValue(15);
         AnalyzeEnv.classFileList.addAll(cfs);
         logger.info("get all class");
-        LogUtil.log("get all class");
+        LogUtil.info("get all class");
         DatabaseManager.saveClassFiles(AnalyzeEnv.classFileList);
         MainForm.getInstance().getBuildBar().setValue(20);
         DiscoveryRunner.start(AnalyzeEnv.classFileList, AnalyzeEnv.discoveredClasses,
@@ -166,7 +166,7 @@ public class CoreRunner {
         DatabaseManager.saveMethods(AnalyzeEnv.discoveredMethods);
         MainForm.getInstance().getBuildBar().setValue(30);
         logger.info("analyze class finish");
-        LogUtil.log("analyze class finish");
+        LogUtil.info("analyze class finish");
         for (MethodReference mr : AnalyzeEnv.discoveredMethods) {
             ClassReference.Handle ch = mr.getClassReference();
             if (AnalyzeEnv.methodsInClassMap.get(ch) == null) {
@@ -185,7 +185,7 @@ public class CoreRunner {
         AnalyzeEnv.inheritanceMap = InheritanceRunner.derive(AnalyzeEnv.classMap);
         MainForm.getInstance().getBuildBar().setValue(50);
         logger.info("build inheritance");
-        LogUtil.log("build inheritance");
+        LogUtil.info("build inheritance");
         Map<MethodReference.Handle, Set<MethodReference.Handle>> implMap =
                 InheritanceRunner.getAllMethodImplementations(AnalyzeEnv.inheritanceMap, AnalyzeEnv.methodMap);
         DatabaseManager.saveImpls(implMap);
@@ -200,7 +200,7 @@ public class CoreRunner {
         DatabaseManager.saveMethodCalls(AnalyzeEnv.methodCalls);
         MainForm.getInstance().getBuildBar().setValue(70);
         logger.info("build extra inheritance");
-        LogUtil.log("build extra inheritance");
+        LogUtil.info("build extra inheritance");
         for (ClassFileEntity file : AnalyzeEnv.classFileList) {
             try {
                 StringClassVisitor dcv = new StringClassVisitor(AnalyzeEnv.strMap, AnalyzeEnv.classMap, AnalyzeEnv.methodMap);
@@ -218,7 +218,7 @@ public class CoreRunner {
 
         MainForm.getInstance().getBuildBar().setValue(90);
         logger.info("build database finish");
-        LogUtil.log("build database finish");
+        LogUtil.info("build database finish");
 
         long fileSizeBytes = getFileSize();
         String fileSizeMB = formatSizeInMB(fileSizeBytes);
@@ -248,7 +248,7 @@ public class CoreRunner {
         if (MainForm.getInstance().getAutoSaveCheckBox().isSelected()) {
             ConfigEngine.saveConfig(config);
             logger.info("auto save finish");
-            LogUtil.log("auto save finish");
+            LogUtil.info("auto save finish");
         }
 
         MainForm.getInstance().getFileTree().refresh();

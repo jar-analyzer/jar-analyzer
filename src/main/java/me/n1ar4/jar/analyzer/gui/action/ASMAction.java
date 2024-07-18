@@ -93,7 +93,7 @@ public class ASMAction {
 
                 OpcodeForm.start(test);
             } catch (Exception ex) {
-                LogUtil.log("parse opcode error");
+                LogUtil.info("parse opcode error");
             }
         });
 
@@ -119,7 +119,7 @@ public class ASMAction {
 
                 OpcodeForm.start(data);
             } catch (Exception ex) {
-                LogUtil.log("parse opcode error");
+                LogUtil.info("parse opcode error");
             }
         });
     }

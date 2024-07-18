@@ -19,18 +19,18 @@ public class RuntimeJarAction {
 
         findRtBox.addActionListener(e -> {
             if (findRtBox.isSelected()) {
-                LogUtil.log("start find rt.jar file");
+                LogUtil.info("start find rt.jar file");
                 String javaHome = System.getProperty("java.home");
                 String rtJarPath = javaHome + File.separator + "lib" + File.separator + "rt.jar";
                 if (Files.exists(Paths.get(rtJarPath))) {
-                    LogUtil.log("rt.jar file found");
+                    LogUtil.info("rt.jar file found");
                     rtText.setText(rtJarPath);
                 } else {
-                    LogUtil.log("rt.jar file not found");
+                    LogUtil.info("rt.jar file not found");
                     rtText.setText(NOT_FOUND);
                 }
             } else {
-                LogUtil.log("clean rt.jar file path");
+                LogUtil.info("clean rt.jar file path");
                 rtText.setText(null);
             }
         });
@@ -45,14 +45,14 @@ public class RuntimeJarAction {
                 }
                 String rtJarPath = rtText.getText();
                 if (Files.exists(Paths.get(rtJarPath))) {
-                    LogUtil.log("add rt.jar");
+                    LogUtil.info("add rt.jar");
                 } else {
                     JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                             "file not found");
                     addRtBox.setSelected(false);
                 }
             } else {
-                LogUtil.log("not add rt.jar");
+                LogUtil.info("not add rt.jar");
             }
         });
     }

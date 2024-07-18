@@ -105,7 +105,7 @@ public class MenuUtil {
         menuBar.add(createGames());
         JMenu system = new JMenu("system info");
         JMenuItem systemItem = new JMenuItem("open");
-        systemItem.addActionListener(e-> SystemChart.start0());
+        systemItem.addActionListener(e -> SystemChart.start0());
         system.add(systemItem);
         menuBar.add(system);
         return menuBar;

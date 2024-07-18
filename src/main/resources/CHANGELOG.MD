@@ -10,12 +10,15 @@
 更新日志：
 
 - [重要] 分析时支持类和包名的白名单
+- [功能] 允许分析 `Spring` 根据 `Path` 搜索
+- [优化] 数据量巨大时某些功能可能的内存溢出
 - [优化] 优化黑名单白名单的解析和配置语法
 - [其他] 修复 `CHANGELOG` 错误的描述
 
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
+- Honey Baby (https://github.com/Gosiu)
 
 所有可供下载的文件都由 `Github Actions` 构建，提供以下三种:
 

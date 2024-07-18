@@ -827,7 +827,7 @@ public class MainForm {
                 instance.startSearchButton.setText("开始搜索");
                 instance.springLabel.setText("分析 JAR/JARS 中的 Spring Controller/Mapping 信息");
                 instance.pathSearchButton.setText("查找");
-                instance.pathSearchLabel.setText("在所有Mapping中查找Path");
+                instance.pathSearchLabel.setText("在所有 Mapping 中查找 Path");
                 instance.refreshButton.setText("刷新");
                 instance.javaVulLabel.setText("快速搜索通用 JAVA 漏洞相关");
 
@@ -935,7 +935,7 @@ public class MainForm {
                 instance.startSearchButton.setText("Start Search");
                 instance.springLabel.setText(" Analyze Spring Controllers and Mappings in Jar/Jars");
                 instance.pathSearchButton.setText("Search");
-                instance.pathSearchLabel.setText("Search path in all Mappings");
+                instance.pathSearchLabel.setText(" Search path in all Mappings");
                 instance.refreshButton.setText("Refresh");
                 instance.javaVulLabel.setText("Quickly Search Commons Java Vulnerabilities Call");
 
@@ -1287,7 +1287,7 @@ public class MainForm {
         pathSearchButton.setText("Search");
         springCPanel.add(pathSearchButton, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         pathSearchLabel = new JLabel();
-        pathSearchLabel.setText("Search path in all Mappings");
+        pathSearchLabel.setText(" Search path in all Mappings");
         springCPanel.add(pathSearchLabel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         pathSearchTextField = new JTextField();
         pathSearchTextField.setToolTipText("");

@@ -71,15 +71,15 @@ public class SpringMethodAdapter extends MethodVisitor {
         if (this.currentMapping != null) {
             if (pathAnnoAdapter != null) {
                 if (!pathAnnoAdapter.getResults().isEmpty()) {
-                    if(!pathAnnoAdapter.getResults().get(0).startsWith("/")){
-                        pathAnnoAdapter.getResults().set(0,"/"+ pathAnnoAdapter.getResults().get(0));
+                    if (!pathAnnoAdapter.getResults().get(0).startsWith("/")) {
+                        pathAnnoAdapter.getResults().set(0, "/" + pathAnnoAdapter.getResults().get(0));
                     }
-                    if(!pathAnnoAdapter.getResults().get(0).endsWith("/")){
-                       pathAnnoAdapter.getResults().set(0,pathAnnoAdapter.getResults().get(0).substring(0, pathAnnoAdapter.getResults().get(0).length()-1));
+                    if (pathAnnoAdapter.getResults().get(0).endsWith("/")) {
+                        pathAnnoAdapter.getResults().set(0, pathAnnoAdapter.getResults().get(0).substring(0, pathAnnoAdapter.getResults().get(0).length() - 1));
                     }
                     if (!StringUtil.isNull(controller.getBasePath())) {
-                        if(controller.getBasePath().endsWith("/")){
-                            controller.setBasePath(controller.getBasePath().substring(0, controller.getBasePath().length()-1));
+                        if (controller.getBasePath().endsWith("/")) {
+                            controller.setBasePath(controller.getBasePath().substring(0, controller.getBasePath().length() - 1));
                         }
                         currentMapping.setPath(controller.getBasePath() + pathAnnoAdapter.getResults().get(0));
                     } else {
@@ -127,7 +127,7 @@ public class SpringMethodAdapter extends MethodVisitor {
             });
             for (SpringMapping mapping : currentMapping.getController().getMappings()) {
                 if (mapping.getPath().endsWith("/")) {
-                    mapping.setPath(mapping.getPath().substring(0, mapping.getPath().length()-1));
+                    mapping.setPath(mapping.getPath().substring(0, mapping.getPath().length() - 1));
                 }
             }
             controller.addMapping(currentMapping);

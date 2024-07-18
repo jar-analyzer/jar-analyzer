@@ -136,7 +136,8 @@ public class CoreHelper {
             if (!collect.isEmpty()) {
                 classResults.add(result);
                 methodResultsTotal.addAll(collect);
-            }});
+            }
+        });
         methodResultsTotal.sort(Comparator.comparing(MethodResult::getPath));
         classResults.stream().sorted(Comparator.comparing(ClassResult::getClassName));
         DefaultListModel<MethodResult> springMModel = new DefaultListModel<>();
@@ -146,8 +147,8 @@ public class CoreHelper {
         for (MethodResult result : methodResultsTotal) {
             springMModel.addElement(result);
         }
-        LogUtil.log("Total Spring Controller records ："+springCModelvar0.size());
-        LogUtil.log("Total path method records ："+springMModel.size());
+        LogUtil.log("Total Spring Controller records ：" + springCModelvar0.size());
+        LogUtil.log("Total path method records ：" + springMModel.size());
         MainForm.getInstance().getSpringMList().setModel(springMModel);
         MainForm.getInstance().getSpringCList().setModel(springCModelvar0);
     }

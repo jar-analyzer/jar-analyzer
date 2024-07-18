@@ -187,6 +187,22 @@ public class MainForm {
     private JScrollPane classWhitePanel;
     private JTextArea classWhiteArea;
     private JLabel classWhiteListLabel;
+
+    public JButton getPathSearchButton() {
+        return pathSearchButton;
+    }
+
+    public JLabel getPathSearchLabel() {
+        return pathSearchLabel;
+    }
+
+    public JTextField getPathSearchTextField() {
+        return pathSearchTextField;
+    }
+
+    private JButton pathSearchButton;
+    private JLabel pathSearchLabel;
+    private JTextField pathSearchTextField;
     private static MainForm instance;
     private static ConfigFile config;
     private static CoreEngine engine;
@@ -810,6 +826,8 @@ public class MainForm {
                 instance.classBlackLabel.setText("类名黑名单 (完整类名并使用 ; 和 \\n 分割)");
                 instance.startSearchButton.setText("开始搜索");
                 instance.springLabel.setText("分析 JAR/JARS 中的 Spring Controller/Mapping 信息");
+                instance.pathSearchButton.setText("查找");
+                instance.pathSearchLabel.setText("在所有Mapping中查找Path");
                 instance.refreshButton.setText("刷新");
                 instance.javaVulLabel.setText("快速搜索通用 JAVA 漏洞相关");
 
@@ -916,6 +934,8 @@ public class MainForm {
                 instance.classBlackLabel.setText("Class Name Black List (full class name and split by ; and \\n)");
                 instance.startSearchButton.setText("Start Search");
                 instance.springLabel.setText(" Analyze Spring Controllers and Mappings in Jar/Jars");
+                instance.pathSearchButton.setText("Search");
+                instance.pathSearchLabel.setText("Search path in all Mappings");
                 instance.refreshButton.setText("Refresh");
                 instance.javaVulLabel.setText("Quickly Search Commons Java Vulnerabilities Call");
 
@@ -1250,19 +1270,28 @@ public class MainForm {
         springPanel.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPanel.addTab("spring", springPanel);
         springCPanel = new JPanel();
-        springCPanel.setLayout(new GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
+        springCPanel.setLayout(new GridLayoutManager(3, 3, new Insets(0, 0, 0, 0), -1, -1));
         springPanel.add(springCPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         springCPanel.setBorder(BorderFactory.createTitledBorder(null, "Spring Controllers", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         scScroll = new JScrollPane();
-        springCPanel.add(scScroll, new GridConstraints(1, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        springCPanel.add(scScroll, new GridConstraints(2, 0, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         springCList = new JList();
         scScroll.setViewportView(springCList);
         refreshButton = new JButton();
         refreshButton.setText("Refresh");
-        springCPanel.add(refreshButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        springCPanel.add(refreshButton, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         springLabel = new JLabel();
         springLabel.setText(" Analyze Spring Controllers and Mappings in Jar/Jars");
-        springCPanel.add(springLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        springCPanel.add(springLabel, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        pathSearchButton = new JButton();
+        pathSearchButton.setText("Search");
+        springCPanel.add(pathSearchButton, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        pathSearchLabel = new JLabel();
+        pathSearchLabel.setText("Search path in all Mappings");
+        springCPanel.add(pathSearchLabel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        pathSearchTextField = new JTextField();
+        pathSearchTextField.setToolTipText("");
+        springCPanel.add(pathSearchTextField, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         springMPanel = new JPanel();
         springMPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         springPanel.add(springMPanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));

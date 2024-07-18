@@ -3,6 +3,7 @@ package me.n1ar4.jar.analyzer.gui.util;
 import com.intellij.uiDesigner.core.GridConstraints;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.OpcodeForm;
+import me.n1ar4.jar.analyzer.gui.font.FontHelper;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
@@ -24,6 +25,12 @@ public class SyntaxAreaHelper {
 
     public static void buildJava(JPanel codePanel) {
         RSyntaxTextArea rArea = new RSyntaxTextArea(300, 300);
+
+        Font codeFont = FontHelper.getCodeFont();
+        if (codeFont != null) {
+            rArea.setFont(codeFont);
+        }
+
         rArea.addCaretListener(e -> {
             String selectedText = rArea.getSelectedText();
             if (selectedText == null || selectedText.isEmpty()) {

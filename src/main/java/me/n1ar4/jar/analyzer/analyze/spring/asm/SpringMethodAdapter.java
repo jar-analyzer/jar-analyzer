@@ -7,6 +7,7 @@ import me.n1ar4.jar.analyzer.analyze.spring.SpringParam;
 import me.n1ar4.jar.analyzer.core.ClassReference;
 import me.n1ar4.jar.analyzer.core.MethodReference;
 import me.n1ar4.jar.analyzer.starter.Const;
+import me.n1ar4.jar.analyzer.utils.StringUtil;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
@@ -70,7 +71,16 @@ public class SpringMethodAdapter extends MethodVisitor {
         if (this.currentMapping != null) {
             if (pathAnnoAdapter != null) {
                 if (!pathAnnoAdapter.getResults().isEmpty()) {
-                    if (controller.getBasePath() != null && !controller.getBasePath().isEmpty()) {
+                    if(!pathAnnoAdapter.getResults().get(0).startsWith("/")){
+                        pathAnnoAdapter.getResults().set(0,"/"+ pathAnnoAdapter.getResults().get(0));
+                    }
+                    if(!pathAnnoAdapter.getResults().get(0).endsWith("/")){
+                       pathAnnoAdapter.getResults().set(0,pathAnnoAdapter.getResults().get(0).substring(0, pathAnnoAdapter.getResults().get(0).length()-1));
+                    }
+                    if (!StringUtil.isNull(controller.getBasePath())) {
+                        if(controller.getBasePath().endsWith("/")){
+                            controller.setBasePath(controller.getBasePath().substring(0, controller.getBasePath().length()-1));
+                        }
                         currentMapping.setPath(controller.getBasePath() + pathAnnoAdapter.getResults().get(0));
                     } else {
                         currentMapping.setPath(pathAnnoAdapter.getResults().get(0));
@@ -115,6 +125,11 @@ public class SpringMethodAdapter extends MethodVisitor {
                     param.setReqName(param.getParamName());
                 }
             });
+            for (SpringMapping mapping : currentMapping.getController().getMappings()) {
+                if (mapping.getPath().endsWith("/")) {
+                    mapping.setPath(mapping.getPath().substring(0, mapping.getPath().length()-1));
+                }
+            }
             controller.addMapping(currentMapping);
         }
         super.visitEnd();

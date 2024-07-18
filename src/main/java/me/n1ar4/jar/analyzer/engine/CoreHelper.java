@@ -6,12 +6,16 @@ import me.n1ar4.jar.analyzer.entity.MethodResult;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.render.AllMethodsRender;
 import me.n1ar4.jar.analyzer.gui.util.ListParser;
+import me.n1ar4.jar.analyzer.gui.util.LogUtil;
 import me.n1ar4.jar.analyzer.gui.util.MenuUtil;
+import me.n1ar4.jar.analyzer.utils.StringUtil;
 
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("all")
 public class CoreHelper {
@@ -113,6 +117,39 @@ public class CoreHelper {
             springCModel.addElement(result);
         }
         MainForm.getInstance().getSpringCList().setModel(springCModel);
+    }
+
+    public static void pathSearchC() {
+        String text = MainForm.getInstance().getPathSearchTextField().getText();
+        if (StringUtil.isNull(text)) {
+            LogUtil.log("Please enter the search keyword");
+            return;
+        }
+        DefaultListModel<ClassResult> springCModelvar0 = new DefaultListModel<>();
+        MainForm.getInstance().getSpringCList().setModel(springCModelvar0);
+        ArrayList<ClassResult> results = MainForm.getEngine().getAllSpringC();
+        HashSet<ClassResult> classResults = new HashSet<>();
+        ArrayList<MethodResult> methodResultsTotal = new ArrayList<>();
+        results.forEach(result -> {
+            ArrayList<MethodResult> methodResults = MainForm.getEngine().getSpringM(result.getClassName());
+            List<MethodResult> collect = methodResults.stream().filter(a -> a.getPath().contains(text)).collect(Collectors.toList());
+            if (!collect.isEmpty()) {
+                classResults.add(result);
+                methodResultsTotal.addAll(collect);
+            }});
+        methodResultsTotal.sort(Comparator.comparing(MethodResult::getPath));
+        classResults.stream().sorted(Comparator.comparing(ClassResult::getClassName));
+        DefaultListModel<MethodResult> springMModel = new DefaultListModel<>();
+        for (ClassResult result : classResults) {
+            springCModelvar0.addElement(result);
+        }
+        for (MethodResult result : methodResultsTotal) {
+            springMModel.addElement(result);
+        }
+        LogUtil.log("Total Spring Controller records ："+springCModelvar0.size());
+        LogUtil.log("Total path method records ："+springMModel.size());
+        MainForm.getInstance().getSpringMList().setModel(springMModel);
+        MainForm.getInstance().getSpringCList().setModel(springCModelvar0);
     }
 
     public static void refreshSpringM(String className) {

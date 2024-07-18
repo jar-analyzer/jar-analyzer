@@ -9,5 +9,8 @@ public class SpringAction {
     public static void run() {
         JButton spRefreshBtn = MainForm.getInstance().getRefreshButton();
         spRefreshBtn.addActionListener(e -> CoreHelper.refreshSpringC());
+
+        JButton pathSearchButton = MainForm.getInstance().getPathSearchButton();
+        pathSearchButton.addActionListener(e -> CoreHelper.pathSearchC());
     }
 }

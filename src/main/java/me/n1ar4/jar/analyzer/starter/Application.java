@@ -48,8 +48,6 @@ public class Application {
     public static void main(String[] args) {
         // SET LOG LEVEL
         LogManager.setLevel(LogLevel.INFO);
-        // PRINT LOGO
-        Logo.print();
 
         // VERSION CHECK
         Version.check();
@@ -65,6 +63,9 @@ public class Application {
                 }
             }
         }
+
+        // PRINT LOGO
+        Logo.print();
 
         JCommander commander = JCommander.newBuilder()
                 .addCommand(BuildCmd.CMD, buildCmd)

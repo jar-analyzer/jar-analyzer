@@ -14,6 +14,7 @@ public interface Const {
     String projectUrl = "https://github.com/jar-analyzer/jar-analyzer";
     String newIssueUrl = "https://github.com/jar-analyzer/jar-analyzer/issues/new";
     String dbFile = "jar-analyzer.db";
+    String dbDir = "./db/";
     String tempDir = "jar-analyzer-temp";
     String downDir = "jar-analyzer-download";
     String OpcodeForm = "Jar Analyzer V2 - Method Opcode";

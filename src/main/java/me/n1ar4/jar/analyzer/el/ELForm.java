@@ -138,7 +138,7 @@ public class ELForm {
                 ConcurrentLinkedQueue<ResObj> searchList = new ConcurrentLinkedQueue<>();
                 List<MethodReference> mrs = MainForm.getEngine().getAllMethodRef();
 
-                logger.info("get all methods info finish");
+                logger.info("get all methods log finish");
                 logger.info("methods length: {}", mrs.size());
 
                 int part = mrs.size() / 80;

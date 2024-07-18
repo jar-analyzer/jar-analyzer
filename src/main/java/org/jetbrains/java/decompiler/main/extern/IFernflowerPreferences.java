@@ -35,7 +35,7 @@ public interface IFernflowerPreferences {
     String IGNORE_INVALID_BYTECODE = "iib";
     String VERIFY_ANONYMOUS_CLASSES = "vac";
 
-    String LOG_LEVEL = "log";
+    String LOG_LEVEL = "info";
     String MAX_PROCESSING_METHOD = "mpm";
     String RENAME_ENTITIES = "ren";
     String USER_RENAMER_CLASS = "urc";

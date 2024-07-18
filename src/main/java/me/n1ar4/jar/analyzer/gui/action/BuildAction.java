@@ -1,5 +1,7 @@
 package me.n1ar4.jar.analyzer.gui.action;
 
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.StrUtil;
 import me.n1ar4.jar.analyzer.core.CoreRunner;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
@@ -16,7 +18,29 @@ import java.nio.file.Paths;
 
 public class BuildAction {
     public static void start(String path) {
-        Path od = Paths.get(Const.dbFile);
+        String projectName= "";
+        String projectPath= "";
+        String sub = "";
+        if (FileUtil.isFile(path)) {
+            projectPath = FileUtil.getParent(path, 1);
+            projectName = StrUtil.subBefore(FileUtil.getName(path), ".", true);
+            sub = FileUtil.getSuffix(path);
+        } else if (FileUtil.isDirectory(path)) {
+            projectPath = path;
+            projectName = FileUtil.getName(path);
+        } else {
+            LogUtil.log("Not Supported Choose OR FILE/DIRECTORY No Exist");
+            return;
+        }
+//        Path od=null;
+//        String var0=projectPath.replace("\\","-").replace(":","").replace("\\\\","-");
+//        if(StrUtil.isNotBlank(sub)){
+//            od = Paths.get(Const.dbDir+var0+"-"+projectName+".db");
+//        }
+//        else{
+//            od = Paths.get(Const.dbDir+var0+".db");
+//        }
+        Path od=Paths.get(Const.dbFile);
         MainForm.getInstance().getFileText().setText(path);
 
         if (Files.exists(od)) {
@@ -27,12 +51,13 @@ public class BuildAction {
                             "do you want to delete the old db file?" +
                             "</html>");
             if (res == JOptionPane.OK_OPTION) {
-                LogUtil.log("delete old db");
+                LogUtil.log("deleting old db");
                 try {
                     Files.delete(od);
                     LogUtil.log("delete old db success");
                 } catch (Exception ignored) {
-                    LogUtil.log("cannot delete db");
+                    LogUtil.error("cannot delete db  "+ignored.getMessage());
+                    return;
                 }
             }
             if (res == JOptionPane.NO_OPTION) {
@@ -59,7 +84,7 @@ public class BuildAction {
         }
 
         boolean fixClass = MenuUtil.getFixClassPathConfig().getState();
-
+        Path finalOd = od;
         if (MainForm.getInstance().getAddRtJarWhenCheckBox().isSelected()) {
             String text = MainForm.getInstance().getRtText().getText();
             if (StringUtil.isNull(text)) {
@@ -73,9 +98,10 @@ public class BuildAction {
                         "rt.jar file not exist");
                 return;
             }
+
             new Thread(() -> CoreRunner.run(Paths.get(path), rtJarPath, fixClass)).start();
         } else {
-            new Thread(() -> CoreRunner.run(Paths.get(path), null, fixClass)).start();
+            new Thread(() -> CoreRunner.run(Paths.get(path),null, fixClass)).start();
         }
         MainForm.getInstance().getStartBuildDatabaseButton().setEnabled(false);
     }

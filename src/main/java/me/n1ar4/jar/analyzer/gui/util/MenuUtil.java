@@ -103,7 +103,7 @@ public class MenuUtil {
         menuBar.add(loadRemote());
         menuBar.add(exportJava());
         menuBar.add(createGames());
-        JMenu system = new JMenu("system info");
+        JMenu system = new JMenu("system log");
         JMenuItem systemItem = new JMenuItem("open");
         systemItem.addActionListener(e -> SystemChart.start0());
         system.add(systemItem);

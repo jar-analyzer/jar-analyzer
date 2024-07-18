@@ -10,7 +10,7 @@ import java.io.IOException;
   attribute_info {
     u2 attribute_name_index;
     u4 attribute_length;
-    u1 info[attribute_length];
+    u1 log[attribute_length];
   }
 */
 public class StructGeneralAttribute {

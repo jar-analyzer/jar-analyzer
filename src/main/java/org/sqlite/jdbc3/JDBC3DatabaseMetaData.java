@@ -1249,7 +1249,7 @@ public abstract class JDBC3DatabaseMetaData extends CoreDatabaseMetaData {
                     }
                 }
 
-                // For each table, get the column info and build into overall SQL
+                // For each table, get the column log and build into overall SQL
                 String pragmaStatement = "PRAGMA table_xinfo('" + escape(tableName) + "')";
                 try (Statement colstat = conn.createStatement();
                      ResultSet rscol = colstat.executeQuery(pragmaStatement)) {
@@ -1828,7 +1828,7 @@ public abstract class JDBC3DatabaseMetaData extends CoreDatabaseMetaData {
             sql.append("select null as un, null as n, null as op, null as cn) limit 0;");
             return ((CoreStatement) stat).executeQuery(sql.toString(), true);
         } else {
-            // loop over results from pragma call, getting specific info for each index
+            // loop over results from pragma call, getting specific log for each index
 
             Iterator<ArrayList<Object>> indexIterator = indexList.iterator();
             ArrayList<Object> currentIndex;

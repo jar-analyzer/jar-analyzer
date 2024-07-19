@@ -12,7 +12,7 @@
 
 - [重要] 分析时支持类和包名的白名单
 - [功能] 允许分析 `Spring` 根据 `Path` 搜索
-- [功能] 新增内置 `JAVA 21` 的版本 
+- [功能] 新增内置启用 `ZGC` 的 `JAVA 21` 的版本 
 - [BUG] 修复某些情况下数据库覆盖的问题
 - [BUG] 修复 `API` 返回 `JSON` 过大的报错
 - [优化] 优化 `API` 返回 `JSON` 的大小
@@ -30,14 +30,16 @@
 - 4ra1n (https://github.com/4ra1n)
 - Honey Baby (https://github.com/Gosiu)
 
-所有可供下载的文件都由 `Github Actions` 构建，提供以下三种:
+所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
 
 - `windows-full` 版内置 `JRE 8` 环境 (**完整功能版本**)
-- `windows-full-21` 版内置 `JRE 21` 环境（仅包含核心功能）
+- `windows-full-21` 版内置开启 `ZGC` 的 `JRE 21` 环境（仅包含核心功能）
 - `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
 - `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
 
-推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
+一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
+
+如果你追求**极致**的性能可以考虑使用 `windows-full-21` 版本（没有进行完善测试）
 
 如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
 

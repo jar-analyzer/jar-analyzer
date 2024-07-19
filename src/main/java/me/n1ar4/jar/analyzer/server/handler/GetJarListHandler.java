@@ -1,7 +1,6 @@
 package me.n1ar4.jar.analyzer.server.handler;
 
 import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONWriter;
 import fi.iki.elonen.NanoHTTPD;
 import me.n1ar4.jar.analyzer.engine.CoreEngine;
 import me.n1ar4.jar.analyzer.gui.MainForm;
@@ -18,7 +17,7 @@ public class GetJarListHandler extends BaseHandler implements HttpHandler {
             return error();
         }
         List<String> jars = engine.getJarsPath();
-        String json = JSON.toJSONString(jars, JSONWriter.Feature.PrettyFormat);
+        String json = JSON.toJSONString(jars);
         return buildJSON(json);
     }
 }

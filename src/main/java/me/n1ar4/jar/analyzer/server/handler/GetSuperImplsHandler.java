@@ -1,7 +1,6 @@
 package me.n1ar4.jar.analyzer.server.handler;
 
 import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONWriter;
 import fi.iki.elonen.NanoHTTPD;
 import me.n1ar4.jar.analyzer.engine.CoreEngine;
 import me.n1ar4.jar.analyzer.entity.MethodResult;
@@ -22,7 +21,7 @@ public class GetSuperImplsHandler extends BaseHandler implements HttpHandler {
         String method = getMethodName(session);
         String desc = getMethodDesc(session);
         ArrayList<MethodResult> res = engine.getSuperImpls(clazz, method, desc);
-        String json = JSON.toJSONString(res, JSONWriter.Feature.PrettyFormat);
+        String json = JSON.toJSONString(res);
         return buildJSON(json);
     }
 }

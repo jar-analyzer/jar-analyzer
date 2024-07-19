@@ -1,7 +1,6 @@
 package me.n1ar4.jar.analyzer.server.handler;
 
 import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONWriter;
 import fi.iki.elonen.NanoHTTPD;
 import me.n1ar4.jar.analyzer.engine.CoreEngine;
 import me.n1ar4.jar.analyzer.entity.MethodResult;
@@ -20,7 +19,7 @@ public class GetMethodsByStrHandler extends BaseHandler implements HttpHandler {
         }
         String str = getStr(session);
         ArrayList<MethodResult> res = engine.getMethodsByStr(str);
-        String json = JSON.toJSONString(res, JSONWriter.Feature.PrettyFormat);
+        String json = JSON.toJSONString(res);
         return buildJSON(json);
     }
 }

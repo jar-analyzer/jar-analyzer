@@ -16,7 +16,7 @@ public class LogUtil {
 
     public static void setT(JTextPane t) {
         LogUtil.t = t;
-        if(styleRed==null||styleGreen==null){
+        if (styleRed == null || styleGreen == null) {
             styleRed = t.getStyledDocument().addStyle("RedStyle", null);
             StyleConstants.setForeground(styleRed, Color.red);
             styleGreen = t.getStyledDocument().addStyle("BlueStyle", null);
@@ -25,26 +25,24 @@ public class LogUtil {
     }
 
     public static void info(String msg) {
-        print(styleGreen,msg);
+        print(styleGreen, msg);
     }
 
-    private static void print(Style style,String msg) {
+    private static void print(Style style, String msg) {
         if (t == null) {
             return;
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         String formattedTime = LocalTime.now().format(formatter);
         String head;
-        if(style==styleRed){
-            head="error";
+        if (style == styleRed) {
+            head = "error";
+        } else if (style == styleGreen) {
+            head = "info";
+        } else {
+            head = "unknown";
         }
-        else if(style==styleGreen){
-            head="info";
-        }
-        else {
-            head="unknown";
-        }
-        String logStr = StrUtil.format("[{}] [{}] {}\n",head, formattedTime, msg);
+        String logStr = StrUtil.format("[{}] [{}] {}\n", head, formattedTime, msg);
         try {
             t.getStyledDocument().insertString(t.getStyledDocument().getLength(), logStr, style);
         } catch (Exception e) {
@@ -54,6 +52,6 @@ public class LogUtil {
     }
 
     public static void error(String msg) {
-        print(styleRed,msg);
+        print(styleRed, msg);
     }
 }

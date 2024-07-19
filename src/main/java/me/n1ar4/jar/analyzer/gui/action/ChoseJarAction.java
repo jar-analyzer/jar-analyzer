@@ -31,7 +31,7 @@ public class ChoseJarAction {
             if (option == JFileChooser.APPROVE_OPTION) {
                 File file = fileChooser.getSelectedFile();
                 String absPath = file.getAbsolutePath();
-                LogUtil.log("load file: " + absPath);
+                LogUtil.info("load file: " + absPath);
                 MainForm.getInstance().getFileText().setText(absPath);
             }
         });

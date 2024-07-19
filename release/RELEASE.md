@@ -1,7 +1,10 @@
 # RELEASE DOC
 
-Use `Zulu JRE`
+Use `Zulu JRE 8`
 - https://www.azul.com/downloads/?version=java-8-lts&os=windows&architecture=x86-64-bit&package=jre#zulu
+
+Use `Zulu JRE 21`
+- https://www.azul.com/downloads/?version=java-21-lts&os=windows&architecture=x86-64-bit&package=jre#zulu
 
 Steps:
 - Run `check-version.bat` and update `pom.xml`

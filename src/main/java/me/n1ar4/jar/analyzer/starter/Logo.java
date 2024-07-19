@@ -13,9 +13,9 @@ public class Logo {
                 "/\\__|    |/ __ \\|  | \\/    |    \\   |  \\/ __ \\|  |_\\___  | /    /\\  ___/|  | \\/\n" +
                 "\\________(____  /__|  \\____|__  /___|  (____  /____/ ____|/_____ \\\\___  >__|   \n" +
                 "              \\/              \\/     \\/     \\/     \\/           \\/    \\/       "));
-        System.out.printf(ColorUtil.yellow("Jar Analyzer %s") + " by " +
+        System.out.printf(ColorUtil.yellow("Jar Analyzer %s") + " @ " +
                 ColorUtil.red("4ra1n (https://github.com/4ra1n)") + "\n", Const.version);
-        System.out.printf(ColorUtil.blue("Project Address") + ": " + "%s\n\n", Const.projectUrl);
+        System.out.printf(ColorUtil.blue("Project Address") + " -> " + "%s\n\n", Const.projectUrl);
 
         InputStream is = Logo.class.getClassLoader().getResourceAsStream("thanks.txt");
         if (is != null) {

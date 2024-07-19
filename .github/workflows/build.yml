@@ -72,9 +72,13 @@ jobs:
           curl -L "https://github.com/jar-analyzer/workflow_jre/releases/download/zulu-21.0.4/jre.zip" -o "jre-21.zip"
         working-directory: jar-analyzer
 
-      - name: unpack jre
+      - name: unpack jre-8
         run: >
           unzip jre-8.zip -d release\jar-analyzer-${{ env.VERSION }}-windows-full\
+        working-directory: jar-analyzer
+
+      - name: unpack jre-21
+        run: >
           unzip jre-21.zip -d release\jar-analyzer-${{ env.VERSION }}-windows-full-21\
         working-directory: jar-analyzer
 

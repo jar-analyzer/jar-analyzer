@@ -13,19 +13,18 @@ public class LogUtil {
     private static JTextPane t;
     private static Style styleRed;
     private static Style styleGreen;
+    private static Style styleYellow;
 
     public static void setT(JTextPane t) {
         LogUtil.t = t;
-        if (styleRed == null || styleGreen == null) {
+        if (styleRed == null || styleGreen == null || styleYellow == null) {
             styleRed = t.getStyledDocument().addStyle("RedStyle", null);
             StyleConstants.setForeground(styleRed, Color.red);
             styleGreen = t.getStyledDocument().addStyle("BlueStyle", null);
             StyleConstants.setForeground(styleGreen, Color.green);
+            styleYellow = t.getStyledDocument().addStyle("YellowStyle", null);
+            StyleConstants.setForeground(styleYellow, Color.yellow);
         }
-    }
-
-    public static void info(String msg) {
-        print(styleGreen, msg);
     }
 
     private static void print(Style style, String msg) {
@@ -45,10 +44,17 @@ public class LogUtil {
         String logStr = StrUtil.format("[{}] [{}] {}\n", head, formattedTime, msg);
         try {
             t.getStyledDocument().insertString(t.getStyledDocument().getLength(), logStr, style);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ignored) {
         }
         t.setCaretPosition(t.getDocument().getLength());
+    }
+
+    public static void info(String msg) {
+        print(styleGreen, msg);
+    }
+
+    public static void warn(String msg) {
+        print(styleYellow, msg);
     }
 
     public static void error(String msg) {

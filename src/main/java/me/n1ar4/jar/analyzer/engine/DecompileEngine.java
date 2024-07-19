@@ -141,7 +141,7 @@ public class DecompileEngine {
                 lruCache.put(key, codeStr);
                 return codeStr;
             } else {
-                LogUtil.info("unknown error");
+                LogUtil.warn("unknown error");
                 return null;
             }
         } catch (Exception ex) {

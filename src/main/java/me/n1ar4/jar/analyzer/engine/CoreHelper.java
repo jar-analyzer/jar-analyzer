@@ -122,7 +122,7 @@ public class CoreHelper {
     public static void pathSearchC() {
         String text = MainForm.getInstance().getPathSearchTextField().getText();
         if (StringUtil.isNull(text)) {
-            LogUtil.info("Please enter the search keyword");
+            LogUtil.info("please enter the search keyword");
             return;
         }
         DefaultListModel<ClassResult> springCModelvar0 = new DefaultListModel<>();
@@ -147,8 +147,8 @@ public class CoreHelper {
         for (MethodResult result : methodResultsTotal) {
             springMModel.addElement(result);
         }
-        LogUtil.info("Total Spring Controller records ：" + springCModelvar0.size());
-        LogUtil.info("Total path method records ：" + springMModel.size());
+        LogUtil.info("total spring controller records ：" + springCModelvar0.size());
+        LogUtil.info("total path method records ：" + springMModel.size());
         MainForm.getInstance().getSpringMList().setModel(springMModel);
         MainForm.getInstance().getSpringCList().setModel(springCModelvar0);
     }

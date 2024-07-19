@@ -26,7 +26,7 @@ public class RuntimeJarAction {
                     LogUtil.info("rt.jar file found");
                     rtText.setText(rtJarPath);
                 } else {
-                    LogUtil.info("rt.jar file not found");
+                    LogUtil.warn("rt.jar file not found");
                     rtText.setText(NOT_FOUND);
                 }
             } else {

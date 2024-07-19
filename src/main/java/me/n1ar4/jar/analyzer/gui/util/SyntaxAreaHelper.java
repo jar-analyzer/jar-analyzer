@@ -25,12 +25,11 @@ public class SyntaxAreaHelper {
 
     public static void buildJava(JPanel codePanel) {
         RSyntaxTextArea rArea = new RSyntaxTextArea(300, 300);
-
-        Font codeFont = FontHelper.getCodeFont();
-        if (codeFont != null) {
-            rArea.setFont(codeFont);
-        }
-
+//        Font codeFont = FontHelper.getCodeFont();
+//        if (codeFont != null) {
+//            rArea.setFont(codeFont);
+//        }
+// Font font = rArea.getFont();
         rArea.addCaretListener(e -> {
             String selectedText = rArea.getSelectedText();
             if (selectedText == null || selectedText.isEmpty()) {

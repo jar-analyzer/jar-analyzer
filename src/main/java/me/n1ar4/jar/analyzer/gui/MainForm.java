@@ -71,7 +71,7 @@ public class MainForm {
     private FileTree fileTree;
     private JPanel logPanel;
     private JScrollPane logScroll;
-    private JTextArea logArea;
+    private JTextPane logArea;
     private JPanel curMethodPanel;
     private JScrollPane allMethodScroll;
     private JList<MethodResult> allMethodList;
@@ -1414,7 +1414,7 @@ public class MainForm {
         logScroll = new JScrollPane();
         logPanel.add(logScroll, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(500, 100), new Dimension(500, 100), null, 0, false));
         logScroll.setBorder(BorderFactory.createTitledBorder(null, "Log", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
-        logArea = new JTextArea();
+        logArea = new JTextPane();
         logArea.setBackground(new Color(-13619152));
         logArea.setEditable(false);
         logArea.setForeground(new Color(-16012544));

@@ -34,7 +34,7 @@ public class DatabaseManager {
 
     static {
         logger.info("init database");
-        LogUtil.log("init database");
+        LogUtil.info("init database");
         SqlSessionFactory factory = SqlSessionFactoryUtil.sqlSessionFactory;
         session = factory.openSession(true);
         classMapper = session.getMapper(ClassMapper.class);
@@ -63,7 +63,7 @@ public class DatabaseManager {
         initMapper.createSpringControllerTable();
         initMapper.createSpringMappingTable();
         logger.info("create database finish");
-        LogUtil.log("create database finish");
+        LogUtil.info("create database finish");
     }
 
     public static void saveJar(String jarPath) {

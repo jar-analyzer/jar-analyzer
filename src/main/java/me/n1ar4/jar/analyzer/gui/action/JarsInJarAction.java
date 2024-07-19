@@ -11,10 +11,10 @@ public class JarsInJarAction {
         JCheckBox jarsInJar = MainForm.getInstance().getResolveJarsInJarCheckBox();
         jarsInJar.addActionListener(e -> {
             if (!jarsInJar.isSelected()) {
-                LogUtil.log("not use jars in jar");
+                LogUtil.info("not use jars in jar");
                 AnalyzeEnv.jarsInJar = false;
             } else {
-                LogUtil.log("use jars in jar");
+                LogUtil.info("use jars in jar");
                 AnalyzeEnv.jarsInJar = true;
             }
         });

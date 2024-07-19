@@ -20,36 +20,36 @@ public class BuildAction {
         MainForm.getInstance().getFileText().setText(path);
 
         if (Files.exists(od)) {
-            LogUtil.log("jar-analyzer database exist");
+            LogUtil.info("jar-analyzer database exist");
             int res = JOptionPane.showConfirmDialog(MainForm.getInstance().getMasterPanel(),
                     "<html>" +
                             "file <b>jar-analyzer.db</b> exist<br>" +
                             "do you want to delete the old db file?" +
                             "</html>");
             if (res == JOptionPane.OK_OPTION) {
-                LogUtil.log("delete old db");
+                LogUtil.info("delete old db");
                 try {
                     Files.delete(od);
-                    LogUtil.log("delete old db success");
+                    LogUtil.info("delete old db success");
                 } catch (Exception ignored) {
-                    LogUtil.log("cannot delete db");
+                    LogUtil.info("cannot delete db");
                 }
             }
             if (res == JOptionPane.NO_OPTION) {
-                LogUtil.log("overwrite database");
+                LogUtil.info("overwrite database");
             }
             if (res == JOptionPane.CANCEL_OPTION) {
-                LogUtil.log("cancel build process");
+                LogUtil.info("cancel build process");
                 return;
             }
         }
 
         if (MainForm.getInstance().getDeleteTempCheckBox().isSelected()) {
-            LogUtil.log("start delete temp");
+            LogUtil.info("start delete temp");
             DirUtil.removeDir(new File(Const.tempDir));
             // REFRESH TREE
             MainForm.getInstance().getFileTree().refresh();
-            LogUtil.log("delete temp success");
+            LogUtil.info("delete temp success");
         }
 
         if (StringUtil.isNull(path)) {

@@ -1204,7 +1204,7 @@
                 <properties/>
                 <border type="none" title="Log"/>
                 <children>
-                  <component id="c5b5" class="javax.swing.JTextArea" binding="logArea">
+                  <component id="5c5e0" class="javax.swing.JTextPane" binding="logArea">
                     <constraints/>
                     <properties>
                       <background color="-13619152"/>

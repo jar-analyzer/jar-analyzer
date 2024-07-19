@@ -34,7 +34,7 @@ public class IdentifyCallEngine {
         }
         if (toAnalyze == null) {
             logger.error("analyze null");
-            LogUtil.log("analyze null");
+            LogUtil.info("analyze null");
             return null;
         }
 

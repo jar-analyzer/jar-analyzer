@@ -46,7 +46,7 @@ public class DecompileEngine {
             cmd.add(path.toAbsolutePath().toString());
 
             logger.info("decompile jar: " + jarPath);
-            LogUtil.log("decompile jar: " + jarPath);
+            LogUtil.info("decompile jar: " + jarPath);
             logger.info("output dir: " + outputDir);
 
             // FERN FLOWER API
@@ -125,7 +125,7 @@ public class DecompileEngine {
                 cmd.addAll(extraClassList);
                 cmd.add(javaDir);
 
-                LogUtil.log("decompile class: " + classFilePath.getFileName().toString());
+                LogUtil.info("decompile class: " + classFilePath.getFileName().toString());
 
                 // FERN FLOWER API
                 ConsoleDecompiler.main(cmd.toArray(new String[0]));
@@ -141,7 +141,7 @@ public class DecompileEngine {
                 lruCache.put(key, codeStr);
                 return codeStr;
             } else {
-                LogUtil.log("unknown error");
+                LogUtil.info("unknown error");
                 return null;
             }
         } catch (Exception ex) {

@@ -14,7 +14,7 @@ import java.nio.file.Paths;
 public class CleanAction {
     public static void run() {
         MainForm.getInstance().getCleanButton().addActionListener(e -> {
-            LogUtil.log("clean jar-analyzer");
+            LogUtil.info("clean jar-analyzer");
             int res = JOptionPane.showConfirmDialog(MainForm.getInstance().getMasterPanel(),
                     "<html>" +
                             "do you want to clean jar-analyzer?<br>" +
@@ -40,10 +40,10 @@ public class CleanAction {
                 System.exit(0);
             }
             if (res == JOptionPane.NO_OPTION) {
-                LogUtil.log("cancel clean");
+                LogUtil.info("cancel clean");
             }
             if (res == JOptionPane.CANCEL_OPTION) {
-                LogUtil.log("cancel clean");
+                LogUtil.info("cancel clean");
             }
         });
     }

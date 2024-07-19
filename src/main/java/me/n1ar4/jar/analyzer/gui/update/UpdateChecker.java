@@ -18,7 +18,7 @@ public class UpdateChecker {
                 return;
             }
             String ver = body.trim();
-            LogUtil.log("latest: " + ver);
+            LogUtil.info("latest: " + ver);
             if (!ver.equals(Const.version)) {
                 String output;
                 output = String.format("New Version!\n%s: %s\n%s: %s\n%s",

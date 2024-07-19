@@ -65,11 +65,13 @@ jobs:
       - name: download jre
         run: |
           curl -L "https://github.com/jar-analyzer/workflow_jre/releases/download/zulu-8u422/jre.zip" -o "jre.zip"
+          curl -L "https://github.com/jar-analyzer/workflow_jre/releases/download/zulu-21.0.4/jre.zip" -o "jre-21.zip"
         working-directory: jar-analyzer
 
       - name: unpack jre
         run: >
           unzip jre.zip -d release\jar-analyzer-${{ env.VERSION }}-windows-full\
+          unzip jre-21.zip -d release\jar-analyzer-${{ env.VERSION }}-windows-full-21\
         working-directory: jar-analyzer
 
       - name: zip release
@@ -77,6 +79,7 @@ jobs:
           dir
           Compress-Archive -Path "jar-analyzer-${{ env.VERSION }}-windows-system\" -DestinationPath "jar-analyzer-${{ env.VERSION }}-windows-system.zip" -CompressionLevel Optimal
           Compress-Archive -Path "jar-analyzer-${{ env.VERSION }}-windows-full\" -DestinationPath "jar-analyzer-${{ env.VERSION }}-windows-full.zip" -CompressionLevel Optimal
+          Compress-Archive -Path "jar-analyzer-${{ env.VERSION }}-windows-full-21\" -DestinationPath "jar-analyzer-${{ env.VERSION }}-windows-full-21.zip" -CompressionLevel Optimal
           Compress-Archive -Path "jar-analyzer-${{ env.VERSION }}\" -DestinationPath "jar-analyzer-${{ env.VERSION }}.zip" -CompressionLevel Optimal
         working-directory: jar-analyzer/release
         shell: pwsh
@@ -88,5 +91,6 @@ jobs:
           name: jar-analyzer
           path: |
             jar-analyzer/release/jar-analyzer-${{ env.VERSION }}-windows-full.zip
+            jar-analyzer/release/jar-analyzer-${{ env.VERSION }}-windows-full-21.zip
             jar-analyzer/release/jar-analyzer-${{ env.VERSION }}-windows-system.zip
             jar-analyzer/release/jar-analyzer-${{ env.VERSION }}.zip

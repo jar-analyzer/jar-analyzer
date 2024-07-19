@@ -1,16 +1,16 @@
 package me.n1ar4.jar.analyzer.gui.util;
 
 import com.github.rjeschke.txtmark.Processor;
-import me.n1ar4.flappy.FBMainFrame;
-import me.n1ar4.http.HttpResponse;
-import me.n1ar4.http.Y4Client;
+import me.n1ar4.games.flappy.FBMainFrame;
+import me.n1ar4.jar.analyzer.http.HttpResponse;
+import me.n1ar4.jar.analyzer.http.Y4Client;
 import me.n1ar4.jar.analyzer.gui.*;
 import me.n1ar4.jar.analyzer.os.SystemChart;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
-import me.n1ar4.plane.Game;
-import me.n1ar4.pocker.Main;
+import me.n1ar4.games.plane.Game;
+import me.n1ar4.games.pocker.Main;
 import me.n1ar4.shell.analyzer.form.ShellForm;
 
 import javax.imageio.ImageIO;

@@ -50,6 +50,7 @@
         <okhttp3.version>4.12.0</okhttp3.version>
         <nano.version>2.3.1</nano.version>
         <fastjson.version>2.0.52</fastjson.version>
+        <hutool.version>5.8.26</hutool.version>
         <jfreechart.version>1.5.5</jfreechart.version>
         <oshi.version>6.6.1</oshi.version>
         <!-- Maven Build Version -->
@@ -71,6 +72,11 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>${hutool.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.jfree</groupId>
             <artifactId>jfreechart</artifactId>

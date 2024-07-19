@@ -25,11 +25,8 @@ public class SyntaxAreaHelper {
 
     public static void buildJava(JPanel codePanel) {
         RSyntaxTextArea rArea = new RSyntaxTextArea(300, 300);
-
-        Font codeFont = FontHelper.getCodeFont();
-        if (codeFont != null) {
-            rArea.setFont(codeFont);
-        }
+        // 不要使用其他字体
+        // 默认字体支持中文 其他的不一定
 
         rArea.addCaretListener(e -> {
             String selectedText = rArea.getSelectedText();
@@ -53,6 +50,7 @@ public class SyntaxAreaHelper {
                 }
             }
         });
+
         codeArea = rArea;
         codeArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
         codeArea.setCodeFoldingEnabled(true);

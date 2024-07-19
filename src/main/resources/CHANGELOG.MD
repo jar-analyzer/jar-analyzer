@@ -12,6 +12,7 @@
 
 - [重要] 分析时支持类和包名的白名单
 - [功能] 允许分析 `Spring` 根据 `Path` 搜索
+- [功能] 新增内置 `JAVA 21` 的版本 
 - [BUG] 修复某些情况下数据库覆盖的问题
 - [BUG] 修复 `API` 返回 `JSON` 过大的报错
 - [优化] 优化 `API` 返回 `JSON` 的大小
@@ -32,6 +33,7 @@
 所有可供下载的文件都由 `Github Actions` 构建，提供以下三种:
 
 - `windows-full` 版内置 `JRE 8` 环境 (**完整功能版本**)
+- `windows-full-21` 版内置 `JRE 21` 环境（仅包含核心功能）
 - `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
 - `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
 

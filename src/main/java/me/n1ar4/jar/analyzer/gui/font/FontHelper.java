@@ -4,10 +4,7 @@ import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 
 import java.awt.*;
-import java.awt.font.TextAttribute;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 
 public class FontHelper {
     private static final Logger logger = LogManager.getLogger();

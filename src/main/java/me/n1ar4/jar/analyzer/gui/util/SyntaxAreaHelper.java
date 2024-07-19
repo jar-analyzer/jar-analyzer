@@ -3,7 +3,6 @@ package me.n1ar4.jar.analyzer.gui.util;
 import com.intellij.uiDesigner.core.GridConstraints;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.OpcodeForm;
-import me.n1ar4.jar.analyzer.gui.font.FontHelper;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;

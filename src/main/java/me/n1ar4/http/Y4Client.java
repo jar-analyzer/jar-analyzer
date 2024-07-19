@@ -30,9 +30,9 @@ public class Y4Client {
 
     public void reConfig() {
         this.client = new OkHttpClient.Builder()
-                .connectTimeout(Globals.TIMEOUT_SECOND, TimeUnit.SECONDS)
-                .readTimeout(Globals.TIMEOUT_SECOND, TimeUnit.SECONDS)
-                .writeTimeout(Globals.TIMEOUT_SECOND, TimeUnit.SECONDS)
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10, TimeUnit.SECONDS)
                 .build();
     }
 

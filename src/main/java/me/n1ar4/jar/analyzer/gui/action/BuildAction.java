@@ -31,8 +31,14 @@ public class BuildAction {
                 try {
                     Files.delete(od);
                     LogUtil.info("delete old db success");
-                } catch (Exception ignored) {
-                    LogUtil.info("cannot delete db");
+                } catch (Exception ex) {
+                    LogUtil.error("cannot delete db : " + ex.getMessage());
+                    JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                            "<html>" +
+                                    "<p>无法删除之前的 <strong>jar-analyzer.db</strong> 请手动删除</p>" +
+                                    "<p>" + ex.getMessage().trim() + "</p>" +
+                                    "</html>");
+                    return;
                 }
             }
             if (res == JOptionPane.NO_OPTION) {

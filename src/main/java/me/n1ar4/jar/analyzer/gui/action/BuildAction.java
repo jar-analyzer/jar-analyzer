@@ -1,5 +1,7 @@
 package me.n1ar4.jar.analyzer.gui.action;
 
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.StrUtil;
 import me.n1ar4.jar.analyzer.core.CoreRunner;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
@@ -16,6 +18,30 @@ import java.nio.file.Paths;
 
 public class BuildAction {
     public static void start(String path) {
+
+        String projectName= "";
+        String projectPath= "";
+        String sub = "";
+        if (FileUtil.isFile(path)) {
+            projectPath = FileUtil.getParent(path, 1);
+            projectName = StrUtil.subBefore(FileUtil.getName(path), ".", true);
+            sub = FileUtil.getSuffix(path);
+        } else if (FileUtil.isDirectory(path)) {
+            projectPath = path;
+            projectName = FileUtil.getName(path);
+        } else {
+            LogUtil.info("Not Supported Choose OR FILE/DIRECTORY No Exist");
+            return;
+        }
+//        Path od=null;
+//        String var0=projectPath.replace("\\","-").replace(":","").replace("\\\\","-");
+//        if(StrUtil.isNotBlank(sub)){
+//            od = Paths.get(Const.dbDir+var0+"-"+projectName+".db");
+//        }
+//        else{
+//            od = Paths.get(Const.dbDir+var0+".db");
+//        }
+
         Path od = Paths.get(Const.dbFile);
         MainForm.getInstance().getFileText().setText(path);
 
@@ -27,12 +53,13 @@ public class BuildAction {
                             "do you want to delete the old db file?" +
                             "</html>");
             if (res == JOptionPane.OK_OPTION) {
-                LogUtil.info("delete old db");
+                LogUtil.info("deleting old db");
                 try {
                     Files.delete(od);
                     LogUtil.info("delete old db success");
                 } catch (Exception ignored) {
-                    LogUtil.info("cannot delete db");
+                    LogUtil.error("cannot delete db  "+ignored.getMessage());
+                    return;
                 }
             }
             if (res == JOptionPane.NO_OPTION) {

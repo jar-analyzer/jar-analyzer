@@ -46,26 +46,25 @@ public class Application {
      * 　　＞―r￣￣~∠--|
      */
     public static void main(String[] args) {
-        // SET LOG LEVEL
-        LogManager.setLevel(LogLevel.INFO);
-
-        // VERSION CHECK
-        Version.check();
-
         // CHECK WINDOWS
         if (OSUtil.isWindows()) {
             boolean ok = JNIUtil.extractDllSo("console.dll", null, true);
             if (ok) {
                 try {
                     ConsoleUtils.setWindowsColorSupport();
-                    logger.info("check windows console finish");
                 } catch (Exception ignored) {
                 }
             }
         }
 
+        // SET LOG LEVEL
+        LogManager.setLevel(LogLevel.INFO);
+
         // PRINT LOGO
         Logo.print();
+
+        // VERSION CHECK
+        Version.check();
 
         JCommander commander = JCommander.newBuilder()
                 .addCommand(BuildCmd.CMD, buildCmd)

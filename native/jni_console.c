@@ -11,5 +11,4 @@ JNIEXPORT void JNICALL Java_me_n1ar4_jar_analyzer_utils_ConsoleUtils_setWindowsC
         return;
     }
     SetConsoleMode(hStdOut, mode | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
-    printf("[*] jar-analyzer jni set console mode success\n");
 }

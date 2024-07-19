@@ -3,7 +3,6 @@ package me.n1ar4.jar.analyzer.utils;
 import me.n1ar4.jar.analyzer.starter.Const;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
@@ -21,15 +20,13 @@ public class JNIUtil {
      *
      * @return success or not
      */
-    @SuppressWarnings("all")
     private static boolean deleteUrls() {
         try {
             final Field sysPathsField = ClassLoader.class.getDeclaredField("sys_paths");
             sysPathsField.setAccessible(true);
             sysPathsField.set(null, null);
             return true;
-        } catch (Exception ex) {
-            System.out.printf("[-] delete classloader sys_paths error: %s\n", ex.toString());
+        } catch (Exception ignored) {
         }
         return false;
     }
@@ -43,11 +40,11 @@ public class JNIUtil {
     public static boolean loadLib(String path) {
         Path p = Paths.get(path);
         if (!Files.exists(p)) {
-            System.out.println("[-] load lib error: file not found");
+
             return false;
         }
         if (Files.isDirectory(p)) {
-            System.out.println("[-] load lib error: input file is a dir");
+
             return false;
         }
         String os = System.getProperty("os.name").toLowerCase();
@@ -61,19 +58,14 @@ public class JNIUtil {
             }
             String dll = p.toFile().getName().toLowerCase();
             if (!dll.endsWith(".dll")) {
-                System.out.println("[-] load lib error: must be a dll file");
                 return false;
             }
-            System.out.println("[*] load library: " + dll);
             System.load(p.toFile().getAbsolutePath());
         } else {
             String so = p.toFile().getAbsolutePath();
             if (!so.endsWith(".so")) {
-                System.out.println("[-] must be a so file");
                 return false;
             }
-            String outputName = p.toFile().getName().split("\\.so")[0].trim();
-            System.out.println("[*] load library: " + outputName);
             System.load(so);
         }
         return true;
@@ -85,11 +77,8 @@ public class JNIUtil {
      * @param filename dll/so file name in resources
      */
     public static boolean extractDllSo(String filename, String dir, boolean load) {
-        InputStream is = null;
-        try {
-            is = JNIUtil.class.getClassLoader().getResourceAsStream(filename);
+        try (InputStream is = JNIUtil.class.getClassLoader().getResourceAsStream(filename)) {
             if (is == null) {
-                System.out.println("[-] error dll name");
                 return false;
             }
             if (dir == null || dir.isEmpty()) {
@@ -97,14 +86,12 @@ public class JNIUtil {
             }
             Path targetDir = Paths.get(dir);
             Path outputFile;
-
             if (!Files.exists(targetDir)) {
                 Path dirPath = Files.createDirectories(targetDir);
                 outputFile = dirPath.resolve(filename);
             } else {
                 outputFile = targetDir.resolve(filename);
             }
-
             if (!Files.exists(outputFile)) {
                 ByteArrayOutputStream buffer = new ByteArrayOutputStream();
                 int nRead;
@@ -113,26 +100,12 @@ public class JNIUtil {
                     buffer.write(data, 0, nRead);
                 }
                 Files.write(outputFile, buffer.toByteArray());
-                System.out.println("[*] write file: " + outputFile.toAbsolutePath());
             }
             if (load) {
-                boolean success = loadLib(outputFile.toAbsolutePath().toString());
-                if (!success) {
-                    System.out.println("[-] load lib failed");
-                    return false;
-                }
+                return loadLib(outputFile.toAbsolutePath().toString());
             }
             return true;
-        } catch (Exception ex) {
-            System.out.printf("[-] extract file error: %s", ex);
-        } finally {
-            if (is != null) {
-                try {
-                    is.close();
-                } catch (IOException e) {
-                    System.out.printf("[-] close stream error: %s", e);
-                }
-            }
+        } catch (Exception ignored) {
         }
         return false;
     }

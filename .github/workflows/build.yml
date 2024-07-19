@@ -62,15 +62,19 @@ jobs:
           Copy-Item "target\jar-analyzer-${{ env.VERSION }}-jar-with-dependencies.jar" -Destination "release\jar-analyzer-${{ env.VERSION }}.jar"
         working-directory: jar-analyzer
 
-      - name: download jre
+      - name: download jre-8
         run: |
-          curl -L "https://github.com/jar-analyzer/workflow_jre/releases/download/zulu-8u422/jre.zip" -o "jre.zip"
+          curl -L "https://github.com/jar-analyzer/workflow_jre/releases/download/zulu-8u422/jre.zip" -o "jre-8.zip"
+        working-directory: jar-analyzer
+
+      - name: download jre-21
+        run: |
           curl -L "https://github.com/jar-analyzer/workflow_jre/releases/download/zulu-21.0.4/jre.zip" -o "jre-21.zip"
         working-directory: jar-analyzer
 
       - name: unpack jre
         run: >
-          unzip jre.zip -d release\jar-analyzer-${{ env.VERSION }}-windows-full\
+          unzip jre-8.zip -d release\jar-analyzer-${{ env.VERSION }}-windows-full\
           unzip jre-21.zip -d release\jar-analyzer-${{ env.VERSION }}-windows-full-21\
         working-directory: jar-analyzer
 

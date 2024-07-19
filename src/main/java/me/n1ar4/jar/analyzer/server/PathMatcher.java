@@ -3,11 +3,14 @@ package me.n1ar4.jar.analyzer.server;
 import fi.iki.elonen.NanoHTTPD;
 import me.n1ar4.jar.analyzer.server.handler.*;
 import me.n1ar4.jar.analyzer.server.handler.base.HttpHandler;
+import me.n1ar4.log.LogManager;
+import me.n1ar4.log.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class PathMatcher {
+    private static final Logger logger = LogManager.getLogger();
     public static Map<String, HttpHandler> handlers = new HashMap<>();
 
     static {
@@ -43,6 +46,9 @@ public class PathMatcher {
 
     public static NanoHTTPD.Response handleReq(NanoHTTPD.IHTTPSession session) {
         String uri = session.getUri();
+
+        logger.info("receive {} from {}", session.getRemoteIpAddress(), uri);
+
         for (Map.Entry<String, HttpHandler> entry : handlers.entrySet()) {
             if (uri.startsWith(entry.getKey())) {
                 return entry.getValue().handle(session);

@@ -7,6 +7,7 @@ import com.sun.tools.attach.VirtualMachineDescriptor;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.starter.Version;
 import me.n1ar4.jar.analyzer.utils.OSUtil;
+import me.n1ar4.jar.analyzer.utils.SocketUtil;
 import me.n1ar4.shell.analyzer.model.ClassObj;
 import me.n1ar4.shell.analyzer.model.ProcessObj;
 import me.n1ar4.shell.analyzer.start.SocketHelper;
@@ -24,8 +25,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
-import java.net.Socket;
-import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -575,19 +574,6 @@ public class ShellForm {
         instance.logArea.append(text);
     }
 
-    public static boolean isPortInUse(String host, int port) {
-        boolean result = false;
-        try {
-            Socket socket = new Socket(host, port);
-            socket.close();
-            result = true;
-        } catch (UnknownHostException e) {
-            return false;
-        } catch (IOException ignored) {
-        }
-        return result;
-    }
-
     public static void start0() {
         // check windows
         // 目前该功能仅给 Windows 使用
@@ -603,7 +589,7 @@ public class ShellForm {
         }
 
         // 检查端口 10033 端口是否被占用
-        if (isPortInUse("localhost", 10033)) {
+        if (SocketUtil.isPortInUse("localhost", 10033)) {
             JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                     "<html>" +
                             "10033 port in use<br>" +

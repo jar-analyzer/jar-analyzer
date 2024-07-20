@@ -15,5 +15,7 @@ public interface ClassMapper {
 
     List<ClassResult> selectClassByClassName(@Param("className") String className);
 
+    List<String> includeClassByClassName(@Param("className") String className);
+
     String selectJarByClass(@Param("className") String className);
 }

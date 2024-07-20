@@ -23,14 +23,15 @@
         FROM class_table c
         WHERE c.class_name = #{className}
     </select>
-
+    <!-- 这个方法写的比较抽象 -->
+    <!-- 因为要兼容之前的版本 且避免在 JAVA 层消耗过高 -->
+    <!-- 本质是 查 CLASS 全名里面是否包含了某个字符串 -->
     <select id="includeClassByClassName">
         SELECT c.class_name
         FROM class_table c
         WHERE c.class_name LIKE '%${className}%'
           AND INSTR(REVERSE(c.class_name), '/') > INSTR(REVERSE(c.class_name), REVERSE('${className}'))
     </select>
-
     <select id="selectSuperClassesByClassName">
         SELECT DISTINCT c.super_class_name
         FROM class_table c

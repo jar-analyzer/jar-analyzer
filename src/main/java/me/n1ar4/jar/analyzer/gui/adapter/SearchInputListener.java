@@ -12,11 +12,12 @@ import javax.swing.event.DocumentListener;
 import java.util.List;
 
 public class SearchInputListener implements DocumentListener {
-
-    private static final ClassMapper classMapper = SqlSessionFactoryUtil.sqlSessionFactory.openSession(true).getMapper(ClassMapper.class);
+    @SuppressWarnings("all")
+    private static final ClassMapper classMapper = SqlSessionFactoryUtil.sqlSessionFactory.openSession(
+            true).getMapper(ClassMapper.class);
     private static final FileTree fileTree = MainForm.getInstance().getFileTree();
-    private static final JTextField fileTreeSearchtextField = MainForm.getInstance().getFileTreeSearchtextField();
-    private static final JLabel fileTreeSearchlabel = MainForm.getInstance().getFileTreeSearchlabel();
+    private static final JTextField fileTreeSearchTextField = MainForm.getInstance().getFileTreeSearchTextField();
+    private static final JLabel fileTreeSearchLabel = MainForm.getInstance().getFileTreeSearchLabel();
     private static List<String> collect;
     private static int count = 0;
     private static boolean refresh = false;
@@ -34,37 +35,39 @@ public class SearchInputListener implements DocumentListener {
             }
             fileTree.searchPathTarget(collect.get(count++));
             refresh = false;
-            fileTreeSearchlabel.setText(StrUtil.format("Find: {} Current:{}", String.valueOf(collect.size()), count));
+            fileTreeSearchLabel.setText(StrUtil.format("Find: {} Current:{}",
+                    String.valueOf(collect.size()), count));
             return;
         }
         count = 0;
         refresh = true;
         if (!StrUtil.isNotBlank(string)) {
-            fileTreeSearchtextField.setText("");
+            fileTreeSearchTextField.setText("");
             return;
         }
         collect = classMapper.includeClassByClassName(string);
         if (!collect.isEmpty()) {
-            fileTreeSearchlabel.setText(StrUtil.format("Find: {} Current:{}", String.valueOf(collect.size()), 1));
-            fileTreeSearchlabel.setVisible(true);
+            fileTreeSearchLabel.setText(StrUtil.format("Find: {} Current:{}",
+                    String.valueOf(collect.size()), 1));
+            fileTreeSearchLabel.setVisible(true);
             fileTree.searchPathTarget(collect.get(0));
         } else {
-            fileTreeSearchlabel.setVisible(false);
+            fileTreeSearchLabel.setVisible(false);
         }
     }
 
     @Override
     public void insertUpdate(DocumentEvent e) {
-        search(fileTreeSearchtextField.getText(), true);
+        search(fileTreeSearchTextField.getText(), true);
     }
 
     @Override
     public void removeUpdate(DocumentEvent e) {
-        search(fileTreeSearchtextField.getText(), true);
+        search(fileTreeSearchTextField.getText(), true);
     }
 
     @Override
     public void changedUpdate(DocumentEvent e) {
-        search(fileTreeSearchtextField.getText(), true);
+        search(fileTreeSearchTextField.getText(), true);
     }
 }

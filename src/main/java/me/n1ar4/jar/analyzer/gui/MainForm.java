@@ -189,6 +189,7 @@ public class MainForm {
     private JButton unzipButton;
     private JButton hessianButton;
     private JButton springELStartButton;
+    @SuppressWarnings("all")
     private JLabel spelLabel;
     private JButton startELSearchButton;
     private JButton obfBtn;
@@ -201,9 +202,9 @@ public class MainForm {
     private JButton pathSearchButton;
     private JLabel pathSearchLabel;
     private JTextField pathSearchTextField;
-    private JTextField fileTreeSearchtextField;
+    private JTextField fileTreeSearchTextField;
     private JPanel fileTreeSearchPanel;
-    private JLabel fileTreeSearchlabel;
+    private JLabel fileTreeSearchLabel;
 
     public MainForm(boolean fake) {
         if (fake) {
@@ -382,9 +383,9 @@ public class MainForm {
         instance.historyList.addMouseListener(new CommonMouseAdapter());
         instance.springCList.addMouseListener(new ControllerMouseAdapter());
         instance.springMList.addMouseListener(new CommonMouseAdapter());
-        instance.fileTreeSearchtextField.getDocument().addDocumentListener(new SearchInputListener());
-        instance.fileTreeSearchtextField.addKeyListener(new SearchtextFieldKeyAdapter());
-        instance.fileTreeSearchtextField.addKeyListener(new FileTreeKeyAdapter());
+        instance.fileTreeSearchTextField.getDocument().addDocumentListener(new SearchInputListener());
+        instance.fileTreeSearchTextField.addKeyListener(new SearchTextFieldKeyAdapter());
+        instance.fileTreeSearchTextField.addKeyListener(new FileTreeKeyAdapter());
         refreshLang();
     }
 
@@ -634,40 +635,24 @@ public class MainForm {
         frame.setVisible(true);
     }
 
-    public JLabel getFileTreeSearchlabel() {
-        return fileTreeSearchlabel;
-    }
-
-    public void setFileTreeSearchlabel(JLabel fileTreeSearchlabel) {
-        this.fileTreeSearchlabel = fileTreeSearchlabel;
+    public JLabel getFileTreeSearchLabel() {
+        return fileTreeSearchLabel;
     }
 
     public JButton getPathSearchButton() {
         return pathSearchButton;
     }
 
-    public JLabel getPathSearchLabel() {
-        return pathSearchLabel;
-    }
-
     public JTextField getPathSearchTextField() {
         return pathSearchTextField;
     }
 
-    public JTextField getFileTreeSearchtextField() {
-        return fileTreeSearchtextField;
-    }
-
-    public void setFileTreeSearchtextField(JTextField fileTreeSearchtextField) {
-        this.fileTreeSearchtextField = fileTreeSearchtextField;
+    public JTextField getFileTreeSearchTextField() {
+        return fileTreeSearchTextField;
     }
 
     public JPanel getFileTreeSearchPanel() {
         return fileTreeSearchPanel;
-    }
-
-    public void setFileTreeSearchPanel(JPanel fileTreeSearchPanel) {
-        this.fileTreeSearchPanel = fileTreeSearchPanel;
     }
 
     public JList<ClassResult> getSpringCList() {
@@ -1093,7 +1078,7 @@ public class MainForm {
         classWhitePanel.setViewportView(classWhiteArea);
         decompilerPanel = new JPanel();
         decompilerPanel.setLayout(new GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
-        chosePanel.add(decompilerPanel, new GridConstraints(8, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        chosePanel.add(decompilerPanel, new GridConstraints(8, 0, 1, 6, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         decompilerPanel.setBorder(BorderFactory.createTitledBorder(null, "Decompiler", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         fernRadio = new JRadioButton();
         fernRadio.setEnabled(true);
@@ -1443,13 +1428,13 @@ public class MainForm {
         panel1.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
         fileTreeSearchPanel.add(panel1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         panel1.setBorder(BorderFactory.createTitledBorder(null, "Search Filename(Input 'ENTER' to next)", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
-        fileTreeSearchtextField = new JTextField();
-        fileTreeSearchtextField.setVisible(true);
-        panel1.add(fileTreeSearchtextField, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        fileTreeSearchlabel = new JLabel();
-        fileTreeSearchlabel.setText("");
-        fileTreeSearchlabel.setVisible(false);
-        panel1.add(fileTreeSearchlabel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        fileTreeSearchTextField = new JTextField();
+        fileTreeSearchTextField.setVisible(true);
+        panel1.add(fileTreeSearchTextField, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        fileTreeSearchLabel = new JLabel();
+        fileTreeSearchLabel.setText("");
+        fileTreeSearchLabel.setVisible(false);
+        panel1.add(fileTreeSearchLabel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         logPanel = new JPanel();
         logPanel.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
         corePanel.add(logPanel, new GridConstraints(3, 1, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));

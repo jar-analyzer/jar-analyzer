@@ -5,6 +5,7 @@ import me.n1ar4.jar.analyzer.core.SqlSessionFactoryUtil;
 import me.n1ar4.jar.analyzer.core.mapper.ClassMapper;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.tree.FileTree;
+import me.n1ar4.jar.analyzer.gui.util.LogUtil;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -21,6 +22,8 @@ public class SearchInputListener implements DocumentListener {
     private static List<String> collect;
     private static int count = 0;
     private static boolean refresh = false;
+
+    private static volatile boolean once = false;
 
     public static void search(String string, boolean isInner) {
         if (!isInner) {
@@ -56,18 +59,29 @@ public class SearchInputListener implements DocumentListener {
         }
     }
 
+    private void filterInput() {
+        String text = fileTreeSearchTextField.getText();
+        // 处理输入是中文的问题
+        if (text.contains("'") || text.contains("\"") || text.trim().isEmpty()) {
+            LogUtil.warn("check your input (invalid chars)");
+            SwingUtilities.invokeLater(new Thread(() -> fileTreeSearchTextField.setText("")));
+            return;
+        }
+        search(text, true);
+    }
+
     @Override
     public void insertUpdate(DocumentEvent e) {
-        search(fileTreeSearchTextField.getText(), true);
+        filterInput();
     }
 
     @Override
     public void removeUpdate(DocumentEvent e) {
-        search(fileTreeSearchTextField.getText(), true);
+        filterInput();
     }
 
     @Override
     public void changedUpdate(DocumentEvent e) {
-        search(fileTreeSearchTextField.getText(), true);
+        filterInput();
     }
 }

@@ -34,12 +34,11 @@ public class LogUtil {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         String formattedTime = LocalTime.now().format(formatter);
         String head;
-        if (style == styleRed) {
-            head = "error";
-        } else if (style == styleGreen) {
-            head = "info";
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        if (stackTrace.length > 3) {
+            head = stackTrace[2].getMethodName();
         } else {
-            head = "unknown";
+            head = "Unknown Level";
         }
         String logStr = StrUtil.format("[{}] [{}] {}\n", head, formattedTime, msg);
         try {

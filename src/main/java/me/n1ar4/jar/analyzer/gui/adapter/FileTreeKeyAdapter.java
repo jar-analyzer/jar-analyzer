@@ -15,6 +15,7 @@ public class FileTreeKeyAdapter extends KeyAdapter {
         if ((e.getModifiers() & KeyEvent.CTRL_MASK) != 0 && e.getKeyCode() == KeyEvent.VK_F) {
             fileTreeSearchPanel.setVisible(!fileTreeSearchPanel.isShowing());
             if (fileTreeSearchPanel.isShowing()) {
+                fileTreeSearchtextField.selectAll();
                 fileTreeSearchtextField.requestFocus();
             }
         }

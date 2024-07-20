@@ -23,6 +23,14 @@
         FROM class_table c
         WHERE c.class_name = #{className}
     </select>
+
+    <select id="includeClassByClassName">
+        SELECT c.class_name
+        FROM class_table c
+        WHERE c.class_name LIKE '%${className}%'
+          AND INSTR(REVERSE(c.class_name), '/') > INSTR(REVERSE(c.class_name), REVERSE('${className}'))
+    </select>
+
     <select id="selectSuperClassesByClassName">
         SELECT DISTINCT c.super_class_name
         FROM class_table c

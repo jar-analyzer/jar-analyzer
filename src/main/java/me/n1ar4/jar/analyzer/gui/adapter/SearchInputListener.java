@@ -23,8 +23,6 @@ public class SearchInputListener implements DocumentListener {
     private static int count = 0;
     private static boolean refresh = false;
 
-    private static volatile boolean once = false;
-
     public static void search(String string, boolean isInner) {
         if (!isInner) {
             if (collect.isEmpty()) {
@@ -36,10 +34,15 @@ public class SearchInputListener implements DocumentListener {
             if (refresh) {
                 count++;
             }
-            fileTree.searchPathTarget(collect.get(count++));
+            String className = collect.get(count++);
+            boolean innerClass = className.contains("$");
+            String[] temp = className.split("/");
+            fileTree.searchPathTarget(className);
             refresh = false;
-            fileTreeSearchLabel.setText(StrUtil.format("Find: {} Current:{}",
-                    String.valueOf(collect.size()), count));
+            fileTreeSearchLabel.setText(StrUtil.format("<html><p> result: {} / {} ({}) </p>" +
+                            "<p> class: {} </p>" +
+                            "</html>",
+                    count, collect.size(), innerClass ? "inner class" : "normal", temp[temp.length - 1]));
             return;
         }
         count = 0;
@@ -50,10 +53,15 @@ public class SearchInputListener implements DocumentListener {
         }
         collect = classMapper.includeClassByClassName(string);
         if (!collect.isEmpty()) {
-            fileTreeSearchLabel.setText(StrUtil.format("Find: {} Current:{}",
-                    String.valueOf(collect.size()), 1));
-            fileTreeSearchLabel.setVisible(true);
+            String className = collect.get(0);
+            boolean innerClass = className.contains("$");
+            String[] temp = className.split("/");
             fileTree.searchPathTarget(collect.get(0));
+            fileTreeSearchLabel.setText(StrUtil.format("<html><p> result: {} / {} ({}) </p>" +
+                            "<p> class: {} </p>" +
+                            "</html>",
+                    1, collect.size(), innerClass ? "inner class" : "normal", temp[temp.length - 1]));
+            fileTreeSearchLabel.setVisible(true);
         } else {
             fileTreeSearchLabel.setVisible(false);
         }

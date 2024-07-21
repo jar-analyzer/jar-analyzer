@@ -64,7 +64,7 @@ public class SystemChart extends JFrame {
                     memorySeries.remove(0);
                 }
             }
-        }, 0, 1000);
+        }, 0, 500);
     }
 
     private JFreeChart createChart(XYSeriesCollection dataset, String title) {

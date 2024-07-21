@@ -207,435 +207,6 @@ public class MainForm {
     private JLabel fileTreeSearchLabel;
     private JPanel searchFileNamePanel;
 
-    public MainForm(boolean fake) {
-        if (fake) {
-            logger.info("init fake instance");
-        }
-    }
-
-    public MainForm() {
-        logger.info("init main form");
-        methodCallRadioButton.setSelected(true);
-        fernRadio.setSelected(true);
-        fernRadio.setText(DecompileEngine.INFO);
-        searchStrText.setEnabled(false);
-        deleteTempCheckBox.setSelected(true);
-        LogUtil.setT(logArea);
-        SyntaxAreaHelper.buildJava(codePanel);
-        engineVal.setText("CLOSED");
-        engineVal.setForeground(Color.RED);
-        autoSaveCheckBox.setSelected(true);
-        if (ConfigEngine.exist()) {
-            config = ConfigEngine.parseConfig();
-            resolveConfig();
-        }
-        fileTree.refresh();
-
-        allMethodList.setCellRenderer(new AllMethodsRender());
-        calleeList.setCellRenderer(new MethodCallRender());
-        callerList.setCellRenderer(new MethodCallRender());
-        searchList.setCellRenderer(new MethodCallRender());
-        methodImplList.setCellRenderer(new MethodCallRender());
-        superImplList.setCellRenderer(new MethodCallRender());
-        springCList.setCellRenderer(new ClassRender());
-        springMList.setCellRenderer(new SpringMethodRender());
-
-        historyList.setCellRenderer(new MethodCallRender());
-        historyListData = new DefaultListModel<>();
-        historyList.setModel(historyListData);
-
-        prevBtn.setIcon(IconManager.prevIcon);
-        nextBtn.setIcon(IconManager.nextIcon);
-
-        logoLabel.setIcon(IconManager.showIcon);
-        jreRuntimeLabel.setIcon(IconManager.javaIcon);
-        dbPathLabel.setIcon(IconManager.dbIcon);
-        startEngineButton.setIcon(IconManager.startIcon);
-        curJarLabel.setIcon(IconManager.jarIcon);
-        curClassLabel.setIcon(IconManager.curIcon);
-        curMethodLabel.setIcon(IconManager.curIcon);
-        authorLabel.setIcon(IconManager.auIcon);
-        authorTextLabel.setIcon(IconManager.githubIcon);
-        classBlackListLabel.setIcon(IconManager.whiteIcon);
-        classWhiteListLabel.setIcon(IconManager.whiteIcon);
-
-        authorTextLabel.addMouseListener(new AuthorAdapter());
-
-        blackArea.setText(Const.blackAreaText);
-        classBlackArea.setText(Const.classBlackAreaText);
-        classWhiteArea.setText(Const.classWhiteAreaText);
-
-        likeSearchRadioButton.setSelected(true);
-
-        logger.info("init main form success");
-    }
-
-    public static State getPrevState() {
-        return prevState;
-    }
-
-    public static void setPrevState(State prevState) {
-        MainForm.prevState = prevState;
-    }
-
-    public static State getNextState() {
-        return nextState;
-    }
-
-    public static void setNextState(State nextState) {
-        MainForm.nextState = nextState;
-    }
-
-    public static State getCurState() {
-        return curState;
-    }
-
-    public static void setCurState(State curState) {
-        MainForm.curState = curState;
-    }
-
-    public static MainForm getInstance() {
-        if (instance == null) {
-            return fakeInstance;
-        } else {
-            return instance;
-        }
-    }
-
-    public static MethodResult getCurMethod() {
-        return curMethod;
-    }
-
-    public static void setCurMethod(MethodResult curMethod) {
-        MainForm.curMethod = curMethod;
-    }
-
-    public static JTextArea getCodeArea() {
-        return codeArea;
-    }
-
-    public static void setCodeArea(JTextArea codeArea) {
-        MainForm.codeArea = codeArea;
-    }
-
-    public static CoreEngine getEngine() {
-        return engine;
-    }
-
-    public static void setEngine(CoreEngine engine) {
-        MainForm.engine = engine;
-    }
-
-    public static ConfigFile getConfig() {
-        return config;
-    }
-
-    public static void setConfig(ConfigFile config) {
-        MainForm.config = config;
-    }
-
-    public static DefaultListModel<MethodResult> getHistoryListData() {
-        return historyListData;
-    }
-
-    private static void init() {
-        FontHelper.installFont();
-        DropHelper.setDrop();
-
-        ChoseJarAction.run();
-        BuildAction.run();
-        JarsInJarAction.run();
-        CommonSearchAction.run();
-        SearchAction.run();
-        RuntimeJarAction.run();
-        ASMAction.run();
-        PluginsAction.run();
-        PrevNextAction.run();
-        SpringAction.run();
-        CleanAction.run();
-        ShowStringAction.run();
-        TipsAction.run();
-
-        JNDIVulAction.register();
-        RuntimeExecAction.register();
-        ProcessBuilderAction.register();
-        SpELAction.register();
-        OGNLAction.register();
-        BCELVulAction.register();
-        DefineClassAction.register();
-        ReadObjectVulAction.register();
-        ScriptEngineAction.register();
-        FastjsonVulAction.register();
-        ZIPVulAction.register();
-        HessianAction.register();
-
-        codeArea.addKeyListener(new GlobalKeyListener());
-        instance.allMethodList.addKeyListener(new GlobalKeyListener());
-        instance.fileTree.addKeyListener(new FileTreeKeyAdapter());
-        instance.fileTree.addMouseListener(new TreeMouseAdapter());
-        instance.fileTree.addMouseListener(new TreeRightMenuAdapter());
-        instance.allMethodList.addMouseListener(new CommonMouseAdapter());
-        instance.allMethodList.addMouseListener(new MethodRightMenuAdapter());
-        instance.callerList.addMouseListener(new CommonMouseAdapter());
-        instance.calleeList.addMouseListener(new CommonMouseAdapter());
-        instance.methodImplList.addMouseListener(new CommonMouseAdapter());
-        instance.superImplList.addMouseListener(new CommonMouseAdapter());
-        instance.searchList.addMouseListener(new CommonMouseAdapter());
-        instance.historyList.addMouseListener(new CommonMouseAdapter());
-        instance.springCList.addMouseListener(new ControllerMouseAdapter());
-        instance.springMList.addMouseListener(new CommonMouseAdapter());
-        instance.fileTreeSearchTextField.getDocument().addDocumentListener(new SearchInputListener());
-        instance.fileTreeSearchTextField.addKeyListener(new SearchTextFieldKeyAdapter());
-        instance.fileTreeSearchTextField.addKeyListener(new FileTreeKeyAdapter());
-        refreshLang();
-    }
-
-    public static void refreshLang() {
-        try {
-            if (GlobalOptions.getLang() == GlobalOptions.CHINESE) {
-                instance.codePanel.setBorder(
-                        BorderFactory.createTitledBorder(null,
-                                "Java 反编译代码",
-                                TitledBorder.DEFAULT_JUSTIFICATION,
-                                TitledBorder.DEFAULT_POSITION,
-                                null, null));
-
-                int c = instance.tabbedPanel.getTabCount();
-                if (c != 7) {
-                    throw new RuntimeException("tabbed panel error");
-                }
-                instance.tabbedPanel.setTitleAt(0, "开始");
-                instance.tabbedPanel.setTitleAt(1, "搜索");
-                instance.tabbedPanel.setTitleAt(2, "调用");
-                instance.tabbedPanel.setTitleAt(3, "实现");
-                instance.tabbedPanel.setTitleAt(4, "spring");
-                instance.tabbedPanel.setTitleAt(5, "历史");
-                instance.tabbedPanel.setTitleAt(6, "高级");
-
-                instance.chosePanel.setBorder(
-                        BorderFactory.createTitledBorder(null,
-                                "启动器",
-                                TitledBorder.DEFAULT_JUSTIFICATION,
-                                TitledBorder.DEFAULT_POSITION,
-                                null, null));
-                instance.choseBtn.setText("选择文件/目录");
-                instance.dbPathLabel.setText("数据库路径");
-                instance.jreRuntimeLabel.setText("JRE 环境路径");
-                instance.classBlackListLabel.setText("<html>\n" +
-                        "类黑名单<br>" +
-                        "(1) <font style=\"color: blue; font-weight: bold;\">com.a.</font> package<br>" +
-                        "(2) <font style=\"color: blue; font-weight: bold;\">com.a.Test</font> full name" +
-                        "</html>");
-                instance.classWhiteListLabel.setText("<html>\n" +
-                        "类白名单<br>" +
-                        "(1) <font style=\"color: blue; font-weight: bold;\">com.a.</font> package<br>" +
-                        "(2) <font style=\"color: blue; font-weight: bold;\">com.a.Test</font> full name" +
-                        "</html>");
-                instance.resolveJarsInJarCheckBox.setText("解决内嵌JAR问题");
-                instance.autoSaveCheckBox.setText("自动保存");
-                instance.deleteTempCheckBox.setText("删除缓存");
-                instance.autoFindRtJarCheckBox.setText("自动搜索RT.JAR");
-                instance.addRtJarWhenCheckBox.setText("分析时添加RT.JAR");
-                instance.startEngineButton.setText("启动引擎");
-
-                instance.infoPanel.setBorder(
-                        BorderFactory.createTitledBorder(null,
-                                "基本信息",
-                                TitledBorder.DEFAULT_JUSTIFICATION,
-                                TitledBorder.DEFAULT_POSITION,
-                                null, null));
-                instance.engineLabel.setText("引擎状态");
-                instance.databaseSizeLabel.setText("数据库");
-                instance.totalJarLabel.setText("JAR数量");
-                instance.totalClassLabel.setText("类数量");
-                instance.totalMethodLabel.setText("方法数量");
-
-                instance.decompilerPanel.setBorder(
-                        BorderFactory.createTitledBorder(null,
-                                "反编译相关",
-                                TitledBorder.DEFAULT_JUSTIFICATION,
-                                TitledBorder.DEFAULT_POSITION,
-                                null, null));
-                instance.opcodeBtn.setText("显示方法字节码指令");
-                instance.javaAsmBtn.setText("显示JAVA ASM代码");
-                instance.fernRadio.setText("FernFlower (来自 jetbrains 的 IDEA 项目)");
-
-                instance.analysis.setBorder(BorderFactory.createTitledBorder(null,
-                        "深入分析",
-                        TitledBorder.DEFAULT_JUSTIFICATION,
-                        TitledBorder.DEFAULT_POSITION,
-                        null, null));
-                instance.cfgLabel.setText("控制流图分析");
-                instance.cfgBtn.setText("展示控制流图");
-                instance.frameLabel.setText("JVM栈帧分析");
-                instance.frameBtn.setText("完整栈帧");
-                instance.simpleFrameButton.setText("简易栈帧");
-
-                instance.showStringListButton.setText("所有字符串");
-                instance.cleanButton.setText("清除缓存");
-
-                instance.curPanel.setBorder(BorderFactory.createTitledBorder(
-                        null,
-                        "当前",
-                        TitledBorder.DEFAULT_JUSTIFICATION,
-                        TitledBorder.DEFAULT_POSITION,
-                        null, null));
-                instance.curJarLabel.setText("当前JAR");
-                instance.curClassLabel.setText("当前类");
-                instance.curMethodLabel.setText("当前方法");
-
-                instance.classBlackLabel.setText("类名黑名单 (完整类名并使用 ; 和 \\n 分割)");
-                instance.startSearchButton.setText("开始搜索");
-                instance.springLabel.setText("分析 JAR/JARS 中的 Spring Controller/Mapping 信息");
-                instance.pathSearchButton.setText("查找");
-                instance.pathSearchLabel.setText("在所有 Mapping 中查找 Path");
-                instance.refreshButton.setText("刷新");
-                instance.javaVulLabel.setText("快速搜索通用 JAVA 漏洞相关");
-
-                instance.sqliteLabel.setText("一个 SQLITE 查询工具");
-                instance.encoderLabel.setText("一个编码解码加密解密工具");
-                instance.repeaterLabel.setText("一个 HTTP 发送工具");
-                instance.listenerLabel.setText("一个 SOCKET 监听工具");
-                instance.spelLabel.setText("一个 SPEL 表达式搜索工具");
-                instance.startELSearchButton.setText("开始表达式搜索");
-                instance.obfLabel.setText("一个 Java 序列化数据混淆工具");
-                instance.serUtilLabel.setText("一个分析 Java 序列化数据中字节码的工具");
-            } else if (GlobalOptions.getLang() == GlobalOptions.ENGLISH) {
-                instance.codePanel.setBorder(
-                        BorderFactory.createTitledBorder(null,
-                                "Java Decompile Code",
-                                TitledBorder.DEFAULT_JUSTIFICATION,
-                                TitledBorder.DEFAULT_POSITION,
-                                null, null));
-
-                int c = instance.tabbedPanel.getTabCount();
-                if (c != 7) {
-                    throw new RuntimeException("tabbed panel error");
-                }
-                instance.tabbedPanel.setTitleAt(0, "start");
-                instance.tabbedPanel.setTitleAt(1, "search");
-                instance.tabbedPanel.setTitleAt(2, "call");
-                instance.tabbedPanel.setTitleAt(3, "impl");
-                instance.tabbedPanel.setTitleAt(4, "spring");
-                instance.tabbedPanel.setTitleAt(5, "history");
-                instance.tabbedPanel.setTitleAt(6, "advance");
-
-                instance.chosePanel.setBorder(
-                        BorderFactory.createTitledBorder(null,
-                                "Starter",
-                                TitledBorder.DEFAULT_JUSTIFICATION,
-                                TitledBorder.DEFAULT_POSITION,
-                                null, null));
-                instance.choseBtn.setText("Chose File / Dir");
-                instance.dbPathLabel.setText("Database Path");
-                instance.jreRuntimeLabel.setText("JRE Runtime");
-                instance.classBlackListLabel.setText("<html>\n" +
-                        "Class Black List<br>" +
-                        "(1) <font style=\"color: blue; font-weight: bold;\">com.a.</font> package<br>" +
-                        "(2) <font style=\"color: blue; font-weight: bold;\">com.a.Test</font> full name" +
-                        "</html>");
-                instance.classWhiteListLabel.setText("<html>\n" +
-                        "Class White List<br>" +
-                        "(1) <font style=\"color: blue; font-weight: bold;\">com.a.</font> package<br>" +
-                        "(2) <font style=\"color: blue; font-weight: bold;\">com.a.Test</font> full name" +
-                        "</html>");
-                instance.resolveJarsInJarCheckBox.setText("Resolve Jars in Jar");
-                instance.autoSaveCheckBox.setText("Auto Save");
-                instance.deleteTempCheckBox.setText("Delete Temp");
-                instance.autoFindRtJarCheckBox.setText("Auto Find rt.jar");
-                instance.addRtJarWhenCheckBox.setText("Add rt.jar to Analyze");
-                instance.startEngineButton.setText("Start Engine");
-
-                instance.infoPanel.setBorder(
-                        BorderFactory.createTitledBorder(null,
-                                "Information",
-                                TitledBorder.DEFAULT_JUSTIFICATION,
-                                TitledBorder.DEFAULT_POSITION,
-                                null, null));
-                instance.engineLabel.setText("Engine State");
-                instance.databaseSizeLabel.setText("Database");
-                instance.totalJarLabel.setText("Total Jar");
-                instance.totalClassLabel.setText("Total Class");
-                instance.totalMethodLabel.setText("Total Method");
-
-                instance.decompilerPanel.setBorder(
-                        BorderFactory.createTitledBorder(null,
-                                "Decompiler",
-                                TitledBorder.DEFAULT_JUSTIFICATION,
-                                TitledBorder.DEFAULT_POSITION,
-                                null, null));
-                instance.opcodeBtn.setText("Show Method Opcode");
-                instance.javaAsmBtn.setText("Java ASM Code");
-                instance.fernRadio.setText(" FernFlower (from jetbrains/intellij-community)");
-
-                instance.analysis.setBorder(BorderFactory.createTitledBorder(null,
-                        "Analysis",
-                        TitledBorder.DEFAULT_JUSTIFICATION,
-                        TitledBorder.DEFAULT_POSITION,
-                        null, null));
-                instance.cfgLabel.setText("Control Flow Graph Analysis");
-                instance.cfgBtn.setText("Show CFG");
-                instance.frameLabel.setText("Java Stack Frame Analysis");
-                instance.frameBtn.setText("Full Frame");
-                instance.simpleFrameButton.setText("Simple Frame");
-
-                instance.showStringListButton.setText("All Strings");
-                instance.cleanButton.setText("Clean");
-
-                instance.curPanel.setBorder(BorderFactory.createTitledBorder(
-                        null,
-                        "Current",
-                        TitledBorder.DEFAULT_JUSTIFICATION,
-                        TitledBorder.DEFAULT_POSITION,
-                        null, null));
-                instance.curJarLabel.setText("Jar");
-                instance.curClassLabel.setText("Class");
-                instance.curMethodLabel.setText("Method");
-
-                instance.classBlackLabel.setText("Class Name Black List (full class name and split by ; and \\n)");
-                instance.startSearchButton.setText("Start Search");
-                instance.springLabel.setText(" Analyze Spring Controllers and Mappings in Jar/Jars");
-                instance.pathSearchButton.setText("Search");
-                instance.pathSearchLabel.setText(" Search path in all Mappings");
-                instance.refreshButton.setText("Refresh");
-                instance.javaVulLabel.setText("Quickly Search Commons Java Vulnerabilities Call");
-
-                instance.sqliteLabel.setText("A tool for run custom query in SQLite database");
-                instance.encoderLabel.setText("A tool for encode/decode encrypt/decrypt operations");
-                instance.repeaterLabel.setText("A tool for sending http request and get response");
-                instance.listenerLabel.setText("A tool for listening port and send by socket");
-                instance.spelLabel.setText("A tool for Spring EL search");
-                instance.startELSearchButton.setText("Start EL Search");
-                instance.obfLabel.setText("A tool for obfuscate java serialization data");
-                instance.serUtilLabel.setText("A tool for bytecodes in Java Serialization Data");
-            } else {
-                throw new RuntimeException("invalid language");
-            }
-        } catch (Exception ex) {
-            logger.error("error: {}", ex);
-        }
-    }
-
-    public static void start() {
-        UIHelper.setup();
-        JFrame frame = new JFrame(Const.app);
-        instance = new MainForm();
-
-        init();
-
-        frame.setJMenuBar(MenuUtil.createMenuBar());
-        frame.setContentPane(instance.masterPanel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        frame.setIconImage(IconManager.showIcon.getImage());
-
-        UpdateChecker.checkUpdate();
-
-        frame.pack();
-        frame.setResizable(true);
-        frame.setVisible(true);
-    }
-
     public JLabel getFileTreeSearchLabel() {
         return fileTreeSearchLabel;
     }
@@ -954,6 +525,435 @@ public class MainForm {
 
     public JButton getSerUtilBtn() {
         return serUtilBtn;
+    }
+
+    public static State getPrevState() {
+        return prevState;
+    }
+
+    public static void setPrevState(State prevState) {
+        MainForm.prevState = prevState;
+    }
+
+    public static State getNextState() {
+        return nextState;
+    }
+
+    public static void setNextState(State nextState) {
+        MainForm.nextState = nextState;
+    }
+
+    public static State getCurState() {
+        return curState;
+    }
+
+    public static void setCurState(State curState) {
+        MainForm.curState = curState;
+    }
+
+    public static MainForm getInstance() {
+        if (instance == null) {
+            return fakeInstance;
+        } else {
+            return instance;
+        }
+    }
+
+    public static MethodResult getCurMethod() {
+        return curMethod;
+    }
+
+    public static void setCurMethod(MethodResult curMethod) {
+        MainForm.curMethod = curMethod;
+    }
+
+    public static JTextArea getCodeArea() {
+        return codeArea;
+    }
+
+    public static void setCodeArea(JTextArea codeArea) {
+        MainForm.codeArea = codeArea;
+    }
+
+    public static CoreEngine getEngine() {
+        return engine;
+    }
+
+    public static void setEngine(CoreEngine engine) {
+        MainForm.engine = engine;
+    }
+
+    public static ConfigFile getConfig() {
+        return config;
+    }
+
+    public static void setConfig(ConfigFile config) {
+        MainForm.config = config;
+    }
+
+    public static DefaultListModel<MethodResult> getHistoryListData() {
+        return historyListData;
+    }
+
+    public MainForm(boolean fake) {
+        if (fake) {
+            logger.info("init fake instance");
+        }
+    }
+
+    public MainForm() {
+        logger.info("init main form");
+        methodCallRadioButton.setSelected(true);
+        fernRadio.setSelected(true);
+        fernRadio.setText(DecompileEngine.INFO);
+        searchStrText.setEnabled(false);
+        deleteTempCheckBox.setSelected(true);
+        LogUtil.setT(logArea);
+        SyntaxAreaHelper.buildJava(codePanel);
+        engineVal.setText("CLOSED");
+        engineVal.setForeground(Color.RED);
+        autoSaveCheckBox.setSelected(true);
+        if (ConfigEngine.exist()) {
+            config = ConfigEngine.parseConfig();
+            resolveConfig();
+        }
+        fileTree.refresh();
+
+        allMethodList.setCellRenderer(new AllMethodsRender());
+        calleeList.setCellRenderer(new MethodCallRender());
+        callerList.setCellRenderer(new MethodCallRender());
+        searchList.setCellRenderer(new MethodCallRender());
+        methodImplList.setCellRenderer(new MethodCallRender());
+        superImplList.setCellRenderer(new MethodCallRender());
+        springCList.setCellRenderer(new ClassRender());
+        springMList.setCellRenderer(new SpringMethodRender());
+
+        historyList.setCellRenderer(new MethodCallRender());
+        historyListData = new DefaultListModel<>();
+        historyList.setModel(historyListData);
+
+        prevBtn.setIcon(IconManager.prevIcon);
+        nextBtn.setIcon(IconManager.nextIcon);
+
+        logoLabel.setIcon(IconManager.showIcon);
+        jreRuntimeLabel.setIcon(IconManager.javaIcon);
+        dbPathLabel.setIcon(IconManager.dbIcon);
+        startEngineButton.setIcon(IconManager.startIcon);
+        curJarLabel.setIcon(IconManager.jarIcon);
+        curClassLabel.setIcon(IconManager.curIcon);
+        curMethodLabel.setIcon(IconManager.curIcon);
+        authorLabel.setIcon(IconManager.auIcon);
+        authorTextLabel.setIcon(IconManager.githubIcon);
+        classBlackListLabel.setIcon(IconManager.whiteIcon);
+        classWhiteListLabel.setIcon(IconManager.whiteIcon);
+
+        authorTextLabel.addMouseListener(new AuthorAdapter());
+
+        blackArea.setText(Const.blackAreaText);
+        classBlackArea.setText(Const.classBlackAreaText);
+        classWhiteArea.setText(Const.classWhiteAreaText);
+
+        likeSearchRadioButton.setSelected(true);
+
+        logger.info("init main form success");
+    }
+
+    private static void init() {
+        FontHelper.installFont();
+        DropHelper.setDrop();
+
+        ChoseJarAction.run();
+        BuildAction.run();
+        JarsInJarAction.run();
+        CommonSearchAction.run();
+        SearchAction.run();
+        RuntimeJarAction.run();
+        ASMAction.run();
+        PluginsAction.run();
+        PrevNextAction.run();
+        SpringAction.run();
+        CleanAction.run();
+        ShowStringAction.run();
+        TipsAction.run();
+
+        JNDIVulAction.register();
+        RuntimeExecAction.register();
+        ProcessBuilderAction.register();
+        SpELAction.register();
+        OGNLAction.register();
+        BCELVulAction.register();
+        DefineClassAction.register();
+        ReadObjectVulAction.register();
+        ScriptEngineAction.register();
+        FastjsonVulAction.register();
+        ZIPVulAction.register();
+        HessianAction.register();
+
+        codeArea.addKeyListener(new GlobalKeyListener());
+        instance.allMethodList.addKeyListener(new GlobalKeyListener());
+        instance.fileTree.addKeyListener(new FileTreeKeyAdapter());
+        instance.fileTree.addMouseListener(new TreeMouseAdapter());
+        instance.fileTree.addMouseListener(new TreeRightMenuAdapter());
+        instance.allMethodList.addMouseListener(new CommonMouseAdapter());
+        instance.allMethodList.addMouseListener(new MethodRightMenuAdapter());
+        instance.callerList.addMouseListener(new CommonMouseAdapter());
+        instance.calleeList.addMouseListener(new CommonMouseAdapter());
+        instance.methodImplList.addMouseListener(new CommonMouseAdapter());
+        instance.superImplList.addMouseListener(new CommonMouseAdapter());
+        instance.searchList.addMouseListener(new CommonMouseAdapter());
+        instance.historyList.addMouseListener(new CommonMouseAdapter());
+        instance.springCList.addMouseListener(new ControllerMouseAdapter());
+        instance.springMList.addMouseListener(new CommonMouseAdapter());
+        instance.fileTreeSearchTextField.getDocument().addDocumentListener(new SearchInputListener());
+        instance.fileTreeSearchTextField.addKeyListener(new SearchTextFieldKeyAdapter());
+        instance.fileTreeSearchTextField.addKeyListener(new FileTreeKeyAdapter());
+        refreshLang();
+    }
+
+    public static void refreshLang() {
+        try {
+            if (GlobalOptions.getLang() == GlobalOptions.CHINESE) {
+                instance.codePanel.setBorder(
+                        BorderFactory.createTitledBorder(null,
+                                "Java 反编译代码",
+                                TitledBorder.DEFAULT_JUSTIFICATION,
+                                TitledBorder.DEFAULT_POSITION,
+                                null, null));
+
+                int c = instance.tabbedPanel.getTabCount();
+                if (c != 7) {
+                    throw new RuntimeException("tabbed panel error");
+                }
+                instance.tabbedPanel.setTitleAt(0, "开始");
+                instance.tabbedPanel.setTitleAt(1, "搜索");
+                instance.tabbedPanel.setTitleAt(2, "调用");
+                instance.tabbedPanel.setTitleAt(3, "实现");
+                instance.tabbedPanel.setTitleAt(4, "spring");
+                instance.tabbedPanel.setTitleAt(5, "历史");
+                instance.tabbedPanel.setTitleAt(6, "高级");
+
+                instance.chosePanel.setBorder(
+                        BorderFactory.createTitledBorder(null,
+                                "启动器",
+                                TitledBorder.DEFAULT_JUSTIFICATION,
+                                TitledBorder.DEFAULT_POSITION,
+                                null, null));
+                instance.choseBtn.setText("选择文件/目录");
+                instance.dbPathLabel.setText("数据库路径");
+                instance.jreRuntimeLabel.setText("JRE 环境路径");
+                instance.classBlackListLabel.setText("<html>\n" +
+                        "类黑名单<br>" +
+                        "(1) <font style=\"color: blue; font-weight: bold;\">com.a.</font> package<br>" +
+                        "(2) <font style=\"color: blue; font-weight: bold;\">com.a.Test</font> full name" +
+                        "</html>");
+                instance.classWhiteListLabel.setText("<html>\n" +
+                        "类白名单<br>" +
+                        "(1) <font style=\"color: blue; font-weight: bold;\">com.a.</font> package<br>" +
+                        "(2) <font style=\"color: blue; font-weight: bold;\">com.a.Test</font> full name" +
+                        "</html>");
+                instance.resolveJarsInJarCheckBox.setText("解决内嵌JAR问题");
+                instance.autoSaveCheckBox.setText("自动保存");
+                instance.deleteTempCheckBox.setText("删除缓存");
+                instance.autoFindRtJarCheckBox.setText("自动搜索RT.JAR");
+                instance.addRtJarWhenCheckBox.setText("分析时添加RT.JAR");
+                instance.startEngineButton.setText("启动引擎");
+
+                instance.infoPanel.setBorder(
+                        BorderFactory.createTitledBorder(null,
+                                "基本信息",
+                                TitledBorder.DEFAULT_JUSTIFICATION,
+                                TitledBorder.DEFAULT_POSITION,
+                                null, null));
+                instance.engineLabel.setText("引擎状态");
+                instance.databaseSizeLabel.setText("数据库");
+                instance.totalJarLabel.setText("JAR数量");
+                instance.totalClassLabel.setText("类数量");
+                instance.totalMethodLabel.setText("方法数量");
+
+                instance.decompilerPanel.setBorder(
+                        BorderFactory.createTitledBorder(null,
+                                "反编译相关",
+                                TitledBorder.DEFAULT_JUSTIFICATION,
+                                TitledBorder.DEFAULT_POSITION,
+                                null, null));
+                instance.opcodeBtn.setText("显示方法字节码指令");
+                instance.javaAsmBtn.setText("显示JAVA ASM代码");
+                instance.fernRadio.setText("FernFlower (来自 jetbrains 的 IDEA 项目)");
+
+                instance.analysis.setBorder(BorderFactory.createTitledBorder(null,
+                        "深入分析",
+                        TitledBorder.DEFAULT_JUSTIFICATION,
+                        TitledBorder.DEFAULT_POSITION,
+                        null, null));
+                instance.cfgLabel.setText("控制流图分析");
+                instance.cfgBtn.setText("展示控制流图");
+                instance.frameLabel.setText("JVM栈帧分析");
+                instance.frameBtn.setText("完整栈帧");
+                instance.simpleFrameButton.setText("简易栈帧");
+
+                instance.showStringListButton.setText("所有字符串");
+                instance.cleanButton.setText("清除缓存");
+
+                instance.curPanel.setBorder(BorderFactory.createTitledBorder(
+                        null,
+                        "当前",
+                        TitledBorder.DEFAULT_JUSTIFICATION,
+                        TitledBorder.DEFAULT_POSITION,
+                        null, null));
+                instance.curJarLabel.setText("当前JAR");
+                instance.curClassLabel.setText("当前类");
+                instance.curMethodLabel.setText("当前方法");
+
+                instance.classBlackLabel.setText("类名黑名单 (完整类名并使用 ; 和 \\n 分割)");
+                instance.startSearchButton.setText("开始搜索");
+                instance.springLabel.setText("分析 JAR/JARS 中的 Spring Controller/Mapping 信息");
+                instance.pathSearchButton.setText("查找");
+                instance.pathSearchLabel.setText("在所有 Mapping 中查找 Path");
+                instance.refreshButton.setText("刷新");
+                instance.javaVulLabel.setText("快速搜索通用 JAVA 漏洞相关");
+
+                instance.sqliteLabel.setText("一个 SQLITE 查询工具");
+                instance.encoderLabel.setText("一个编码解码加密解密工具");
+                instance.repeaterLabel.setText("一个 HTTP 发送工具");
+                instance.listenerLabel.setText("一个 SOCKET 监听工具");
+                instance.spelLabel.setText("一个 SPEL 表达式搜索工具");
+                instance.startELSearchButton.setText("开始表达式搜索");
+                instance.obfLabel.setText("一个 Java 序列化数据混淆工具");
+                instance.serUtilLabel.setText("一个分析 Java 序列化数据中字节码的工具");
+            } else if (GlobalOptions.getLang() == GlobalOptions.ENGLISH) {
+                instance.codePanel.setBorder(
+                        BorderFactory.createTitledBorder(null,
+                                "Java Decompile Code",
+                                TitledBorder.DEFAULT_JUSTIFICATION,
+                                TitledBorder.DEFAULT_POSITION,
+                                null, null));
+
+                int c = instance.tabbedPanel.getTabCount();
+                if (c != 7) {
+                    throw new RuntimeException("tabbed panel error");
+                }
+                instance.tabbedPanel.setTitleAt(0, "start");
+                instance.tabbedPanel.setTitleAt(1, "search");
+                instance.tabbedPanel.setTitleAt(2, "call");
+                instance.tabbedPanel.setTitleAt(3, "impl");
+                instance.tabbedPanel.setTitleAt(4, "spring");
+                instance.tabbedPanel.setTitleAt(5, "history");
+                instance.tabbedPanel.setTitleAt(6, "advance");
+
+                instance.chosePanel.setBorder(
+                        BorderFactory.createTitledBorder(null,
+                                "Starter",
+                                TitledBorder.DEFAULT_JUSTIFICATION,
+                                TitledBorder.DEFAULT_POSITION,
+                                null, null));
+                instance.choseBtn.setText("Chose File / Dir");
+                instance.dbPathLabel.setText("Database Path");
+                instance.jreRuntimeLabel.setText("JRE Runtime");
+                instance.classBlackListLabel.setText("<html>\n" +
+                        "Class Black List<br>" +
+                        "(1) <font style=\"color: blue; font-weight: bold;\">com.a.</font> package<br>" +
+                        "(2) <font style=\"color: blue; font-weight: bold;\">com.a.Test</font> full name" +
+                        "</html>");
+                instance.classWhiteListLabel.setText("<html>\n" +
+                        "Class White List<br>" +
+                        "(1) <font style=\"color: blue; font-weight: bold;\">com.a.</font> package<br>" +
+                        "(2) <font style=\"color: blue; font-weight: bold;\">com.a.Test</font> full name" +
+                        "</html>");
+                instance.resolveJarsInJarCheckBox.setText("Resolve Jars in Jar");
+                instance.autoSaveCheckBox.setText("Auto Save");
+                instance.deleteTempCheckBox.setText("Delete Temp");
+                instance.autoFindRtJarCheckBox.setText("Auto Find rt.jar");
+                instance.addRtJarWhenCheckBox.setText("Add rt.jar to Analyze");
+                instance.startEngineButton.setText("Start Engine");
+
+                instance.infoPanel.setBorder(
+                        BorderFactory.createTitledBorder(null,
+                                "Information",
+                                TitledBorder.DEFAULT_JUSTIFICATION,
+                                TitledBorder.DEFAULT_POSITION,
+                                null, null));
+                instance.engineLabel.setText("Engine State");
+                instance.databaseSizeLabel.setText("Database");
+                instance.totalJarLabel.setText("Total Jar");
+                instance.totalClassLabel.setText("Total Class");
+                instance.totalMethodLabel.setText("Total Method");
+
+                instance.decompilerPanel.setBorder(
+                        BorderFactory.createTitledBorder(null,
+                                "Decompiler",
+                                TitledBorder.DEFAULT_JUSTIFICATION,
+                                TitledBorder.DEFAULT_POSITION,
+                                null, null));
+                instance.opcodeBtn.setText("Show Method Opcode");
+                instance.javaAsmBtn.setText("Java ASM Code");
+                instance.fernRadio.setText(" FernFlower (from jetbrains/intellij-community)");
+
+                instance.analysis.setBorder(BorderFactory.createTitledBorder(null,
+                        "Analysis",
+                        TitledBorder.DEFAULT_JUSTIFICATION,
+                        TitledBorder.DEFAULT_POSITION,
+                        null, null));
+                instance.cfgLabel.setText("Control Flow Graph Analysis");
+                instance.cfgBtn.setText("Show CFG");
+                instance.frameLabel.setText("Java Stack Frame Analysis");
+                instance.frameBtn.setText("Full Frame");
+                instance.simpleFrameButton.setText("Simple Frame");
+
+                instance.showStringListButton.setText("All Strings");
+                instance.cleanButton.setText("Clean");
+
+                instance.curPanel.setBorder(BorderFactory.createTitledBorder(
+                        null,
+                        "Current",
+                        TitledBorder.DEFAULT_JUSTIFICATION,
+                        TitledBorder.DEFAULT_POSITION,
+                        null, null));
+                instance.curJarLabel.setText("Jar");
+                instance.curClassLabel.setText("Class");
+                instance.curMethodLabel.setText("Method");
+
+                instance.classBlackLabel.setText("Class Name Black List (full class name and split by ; and \\n)");
+                instance.startSearchButton.setText("Start Search");
+                instance.springLabel.setText(" Analyze Spring Controllers and Mappings in Jar/Jars");
+                instance.pathSearchButton.setText("Search");
+                instance.pathSearchLabel.setText(" Search path in all Mappings");
+                instance.refreshButton.setText("Refresh");
+                instance.javaVulLabel.setText("Quickly Search Commons Java Vulnerabilities Call");
+
+                instance.sqliteLabel.setText("A tool for run custom query in SQLite database");
+                instance.encoderLabel.setText("A tool for encode/decode encrypt/decrypt operations");
+                instance.repeaterLabel.setText("A tool for sending http request and get response");
+                instance.listenerLabel.setText("A tool for listening port and send by socket");
+                instance.spelLabel.setText("A tool for Spring EL search");
+                instance.startELSearchButton.setText("Start EL Search");
+                instance.obfLabel.setText("A tool for obfuscate java serialization data");
+                instance.serUtilLabel.setText("A tool for bytecodes in Java Serialization Data");
+            } else {
+                throw new RuntimeException("invalid language");
+            }
+        } catch (Exception ex) {
+            logger.error("error: {}", ex);
+        }
+    }
+
+    public static void start() {
+        UIHelper.setup();
+        JFrame frame = new JFrame(Const.app);
+        instance = new MainForm();
+
+        init();
+
+        frame.setJMenuBar(MenuUtil.createMenuBar());
+        frame.setContentPane(instance.masterPanel);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        frame.setIconImage(IconManager.showIcon.getImage());
+
+        UpdateChecker.checkUpdate();
+
+        frame.pack();
+        frame.setResizable(true);
+        frame.setVisible(true);
     }
 
     private void resolveConfig() {

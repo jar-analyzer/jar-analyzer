@@ -8,6 +8,7 @@ import me.n1ar4.jar.analyzer.http.Y4Client;
 import me.n1ar4.jar.analyzer.utils.ColorUtil;
 
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class Main {
@@ -23,16 +24,17 @@ public class Main {
             JSONObject obj = array.getJSONObject(i);
             sb.append(" -> ");
             sb.append(ColorUtil.blue((String) obj.get("login")));
-            sb.append(ColorUtil.yellow(" ("));
-            sb.append(ColorUtil.yellow((String) obj.get("html_url")));
-            sb.append(ColorUtil.yellow(") "));
-            sb.append(ColorUtil.red("COMMITS: "));
-            sb.append(ColorUtil.red(String.valueOf((int) obj.get("contributions"))));
+            sb.append(ColorUtil.yellow(" (" + obj.get("html_url") + ") "));
+            sb.append(ColorUtil.red("COMMITS: " + (int) obj.get("contributions")));
             sb.append("\n");
         }
-
+        Path thanksPath = Paths.get("src/main/resources/thanks.txt");
         try {
-            Files.write(Paths.get("src/main/resources/thanks.txt"), sb.toString().getBytes());
+            Files.delete(thanksPath);
+        } catch (Exception ignored) {
+        }
+        try {
+            Files.write(thanksPath, sb.toString().getBytes());
         } catch (Exception ignored) {
         }
     }

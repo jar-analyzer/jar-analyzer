@@ -6,7 +6,11 @@ Use `Zulu JRE 8`
 Use `Zulu JRE 21`
 - https://www.azul.com/downloads/?version=java-21-lts&os=windows&architecture=x86-64-bit&package=jre#zulu
 
+Jar Analyzer Workflow JRE Repo
+- https://github.com/jar-analyzer/workflow_jre
+
 Steps:
+- Run `me/n1ar4/support/Main.java` to generate thanks.txt
 - Run `check-version.bat` and update `pom.xml`
 - Run `rasp/check-version.bat` and update `pom.xml`
 - Check `me/n1ar4/jar/analyzer/starter/Const.java` version

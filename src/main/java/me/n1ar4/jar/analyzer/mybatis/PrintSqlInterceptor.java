@@ -67,7 +67,7 @@ public class PrintSqlInterceptor implements Interceptor {
     private static void showSql(Configuration configuration, BoundSql boundSql, long time) {
         Object parameterObject = boundSql.getParameterObject();
         List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
-        String sql = boundSql.getSql().replaceAll("[\\s]+", " ");
+        String sql = boundSql.getSql().replaceAll("\\s+", " ");
         if (!parameterMappings.isEmpty() && parameterObject != null) {
             TypeHandlerRegistry typeHandlerRegistry = configuration.getTypeHandlerRegistry();
             if (typeHandlerRegistry.hasTypeHandler(parameterObject.getClass())) {
@@ -108,19 +108,22 @@ public class PrintSqlInterceptor implements Interceptor {
 
     private static void logs(long time, String sql) {
         String data = String.format("COST:%d SQL:%s\n", time, sql);
+        logger.debug(data);
         try {
-            Files.write(outputPath, data.getBytes(), StandardOpenOption.APPEND);
+            Files.write(outputPath, sql.getBytes(), StandardOpenOption.APPEND);
         } catch (Exception ex) {
             logger.error(ex.toString());
         }
     }
 
     @Override
+    @SuppressWarnings("all")
     public Object plugin(Object target) {
         return Plugin.wrap(target, this);
     }
 
     @Override
+    @SuppressWarnings("all")
     public void setProperties(Properties properties0) {
     }
 }

@@ -39,6 +39,7 @@ public class MenuUtil {
         sortedByClassConfig.setState(true);
         englishConfig.setState(true);
         chineseConfig.setState(false);
+        logAllSqlConfig.setSelected(true);
 
         chineseConfig.addActionListener(e -> {
             chineseConfig.setState(chineseConfig.getState());

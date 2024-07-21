@@ -26,23 +26,7 @@ public class Logo {
                 if (splits.length > 1) {
                     System.out.println(ColorUtil.green("感谢以下贡献者（按照贡献量排序）"));
                 }
-                for (String s : splits) {
-                    if (s.endsWith("\r")) {
-                        s = s.substring(0, s.length() - 1);
-                    }
-                    String[] temp = s.split(" ");
-
-                    String url = temp[temp.length - 1];
-                    StringBuilder name = new StringBuilder();
-                    for (int i = 0; i < temp.length - 1; i++) {
-                        name.append(temp[i]);
-                        name.append(" ");
-                    }
-
-                    System.out.println(" -> " + ColorUtil.blue(name.toString().trim()) +
-                            " " + ColorUtil.yellow(url));
-                }
-                System.out.println();
+                System.out.println(a);
             } catch (Exception ignored) {
             }
         }

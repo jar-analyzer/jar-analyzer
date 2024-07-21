@@ -93,35 +93,9 @@
 
 ![](img/0012.png)
 
-指令分析
-
-![](img/0006.png)
-
-`CFG` 分析
-
-![](img/0007.png)
-
-带图形的 `Stack Frame` 分析
-
-![](img/0008.png)
-
 分析 `Spring Framework`
 
 ![](img/0009.png)
-
-从 `2.8` 版本开始支持 `tomcat` 分析（一检查杀内存马）
-
-![](img/0017.png)
-
-自定义 `SQL` 语句任意分析
-
-![](img/0014.png)
-
-`Jar Analyzer 2.12` 版本以后使用自研 `RASP` 保护程序
-
-(Runtime Application Self-Protection)
-
-![](img/0032.png)
 
 `Jar Analyzer 2.15` 版本以后支持代码区域的搜索
 
@@ -130,10 +104,6 @@
 `Jar Analyzer 2.15` 版本以后支持远程 `Jar` 文件加载
 
 ![](img/0034.png)
-
-`Jar Analyzer 2.17` 版本以后支持远程字节码调试
-
-![](img/0035.png)
 
 `Jar Analyzer 2.17` 版本以后支持从序列化数据中一键提取恶意代码
 
@@ -152,6 +122,10 @@
 `Jar Analyzer 2.20` 版本后支持选中字符串全局高亮显示
 
 ![](img/0041.png)
+
+## 进阶功能
+
+以上是基础功能，进阶和测试性的功能请参考：[进阶测试性功能](doc/README-advance.md)
 
 ## 性能对比
 

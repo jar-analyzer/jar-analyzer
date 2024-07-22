@@ -2,7 +2,7 @@
 setlocal
 
 rem set file name
-set "jar-analyzer=jar-analyzer-2.20.jar"
+set "jar-analyzer=jar-analyzer-2.21.jar"
 
 rem env
 set "jre_bin=jre\bin\java.exe"

@@ -40,6 +40,7 @@ public class Contributor {
             sb.append("\n");
         }
         Path thanksPath = Paths.get("src/main/resources/thanks.txt");
+        System.out.println(sb);
         try {
             Files.delete(thanksPath);
         } catch (Exception ignored) {

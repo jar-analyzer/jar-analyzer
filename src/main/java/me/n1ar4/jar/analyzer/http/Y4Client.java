@@ -57,11 +57,19 @@ public class Y4Client {
 
     public HttpResponse request(HttpRequest request) {
         try {
-            Request.Builder requestBuilder = new Request.Builder()
-                    .url(request.getUrl())
-                    .method(request.getMethod(), RequestBody.create(request.getBody()));
+            Request.Builder requestBuilder;
+            if (request.getMethod().equals("GET")) {
+                requestBuilder = new Request.Builder()
+                        .url(request.getUrl())
+                        .method(request.getMethod(), null);
+            } else {
+                requestBuilder = new Request.Builder()
+                        .url(request.getUrl())
+                        .method(request.getMethod(), RequestBody.create(request.getBody()));
+            }
             return getHttpResponse(request.getHeaders(), requestBuilder);
         } catch (Exception ex) {
+            ex.printStackTrace();
             logger.error("http request error: {}", ex.toString());
             return null;
         }

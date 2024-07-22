@@ -65,6 +65,7 @@
 - [\[GHSA-jmcg-r2c5-7m29\] Jar Analyzer 存在 ZIP SLIP 漏洞（最坏情况可导致 RCE 风险）](https://github.com/jar-analyzer/jar-analyzer/security/advisories/GHSA-jmcg-r2c5-7m29)
 
 感谢以下贡献者（按照贡献量排序）
+
 - 4ra1n (https://github.com/4ra1n)
 - Honey Baby (https://github.com/Gosiu)
 - whwlsfb (https://github.com/whwlsfb)
@@ -149,6 +150,7 @@
 ## UI 主题
 
 支持以下：
+
 - default (默认使用 类似 `IDEA` 主题)
 - metal
 - win (仅 `Windows` 支持)

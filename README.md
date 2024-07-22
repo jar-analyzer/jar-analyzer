@@ -58,31 +58,22 @@
 
 ## 相关
 
+用户使用文章
+
+- [利用 jar-analyzer 分析 CVE-2022-42889](https://zone.huoxian.cn/d/2884-jar-analyzer-cve-2022-42889)
+- [某人力系统的代码审计](https://forum.butian.net/share/3109)
+
+用户使用视频
+
+- [Jar Analyzer V2 教程（早期版本）](https://www.bilibili.com/video/BV1ac411S7q4)
+- [通过 jar-analyzer 分析漏洞 CVE-2022-42889](https://www.bilibili.com/video/BV1a94y1E7Nn)
+- [Jar Analyzer V2 新版本功能介绍](https://www.bilibili.com/video/BV1Dm421G75i)
+
 漏洞公告
 
 - [\[GHSA-43rf-3hm4-hv5f\] 反编译恶意的 CLASS 文件可能导致程序不可用](https://github.com/jar-analyzer/jar-analyzer/security/advisories/GHSA-43rf-3hm4-hv5f)
 - [\[GHSA-x5h2-78p8-w943\] Jar Analyzer 2.13 版本之前存在 SQL 注入漏洞](https://github.com/jar-analyzer/jar-analyzer/security/advisories/GHSA-x5h2-78p8-w943)
 - [\[GHSA-jmcg-r2c5-7m29\] Jar Analyzer 存在 ZIP SLIP 漏洞（最坏情况可导致 RCE 风险）](https://github.com/jar-analyzer/jar-analyzer/security/advisories/GHSA-jmcg-r2c5-7m29)
-
-感谢以下贡献者（按照贡献量排序）
-
-- 4ra1n (https://github.com/4ra1n)
-- Honey Baby (https://github.com/Gosiu)
-- whwlsfb (https://github.com/whwlsfb)
-
-文章
-
-- [利用 jar-analyzer 分析 CVE-2022-42889](https://zone.huoxian.cn/d/2884-jar-analyzer-cve-2022-42889)
-- [某人力系统的代码审计](https://forum.butian.net/share/3109)
-
-视频
-
-- [Jar Analyzer V2 教程（早期版本）](https://www.bilibili.com/video/BV1ac411S7q4)
-- [Jar Analyzer V2 新版本功能介绍](https://www.bilibili.com/video/BV1Dm421G75i)
-
-注意：请勿分析数量极多或体积巨大的 `JAR` 文件，可能导致巨大的临时文件和数据库，以及高内存消耗
-
-![](img/0039.png)
 
 ## 截图
 
@@ -146,6 +137,7 @@
 
 - `CTRL+X` 方法交叉引用 快速跳转方法 `caller` 和 `callee` 页面
 - `CTRL+F` 代码区域搜索 打开搜索面板 支持 `next` 和 `prev` 选项
+- `CTRL+F` 文件树区搜索 显示搜索面板 搜索文件树中的类名以及内部类
 
 ## UI 主题
 

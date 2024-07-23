@@ -62,5 +62,8 @@ func main() {
 	color.GreenPrintln("--- START GITHUB ACTION TRUFFLEHOG CLEAN ---")
 	util.CleanAction(token, useProxy, socksProxy, repoOwner, repoName, "trufflehog.yml")
 
+    color.GreenPrintln("--- START GITHUB ACTION GOLANG CLEAN ---")
+    util.CleanAction(token, useProxy, socksProxy, repoOwner, repoName, "golang.yml")
+
 	color.GreenPrintln("GITHUB CLEAN FINISH")
 }

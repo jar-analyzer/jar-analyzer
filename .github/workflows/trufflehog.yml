@@ -1,3 +1,5 @@
+name: truffle check
+
 on:
   push:
     branches:

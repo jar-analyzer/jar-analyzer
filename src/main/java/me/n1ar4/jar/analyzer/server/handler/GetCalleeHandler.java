@@ -7,6 +7,7 @@ import me.n1ar4.jar.analyzer.entity.MethodResult;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.server.handler.base.BaseHandler;
 import me.n1ar4.jar.analyzer.server.handler.base.HttpHandler;
+import me.n1ar4.jar.analyzer.utils.StringUtil;
 
 import java.util.ArrayList;
 
@@ -20,6 +21,12 @@ public class GetCalleeHandler extends BaseHandler implements HttpHandler {
         String clazz = getClassName(session);
         String method = getMethodName(session);
         String desc = getMethodDesc(session);
+        if (StringUtil.isNull(clazz)) {
+            return needParam("class");
+        }
+        if (StringUtil.isNull(method)) {
+            return needParam("method");
+        }
         ArrayList<MethodResult> res = engine.getCallee(clazz, method, desc);
         String json = JSON.toJSONString(res);
         return buildJSON(json);

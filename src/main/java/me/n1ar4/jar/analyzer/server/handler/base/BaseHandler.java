@@ -64,6 +64,14 @@ public class BaseHandler {
         }
     }
 
+    public NanoHTTPD.Response needParam(String s) {
+        return NanoHTTPD.newFixedLengthResponse(
+                NanoHTTPD.Response.Status.INTERNAL_ERROR,
+                "text/html",
+                String.format("<h1>JAR ANALYZER SERVER</h1>" +
+                        "<h2>NEED PARAM: %s</h2>", s));
+    }
+
     public NanoHTTPD.Response error() {
         return NanoHTTPD.newFixedLengthResponse(
                 NanoHTTPD.Response.Status.INTERNAL_ERROR,

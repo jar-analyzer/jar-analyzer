@@ -10,7 +10,7 @@ Jar Analyzer Workflow JRE Repo
 - https://github.com/jar-analyzer/workflow_jre
 
 Steps:
-- Run `me/n1ar4/support/Main.java` to generate thanks.txt
+- Run `me/n1ar4/support/Contributor.java` to generate thanks.txt
 - Run `check-version.bat` and update `pom.xml`
 - Run `rasp/check-version.bat` and update `pom.xml`
 - Check `me/n1ar4/jar/analyzer/starter/Const.java` version

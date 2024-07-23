@@ -79,7 +79,7 @@ jobs:
 
       - name: unpack jre-21
         run: >
-          unzip jre-21.zip -d release\jar-analyzer-${{ env.VERSION }}-windows-full-21\
+          unzip jre-21.zip -d release\jar-analyzer-${{ env.VERSION }}-windows-21\
         working-directory: jar-analyzer
 
       - name: zip release
@@ -87,7 +87,7 @@ jobs:
           dir
           Compress-Archive -Path "jar-analyzer-${{ env.VERSION }}-windows-system\" -DestinationPath "jar-analyzer-${{ env.VERSION }}-windows-system.zip" -CompressionLevel Optimal
           Compress-Archive -Path "jar-analyzer-${{ env.VERSION }}-windows-full\" -DestinationPath "jar-analyzer-${{ env.VERSION }}-windows-full.zip" -CompressionLevel Optimal
-          Compress-Archive -Path "jar-analyzer-${{ env.VERSION }}-windows-full-21\" -DestinationPath "jar-analyzer-${{ env.VERSION }}-windows-full-21.zip" -CompressionLevel Optimal
+          Compress-Archive -Path "jar-analyzer-${{ env.VERSION }}-windows-21\" -DestinationPath "jar-analyzer-${{ env.VERSION }}-windows-21.zip" -CompressionLevel Optimal
           Compress-Archive -Path "jar-analyzer-${{ env.VERSION }}\" -DestinationPath "jar-analyzer-${{ env.VERSION }}.zip" -CompressionLevel Optimal
         working-directory: jar-analyzer/release
         shell: pwsh
@@ -99,6 +99,6 @@ jobs:
           name: jar-analyzer
           path: |
             jar-analyzer/release/jar-analyzer-${{ env.VERSION }}-windows-full.zip
-            jar-analyzer/release/jar-analyzer-${{ env.VERSION }}-windows-full-21.zip
+            jar-analyzer/release/jar-analyzer-${{ env.VERSION }}-windows-21.zip
             jar-analyzer/release/jar-analyzer-${{ env.VERSION }}-windows-system.zip
             jar-analyzer/release/jar-analyzer-${{ env.VERSION }}.zip

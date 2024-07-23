@@ -4,12 +4,15 @@
 
 <img alt="gitleaks badge" src="https://img.shields.io/badge/protected%20by-gitleaks-blue">
 
+![](https://img.shields.io/github/downloads/jar-analyzer/jar-analyzer/total)
+![](https://img.shields.io/github/v/release/jar-analyzer/jar-analyzer)
+
+<br>
+
 ![](https://github.com/jar-analyzer/jar-analyzer/workflows/maven%20check/badge.svg)
 ![](https://github.com/jar-analyzer/jar-analyzer/workflows/leak%20check/badge.svg)
 ![](https://github.com/jar-analyzer/jar-analyzer/workflows/truffle%20check/badge.svg)
 ![](https://github.com/jar-analyzer/jar-analyzer/workflows/golang%20check/badge.svg)
-![](https://img.shields.io/github/downloads/jar-analyzer/jar-analyzer/total)
-![](https://img.shields.io/github/v/release/jar-analyzer/jar-analyzer)
 
 `Jar Analyzer` 是一个分析 `Jar` 文件的 `GUI` 工具：
 

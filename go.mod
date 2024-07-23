@@ -1,4 +1,4 @@
-module github.com/4ra1n/y4-lang
+module github.com/jar-analyzer/jar-analyzer
 
 go 1.21
 

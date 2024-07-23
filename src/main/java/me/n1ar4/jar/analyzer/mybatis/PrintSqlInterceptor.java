@@ -1,5 +1,6 @@
 package me.n1ar4.jar.analyzer.mybatis;
 
+import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.MenuUtil;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
@@ -47,6 +48,9 @@ public class PrintSqlInterceptor implements Interceptor {
 
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
+        if (MainForm.getEngine() == null || !MainForm.getEngine().isEnabled()) {
+            return invocation.proceed();
+        }
         if (!MenuUtil.getLogAllSqlConfig().getState()) {
             return invocation.proceed();
         }
@@ -57,6 +61,15 @@ public class PrintSqlInterceptor implements Interceptor {
         }
         BoundSql boundSql = mappedStatement.getBoundSql(parameter);
         Configuration configuration = mappedStatement.getConfiguration();
+        String sql = boundSql.getSql().toLowerCase();
+        if (sql.trim().isEmpty()) {
+            return invocation.proceed();
+        }
+        // 不记录 INSERT 阶段的 SQL 语句
+        // 这样效率会大幅下降
+        if (sql.startsWith("insert") || sql.startsWith("create")) {
+            return invocation.proceed();
+        }
         long start = System.currentTimeMillis();
         Object returnValue = invocation.proceed();
         long time = System.currentTimeMillis() - start;

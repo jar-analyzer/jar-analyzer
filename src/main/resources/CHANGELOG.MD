@@ -2,10 +2,12 @@
 
 ## 2.22
 
-todo
+严重 `BUG` 紧急修复版本
 
 更新日志：
 
+- [重要] `Illegal group reference` 报错
+- [BUG] 构建数据库的效率过低（不应该构建阶段记录 `SQL` 语句）
 - [BUG] 修复 `API Server` 不传参数返回全部数据的问题
 - [其他] 增加 `ISSUE` 模板修改跳转链接
 - [其他] 更新 `attach.dll` 和 `tools.jar` 到最新

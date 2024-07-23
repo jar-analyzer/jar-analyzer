@@ -12,7 +12,7 @@ public interface Const {
     String checkUpdateUrl = "https://jar-analyzer.oss-cn-hangzhou.aliyuncs.com/jar-analyzer/version.txt";
     String authorUrl = "https://github.com/4ra1n";
     String projectUrl = "https://github.com/jar-analyzer/jar-analyzer";
-    String newIssueUrl = "https://github.com/jar-analyzer/jar-analyzer/issues/new";
+    String newIssueUrl = "https://github.com/jar-analyzer/jar-analyzer/issues/new/choose";
     String dbFile = "jar-analyzer.db";
     String tempDir = "jar-analyzer-temp";
     String downDir = "jar-analyzer-download";

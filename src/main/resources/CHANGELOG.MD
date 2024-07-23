@@ -7,6 +7,7 @@ todo
 更新日志：
 
 - [BUG] 修复 `API Server` 不传参数返回全部数据的问题
+- [其他] 增加 `ISSUE` 模板修改跳转链接
 - [其他] 更新 `attach.dll` 和 `tools.jar` 到最新
 
 感谢以下用户的贡献:

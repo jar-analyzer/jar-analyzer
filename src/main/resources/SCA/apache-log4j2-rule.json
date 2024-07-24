@@ -1,0 +1,207 @@
+[
+  {
+    "CVE": "CVE-2021-45105,CVE-2021-45046,CVE-2021-44228",
+    "JndiLookupHash": "7f0add9055958365137a8cc7a90969a43c44b20280323bdac718c1ff3795beb8",
+    "MavenVersion": "2.3.2"
+  },
+  {
+    "CVE": "CVE-2021-45105,CVE-2021-45046,CVE-2021-44228",
+    "JndiLookupHash": "edb797a8633f629b7c2187ccafd259a16a0b7b4cce4d42e646f8472358b8962a",
+    "MavenVersion": "2.12.4"
+  },
+  {
+    "CVE": "CVE-2021-45105,CVE-2021-45046,CVE-2021-44832,CVE-2021-44228",
+    "JndiLookupHash": "0ad99a95ff637fc966fc4ce5fe1f9e78d3b24b113282f9990b95a6fde3383d9c",
+    "MavenVersion": "2.3.1"
+  },
+  {
+    "CVE": "CVE-2021-45046,CVE-2021-44832,CVE-2021-44228",
+    "JndiLookupHash": "edb797a8633f629b7c2187ccafd259a16a0b7b4cce4d42e646f8472358b8962a",
+    "MavenVersion": "2.12.3"
+  },
+  {
+    "CVE": "CVE-2021-44832",
+    "JndiLookupHash": "ddad241274b834182525eeddc35c3198247507bd2df59645b58b94cd18fada7c",
+    "MavenVersion": "2.17.0"
+  },
+  {
+    "CVE": "CVE-2021-45105,CVE-2021-45046,CVE-2021-44832,CVE-2021-44228",
+    "JndiLookupHash": "febbc7867784d0f06934fec59df55ee45f6b24c55b17fff71cc4fca80bf22ebb",
+    "MavenVersion": "2.12.2"
+  },
+  {
+    "CVE": "CVE-2021-45105,CVE-2021-44832",
+    "JndiLookupHash": "84057480ba7da6fb6d9ea50c53a00848315833c1f34bf8f4a47f11a14499ae3f",
+    "MavenVersion": "2.16.0"
+  },
+  {
+    "CVE": "CVE-2021-45105,CVE-2021-45046,CVE-2021-44832",
+    "JndiLookupHash": "84057480ba7da6fb6d9ea50c53a00848315833c1f34bf8f4a47f11a14499ae3f",
+    "MavenVersion": "2.15.0"
+  },
+  {
+    "CVE": "CVE-2021-45105,CVE-2021-45046,CVE-2021-44832,CVE-2021-44228",
+    "JndiLookupHash": "84057480ba7da6fb6d9ea50c53a00848315833c1f34bf8f4a47f11a14499ae3f",
+    "MavenVersion": "2.14.1"
+  },
+  {
+    "CVE": "CVE-2021-45105,CVE-2021-45046,CVE-2021-44832,CVE-2021-44228",
+    "JndiLookupHash": "84057480ba7da6fb6d9ea50c53a00848315833c1f34bf8f4a47f11a14499ae3f",
+    "MavenVersion": "2.14.0"
+  },
+  {
+    "CVE": "CVE-2021-45105,CVE-2021-45046,CVE-2021-44832,CVE-2021-44228",
+    "JndiLookupHash": "2b32bfc0556ea59307b9b2fde75b6dfbb5bf4f1d008d1402bc9a2357d8a8c61f",
+    "MavenVersion": "2.13.3"
+  },
+  {
+    "CVE": "CVE-2021-45105,CVE-2021-45046,CVE-2021-44832,CVE-2021-44228",
+    "JndiLookupHash": "2b32bfc0556ea59307b9b2fde75b6dfbb5bf4f1d008d1402bc9a2357d8a8c61f",
+    "MavenVersion": "2.13.2"
+  },
+  {
+    "CVE": "CVE-2021-45105,CVE-2021-45046,CVE-2021-44832,CVE-2021-44228",
+    "JndiLookupHash": "2b32bfc0556ea59307b9b2fde75b6dfbb5bf4f1d008d1402bc9a2357d8a8c61f",
+    "MavenVersion": "2.13.1"
+  },
+  {
+    "CVE": "CVE-2021-45105,CVE-2021-45046,CVE-2021-44832,CVE-2021-44228",
+    "JndiLookupHash": "2b32bfc0556ea59307b9b2fde75b6dfbb5bf4f1d008d1402bc9a2357d8a8c61f",
+    "MavenVersion": "2.13.0"
+  },
+  {
+    "CVE": "CVE-2021-45105,CVE-2021-45046,CVE-2021-44832,CVE-2021-44228",
+    "JndiLookupHash": "5c104d16ff9831b456e4d7eaf66bcf531f086767782d08eece3fb37e40467279",
+    "MavenVersion": "2.12.1"
+  },
+  {
+    "CVE": "CVE-2021-45105,CVE-2021-45046,CVE-2021-44832,CVE-2021-44228",
+    "JndiLookupHash": "5c104d16ff9831b456e4d7eaf66bcf531f086767782d08eece3fb37e40467279",
+    "MavenVersion": "2.12.0"
+  },
+  {
+    "CVE": "CVE-2021-45105,CVE-2021-45046,CVE-2021-44832,CVE-2021-44228",
+    "JndiLookupHash": "0f038a1e0aa0aff76d66d1440c88a2b35a3d023ad8b2e3bac8e25a3208499f7e",
+    "MavenVersion": "2.11.2"
+  },
+  {
+    "CVE": "CVE-2021-45105,CVE-2021-45046,CVE-2021-44832,CVE-2021-44228",
+    "JndiLookupHash": "0f038a1e0aa0aff76d66d1440c88a2b35a3d023ad8b2e3bac8e25a3208499f7e",
+    "MavenVersion": "2.11.1"
+  },
+  {
+    "CVE": "CVE-2021-45105,CVE-2021-45046,CVE-2021-44832,CVE-2021-44228",
+    "JndiLookupHash": "0f038a1e0aa0aff76d66d1440c88a2b35a3d023ad8b2e3bac8e25a3208499f7e",
+    "MavenVersion": "2.11.0"
+  },
+  {
+    "CVE": "CVE-2021-45105,CVE-2021-45046,CVE-2021-44832,CVE-2021-44228",
+    "JndiLookupHash": "0f038a1e0aa0aff76d66d1440c88a2b35a3d023ad8b2e3bac8e25a3208499f7e",
+    "MavenVersion": "2.10.0"
+  },
+  {
+    "CVE": "CVE-2021-45105,CVE-2021-45046,CVE-2021-44832,CVE-2021-44228",
+    "JndiLookupHash": "0f038a1e0aa0aff76d66d1440c88a2b35a3d023ad8b2e3bac8e25a3208499f7e",
+    "MavenVersion": "2.9.1"
+  },
+  {
+    "CVE": "CVE-2021-45105,CVE-2021-45046,CVE-2021-44832,CVE-2021-44228",
+    "JndiLookupHash": "0f038a1e0aa0aff76d66d1440c88a2b35a3d023ad8b2e3bac8e25a3208499f7e",
+    "MavenVersion": "2.9.0"
+  },
+  {
+    "CVE": "CVE-2021-45105,CVE-2021-45046,CVE-2021-44832,CVE-2021-44228",
+    "JndiLookupHash": "d4ec57440cd6db6eaf6bcb6b197f1cbaf5a3e26253d59578d51db307357cbf15",
+    "MavenVersion": "2.8.2"
+  },
+  {
+    "CVE": "CVE-2021-45105,CVE-2021-45046,CVE-2021-44832,CVE-2021-44228",
+    "JndiLookupHash": "66c89e2d5ae674641138858b571e65824df6873abb1677f7b2ef5c0dd4dbc442",
+    "MavenVersion": "2.8.1"
+  },
+  {
+    "CVE": "CVE-2021-45105,CVE-2021-45046,CVE-2021-44832,CVE-2021-44228",
+    "JndiLookupHash": "66c89e2d5ae674641138858b571e65824df6873abb1677f7b2ef5c0dd4dbc442",
+    "MavenVersion": "2.8"
+  },
+  {
+    "CVE": "CVE-2021-45105,CVE-2021-45046,CVE-2021-44832,CVE-2021-44228",
+    "JndiLookupHash": "cee2305065bb61d434cdb45cfdaa46e7da148e5c6a7678d56f3e3dc8d7073eae",
+    "MavenVersion": "2.7"
+  },
+  {
+    "CVE": "CVE-2021-45105,CVE-2021-45046,CVE-2021-44832,CVE-2021-44228",
+    "JndiLookupHash": "e8ffed196e04f81b015f847d4ec61f22f6731c11b5a21b1cfc45ccbc58b8ea45",
+    "MavenVersion": "2.6.2"
+  },
+  {
+    "CVE": "CVE-2021-45105,CVE-2021-45046,CVE-2021-44832,CVE-2021-44228",
+    "JndiLookupHash": "e8ffed196e04f81b015f847d4ec61f22f6731c11b5a21b1cfc45ccbc58b8ea45",
+    "MavenVersion": "2.6.1"
+  },
+  {
+    "CVE": "CVE-2021-45105,CVE-2021-45046,CVE-2021-44832,CVE-2021-44228",
+    "JndiLookupHash": "e8ffed196e04f81b015f847d4ec61f22f6731c11b5a21b1cfc45ccbc58b8ea45",
+    "MavenVersion": "2.6"
+  },
+  {
+    "CVE": "CVE-2021-45105,CVE-2021-45046,CVE-2021-44832,CVE-2021-44228",
+    "JndiLookupHash": "a534961bbfce93966496f86c9314f46939fd082bb89986b48b7430c3bea903f7",
+    "MavenVersion": "2.5"
+  },
+  {
+    "CVE": "CVE-2021-45105,CVE-2021-45046,CVE-2021-44832,CVE-2021-44228",
+    "JndiLookupHash": "a534961bbfce93966496f86c9314f46939fd082bb89986b48b7430c3bea903f7",
+    "MavenVersion": "2.4.1"
+  },
+  {
+    "CVE": "CVE-2021-45105,CVE-2021-45046,CVE-2021-44832,CVE-2021-44228",
+    "JndiLookupHash": "a534961bbfce93966496f86c9314f46939fd082bb89986b48b7430c3bea903f7",
+    "MavenVersion": "2.4"
+  },
+  {
+    "CVE": "CVE-2021-45105,CVE-2021-45046,CVE-2021-44832,CVE-2021-44228",
+    "JndiLookupHash": "a768e5383990b512f9d4f97217eda94031c2fa4aea122585f5a475ab99dc7307",
+    "MavenVersion": "2.3"
+  },
+  {
+    "CVE": "CVE-2021-45105,CVE-2021-45046,CVE-2021-44832,CVE-2021-44228",
+    "JndiLookupHash": "a768e5383990b512f9d4f97217eda94031c2fa4aea122585f5a475ab99dc7307",
+    "MavenVersion": "2.2"
+  },
+  {
+    "CVE": "CVE-2021-45105,CVE-2021-45046,CVE-2021-44832,CVE-2021-44228",
+    "JndiLookupHash": "a768e5383990b512f9d4f97217eda94031c2fa4aea122585f5a475ab99dc7307",
+    "MavenVersion": "2.1"
+  },
+  {
+    "CVE": "CVE-2021-45105,CVE-2021-45046,CVE-2021-44832,CVE-2021-44228",
+    "JndiLookupHash": "9626798cce6abd0f2ffef89f1a3d0092a60d34a837a02bbe571dbe00236a2c8c",
+    "MavenVersion": "2.0.2"
+  },
+  {
+    "CVE": "CVE-2021-45105,CVE-2021-45046,CVE-2021-44832,CVE-2021-44228",
+    "JndiLookupHash": "964fa0bf8c045097247fa0c973e0c167df08720409fd9e44546e0ceda3925f3e",
+    "MavenVersion": "2.0.1"
+  },
+  {
+    "CVE": "CVE-2021-45105,CVE-2021-45046,CVE-2021-44832,CVE-2021-44228",
+    "JndiLookupHash": "fd6c63c11f7a6b52eff04be1de3477c9ddbbc925022f7216320e6db93f1b7d29",
+    "MavenVersion": "2.0"
+  },
+  {
+    "CVE": "CVE-2021-45105,CVE-2021-45046,CVE-2021-44832,CVE-2021-44228",
+    "JndiLookupHash": "a03e538ed25eff6c4fe48aabc5514e5ee687542f29f2206256840e74ed59bcd2",
+    "MavenVersion": "2.0-rc2"
+  },
+  {
+    "CVE": "CVE-2021-45105,CVE-2021-45046,CVE-2021-44832,CVE-2021-44228",
+    "JndiLookupHash": "39a495034d37c7934b64a9aa686ea06b61df21aa222044cc50a47d6903ba1ca8",
+    "MavenVersion": "2.0-rc1"
+  },
+  {
+    "CVE": "CVE-2021-45105,CVE-2021-45046,CVE-2021-44832,CVE-2021-44228",
+    "JndiLookupHash": "39a495034d37c7934b64a9aa686ea06b61df21aa222044cc50a47d6903ba1ca8",
+    "MavenVersion": "2.0-beta9"
+  }
+]

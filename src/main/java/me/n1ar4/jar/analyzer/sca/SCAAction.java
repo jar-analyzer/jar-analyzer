@@ -2,6 +2,8 @@ package me.n1ar4.jar.analyzer.sca;
 
 import me.n1ar4.jar.analyzer.gui.MainForm;
 
+import java.util.List;
+
 public class SCAAction {
     public static void register() {
         MainForm instance = MainForm.getInstance();
@@ -22,8 +24,10 @@ public class SCAAction {
         instance.getScaFastjsonBox().setEnabled(false);
         instance.getScaTomcatBox().setEnabled(false);
         instance.getScaShiroBox().setEnabled(false);
+        // 解析规则
+        List<SCARule> log4jRuleList = SCAParser.getApacheLog4j2Rules();
         // 按钮绑定
         instance.getScaOpenBtn().addActionListener(new SCAOpenActionListener());
-        instance.getScaStartBtn().addActionListener(new SCAStartActionListener());
+        instance.getScaStartBtn().addActionListener(new SCAStartActionListener(log4jRuleList));
     }
 }

@@ -10,7 +10,7 @@
 
 - [重要] 支持了 `SCA` 检测
 - [SCA] 支持 `Apache Log4j2` 全版本的匹配
-- [SCA] 支持 `FAT JAR` 和 `LIB JAR` 两种检测
+- [SCA] 支持 `ASSEMBLY JAR` 和 `LIB JAR` 两种检测
 - [优化] 整体优化 `GUI` 排列布局
 
 感谢以下用户的贡献:

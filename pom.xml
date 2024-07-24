@@ -11,14 +11,6 @@
     <packaging>jar</packaging>
     <description>Jar Analyzer Project</description>
 
-    <developers>
-        <developer>
-            <id>4ra1n</id>
-            <name>4ra1n</name>
-            <url>https://github.com/4ra1n</url>
-        </developer>
-    </developers>
-
     <contributors>
         <!-- CONTRIBUTOR 按照贡献量排序 -->
         <contributor>
@@ -224,6 +216,8 @@
                 <configuration>
                     <ruleSet>
                         <rules>
+                            <!-- SPRING 3.X 需要 JRE 17 + -->
+                            <!-- 本项目必须兼容 JAVA 8 所以这样设置 -->
                             <rule>
                                 <groupId>org.springframework</groupId>
                                 <ignoreVersion>

@@ -11,9 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class SCAStartActionListener implements ActionListener {
     public List<SCARule> log4j2RuleList;
@@ -44,9 +42,14 @@ public class SCAStartActionListener implements ActionListener {
             jarList.add(path.toAbsolutePath().toString());
         }
         List<String> finalJarList = jarList;
+
         new Thread(() -> {
-            Set<String> cveList = new HashSet<>();
+            // APACHE LOG4J2
+            List<SCAResult> cveList = new ArrayList<>();
+            // 分析
             for (String s : finalJarList) {
+                // 对于同一个 JAR 来说 CVE 不要重复
+                List<String> exist = new ArrayList<>();
                 for (SCARule rule : log4j2RuleList) {
                     byte[] data = SCAUtil.exploreJar(Paths.get(s).toFile(), rule.getKeyClassName());
                     if (data == null) {
@@ -54,7 +57,18 @@ public class SCAStartActionListener implements ActionListener {
                     }
                     String hash = SCAHashUtil.sha256(data);
                     if (hash.equals(rule.getHash())) {
-                        cveList.add(rule.getCVE());
+                        if (exist.contains(rule.getCVE())) {
+                            continue;
+                        }
+                        exist.add(rule.getCVE());
+                        SCAResult result = new SCAResult();
+                        result.setHash(hash);
+                        result.setCVE(rule.getCVE());
+                        result.setVersion(rule.getVersion());
+                        result.setJarPath(s);
+                        result.setProject(rule.getProjectName());
+                        result.setKeyClass(rule.getKeyClassName());
+                        cveList.add(result);
                     }
                 }
             }
@@ -63,9 +77,8 @@ public class SCAStartActionListener implements ActionListener {
                 return;
             }
             SCALogger.logger.print("--------------- FIND VULNERABILITY ---------------\n");
-            SCALogger.logger.print("PROJECT: Apache Log4j2\n");
-            for (String cve : cveList) {
-                SCALogger.logger.print(cve + "\n");
+            for (SCAResult result : cveList) {
+                SCALogger.logger.print(result + "\n");
             }
             SCALogger.logger.print("--------------------------------------------------\n");
         }).start();

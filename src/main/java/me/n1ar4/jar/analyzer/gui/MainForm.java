@@ -21,6 +21,7 @@ import me.n1ar4.jar.analyzer.gui.tree.FileTree;
 import me.n1ar4.jar.analyzer.gui.update.UpdateChecker;
 import me.n1ar4.jar.analyzer.gui.util.*;
 import me.n1ar4.jar.analyzer.gui.vul.*;
+import me.n1ar4.jar.analyzer.sca.SCAAction;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.utils.DirUtil;
 import me.n1ar4.log.LogManager;
@@ -148,8 +149,6 @@ public class MainForm {
     private JList<MethodResult> superImplList;
     private JPanel analysis;
     private JButton cfgBtn;
-    private JLabel cfgLabel;
-    private JLabel frameLabel;
     private JButton frameBtn;
     private JButton encoderBtn;
     private JButton repeaterBtn;
@@ -219,12 +218,60 @@ public class MainForm {
     private JTextArea scaConsoleArea;
     private JRadioButton scaOutConsoleRadio;
     private JRadioButton scaOutTxtRadio;
-    private JButton scaStartPanel;
+    private JButton scaStartBtn;
     private JPanel scaOutPanel;
     private JLabel scaOutLabel;
     private JScrollPane scanConsoleScroll;
     private JLabel scaFileLabel;
     private JPanel scaActionPanel;
+
+    public JCheckBox getScaLog4jBox() {
+        return scaLog4jBox;
+    }
+
+    public JCheckBox getScaSpringBox() {
+        return scaSpringBox;
+    }
+
+    public JCheckBox getScaShiroBox() {
+        return scaShiroBox;
+    }
+
+    public JCheckBox getScaTomcatBox() {
+        return scaTomcatBox;
+    }
+
+    public JCheckBox getScaFastjsonBox() {
+        return scaFastjsonBox;
+    }
+
+    public JCheckBox getScaStrutsBox() {
+        return scaStrutsBox;
+    }
+
+    public JTextField getScaFileText() {
+        return scaFileText;
+    }
+
+    public JButton getScaOpenBtn() {
+        return scaOpenBtn;
+    }
+
+    public JTextArea getScaConsoleArea() {
+        return scaConsoleArea;
+    }
+
+    public JRadioButton getScaOutConsoleRadio() {
+        return scaOutConsoleRadio;
+    }
+
+    public JRadioButton getScaOutTxtRadio() {
+        return scaOutTxtRadio;
+    }
+
+    public JButton getScaStartBtn() {
+        return scaStartBtn;
+    }
 
     public JLabel getFileTreeSearchLabel() {
         return fileTreeSearchLabel;
@@ -695,6 +742,7 @@ public class MainForm {
         ShowStringAction.run();
         TipsAction.run();
 
+        SCAAction.register();
         JNDIVulAction.register();
         RuntimeExecAction.register();
         ProcessBuilderAction.register();
@@ -805,9 +853,7 @@ public class MainForm {
                         TitledBorder.DEFAULT_JUSTIFICATION,
                         TitledBorder.DEFAULT_POSITION,
                         null, null));
-                instance.cfgLabel.setText("控制流图分析");
                 instance.cfgBtn.setText("展示控制流图");
-                instance.frameLabel.setText("JVM栈帧分析");
                 instance.frameBtn.setText("完整栈帧");
                 instance.simpleFrameButton.setText("简易栈帧");
 
@@ -914,9 +960,7 @@ public class MainForm {
                         TitledBorder.DEFAULT_JUSTIFICATION,
                         TitledBorder.DEFAULT_POSITION,
                         null, null));
-                instance.cfgLabel.setText("Control Flow Graph Analysis");
                 instance.cfgBtn.setText("Show CFG");
-                instance.frameLabel.setText("Java Stack Frame Analysis");
                 instance.frameBtn.setText("Full Frame");
                 instance.simpleFrameButton.setText("Simple Frame");
 
@@ -953,6 +997,7 @@ public class MainForm {
                 throw new RuntimeException("invalid language");
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
             logger.error("error: {}", ex);
         }
     }
@@ -1389,9 +1434,9 @@ public class MainForm {
         scaOutTxtRadio = new JRadioButton();
         scaOutTxtRadio.setText("TXT");
         scaOutPanel.add(scaOutTxtRadio, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        scaStartPanel = new JButton();
-        scaStartPanel.setText("START");
-        scaActionPanel.add(scaStartPanel, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        scaStartBtn = new JButton();
+        scaStartBtn.setText("START");
+        scaActionPanel.add(scaStartBtn, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         advancePanel = new JPanel();
         advancePanel.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPanel.addTab("advance", advancePanel);
@@ -1487,24 +1532,18 @@ public class MainForm {
         serUtilBtn.setText("Start");
         piPanel.add(serUtilBtn, new GridConstraints(6, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         analysis = new JPanel();
-        analysis.setLayout(new GridLayoutManager(2, 3, new Insets(0, 0, 0, 0), -1, -1));
+        analysis.setLayout(new GridLayoutManager(1, 5, new Insets(0, 0, 0, 0), -1, -1));
         advancePanel.add(analysis, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         analysis.setBorder(BorderFactory.createTitledBorder(null, "Analysis", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+        frameBtn = new JButton();
+        frameBtn.setText("Full Frame");
+        analysis.add(frameBtn, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, new Dimension(150, -1), 0, false));
+        simpleFrameButton = new JButton();
+        simpleFrameButton.setText("Simple Frame");
+        analysis.add(simpleFrameButton, new GridConstraints(0, 3, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, new Dimension(150, -1), 0, false));
         cfgBtn = new JButton();
         cfgBtn.setText("Show CFG");
         analysis.add(cfgBtn, new GridConstraints(0, 1, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, new Dimension(150, -1), 0, false));
-        cfgLabel = new JLabel();
-        cfgLabel.setText("Control Flow Graph Analysis");
-        analysis.add(cfgLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        frameLabel = new JLabel();
-        frameLabel.setText("Java Stack Frame Analysis");
-        analysis.add(frameLabel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        frameBtn = new JButton();
-        frameBtn.setText("Full Frame");
-        analysis.add(frameBtn, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, new Dimension(150, -1), 0, false));
-        simpleFrameButton = new JButton();
-        simpleFrameButton.setText("Simple Frame");
-        analysis.add(simpleFrameButton, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, new Dimension(150, -1), 0, false));
         leftPanel = new JPanel();
         leftPanel.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
         corePanel.add(leftPanel, new GridConstraints(0, 0, 4, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_VERTICAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));

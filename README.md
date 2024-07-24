@@ -68,6 +68,12 @@
 
 ## 相关
 
+时间
+
+- `Jar Analyzer V1` 最初版诞生于 `2022.11.27`
+- `Jar Analyzer V2` 在 `2023.10.23` 第一次提交 
+- `Jar Analyzer v2` 正式版在 `2023.12.07` 发布
+
 用户使用文章
 
 - [利用 jar-analyzer 分析 CVE-2022-42889](https://zone.huoxian.cn/d/2884-jar-analyzer-cve-2022-42889)

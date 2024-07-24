@@ -10,7 +10,7 @@ import java.nio.file.Paths;
  */
 public class Main {
     public static void main(String[] args) throws Exception{
-        byte[] data = Files.readAllBytes(Paths.get("JNDILookup.class"));
+        byte[] data = Files.readAllBytes(Paths.get("TypeUtils.class"));
         String hex = SCAHashUtil.sha256(data);
         System.out.println(hex);
     }

@@ -1,0 +1,347 @@
+[
+  {
+    "CVE": "FJ-1.2.47,FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "9311585152b2064de8162bc7e933f17f51428115fa08843f0d7b523497072992",
+    "MavenVersion": "1.2.10"
+  },
+  {
+    "CVE": "FJ-1.2.47,FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "547176d439bab41ab2ece04f2ab55b3e7b9f1d03bfeee384e1a5acf2601efcfc",
+    "MavenVersion": "1.2.11"
+  },
+  {
+    "CVE": "FJ-1.2.47,FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "029efa8de580efbe4315502a515ad30b77aad9373d3fccc4e75f38902fd1bf0b",
+    "MavenVersion": "1.2.12"
+  },
+  {
+    "CVE": "FJ-1.2.47,FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "c89f45042c0bfc19b9855902c8f6da135654da769cf4bd09c5a066b265f33cfb",
+    "MavenVersion": "1.2.13"
+  },
+  {
+    "CVE": "FJ-1.2.47,FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "c89f45042c0bfc19b9855902c8f6da135654da769cf4bd09c5a066b265f33cfb",
+    "MavenVersion": "1.2.14"
+  },
+  {
+    "CVE": "FJ-1.2.47,FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "fba0fef6a7e20fe1e4eb33f69f0f7b80dcce3eb3553e8748c0159a6a4b0b6068",
+    "MavenVersion": "1.2.15"
+  },
+  {
+    "CVE": "FJ-1.2.47,FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "bf09dae82498f770b98411bf7ad57081083041bdb9f2eac12c901508e132b28b",
+    "MavenVersion": "1.2.16"
+  },
+  {
+    "CVE": "FJ-1.2.47,FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "fc961b501d9eedea092d74800a66a149d13eb1b2879df08eac82620dc084adb2",
+    "MavenVersion": "1.2.17"
+  },
+  {
+    "CVE": "FJ-1.2.47,FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "fc961b501d9eedea092d74800a66a149d13eb1b2879df08eac82620dc084adb2",
+    "MavenVersion": "1.2.18"
+  },
+  {
+    "CVE": "FJ-1.2.47,FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "fc961b501d9eedea092d74800a66a149d13eb1b2879df08eac82620dc084adb2",
+    "MavenVersion": "1.2.19"
+  },
+  {
+    "CVE": "FJ-1.2.47,FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "fc961b501d9eedea092d74800a66a149d13eb1b2879df08eac82620dc084adb2",
+    "MavenVersion": "1.2.20"
+  },
+  {
+    "CVE": "FJ-1.2.47,FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "6d5ea9f241108ec7bee8c28c74a87479a6859da11b4d2a16af60b0fbaec2d979",
+    "MavenVersion": "1.2.21"
+  },
+  {
+    "CVE": "FJ-1.2.47,FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "b48cff853e789acdc64c044545a30131efcf353b64fe3594330e63d1f6f83e50",
+    "MavenVersion": "1.2.22"
+  },
+  {
+    "CVE": "FJ-1.2.47,FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "c1c70ea7162151ce4eb716bbc88cdff9d39afdadb47d9674bb43ae61de73abd8",
+    "MavenVersion": "1.2.23"
+  },
+  {
+    "CVE": "FJ-1.2.47,FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "68b77af983a26cfe86e33e8fa87534502a226f5b18de2f4ec655c04ffab7be09",
+    "MavenVersion": "1.2.24"
+  },
+  {
+    "CVE": "FJ-1.2.47,FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "e6743e950c63268ba1a926d07d276df23a43c26c69eb8ad35209255371a3bfce",
+    "MavenVersion": "1.2.25"
+  },
+  {
+    "CVE": "FJ-1.2.47,FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "e6743e950c63268ba1a926d07d276df23a43c26c69eb8ad35209255371a3bfce",
+    "MavenVersion": "1.2.26"
+  },
+  {
+    "CVE": "FJ-1.2.47,FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "3176fd07e18715782b1f08499c27509b018d19d547fee40b19c08a933a7fa46c",
+    "MavenVersion": "1.2.27"
+  },
+  {
+    "CVE": "FJ-1.2.47,FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "e692f02ce45eef29116e37bbc4727da0640e8fa30003ea90156ea0949f04f89d",
+    "MavenVersion": "1.2.28"
+  },
+  {
+    "CVE": "FJ-1.2.47,FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "72daf4debf8f77857dc9dbbfa66294354c6023a50b3a15fa0feb85cd672327c2",
+    "MavenVersion": "1.2.29"
+  },
+  {
+    "CVE": "FJ-1.2.47,FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "32529141d0f31b0e19d005e95a620eded83044969acdf5a1acec03560590e163",
+    "MavenVersion": "1.2.30"
+  },
+  {
+    "CVE": "FJ-1.2.47,FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "14221de4aef4673fcd67b328c600266b22f941a107ace69959b35beb605647f3",
+    "MavenVersion": "1.2.31"
+  },
+  {
+    "CVE": "FJ-1.2.47,FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "07f14760dc6548f35ec80587215db4b6df5fb7d741dc1385897fe83bcd0a01e0",
+    "MavenVersion": "1.2.32"
+  },
+  {
+    "CVE": "FJ-1.2.47,FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "486bf4f62c9ff9fa6c61054956778c6412b5cda6e7b2b4ab2b1bc453514350d1",
+    "MavenVersion": "1.2.33"
+  },
+  {
+    "CVE": "FJ-1.2.47,FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "1efbd7d33eeee0211daf00bf98102f1a8e0c7849fb96cf1998ebe45a9040bf51",
+    "MavenVersion": "1.2.34"
+  },
+  {
+    "CVE": "FJ-1.2.47,FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "1efbd7d33eeee0211daf00bf98102f1a8e0c7849fb96cf1998ebe45a9040bf51",
+    "MavenVersion": "1.2.35"
+  },
+  {
+    "CVE": "FJ-1.2.47,FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "feb03583df5bed21e0b9ee21b56d7ea17b507a8b423a0d58331f5a84c802e9de",
+    "MavenVersion": "1.2.36"
+  },
+  {
+    "CVE": "FJ-1.2.47,FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "293d087fb4e0e6edb24be7daa63f023b5d6427317dc4b30af9c37e21edb194b7",
+    "MavenVersion": "1.2.37"
+  },
+  {
+    "CVE": "FJ-1.2.47,FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "7f9bf9277d27edc1daf281e7b0d588ef35a816aad27a3908b1ba3fcd6e4e40c9",
+    "MavenVersion": "1.2.38"
+  },
+  {
+    "CVE": "FJ-1.2.47,FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "d8966ae0e96709e46ad44849368429cd3fb0a238ae162b2a460055c8b921f095",
+    "MavenVersion": "1.2.39"
+  },
+  {
+    "CVE": "FJ-1.2.47,FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "aeff100e64488e669f690bacefc7988b1e1a7a4f5c082c22a7de97f7d3fa44e4",
+    "MavenVersion": "1.2.40"
+  },
+  {
+    "CVE": "FJ-1.2.47,FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "ec845004478cf926e98b8d4ace0c043781213f8af7f9c1a9d4e1a883b16be10d",
+    "MavenVersion": "1.2.41"
+  },
+  {
+    "CVE": "FJ-1.2.47,FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "3ee2ec9812cd1d2ad8ea0ef67b4aed06ccf87c711c526ca9a8889b94764c349a",
+    "MavenVersion": "1.2.42"
+  },
+  {
+    "CVE": "FJ-1.2.47,FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "bc4d48a5cd155a48e6e86f150ae4a1754ee09e3855c9b6e246ddc574dcc30a55",
+    "MavenVersion": "1.2.43"
+  },
+  {
+    "CVE": "FJ-1.2.47,FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "97c94cc883a1c4167c44f4fc9ad0d4e20c9b30b5f38343498ae8c00f780a4f0a",
+    "MavenVersion": "1.2.44"
+  },
+  {
+    "CVE": "FJ-1.2.47,FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "54cf5ffacb8f20146d7975f7484d93bcead5f6f8d0ae31820d7df043dd5f2811",
+    "MavenVersion": "1.2.45"
+  },
+  {
+    "CVE": "FJ-1.2.47,FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "616ddda4cbbfff4d054636fedbfe086f3804ae3cb69e4b515898c76971900af5",
+    "MavenVersion": "1.2.46"
+  },
+  {
+    "CVE": "FJ-1.2.47,FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "616ddda4cbbfff4d054636fedbfe086f3804ae3cb69e4b515898c76971900af5",
+    "MavenVersion": "1.2.47"
+  },
+  {
+    "CVE": "FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "8a7690dc9bd20c94c9663a30316a4e2377882c42bd7415c85c723197a5bfd3be",
+    "MavenVersion": "1.2.48"
+  },
+  {
+    "CVE": "FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "051f61c77bd3e9f042a936a50fed8ee18dc9e898061ae6e33d8b973bd715a011",
+    "MavenVersion": "1.2.49"
+  },
+  {
+    "CVE": "FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "fb19df361351229e2a363972663a1eca81ddd3addba1c5c919b2d5257f489c7b",
+    "MavenVersion": "1.2.50"
+  },
+  {
+    "CVE": "FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "c548344a82e4d87b4025430706e4041132d5e0b1132cbc0db893d606d6845742",
+    "MavenVersion": "1.2.51"
+  },
+  {
+    "CVE": "FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "c548344a82e4d87b4025430706e4041132d5e0b1132cbc0db893d606d6845742",
+    "MavenVersion": "1.2.52"
+  },
+  {
+    "CVE": "FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "c548344a82e4d87b4025430706e4041132d5e0b1132cbc0db893d606d6845742",
+    "MavenVersion": "1.2.53"
+  },
+  {
+    "CVE": "FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "05abc99183df180b882e84a37b2be2011af9588727ecdc8f53f8036faf746925",
+    "MavenVersion": "1.2.54"
+  },
+  {
+    "CVE": "FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "8a6afdae214ef4cb56b14dba1da90c7e32933425133f72cfefe985b32fd70531",
+    "MavenVersion": "1.2.55"
+  },
+  {
+    "CVE": "FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "8a5a025bbdb715147145b16989da60304ae0c44861d006cf91a3fb181167d8ac",
+    "MavenVersion": "1.2.56"
+  },
+  {
+    "CVE": "FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "63e7b39aec9ad2847920c6fbdc91f9256e0e1a7ab7932f389e16f704cc8ed35d",
+    "MavenVersion": "1.2.57"
+  },
+  {
+    "CVE": "FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "30abf8451de7d8e20d62126580f634a0529ccb18d058bd4ef2f1b49af16f837f",
+    "MavenVersion": "1.2.58"
+  },
+  {
+    "CVE": "FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "30abf8451de7d8e20d62126580f634a0529ccb18d058bd4ef2f1b49af16f837f",
+    "MavenVersion": "1.2.59"
+  },
+  {
+    "CVE": "FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "38ad4b5c34f4654cdbf5c1bf6b6a3dbd693006aad3cf915e68df00c2a7dcfa3e",
+    "MavenVersion": "1.2.60"
+  },
+  {
+    "CVE": "FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "1c1777e89fa0c1a52d7539d4d293cfd0f081ba9932ae74649b5f00c4504c3762",
+    "MavenVersion": "1.2.61"
+  },
+  {
+    "CVE": "FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "47fbff717239f2d6d023c6a81f128e3d1622fc62148db91b925641354a8bf002",
+    "MavenVersion": "1.2.62"
+  },
+  {
+    "CVE": "FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "e87ea7236d24167f3c19a5a3dbbfb09bcaea03fc06a6af1b9564d07e577ccca8",
+    "MavenVersion": "1.2.66"
+  },
+  {
+    "CVE": "FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "f5acf5a26dd87b3475c418b541828842dc2966a4c0d7fd5ec8ac6b906dd974d9",
+    "MavenVersion": "1.2.67"
+  },
+  {
+    "CVE": "FJ-1.2.68,FJ-1.2.80",
+    "TypeUtilsHash": "5c473c1236aa3ef9255d3007bc08480bede047947b4df8e57e45901e6fbfa366",
+    "MavenVersion": "1.2.68"
+  },
+  {
+    "CVE": "FJ-1.2.80",
+    "TypeUtilsHash": "7021fd133d91b184f8e0922866e821a612f8fdfd36fc489fbf5b8f1a995bac8b",
+    "MavenVersion": "1.2.69"
+  },
+  {
+    "CVE": "FJ-1.2.80",
+    "TypeUtilsHash": "12fdb960db02d563c63723774bedda9afff1d824a2bf6d49512df16574b2a922",
+    "MavenVersion": "1.2.70"
+  },
+  {
+    "CVE": "FJ-1.2.80",
+    "TypeUtilsHash": "0030df541f0e0d35ca7a1e97b3207050656530914d24f258ce7dcec32cab89ad",
+    "MavenVersion": "1.2.71"
+  },
+  {
+    "CVE": "FJ-1.2.80",
+    "TypeUtilsHash": "eb53b3ca6312c22591b45bb48a736fe448b2140ef7bbec00c561c8a137a2e125",
+    "MavenVersion": "1.2.72"
+  },
+  {
+    "CVE": "FJ-1.2.80",
+    "TypeUtilsHash": "fe630f9080d7ceda15ef176bb6c9c63fbea3e1a02abb4b61d8123478615917c4",
+    "MavenVersion": "1.2.73"
+  },
+  {
+    "CVE": "FJ-1.2.80",
+    "TypeUtilsHash": "5972b1736c2ae265a7bb8e274f3e47af4e10c00c9e90242b8c6ee1cea4aec845",
+    "MavenVersion": "1.2.74"
+  },
+  {
+    "CVE": "FJ-1.2.80",
+    "TypeUtilsHash": "da708b2adb9084df618fed5436bacb3ab6f2dd12a8030fa95535d1280e976995",
+    "MavenVersion": "1.2.75"
+  },
+  {
+    "CVE": "FJ-1.2.80",
+    "TypeUtilsHash": "47647eee4f81b4b00f89b0476f50dd7e8d682eadb70fdeabe384c32657fdb941",
+    "MavenVersion": "1.2.76"
+  },
+  {
+    "CVE": "FJ-1.2.80",
+    "TypeUtilsHash": "12197f7aec1cf63c411f8d3590839d987492a4fdf6004068d199b68f9eaf04f5",
+    "MavenVersion": "1.2.77"
+  },
+  {
+    "CVE": "FJ-1.2.80",
+    "TypeUtilsHash": "12197f7aec1cf63c411f8d3590839d987492a4fdf6004068d199b68f9eaf04f5",
+    "MavenVersion": "1.2.78"
+  },
+  {
+    "CVE": "FJ-1.2.80",
+    "TypeUtilsHash": "a8e44bcbdbce39d5c8bd58edca6e202004924ee377578f7fba33620b82796d6d",
+    "MavenVersion": "1.2.79"
+  },
+  {
+    "CVE": "FJ-1.2.80",
+    "TypeUtilsHash": "a8e44bcbdbce39d5c8bd58edca6e202004924ee377578f7fba33620b82796d6d",
+    "MavenVersion": "1.2.80"
+  },
+  {
+    "CVE": "",
+    "TypeUtilsHash": "00fc1b3d7505d46bc25fddbaa49c389e15014003e2b99a986b4f00261bc6d913",
+    "MavenVersion": "1.2.83"
+  }
+]

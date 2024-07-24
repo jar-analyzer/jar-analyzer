@@ -3,6 +3,8 @@ package me.n1ar4.jar.analyzer.sca;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import me.n1ar4.jar.analyzer.utils.IOUtil;
+import me.n1ar4.log.LogManager;
+import me.n1ar4.log.Logger;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -10,6 +12,8 @@ import java.util.List;
 import java.util.UUID;
 
 public class SCAParser {
+    private static final Logger logger = LogManager.getLogger();
+
     public static List<SCARule> getApacheLog4j2Rules() {
         String path = "SCA/apache-log4j2-rule.json";
         InputStream is = SCAParser.class.getClassLoader().getResourceAsStream(path);
@@ -29,26 +33,31 @@ public class SCAParser {
             if (cveList.contains(",")) {
                 String[] cveItems = cveList.split(",");
                 for (String cve : cveItems) {
-                    SCARule rule = new SCARule();
-                    rule.setCVE(cve);
-                    rule.setHash(hash);
-                    rule.setKeyClassName(keyClass);
-                    rule.setUuid(UUID.randomUUID().toString());
-                    rule.setVersion(version);
-                    rule.setProjectName(project);
-                    result.add(rule);
+                    makeSCARule(project, keyClass, result, hash, version, cve);
                 }
             } else {
-                SCARule rule = new SCARule();
-                rule.setCVE(cveList);
-                rule.setHash(hash);
-                rule.setKeyClassName(keyClass);
-                rule.setUuid(UUID.randomUUID().toString());
-                rule.setVersion(version);
-                rule.setProjectName(project);
-                result.add(rule);
+                makeSCARule(project, keyClass, result, hash, version, cveList);
             }
         }
+        if (!result.isEmpty()) {
+            logger.info("parse apache log4j sca finish");
+        }
         return result;
+    }
+
+    private static void makeSCARule(String project,
+                                    String keyClass,
+                                    List<SCARule> result,
+                                    String hash,
+                                    String version,
+                                    String cve) {
+        SCARule rule = new SCARule();
+        rule.setCVE(cve);
+        rule.setHash(hash);
+        rule.setKeyClassName(keyClass);
+        rule.setUuid(UUID.randomUUID().toString());
+        rule.setVersion(version);
+        rule.setProjectName(project);
+        result.add(rule);
     }
 }

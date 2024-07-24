@@ -22,4 +22,18 @@ public class FontHelper {
             logger.error("install font error: {}", e.toString());
         }
     }
+
+    public static Font getFont() {
+        try {
+            InputStream is = FontHelper.class.getClassLoader().getResourceAsStream("consolas.ttf");
+            if (is == null) {
+                throw new RuntimeException("unknown error");
+            }
+            Font customFont = Font.createFont(Font.TRUETYPE_FONT, is);
+            return customFont.deriveFont(12f);
+        } catch (Exception e) {
+            logger.error("install font error: {}", e.toString());
+        }
+        return null;
+    }
 }

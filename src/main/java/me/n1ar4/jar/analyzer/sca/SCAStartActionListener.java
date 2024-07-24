@@ -59,13 +59,15 @@ public class SCAStartActionListener implements ActionListener {
                 }
             }
             if (cveList.isEmpty()) {
+                SCALogger.logger.warn("NO VULNERABILITY FOUND");
                 return;
             }
-            SCALogger.logger.print("--- FIND Apache Log4j2 VULNERABILITY ---\n");
+            SCALogger.logger.print("--------------- FIND VULNERABILITY ---------------\n");
+            SCALogger.logger.print("PROJECT: Apache Log4j2\n");
             for (String cve : cveList) {
                 SCALogger.logger.print(cve + "\n");
             }
-            SCALogger.logger.print("------------------------------------------------------\n");
+            SCALogger.logger.print("--------------------------------------------------\n");
         }).start();
     }
 }

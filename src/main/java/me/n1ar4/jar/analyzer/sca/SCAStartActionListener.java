@@ -93,5 +93,6 @@ public class SCAStartActionListener implements ActionListener {
                 cveList.add(result);
             }
         }
+        SCAUtil.refresh();
     }
 }

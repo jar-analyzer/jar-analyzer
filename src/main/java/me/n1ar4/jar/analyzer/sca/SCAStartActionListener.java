@@ -43,26 +43,29 @@ public class SCAStartActionListener implements ActionListener {
             SCALogger.logger.info("INPUT IS A FILE");
             jarList.add(path.toAbsolutePath().toString());
         }
-        Set<String> cveList = new HashSet<>();
-        for (String s : jarList) {
-            for (SCARule rule : log4j2RuleList) {
-                byte[] data = SCAUtil.exploreJar(Paths.get(s).toFile(), rule.getKeyClassName());
-                if (data == null) {
-                    continue;
-                }
-                String hash = SCAHashUtil.sha256(data);
-                if (hash.equals(rule.getHash())) {
-                    cveList.add(rule.getCVE());
+        List<String> finalJarList = jarList;
+        new Thread(() -> {
+            Set<String> cveList = new HashSet<>();
+            for (String s : finalJarList) {
+                for (SCARule rule : log4j2RuleList) {
+                    byte[] data = SCAUtil.exploreJar(Paths.get(s).toFile(), rule.getKeyClassName());
+                    if (data == null) {
+                        continue;
+                    }
+                    String hash = SCAHashUtil.sha256(data);
+                    if (hash.equals(rule.getHash())) {
+                        cveList.add(rule.getCVE());
+                    }
                 }
             }
-        }
-        if (cveList.isEmpty()) {
-            return;
-        }
-        SCALogger.logger.print("--- FIND Apache Log4j2 VULNERABILITY ---\n");
-        for (String cve : cveList) {
-            SCALogger.logger.print(cve + "\n");
-        }
-        SCALogger.logger.print("------------------------------------------------------\n");
+            if (cveList.isEmpty()) {
+                return;
+            }
+            SCALogger.logger.print("--- FIND Apache Log4j2 VULNERABILITY ---\n");
+            for (String cve : cveList) {
+                SCALogger.logger.print(cve + "\n");
+            }
+            SCALogger.logger.print("------------------------------------------------------\n");
+        }).start();
     }
 }

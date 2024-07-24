@@ -39,7 +39,7 @@
             <properties/>
             <border type="none"/>
             <children>
-              <grid id="85cbd" binding="startPanel" layout-manager="GridLayoutManager" row-count="5" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+              <grid id="85cbd" binding="startPanel" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                 <margin top="0" left="0" bottom="0" right="0"/>
                 <constraints>
                   <tabbedpane title="start"/>
@@ -178,9 +178,9 @@
                       <scrollpane id="89c67" binding="classBlackPanel">
                         <constraints>
                           <grid row="4" column="1" row-span="1" col-span="5" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                            <minimum-size width="-1" height="66"/>
-                            <preferred-size width="-1" height="66"/>
-                            <maximum-size width="-1" height="66"/>
+                            <minimum-size width="-1" height="75"/>
+                            <preferred-size width="-1" height="75"/>
+                            <maximum-size width="-1" height="75"/>
                           </grid>
                         </constraints>
                         <properties/>
@@ -191,6 +191,7 @@
                             <properties>
                               <background color="-12895429"/>
                               <foreground color="-16711931"/>
+                              <rows value="0"/>
                             </properties>
                           </component>
                         </children>
@@ -205,7 +206,11 @@
                       </component>
                       <scrollpane id="85ab8" binding="classWhitePanel">
                         <constraints>
-                          <grid row="3" column="1" row-span="1" col-span="5" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                          <grid row="3" column="1" row-span="1" col-span="5" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                            <minimum-size width="-1" height="75"/>
+                            <preferred-size width="-1" height="75"/>
+                            <maximum-size width="-1" height="75"/>
+                          </grid>
                         </constraints>
                         <properties/>
                         <border type="none"/>
@@ -215,6 +220,7 @@
                             <properties>
                               <background color="-12895429"/>
                               <foreground color="-853761"/>
+                              <rows value="0"/>
                               <text value=""/>
                             </properties>
                           </component>
@@ -378,71 +384,10 @@
                       </grid>
                     </children>
                   </grid>
-                  <vspacer id="aa3b7">
-                    <constraints>
-                      <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-                    </constraints>
-                  </vspacer>
-                  <grid id="5eaf" binding="analysis" layout-manager="GridLayoutManager" row-count="2" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                    <margin top="0" left="0" bottom="0" right="0"/>
-                    <constraints>
-                      <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                    </constraints>
-                    <properties/>
-                    <border type="none" title="Analysis"/>
-                    <children>
-                      <component id="2b315" class="javax.swing.JButton" binding="cfgBtn">
-                        <constraints>
-                          <grid row="0" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
-                            <maximum-size width="150" height="-1"/>
-                          </grid>
-                        </constraints>
-                        <properties>
-                          <text value="Show CFG"/>
-                        </properties>
-                      </component>
-                      <component id="5314e" class="javax.swing.JLabel" binding="cfgLabel">
-                        <constraints>
-                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                        </constraints>
-                        <properties>
-                          <text value="Control Flow Graph Analysis"/>
-                        </properties>
-                      </component>
-                      <component id="594da" class="javax.swing.JLabel" binding="frameLabel">
-                        <constraints>
-                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                        </constraints>
-                        <properties>
-                          <text value="Java Stack Frame Analysis"/>
-                        </properties>
-                      </component>
-                      <component id="7d0ba" class="javax.swing.JButton" binding="frameBtn">
-                        <constraints>
-                          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
-                            <maximum-size width="150" height="-1"/>
-                          </grid>
-                        </constraints>
-                        <properties>
-                          <text value="Full Frame"/>
-                        </properties>
-                      </component>
-                      <component id="a28bd" class="javax.swing.JButton" binding="simpleFrameButton" default-binding="true">
-                        <constraints>
-                          <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
-                            <maximum-size width="150" height="-1"/>
-                          </grid>
-                        </constraints>
-                        <properties>
-                          <text value="Simple Frame"/>
-                        </properties>
-                      </component>
-                    </children>
-                  </grid>
                   <grid id="7a036" binding="actionPanel" layout-manager="GridLayoutManager" row-count="1" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
-                      <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                      <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties/>
                     <border type="empty" title=""/>
@@ -914,7 +859,175 @@
                   </scrollpane>
                 </children>
               </grid>
-              <grid id="3a6be" binding="advancePanel" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+              <grid id="8326a" binding="scaPanel" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <tabbedpane title="SCA"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <grid id="5832f" binding="modulePanel" layout-manager="GridLayoutManager" row-count="2" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="0" bottom="0" right="0"/>
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none" title="Module"/>
+                    <children>
+                      <component id="acbad" class="javax.swing.JCheckBox" binding="scaLog4jBox">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Apache Log4j2"/>
+                        </properties>
+                      </component>
+                      <component id="4c27d" class="javax.swing.JCheckBox" binding="scaSpringBox">
+                        <constraints>
+                          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Spring Framework"/>
+                        </properties>
+                      </component>
+                      <component id="547de" class="javax.swing.JCheckBox" binding="scaShiroBox">
+                        <constraints>
+                          <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Apache Shiro"/>
+                        </properties>
+                      </component>
+                      <component id="b03a5" class="javax.swing.JCheckBox" binding="scaTomcatBox">
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Apache Tomcat"/>
+                        </properties>
+                      </component>
+                      <component id="2b8d" class="javax.swing.JCheckBox" binding="scaFastjsonBox">
+                        <constraints>
+                          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="FASTJSON"/>
+                        </properties>
+                      </component>
+                      <component id="93565" class="javax.swing.JCheckBox" binding="scaStrutsBox">
+                        <constraints>
+                          <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Apache Struts"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
+                  <vspacer id="94435">
+                    <constraints>
+                      <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                  </vspacer>
+                  <grid id="79b2d" binding="scaActionPanel" layout-manager="GridLayoutManager" row-count="3" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="0" bottom="0" right="0"/>
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none" title="Action"/>
+                    <children>
+                      <component id="3eaf9" class="javax.swing.JLabel" binding="scaFileLabel">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="JAR FILE / JAR DIR"/>
+                        </properties>
+                      </component>
+                      <component id="b68bd" class="javax.swing.JTextField" binding="scaFileText">
+                        <constraints>
+                          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="15990" class="javax.swing.JButton" binding="scaOpenBtn">
+                        <constraints>
+                          <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="OPEN"/>
+                        </properties>
+                      </component>
+                      <scrollpane id="7f42f" binding="scanConsoleScroll">
+                        <constraints>
+                          <grid row="2" column="0" row-span="1" col-span="3" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none" title=""/>
+                        <children>
+                          <component id="36a95" class="javax.swing.JTextArea" binding="scaConsoleArea">
+                            <constraints/>
+                            <properties>
+                              <background color="-12895429"/>
+                              <editable value="false"/>
+                              <foreground color="-16711931"/>
+                              <lineWrap value="true"/>
+                              <rows value="20"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </scrollpane>
+                      <component id="a9a37" class="javax.swing.JLabel" binding="scaOutLabel">
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="OUTPUT"/>
+                        </properties>
+                      </component>
+                      <grid id="24a58" binding="scaOutPanel" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="0" left="0" bottom="0" right="0"/>
+                        <constraints>
+                          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="a6315" class="javax.swing.JRadioButton" binding="scaOutConsoleRadio">
+                            <constraints>
+                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="CONSOLE"/>
+                            </properties>
+                          </component>
+                          <component id="ff811" class="javax.swing.JRadioButton" binding="scaOutTxtRadio">
+                            <constraints>
+                              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="TXT"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </grid>
+                      <component id="76eb" class="javax.swing.JButton" binding="scaStartPanel">
+                        <constraints>
+                          <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="START"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
+                </children>
+              </grid>
+              <grid id="3a6be" binding="advancePanel" layout-manager="GridLayoutManager" row-count="4" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                 <margin top="0" left="0" bottom="0" right="0"/>
                 <constraints>
                   <tabbedpane title="advance"/>
@@ -925,7 +1038,7 @@
                   <grid id="3e46f" binding="javaVulSearchPanel" layout-manager="GridLayoutManager" row-count="5" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
-                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties/>
                     <border type="none" title="Java Vulnerability"/>
@@ -1038,13 +1151,13 @@
                   </grid>
                   <vspacer id="ab633">
                     <constraints>
-                      <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                      <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                     </constraints>
                   </vspacer>
                   <grid id="fadfa" binding="piPanel" layout-manager="GridLayoutManager" row-count="7" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
-                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                      <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties/>
                     <border type="none" title="Plugins"/>
@@ -1159,6 +1272,62 @@
                         </constraints>
                         <properties>
                           <text value="Start"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
+                  <grid id="5b600" binding="analysis" layout-manager="GridLayoutManager" row-count="2" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="0" bottom="0" right="0"/>
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none" title="Analysis"/>
+                    <children>
+                      <component id="da065" class="javax.swing.JButton" binding="cfgBtn">
+                        <constraints>
+                          <grid row="0" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                            <maximum-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties>
+                          <text value="Show CFG"/>
+                        </properties>
+                      </component>
+                      <component id="65f53" class="javax.swing.JLabel" binding="cfgLabel">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Control Flow Graph Analysis"/>
+                        </properties>
+                      </component>
+                      <component id="35c1c" class="javax.swing.JLabel" binding="frameLabel">
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Java Stack Frame Analysis"/>
+                        </properties>
+                      </component>
+                      <component id="ff112" class="javax.swing.JButton" binding="frameBtn">
+                        <constraints>
+                          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                            <maximum-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties>
+                          <text value="Full Frame"/>
+                        </properties>
+                      </component>
+                      <component id="3f5d6" class="javax.swing.JButton" binding="simpleFrameButton" default-binding="true">
+                        <constraints>
+                          <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                            <maximum-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties>
+                          <text value="Simple Frame"/>
                         </properties>
                       </component>
                     </children>
@@ -1377,6 +1546,10 @@
     <group name="searchOptions">
       <member id="6186b"/>
       <member id="9d995"/>
+    </group>
+    <group name="scaOutGroup">
+      <member id="a6315"/>
+      <member id="ff811"/>
     </group>
   </buttonGroups>
 </form>

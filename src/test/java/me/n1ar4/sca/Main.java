@@ -1,4 +1,4 @@
-package me.n1ar4.jar.analyzer.sca.test;
+package me.n1ar4.sca;
 
 import me.n1ar4.jar.analyzer.sca.SCAHashUtil;
 

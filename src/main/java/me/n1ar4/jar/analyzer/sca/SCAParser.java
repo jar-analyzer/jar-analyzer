@@ -28,21 +28,59 @@ public class SCAParser {
         for (int i = 0; i < array.size(); i++) {
             JSONObject object = array.getJSONObject(i);
             String cveList = (String) object.get("CVE");
-            String hash = object.getString("JndiLookupHash");
-            String version = object.getString("MavenVersion");
-            if (cveList.contains(",")) {
-                String[] cveItems = cveList.split(",");
-                for (String cve : cveItems) {
-                    makeSCARule(project, keyClass, result, hash, version, cve);
-                }
-            } else {
-                makeSCARule(project, keyClass, result, hash, version, cveList);
+            if (cveList == null || cveList.trim().isEmpty()) {
+                continue;
             }
+            String hash = object.getString("JndiLookupHash");
+            buildVersion(project, keyClass, result, object, cveList, hash);
         }
         if (!result.isEmpty()) {
-            logger.info("parse apache log4j sca finish");
+            logger.info("apache log4j2 sca rules: {}",result.size());
         }
         return result;
+    }
+
+    public static List<SCARule> getFastjsonRules() {
+        String path = "SCA/fastjson-rule.json";
+        InputStream is = SCAParser.class.getClassLoader().getResourceAsStream(path);
+        String data = IOUtil.readString(is);
+        JSONArray array = JSONArray.parse(data);
+        if (array == null || array.isEmpty()) {
+            return null;
+        }
+        String project = "FASTJSON";
+        String keyClass = "com/alibaba/fastjson/util/TypeUtils";
+        List<SCARule> result = new ArrayList<>();
+        for (int i = 0; i < array.size(); i++) {
+            JSONObject object = array.getJSONObject(i);
+            String cveList = (String) object.get("CVE");
+            if (cveList == null || cveList.trim().isEmpty()) {
+                continue;
+            }
+            String hash = object.getString("TypeUtilsHash");
+            buildVersion(project, keyClass, result, object, cveList, hash);
+        }
+        if (!result.isEmpty()) {
+            logger.info("fastjson sca rules: {}",result.size());
+        }
+        return result;
+    }
+
+    private static void buildVersion(String project,
+                                     String keyClass,
+                                     List<SCARule> result,
+                                     JSONObject object,
+                                     String cveList,
+                                     String hash) {
+        String version = object.getString("MavenVersion");
+        if (cveList.contains(",")) {
+            String[] cveItems = cveList.split(",");
+            for (String cve : cveItems) {
+                makeSCARule(project, keyClass, result, hash, version, cve);
+            }
+        } else {
+            makeSCARule(project, keyClass, result, hash, version, cveList);
+        }
     }
 
     private static void makeSCARule(String project,

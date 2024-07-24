@@ -15,9 +15,12 @@ import java.util.List;
 
 public class SCAStartActionListener implements ActionListener {
     public List<SCARule> log4j2RuleList;
+    public List<SCARule> fastjsonRuleList;
 
-    public SCAStartActionListener(List<SCARule> log4j) {
+    public SCAStartActionListener(List<SCARule> log4j,
+                                  List<SCARule> fastjson) {
         this.log4j2RuleList = log4j;
+        this.fastjsonRuleList = fastjson;
     }
 
     @Override
@@ -50,27 +53,8 @@ public class SCAStartActionListener implements ActionListener {
             for (String s : finalJarList) {
                 // 对于同一个 JAR 来说 CVE 不要重复
                 List<String> exist = new ArrayList<>();
-                for (SCARule rule : log4j2RuleList) {
-                    byte[] data = SCAUtil.exploreJar(Paths.get(s).toFile(), rule.getKeyClassName());
-                    if (data == null) {
-                        continue;
-                    }
-                    String hash = SCAHashUtil.sha256(data);
-                    if (hash.equals(rule.getHash())) {
-                        if (exist.contains(rule.getCVE())) {
-                            continue;
-                        }
-                        exist.add(rule.getCVE());
-                        SCAResult result = new SCAResult();
-                        result.setHash(hash);
-                        result.setCVE(rule.getCVE());
-                        result.setVersion(rule.getVersion());
-                        result.setJarPath(s);
-                        result.setProject(rule.getProjectName());
-                        result.setKeyClass(rule.getKeyClassName());
-                        cveList.add(result);
-                    }
-                }
+                exec(cveList, s, exist, log4j2RuleList);
+                exec(cveList, s, exist, fastjsonRuleList);
             }
             if (cveList.isEmpty()) {
                 SCALogger.logger.warn("NO VULNERABILITY FOUND");
@@ -82,5 +66,32 @@ public class SCAStartActionListener implements ActionListener {
             }
             SCALogger.logger.print("--------------------------------------------------\n");
         }).start();
+    }
+
+    private void exec(List<SCAResult> cveList,
+                      String s,
+                      List<String> exist,
+                      List<SCARule> log4j2RuleList) {
+        for (SCARule rule : log4j2RuleList) {
+            byte[] data = SCAUtil.exploreJar(Paths.get(s).toFile(), rule.getKeyClassName());
+            if (data == null) {
+                continue;
+            }
+            String hash = SCAHashUtil.sha256(data);
+            if (hash.equals(rule.getHash())) {
+                if (exist.contains(rule.getCVE())) {
+                    continue;
+                }
+                exist.add(rule.getCVE());
+                SCAResult result = new SCAResult();
+                result.setHash(hash);
+                result.setCVE(rule.getCVE());
+                result.setVersion(rule.getVersion());
+                result.setJarPath(s);
+                result.setProject(rule.getProjectName());
+                result.setKeyClass(rule.getKeyClassName());
+                cveList.add(result);
+            }
+        }
     }
 }

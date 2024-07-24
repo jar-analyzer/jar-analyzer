@@ -757,7 +757,6 @@ public class MainForm {
         HessianAction.register();
 
         Font codeFont = FontHelper.getFont();
-        instance.scaConsoleArea.setFont(codeFont);
         instance.blackArea.setFont(codeFont);
         instance.classBlackArea.setFont(codeFont);
         instance.classWhiteArea.setFont(codeFont);

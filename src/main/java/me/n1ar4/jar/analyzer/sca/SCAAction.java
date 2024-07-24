@@ -3,6 +3,7 @@ package me.n1ar4.jar.analyzer.sca;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 
 import java.util.List;
+import java.util.Map;
 
 public class SCAAction {
     public static void register() {
@@ -24,12 +25,14 @@ public class SCAAction {
         instance.getScaStrutsBox().setEnabled(false);
         instance.getScaTomcatBox().setEnabled(false);
         instance.getScaShiroBox().setEnabled(false);
+        // 解析 CVE 数据库
+        Map<String, CVEData> cveMap = SCAVulDB.getCVEMap();
         // 解析规则
         List<SCARule> log4jRuleList = SCAParser.getApacheLog4j2Rules();
         List<SCARule> fastjsonRuleList = SCAParser.getFastjsonRules();
         // 按钮绑定
         instance.getScaOpenBtn().addActionListener(new SCAOpenActionListener());
         instance.getScaStartBtn().addActionListener(
-                new SCAStartActionListener(log4jRuleList, fastjsonRuleList));
+                new SCAStartActionListener(cveMap, log4jRuleList, fastjsonRuleList));
     }
 }

@@ -12,13 +12,17 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class SCAStartActionListener implements ActionListener {
-    public List<SCARule> log4j2RuleList;
-    public List<SCARule> fastjsonRuleList;
+    private final List<SCARule> log4j2RuleList;
+    private final List<SCARule> fastjsonRuleList;
+    private final Map<String, CVEData> cveMap;
 
-    public SCAStartActionListener(List<SCARule> log4j,
+    public SCAStartActionListener(Map<String, CVEData> cve,
+                                  List<SCARule> log4j,
                                   List<SCARule> fastjson) {
+        this.cveMap = cve;
         this.log4j2RuleList = log4j;
         this.fastjsonRuleList = fastjson;
     }
@@ -47,7 +51,6 @@ public class SCAStartActionListener implements ActionListener {
         List<String> finalJarList = jarList;
 
         new Thread(() -> {
-            // APACHE LOG4J2
             List<SCAResult> cveList = new ArrayList<>();
             // 分析
             for (String s : finalJarList) {
@@ -60,11 +63,22 @@ public class SCAStartActionListener implements ActionListener {
                 SCALogger.logger.warn("NO VULNERABILITY FOUND");
                 return;
             }
-            SCALogger.logger.print("--------------- FIND VULNERABILITY ---------------\n");
             for (SCAResult result : cveList) {
-                SCALogger.logger.print(result + "\n");
+                String output = String.format(
+                        "   CVE-ID: %s\n" +
+                                "   DESC  : %s\n" +
+                                "   CVSS  : %s\n" +
+                                "   JAR   : %s\n" +
+                                "   CLASS : %s\n" +
+                                "   HASH  : %s\n\n",
+                        result.getCVE(),
+                        cveMap.get(result.getCVE()).getDesc(),
+                        cveMap.get(result.getCVE()).getCvss(),
+                        result.getJarPath(),
+                        result.getKeyClass(),
+                        result.getHash().substring(0, 16));
+                SCALogger.logger.print(output);
             }
-            SCALogger.logger.print("--------------------------------------------------\n");
         }).start();
     }
 

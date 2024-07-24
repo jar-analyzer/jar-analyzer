@@ -1068,6 +1068,8 @@ public class MainForm {
         classBlackPanel = new JScrollPane();
         chosePanel.add(classBlackPanel, new GridConstraints(4, 1, 1, 5, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(-1, 66), new Dimension(-1, 66), new Dimension(-1, 66), 0, false));
         classBlackArea = new JTextArea();
+        classBlackArea.setBackground(new Color(-12895429));
+        classBlackArea.setForeground(new Color(-16711931));
         classBlackPanel.setViewportView(classBlackArea);
         classWhiteListLabel = new JLabel();
         classWhiteListLabel.setText("Class White List");
@@ -1075,6 +1077,8 @@ public class MainForm {
         classWhitePanel = new JScrollPane();
         chosePanel.add(classWhitePanel, new GridConstraints(3, 1, 1, 5, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         classWhiteArea = new JTextArea();
+        classWhiteArea.setBackground(new Color(-12895429));
+        classWhiteArea.setForeground(new Color(-853761));
         classWhiteArea.setText("");
         classWhitePanel.setViewportView(classWhiteArea);
         decompilerPanel = new JPanel();
@@ -1239,8 +1243,10 @@ public class MainForm {
         blackListPanel.add(blackScroll, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(-1, 100), new Dimension(-1, 100), new Dimension(-1, 100), 0, false));
         blackScroll.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         blackArea = new JTextArea();
+        blackArea.setBackground(new Color(-12895429));
         Font blackAreaFont = this.$$$getFont$$$("Consolas", -1, -1, blackArea.getFont());
         if (blackAreaFont != null) blackArea.setFont(blackAreaFont);
+        blackArea.setForeground(new Color(-16711931));
         blackScroll.setViewportView(blackArea);
         classBlackLabel = new JLabel();
         classBlackLabel.setText("Class Name Black List (split by ; and \\n)");

@@ -188,7 +188,10 @@
                         <children>
                           <component id="f0388" class="javax.swing.JTextArea" binding="classBlackArea">
                             <constraints/>
-                            <properties/>
+                            <properties>
+                              <background color="-12895429"/>
+                              <foreground color="-16711931"/>
+                            </properties>
                           </component>
                         </children>
                       </scrollpane>
@@ -210,6 +213,8 @@
                           <component id="3de4b" class="javax.swing.JTextArea" binding="classWhiteArea">
                             <constraints/>
                             <properties>
+                              <background color="-12895429"/>
+                              <foreground color="-853761"/>
                               <text value=""/>
                             </properties>
                           </component>
@@ -667,7 +672,9 @@
                                   <component id="d72ef" class="javax.swing.JTextArea" binding="blackArea">
                                     <constraints/>
                                     <properties>
+                                      <background color="-12895429"/>
                                       <font name="Consolas"/>
+                                      <foreground color="-16711931"/>
                                     </properties>
                                   </component>
                                 </children>

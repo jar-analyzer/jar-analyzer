@@ -23,7 +23,7 @@ public class SearchForm {
     private static int total = 0;
 
     public static void start() {
-        JFrame frame = new JFrame(Const.SearchForm);
+        JFrame frame = new JFrame();
         instance = new SearchForm();
         instance.init();
         frame.setContentPane(instance.rootPanel);
@@ -92,7 +92,7 @@ public class SearchForm {
      */
     private void $$$setupUI$$$() {
         rootPanel = new JPanel();
-        rootPanel.setLayout(new GridLayoutManager(3, 2, new Insets(0, 0, 0, 0), -1, -1));
+        rootPanel.setLayout(new GridLayoutManager(3, 2, new Insets(5, 5, 5, 5), -1, -1));
         searchLabel = new JLabel();
         searchLabel.setText("Search Text");
         rootPanel.add(searchLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));

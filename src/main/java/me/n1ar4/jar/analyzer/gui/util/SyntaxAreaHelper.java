@@ -95,12 +95,12 @@ public class SyntaxAreaHelper {
         if (searchResults.isEmpty()) return;
         int index = searchResults.get(currentIndex);
         try {
+            codeArea.setCaretPosition(index);
             Highlighter highlighter = codeArea.getHighlighter();
             Highlighter.HighlightPainter painter =
-                    new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+                    new DefaultHighlighter.DefaultHighlightPainter(Color.CYAN);
             highlighter.removeAllHighlights();
             highlighter.addHighlight(index, index + text.length(), painter);
-            codeArea.setCaretPosition(index);
         } catch (BadLocationException ex) {
             logger.error("bad location: {}", ex.toString());
         }

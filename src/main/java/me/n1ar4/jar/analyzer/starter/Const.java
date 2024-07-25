@@ -23,7 +23,6 @@ public interface Const {
     String FrameForm = "Jar Analyzer V2 - Frame";
     String SQLiteForm = "Jar Analyzer V2 - SQLite";
     String StringForm = "Jar Analyzer V2 - String";
-    String SearchForm = "Jar Analyzer V2 - Code Search";
     String RemoteForm = "Jar Analyzer V2 - Remote Load";
     String PartForm = "Jar Analyzer V2 - Partition Config";
     String SerUtilForm = "Jar Analyzer V2 - SerUtil";

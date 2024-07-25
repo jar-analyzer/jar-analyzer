@@ -5,6 +5,7 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import me.n1ar4.jar.analyzer.gui.util.SyntaxAreaHelper;
 import me.n1ar4.jar.analyzer.starter.Const;
+import me.n1ar4.jar.analyzer.utils.StringUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,6 +38,11 @@ public class SearchForm {
         resultLabel.setText("0/0");
         instance.searchBtn.addActionListener(e -> {
             String text = searchText.getText();
+            // 修复卡死的 BUG
+            if (StringUtil.isNull(text)) {
+                JOptionPane.showMessageDialog(rootPanel, "search text is empty");
+                return;
+            }
             searchTextGlobal = text;
             total = SyntaxAreaHelper.addSearchAction(text);
             if (total == 0) {

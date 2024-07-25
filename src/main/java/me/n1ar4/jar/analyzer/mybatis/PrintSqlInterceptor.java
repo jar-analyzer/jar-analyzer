@@ -1,5 +1,6 @@
 package me.n1ar4.jar.analyzer.mybatis;
 
+import com.alibaba.fastjson2.JSON;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.MenuUtil;
 import me.n1ar4.log.LogManager;
@@ -119,11 +120,35 @@ public class PrintSqlInterceptor implements Interceptor {
         return value.replace("$", "\\$");
     }
 
+    static class SqlLog {
+        private long costTime;
+        private String sql;
+
+        public long getCostTime() {
+            return costTime;
+        }
+
+        public void setCostTime(long costTime) {
+            this.costTime = costTime;
+        }
+
+        public String getSql() {
+            return sql;
+        }
+
+        public void setSql(String sql) {
+            this.sql = sql;
+        }
+    }
+
     private static void logs(long time, String sql) {
-        String data = String.format("COST:%d SQL:%s\n", time, sql);
-        logger.debug(data);
+        SqlLog sqlLog = new SqlLog();
+        sqlLog.setCostTime(time);
+        sqlLog.setSql(sql);
+        String data = JSON.toJSONString(sqlLog);
+        data = data + "\n";
         try {
-            Files.write(outputPath, sql.getBytes(), StandardOpenOption.APPEND);
+            Files.write(outputPath, data.getBytes(), StandardOpenOption.APPEND);
         } catch (Exception ex) {
             logger.error(ex.toString());
         }

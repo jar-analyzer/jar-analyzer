@@ -20,6 +20,11 @@ import java.util.stream.Collectors;
 @SuppressWarnings("all")
 public class CoreHelper {
     public static void refreshAllMethods(String className) {
+        if (MainForm.getInstance().getEngine() == null) {
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                    "PLEASE BUILD DATABASE FIRST");
+            return;
+        }
         ArrayList<MethodResult> results = MainForm.getEngine().getMethodsByClass(className);
         if (results.size() == 0) {
             results = MainForm.getEngine().getMethodsByClassNoJar(className);
@@ -38,6 +43,11 @@ public class CoreHelper {
     }
 
     public static void refreshCallers(String className, String methodName, String methodDesc) {
+        if (MainForm.getInstance().getEngine() == null) {
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                    "PLEASE BUILD DATABASE FIRST");
+            return;
+        }
         ArrayList<MethodResult> results = MainForm.getEngine().getCallers(className, methodName, methodDesc);
         if (MenuUtil.sortedByMethod()) {
             results.sort(Comparator.comparing(MethodResult::getMethodName));
@@ -56,6 +66,11 @@ public class CoreHelper {
     }
 
     public static void refreshImpls(String className, String methodName, String methodDesc) {
+        if (MainForm.getInstance().getEngine() == null) {
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                    "PLEASE BUILD DATABASE FIRST");
+            return;
+        }
         ArrayList<MethodResult> results = MainForm.getEngine().getImpls(className, methodName, methodDesc);
         if (MenuUtil.sortedByMethod()) {
             results.sort(Comparator.comparing(MethodResult::getMethodName));
@@ -74,6 +89,11 @@ public class CoreHelper {
     }
 
     public static void refreshSuperImpls(String className, String methodName, String methodDesc) {
+        if (MainForm.getInstance().getEngine() == null) {
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                    "PLEASE BUILD DATABASE FIRST");
+            return;
+        }
         ArrayList<MethodResult> results = MainForm.getEngine().getSuperImpls(className, methodName, methodDesc);
         if (MenuUtil.sortedByMethod()) {
             results.sort(Comparator.comparing(MethodResult::getMethodName));
@@ -92,6 +112,11 @@ public class CoreHelper {
     }
 
     public static void refreshCallee(String className, String methodName, String methodDesc) {
+        if (MainForm.getInstance().getEngine() == null) {
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                    "PLEASE BUILD DATABASE FIRST");
+            return;
+        }
         ArrayList<MethodResult> results = MainForm.getEngine().getCallee(className, methodName, methodDesc);
         if (MenuUtil.sortedByMethod()) {
             results.sort(Comparator.comparing(MethodResult::getMethodName));
@@ -110,6 +135,11 @@ public class CoreHelper {
     }
 
     public static void refreshSpringC() {
+        if (MainForm.getInstance().getEngine() == null) {
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                    "PLEASE BUILD DATABASE FIRST");
+            return;
+        }
         ArrayList<ClassResult> results = MainForm.getEngine().getAllSpringC();
         results.sort(Comparator.comparing(ClassResult::getClassName));
         DefaultListModel<ClassResult> springCModel = new DefaultListModel<>();
@@ -120,6 +150,11 @@ public class CoreHelper {
     }
 
     public static void pathSearchC() {
+        if (MainForm.getInstance().getEngine() == null) {
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                    "PLEASE BUILD DATABASE FIRST");
+            return;
+        }
         String text = MainForm.getInstance().getPathSearchTextField().getText();
         if (StringUtil.isNull(text)) {
             LogUtil.info("please enter the search keyword");
@@ -154,6 +189,11 @@ public class CoreHelper {
     }
 
     public static void refreshSpringM(String className) {
+        if (MainForm.getInstance().getEngine() == null) {
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                    "PLEASE BUILD DATABASE FIRST");
+            return;
+        }
         ArrayList<MethodResult> results = MainForm.getEngine().getSpringM(className);
         results.sort(Comparator.comparing(MethodResult::getMethodName));
         DefaultListModel<MethodResult> springCModel = new DefaultListModel<>();
@@ -164,6 +204,11 @@ public class CoreHelper {
     }
 
     public static void refreshCallSearch(String className, String methodName, String methodDesc) {
+        if (MainForm.getInstance().getEngine() == null) {
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                    "PLEASE BUILD DATABASE FIRST");
+            return;
+        }
         // java.lang.String java/lang/String
         if (className != null) {
             className = className.replace(".", "/");
@@ -216,6 +261,11 @@ public class CoreHelper {
     }
 
     public static void refreshCallSearchList(List<SearchCondition> conditions) {
+        if (MainForm.getInstance().getEngine() == null) {
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                    "PLEASE BUILD DATABASE FIRST");
+            return;
+        }
         ArrayList<MethodResult> totalResults = new ArrayList<>();
         for (SearchCondition condition : conditions) {
             String className = condition.getClassName();
@@ -274,6 +324,11 @@ public class CoreHelper {
     }
 
     public static void refreshDefSearch(String className, String methodName, String methodDesc) {
+        if (MainForm.getInstance().getEngine() == null) {
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                    "PLEASE BUILD DATABASE FIRST");
+            return;
+        }
         // java.lang.String java/lang/String
         if (className != null) {
             className = className.replace(".", "/");
@@ -326,6 +381,11 @@ public class CoreHelper {
     }
 
     public static void refreshStrSearch(String val) {
+        if (MainForm.getInstance().getEngine() == null) {
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                    "PLEASE BUILD DATABASE FIRST");
+            return;
+        }
         ArrayList<MethodResult> results = MainForm.getEngine().getMethodsByStr(val);
 
         // BALCK LIST
@@ -374,6 +434,11 @@ public class CoreHelper {
     }
 
     public static void refreshHistory(String className, String methodName, String methodDesc) {
+        if (MainForm.getInstance().getEngine() == null) {
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                    "PLEASE BUILD DATABASE FIRST");
+            return;
+        }
         DefaultListModel<MethodResult> methodsList = MainForm.getHistoryListData();
         MethodResult methodResult = new MethodResult();
         methodResult.setClassName(className);
@@ -385,6 +450,11 @@ public class CoreHelper {
     }
 
     public static void refreshCallSearchLike(String className, String methodName, String methodDesc) {
+        if (MainForm.getInstance().getEngine() == null) {
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                    "PLEASE BUILD DATABASE FIRST");
+            return;
+        }
         // java.lang.String java/lang/String
         if (className != null) {
             className = className.replace(".", "/");
@@ -437,6 +507,11 @@ public class CoreHelper {
     }
 
     public static void refreshDefSearchLike(String className, String methodName, String methodDesc) {
+        if (MainForm.getInstance().getEngine() == null) {
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                    "PLEASE BUILD DATABASE FIRST");
+            return;
+        }
         // java.lang.String java/lang/String
         if (className != null) {
             className = className.replace(".", "/");
@@ -489,6 +564,11 @@ public class CoreHelper {
     }
 
     public static void refreshMethods(List<ResObj> methods) {
+        if (MainForm.getInstance().getEngine() == null) {
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                    "PLEASE BUILD DATABASE FIRST");
+            return;
+        }
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
         for (ResObj result : methods) {
             MethodResult mr = new MethodResult();

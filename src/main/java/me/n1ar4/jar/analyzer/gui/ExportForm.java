@@ -70,7 +70,7 @@ public class ExportForm {
      */
     private void $$$setupUI$$$() {
         masterPanel = new JPanel();
-        masterPanel.setLayout(new GridLayoutManager(5, 2, new Insets(0, 0, 0, 0), -1, -1));
+        masterPanel.setLayout(new GridLayoutManager(5, 2, new Insets(5, 5, 5, 5), -1, -1));
         outputDirLabel = new JLabel();
         outputDirLabel.setText("OUTPUT DIR");
         masterPanel.add(outputDirLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));

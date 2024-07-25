@@ -44,7 +44,7 @@ public class DirUtil {
                 for (String child : children) {
                     boolean success = removeDir(new File(dir, child));
                     if (!success) {
-                        logger.warn("remove dir {} not success", dir.toString());
+                        logger.debug("remove dir {} not success", dir.toString());
                         // 由于 DLL 文件不能删除
                         // 这里应该继续删除不能返回
                     }
@@ -52,7 +52,7 @@ public class DirUtil {
             }
         }
         if (!dir.delete()) {
-            logger.warn("remove dir {} not success", dir.toString());
+            logger.debug("remove dir {} not success", dir.toString());
             return false;
         } else {
             return true;

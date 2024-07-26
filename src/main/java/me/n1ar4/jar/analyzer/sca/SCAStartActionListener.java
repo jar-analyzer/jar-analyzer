@@ -93,7 +93,7 @@ public class SCAStartActionListener implements ActionListener {
             }
             if (MainForm.getInstance().getScaOutTxtRadio().isSelected()) {
                 try {
-                    ReportGenerator.generateHtmlReport(sb.toString(),"jar-analyzer.html");
+                    ReportGenerator.generateHtmlReport(sb.toString(),"jar-analyzer-sca.html");
                 } catch (Exception ignored) {
                 }
             }

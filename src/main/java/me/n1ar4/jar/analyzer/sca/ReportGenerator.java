@@ -1,9 +1,31 @@
 package me.n1ar4.jar.analyzer.sca;
 
+import me.n1ar4.jar.analyzer.utils.IOUtils;
+
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class ReportGenerator {
+    private static byte[] BT_CSS = null;
+    private static byte[] BT_JS = null;
+    private static byte[] JQ_JS = null;
+    private static byte[] POPPER_JS = null;
+
+    static {
+        try {
+            InputStream bcCssIs = ClassLoader.getSystemResourceAsStream("report/BT_CSS.css");
+            BT_CSS = IOUtils.readAllBytes(bcCssIs);
+            InputStream btJsIs = ClassLoader.getSystemResourceAsStream("report/BT_JS.js");
+            BT_JS = IOUtils.readAllBytes(btJsIs);
+            InputStream jqJsIs = ClassLoader.getSystemResourceAsStream("report/JQ_JS.js");
+            JQ_JS = IOUtils.readAllBytes(jqJsIs);
+            InputStream popperJsIs = ClassLoader.getSystemResourceAsStream("report/POPPER_JS.js");
+            POPPER_JS = IOUtils.readAllBytes(popperJsIs);
+        } catch (Exception ignored) {
+        }
+    }
+
     public static void generateHtmlReport(String vulnerabilities, String filePath) throws IOException {
         String[] entries = vulnerabilities.split("\n\n");
         StringBuilder htmlContent = new StringBuilder();
@@ -11,10 +33,10 @@ public class ReportGenerator {
                 .append("<meta charset=\"UTF-8\">\n<meta name=\"viewport\" " +
                         "content=\"width=device-width, initial-scale=1, shrink-to-fit=no\">\n")
                 .append("<title>Jar Analyzer 漏洞报告</title>\n")
-                .append("<link href=\"https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.3/css/bootstrap.min.css\" rel=\"stylesheet\">\n")
-                .append("<script src=\"https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js\"></script>\n")
-                .append("<script src=\"https://cdn.bootcdn.net/ajax/libs/popper.js/2.11.8/cjs/popper.min.js\"></script>\n")
-                .append("<script src=\"https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.3/js/bootstrap.min.js\"></script>\n")
+                .append("<style>").append(new String(BT_CSS)).append("</style>")
+                .append("<script>").append(new String(JQ_JS)).append("</script>\n")
+                .append("<script>").append(new String(BT_JS)).append("</script>\n")
+                .append("<script>").append(new String(POPPER_JS)).append("</script>\n")
                 .append("<style>\n")
                 .append(".card { margin-bottom: 1rem; }\n")
                 .append(".card-header { font-weight: bold; font-size: 1.25rem; }\n")

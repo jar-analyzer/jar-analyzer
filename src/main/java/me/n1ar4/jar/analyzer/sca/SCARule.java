@@ -1,5 +1,7 @@
 package me.n1ar4.jar.analyzer.sca;
 
+import java.util.Map;
+
 /**
  * 该类是 SCA 匹配 CVE 的规则
  */
@@ -12,10 +14,7 @@ public class SCARule {
     private String projectName;
     // 存在该漏洞的版本信息
     private String version;
-    // 关键 CLASS 全名 例如 org.apache.A
-    private String keyClassName;
-    // 关键 CLASS 的 HASH 如果可以匹配成功 认为存在该漏洞
-    private String hash;
+    private Map<String, String> hashMap;
 
     public String getUuid() {
         return uuid;
@@ -49,19 +48,31 @@ public class SCARule {
         this.version = version;
     }
 
-    public String getKeyClassName() {
-        return keyClassName;
+    public Map<String, String> getHashMap() {
+        return hashMap;
     }
 
-    public void setKeyClassName(String keyClassName) {
-        this.keyClassName = keyClassName;
+    public void setHashMap(Map<String, String> hashMap) {
+        this.hashMap = hashMap;
     }
 
-    public String getHash() {
-        return hash;
+    public String getOnlyClassName() {
+        if (this.hashMap == null || this.hashMap.isEmpty()) {
+            throw new RuntimeException("HASH MAP IS NULL");
+        }
+        for (Map.Entry<String, String> entry : this.hashMap.entrySet()) {
+            return entry.getKey();
+        }
+        throw new RuntimeException("HASH MAP UNKNOWN ERROR");
     }
 
-    public void setHash(String hash) {
-        this.hash = hash;
+    public String getOnlyHash() {
+        if (this.hashMap == null || this.hashMap.isEmpty()) {
+            throw new RuntimeException("HASH MAP IS NULL");
+        }
+        for (Map.Entry<String, String> entry : this.hashMap.entrySet()) {
+            return entry.getValue();
+        }
+        throw new RuntimeException("HASH MAP UNKNOWN ERROR");
     }
 }

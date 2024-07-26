@@ -56,8 +56,8 @@ public class SCAStartActionListener implements ActionListener {
             for (String s : finalJarList) {
                 // 对于同一个 JAR 来说 CVE 不要重复
                 List<String> exist = new ArrayList<>();
-                exec(cveList, s, exist, log4j2RuleList);
-                exec(cveList, s, exist, fastjsonRuleList);
+                execWithOneRule(cveList, s, exist, log4j2RuleList);
+                execWithOneRule(cveList, s, exist, fastjsonRuleList);
             }
             if (cveList.isEmpty()) {
                 SCALogger.logger.warn("NO VULNERABILITY FOUND");
@@ -82,17 +82,19 @@ public class SCAStartActionListener implements ActionListener {
         }).start();
     }
 
-    private void exec(List<SCAResult> cveList,
-                      String s,
-                      List<String> exist,
-                      List<SCARule> log4j2RuleList) {
+    private void execWithOneRule(List<SCAResult> cveList,
+                                 String s,
+                                 List<String> exist,
+                                 List<SCARule> log4j2RuleList) {
         for (SCARule rule : log4j2RuleList) {
-            byte[] data = SCAUtil.exploreJar(Paths.get(s).toFile(), rule.getKeyClassName());
+            String keyClass = rule.getOnlyClassName();
+            String keyHash = rule.getOnlyHash();
+            byte[] data = SCAUtil.exploreJar(Paths.get(s).toFile(), keyClass);
             if (data == null) {
                 continue;
             }
             String hash = SCAHashUtil.sha256(data);
-            if (hash.equals(rule.getHash())) {
+            if (hash.equals(keyHash)) {
                 if (exist.contains(rule.getCVE())) {
                     continue;
                 }
@@ -103,7 +105,7 @@ public class SCAStartActionListener implements ActionListener {
                 result.setVersion(rule.getVersion());
                 result.setJarPath(s);
                 result.setProject(rule.getProjectName());
-                result.setKeyClass(rule.getKeyClassName());
+                result.setKeyClass(keyClass);
                 cveList.add(result);
             }
         }

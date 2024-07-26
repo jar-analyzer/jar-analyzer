@@ -7,9 +7,7 @@ import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class SCAParser {
     private static final Logger logger = LogManager.getLogger();
@@ -32,10 +30,10 @@ public class SCAParser {
                 continue;
             }
             String hash = object.getString("JndiLookupHash");
-            buildVersion(project, keyClass, result, object, cveList, hash);
+            buildOneRuleVersion(project, keyClass, result, object, cveList, hash);
         }
         if (!result.isEmpty()) {
-            logger.info("apache log4j2 sca rules: {}",result.size());
+            logger.info("apache log4j2 sca rules: {}", result.size());
         }
         return result;
     }
@@ -58,20 +56,20 @@ public class SCAParser {
                 continue;
             }
             String hash = object.getString("TypeUtilsHash");
-            buildVersion(project, keyClass, result, object, cveList, hash);
+            buildOneRuleVersion(project, keyClass, result, object, cveList, hash);
         }
         if (!result.isEmpty()) {
-            logger.info("fastjson sca rules: {}",result.size());
+            logger.info("fastjson sca rules: {}", result.size());
         }
         return result;
     }
 
-    private static void buildVersion(String project,
-                                     String keyClass,
-                                     List<SCARule> result,
-                                     JSONObject object,
-                                     String cveList,
-                                     String hash) {
+    private static void buildOneRuleVersion(String project,
+                                            String keyClass,
+                                            List<SCARule> result,
+                                            JSONObject object,
+                                            String cveList,
+                                            String hash) {
         String version = object.getString("MavenVersion");
         if (cveList.contains(",")) {
             String[] cveItems = cveList.split(",");
@@ -91,8 +89,11 @@ public class SCAParser {
                                     String cve) {
         SCARule rule = new SCARule();
         rule.setCVE(cve);
-        rule.setHash(hash);
-        rule.setKeyClassName(keyClass);
+
+        Map<String, String> hashMap = new HashMap<>();
+        hashMap.put(keyClass, hash);
+        rule.setHashMap(hashMap);
+
         rule.setUuid(UUID.randomUUID().toString());
         rule.setVersion(version);
         rule.setProjectName(project);

@@ -54,6 +54,8 @@ public class SCAStartActionListener implements ActionListener {
         List<String> finalJarList = jarList;
 
         new Thread(() -> {
+            SCALogger.logger.info("START SCA SCAN AND WAIT...");
+
             List<SCAResult> cveList = new ArrayList<>();
             // 分析
             for (String s : finalJarList) {
@@ -82,18 +84,18 @@ public class SCAStartActionListener implements ActionListener {
                                 "   CVSS  : %s\n" +
                                 "   JAR   : %s\n" +
                                 "   CLASS : %s\n" +
-                                "   HASH  : %s\n\n",
+                                "   HASH (16) : %s\n\n",
                         result.getCVE(),
                         cveMap.get(result.getCVE()).getDesc(),
                         cveMap.get(result.getCVE()).getCvss(),
                         result.getJarPath(),
                         result.getKeyClass(),
-                        result.getHash());
+                        result.getHash().substring(0, 16));
                 sb.append(output);
             }
             if (MainForm.getInstance().getScaOutTxtRadio().isSelected()) {
                 try {
-                    ReportGenerator.generateHtmlReport(sb.toString(),"jar-analyzer-sca.html");
+                    ReportGenerator.generateHtmlReport(sb.toString(), "jar-analyzer-sca.html");
                 } catch (Exception ignored) {
                 }
             }

@@ -92,7 +92,7 @@ public class SCAParser {
             buildManyRulesVersion(project, result, object, cveList, hashMap);
         }
         if (!result.isEmpty()) {
-            logger.info("fastjson sca rules: {}", result.size());
+            logger.info("apache shiro sca rules: {}", result.size());
         }
         return result;
     }

@@ -1002,7 +1002,6 @@ public class MainForm {
                 throw new RuntimeException("invalid language");
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
             logger.error("error: {}", ex);
         }
     }

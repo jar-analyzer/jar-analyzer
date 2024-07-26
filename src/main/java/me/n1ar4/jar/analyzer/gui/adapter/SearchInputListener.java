@@ -35,7 +35,7 @@ public class SearchInputListener implements DocumentListener {
             if (count == collect.size()) {
                 count = 0;
             }
-            if (refresh) {
+            if (count != 0 && refresh) {
                 count++;
             }
             String className = collect.get(count++);

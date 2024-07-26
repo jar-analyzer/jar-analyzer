@@ -1,6 +1,7 @@
 package me.n1ar4.jar.analyzer.gui.tree;
 
 import cn.hutool.core.util.StrUtil;
+import me.n1ar4.jar.analyzer.gui.util.LogUtil;
 import me.n1ar4.jar.analyzer.starter.Const;
 
 import javax.imageio.ImageIO;
@@ -13,6 +14,9 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
@@ -159,12 +163,27 @@ public class FileTree extends JTree {
         }
     }
 
+    public static volatile boolean found = false;
+
+    public static void setFound(boolean found) {
+        FileTree.found = found;
+    }
+
+    public static boolean isFound() {
+        return found;
+    }
+
     private void expandPathTarget(Enumeration<?> parent, String[] split) {
+        if (found) {
+            return;
+        }
         while (parent.hasMoreElements()) {
             DefaultMutableTreeNode children = (DefaultMutableTreeNode) parent.nextElement();
             for (int i = 0; i < split.length - 1; i++) {
                 if (children.toString().equals(split[i])) {
-                    expandPath(new TreePath(children.getPath()));
+                    if (!found) {
+                        expandPath(new TreePath(children.getPath()));
+                    }
                     if (split.length - 2 == i) {
                         Enumeration<?> children2 = children.children();
                         while (children2.hasMoreElements()) {
@@ -176,6 +195,7 @@ public class FileTree extends JTree {
                             if (end.toString().equals(split[split.length - 1] + ".class") ||
                                     (StrUtil.isNotEmpty(var0) && end.toString().equals(var0 + ".class"))) {
                                 setSelectionPath(new TreePath(end.getPath()));
+                                found = true;
                                 return;
                             }
                         }
@@ -189,7 +209,22 @@ public class FileTree extends JTree {
     public void searchPathTarget(String classname) {
         refresh();
         String[] split = classname.split("/");
+
+        // CHECK FILE EXIST
+        Path dir = Paths.get(Const.tempDir);
+        Path classPath = dir.resolve(classname + ".class");
+        if (!Files.exists(classPath)) {
+            classname = "BOOT-INF/classes/" + classname;
+            classPath = dir.resolve(classname + ".class");
+            if (!Files.exists(classPath)) {
+                LogUtil.warn("class not found");
+                return;
+            }
+            split = classname.split("/");
+        }
+
         Enumeration<?> children = rootNode.children();
+        FileTree.setFound(false);
         expandPathTarget(children, split);
     }
 }

@@ -1436,7 +1436,7 @@ public class MainForm {
         scaOutConsoleRadio.setText("CONSOLE");
         scaOutPanel.add(scaOutConsoleRadio, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         scaOutTxtRadio = new JRadioButton();
-        scaOutTxtRadio.setText("TXT");
+        scaOutTxtRadio.setText("HTML");
         scaOutPanel.add(scaOutTxtRadio, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         scaStartBtn = new JButton();
         scaStartBtn.setText("START");

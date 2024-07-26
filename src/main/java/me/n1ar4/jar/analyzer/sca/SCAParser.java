@@ -64,6 +64,39 @@ public class SCAParser {
         return result;
     }
 
+    public static List<SCARule> getShiroRules() {
+        String path = "SCA/apache-shiro-rule.json";
+        InputStream is = SCAParser.class.getClassLoader().getResourceAsStream(path);
+        String data = IOUtil.readString(is);
+        JSONArray array = JSONArray.parse(data);
+        if (array == null || array.isEmpty()) {
+            return null;
+        }
+        String project = "Apache Shiro";
+        String keyClass1 = "org/apache/shiro/mgt/AbstractRememberMeManager";
+        String keyClass2 = "org/apache/shiro/util/AntPathMatcher";
+        List<SCARule> result = new ArrayList<>();
+        for (int i = 0; i < array.size(); i++) {
+            JSONObject object = array.getJSONObject(i);
+            String cveList = (String) object.get("CVE");
+            if (cveList == null || cveList.trim().isEmpty()) {
+                continue;
+            }
+            String hash1 = object.getString("AbstractRememberMeManagerHash");
+            String hash2 = object.getString("AntPathMatcherHash");
+
+            Map<String, String> hashMap = new HashMap<>();
+            hashMap.put(keyClass1, hash1);
+            hashMap.put(keyClass2, hash2);
+
+            buildManyRulesVersion(project, result, object, cveList, hashMap);
+        }
+        if (!result.isEmpty()) {
+            logger.info("fastjson sca rules: {}", result.size());
+        }
+        return result;
+    }
+
     private static void buildOneRuleVersion(String project,
                                             String keyClass,
                                             List<SCARule> result,
@@ -98,5 +131,35 @@ public class SCAParser {
         rule.setVersion(version);
         rule.setProjectName(project);
         result.add(rule);
+    }
+
+    private static void makeSCARules(String project,
+                                     List<SCARule> result,
+                                     String version,
+                                     String cve,
+                                     Map<String, String> hashMap) {
+        SCARule rule = new SCARule();
+        rule.setCVE(cve);
+        rule.setHashMap(hashMap);
+        rule.setUuid(UUID.randomUUID().toString());
+        rule.setVersion(version);
+        rule.setProjectName(project);
+        result.add(rule);
+    }
+
+    private static void buildManyRulesVersion(String project,
+                                              List<SCARule> result,
+                                              JSONObject object,
+                                              String cveList,
+                                              Map<String, String> hashMap) {
+        String version = object.getString("MavenVersion");
+        if (cveList.contains(",")) {
+            String[] cveItems = cveList.split(",");
+            for (String cve : cveItems) {
+                makeSCARules(project, result, version, cve, hashMap);
+            }
+        } else {
+            makeSCARules(project, result, version, cveList, hashMap);
+        }
     }
 }

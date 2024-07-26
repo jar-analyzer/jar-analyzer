@@ -30,7 +30,7 @@ public class SCAUtil {
             while (entries.hasMoreElements()) {
                 JarEntry entry = entries.nextElement();
                 if (entry.getName().endsWith(".class")) {
-                    if (entry.getName().contains(keyClassName)) {
+                    if (entry.getName().contains(keyClassName) && !entry.getName().contains("$")) {
                         found = true;
                         data = getClassBytes(jarFile, entry);
                         return data;

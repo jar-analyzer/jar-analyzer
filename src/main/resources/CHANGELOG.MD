@@ -11,9 +11,11 @@
 - [重要] 支持了 `SCA` 检测
 - [功能] 反编译代码展示应该自动在文件树选中
 - [SCA] 支持 `Apache Log4j2` 全版本的匹配
+- [SCA] 支持 `Apache Shiro` 全版本的匹配
 - [SCA] 支持 `FASTJSON 1.X` 几乎全版本的匹配 
 - [SCA] 支持 `ASSEMBLY JAR` 和 `LIB JAR` 两种检测
 - [SCA] 内置常见的 `CVE` 漏洞和描述信息用于报告
+- [SCA] 支持一键导出 `HTML` 漏洞报告
 - [BUG] 文件数区域搜索 `SPRINGBOOT` 项目报错问题
 - [BUG] 代码区域空搜索导致卡死的问题
 - [BUG] 批量反编译代码没有加载 `JAR` 时报错问题

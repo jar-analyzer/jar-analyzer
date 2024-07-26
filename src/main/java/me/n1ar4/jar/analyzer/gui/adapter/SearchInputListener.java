@@ -23,6 +23,10 @@ public class SearchInputListener implements DocumentListener {
     private static int count = 0;
     private static boolean refresh = false;
 
+    public static FileTree getFileTree() {
+        return fileTree;
+    }
+
     public static void search(String string, boolean isInner) {
         if (!isInner) {
             if (collect.isEmpty()) {

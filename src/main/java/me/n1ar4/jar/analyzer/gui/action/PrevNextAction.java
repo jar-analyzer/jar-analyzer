@@ -5,6 +5,7 @@ import me.n1ar4.jar.analyzer.engine.CoreHelper;
 import me.n1ar4.jar.analyzer.engine.DecompileEngine;
 import me.n1ar4.jar.analyzer.entity.MethodResult;
 import me.n1ar4.jar.analyzer.gui.MainForm;
+import me.n1ar4.jar.analyzer.gui.adapter.SearchInputListener;
 import me.n1ar4.jar.analyzer.gui.state.State;
 import me.n1ar4.jar.analyzer.gui.util.ProcessDialog;
 import me.n1ar4.jar.analyzer.starter.Const;
@@ -89,6 +90,9 @@ public class PrevNextAction {
                 int paramNum = Type.getMethodType(
                         m.getMethodDesc()).getArgumentTypes().length;
                 int pos = FinderRunner.find(code, methodName, paramNum);
+
+                // SET FILE TREE HIGHLIGHT
+                SearchInputListener.getFileTree().searchPathTarget(className);
 
                 MainForm.getCodeArea().setText(code);
                 MainForm.getCodeArea().setCaretPosition(pos + 1);
@@ -177,6 +181,8 @@ public class PrevNextAction {
                 int paramNum = Type.getMethodType(
                         m.getMethodDesc()).getArgumentTypes().length;
                 int pos = FinderRunner.find(code, methodName, paramNum);
+
+                // SET FILE TREE HIGHLIGHT
 
                 MainForm.getCodeArea().setText(code);
                 MainForm.getCodeArea().setCaretPosition(pos + 1);

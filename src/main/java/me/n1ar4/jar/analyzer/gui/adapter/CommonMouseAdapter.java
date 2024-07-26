@@ -65,6 +65,9 @@ public class CommonMouseAdapter extends MouseAdapter {
                         finalRes.getMethodDesc()).getArgumentTypes().length;
                 int pos = FinderRunner.find(code, methodName, paramNum);
 
+                // SET FILE TREE HIGHLIGHT
+                SearchInputListener.getFileTree().searchPathTarget(className);
+
                 MainForm.getCodeArea().setText(code);
                 MainForm.getCodeArea().setCaretPosition(pos + 1);
             }).start();

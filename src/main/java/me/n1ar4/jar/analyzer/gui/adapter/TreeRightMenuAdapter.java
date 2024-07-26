@@ -95,6 +95,10 @@ public class TreeRightMenuAdapter extends MouseAdapter {
                 }
 
                 String code = DecompileEngine.decompile(absPathPath);
+
+                // SET FILE TREE HIGHLIGHT
+                SearchInputListener.getFileTree().searchPathTarget(className);
+
                 MainForm.getCodeArea().setText(code);
                 MainForm.getCodeArea().setCaretPosition(0);
 

@@ -159,9 +159,9 @@ public class FileTree extends JTree {
         }
     }
 
-    private void expandPathTarget(Enumeration<?> children1, String[] split) {
-        while (children1.hasMoreElements()) {
-            DefaultMutableTreeNode children = (DefaultMutableTreeNode) children1.nextElement();
+    private void expandPathTarget(Enumeration<?> parent, String[] split) {
+        while (parent.hasMoreElements()) {
+            DefaultMutableTreeNode children = (DefaultMutableTreeNode) parent.nextElement();
             for (int i = 0; i < split.length - 1; i++) {
                 if (children.toString().equals(split[i])) {
                     expandPath(new TreePath(children.getPath()));
@@ -189,7 +189,7 @@ public class FileTree extends JTree {
     public void searchPathTarget(String classname) {
         refresh();
         String[] split = classname.split("/");
-        Enumeration<?> children1 = rootNode.children();
-        expandPathTarget(children1, split);
+        Enumeration<?> children = rootNode.children();
+        expandPathTarget(children, split);
     }
 }

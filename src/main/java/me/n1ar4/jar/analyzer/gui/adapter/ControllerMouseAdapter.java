@@ -46,6 +46,10 @@ public class ControllerMouseAdapter extends MouseAdapter {
 
             new Thread(() -> {
                 String code = DecompileEngine.decompile(Paths.get(finalClassPath));
+
+                // SET FILE TREE HIGHLIGHT
+                SearchInputListener.getFileTree().searchPathTarget(className);
+
                 MainForm.getCodeArea().setText(code);
                 MainForm.getCodeArea().setCaretPosition(0);
             }).start();

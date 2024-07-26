@@ -9,6 +9,7 @@
 更新日志：
 
 - [重要] 支持了 `SCA` 检测
+- [功能] 反编译代码展示应该自动在文件树选中
 - [SCA] 支持 `Apache Log4j2` 全版本的匹配
 - [SCA] 支持 `FASTJSON 1.X` 几乎全版本的匹配 
 - [SCA] 支持 `ASSEMBLY JAR` 和 `LIB JAR` 两种检测

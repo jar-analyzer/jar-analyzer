@@ -38,6 +38,9 @@ public class DecompileHelper {
         }
 
         String code = DecompileEngine.decompile(thePath);
+
+        // SET FILE TREE HIGHLIGHT
+
         MainForm.getCodeArea().setText(code);
         MainForm.getCodeArea().setCaretPosition(0);
 

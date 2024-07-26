@@ -25,6 +25,10 @@ public class SerUtil {
                 Path p = Paths.get(Const.tempDir).resolve(Paths.get("test-ser.class"));
                 Files.write(p, result);
                 String data = DecompileEngine.decompile(p);
+
+                // SET FILE TREE HIGHLIGHT
+                // NOT SUPPORT FOR THIS
+
                 MainForm.getCodeArea().setText(data);
                 MainForm.getCodeArea().setCaretPosition(0);
             } else {

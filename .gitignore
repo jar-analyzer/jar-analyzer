@@ -54,3 +54,5 @@ token.txt
 cmake-*/
 *.dat
 logs/
+*.class
+*.ser

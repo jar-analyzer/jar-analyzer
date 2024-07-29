@@ -146,10 +146,14 @@ public class SCAStartActionListener implements ActionListener {
                                    String s,
                                    List<String> exist,
                                    List<SCARule> shiroRuleList) {
-
+        int i = 0;
+        int total = shiroRuleList.size();
         for (SCARule rule : shiroRuleList) {
+            i++;
+            if (i % 20 == 0) {
+                SCALogger.logger.info("SHIRO SCAN " + i + "/" + total);
+            }
             Map<String, String> hashMap = rule.getHashMap();
-            System.out.println(rule);
             boolean match = SCAMultiUtil.exploreJarEx(Paths.get(s).toFile(), hashMap);
             if (!match) {
                 continue;

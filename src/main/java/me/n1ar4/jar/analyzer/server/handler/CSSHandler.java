@@ -10,7 +10,7 @@ import java.io.InputStream;
 public class CSSHandler extends BaseHandler implements HttpHandler {
     @Override
     public NanoHTTPD.Response handle(NanoHTTPD.IHTTPSession session) {
-        InputStream is = CSSHandler.class.getClassLoader().getResourceAsStream("static/boot.css");
+        InputStream is = CSSHandler.class.getClassLoader().getResourceAsStream("report/BT_CSS.css");
         if (is == null) {
             return error();
         }

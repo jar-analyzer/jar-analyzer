@@ -29,40 +29,40 @@ public class ReportUtil {
     public static void generateHtmlReport(String vulnerabilities, String filePath) throws IOException {
         String[] entries = vulnerabilities.split("\n\n");
         StringBuilder htmlContent = new StringBuilder();
-        htmlContent.append("<!DOCTYPE html>\n<html lang=\"zh-CN\">\n<head>\n")
-                .append("<meta charset=\"UTF-8\">\n<meta name=\"viewport\" " +
-                        "content=\"width=device-width, initial-scale=1, shrink-to-fit=no\">\n")
-                .append("<title>Jar Analyzer 漏洞报告</title>\n")
+        htmlContent.append("<!DOCTYPE html><html lang=\"zh-CN\"><head>")
+                .append("<meta charset=\"UTF-8\"><meta name=\"viewport\" " +
+                        "content=\"width=device-width, initial-scale=1, shrink-to-fit=no\">")
+                .append("<title>Jar Analyzer 漏洞报告</title>")
                 .append("<style>").append(new String(BT_CSS)).append("</style>")
-                .append("<script>").append(new String(JQ_JS)).append("</script>\n")
-                .append("<script>").append(new String(BT_JS)).append("</script>\n")
-                .append("<script>").append(new String(POPPER_JS)).append("</script>\n")
-                .append("<style>\n")
-                .append(".card { margin-bottom: 1rem; }\n")
-                .append(".card-header { font-weight: bold; font-size: 1.25rem; }\n")
-                .append(".card-title { font-size: 1rem; margin-top: 0.5rem; }\n")
-                .append("</style>\n")
-                .append("</head>\n<body>\n<div class=\"container\">\n")
-                .append("<h1 class=\"mt-5 mb-4\">Jar Analyzer 漏洞报告</h1>\n")
-                .append("<div class=\"accordion\" id=\"accordionExample\">\n");
+                .append("<script>").append(new String(JQ_JS)).append("</script>")
+                .append("<script>").append(new String(BT_JS)).append("</script>")
+                .append("<script>").append(new String(POPPER_JS)).append("</script>")
+                .append("<style>")
+                .append(".card { margin-bottom: 1rem; }")
+                .append(".card-header { font-weight: bold; font-size: 1.25rem; }")
+                .append(".card-title { font-size: 1rem; margin-top: 0.5rem; }")
+                .append("</style>")
+                .append("</head><body><div class=\"container\">")
+                .append("<h1 class=\"mt-5 mb-4\">Jar Analyzer 漏洞报告</h1>")
+                .append("<div class=\"accordion\" id=\"accordionExample\">");
         for (int index = 0; index < entries.length; index++) {
             String entry = entries[index];
             String[] lines = entry.split("\n");
             String cve = lines[0].split(":")[1].trim();
-            htmlContent.append("<div class=\"card\">\n")
-                    .append("<div class=\"card-header\" id=\"heading").append(index).append("\">\n")
-                    .append("<h2 class=\"mb-0\">\n")
+            htmlContent.append("<div class=\"card\">")
+                    .append("<div class=\"card-header\" id=\"heading").append(index).append("\">")
+                    .append("<h2 class=\"mb-0\">")
                     .append("<button class=\"btn btn-link\" type=\"button\" " +
                             "data-toggle=\"collapse\" data-target=\"#collapse").append(index).append(
-                            "\" aria-expanded=\"true\" aria-controls=\"collapse").append(index).append("\">\n")
-                    .append(cve).append("\n")
-                    .append("</button>\n")
-                    .append("</h2>\n")
-                    .append("</div>\n")
+                            "\" aria-expanded=\"true\" aria-controls=\"collapse").append(index).append("\">")
+                    .append(cve)
+                    .append("</button>")
+                    .append("</h2>")
+                    .append("</div>")
                     .append("<div id=\"collapse").append(index).append(
                             "\" class=\"collapse\" aria-labelledby=\"heading").append(index).append(
-                            "\" data-parent=\"#accordionExample\">\n")
-                    .append("<div class=\"card-body\">\n");
+                            "\" data-parent=\"#accordionExample\">")
+                    .append("<div class=\"card-body\">");
             for (int i = 1; i < lines.length; i++) {
                 String[] parts = lines[i].split(":");
                 String title = parts[0].trim();
@@ -76,34 +76,34 @@ public class ReportUtil {
                 }
                 String result = sb.toString();
                 String content = result.substring(0, result.length() - 1);
-                htmlContent.append("<h5 class=\"card-title\">").append(title).append("</h5>\n");
+                htmlContent.append("<h5 class=\"card-title\">").append(title).append("</h5>");
                 if (title.equals("CVSS")) {
                     double val = Double.parseDouble(content);
                     htmlContent.append("<p class=\"card-text\">").append(content).append("&nbsp;&nbsp;&nbsp;");
                     if (val > 8.9) {
                         // 严重
                         htmlContent.append("<button type=\"button\" class=\"btn btn-dark\">CRITICAL</button>");
-                        htmlContent.append("</p>\n");
+                        htmlContent.append("</p>");
                     } else if (val > 6.9) {
                         // 高危
                         htmlContent.append("<button type=\"button\" class=\"btn btn-danger\">HIGH</button>");
-                        htmlContent.append("</p>\n");
+                        htmlContent.append("</p>");
                     } else if (val > 3.9) {
                         // 中危
                         htmlContent.append("<button type=\"button\" class=\"btn btn-warning\">MODERATE</button>");
-                        htmlContent.append("</p>\n");
+                        htmlContent.append("</p>");
                     } else {
                         // 低危
                         htmlContent.append("<button type=\"button\" class=\"btn btn-secondary\">LOW</button>");
-                        htmlContent.append("</p>\n");
+                        htmlContent.append("</p>");
                     }
                 } else {
-                    htmlContent.append("<p class=\"card-text\">").append(content).append("</p>\n");
+                    htmlContent.append("<p class=\"card-text\">").append(content).append("</p>");
                 }
             }
-            htmlContent.append("</div>\n</div>\n</div>\n");
+            htmlContent.append("</div></div></div>");
         }
-        htmlContent.append("</div>\n</div>\n</body>\n</html>");
+        htmlContent.append("</div></div></body></html>");
         try (FileWriter writer = new FileWriter(filePath)) {
             writer.write(htmlContent.toString());
         }

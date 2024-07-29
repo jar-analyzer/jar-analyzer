@@ -29,8 +29,13 @@ public class SCAOpenResultListener implements ActionListener {
             return;
         }
         String absPath = path.toAbsolutePath().toString();
+        if (absPath.trim().contains(" ")) {
+            JOptionPane.showMessageDialog(instance.getMasterPanel(),
+                    "PATH SHOULD NOT CONTAINS SPACE");
+            return;
+        }
         if (OSUtil.isWindows()) {
-            String cmd = String.format("start \"%s\"", absPath);
+            String cmd = String.format("start %s", absPath);
             String[] xrayCmd = new String[]{"cmd.exe", "/c", String.format("%s", cmd)};
             exec(xrayCmd);
         } else {

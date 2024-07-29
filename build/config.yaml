@@ -1,4 +1,4 @@
-block: true
+block: false
 debug: false
 hooks:
   - className: java/lang/ProcessBuilder

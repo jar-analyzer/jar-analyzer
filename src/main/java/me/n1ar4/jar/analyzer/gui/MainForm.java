@@ -226,6 +226,9 @@ public class MainForm {
     private JPanel scaActionPanel;
     private JPanel scaTipPanel;
     private JLabel scaTipLabel;
+    private JLabel outputFileLabel;
+    private JTextField outputFileText;
+    private JButton scaResultOpenBtn;
 
     public JCheckBox getScaLog4jBox() {
         return scaLog4jBox;
@@ -617,6 +620,14 @@ public class MainForm {
 
     public static void setCurState(State curState) {
         MainForm.curState = curState;
+    }
+
+    public JTextField getOutputFileText() {
+        return outputFileText;
+    }
+
+    public JButton getScaResultOpenBtn() {
+        return scaResultOpenBtn;
     }
 
     public static MainForm getInstance() {
@@ -1417,7 +1428,7 @@ public class MainForm {
         final Spacer spacer1 = new Spacer();
         scaPanel.add(spacer1, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         scaActionPanel = new JPanel();
-        scaActionPanel.setLayout(new GridLayoutManager(3, 3, new Insets(0, 0, 0, 0), -1, -1));
+        scaActionPanel.setLayout(new GridLayoutManager(4, 3, new Insets(0, 0, 0, 0), -1, -1));
         scaPanel.add(scaActionPanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         scaActionPanel.setBorder(BorderFactory.createTitledBorder(null, "Action", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         scaFileLabel = new JLabel();
@@ -1429,7 +1440,7 @@ public class MainForm {
         scaOpenBtn.setText("OPEN");
         scaActionPanel.add(scaOpenBtn, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         scanConsoleScroll = new JScrollPane();
-        scaActionPanel.add(scanConsoleScroll, new GridConstraints(2, 0, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        scaActionPanel.add(scanConsoleScroll, new GridConstraints(3, 0, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         scanConsoleScroll.setBorder(BorderFactory.createTitledBorder(null, "", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         scaConsoleArea = new JTextArea();
         scaConsoleArea.setBackground(new Color(-12895429));
@@ -1453,6 +1464,14 @@ public class MainForm {
         scaStartBtn = new JButton();
         scaStartBtn.setText("START");
         scaActionPanel.add(scaStartBtn, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        outputFileLabel = new JLabel();
+        outputFileLabel.setText("OUTPUT FILE");
+        scaActionPanel.add(outputFileLabel, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
+        outputFileText = new JTextField();
+        scaActionPanel.add(outputFileText, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        scaResultOpenBtn = new JButton();
+        scaResultOpenBtn.setText("OPEN");
+        scaActionPanel.add(scaResultOpenBtn, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         advancePanel = new JPanel();
         advancePanel.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPanel.addTab("advance", advancePanel);

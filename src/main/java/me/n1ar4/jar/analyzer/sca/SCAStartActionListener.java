@@ -105,6 +105,7 @@ public class SCAStartActionListener implements ActionListener {
                 try {
                     String outName = String.format("jar-analyzer-sca-%d.html", System.currentTimeMillis());
                     ReportUtil.generateHtmlReport(sb.toString(), outName);
+                    MainForm.getInstance().getOutputFileText().setText(outName);
                 } catch (Exception ignored) {
                 }
             }

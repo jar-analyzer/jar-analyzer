@@ -16,6 +16,7 @@ public class SCAAction {
         }
         instance.getScaOutHtmlRadio().setSelected(true);
         instance.getScaOutConsoleRadio().setSelected(false);
+        instance.getOutputFileText().setEnabled(false);
         // 设置输出
         if (SCALogger.logger == null) {
             SCALogger.logger = new SCALogger(instance.getScaConsoleArea());
@@ -37,6 +38,7 @@ public class SCAAction {
         List<SCARule> shiroRuleList = SCAParser.getShiroRules();
         // 按钮绑定
         instance.getScaOpenBtn().addActionListener(new SCAOpenActionListener());
+        instance.getScaResultOpenBtn().addActionListener(new SCAOpenResultListener());
         instance.getScaStartBtn().addActionListener(
                 new SCAStartActionListener(
                         cveMap,

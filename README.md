@@ -233,3 +233,11 @@ set "theme_name=default"
 
 This project is developed using JetBrains IDEA.
 Thanks to JetBrains for providing me with a free license, which is a strong support for me.
+
+## Star
+
+<div align="center">
+
+<img src="https://api.star-history.com/svg?repos=jar-analyzer/jar-analyzer&type=Date" width="600" height="400" alt="Star History Chart" valign="middle">
+
+</div>

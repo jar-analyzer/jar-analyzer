@@ -76,6 +76,7 @@ public class SCAParser {
         String project = "Apache Shiro";
         String keyClass1 = "org/apache/shiro/mgt/AbstractRememberMeManager";
         String keyClass2 = "org/apache/shiro/util/AntPathMatcher";
+        String keyClass3 = "org/apache/shiro/config/Ini";
         List<SCARule> result = new ArrayList<>();
         for (int i = 0; i < array.size(); i++) {
             JSONObject object = array.getJSONObject(i);
@@ -85,10 +86,12 @@ public class SCAParser {
             }
             String hash1 = object.getString("AbstractRememberMeManagerHash");
             String hash2 = object.getString("AntPathMatcherHash");
+            String hash3 = object.getString("IniHash");
 
             Map<String, String> hashMap = new HashMap<>();
             hashMap.put(keyClass1, hash1);
             hashMap.put(keyClass2, hash2);
+            hashMap.put(keyClass3, hash3);
 
             buildManyRulesVersion(project, result, object, cveList, hashMap);
         }

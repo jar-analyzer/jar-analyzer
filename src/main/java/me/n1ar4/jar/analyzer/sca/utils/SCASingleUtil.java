@@ -1,15 +1,20 @@
 package me.n1ar4.jar.analyzer.sca.utils;
 
+import cn.hutool.core.lang.UUID;
+import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.utils.IOUtil;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-public class SCAUtil {
+public class SCASingleUtil {
     public static List<String> visitedJar = new ArrayList<>();
     public static boolean found = false;
     public static byte[] data = null;
@@ -50,7 +55,6 @@ public class SCAUtil {
         return data;
     }
 
-    @SuppressWarnings("all")
     private static File extractNestedJar(JarFile jarFile, JarEntry entry) throws IOException {
         if (jarFile == null) {
             throw new IllegalArgumentException("JarFile cannot be null");
@@ -61,7 +65,13 @@ public class SCAUtil {
         if (jarFile.getJarEntry(entry.getName()) == null) {
             throw new IOException("JarEntry does not exist in the JarFile");
         }
-        File tempFile = File.createTempFile("nested-", ".jar");
+        Path finalDir = Paths.get(Const.tempDir).resolve("SCA");
+        try {
+            Files.createDirectories(finalDir);
+        } catch (Exception ignored) {
+        }
+        File tempFile = Files.createFile(finalDir.resolve(
+                String.format("%s.jar", UUID.randomUUID()))).toFile();
         try (InputStream jarInputStream = jarFile.getInputStream(entry);
              FileOutputStream fos = new FileOutputStream(tempFile)) {
             if (jarInputStream == null) {
@@ -72,7 +82,7 @@ public class SCAUtil {
         return tempFile;
     }
 
-    private static byte[] getClassBytes(JarFile jarFile, JarEntry entry) throws IOException {
+    static byte[] getClassBytes(JarFile jarFile, JarEntry entry) throws IOException {
         try (InputStream is = jarFile.getInputStream(entry);
              ByteArrayOutputStream bao = new ByteArrayOutputStream()) {
             byte[] buffer = new byte[1024];

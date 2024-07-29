@@ -224,6 +224,8 @@ public class MainForm {
     private JScrollPane scanConsoleScroll;
     private JLabel scaFileLabel;
     private JPanel scaActionPanel;
+    private JPanel scaTipPanel;
+    private JLabel scaTipLabel;
 
     public JCheckBox getScaLog4jBox() {
         return scaLog4jBox;
@@ -891,6 +893,8 @@ public class MainForm {
                 instance.startELSearchButton.setText("开始表达式搜索");
                 instance.obfLabel.setText("一个 Java 序列化数据混淆工具");
                 instance.serUtilLabel.setText("一个分析 Java 序列化数据中字节码的工具");
+
+                instance.scaTipLabel.setText(" 不建议一次分析开启多个模块");
             } else if (GlobalOptions.getLang() == GlobalOptions.ENGLISH) {
                 instance.codePanel.setBorder(
                         BorderFactory.createTitledBorder(null,
@@ -998,6 +1002,8 @@ public class MainForm {
                 instance.startELSearchButton.setText("Start EL Search");
                 instance.obfLabel.setText("A tool for obfuscate java serialization data");
                 instance.serUtilLabel.setText("A tool for bytecodes in Java Serialization Data");
+
+                instance.scaTipLabel.setText(" not recommended to enable multiple modules in one analysis");
             } else {
                 throw new RuntimeException("invalid language");
             }
@@ -1381,27 +1387,33 @@ public class MainForm {
         scaPanel.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPanel.addTab("SCA", scaPanel);
         modulePanel = new JPanel();
-        modulePanel.setLayout(new GridLayoutManager(2, 3, new Insets(0, 0, 0, 0), -1, -1));
+        modulePanel.setLayout(new GridLayoutManager(3, 3, new Insets(0, 0, 0, 0), -1, -1));
         scaPanel.add(modulePanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         modulePanel.setBorder(BorderFactory.createTitledBorder(null, "Module", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         scaLog4jBox = new JCheckBox();
         scaLog4jBox.setText("Apache Log4j2");
-        modulePanel.add(scaLog4jBox, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        modulePanel.add(scaLog4jBox, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         scaSpringBox = new JCheckBox();
         scaSpringBox.setText("Spring Framework");
-        modulePanel.add(scaSpringBox, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        modulePanel.add(scaSpringBox, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         scaShiroBox = new JCheckBox();
         scaShiroBox.setText("Apache Shiro");
-        modulePanel.add(scaShiroBox, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        modulePanel.add(scaShiroBox, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         scaTomcatBox = new JCheckBox();
         scaTomcatBox.setText("Apache Tomcat");
-        modulePanel.add(scaTomcatBox, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        modulePanel.add(scaTomcatBox, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         scaFastjsonBox = new JCheckBox();
         scaFastjsonBox.setText("FASTJSON");
-        modulePanel.add(scaFastjsonBox, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        modulePanel.add(scaFastjsonBox, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         scaStrutsBox = new JCheckBox();
         scaStrutsBox.setText("Apache Struts");
-        modulePanel.add(scaStrutsBox, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        modulePanel.add(scaStrutsBox, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        scaTipPanel = new JPanel();
+        scaTipPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        modulePanel.add(scaTipPanel, new GridConstraints(0, 0, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        scaTipLabel = new JLabel();
+        scaTipLabel.setText("not recommended to enable multiple modules in one analysis");
+        scaTipPanel.add(scaTipLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer1 = new Spacer();
         scaPanel.add(spacer1, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         scaActionPanel = new JPanel();

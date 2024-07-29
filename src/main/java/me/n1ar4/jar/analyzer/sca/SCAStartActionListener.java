@@ -1,6 +1,5 @@
 package me.n1ar4.jar.analyzer.sca;
 
-import cn.hutool.core.lang.UUID;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.sca.dto.CVEData;
 import me.n1ar4.jar.analyzer.sca.dto.SCAResult;
@@ -8,7 +7,8 @@ import me.n1ar4.jar.analyzer.sca.dto.SCARule;
 import me.n1ar4.jar.analyzer.sca.log.SCALogger;
 import me.n1ar4.jar.analyzer.sca.utils.ReportUtil;
 import me.n1ar4.jar.analyzer.sca.utils.SCAHashUtil;
-import me.n1ar4.jar.analyzer.sca.utils.SCAUtil;
+import me.n1ar4.jar.analyzer.sca.utils.SCAMultiUtil;
+import me.n1ar4.jar.analyzer.sca.utils.SCASingleUtil;
 import me.n1ar4.jar.analyzer.utils.DirUtil;
 import me.n1ar4.jar.analyzer.utils.StringUtil;
 
@@ -103,7 +103,7 @@ public class SCAStartActionListener implements ActionListener {
             }
             if (MainForm.getInstance().getScaOutHtmlRadio().isSelected()) {
                 try {
-                    String outName = String.format("jar-analyzer-sca-%s.html", UUID.randomUUID());
+                    String outName = String.format("jar-analyzer-sca-%d.html", System.currentTimeMillis());
                     ReportUtil.generateHtmlReport(sb.toString(), outName);
                 } catch (Exception ignored) {
                 }
@@ -119,7 +119,7 @@ public class SCAStartActionListener implements ActionListener {
         for (SCARule rule : log4j2RuleList) {
             String keyClass = rule.getOnlyClassName();
             String keyHash = rule.getOnlyHash();
-            byte[] data = SCAUtil.exploreJar(Paths.get(s).toFile(), keyClass);
+            byte[] data = SCASingleUtil.exploreJar(Paths.get(s).toFile(), keyClass);
             if (data == null) {
                 continue;
             }
@@ -139,7 +139,7 @@ public class SCAStartActionListener implements ActionListener {
                 cveList.add(result);
             }
         }
-        SCAUtil.refresh();
+        SCASingleUtil.refresh();
     }
 
     private void execWithManyRules(List<SCAResult> cveList,
@@ -148,50 +148,21 @@ public class SCAStartActionListener implements ActionListener {
                                    List<SCARule> shiroRuleList) {
 
         for (SCARule rule : shiroRuleList) {
-            String outputHash = null;
-            String outputClass = null;
             Map<String, String> hashMap = rule.getHashMap();
-            boolean[] flags = new boolean[hashMap.size()];
-            int i = 0;
-            for (Map.Entry<String, String> entry : hashMap.entrySet()) {
-                i++;
-                String keyClass = entry.getKey();
-                String keyHash = entry.getValue();
-                outputHash = keyHash;
-                outputClass = keyClass;
-
-                byte[] data = SCAUtil.exploreJar(Paths.get(s).toFile(), keyClass);
-                SCAUtil.refresh();
-                if (data == null) {
-                    continue;
-                }
-
-                String hash = SCAHashUtil.sha256(data);
-                if (hash.equals(keyHash)) {
-                    flags[i - 1] = true;
-                }
-            }
-            boolean finalFlag = true;
-            for (boolean flag : flags) {
-                if (!flag) {
-                    finalFlag = false;
-                    break;
-                }
-            }
-            if (!finalFlag) {
-                continue;
-            }
-            if (exist.contains(rule.getCVE())) {
+            System.out.println(rule);
+            boolean match = SCAMultiUtil.exploreJarEx(Paths.get(s).toFile(), hashMap);
+            if (!match) {
                 continue;
             }
             exist.add(rule.getCVE());
             SCAResult result = new SCAResult();
-            result.setHash(outputHash);
+            Map.Entry<String, String> first = hashMap.entrySet().iterator().next();
+            result.setHash(first.getValue());
             result.setCVE(rule.getCVE());
             result.setVersion(rule.getVersion());
             result.setJarPath(s);
             result.setProject(rule.getProjectName());
-            result.setKeyClass(outputClass);
+            result.setKeyClass(first.getKey());
             cveList.add(result);
         }
     }

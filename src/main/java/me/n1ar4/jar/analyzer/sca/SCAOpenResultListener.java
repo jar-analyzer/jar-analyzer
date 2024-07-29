@@ -30,8 +30,8 @@ public class SCAOpenResultListener implements ActionListener {
         }
         String absPath = path.toAbsolutePath().toString();
         if (OSUtil.isWindows()) {
-            String cmd = String.format("start %s", absPath);
-            String[] xrayCmd = new String[]{"cmd.exe", "/c", String.format("\"%s\"", cmd)};
+            String cmd = String.format("start \"%s\"", absPath);
+            String[] xrayCmd = new String[]{"cmd.exe", "/c", String.format("%s", cmd)};
             exec(xrayCmd);
         } else {
             String cmd = String.format("open %s", absPath);

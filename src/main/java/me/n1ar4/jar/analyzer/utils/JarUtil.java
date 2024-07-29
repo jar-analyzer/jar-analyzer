@@ -5,6 +5,7 @@ import me.n1ar4.jar.analyzer.entity.ClassFileEntity;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.ListParser;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
+import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 
@@ -24,7 +25,7 @@ public class JarUtil {
 
     public static List<ClassFileEntity> resolveNormalJarFile(String jarPath) {
         try {
-            Path tmpDir = Paths.get("jar-analyzer-temp/");
+            Path tmpDir = Paths.get(Const.tempDir);
             try {
                 Files.createDirectory(tmpDir);
             } catch (Exception ignored) {

@@ -1,6 +1,7 @@
 package me.n1ar4.jar.analyzer.utils;
 
 import me.n1ar4.jar.analyzer.entity.ClassFileEntity;
+import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 
@@ -19,7 +20,7 @@ public class CoreUtil {
     public static List<ClassFileEntity> getAllClassesFromJars(List<String> jarPathList) {
         logger.info("collect all class");
         Set<ClassFileEntity> classFileSet = new HashSet<>();
-        Path temp = Paths.get("jar-analyzer-temp");
+        Path temp = Paths.get(Const.tempDir);
         try {
             Files.delete(temp);
         } catch (Exception ignored) {

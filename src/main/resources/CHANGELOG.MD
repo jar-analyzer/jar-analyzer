@@ -12,7 +12,7 @@
 - [功能] 反编译代码展示应该自动在文件树选中
 - [SCA] 支持 `Apache Log4j2` 全版本的匹配
 - [SCA] 支持 `Apache Shiro` 全版本的匹配
-- [SCA] 支持 `FASTJSON 1.X` 几乎全版本的匹配 
+- [SCA] 支持 `FASTJSON 1.X` 几乎全版本的匹配
 - [SCA] 支持 `ASSEMBLY JAR` 和 `LIB JAR` 两种检测
 - [SCA] 内置常见的 `CVE` 漏洞和描述信息用于报告
 - [SCA] 支持一键导出 `HTML` 漏洞报告

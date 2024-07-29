@@ -10,7 +10,7 @@ public class SCALogger {
         this.logArea = area;
     }
 
-    public void print(String s){
+    public void print(String s) {
         this.logArea.append(s);
         this.logArea.setCaretPosition(this.logArea.getDocument().getLength());
     }

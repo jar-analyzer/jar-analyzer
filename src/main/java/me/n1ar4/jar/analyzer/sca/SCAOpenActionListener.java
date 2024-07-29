@@ -1,6 +1,7 @@
 package me.n1ar4.jar.analyzer.sca;
 
 import me.n1ar4.jar.analyzer.gui.MainForm;
+import me.n1ar4.jar.analyzer.sca.log.SCALogger;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;

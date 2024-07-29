@@ -217,7 +217,7 @@ public class MainForm {
     private JButton scaOpenBtn;
     private JTextArea scaConsoleArea;
     private JRadioButton scaOutConsoleRadio;
-    private JRadioButton scaOutTxtRadio;
+    private JRadioButton scaOutHtmlRadio;
     private JButton scaStartBtn;
     private JPanel scaOutPanel;
     private JLabel scaOutLabel;
@@ -265,8 +265,8 @@ public class MainForm {
         return scaOutConsoleRadio;
     }
 
-    public JRadioButton getScaOutTxtRadio() {
-        return scaOutTxtRadio;
+    public JRadioButton getScaOutHtmlRadio() {
+        return scaOutHtmlRadio;
     }
 
     public JButton getScaStartBtn() {
@@ -1435,9 +1435,9 @@ public class MainForm {
         scaOutConsoleRadio = new JRadioButton();
         scaOutConsoleRadio.setText("CONSOLE");
         scaOutPanel.add(scaOutConsoleRadio, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        scaOutTxtRadio = new JRadioButton();
-        scaOutTxtRadio.setText("HTML");
-        scaOutPanel.add(scaOutTxtRadio, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        scaOutHtmlRadio = new JRadioButton();
+        scaOutHtmlRadio.setText("HTML");
+        scaOutPanel.add(scaOutHtmlRadio, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         scaStartBtn = new JButton();
         scaStartBtn.setText("START");
         scaActionPanel.add(scaStartBtn, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -1624,7 +1624,7 @@ public class MainForm {
         buttonGroup.add(equalsSearchRadioButton);
         buttonGroup = new ButtonGroup();
         buttonGroup.add(scaOutConsoleRadio);
-        buttonGroup.add(scaOutTxtRadio);
+        buttonGroup.add(scaOutHtmlRadio);
     }
 
     /**

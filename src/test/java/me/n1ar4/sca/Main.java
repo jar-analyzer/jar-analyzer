@@ -1,6 +1,6 @@
 package me.n1ar4.sca;
 
-import me.n1ar4.jar.analyzer.sca.SCAHashUtil;
+import me.n1ar4.jar.analyzer.sca.utils.SCAHashUtil;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;

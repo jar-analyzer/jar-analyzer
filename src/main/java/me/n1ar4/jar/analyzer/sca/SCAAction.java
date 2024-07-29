@@ -1,6 +1,9 @@
 package me.n1ar4.jar.analyzer.sca;
 
 import me.n1ar4.jar.analyzer.gui.MainForm;
+import me.n1ar4.jar.analyzer.sca.dto.CVEData;
+import me.n1ar4.jar.analyzer.sca.dto.SCARule;
+import me.n1ar4.jar.analyzer.sca.log.SCALogger;
 
 import java.util.List;
 import java.util.Map;
@@ -11,7 +14,8 @@ public class SCAAction {
         if (instance == null) {
             return;
         }
-        instance.getScaOutConsoleRadio().setSelected(true);
+        instance.getScaOutHtmlRadio().setSelected(true);
+        instance.getScaOutConsoleRadio().setSelected(false);
         // 设置输出
         if (SCALogger.logger == null) {
             SCALogger.logger = new SCALogger(instance.getScaConsoleArea());
@@ -21,6 +25,7 @@ public class SCAAction {
         instance.getScaFastjsonBox().setEnabled(true);
         instance.getScaFastjsonBox().setSelected(true);
         instance.getScaShiroBox().setEnabled(true);
+        instance.getScaShiroBox().setSelected(true);
         // 暂不支持
         instance.getScaSpringBox().setEnabled(false);
         instance.getScaStrutsBox().setEnabled(false);

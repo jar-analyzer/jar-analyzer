@@ -1,4 +1,4 @@
-package me.n1ar4.jar.analyzer.sca;
+package me.n1ar4.jar.analyzer.sca.dto;
 
 public class SCAResult {
     private String jarPath;

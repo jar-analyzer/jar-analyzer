@@ -2,6 +2,7 @@ package me.n1ar4.jar.analyzer.sca;
 
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
+import me.n1ar4.jar.analyzer.sca.dto.CVEData;
 import me.n1ar4.jar.analyzer.utils.IOUtil;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;

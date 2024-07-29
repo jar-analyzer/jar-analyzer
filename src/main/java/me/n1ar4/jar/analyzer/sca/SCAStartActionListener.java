@@ -1,6 +1,14 @@
 package me.n1ar4.jar.analyzer.sca;
 
+import cn.hutool.core.lang.UUID;
 import me.n1ar4.jar.analyzer.gui.MainForm;
+import me.n1ar4.jar.analyzer.sca.dto.CVEData;
+import me.n1ar4.jar.analyzer.sca.dto.SCAResult;
+import me.n1ar4.jar.analyzer.sca.dto.SCARule;
+import me.n1ar4.jar.analyzer.sca.log.SCALogger;
+import me.n1ar4.jar.analyzer.sca.utils.ReportUtil;
+import me.n1ar4.jar.analyzer.sca.utils.SCAHashUtil;
+import me.n1ar4.jar.analyzer.sca.utils.SCAUtil;
 import me.n1ar4.jar.analyzer.utils.DirUtil;
 import me.n1ar4.jar.analyzer.utils.StringUtil;
 
@@ -93,9 +101,10 @@ public class SCAStartActionListener implements ActionListener {
                         result.getHash().substring(0, 16));
                 sb.append(output);
             }
-            if (MainForm.getInstance().getScaOutTxtRadio().isSelected()) {
+            if (MainForm.getInstance().getScaOutHtmlRadio().isSelected()) {
                 try {
-                    ReportGenerator.generateHtmlReport(sb.toString(), "jar-analyzer-sca.html");
+                    String outName = String.format("jar-analyzer-sca-%s.html", UUID.randomUUID());
+                    ReportUtil.generateHtmlReport(sb.toString(), outName);
                 } catch (Exception ignored) {
                 }
             }

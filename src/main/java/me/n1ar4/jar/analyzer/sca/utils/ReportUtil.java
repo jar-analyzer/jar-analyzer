@@ -1,4 +1,4 @@
-package me.n1ar4.jar.analyzer.sca;
+package me.n1ar4.jar.analyzer.sca.utils;
 
 import me.n1ar4.jar.analyzer.utils.IOUtils;
 
@@ -6,7 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class ReportGenerator {
+public class ReportUtil {
     private static byte[] BT_CSS = null;
     private static byte[] BT_JS = null;
     private static byte[] JQ_JS = null;
@@ -77,7 +77,29 @@ public class ReportGenerator {
                 String result = sb.toString();
                 String content = result.substring(0, result.length() - 1);
                 htmlContent.append("<h5 class=\"card-title\">").append(title).append("</h5>\n");
-                htmlContent.append("<p class=\"card-text\">").append(content).append("</p>\n");
+                if (title.equals("CVSS")) {
+                    double val = Double.parseDouble(content);
+                    htmlContent.append("<p class=\"card-text\">").append(content).append("&nbsp;&nbsp;&nbsp;");
+                    if (val > 8.9) {
+                        // 严重
+                        htmlContent.append("<button type=\"button\" class=\"btn btn-dark\">CRITICAL</button>");
+                        htmlContent.append("</p>\n");
+                    } else if (val > 6.9) {
+                        // 高危
+                        htmlContent.append("<button type=\"button\" class=\"btn btn-danger\">HIGH</button>");
+                        htmlContent.append("</p>\n");
+                    } else if (val > 3.9) {
+                        // 中危
+                        htmlContent.append("<button type=\"button\" class=\"btn btn-warning\">MODERATE</button>");
+                        htmlContent.append("</p>\n");
+                    } else {
+                        // 低危
+                        htmlContent.append("<button type=\"button\" class=\"btn btn-secondary\">LOW</button>");
+                        htmlContent.append("</p>\n");
+                    }
+                } else {
+                    htmlContent.append("<p class=\"card-text\">").append(content).append("</p>\n");
+                }
             }
             htmlContent.append("</div>\n</div>\n</div>\n");
         }

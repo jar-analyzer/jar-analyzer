@@ -2,7 +2,7 @@
 name: FEAT 功能建议 | FEATURE
 about: Suggest an idea for this project
 title: "[FEAT]"
-labels: enhancement
+labels: ''
 assignees: 4ra1n
 
 ---

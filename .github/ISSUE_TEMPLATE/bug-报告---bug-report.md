@@ -1,8 +1,8 @@
 ---
 name: BUG 报告 | BUG REPORT
-about: Create a report to help us improve
+about: CREATE A BUG | 提交 BUG
 title: "[BUG]"
-labels: bug
+labels: BUG
 assignees: 4ra1n
 
 ---

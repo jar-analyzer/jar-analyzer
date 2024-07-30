@@ -34,6 +34,7 @@ public class SCASingleUtil {
         } catch (IOException ignored) {
         }
         if (data != null) {
+            nestedJars.clear();
             return data;
         }
         if (nestedJars.isEmpty()) {

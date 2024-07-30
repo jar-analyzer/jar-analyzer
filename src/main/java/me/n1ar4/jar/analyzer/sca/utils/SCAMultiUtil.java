@@ -11,11 +11,10 @@ import java.util.jar.JarFile;
 public class SCAMultiUtil {
     public static List<File> nestedJars = new ArrayList<>();
 
-    public static boolean exploreJarEx(File file, Map<String, String> hashMap) {
-        Map<String, Boolean> resultMap = new HashMap<>();
+    public static Map<String, byte[]> exploreJarEx(File file, Map<String, String> hashMap) {
+        Map<String, byte[]> resultMap = new HashMap<>();
         for (Map.Entry<String, String> mapEntry : hashMap.entrySet()) {
             String keyClass = mapEntry.getKey();
-            String hash = mapEntry.getValue();
             // 处理直接 CLASS
             try (JarFile jarFile = new JarFile(file)) {
                 Enumeration<JarEntry> entries = jarFile.entries();
@@ -24,11 +23,8 @@ public class SCAMultiUtil {
                     if (entry.getName().endsWith(".class")) {
                         if (entry.getName().contains(keyClass) && !entry.getName().contains("$")) {
                             byte[] data = SCASingleUtil.getClassBytes(jarFile, entry);
-                            String result = SCAHashUtil.sha256(data);
-                            if (hash.equals(result)) {
-                                resultMap.put(keyClass, true);
-                                break;
-                            }
+                            resultMap.put(keyClass, data);
+                            break;
                         }
                     } else if (entry.getName().endsWith(".jar")) {
                         // 这里别递归了 要不然变成一坨
@@ -50,11 +46,8 @@ public class SCAMultiUtil {
                         if (entry.getName().endsWith(".class")) {
                             if (entry.getName().contains(keyClass) && !entry.getName().contains("$")) {
                                 byte[] data = SCASingleUtil.getClassBytes(jarFile, entry);
-                                String result = SCAHashUtil.sha256(data);
-                                if (hash.equals(result)) {
-                                    resultMap.put(keyClass, true);
-                                    break;
-                                }
+                                resultMap.put(keyClass, data);
+                                break;
                             }
                         }
                     }
@@ -69,6 +62,6 @@ public class SCAMultiUtil {
             }
             nestedJars.clear();
         }
-        return resultMap.size() == hashMap.size();
+        return resultMap;
     }
 }

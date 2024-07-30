@@ -18,7 +18,9 @@ import java.awt.event.ActionListener;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class SCAStartActionListener implements ActionListener {
     private final List<SCARule> log4j2RuleList;
@@ -62,7 +64,7 @@ public class SCAStartActionListener implements ActionListener {
         new Thread(() -> {
             SCALogger.logger.info("START SCA SCAN AND WAIT...");
 
-            Set<SCAResult> cveList = new HashSet<>();
+            List<SCAResult> cveList = new ArrayList<>();
             // 分析
             for (String s : finalJarList) {
                 // 对于同一个 JAR 来说 CVE 不要重复
@@ -111,7 +113,7 @@ public class SCAStartActionListener implements ActionListener {
         }).start();
     }
 
-    private void execWithOneRule(Set<SCAResult> cveList,
+    private void execWithOneRule(List<SCAResult> cveList,
                                  String s,
                                  List<String> exist,
                                  List<SCARule> log4j2RuleList) {
@@ -140,20 +142,29 @@ public class SCAStartActionListener implements ActionListener {
         }
     }
 
-    private void execWithManyRules(Set<SCAResult> cveList,
+    private void execWithManyRules(List<SCAResult> cveList,
                                    String s,
                                    List<String> exist,
                                    List<SCARule> shiroRuleList) {
-        int i = 0;
-        int total = shiroRuleList.size();
+        Map<String, String> hashMap = shiroRuleList.get(0).getHashMap();
+        Map<String, byte[]> resultMap = SCAMultiUtil.exploreJarEx(Paths.get(s).toFile(), hashMap);
+        if (resultMap.isEmpty()) {
+            return;
+        }
         for (SCARule rule : shiroRuleList) {
-            i++;
-            if (i % 20 == 0) {
-                SCALogger.logger.info("SHIRO SCAN " + i + "/" + total);
+            if (exist.contains(rule.getCVE())) {
+                continue;
             }
-            Map<String, String> hashMap = rule.getHashMap();
-            boolean match = SCAMultiUtil.exploreJarEx(Paths.get(s).toFile(), hashMap);
-            if (!match) {
+            boolean flag = true;
+            Map<String, String> ruleHashMap = rule.getHashMap();
+            for (String key : resultMap.keySet()) {
+                String data = SCAHashUtil.sha256(resultMap.get(key));
+                String ruleHash = ruleHashMap.get(key);
+                if (!data.equals(ruleHash)) {
+                    flag = false;
+                }
+            }
+            if (!flag) {
                 continue;
             }
             exist.add(rule.getCVE());

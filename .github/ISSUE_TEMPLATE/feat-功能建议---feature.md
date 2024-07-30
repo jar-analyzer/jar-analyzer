@@ -1,8 +1,8 @@
 ---
 name: FEAT 功能建议 | FEATURE
-about: Suggest an idea for this project
+about: SUGGESTION | 建议
 title: "[FEAT]"
-labels: ''
+labels: 功能
 assignees: 4ra1n
 
 ---
@@ -13,4 +13,4 @@ assignees: 4ra1n
 
 ## 是否可以贡献 | CONTRIBUTE
 
-是否考虑自己提 `MR` 贡献代码
+是否考虑自己提 `MR/PR` 贡献代码

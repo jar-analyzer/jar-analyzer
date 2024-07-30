@@ -18,9 +18,7 @@ import java.awt.event.ActionListener;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class SCAStartActionListener implements ActionListener {
     private final List<SCARule> log4j2RuleList;
@@ -64,7 +62,7 @@ public class SCAStartActionListener implements ActionListener {
         new Thread(() -> {
             SCALogger.logger.info("START SCA SCAN AND WAIT...");
 
-            List<SCAResult> cveList = new ArrayList<>();
+            Set<SCAResult> cveList = new HashSet<>();
             // 分析
             for (String s : finalJarList) {
                 // 对于同一个 JAR 来说 CVE 不要重复
@@ -113,19 +111,19 @@ public class SCAStartActionListener implements ActionListener {
         }).start();
     }
 
-    private void execWithOneRule(List<SCAResult> cveList,
+    private void execWithOneRule(Set<SCAResult> cveList,
                                  String s,
                                  List<String> exist,
                                  List<SCARule> log4j2RuleList) {
+        String keyClass = log4j2RuleList.get(0).getOnlyClassName();
+        byte[] data = SCASingleUtil.exploreJar(Paths.get(s).toFile(), keyClass);
+        if (data == null) {
+            return;
+        }
+        String targetJarClassHash = SCAHashUtil.sha256(data);
         for (SCARule rule : log4j2RuleList) {
-            String keyClass = rule.getOnlyClassName();
-            String keyHash = rule.getOnlyHash();
-            byte[] data = SCASingleUtil.exploreJar(Paths.get(s).toFile(), keyClass);
-            if (data == null) {
-                continue;
-            }
-            String hash = SCAHashUtil.sha256(data);
-            if (hash.equals(keyHash)) {
+            String hash = rule.getOnlyHash();
+            if (hash.equals(targetJarClassHash)) {
                 if (exist.contains(rule.getCVE())) {
                     continue;
                 }
@@ -140,10 +138,9 @@ public class SCAStartActionListener implements ActionListener {
                 cveList.add(result);
             }
         }
-        SCASingleUtil.refresh();
     }
 
-    private void execWithManyRules(List<SCAResult> cveList,
+    private void execWithManyRules(Set<SCAResult> cveList,
                                    String s,
                                    List<String> exist,
                                    List<SCARule> shiroRuleList) {

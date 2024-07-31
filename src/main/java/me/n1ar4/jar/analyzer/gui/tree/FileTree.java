@@ -85,17 +85,8 @@ public class FileTree extends JTree {
     }
 
     private void initListeners() {
-        addTreeSelectionListener(e -> {
-            TreePath path = e.getNewLeadSelectionPath();
-            if (path != null) {
-                Rectangle bounds = getPathBounds(path);
-                if (bounds != null) {
-                    int height = getHeight() / 3;
-                    Rectangle rectangle = new Rectangle(bounds.x, bounds.y + height, bounds.width, bounds.height);
-                    scrollRectToVisible(rectangle);
-                }
-            }
-        });
+        // 2024-07-31 删除 addTreeSelectionListener
+        // 不需要提供自动的滚动功能 影响正常使用
         addTreeExpansionListener(new TreeExpansionListener() {
             public void treeCollapsed(TreeExpansionEvent event) {
             }
@@ -194,7 +185,9 @@ public class FileTree extends JTree {
                             }
                             if (end.toString().equals(split[split.length - 1] + ".class") ||
                                     (StrUtil.isNotEmpty(var0) && end.toString().equals(var0 + ".class"))) {
-                                setSelectionPath(new TreePath(end.getPath()));
+                                TreePath tempPath = new TreePath(end.getPath());
+                                setSelectionPath(tempPath);
+                                scrollPathToVisible(tempPath);
                                 found = true;
                                 return;
                             }

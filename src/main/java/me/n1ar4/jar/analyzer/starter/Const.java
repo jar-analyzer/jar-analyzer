@@ -8,7 +8,7 @@ public interface Const {
     int GlobalASMOptions = ClassReader.SKIP_FRAMES | ClassReader.SKIP_DEBUG;
     int AnalyzeASMOptions = ClassReader.EXPAND_FRAMES;
     String app = "Jar Analyzer V2 - 4ra1n";
-    String version = "2.23";
+    String version = "2.24";
     String checkUpdateUrl = "https://jar-analyzer.oss-cn-hangzhou.aliyuncs.com/jar-analyzer/version.txt";
     String authorUrl = "https://github.com/4ra1n";
     String projectUrl = "https://github.com/jar-analyzer/jar-analyzer";

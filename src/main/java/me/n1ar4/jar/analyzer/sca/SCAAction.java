@@ -26,6 +26,7 @@ public class SCAAction {
         instance.getScaFastjsonBox().setEnabled(true);
         instance.getScaFastjsonBox().setSelected(true);
         instance.getScaShiroBox().setEnabled(true);
+        instance.getScaShiroBox().setSelected(true);
         // 暂不支持
         instance.getScaSpringBox().setEnabled(false);
         instance.getScaStrutsBox().setEnabled(false);

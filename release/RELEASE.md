@@ -1,10 +1,10 @@
 # RELEASE DOC
 
-Use `Zulu JRE 8`
-- https://www.azul.com/downloads/?version=java-8-lts&os=windows&architecture=x86-64-bit&package=jre#zulu
+Use `Eclipse Temurin JRE 8`
+- https://adoptium.net/zh-CN/temurin/releases/?os=windows&arch=x64&package=jre&version=8
 
-Use `Zulu JRE 21`
-- https://www.azul.com/downloads/?version=java-21-lts&os=windows&architecture=x86-64-bit&package=jre#zulu
+Use `Eclipse Temurin JRE 21`
+- https://adoptium.net/zh-CN/temurin/releases/?os=windows&arch=x64&package=jre&version=21
 
 Jar Analyzer Workflow JRE Repo
 - https://github.com/jar-analyzer/workflow_jre

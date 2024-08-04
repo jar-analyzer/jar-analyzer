@@ -12,7 +12,13 @@
 ![](https://github.com/jar-analyzer/jar-analyzer/workflows/truffle%20check/badge.svg)
 ![](https://github.com/jar-analyzer/jar-analyzer/workflows/golang%20check/badge.svg)
 
+首页
+
 ![](img/0046.png)
+
+一键快速搜索
+
+![](img/0052.png)
 
 `Jar Analyzer` 是一个分析 `Jar` 文件的 `GUI` 工具：
 

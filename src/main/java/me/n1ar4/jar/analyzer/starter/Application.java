@@ -174,6 +174,9 @@ public class Application {
             // START HTTP SERVER
             new Thread(HttpServer::start).start();
 
+            // SET AWT EVENT EXCEPTION
+            Thread.setDefaultUncaughtExceptionHandler(new ExpHandler());
+
             // START GUI
             MainForm.start();
         } catch (Exception ex) {

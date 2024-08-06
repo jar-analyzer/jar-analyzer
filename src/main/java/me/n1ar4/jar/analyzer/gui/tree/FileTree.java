@@ -149,7 +149,11 @@ public class FileTree extends JTree {
                     subNode.add(new DefaultMutableTreeNode("fake"));
                 }
                 node.add(subNode);
-                addSelectionPath(new TreePath(node.getPath()));
+
+                try {
+                    addSelectionPath(new TreePath(node.getPath()));
+                } catch (Exception ignored) {
+                }
             }
         }
     }

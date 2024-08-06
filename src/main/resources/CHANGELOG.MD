@@ -36,7 +36,7 @@
 - [SCA-BUG] 修复 `FASTJSON` 漏洞分数的问题
 - [SCA-FEAT] 应该只遍历一次 `JAR` 文件以提高效率
 - [SCA-FEAT] 分析 `JAR` 代码避免使用递归
-- [SCA-FEAT] 压缩 `HTML` 报告的大小 
+- [SCA-FEAT] 压缩 `HTML` 报告的大小
 - [BUG] 选中非方法时不会刷新 `CALL/IMPL` 区域
 - [BUG] 文件树选择文件某些情况下不在屏幕范围内
 - [BUG] 文件树搜索不会自动滚动到高亮文件

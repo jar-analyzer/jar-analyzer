@@ -18,6 +18,7 @@ public class PathMatcher {
         handlers.put("/index", handler);
         handlers.put("/index.html", handler);
         handlers.put("/index.jsp", handler);
+        handlers.put("/favicon.ico", new FaviconHandler());
         handlers.put("/static/boot.js", new JSHandler());
         handlers.put("/static/boot.css", new CSSHandler());
 

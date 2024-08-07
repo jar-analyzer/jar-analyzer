@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jar Analyzer Call Graph</title>
+    <script src="__D3JS__"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+        .node rect {
+            stroke: #fff;
+            stroke-width: 1.5px;
+        }
+        .link {
+            stroke: #999;
+            stroke-opacity: 0.6;
+        }
+        .highlight {
+            fill: orange;
+        }
+        .normal {
+            fill: lightblue;
+        }
+    </style>
+</head>
+<body>
+<svg width="1200" height="800"></svg>
+<script>
+    const data = {
+        nodes: [
+            __NODES__
+        ],
+        links: [
+            __LINKS__
+        ]
+    };
+    const currentMethod = '__CURRENT_NODE__';
+    const svg = d3.select('svg');
+    const width = +svg.attr('width');
+    const height = +svg.attr('height');
+    svg.append('defs').append('marker')
+        .attr('id', 'arrow')
+        .attr('viewBox', '0 -5 10 10')
+        .attr('refX', 5)
+        .attr('refY', 0)
+        .attr('markerWidth', 6)
+        .attr('markerHeight', 6)
+        .attr('orient', 'auto')
+        .append('path')
+        .attr('d', 'M0,-5L10,0L0,5')
+        .attr('class', 'arrow');
+    const simulation = d3.forceSimulation(data.nodes)
+        .force('link', d3.forceLink(data.links).id(d => d.id).distance(150))
+        .force('charge', d3.forceManyBody().strength(-500))
+        .force('center', d3.forceCenter(width / 2, height / 2));
+    const link = svg.append('g')
+        .attr('class', 'links')
+        .selectAll('line')
+        .data(data.links)
+        .enter().append('line')
+        .attr('class', 'link');
+    const node = svg.append('g')
+        .attr('class', 'nodes')
+        .selectAll('g')
+        .data(data.nodes)
+        .enter().append('g')
+        .call(d3.drag()
+            .on('start', dragstarted)
+            .on('drag', dragged)
+            .on('end', dragended));
+    node.append('rect')
+        .attr('x', d => -getTextWidth(d.name) / 2 - 10)
+        .attr('y', -20)
+        .attr('width', d => getTextWidth(d.name) + 20)
+        .attr('height', 40)
+        .attr('class', d => d.id === currentMethod ? 'highlight' : 'normal');
+    node.append('text')
+        .attr('dy', 5)
+        .attr('text-anchor', 'middle')
+        .style('font-size', '12px')
+        .text(d => d.name);
+    simulation.on('tick', () => {
+        link
+            .attr('x1', d => d.source.x)
+            .attr('y1', d => d.source.y)
+            .attr('x2', d => d.target.x)
+            .attr('y2', d => d.target.y);
+        node
+            .attr('transform', d => `translate(${d.x},${d.y})`);
+        svg.selectAll('.link-arrow').remove();
+        data.links.forEach(d => {
+            const midX = (d.source.x + d.target.x) / 2;
+            const midY = (d.source.y + d.target.y) / 2;
+            svg.append('path')
+                .attr('class', 'link-arrow')
+                .attr('d', 'M0,-5L10,0L0,5')
+                .attr('transform', `translate(${midX},${midY}) rotate(${Math.atan2(d.target.y - d.source.y, d.target.x - d.source.x) * 180 / Math.PI})`);
+        });
+    });
+    function getTextWidth(text) {
+        const context = document.createElement('canvas').getContext('2d');
+        context.font = '12px sans-serif';
+        return context.measureText(text).width;
+    }
+    function dragstarted(event, d) {
+        if (!event.active) simulation.alphaTarget(0.3).restart();
+        d.fx = d.x;
+        d.fy = d.y;
+    }
+    function dragged(event, d) {
+        d.fx = event.x;
+        d.fy = event.y;
+    }
+    function dragended(event, d) {
+        if (!event.active) simulation.alphaTarget(0);
+        d.fx = null;
+        d.fy = null;
+    }
+</script>
+</body>
+</html>

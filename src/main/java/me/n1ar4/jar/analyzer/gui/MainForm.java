@@ -9,6 +9,7 @@ import me.n1ar4.jar.analyzer.engine.CoreEngine;
 import me.n1ar4.jar.analyzer.engine.DecompileEngine;
 import me.n1ar4.jar.analyzer.entity.ClassResult;
 import me.n1ar4.jar.analyzer.entity.MethodResult;
+import me.n1ar4.jar.analyzer.graph.HtmlGraph;
 import me.n1ar4.jar.analyzer.gui.action.*;
 import me.n1ar4.jar.analyzer.gui.adapter.*;
 import me.n1ar4.jar.analyzer.gui.font.FontHelper;
@@ -226,6 +227,11 @@ public class MainForm {
     private JLabel outputFileLabel;
     private JTextField outputFileText;
     private JButton scaResultOpenBtn;
+    private JButton htmlGraphBtn;
+
+    public JButton getHtmlGraphBtn() {
+        return htmlGraphBtn;
+    }
 
     public JCheckBox getScaLog4jBox() {
         return scaLog4jBox;
@@ -739,6 +745,7 @@ public class MainForm {
         CleanAction.run();
         ShowStringAction.run();
         TipsAction.run();
+        HtmlGraph.run();
 
         SCAAction.register();
         JNDIVulAction.register();
@@ -1543,7 +1550,7 @@ public class MainForm {
         serUtilBtn.setText("Start");
         piPanel.add(serUtilBtn, new GridConstraints(6, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         analysis = new JPanel();
-        analysis.setLayout(new GridLayoutManager(1, 6, new Insets(0, 0, 0, 0), -1, -1));
+        analysis.setLayout(new GridLayoutManager(2, 6, new Insets(0, 0, 0, 0), -1, -1));
         advancePanel.add(analysis, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         analysis.setBorder(BorderFactory.createTitledBorder(null, "Analysis", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         frameBtn = new JButton();
@@ -1555,6 +1562,9 @@ public class MainForm {
         simpleFrameButton = new JButton();
         simpleFrameButton.setText("Simple Frame");
         analysis.add(simpleFrameButton, new GridConstraints(0, 2, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, new Dimension(150, -1), 0, false));
+        htmlGraphBtn = new JButton();
+        htmlGraphBtn.setText("HTML Graph");
+        analysis.add(htmlGraphBtn, new GridConstraints(1, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         leftPanel = new JPanel();
         leftPanel.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
         corePanel.add(leftPanel, new GridConstraints(0, 0, 4, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_VERTICAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));

@@ -4,6 +4,7 @@
 
 更新日志：
 
+- [重要] 支持一键生成当前方法调用的 `HTML` 图
 - [BUG] 修复某些情况 `AWT` 线程出现异常报错
 - [优化] `API Server` 添加 `favicon.ico`
 - [其他] 内置 `JRE` 改成 `Eclipse Temurin`

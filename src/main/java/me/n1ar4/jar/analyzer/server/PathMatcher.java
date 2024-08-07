@@ -20,6 +20,7 @@ public class PathMatcher {
         handlers.put("/index.jsp", handler);
         handlers.put("/favicon.ico", new FaviconHandler());
         handlers.put("/static/boot.js", new JSHandler());
+        handlers.put("/static/d3v6.js", new D3Handler());
         handlers.put("/static/boot.css", new CSSHandler());
 
         handlers.put("/api/get_jars_list", new GetJarListHandler());

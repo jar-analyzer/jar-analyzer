@@ -27,10 +27,6 @@ public class SCAAction {
         instance.getScaFastjsonBox().setSelected(true);
         instance.getScaShiroBox().setEnabled(true);
         instance.getScaShiroBox().setSelected(true);
-        // 暂不支持
-        instance.getScaSpringBox().setEnabled(false);
-        instance.getScaStrutsBox().setEnabled(false);
-        instance.getScaTomcatBox().setEnabled(false);
         // 解析 CVE 数据库
         Map<String, CVEData> cveMap = SCAVulDB.getCVEMap();
         // 解析规则

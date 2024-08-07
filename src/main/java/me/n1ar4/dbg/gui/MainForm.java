@@ -26,7 +26,6 @@ public class MainForm {
     private JScrollPane logScroll;
     private JPanel curPanel;
     private JTextField breakClassText;
-    private JTextField breakDescText;
     private JButton setBreakpointButton;
     private JLabel curClassLabel;
     private JLabel curlMethodLabel;
@@ -44,10 +43,6 @@ public class MainForm {
     private JPanel actionPanel;
     private static MainForm instance;
     private static DBGRunner runner;
-
-    public JTextArea getLogArea() {
-        return logArea;
-    }
 
     public static MainForm getInstance() {
         return instance;
@@ -81,10 +76,6 @@ public class MainForm {
         return breakClassText;
     }
 
-    public JTextField getBreakDescText() {
-        return breakDescText;
-    }
-
     public JLabel getCurClassText() {
         return curClassText;
     }
@@ -95,10 +86,6 @@ public class MainForm {
 
     public JTextField getBreakMethodText() {
         return breakMethodText;
-    }
-
-    public JLabel getBreakMethodLabel() {
-        return breakMethodLabel;
     }
 
     public static void doStart() {

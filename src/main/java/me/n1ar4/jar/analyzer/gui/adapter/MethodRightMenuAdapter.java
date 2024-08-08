@@ -18,6 +18,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * 现在不支持改方法名的操作了
+ * 但是先保留 说不定未来某天会遇到
+ */
+@SuppressWarnings("all")
 public class MethodRightMenuAdapter extends MouseAdapter {
     private static final Logger logger = LogManager.getLogger();
     private final JList<MethodResult> list;

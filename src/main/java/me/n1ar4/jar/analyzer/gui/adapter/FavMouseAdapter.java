@@ -18,7 +18,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class CommonMouseAdapter extends MouseAdapter {
+public class FavMouseAdapter extends MouseAdapter {
     @SuppressWarnings("all")
     public void mouseClicked(MouseEvent evt) {
         JList<?> list = (JList<?>) evt.getSource();
@@ -111,16 +111,21 @@ public class CommonMouseAdapter extends MouseAdapter {
             MainForm.setNextState(null);
         } else if (SwingUtilities.isRightMouseButton(evt)) {
             JPopupMenu popupMenu = new JPopupMenu();
-            JMenuItem addToFavorite = new JMenuItem("add to favorite");
-            popupMenu.add(addToFavorite);
-            addToFavorite.addActionListener(e -> {
+            JMenuItem cleanAllFavorite = new JMenuItem("clean all favorite");
+            JMenuItem cleanCurItems = new JMenuItem("clean this favorite");
+            popupMenu.add(cleanAllFavorite);
+            popupMenu.add(cleanCurItems);
+            cleanAllFavorite.addActionListener(e -> {
+                MainForm.getFavData().clear();
+                JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                        "CLEAN ALL FAVORIATES FINISH");
+            });
+            cleanCurItems.addActionListener(e -> {
                 MethodResult selectedItem = (MethodResult) list.getSelectedValue();
-                if (selectedItem == null) {
+                if (MainForm.getFavData().removeElement(selectedItem)) {
                     JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
-                            "SELECTED METHOD IS NULL");
-                    return;
+                            "CLEAN FAVORIATE " + selectedItem.getMethodName() + " FINISH");
                 }
-                MainForm.getFavData().addElement(selectedItem);
             });
             int index = list.locationToIndex(evt.getPoint());
             list.setSelectedIndex(index);

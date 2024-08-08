@@ -25,14 +25,13 @@ public class CoreTransformer implements ClassFileTransformer {
                             ProtectionDomain protectionDomain,
                             byte[] classFileBuffer) {
         try {
-            if (className.equals(Const.ProcessBuilder)) {
-                return transformASM(className, ProcessClassVisitor.class);
-            }
-            if (className.equals(Const.InitialContext)) {
-                return transformASM(className, ContextClassVisitor.class);
-            }
-            if (className.equals(Const.ObjectInputStream)) {
-                return transformASM(className, OisClassVisitor.class);
+            switch (className) {
+                case Const.ProcessBuilder:
+                    return transformASM(className, ProcessClassVisitor.class);
+                case Const.InitialContext:
+                    return transformASM(className, ContextClassVisitor.class);
+                case Const.ObjectInputStream:
+                    return transformASM(className, OisClassVisitor.class);
             }
         } catch (ClassCircularityError | Exception ex) {
             return classFileBuffer;

@@ -88,7 +88,7 @@ public class MainForm {
     private JPanel curMethodPanel;
     private JScrollPane allMethodScroll;
     private JList<MethodResult> allMethodList;
-    private JPanel historyPanel;
+    private JPanel notePanel;
     private JPanel advancePanel;
     private JScrollPane hisScroll;
     private JList<MethodResult> callerList;
@@ -228,6 +228,18 @@ public class MainForm {
     private JTextField outputFileText;
     private JButton scaResultOpenBtn;
     private JButton htmlGraphBtn;
+    private JScrollPane favScroll;
+    private JList<MethodResult> favList;
+    private JButton addToFavoritesButton;
+    private static DefaultListModel<MethodResult> favData;
+
+    public static DefaultListModel<MethodResult> getFavData() {
+        return favData;
+    }
+
+    public JButton getAddToFavoritesButton() {
+        return addToFavoritesButton;
+    }
 
     public JButton getHtmlGraphBtn() {
         return htmlGraphBtn;
@@ -699,8 +711,12 @@ public class MainForm {
         springMList.setCellRenderer(new SpringMethodRender());
 
         historyList.setCellRenderer(new MethodCallRender());
+        favList.setCellRenderer(new MethodCallRender());
+
         historyListData = new DefaultListModel<>();
         historyList.setModel(historyListData);
+        favData = new DefaultListModel<>();
+        favList.setModel(favData);
 
         prevBtn.setIcon(IconManager.prevIcon);
         nextBtn.setIcon(IconManager.nextIcon);
@@ -772,7 +788,6 @@ public class MainForm {
         instance.fileTree.addMouseListener(new TreeMouseAdapter());
         instance.fileTree.addMouseListener(new TreeRightMenuAdapter());
         instance.allMethodList.addMouseListener(new CommonMouseAdapter());
-        instance.allMethodList.addMouseListener(new MethodRightMenuAdapter());
         instance.callerList.addMouseListener(new CommonMouseAdapter());
         instance.calleeList.addMouseListener(new CommonMouseAdapter());
         instance.methodImplList.addMouseListener(new CommonMouseAdapter());
@@ -781,9 +796,20 @@ public class MainForm {
         instance.historyList.addMouseListener(new CommonMouseAdapter());
         instance.springCList.addMouseListener(new ControllerMouseAdapter());
         instance.springMList.addMouseListener(new CommonMouseAdapter());
+        instance.favList.addMouseListener(new FavMouseAdapter());
         instance.fileTreeSearchTextField.getDocument().addDocumentListener(new SearchInputListener());
         instance.fileTreeSearchTextField.addKeyListener(new SearchTextFieldKeyAdapter());
         instance.fileTreeSearchTextField.addKeyListener(new FileTreeKeyAdapter());
+
+        instance.getAddToFavoritesButton().addActionListener(e -> {
+            if (curMethod != null) {
+                getFavData().addElement(curMethod);
+                JOptionPane.showMessageDialog(instance.masterPanel, "add current method to favorite ok");
+            } else {
+                JOptionPane.showMessageDialog(instance.masterPanel, "current method is null");
+            }
+        });
+
         refreshLang();
     }
 
@@ -806,7 +832,7 @@ public class MainForm {
                 instance.tabbedPanel.setTitleAt(2, "调用");
                 instance.tabbedPanel.setTitleAt(3, "实现");
                 instance.tabbedPanel.setTitleAt(4, "spring");
-                instance.tabbedPanel.setTitleAt(5, "历史");
+                instance.tabbedPanel.setTitleAt(5, "记录");
                 instance.tabbedPanel.setTitleAt(6, "SCA");
                 instance.tabbedPanel.setTitleAt(7, "高级");
 
@@ -915,7 +941,7 @@ public class MainForm {
                 instance.tabbedPanel.setTitleAt(2, "call");
                 instance.tabbedPanel.setTitleAt(3, "impl");
                 instance.tabbedPanel.setTitleAt(4, "spring");
-                instance.tabbedPanel.setTitleAt(5, "history");
+                instance.tabbedPanel.setTitleAt(5, "note");
                 instance.tabbedPanel.setTitleAt(6, "SCA");
                 instance.tabbedPanel.setTitleAt(7, "advance");
 
@@ -1379,13 +1405,21 @@ public class MainForm {
         springMPanel.add(smScroll, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         springMList = new JList();
         smScroll.setViewportView(springMList);
-        historyPanel = new JPanel();
-        historyPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-        tabbedPanel.addTab("history", historyPanel);
+        notePanel = new JPanel();
+        notePanel.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
+        tabbedPanel.addTab("note", notePanel);
         hisScroll = new JScrollPane();
-        historyPanel.add(hisScroll, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        notePanel.add(hisScroll, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        hisScroll.setBorder(BorderFactory.createTitledBorder(null, "history", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         historyList = new JList();
+        final DefaultListModel defaultListModel2 = new DefaultListModel();
+        historyList.setModel(defaultListModel2);
         hisScroll.setViewportView(historyList);
+        favScroll = new JScrollPane();
+        notePanel.add(favScroll, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        favScroll.setBorder(BorderFactory.createTitledBorder(null, "favorites", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+        favList = new JList();
+        favScroll.setViewportView(favList);
         scaPanel = new JPanel();
         scaPanel.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPanel.addTab("SCA", scaPanel);
@@ -1607,7 +1641,7 @@ public class MainForm {
         allMethodList = new JList();
         allMethodScroll.setViewportView(allMethodList);
         curPanel = new JPanel();
-        curPanel.setLayout(new GridLayoutManager(3, 2, new Insets(0, 0, 0, 0), -1, -1));
+        curPanel.setLayout(new GridLayoutManager(3, 3, new Insets(0, 0, 0, 0), -1, -1));
         corePanel.add(curPanel, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         curPanel.setBorder(BorderFactory.createTitledBorder(null, "Current", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         curClassLabel = new JLabel();
@@ -1615,7 +1649,7 @@ public class MainForm {
         curPanel.add(curClassLabel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
         curClassText = new JTextField();
         curClassText.setEditable(false);
-        curPanel.add(curClassText, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        curPanel.add(curClassText, new GridConstraints(1, 1, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         curMethodLabel = new JLabel();
         curMethodLabel.setText("Method");
         curPanel.add(curMethodLabel, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
@@ -1627,7 +1661,10 @@ public class MainForm {
         curPanel.add(curJarLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
         curJarText = new JTextField();
         curJarText.setEditable(false);
-        curPanel.add(curJarText, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        curPanel.add(curJarText, new GridConstraints(0, 1, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        addToFavoritesButton = new JButton();
+        addToFavoritesButton.setText("add to favorites");
+        curPanel.add(addToFavoritesButton, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         ButtonGroup buttonGroup;
         buttonGroup = new ButtonGroup();
         buttonGroup.add(methodDefinitionRadioButton);

@@ -27,6 +27,7 @@ import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.utils.DirUtil;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -47,6 +48,7 @@ public class MainForm {
     private static CoreEngine engine;
     private static JTextArea codeArea;
     private static MethodResult curMethod;
+    private static String curClass;
     private static State prevState;
     private static State nextState;
     private static State curState;
@@ -232,6 +234,14 @@ public class MainForm {
     private JList<MethodResult> favList;
     private JButton addToFavoritesButton;
     private static DefaultListModel<MethodResult> favData;
+
+    public static String getCurClass() {
+        return curClass;
+    }
+
+    public static void setCurClass(String curClass) {
+        MainForm.curClass = curClass;
+    }
 
     public static DefaultListModel<MethodResult> getFavData() {
         return favData;
@@ -747,6 +757,7 @@ public class MainForm {
     private static void init() {
         FontHelper.installFont();
         DropHelper.setDrop();
+        CodeMenuHelper.run();
 
         ChoseJarAction.run();
         BuildAction.run();

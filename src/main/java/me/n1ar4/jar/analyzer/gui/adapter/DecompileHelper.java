@@ -61,6 +61,8 @@ public class DecompileHelper {
 
         CoreHelper.refreshAllMethods(className);
 
+        MainForm.setCurClass(className);
+
         MainForm.getInstance().getCurClassText().setText(className);
         String jarName = MainForm.getEngine().getJarByClass(className);
         MainForm.getInstance().getCurJarText().setText(jarName);

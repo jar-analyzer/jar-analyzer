@@ -400,11 +400,8 @@
 
 ## 2.13
 
-集成 `https://github.com/luelueking/ClazzSearcher` 作为 `jar-analyzer` 的命令行版本，未来版本可能会完善和修复
-
 更新日志：
 
-- [重要] 集成 [clazz-searcher](https://github.com/luelueking/ClazzSearcher) 项目作为命令行版本
 - [功能] 提供 `Windows` 版本的启动 `EXE`
 - [其他] 完善和优化 `README` 文档
 

@@ -1,6 +1,0 @@
-fields:
-  - {
-    "name": "selectColor",
-    "access" : 4,
-    "type": "java/awt/Color"
-  }

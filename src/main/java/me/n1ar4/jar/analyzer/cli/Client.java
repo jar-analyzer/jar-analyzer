@@ -22,13 +22,6 @@ public class Client {
             System.exit(-1);
         }
         switch (cmd) {
-            case SearcherCmd.CMD:
-                try {
-                    ClassSearcher.start(new String[]{});
-                } catch (Exception ex) {
-                    logger.error("start class searcher error: {}", ex);
-                }
-                System.exit(0);
             case BuildCmd.CMD:
                 logger.info("use build command");
                 if (buildCmd.getJar() == null || buildCmd.getJar().isEmpty()) {

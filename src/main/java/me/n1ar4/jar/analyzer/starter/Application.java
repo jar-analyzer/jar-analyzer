@@ -3,7 +3,6 @@ package me.n1ar4.jar.analyzer.starter;
 import com.beust.jcommander.JCommander;
 import me.n1ar4.jar.analyzer.cli.BuildCmd;
 import me.n1ar4.jar.analyzer.cli.Client;
-import me.n1ar4.jar.analyzer.cli.SearcherCmd;
 import me.n1ar4.jar.analyzer.cli.StartCmd;
 import me.n1ar4.jar.analyzer.gui.GlobalOptions;
 import me.n1ar4.jar.analyzer.gui.MainForm;
@@ -23,8 +22,6 @@ public class Application {
     private static final BuildCmd buildCmd = new BuildCmd();
     @SuppressWarnings("all")
     private static final StartCmd startCmd = new StartCmd();
-    @SuppressWarnings("all")
-    private static final SearcherCmd searcherCmd = new SearcherCmd();
 
     /**
      * Main Method
@@ -66,7 +63,6 @@ public class Application {
         JCommander commander = JCommander.newBuilder()
                 .addCommand(BuildCmd.CMD, buildCmd)
                 .addCommand(StartCmd.CMD, startCmd)
-                .addCommand(SearcherCmd.CMD, searcherCmd)
                 .build();
 
         try {

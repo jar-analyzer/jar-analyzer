@@ -22,5 +22,3 @@ jobs:
       run: mvn -B clean package -DskipTests --file pom.xml --file pom.xml
     - name: check agent maven
       run: cd agent && mvn -B clean package -DskipTests --file pom.xml --file pom.xml
-    - name: check clazz searcher
-      run: cd class-searcher && mvn -B clean package -DskipTests --file pom.xml --file pom.xml

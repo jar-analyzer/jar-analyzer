@@ -19,12 +19,6 @@ def copy_jar_files(source_dir, target_dir):
                 shutil.copy(source_path, target_path)
 
 
-def copy_searcher_files(target_dir):
-    source_path = "class-searcher-1.0.jar"
-    target_path = os.path.join(target_dir, source_path)
-    shutil.copy(source_path, target_path)
-
-
 def copy_config_files(target_dir):
     source_path = os.path.join("build", "config.yaml")
     target_path = os.path.join(target_dir, "config.yaml")
@@ -77,9 +71,6 @@ if __name__ == '__main__':
     copy_jar_files(java_target_directory, "{}/{}/{}".format(target_directory, release_win_full_dir, "lib"))
     copy_jar_files(java_target_directory, "{}/{}/{}".format(target_directory, release_win_21_dir, "lib"))
     copy_jar_files(java_target_directory, "{}/{}/{}".format(target_directory, release_zip_dir, "lib"))
-
-    copy_searcher_files("{}/{}/{}".format(target_directory, release_win_system_dir, "lib"))
-    copy_searcher_files("{}/{}/{}".format(target_directory, release_win_full_dir, "lib"))
 
     copy_config_files("{}/{}".format(target_directory, release_win_system_dir))
     copy_config_files("{}/{}".format(target_directory, release_win_full_dir))

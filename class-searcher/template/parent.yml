@@ -1,5 +1,0 @@
-implementsList:
-  - org/springframework/beans/PropertyValues
-  - java/io/Serializable
-extendsList:
-  - org/springframework/beans/MutablePropertyValues

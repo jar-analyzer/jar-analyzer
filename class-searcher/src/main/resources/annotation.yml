@@ -1,7 +1,0 @@
-annotations:
-  - "Lorg/springframework/web/bind/annotation/RestController;"
-  - "Lorg/springframework/stereotype/Controller;"
-methods:
-  - {
-    "name": "hello"
-  }

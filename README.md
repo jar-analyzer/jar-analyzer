@@ -32,7 +32,6 @@
 - 一键生成方法的 `Stack Frame` 分析结果
 - 远程分析 `Tomcat` 中的 `Servlet` 等组件
 - 自定义 `SQL` 语句进行高级分析
-- 集成 `ClazzSearcher` 项目作为命令行分析版本
 - 自从 `2.14` 版本之后支持了全屏显示的功能
 - 自从 `2.15` 版本后支持代码区域字符串搜索功能
 - 自从 `2.15` 版本后支持通过 `HTTP` 分析远程文件
@@ -199,10 +198,6 @@
 set "theme_name=default"
 ```
 
-## 命令行
-
-[文档](doc/README-cli.md)
-
 ## 表达式
 
 [文档](doc/README-el.md)
@@ -233,10 +228,9 @@ set "theme_name=default"
 
 1. 构建核心项目 `mvn -B clean package -DskipTests --file pom.xml`
 2. 构建`agent`子项目 `mvn -B clean package -DskipTests --file agent\pom.xml`
-3. 构建命令行子项目 `mvn -B clean package -DskipTests --file class-searcher\pom.xml`
-4. 使用`cmake`构建`native`目录的`C`代码生成`dll`文件放入`resources`
-5. 使用`winres`和`gcc`构建启动`exe`文件和图标信息 
-6. 参考`build.py`和`build.yml`文件进行最终的文件合并和版本构建
+3. 使用`cmake`构建`native`目录的`C`代码生成`dll`文件放入`resources`
+4. 使用`winres`和`gcc`构建启动`exe`文件和图标信息 
+5. 参考`build.py`和`build.yml`文件进行最终的文件合并和版本构建
 
 ## Thanks
 

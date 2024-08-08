@@ -1,6 +1,0 @@
-annotations:
-  - "Lorg/springframework/web/bind/annotation/RestController;"
-methods:
-  - {
-      "name": "hello"
-  }

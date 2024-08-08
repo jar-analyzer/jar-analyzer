@@ -11,7 +11,7 @@ set "jre_bin_abs="%cur_dir%%jre_bin%""
 
 rem jvm args
 set "other_args=-Dfile.encoding=UTF-8"
-set "java_args=%other_args%"
+set "java_args=-XX:+UseZGC -Xms4g -Xmx4g %other_args%"
 set "java_cp=lib\%jar-analyzer%;lib\tools.jar"
 set "main_class=me.n1ar4.jar.analyzer.starter.Application"
 

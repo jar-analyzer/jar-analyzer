@@ -23,9 +23,3 @@
 `Jar Analyzer 2.17` 版本以后支持远程字节码调试
 
 ![](../img/0035.png)
-
-`Jar Analyzer 2.12` 版本以后使用自研 `RASP` 保护程序
-
-(Runtime Application Self-Protection)
-
-![](../img/0032.png)

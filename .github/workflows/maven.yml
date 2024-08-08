@@ -20,8 +20,6 @@ jobs:
         cache: maven
     - name: check core maven
       run: mvn -B clean package -DskipTests --file pom.xml --file pom.xml
-    - name: check rasp maven
-      run: cd jar-analyzer-rasp && mvn -B clean package -DskipTests --file pom.xml
     - name: check agent maven
       run: cd agent && mvn -B clean package -DskipTests --file pom.xml --file pom.xml
     - name: check clazz searcher

@@ -234,10 +234,9 @@ set "theme_name=default"
 1. 构建核心项目 `mvn -B clean package -DskipTests --file pom.xml`
 2. 构建`agent`子项目 `mvn -B clean package -DskipTests --file agent\pom.xml`
 3. 构建命令行子项目 `mvn -B clean package -DskipTests --file class-searcher\pom.xml`
-4. 构建`rasp`子项目 `mvn -B clean package -DskipTests --file jar-analyzer-rasp\pom.xml`
-5. 使用`cmake`构建`native`目录的`C`代码生成`dll`文件放入`resources`
-6. 使用`winres`和`gcc`构建启动`exe`文件和图标信息
-7. 参考`build.py`和`build.yml`文件进行最终的文件合并和版本构建
+4. 使用`cmake`构建`native`目录的`C`代码生成`dll`文件放入`resources`
+5. 使用`winres`和`gcc`构建启动`exe`文件和图标信息 
+6. 参考`build.py`和`build.yml`文件进行最终的文件合并和版本构建
 
 ## Thanks
 

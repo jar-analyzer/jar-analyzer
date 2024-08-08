@@ -14,7 +14,6 @@ Steps:
 - run `go run .\github\main.go proxy`
 - Run `me/n1ar4/support/Contributor.java` to generate thanks.txt
 - Run `check-version.bat` and update `pom.xml`
-- Run `rasp/check-version.bat` and update `pom.xml`
 - Check `me/n1ar4/jar/analyzer/starter/Const.java` version
 - Check `build/*.bat` files
 - Check `pom.xml` version tag

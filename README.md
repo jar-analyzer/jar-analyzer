@@ -101,6 +101,8 @@
 - [通过 jar-analyzer 分析漏洞 CVE-2022-42889](https://www.bilibili.com/video/BV1a94y1E7Nn)
 - [Jar Analyzer V2 新版本功能介绍](https://www.bilibili.com/video/BV1Dm421G75i)
 
+性能测试：参考 [性能测试文档](doc/README-test.md) 对比分析 `G1GC` 和 `ZGC` 情况
+
 漏洞公告
 
 - [\[GHSA-43rf-3hm4-hv5f\] 反编译恶意的 CLASS 文件可能导致程序不可用](https://github.com/jar-analyzer/jar-analyzer/security/advisories/GHSA-43rf-3hm4-hv5f)
@@ -152,20 +154,6 @@
 ## 进阶功能
 
 以上是基础功能，进阶和测试性的功能请参考：[进阶测试性功能](doc/README-advance.md)
-
-## 性能对比
-
-分析同一个 `20 MB` 大小的 `JAR` 文件对比
-
-`JRE 8` 开启 `G1GC`)
-
-![](img/0056.png)
-
-`JRE 21` 开启 `ZGC`
-
-![](img/0057.png)
-
-新版本同时支持了内置 `JAVA 8` 和 `JAVA 21` 的版本
 
 ## 快捷键
 

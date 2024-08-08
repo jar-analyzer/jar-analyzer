@@ -3,5 +3,5 @@ annotations:
   - "Lorg/springframework/stereotype/Controller;"
 methods:
   - {
-      "name": "hello"
+    "name": "hello"
   }

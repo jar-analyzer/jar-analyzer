@@ -123,7 +123,7 @@ public class LoaderUtil {
         return classLoader;
     }
 
-    public static ClassLoader getJarClassLoader(Path ... jarPaths) throws IOException {
+    public static ClassLoader getJarClassLoader(Path... jarPaths) throws IOException {
         final List<URL> classPathUrls = new ArrayList<>(jarPaths.length);
         for (Path jarPath : jarPaths) {
             if (!Files.exists(jarPath) || Files.isDirectory(jarPath)) {
@@ -137,6 +137,7 @@ public class LoaderUtil {
 
     /**
      * Recursively delete the directory root and all its contents
+     *
      * @param root Root directory to be deleted
      */
     public static void deleteDirectory(Path root) throws IOException {

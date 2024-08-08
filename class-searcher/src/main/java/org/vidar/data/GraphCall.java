@@ -3,9 +3,7 @@ package org.vidar.data;
 import lombok.Data;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @author zhchen
@@ -45,7 +43,7 @@ public class GraphCall {
         @Override
         public GraphCall parse(String[] fields) {
             GraphCall graphCall = new GraphCall(new MethodReference.Handle(new ClassReference.Handle(fields[0]), fields[1], fields[2]));
-            for (int i = 3; i < fields.length; i+=3) {
+            for (int i = 3; i < fields.length; i += 3) {
                 MethodReference.Handle handle = new MethodReference.Handle(new ClassReference.Handle(fields[i]), fields[i + 1], fields[i + 2]);
                 graphCall.addCallMethod(handle);
             }

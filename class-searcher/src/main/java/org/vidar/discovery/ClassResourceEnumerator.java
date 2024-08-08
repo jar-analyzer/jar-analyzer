@@ -13,6 +13,7 @@ import java.util.Collection;
 
 /**
  * 获取用于分析的类文件(ClassResource)
+ *
  * @author zhchen
  */
 public class ClassResourceEnumerator {
@@ -24,6 +25,7 @@ public class ClassResourceEnumerator {
 
     /**
      * java runtime所有的classes(rt.jar)和指定的jar或war中的所有class
+     *
      * @return
      * @throws IOException
      */
@@ -33,7 +35,7 @@ public class ClassResourceEnumerator {
             return result;
         }
         for (ClassPath.ClassInfo classInfo : ClassPath.from(classLoader).getAllClasses()) {
-            result.add(new ClassLoaderClassResource(classLoader,classInfo.getResourceName()));
+            result.add(new ClassLoaderClassResource(classLoader, classInfo.getResourceName()));
         }
         return result;
     }
@@ -73,6 +75,7 @@ public class ClassResourceEnumerator {
 
 interface ClassResource {
     public InputStream getInputStream() throws IOException;
+
     public String getName();
 }
 

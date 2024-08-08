@@ -1,6 +1,6 @@
 fields:
   - {
     "name": "request",
-    "access" : 2,
+    "access": 2,
     "type": "org/springframework/http/server/reactive/ServerHttpRequest"
   }

@@ -2,9 +2,6 @@ package org.vidar.data;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.vidar.data.ClassReference;
-import org.vidar.data.InheritanceMap;
-import org.vidar.data.MethodReference;
 
 import java.util.HashMap;
 import java.util.HashSet;

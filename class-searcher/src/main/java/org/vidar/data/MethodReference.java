@@ -24,6 +24,7 @@ public class MethodReference {
     public Handle getHandle() {
         return new Handle(classReference, name, desc);
     }
+
     @Data
     public static class Handle {
         private final ClassReference.Handle classReference;
@@ -49,6 +50,7 @@ public class MethodReference {
                     && handle.name.equals(name)
                     && handle.desc.equals(desc);
         }
+
         @Override
         public int hashCode() {
             int result = classReference != null ? classReference.hashCode() : 0;
@@ -72,7 +74,7 @@ public class MethodReference {
 
         @Override
         public String[] serialize(MethodReference obj) {
-            return new String[] {
+            return new String[]{
                     obj.classReference.getName(),
                     obj.name,
                     obj.desc,

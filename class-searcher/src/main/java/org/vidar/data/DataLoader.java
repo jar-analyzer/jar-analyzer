@@ -90,7 +90,7 @@ public class DataLoader {
         try {
             HashMap<MethodReference.Handle, GraphCall> callMap = new HashMap<>();
             for (GraphCall graphCall : loadData(Paths.get("calls.dat"), new GraphCall.Factory())) {
-                callMap.put(graphCall.getMethod(),graphCall);
+                callMap.put(graphCall.getMethod(), graphCall);
             }
             return callMap;
         } catch (Exception e) {

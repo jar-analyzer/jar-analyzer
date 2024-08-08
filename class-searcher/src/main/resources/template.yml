@@ -42,7 +42,7 @@ methods:
     "name": "method2",
     "desc": "(Ljava/io/Reader;)Ljava/lang/Object;",
     "access": true,
-    "call" : [
+    "call": [
       { },{ },...
     ]
   }

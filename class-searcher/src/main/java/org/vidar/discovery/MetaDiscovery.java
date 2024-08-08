@@ -77,8 +77,7 @@ public class MetaDiscovery {
         }
 
         @Override
-        public void visit ( int version, int access, String name, String signature, String superName, String[]interfaces)
-        {
+        public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
             this.name = name;
             this.superName = superName;
             this.interfaces = interfaces;
@@ -110,6 +109,7 @@ public class MetaDiscovery {
             }
             return super.visitField(access, name, desc, signature, value);
         }
+
         private String getAccessModifier(int access) {
             if ((access & Opcodes.ACC_PUBLIC) != 0) {
                 return "public";
@@ -121,6 +121,7 @@ public class MetaDiscovery {
                 return "default";
             }
         }
+
         @Override
         public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
             boolean isStatic = (access & Opcodes.ACC_STATIC) != 0;
@@ -140,7 +141,7 @@ public class MetaDiscovery {
             return new MethodVisitor(Opcodes.ASM6, methodVisitor) {
                 @Override
                 public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
-                    graphCall.getCallMethods().add(new MethodReference.Handle(new ClassReference.Handle(owner),name,descriptor));
+                    graphCall.getCallMethods().add(new MethodReference.Handle(new ClassReference.Handle(owner), name, descriptor));
                     super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
                 }
             };

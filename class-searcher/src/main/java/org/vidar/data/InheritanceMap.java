@@ -80,7 +80,7 @@ public class InheritanceMap {
 
         @Override
         public String[] serialize(Map.Entry<ClassReference.Handle, Set<ClassReference.Handle>> obj) {
-            final String[] fields = new String[obj.getValue().size()+1];
+            final String[] fields = new String[obj.getValue().size() + 1];
             fields[0] = obj.getKey().getName();
             int i = 1;
             for (ClassReference.Handle handle : obj.getValue()) {

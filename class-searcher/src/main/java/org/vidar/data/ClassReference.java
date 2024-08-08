@@ -3,7 +3,6 @@ package org.vidar.data;
 import lombok.Data;
 
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -40,6 +39,7 @@ public class ClassReference {
         this.members = members;
         this.annotations = annotations;
     }
+
     public Handle getHandle() {
         return new Handle(name);
     }
@@ -47,6 +47,7 @@ public class ClassReference {
     @Data
     public static class Handle {
         private final String name;
+
         public Handle(String name) {
             this.name = name;
         }
@@ -80,10 +81,10 @@ public class ClassReference {
             }
 
             String[] memberEntries = fields[4].split("!");
-            Member[] members = new Member[memberEntries.length/3];
+            Member[] members = new Member[memberEntries.length / 3];
             for (int i = 0; i < members.length; i++) {
-                members[i] = new Member(memberEntries[3*i], Integer.parseInt(memberEntries[3*i+1]),
-                        new ClassReference.Handle(memberEntries[3*i+2]));
+                members[i] = new Member(memberEntries[3 * i], Integer.parseInt(memberEntries[3 * i + 1]),
+                        new ClassReference.Handle(memberEntries[3 * i + 2]));
             }
             String[] tmpAnnotations = fields[5].split(",");
             Set<String> annotations = new HashSet<>();

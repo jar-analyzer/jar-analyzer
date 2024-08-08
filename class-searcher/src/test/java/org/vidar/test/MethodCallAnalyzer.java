@@ -1,6 +1,9 @@
 package org.vidar.test;
 
-import org.objectweb.asm.*;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -20,7 +23,7 @@ public class MethodCallAnalyzer {
                 public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
                     MethodVisitor methodVisitor = super.visitMethod(access, name, descriptor, signature, exceptions);
                     String currentMethodName = name;
-                    System.out.println("当前解析到的方法是"+ name);
+                    System.out.println("当前解析到的方法是" + name);
                     System.out.println("下面输出其call的方法");
                     return new MethodVisitor(Opcodes.ASM6, methodVisitor) {
 

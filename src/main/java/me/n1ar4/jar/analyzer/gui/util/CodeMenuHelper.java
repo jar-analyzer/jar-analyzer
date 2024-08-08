@@ -11,8 +11,34 @@ public class CodeMenuHelper {
     public static void run() {
         RSyntaxTextArea rArea = (RSyntaxTextArea) MainForm.getCodeArea();
         JPopupMenu popupMenu = new JPopupMenu();
+
+        JMenuItem selectItem = new JMenuItem("SELECT STRING (LDC)");
+        popupMenu.add(selectItem);
+
+        selectItem.addActionListener(e -> {
+            String str = rArea.getSelectedText();
+
+            if (str == null) {
+                JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                        "SELECTED STRING IS NULL");
+                return;
+            }
+
+            new Thread(() -> {
+                List<MethodResult> mrs = MainForm.getEngine().getMethodsByStr(str);
+                DefaultListModel<MethodResult> searchData = new DefaultListModel<>();
+                searchData.clear();
+                for (MethodResult mr : mrs) {
+                    searchData.addElement(mr);
+                }
+                MainForm.getInstance().getSearchList().setModel(searchData);
+                MainForm.getInstance().getTabbedPanel().setSelectedIndex(1);
+            }).start();
+        });
+
         JMenuItem searchCallItem = new JMenuItem("SEARCH CALL INFO");
         popupMenu.add(searchCallItem);
+
         searchCallItem.addActionListener(e -> {
             String methodName = rArea.getSelectedText();
 
@@ -22,27 +48,32 @@ public class CodeMenuHelper {
                 return;
             }
 
+            methodName = methodName.trim();
+
             String className = MainForm.getCurClass();
 
-            List<MethodResult> rL = MainForm.getEngine().getCallers(className, methodName, null);
-            List<MethodResult> eL = MainForm.getEngine().getCallee(className, methodName, null);
+            String finalMethodName = methodName;
+            new Thread(() -> {
+                List<MethodResult> rL = MainForm.getEngine().getCallers(className, finalMethodName, null);
+                List<MethodResult> eL = MainForm.getEngine().getCallee(className, finalMethodName, null);
 
-            DefaultListModel<MethodResult> calleeData = (DefaultListModel<MethodResult>)
-                    MainForm.getInstance().getCalleeList().getModel();
-            DefaultListModel<MethodResult> callerData = (DefaultListModel<MethodResult>)
-                    MainForm.getInstance().getCallerList().getModel();
+                DefaultListModel<MethodResult> calleeData = (DefaultListModel<MethodResult>)
+                        MainForm.getInstance().getCalleeList().getModel();
+                DefaultListModel<MethodResult> callerData = (DefaultListModel<MethodResult>)
+                        MainForm.getInstance().getCallerList().getModel();
 
-            calleeData.clear();
-            callerData.clear();
+                calleeData.clear();
+                callerData.clear();
 
-            for (MethodResult mr : rL) {
-                callerData.addElement(mr);
-            }
-            for (MethodResult mr : eL) {
-                calleeData.addElement(mr);
-            }
+                for (MethodResult mr : rL) {
+                    callerData.addElement(mr);
+                }
+                for (MethodResult mr : eL) {
+                    calleeData.addElement(mr);
+                }
 
-            MainForm.getInstance().getTabbedPanel().setSelectedIndex(2);
+                MainForm.getInstance().getTabbedPanel().setSelectedIndex(2);
+            }).start();
         });
         rArea.setPopupMenu(popupMenu);
     }

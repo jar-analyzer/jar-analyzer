@@ -18,7 +18,6 @@ public class Security {
         // JAVA VERSION
         String version = System.getProperty("java.version");
         if (!version.startsWith("1.8")) {
-            System.out.println("[*] ONLY JAVA 8 LOAD SECURITY MANAGER");
             try {
                 byte[] data = JarAnalyzerInputFilter9Dump.makeJava9();
                 JarAnalyzerClassLoader loader = new JarAnalyzerClassLoader();

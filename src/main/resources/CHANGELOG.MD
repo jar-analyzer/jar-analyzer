@@ -2,6 +2,8 @@
 
 ## 2.25
 
+更新多个重要功能，多个安全增强改进，删除无意义功能
+
 更新日志：
 
 - [重要] 代码区域支持选中方法名右键搜索调用信息
@@ -13,10 +15,12 @@
 - [BUG] 修复某些情况 `AWT` 线程出现异常报错
 - [优化] `full` 和 `system` 版本使用 `G1GC`
 - [优化] 修改 `Xmx` 和 `Xms` 到更合适的值
+- [优化] 自定义 `SecurityManager` 替代 `RASP`
+- [优化] 自定义 `ObjectInputFilter` 保护程序
 - [优化] `API Server` 添加 `favicon.ico`
 - [其他] 内置 `JRE` 改成 `Eclipse Temurin`
 - [其他] 删除修改字节码中方法名的测试功能（无意义）
-- [其他] 删除 `RASP` 和 `SEARCHER` 子项目（无意义）
+- [其他] 删除 `CLASS-SEARCHER` 子项目（无意义）
 
 感谢以下用户的贡献:
 

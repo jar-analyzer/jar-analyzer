@@ -14,6 +14,11 @@ import me.n1ar4.log.LogLevel;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 import me.n1ar4.log.LoggingStream;
+import me.n1ar4.security.JarAnalyzerInputFilter;
+import me.n1ar4.security.JarAnalyzerSecurityManager;
+import sun.misc.ObjectInputFilter;
+
+import java.io.ObjectInputStream;
 
 
 public class Application {
@@ -40,6 +45,21 @@ public class Application {
      * 　　＞―r￣￣~∠--|
      */
     public static void main(String[] args) {
+        // SET SECURITY MANAGER
+        System.setSecurityManager(new JarAnalyzerSecurityManager());
+
+        // SET OBJECT INPUT FILTER
+        ObjectInputFilter objectInputFilter = new JarAnalyzerInputFilter(
+                // MAX ARRAY LENGTH
+                100000,
+                // MAX DEPTH
+                20,
+                // MAX REFS
+                100000,
+                // MAX BYTES
+                500000000);
+        ObjectInputFilter.Config.setSerialFilter(objectInputFilter);
+
         // CHECK WINDOWS
         if (OSUtil.isWindows()) {
             boolean ok = JNIUtil.extractDllSo("console.dll", null, true);

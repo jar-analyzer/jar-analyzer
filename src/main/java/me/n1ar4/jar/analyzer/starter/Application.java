@@ -41,8 +41,9 @@ public class Application {
      */
     public static void main(String[] args) {
         // SET SECURITY MANAGER
+        Security.setSecurityManager();
         // SET OBJECT INPUT FILTER
-        Security.security();
+        Security.setObjectInputFilter();
 
         // CHECK WINDOWS
         if (OSUtil.isWindows()) {

@@ -1,9 +1,12 @@
 package me.n1ar4.security;
 
-import sun.misc.ObjectInputFilter;
-
+/**
+ * 这是原始 ObjectInputFilter
+ * 但是 JAVA 8 和 JAVA 9+ 继承类不一样
+ * 所以使用 ASM 动态生成代码
+ */
 @SuppressWarnings("all")
-public class JarAnalyzerInputFilter implements ObjectInputFilter {
+public class JarAnalyzerInputFilter {
     private final int maxLength;
     private final int maxBytes;
     private final int maxDepth;
@@ -327,36 +330,36 @@ public class JarAnalyzerInputFilter implements ObjectInputFilter {
         this.maxBytes = maxBytes;
     }
 
-    @Override
-    public Status checkInput(FilterInfo filterInfo) {
-        if (filterInfo == null) {
-            return Status.ALLOWED;
-        }
-        if (filterInfo.depth() > maxDepth) {
-            SecurityLog.log("DESERIALIZE DEPTH TOO LARGE");
-            return Status.REJECTED;
-        }
-        if (filterInfo.references() > maxRefs) {
-            SecurityLog.log("DESERIALIZE REFS TOO LARGE");
-            return Status.REJECTED;
-        }
-        if (filterInfo.arrayLength() > maxLength) {
-            SecurityLog.log("DESERIALIZE LENGTH TOO LARGE");
-            return Status.REJECTED;
-        }
-        if (filterInfo.streamBytes() > maxBytes) {
-            SecurityLog.log("DESERIALIZE BYTES TOO LARGE");
-            return Status.REJECTED;
-        }
-        for (String s : BLACK_LIST) {
-            if (filterInfo.serialClass() == null) {
-                continue;
-            }
-            if (filterInfo.serialClass().getName().equals(s)) {
-                SecurityLog.log("REJECT: " + s);
-                return Status.REJECTED;
-            }
-        }
-        return Status.ALLOWED;
-    }
+//    @Override
+//    public Status checkInput(FilterInfo filterInfo) {
+//        if (filterInfo == null) {
+//            return Status.ALLOWED;
+//        }
+//        if (filterInfo.depth() > maxDepth) {
+//            SecurityLog.log("DESERIALIZE DEPTH TOO LARGE");
+//            return Status.REJECTED;
+//        }
+//        if (filterInfo.references() > maxRefs) {
+//            SecurityLog.log("DESERIALIZE REFS TOO LARGE");
+//            return Status.REJECTED;
+//        }
+//        if (filterInfo.arrayLength() > maxLength) {
+//            SecurityLog.log("DESERIALIZE LENGTH TOO LARGE");
+//            return Status.REJECTED;
+//        }
+//        if (filterInfo.streamBytes() > maxBytes) {
+//            SecurityLog.log("DESERIALIZE BYTES TOO LARGE");
+//            return Status.REJECTED;
+//        }
+//        for (String s : BLACK_LIST) {
+//            if (filterInfo.serialClass() == null) {
+//                continue;
+//            }
+//            if (filterInfo.serialClass().getName().equals(s)) {
+//                SecurityLog.log("REJECT: " + s);
+//                return Status.REJECTED;
+//            }
+//        }
+//        return Status.ALLOWED;
+//    }
 }

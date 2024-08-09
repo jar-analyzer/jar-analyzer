@@ -1,13 +1,10 @@
 package me.n1ar4.security;
 
-import me.n1ar4.jar.analyzer.utils.ColorUtil;
 import me.n1ar4.jar.analyzer.utils.IPUtil;
 
 import java.io.FileDescriptor;
 import java.net.InetAddress;
 import java.security.Permission;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @SuppressWarnings("all")
 public class JarAnalyzerSecurityManager extends SecurityManager {

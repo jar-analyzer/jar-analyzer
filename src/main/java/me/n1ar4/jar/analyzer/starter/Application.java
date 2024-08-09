@@ -14,12 +14,7 @@ import me.n1ar4.log.LogLevel;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 import me.n1ar4.log.LoggingStream;
-import me.n1ar4.security.JarAnalyzerInputFilter;
-import me.n1ar4.security.JarAnalyzerSecurityManager;
-import sun.misc.ObjectInputFilter;
-
-import java.io.ObjectInputStream;
-
+import me.n1ar4.security.Security;
 
 public class Application {
     private static final Logger logger = LogManager.getLogger();
@@ -46,19 +41,8 @@ public class Application {
      */
     public static void main(String[] args) {
         // SET SECURITY MANAGER
-        System.setSecurityManager(new JarAnalyzerSecurityManager());
-
         // SET OBJECT INPUT FILTER
-        ObjectInputFilter objectInputFilter = new JarAnalyzerInputFilter(
-                // MAX ARRAY LENGTH
-                100000,
-                // MAX DEPTH
-                20,
-                // MAX REFS
-                100000,
-                // MAX BYTES
-                500000000);
-        ObjectInputFilter.Config.setSerialFilter(objectInputFilter);
+        Security.security();
 
         // CHECK WINDOWS
         if (OSUtil.isWindows()) {

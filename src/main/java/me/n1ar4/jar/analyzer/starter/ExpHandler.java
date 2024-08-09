@@ -3,6 +3,9 @@ package me.n1ar4.jar.analyzer.starter;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 public class ExpHandler implements Thread.UncaughtExceptionHandler {
     private static final Logger logger = LogManager.getLogger();
 
@@ -17,7 +20,18 @@ public class ExpHandler implements Thread.UncaughtExceptionHandler {
                     return;
                 }
             }
-            logger.warn("thread error: {}", e.toString());
+            // 处理下异常：不抛出异常 记录到当前目录
+            StringBuilder sb = new StringBuilder();
+            StackTraceElement[] items = e.getStackTrace();
+            for (StackTraceElement item : items) {
+                String info = String.format("%s.%s:%d\n",
+                        item.getClassName(),
+                        item.getMethodName(),
+                        item.getLineNumber());
+                sb.append(info);
+            }
+            Files.write(Paths.get("JAR-ANALYZER-ERROR.txt"), sb.toString().getBytes());
+            logger.error("UNCAUGHT EXCEPTION LOGGED IN JAR-ANALYZER-ERROR.txt");
         } catch (Exception ex) {
             logger.warn("handle thread error: {}", ex.toString());
         }

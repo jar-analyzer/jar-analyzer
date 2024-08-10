@@ -945,6 +945,17 @@ public class MainForm {
                 instance.serUtilLabel.setText("一个分析 Java 序列化数据中字节码的工具");
 
                 instance.scaTipLabel.setText(" 不建议一次分析开启多个模块");
+
+                instance.addToFavoritesButton.setText("添加到收藏");
+                instance.scaFileLabel.setText("JAR 文件/JAR 目录");
+                instance.scaOutLabel.setText("输出类型");
+                instance.outputFileLabel.setText("输出文件");
+                instance.scaOpenBtn.setText("选择");
+                instance.scaStartBtn.setText("开始");
+                instance.scaResultOpenBtn.setText("打开");
+                instance.scaOutConsoleRadio.setText("命令行输出");
+                instance.scaOutHtmlRadio.setText("HTML文件");
+                instance.htmlGraphBtn.setText("方法HTML图");
             } else if (GlobalOptions.getLang() == GlobalOptions.ENGLISH) {
                 instance.codePanel.setBorder(
                         BorderFactory.createTitledBorder(null,
@@ -1054,6 +1065,17 @@ public class MainForm {
                 instance.serUtilLabel.setText("A tool for bytecodes in Java Serialization Data");
 
                 instance.scaTipLabel.setText(" not recommended to enable multiple modules in one analysis");
+
+                instance.addToFavoritesButton.setText("add to favorites");
+                instance.scaFileLabel.setText("JAR FILE / JAR DIR");
+                instance.scaOutLabel.setText("OUTPUT");
+                instance.outputFileLabel.setText("OUTPUT FILE");
+                instance.scaOpenBtn.setText("OPEN");
+                instance.scaStartBtn.setText("START");
+                instance.scaResultOpenBtn.setText("OPEN");
+                instance.scaOutConsoleRadio.setText("CONSOLE");
+                instance.scaOutHtmlRadio.setText("HTML");
+                instance.htmlGraphBtn.setText("HTML Graph");
             } else {
                 throw new RuntimeException("invalid language");
             }

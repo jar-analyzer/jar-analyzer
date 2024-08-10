@@ -242,6 +242,7 @@ public class CoreRunner {
         config.setDbPath(Const.dbFile);
         config.setJarPath(MainForm.getInstance().getFileText().getText());
         config.setDbSize(fileSizeMB);
+        config.setLang("en");
         MainForm.setConfig(config);
         MainForm.setEngine(new CoreEngine(config));
 

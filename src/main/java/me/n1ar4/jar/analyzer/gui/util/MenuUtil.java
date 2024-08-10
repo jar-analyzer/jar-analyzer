@@ -59,6 +59,9 @@ public class MenuUtil {
                 JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                         "已切换到中文");
                 ConfigFile cf = MainForm.getConfig();
+                if (cf == null) {
+                    return;
+                }
                 cf.setLang("zh");
                 MainForm.setConfig(cf);
                 ConfigEngine.saveConfig(cf);
@@ -75,6 +78,9 @@ public class MenuUtil {
                 JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                         "use english language");
                 ConfigFile cf = MainForm.getConfig();
+                if (cf == null) {
+                    return;
+                }
                 cf.setLang("en");
                 MainForm.setConfig(cf);
                 ConfigEngine.saveConfig(cf);

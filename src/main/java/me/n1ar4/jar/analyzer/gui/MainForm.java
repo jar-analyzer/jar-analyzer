@@ -820,10 +820,21 @@ public class MainForm {
             }
         });
 
-        refreshLang();
+        refreshLang(false);
+        MenuUtil.setLangFlag();
     }
 
-    public static void refreshLang() {
+    public static void refreshLang(boolean checkConfig) {
+        if (!checkConfig && config != null) {
+            String lang = config.getLang();
+            if (lang != null) {
+                if (lang.equals("en")) {
+                    GlobalOptions.setLang(GlobalOptions.ENGLISH);
+                } else if (lang.equals("zh")) {
+                    GlobalOptions.setLang(GlobalOptions.CHINESE);
+                }
+            }
+        }
         try {
             if (GlobalOptions.getLang() == GlobalOptions.CHINESE) {
                 instance.codePanel.setBorder(

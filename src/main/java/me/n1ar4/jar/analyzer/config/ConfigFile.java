@@ -8,6 +8,15 @@ public class ConfigFile {
     private String totalJar;
     private String totalClass;
     private String totalMethod;
+    private String lang;
+
+    public String getLang() {
+        return lang;
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
+    }
 
     public String getJarPath() {
         return jarPath;

@@ -48,6 +48,7 @@ public class ConfigEngine {
             obj.setTotalClass(properties.getProperty("total-class"));
             obj.setTotalJar(properties.getProperty("total-jar"));
             obj.setTotalMethod(properties.getProperty("total-method"));
+            obj.setLang(properties.getProperty("lang"));
             return obj;
         } catch (Exception ex) {
             logger.error("parse config error: {}", ex.toString());
@@ -66,6 +67,7 @@ public class ConfigEngine {
             properties.setProperty("total-class", configFile.getTotalClass());
             properties.setProperty("total-jar", configFile.getTotalJar());
             properties.setProperty("total-method", configFile.getTotalMethod());
+            properties.setProperty("lang",configFile.getLang());
             properties.store(Files.newOutputStream(configPath), null);
         } catch (Exception ex) {
             logger.error("save config error: {}", ex.toString());

@@ -4,6 +4,8 @@ import com.github.rjeschke.txtmark.Processor;
 import me.n1ar4.games.flappy.FBMainFrame;
 import me.n1ar4.games.plane.Game;
 import me.n1ar4.games.pocker.Main;
+import me.n1ar4.jar.analyzer.config.ConfigEngine;
+import me.n1ar4.jar.analyzer.config.ConfigFile;
 import me.n1ar4.jar.analyzer.gui.*;
 import me.n1ar4.jar.analyzer.http.HttpResponse;
 import me.n1ar4.jar.analyzer.http.Y4Client;
@@ -32,13 +34,19 @@ public class MenuUtil {
     private static final JCheckBoxMenuItem chineseConfig = new JCheckBoxMenuItem("Chinese");
     private static final JCheckBoxMenuItem englishConfig = new JCheckBoxMenuItem("English");
 
+    public static void setLangFlag() {
+        if (GlobalOptions.getLang() == GlobalOptions.CHINESE) {
+            chineseConfig.setState(true);
+        } else if (GlobalOptions.getLang() == GlobalOptions.ENGLISH) {
+            englishConfig.setState(true);
+        }
+    }
+
     static {
         showInnerConfig.setState(false);
         fixClassPathConfig.setState(false);
         sortedByMethodConfig.setState(false);
         sortedByClassConfig.setState(true);
-        englishConfig.setState(true);
-        chineseConfig.setState(false);
         logAllSqlConfig.setSelected(true);
 
         chineseConfig.addActionListener(e -> {
@@ -47,9 +55,13 @@ public class MenuUtil {
             if (chineseConfig.getState()) {
                 logger.info("use chinese language");
                 GlobalOptions.setLang(GlobalOptions.CHINESE);
-                MainForm.refreshLang();
+                MainForm.refreshLang(true);
                 JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                         "已切换到中文");
+                ConfigFile cf = MainForm.getConfig();
+                cf.setLang("zh");
+                MainForm.setConfig(cf);
+                ConfigEngine.saveConfig(cf);
             }
         });
 
@@ -59,9 +71,13 @@ public class MenuUtil {
             if (englishConfig.getState()) {
                 logger.info("use english language");
                 GlobalOptions.setLang(GlobalOptions.ENGLISH);
-                MainForm.refreshLang();
+                MainForm.refreshLang(true);
                 JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                         "use english language");
+                ConfigFile cf = MainForm.getConfig();
+                cf.setLang("en");
+                MainForm.setConfig(cf);
+                ConfigEngine.saveConfig(cf);
             }
         });
 

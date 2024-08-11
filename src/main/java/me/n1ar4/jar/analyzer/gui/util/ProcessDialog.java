@@ -3,6 +3,7 @@ package me.n1ar4.jar.analyzer.gui.util;
 import javax.swing.*;
 import java.awt.*;
 
+@SuppressWarnings("all")
 public class ProcessDialog {
     public static JDialog createProgressDialog(JPanel master) {
         JProgressBar progressBar = new JProgressBar();
@@ -25,7 +26,7 @@ public class ProcessDialog {
                 JOptionPane.DEFAULT_OPTION, IconManager.showIcon, new Object[]{}, null);
 
         JDialog dialog = new JDialog();
-        dialog.setTitle("Jar Analyzer V2");
+        dialog.setTitle("Jar Analyzer");
         dialog.setModalityType(JDialog.DEFAULT_MODALITY_TYPE);
         dialog.setContentPane(optionPane);
         dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

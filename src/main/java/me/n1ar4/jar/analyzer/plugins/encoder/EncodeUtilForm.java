@@ -148,7 +148,7 @@ public class EncodeUtilForm {
     }
 
     public static void start() {
-        JFrame frame = new JFrame("Jar Analyzer V2 - Encoder");
+        JFrame frame = new JFrame("Jar Analyzer - Encoder");
         frame.setContentPane(new EncodeUtilForm().encodeUtilPanel);
         frame.setResizable(false);
         frame.setLocationRelativeTo(MainForm.getInstance().getMasterPanel());

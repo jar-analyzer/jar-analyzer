@@ -54,7 +54,7 @@ public class ListenUtilForm {
     }
 
     public static void start() {
-        JFrame frame = new JFrame("Jar Analyzer V2 - Listener");
+        JFrame frame = new JFrame("Jar Analyzer - Listener");
         frame.setContentPane(new ListenUtilForm().listenUtilPanel);
         frame.setResizable(false);
         frame.setLocationRelativeTo(MainForm.getInstance().getMasterPanel());

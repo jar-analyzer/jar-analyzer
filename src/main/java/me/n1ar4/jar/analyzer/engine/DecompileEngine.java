@@ -23,7 +23,7 @@ public class DecompileEngine {
     private static final String JAVA_DIR = "jar-analyzer-decompile";
     private static final String JAVA_FILE = ".java";
     private static final String FERN_PREFIX = "//\n" +
-            "// Jar Analyzer V2 by 4ra1n\n" +
+            "// Jar Analyzer by 4ra1n\n" +
             "// (powered by FernFlower decompiler)\n" +
             "//\n";
 

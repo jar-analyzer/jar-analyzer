@@ -23,6 +23,7 @@ if "%JAVA_HOME%"=="" (
 )
 
 rem start jar
+echo [*] JVM ARGS: %java_args%
 "%JAVA_HOME%\bin\java.exe" %java_args% -cp %java_cp% %main_class% gui -t %theme_name% -p %api_server_port%
 
 :end

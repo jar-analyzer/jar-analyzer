@@ -69,6 +69,9 @@ public class CoreRunner {
                             "文件内容过大，可能产生巨大的临时文件和数据库，可能非常消耗内存<br>" +
                             "请确认是否要继续进行分析" +
                             "</html>");
+        } else if (totalM == 0) {
+            chose = JOptionPane.showConfirmDialog(MainForm.getInstance().getMasterPanel(),
+                    "加载 JAR/WAR 总大小不足 1MB 是否继续");
         } else {
             chose = JOptionPane.showConfirmDialog(MainForm.getInstance().getMasterPanel(),
                     "加载 JAR/WAR 总大小 " + totalM + " MB 是否继续");

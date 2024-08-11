@@ -13,6 +13,7 @@
 - [功能] 分析历史和记录功能合并到同个 `PANEL` 中
 - [功能] 方法记录功能允许删除单个和全部清除
 - [功能] 语言切换支持保存重启后读取记录生效
+- [功能] 新增 `FreeMarker` 调用的一键搜索
 - [BUG] 修复某些情况 `AWT` 线程出现异常报错
 - [优化] 代码区域搜索输入框内容变化实时监听搜索
 - [优化] 代码区域搜索按 `ENTER` 键切换下一条记录
@@ -20,6 +21,7 @@
 - [优化] 修改 `Xmx` 和 `Xms` 到更合适的值
 - [优化] 自定义 `SecurityManager` 替代 `RASP`
 - [优化] 自定义 `ObjectInputFilter` 保护程序
+- [优化] 输入 `JAR` 大小不足 `1MB` 的提示优化
 - [优化] `API Server` 添加 `favicon.ico`
 - [其他] 内置 `JRE` 改成 `Eclipse Temurin`
 - [其他] 升级 `hutool/flatlaf/slf4j` 依赖版本

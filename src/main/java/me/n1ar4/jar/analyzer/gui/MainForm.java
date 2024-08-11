@@ -232,6 +232,7 @@ public class MainForm {
     private JScrollPane favScroll;
     private JList<MethodResult> favList;
     private JButton addToFavoritesButton;
+    private JButton freeMarkerButton;
     private static DefaultListModel<MethodResult> favData;
 
     public static String getCurClass() {
@@ -598,6 +599,10 @@ public class MainForm {
         return hessianButton;
     }
 
+    public JButton getFreeMarkerButton() {
+        return freeMarkerButton;
+    }
+
     public JButton getStartELSearchButton() {
         return startELSearchButton;
     }
@@ -786,6 +791,7 @@ public class MainForm {
         FastjsonVulAction.register();
         ZIPVulAction.register();
         HessianAction.register();
+        FreeMarkerAction.register();
 
         Font codeFont = FontHelper.getFont();
         instance.blackArea.setFont(codeFont);
@@ -1536,7 +1542,7 @@ public class MainForm {
         advancePanel.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPanel.addTab("advance", advancePanel);
         javaVulSearchPanel = new JPanel();
-        javaVulSearchPanel.setLayout(new GridLayoutManager(5, 3, new Insets(0, 0, 0, 0), -1, -1));
+        javaVulSearchPanel.setLayout(new GridLayoutManager(6, 3, new Insets(0, 0, 0, 0), -1, -1));
         advancePanel.add(javaVulSearchPanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         javaVulSearchPanel.setBorder(BorderFactory.createTitledBorder(null, "Java Vulnerability", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         JNDIButton = new JButton();
@@ -1578,6 +1584,9 @@ public class MainForm {
         hessianButton = new JButton();
         hessianButton.setText("Hessian readObject");
         javaVulSearchPanel.add(hessianButton, new GridConstraints(4, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        freeMarkerButton = new JButton();
+        freeMarkerButton.setText("FreeMarker");
+        javaVulSearchPanel.add(freeMarkerButton, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer2 = new Spacer();
         advancePanel.add(spacer2, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         piPanel = new JPanel();

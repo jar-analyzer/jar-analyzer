@@ -1151,7 +1151,7 @@ public class MainForm {
 
         frame.setIconImage(IconManager.showIcon.getImage());
 
-        UpdateChecker.checkUpdate();
+        UpdateChecker.check();
 
         frame.pack();
         frame.setResizable(true);

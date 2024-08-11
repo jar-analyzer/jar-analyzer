@@ -244,6 +244,7 @@ public class MenuUtil {
         return null;
     }
 
+    @SuppressWarnings("all")
     private static JMenu createAboutMenu() {
         try {
             JMenu aboutMenu = new JMenu("help");
@@ -265,15 +266,15 @@ public class MenuUtil {
                 }
             });
 
-            JMenuItem authorItem = new JMenuItem("project");
+            JMenuItem projectItem = new JMenuItem("project");
             is = MainForm.class.getClassLoader().getResourceAsStream("img/address.png");
             if (is == null) {
                 return null;
             }
             imageIcon = new ImageIcon(ImageIO.read(is));
-            authorItem.setIcon(imageIcon);
-            aboutMenu.add(authorItem);
-            authorItem.addActionListener(e -> {
+            projectItem.setIcon(imageIcon);
+            aboutMenu.add(projectItem);
+            projectItem.addActionListener(e -> {
                 try {
                     Desktop desktop = Desktop.getDesktop();
                     URI oURL = new URI(Const.projectUrl);
@@ -290,14 +291,14 @@ public class MenuUtil {
             imageIcon = new ImageIcon(ImageIO.read(is));
             jarItem.setIcon(imageIcon);
             aboutMenu.add(jarItem);
-            JMenuItem updateItem = new JMenuItem("changelogs");
+            JMenuItem changelogItem = new JMenuItem("changelogs");
             is = MainForm.class.getClassLoader().getResourceAsStream("img/update.png");
             if (is == null) {
                 return null;
             }
             imageIcon = new ImageIcon(ImageIO.read(is));
-            updateItem.setIcon(imageIcon);
-            updateItem.addActionListener(e -> {
+            changelogItem.setIcon(imageIcon);
+            changelogItem.addActionListener(e -> {
                 try {
                     InputStream i = MenuUtil.class.getClassLoader().getResourceAsStream("CHANGELOG.MD");
                     if (i == null) {
@@ -315,31 +316,30 @@ public class MenuUtil {
                     logger.error("error: {}", ex.toString());
                 }
             });
-            aboutMenu.add(updateItem);
-            JMenuItem downItem = new JMenuItem("check update");
+            aboutMenu.add(changelogItem);
+            JMenuItem checkUpdateItem = new JMenuItem("check update");
             is = MainForm.class.getClassLoader().getResourceAsStream("img/normal.png");
             if (is == null) {
                 return null;
             }
             imageIcon = new ImageIcon(ImageIO.read(is));
-            downItem.setIcon(imageIcon);
-            downItem.addActionListener(e -> {
-                new Thread(() -> {
-                    HttpResponse resp = Y4Client.INSTANCE.get(Const.checkUpdateUrl);
-                    String body = new String(resp.getBody());
-                    if (body.isEmpty()) {
-                        return;
-                    }
-                    String ver = body.trim();
-                    LogUtil.info("latest: " + ver);
-                    String output;
-                    output = String.format("%s: %s\n%s: %s",
-                            "Current Version", Const.version,
-                            "Latest Version", ver);
-                    JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(), output);
-                }).start();
-            });
-            aboutMenu.add(downItem);
+            checkUpdateItem.setIcon(imageIcon);
+            checkUpdateItem.addActionListener(e -> new Thread(() -> {
+                logger.info("check update from aliyun oss");
+                HttpResponse resp = Y4Client.INSTANCE.get(Const.checkUpdateUrl);
+                String body = new String(resp.getBody());
+                if (body.isEmpty()) {
+                    return;
+                }
+                String ver = body.trim();
+                LogUtil.info("latest: " + ver);
+                String output;
+                output = String.format("%s: %s\n%s: %s",
+                        "Current Version", Const.version,
+                        "Latest Version", ver);
+                JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(), output);
+            }).start());
+            aboutMenu.add(checkUpdateItem);
             return aboutMenu;
         } catch (Exception ex) {
             return null;

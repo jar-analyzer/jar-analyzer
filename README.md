@@ -18,7 +18,7 @@
 
 一键快速搜索
 
-![](img/0052.png)
+![](img/0060.png)
 
 `Jar Analyzer` 是一个分析 `Jar` 文件的 `GUI` 工具：
 

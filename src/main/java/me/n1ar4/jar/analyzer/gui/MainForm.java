@@ -233,6 +233,14 @@ public class MainForm {
     private JList<MethodResult> favList;
     private JButton addToFavoritesButton;
     private JButton freeMarkerButton;
+    private JButton JEXLButton;
+    private JButton rhinoEvalButton;
+    private JButton aviatorExecuteButton;
+    private JButton mvelEvalButton;
+    private JButton qlExpressButton;
+    private JButton sqlExecNoPrepareButton;
+    private JButton sqlExecButton;
+    private JButton xStreamButton;
     private static DefaultListModel<MethodResult> favData;
 
     public static String getCurClass() {
@@ -563,6 +571,38 @@ public class MainForm {
         return BCELLoadClassButton;
     }
 
+    public JButton getJEXLButton() {
+        return JEXLButton;
+    }
+
+    public JButton getRhinoEvalButton() {
+        return rhinoEvalButton;
+    }
+
+    public JButton getAviatorExecuteButton() {
+        return aviatorExecuteButton;
+    }
+
+    public JButton getMvelEvalButton() {
+        return mvelEvalButton;
+    }
+
+    public JButton getQlExpressButton() {
+        return qlExpressButton;
+    }
+
+    public JButton getSqlExecButton() {
+        return sqlExecButton;
+    }
+
+    public JButton getSqlExecNoPrepareButton() {
+        return sqlExecNoPrepareButton;
+    }
+
+    public JButton getXStreamButton() {
+        return xStreamButton;
+    }
+
     public JButton getDefineClassButton() {
         return defineClassButton;
     }
@@ -792,6 +832,14 @@ public class MainForm {
         ZIPVulAction.register();
         HessianAction.register();
         FreeMarkerAction.register();
+        JEXLAction.register();
+        RhinoAction.register();
+        AviatorAction.register();
+        MvelAction.register();
+        QLExpressAction.register();
+        XStreamAction.register();
+        SQLExecAction.register();
+        SQLExecNoPrepareAction.register();
 
         Font codeFont = FontHelper.getFont();
         instance.blackArea.setFont(codeFont);
@@ -1542,7 +1590,7 @@ public class MainForm {
         advancePanel.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPanel.addTab("advance", advancePanel);
         javaVulSearchPanel = new JPanel();
-        javaVulSearchPanel.setLayout(new GridLayoutManager(6, 3, new Insets(0, 0, 0, 0), -1, -1));
+        javaVulSearchPanel.setLayout(new GridLayoutManager(8, 3, new Insets(0, 0, 0, 0), -1, -1));
         advancePanel.add(javaVulSearchPanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         javaVulSearchPanel.setBorder(BorderFactory.createTitledBorder(null, "Java Vulnerability", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         JNDIButton = new JButton();
@@ -1587,6 +1635,30 @@ public class MainForm {
         freeMarkerButton = new JButton();
         freeMarkerButton.setText("FreeMarker");
         javaVulSearchPanel.add(freeMarkerButton, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        JEXLButton = new JButton();
+        JEXLButton.setText("JEXL eval");
+        javaVulSearchPanel.add(JEXLButton, new GridConstraints(5, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        rhinoEvalButton = new JButton();
+        rhinoEvalButton.setText("Rhino eval");
+        javaVulSearchPanel.add(rhinoEvalButton, new GridConstraints(5, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        aviatorExecuteButton = new JButton();
+        aviatorExecuteButton.setText("Aviator execute");
+        javaVulSearchPanel.add(aviatorExecuteButton, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        mvelEvalButton = new JButton();
+        mvelEvalButton.setText("MVEL eval");
+        javaVulSearchPanel.add(mvelEvalButton, new GridConstraints(6, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        qlExpressButton = new JButton();
+        qlExpressButton.setText("QLExpress");
+        javaVulSearchPanel.add(qlExpressButton, new GridConstraints(6, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        sqlExecNoPrepareButton = new JButton();
+        sqlExecNoPrepareButton.setText("SQL exec (no prepare)");
+        javaVulSearchPanel.add(sqlExecNoPrepareButton, new GridConstraints(7, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        sqlExecButton = new JButton();
+        sqlExecButton.setText("SQL exec");
+        javaVulSearchPanel.add(sqlExecButton, new GridConstraints(7, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        xStreamButton = new JButton();
+        xStreamButton.setText("XStream");
+        javaVulSearchPanel.add(xStreamButton, new GridConstraints(7, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer2 = new Spacer();
         advancePanel.add(spacer2, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         piPanel = new JPanel();

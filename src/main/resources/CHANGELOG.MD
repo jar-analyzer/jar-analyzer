@@ -20,6 +20,7 @@
 - [优化] 自定义 `ObjectInputFilter` 保护程序
 - [优化] `API Server` 添加 `favicon.ico`
 - [其他] 内置 `JRE` 改成 `Eclipse Temurin`
+- [其他] 升级 `hutool/flatlaf/slf4j` 依赖版本
 - [其他] 删除修改字节码中方法名的测试功能（无意义）
 - [其他] 删除 `CLASS-SEARCHER` 子项目（无意义）
 

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SQLExecNoPrepareAction {
-    public static void register(){
+    public static void register() {
         MainForm instance = MainForm.getInstance();
 
         instance.getSqlExecNoPrepareButton().addActionListener(e -> {

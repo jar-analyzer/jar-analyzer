@@ -1,6 +1,5 @@
 package me.n1ar4.jar.analyzer.gui.vul;
 
-import cn.hutool.extra.expression.engine.jexl.JexlEngine;
 import me.n1ar4.jar.analyzer.engine.CoreHelper;
 import me.n1ar4.jar.analyzer.engine.SearchCondition;
 import me.n1ar4.jar.analyzer.gui.MainForm;

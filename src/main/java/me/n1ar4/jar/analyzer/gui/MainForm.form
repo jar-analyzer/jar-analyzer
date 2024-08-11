@@ -1349,7 +1349,9 @@
                       </component>
                       <component id="43e7" class="javax.swing.JButton" binding="htmlGraphBtn">
                         <constraints>
-                          <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                          <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                            <maximum-size width="150" height="-1"/>
+                          </grid>
                         </constraints>
                         <properties>
                           <text value="HTML Graph"/>

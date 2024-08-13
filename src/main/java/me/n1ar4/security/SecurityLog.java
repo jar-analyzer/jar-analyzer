@@ -10,7 +10,7 @@ public class SecurityLog {
         String timestamp = LocalDateTime.now().format(
                 DateTimeFormatter.ofPattern("HH:mm:ss"));
         String logInfo = String.format("[%s] [%s] %s\n",
-                timestamp, ColorUtil.red("SECURITY"), info);
+                timestamp, ColorUtil.blue("SECURITY"), info);
         System.out.print(logInfo);
     }
 }

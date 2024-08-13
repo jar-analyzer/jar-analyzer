@@ -81,15 +81,9 @@ public class SSAUConstructorSparseEx {
 
         setCatchMaps(root, dgraph, flatthelper);
 
-        //		try {
-        //			DotExporter.toDotFile(dgraph, new File("c:\\Temp\\gr12_my.dot"));
-        //		} catch(Exception ex) {ex.printStackTrace();}
-
         HashSet<String> updated = new HashSet<>();
         do {
-            //			System.out.println("~~~~~~~~~~~~~ \r\n"+root.toJava());
             ssaStatements(dgraph, updated, false);
-            //			System.out.println("~~~~~~~~~~~~~ \r\n"+root.toJava());
         }
         while (!updated.isEmpty());
 

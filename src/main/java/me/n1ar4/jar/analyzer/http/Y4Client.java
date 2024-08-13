@@ -69,7 +69,6 @@ public class Y4Client {
             }
             return getHttpResponse(request.getHeaders(), requestBuilder);
         } catch (Exception ex) {
-            ex.printStackTrace();
             logger.error("http request error: {}", ex.toString());
             return null;
         }

@@ -34,12 +34,6 @@ public class FastExtendedPostdominanceHelper {
 
         lstReversePostOrderList = statement.getReversePostOrderList();
 
-        //		try {
-        //			DotExporter.toDotFile(statement, new File("c:\\Temp\\stat1.dot"));
-        //		} catch (Exception ex) {
-        //			ex.printStackTrace();
-        //		}
-
         calcDefaultReachableSets();
 
         removeErroneousNodes();

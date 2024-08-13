@@ -67,8 +67,7 @@ public class RemoteHttp {
             okHttpClient.newCall(request).enqueue(new Callback() {
                 @Override
                 @SuppressWarnings("all")
-                public void onFailure(Call call, IOException e1) {
-                    e1.printStackTrace();
+                public void onFailure(Call call, IOException ignored) {
                 }
 
                 @Override
@@ -103,8 +102,7 @@ public class RemoteHttp {
                             progressBar.setValue(progress);
                         }
                         fos.flush();
-                    } catch (Exception e1) {
-                        e1.printStackTrace();
+                    } catch (Exception ignored) {
                     } finally {
                         try {
                             if (is != null)

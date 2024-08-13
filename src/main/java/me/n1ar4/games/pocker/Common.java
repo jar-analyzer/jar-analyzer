@@ -96,8 +96,7 @@ public class Common {
                 card.setLocation(i, (int) y);
                 try {
                     Thread.sleep(5);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                } catch (InterruptedException ignored) {
                 }
             }
         }

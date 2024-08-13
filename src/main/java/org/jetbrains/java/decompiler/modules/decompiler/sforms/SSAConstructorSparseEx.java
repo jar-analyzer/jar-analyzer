@@ -48,13 +48,8 @@ public class SSAConstructorSparseEx {
     private FastSparseSetFactory<Integer> factory;
 
     public void splitVariables(RootStatement root, StructMethod mt) {
-
         FlattenStatementsHelper flatthelper = new FlattenStatementsHelper();
         DirectGraph dgraph = flatthelper.buildDirectGraph(root);
-
-        // try {
-        // DotExporter.toDotFile(dgraph, new File("c:\\Temp\\gr12_my.dot"));
-        // } catch(Exception ex) {ex.printStackTrace();}
 
         HashSet<Integer> setInit = new HashSet<>();
         for (int i = 0; i < 64; i++) {
@@ -69,30 +64,13 @@ public class SSAConstructorSparseEx {
 
         HashSet<String> updated = new HashSet<>();
         do {
-            // System.out.println("~~~~~~~~~~~~~ \r\n"+root.toJava());
             ssaStatements(dgraph, updated);
-            // System.out.println("~~~~~~~~~~~~~ \r\n"+root.toJava());
         }
         while (!updated.isEmpty());
     }
 
     private void ssaStatements(DirectGraph dgraph, HashSet<String> updated) {
-
-        // try {
-        // DotExporter.toDotFile(dgraph, new File("c:\\Temp\\gr1_my.dot"));
-        // } catch(Exception ex) {ex.printStackTrace();}
-
         for (DirectNode node : dgraph.nodes) {
-
-            //			if (node.id.endsWith("_inc")) {
-            //				System.out.println();
-            //
-            //				try {
-            //					DotExporter.toDotFile(dgraph, new File("c:\\Temp\\gr1_my.dot"));
-            //				} catch (Exception ex) {
-            //					ex.printStackTrace();
-            //				}
-            //			}
 
             updated.remove(node.id);
             mergeInVarMaps(node, dgraph);

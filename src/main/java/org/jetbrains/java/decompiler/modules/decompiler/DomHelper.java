@@ -188,12 +188,6 @@ public class DomHelper {
         RootStatement root = graphToStatement(graph);
 
         if (!processStatement(root, new HashMap<>())) {
-
-            //			try {
-            //				DotExporter.toDotFile(root.getFirst().getStats().get(13), new File("c:\\Temp\\stat1.dot"));
-            //			} catch (Exception ex) {
-            //				ex.printStackTrace();
-            //			}
             throw new RuntimeException("parsing failure!");
         }
 
@@ -202,7 +196,6 @@ public class DomHelper {
         SequenceHelper.condenseSequences(root);
         root.buildMonitorFlags();
 
-        // build synchronized statements
         buildSynchronized(root);
 
         return root;
@@ -313,11 +306,6 @@ public class DomHelper {
                  reducibility++) { // FIXME: implement proper node splitting. For now up to 5 nodes in sequence are splitted.
 
                 if (reducibility > 0) {
-
-                    //					try {
-                    //						DotExporter.toDotFile(general, new File("c:\\Temp\\stat1.dot"));
-                    //					} catch(Exception ex) {ex.printStackTrace();}
-
                     // take care of irreducible control flow graphs
                     if (IrreducibleCFGDeobfuscator.isStatementIrreducible(general)) {
                         if (!IrreducibleCFGDeobfuscator.splitIrreducibleNode(general)) {
@@ -330,11 +318,6 @@ public class DomHelper {
                         }
                         break;
                     }
-
-                    //					try {
-                    //						DotExporter.toDotFile(general, new File("c:\\Temp\\stat1.dot"));
-                    //					} catch(Exception ex) {ex.printStackTrace();}
-
                     mapExtPost = new HashMap<>();
                     mapRefreshed = true;
                 }
@@ -359,7 +342,6 @@ public class DomHelper {
                             boolean complete = processStatement(stat, general.getFirst() == stat ? mapExtPost : new HashMap<>());
 
                             if (complete) {
-                                // replace general purpose statement with simple one
                                 general.replaceStatement(stat, stat.getFirst());
                             } else {
                                 return false;
@@ -373,12 +355,6 @@ public class DomHelper {
                         }
                     }
                 }
-
-                //				try {
-                //					DotExporter.toDotFile(general, new File("c:\\Temp\\stat1.dot"));
-                //				} catch (Exception ex) {
-                //					ex.printStackTrace();
-                //				}
             }
 
             if (mapRefreshed) {

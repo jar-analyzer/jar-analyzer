@@ -33,8 +33,7 @@ public class Card extends JLabel implements MouseListener {
             this.setIcon(new ImageIcon(ImageIO.read(
                     this.getClass().getClassLoader().getResourceAsStream("game/pocker/" + "images/" + name + ".gif"))));
             this.up = true;
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception ignored) {
         }
     }
 
@@ -43,8 +42,7 @@ public class Card extends JLabel implements MouseListener {
             this.setIcon(new ImageIcon(ImageIO.read(
                     this.getClass().getClassLoader().getResourceAsStream("game/pocker/" + "images/rear.gif"))));
             this.up = false;
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception ignored) {
         }
     }
 

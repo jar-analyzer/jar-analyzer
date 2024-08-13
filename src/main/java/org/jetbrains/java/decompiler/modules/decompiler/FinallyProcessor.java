@@ -488,18 +488,10 @@ public class FinallyProcessor {
             lstAreas.add(arr);
         }
 
-        //		try {
-        //			DotExporter.toDotFile(graph, new File("c:\\Temp\\fern5.dot"), true);
-        //		} catch(Exception ex){ex.printStackTrace();}
-
         // delete areas
         for (Area area : lstAreas) {
             deleteArea(graph, area);
         }
-
-        //		try {
-        //			DotExporter.toDotFile(graph, new File("c:\\Temp\\fern5.dot"), true);
-        //		} catch(Exception ex){ex.printStackTrace();}
 
         // INFO: empty basic blocks may remain in the graph!
         for (Entry<BasicBlock, Boolean> entry : mapLast.entrySet()) {
@@ -705,12 +697,6 @@ public class FinallyProcessor {
                     }
                 }
             }
-
-            //			try {
-            //				DotExporter.toDotFile(graph, new File("c:\\Temp\\fern5.dot"), true);
-            //			} catch(IOException ex) {
-            //				ex.printStackTrace();
-            //			}
 
             for (BasicBlock[] arr : setNext) {
                 if (arr[1] != next) {

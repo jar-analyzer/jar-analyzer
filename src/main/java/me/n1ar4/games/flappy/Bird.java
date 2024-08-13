@@ -38,8 +38,7 @@ public class Bird extends FBImgIcon implements InXMLAnalysis, Runnable {
         while (live) {
             try {
                 Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            } catch (InterruptedException ignored) {
             }
             if (iconIndex == 2) {
                 iconIndex = 0;

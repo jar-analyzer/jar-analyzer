@@ -30,8 +30,7 @@ public class PM {
             enemybulletpng = ImageIO.read(PM.class.getClassLoader().getResourceAsStream(
                     "game/plane/enemybullet.png"));
             gameoverjpg = ImageIO.read(PM.class.getClassLoader().getResourceAsStream("game/plane/gameover.jpg"));
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignored) {
         }
     }
 }

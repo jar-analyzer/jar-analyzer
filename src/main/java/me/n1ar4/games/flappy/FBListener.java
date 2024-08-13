@@ -31,8 +31,7 @@ public class FBListener implements MouseListener, MouseMotionListener, Runnable 
             frame.repaint();
             try {
                 Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            } catch (InterruptedException ignored) {
             }
             move();
         }

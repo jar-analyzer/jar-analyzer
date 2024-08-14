@@ -1138,7 +1138,7 @@ public class MainForm {
         }
     }
 
-    public static void start() {
+    public static JFrame start() {
         UIHelper.setup();
         JFrame frame = new JFrame(Const.app);
         instance = new MainForm();
@@ -1156,7 +1156,8 @@ public class MainForm {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setResizable(true);
-        frame.setVisible(true);
+        frame.setVisible(false);
+        return frame;
     }
 
     private void resolveConfig() {

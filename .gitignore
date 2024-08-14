@@ -46,6 +46,7 @@ target/
 .jar-analyzer
 .idea/
 jar-analyzer-temp/
+jar-analyzer-export/
 jar-analyzer-download/
 build/jre/jre/
 jar-analyzer-lockfile

@@ -1,11 +1,15 @@
 // Copyright 2000-2018 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package org.jetbrains.java.decompiler.main.decompiler;
 
+import me.n1ar4.log.LogManager;
+import me.n1ar4.log.Logger;
 import org.jetbrains.java.decompiler.main.extern.IFernflowerLogger;
 
 import java.io.PrintStream;
 
 public class PrintStreamLogger extends IFernflowerLogger {
+
+    private static final Logger logger = LogManager.getLogger();
 
     private final PrintStream stream;
     private int indent;
@@ -18,7 +22,7 @@ public class PrintStreamLogger extends IFernflowerLogger {
     @Override
     public void writeMessage(String message, Severity severity) {
         if (accepts(severity)) {
-            stream.println(message);
+            logger.debug("decompile: " + message);
         }
     }
 
@@ -42,14 +46,12 @@ public class PrintStreamLogger extends IFernflowerLogger {
     public void endReadingClass() {
         if (accepts(Severity.INFO)) {
             --indent;
-            writeMessage("done", Severity.INFO);
         }
     }
 
     @Override
     public void startClass(String className) {
         if (accepts(Severity.INFO)) {
-            writeMessage("Processing class " + className, Severity.TRACE);
             ++indent;
         }
     }
@@ -58,14 +60,12 @@ public class PrintStreamLogger extends IFernflowerLogger {
     public void endClass() {
         if (accepts(Severity.INFO)) {
             --indent;
-            writeMessage("... proceeded", Severity.TRACE);
         }
     }
 
     @Override
     public void startMethod(String methodName) {
         if (accepts(Severity.INFO)) {
-            writeMessage("Processing method " + methodName, Severity.TRACE);
             ++indent;
         }
     }
@@ -74,14 +74,12 @@ public class PrintStreamLogger extends IFernflowerLogger {
     public void endMethod() {
         if (accepts(Severity.INFO)) {
             --indent;
-            writeMessage("... proceeded", Severity.TRACE);
         }
     }
 
     @Override
     public void startWriteClass(String className) {
         if (accepts(Severity.INFO)) {
-            writeMessage("Writing class " + className, Severity.TRACE);
             ++indent;
         }
     }
@@ -90,7 +88,6 @@ public class PrintStreamLogger extends IFernflowerLogger {
     public void endWriteClass() {
         if (accepts(Severity.INFO)) {
             --indent;
-            writeMessage("... written", Severity.TRACE);
         }
     }
 }

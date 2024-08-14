@@ -19,10 +19,14 @@ rem support default metal win win-classic motif mac gtk cross aqua nimbus
 set "theme_name=default"
 rem http api server port
 set "api_server_port=10032"
+rem log level
+set "log_level=debug"
+rem program args
+set "program_args=--theme %theme_name% --port %api_server_port% --log-level %log_level%"
 
 rem start jar
 echo [*] RUN %jar-analyzer% ON JAVA 21
 echo [*] JVM ARGS: %java_args%
-%jre_bin_abs% %java_args% -cp %java_cp% %main_class% gui -t %theme_name% -p %api_server_port%
+%jre_bin_abs% %java_args% -cp %java_cp% %main_class% gui %program_args%
 
 endlocal

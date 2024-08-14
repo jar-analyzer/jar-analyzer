@@ -80,7 +80,7 @@ public class DecompileEngine {
                 String key = classFilePath.toAbsolutePath().toString();
                 String data = lruCache.get(key);
                 if (data != null && !data.isEmpty()) {
-                    logger.info("use cache");
+                    logger.debug("use cache");
                     return data;
                 }
                 Path dirPath = Paths.get(Const.tempDir);
@@ -137,7 +137,7 @@ public class DecompileEngine {
                     Files.delete(newFilePath);
                 } catch (Exception ignored) {
                 }
-                logger.info("save cache");
+                logger.debug("save cache");
                 lruCache.put(key, codeStr);
                 return codeStr;
             } else {

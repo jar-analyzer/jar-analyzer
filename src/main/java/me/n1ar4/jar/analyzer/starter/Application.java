@@ -9,6 +9,7 @@ import me.n1ar4.jar.analyzer.server.HttpServer;
 import me.n1ar4.jar.analyzer.utils.ConsoleUtils;
 import me.n1ar4.jar.analyzer.utils.JNIUtil;
 import me.n1ar4.jar.analyzer.utils.OSUtil;
+import me.n1ar4.jar.analyzer.utils.StringUtil;
 import me.n1ar4.log.LogLevel;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
@@ -55,9 +56,6 @@ public class Application {
             }
         }
 
-        // SET LOG LEVEL
-        LogManager.setLevel(LogLevel.INFO);
-
         // PRINT LOGO
         Logo.print();
 
@@ -75,6 +73,34 @@ public class Application {
             commander.usage();
             return;
         }
+
+        // SET LOG LEVEL (debug|info|warn|error)
+        LogLevel logLevel;
+        String logLevelStr = startCmd.getLogLevel();
+        if (logLevelStr == null || StringUtil.isNull(logLevelStr)) {
+            System.out.println("[-] UNKNOWN LOG LEVEL USE INFO LEVEL BY DEFAULT");
+            logLevel = LogLevel.INFO;
+        } else {
+            switch (logLevelStr) {
+                case "debug":
+                    logLevel = LogLevel.DEBUG;
+                    break;
+                case "info":
+                    logLevel = LogLevel.INFO;
+                    break;
+                case "warn":
+                    logLevel = LogLevel.WARN;
+                    break;
+                case "error":
+                    logLevel = LogLevel.ERROR;
+                    break;
+                default:
+                    logLevel = LogLevel.INFO;
+                    System.out.println("[-] UNKNOWN LOG LEVEL USE INFO LEVEL BY DEFAULT");
+                    break;
+            }
+        }
+        LogManager.setLevel(logLevel);
 
         // THEME PROCESS
         ThemeHelper.process(startCmd);

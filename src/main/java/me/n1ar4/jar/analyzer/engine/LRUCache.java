@@ -37,7 +37,7 @@ public class LRUCache {
         }
         moveToHead(node);
 
-        logger.info("LRU GET - capacity : {} - size : {}", capacity, count);
+        logger.debug("LRU GET - capacity : {} - size : {}", capacity, count);
 
         return node.value;
     }
@@ -68,7 +68,7 @@ public class LRUCache {
         count++;
         addNode(newNode);
 
-        logger.info("LRU PUT - capacity : {} - size : {}", capacity, count);
+        logger.debug("LRU PUT - capacity : {} - size : {}", capacity, count);
     }
 
     private Node findNodeByKey(String key) {

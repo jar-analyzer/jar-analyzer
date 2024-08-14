@@ -14,6 +14,9 @@ public class StartCmd {
             description = "use theme name (default|metal|win|win-classic|motif|mac|gtk|cross|aqua|nimbus)")
     public String theme;
 
+    @Parameter(names = {"-l", "--log-level"}, description = "set log level (debug|info|warn|error)")
+    public String logLevel;
+
     public StartCmd() {
 
     }
@@ -32,5 +35,13 @@ public class StartCmd {
 
     public void setTheme(String theme) {
         this.theme = theme;
+    }
+
+    public String getLogLevel() {
+        return logLevel;
+    }
+
+    public void setLogLevel(String logLevel) {
+        this.logLevel = logLevel;
     }
 }

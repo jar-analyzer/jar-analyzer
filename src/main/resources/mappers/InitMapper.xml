@@ -2,337 +2,136 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="me.n1ar4.jar.analyzer.core.mapper.InitMapper">
     <update id="createJarTable">
-        create table if not exists jar_table
+        CREATE TABLE IF NOT EXISTS jar_table
         (
-            jid
-            integer
-            not
-            null
-            constraint
-            jar_table_pk
-            primary
-            key
-            autoincrement,
-            jar_name
-            TEXT
-            not
-            null,
-            jar_abs_path
-            TEXT
-            not
-            null
+            jid INTEGER NOT NULL
+            CONSTRAINT jar_table_pk PRIMARY KEY AUTOINCREMENT,
+            jar_name TEXT NOT NULL,
+            jar_abs_path TEXT NOT NULL
         );
     </update>
     <update id="createClassTable">
-        create table if not exists class_table
+        CREATE TABLE IF NOT EXISTS class_table
         (
-            cid
-            integer
-            not
-            null
-            constraint
-            class_table_pk
-            primary
-            key
-            autoincrement,
-            jar_name
-            TEXT
-            not
-            null,
-            class_name
-            TEXT
-            not
-            null,
-            super_class_name
-            TEXT,
-            is_interface
-            INTEGER
-            not
-            null
+            cid INTEGER NOT NULL
+            CONSTRAINT class_table_pk PRIMARY KEY AUTOINCREMENT,
+            jar_name TEXT NOT NULL,
+            class_name TEXT NOT NULL,
+            super_class_name TEXT,
+            is_interface INTEGER NOT NULL
         );
     </update>
     <update id="createClassFileTable">
-        create table if not exists class_file_table
+        CREATE TABLE IF NOT EXISTS class_file_table
         (
-            cf_id
-            integer
-            not
-            null
-            constraint
-            class_table_pk
-            primary
-            key
-            autoincrement,
-            class_name
-            TEXT
-            not
-            null,
-            path_str
-            TEXT
-            not
-            null,
-            jar_name
-            TEXT
-            not
-            null
+            cf_id INTEGER NOT NULL
+            CONSTRAINT class_table_pk PRIMARY KEY AUTOINCREMENT,
+            class_name TEXT NOT NULL,
+            path_str TEXT NOT NULL,
+            jar_name TEXT NOT NULL
         );
+
     </update>
     <update id="createMemberTable">
-        create table if not exists member_table
+        CREATE TABLE IF NOT EXISTS member_table
         (
-            mid
-            integer
-            not
-            null
-            constraint
-            member_table_pk
-            primary
-            key
-            autoincrement,
-            member_name
-            TEXT
-            not
-            null,
-            modifiers
-            integer
-            not
-            null,
-            type_class_name
-            TEXT
-            not
-            null,
-            class_name
-            TEXT
-            not
-            null
+            mid INTEGER NOT NULL
+            CONSTRAINT member_table_pk PRIMARY KEY AUTOINCREMENT,
+            member_name TEXT NOT NULL,
+            modifiers INTEGER NOT NULL,
+            type_class_name TEXT NOT NULL,
+            class_name TEXT NOT NULL
         );
+
     </update>
     <update id="createMethodTable">
-        create table if not exists method_table
+        CREATE TABLE IF NOT EXISTS method_table
         (
-            method_id
-            INTEGER
-            not
-            null
-            constraint
-            method_table_pk
-            primary
-            key
-            autoincrement,
-            method_name
-            TEXT
-            not
-            null,
-            method_desc
-            TEXT
-            not
-            null,
-            is_static
-            integer
-            not
-            null,
-            class_name
-            TEXT
-            not
-            null,
-            access
-            integer
-            not
-            null
+            method_id INTEGER NOT NULL
+            CONSTRAINT method_table_pk PRIMARY KEY AUTOINCREMENT,
+            method_name TEXT NOT NULL,
+            method_desc TEXT NOT NULL,
+            is_static INTEGER NOT NULL,
+            class_name TEXT NOT NULL,
+            access INTEGER NOT NULL
         );
+
     </update>
     <update id="createAnnoTable">
-        create table if not exists anno_table
+        CREATE TABLE IF NOT EXISTS anno_table
         (
-            anno_id
-            integer
-            not
-            null
-            constraint
-            anno_table_pk
-            primary
-            key
-            autoincrement,
-            anno_name
-            TEXT
-            not
-            null,
-            method_name
-            TEXT,
-            class_name
-            TEXT
+            anno_id INTEGER NOT NULL
+            CONSTRAINT anno_table_pk PRIMARY KEY AUTOINCREMENT,
+            anno_name TEXT NOT NULL,
+            method_name TEXT,
+            class_name TEXT
         );
+
     </update>
     <update id="createInterfaceTable">
-        create table if not exists interface_table
+        CREATE TABLE IF NOT EXISTS interface_table
         (
-            iid
-            integer
-            not
-            null
-            constraint
-            interface_table_pk
-            primary
-            key
-            autoincrement,
-            interface_name
-            TEXT
-            not
-            null,
-            class_name
-            TEXT
-            not
-            null
+            iid INTEGER NOT NULL
+            CONSTRAINT interface_table_pk PRIMARY KEY AUTOINCREMENT,
+            interface_name TEXT NOT NULL,
+            class_name TEXT NOT NULL
         );
+
     </update>
     <update id="createMethodCallTable">
-        create table if not exists method_call_table
+        CREATE TABLE IF NOT EXISTS method_call_table
         (
-            mc_id
-            integer
-            not
-            null
-            constraint
-            method_call_table_pk
-            primary
-            key
-            autoincrement,
-            caller_method_name
-            TEXT
-            not
-            null,
-            caller_class_name
-            TEXT
-            not
-            null,
-            caller_method_desc
-            TEXT
-            not
-            null,
-            callee_method_name
-            TEXT
-            not
-            null,
-            callee_method_desc
-            TEXT
-            not
-            null,
-            callee_class_name
-            TEXT
-            not
-            null
+            mc_id INTEGER NOT NULL
+            CONSTRAINT method_call_table_pk PRIMARY KEY AUTOINCREMENT,
+            caller_method_name TEXT NOT NULL,
+            caller_class_name TEXT NOT NULL,
+            caller_method_desc TEXT NOT NULL,
+            callee_method_name TEXT NOT NULL,
+            callee_method_desc TEXT NOT NULL,
+            callee_class_name TEXT NOT NULL
         );
     </update>
     <update id="createMethodImplTable">
-        create table if not exists method_impl_table
+        CREATE TABLE IF NOT EXISTS method_impl_table
         (
-            impl_id
-            integer
-            not
-            null
-            constraint
-            method_impl_table_pk
-            primary
-            key
-            autoincrement,
-            class_name
-            TEXT
-            not
-            null,
-            method_name
-            TEXT
-            not
-            null,
-            method_desc
-            TEXT
-            not
-            null,
-            impl_class_name
-            TEXT
-            not
-            null
+            impl_id INTEGER NOT NULL
+            CONSTRAINT method_impl_table_pk PRIMARY KEY AUTOINCREMENT,
+            class_name TEXT NOT NULL,
+            method_name TEXT NOT NULL,
+            method_desc TEXT NOT NULL,
+            impl_class_name TEXT NOT NULL
         );
     </update>
     <update id="createStringTable">
-        create table if not exists string_table
+        CREATE TABLE IF NOT EXISTS string_table
         (
-            sid
-            integer
-            not
-            null
-            constraint
-            string_table_pk
-            primary
-            key
-            autoincrement,
-            value
-            TEXT
-            not
-            null,
-            access
-            integer
-            not
-            null,
-            method_desc
-            TEXT
-            not
-            null,
-            method_name
-            TEXT
-            not
-            null,
-            class_name
-            TEXT
-            not
-            null,
-            jar_name
-            TEXT
-            not
-            null
+            sid INTEGER NOT NULL
+            CONSTRAINT string_table_pk PRIMARY KEY AUTOINCREMENT,
+            value TEXT NOT NULL,
+            access INTEGER NOT NULL,
+            method_desc TEXT NOT NULL,
+            method_name TEXT NOT NULL,
+            class_name TEXT NOT NULL,
+            jar_name TEXT NOT NULL
         );
     </update>
     <update id="createSpringControllerTable">
-        create table if not exists spring_controller_table
+        CREATE TABLE IF NOT EXISTS spring_controller_table
         (
-            sc_id
-            integer
-            constraint
-            spring_controller_table_pk
-            primary
-            key
-            autoincrement,
-            class_name
-            TEXT
-            not
-            null
+            sc_id INTEGER
+            CONSTRAINT spring_controller_table_pk PRIMARY KEY AUTOINCREMENT,
+            class_name TEXT NOT NULL
         );
     </update>
     <update id="createSpringMappingTable">
-        create table if not exists spring_method_table
+        CREATE TABLE IF NOT EXISTS spring_method_table
         (
-            sm_id
-            integer
-            constraint
-            spring_method_table_pk
-            primary
-            key
-            autoincrement,
-            class_name
-            TEXT
-            not
-            null,
-            method_name
-            TEXT
-            not
-            null,
-            method_desc
-            TEXT
-            not
-            null,
-            path
-            TEXT
-            not
-            null
+            sm_id INTEGER
+            CONSTRAINT spring_method_table_pk PRIMARY KEY AUTOINCREMENT,
+            class_name TEXT NOT NULL,
+            method_name TEXT NOT NULL,
+            method_desc TEXT NOT NULL,
+            path TEXT NOT NULL
         );
     </update>
 </mapper>

@@ -31,6 +31,7 @@
 - [优化] 自定义 `SecurityManager` 替代 `RASP`
 - [优化] 自定义 `ObjectInputFilter` 保护程序
 - [优化] 输入 `JAR` 大小不足 `1MB` 的提示优化
+- [优化] 启动加入动画效果和 `GUI` 居中显示
 - [优化] `API Server` 添加 `favicon.ico`
 - [优化] 优化所有不必要的错误日志输出格式
 - [其他] 内置 `JRE` 改成 `Eclipse Temurin`

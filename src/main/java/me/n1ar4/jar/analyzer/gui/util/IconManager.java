@@ -10,6 +10,7 @@ public class IconManager {
     public static ImageIcon javaIcon;
     public static ImageIcon dbIcon;
     public static ImageIcon startIcon;
+    public static ImageIcon startUpIcon;
     public static ImageIcon jarIcon;
     public static ImageIcon curIcon;
     public static ImageIcon auIcon;
@@ -39,6 +40,10 @@ public class IconManager {
             startIcon = new ImageIcon(ImageIO.read(
                     Objects.requireNonNull(IconManager.class
                             .getClassLoader().getResourceAsStream("img/start.png"))));
+
+            startUpIcon = new ImageIcon(ImageIO.read(
+                    Objects.requireNonNull(IconManager.class
+                            .getClassLoader().getResourceAsStream("img/startup.png"))));
 
             jarIcon = new ImageIcon(ImageIO.read(
                     Objects.requireNonNull(IconManager.class

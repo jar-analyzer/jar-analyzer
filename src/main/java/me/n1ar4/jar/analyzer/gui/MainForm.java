@@ -1154,6 +1154,7 @@ public class MainForm {
         UpdateChecker.check();
 
         frame.pack();
+        frame.setLocationRelativeTo(null);
         frame.setResizable(true);
         frame.setVisible(true);
     }

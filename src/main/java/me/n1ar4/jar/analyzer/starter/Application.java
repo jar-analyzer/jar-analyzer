@@ -105,8 +105,7 @@ public class Application {
             // SET AWT EVENT EXCEPTION
             Thread.setDefaultUncaughtExceptionHandler(new ExpHandler());
 
-            // START GUI
-            MainForm.start();
+            StartUpMessage.run();
         } catch (Exception ex) {
             logger.error("start jar analyzer error: {}", ex.toString());
         }

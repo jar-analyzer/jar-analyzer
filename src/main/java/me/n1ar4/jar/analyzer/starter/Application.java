@@ -5,7 +5,6 @@ import me.n1ar4.jar.analyzer.cli.BuildCmd;
 import me.n1ar4.jar.analyzer.cli.Client;
 import me.n1ar4.jar.analyzer.cli.StartCmd;
 import me.n1ar4.jar.analyzer.gui.GlobalOptions;
-import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.server.HttpServer;
 import me.n1ar4.jar.analyzer.utils.ConsoleUtils;
 import me.n1ar4.jar.analyzer.utils.JNIUtil;

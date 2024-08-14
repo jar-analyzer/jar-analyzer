@@ -30,7 +30,6 @@
             path_str TEXT NOT NULL,
             jar_name TEXT NOT NULL
         );
-
     </update>
     <update id="createMemberTable">
         CREATE TABLE IF NOT EXISTS member_table
@@ -42,7 +41,6 @@
             type_class_name TEXT NOT NULL,
             class_name TEXT NOT NULL
         );
-
     </update>
     <update id="createMethodTable">
         CREATE TABLE IF NOT EXISTS method_table
@@ -55,7 +53,6 @@
             class_name TEXT NOT NULL,
             access INTEGER NOT NULL
         );
-
     </update>
     <update id="createAnnoTable">
         CREATE TABLE IF NOT EXISTS anno_table
@@ -66,7 +63,6 @@
             method_name TEXT,
             class_name TEXT
         );
-
     </update>
     <update id="createInterfaceTable">
         CREATE TABLE IF NOT EXISTS interface_table
@@ -76,7 +72,6 @@
             interface_name TEXT NOT NULL,
             class_name TEXT NOT NULL
         );
-
     </update>
     <update id="createMethodCallTable">
         CREATE TABLE IF NOT EXISTS method_call_table

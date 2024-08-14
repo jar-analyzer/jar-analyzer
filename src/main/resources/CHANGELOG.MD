@@ -35,7 +35,7 @@
 - [优化] `API Server` 添加 `favicon.ico`
 - [优化] 优化所有不必要的错误日志输出格式
 - [其他] 内置 `JRE` 改成 `Eclipse Temurin`
-- [其他] 升级 `hutool/flatlaf/slf4j` 依赖版本
+- [其他] 升级 `hutool/flatlaf/slf4j/spring` 依赖
 - [其他] 删除修改字节码中方法名的测试功能（无意义）
 - [其他] 删除 `CLASS-SEARCHER` 子项目（无意义）
 

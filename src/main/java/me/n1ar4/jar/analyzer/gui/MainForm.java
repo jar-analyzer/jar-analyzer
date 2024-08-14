@@ -33,6 +33,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -1147,9 +1149,21 @@ public class MainForm {
 
         frame.setJMenuBar(MenuUtil.createMenuBar());
         frame.setContentPane(instance.masterPanel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         frame.setIconImage(IconManager.showIcon.getImage());
+
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                int resp = JOptionPane.showConfirmDialog(frame, "CONFIRM EXIT?",
+                        "Exit Confirmation", JOptionPane.OK_CANCEL_OPTION);
+                if (resp == JOptionPane.OK_OPTION) {
+                    frame.dispose();
+                    System.exit(0);
+                }
+            }
+        });
 
         UpdateChecker.check();
 

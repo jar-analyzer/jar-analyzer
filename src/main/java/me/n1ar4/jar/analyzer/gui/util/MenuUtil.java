@@ -2,7 +2,6 @@ package me.n1ar4.jar.analyzer.gui.util;
 
 import com.github.rjeschke.txtmark.Processor;
 import me.n1ar4.games.flappy.FBMainFrame;
-import me.n1ar4.games.plane.Game;
 import me.n1ar4.games.pocker.Main;
 import me.n1ar4.jar.analyzer.config.ConfigEngine;
 import me.n1ar4.jar.analyzer.config.ConfigFile;
@@ -193,19 +192,8 @@ public class MenuUtil {
             pokerItem.setIcon(pokerIcon);
             pokerItem.addActionListener(e -> new Thread(Main::new).start());
 
-            JMenuItem planeItem = new JMenuItem("雷电");
-            is = MainForm.class.getClassLoader().getResourceAsStream(
-                    "game/plane/logo.png");
-            if (is == null) {
-                return null;
-            }
-            ImageIcon planeIcon = new ImageIcon(ImageIO.read(is));
-            planeItem.setIcon(planeIcon);
-            planeItem.addActionListener(e -> Game.start());
-
             gameMenu.add(flappyItem);
             gameMenu.add(pokerItem);
-            gameMenu.add(planeItem);
             return gameMenu;
         } catch (Exception ex) {
             logger.error("error: {}", ex.toString());

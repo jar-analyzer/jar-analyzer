@@ -1,5 +1,6 @@
 package me.n1ar4.jar.analyzer.gui.font;
 
+import me.n1ar4.jar.analyzer.utils.OSUtil;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 
@@ -30,7 +31,11 @@ public class FontHelper {
                 throw new RuntimeException("unknown error");
             }
             Font customFont = Font.createFont(Font.TRUETYPE_FONT, is);
-            return customFont.deriveFont(12f);
+            if (OSUtil.isLinux()) {
+                return customFont.deriveFont(16f);
+            } else {
+                return customFont.deriveFont(12f);
+            }
         } catch (Exception e) {
             logger.error("install font error: {}", e.toString());
         }

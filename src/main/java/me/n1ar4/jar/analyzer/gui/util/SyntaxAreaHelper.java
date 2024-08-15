@@ -3,6 +3,7 @@ package me.n1ar4.jar.analyzer.gui.util;
 import com.intellij.uiDesigner.core.GridConstraints;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.OpcodeForm;
+import me.n1ar4.jar.analyzer.utils.OSUtil;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
@@ -53,6 +54,11 @@ public class SyntaxAreaHelper {
         codeArea = rArea;
         codeArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
         codeArea.setCodeFoldingEnabled(true);
+
+        if (OSUtil.isLinux()) {
+            codeArea.setFont(codeArea.getFont().deriveFont(18.0f));
+        }
+
         RTextScrollPane sp = new RTextScrollPane(codeArea);
         codePanel.add(sp, new GridConstraints());
         MainForm.setCodeArea(codeArea);
@@ -110,6 +116,11 @@ public class SyntaxAreaHelper {
         RSyntaxTextArea textArea = new RSyntaxTextArea(30, 100);
         textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
         textArea.setCodeFoldingEnabled(false);
+
+        if (OSUtil.isLinux()) {
+            textArea.setFont(textArea.getFont().deriveFont(18.0f));
+        }
+
         RTextScrollPane sp = new RTextScrollPane(textArea);
         codePanel.add(sp, new GridConstraints());
         OpcodeForm.setCodeArea(textArea);
@@ -119,6 +130,11 @@ public class SyntaxAreaHelper {
         RSyntaxTextArea textArea = new RSyntaxTextArea(10, 80);
         textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_SQL);
         textArea.setCodeFoldingEnabled(true);
+
+        if (OSUtil.isLinux()) {
+            textArea.setFont(textArea.getFont().deriveFont(18.0f));
+        }
+
         RTextScrollPane sp = new RTextScrollPane(textArea);
         codePanel.add(sp, new GridConstraints());
         return textArea;

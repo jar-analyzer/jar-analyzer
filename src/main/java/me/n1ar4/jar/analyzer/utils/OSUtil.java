@@ -5,4 +5,9 @@ public class OSUtil {
         String osName = System.getProperty("os.name");
         return osName.toLowerCase().contains("windows");
     }
+
+    public static boolean isLinux() {
+        String osName = System.getProperty("os.name");
+        return osName.toLowerCase().contains("linux");
+    }
 }

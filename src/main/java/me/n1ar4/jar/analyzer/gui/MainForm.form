@@ -20,8 +20,8 @@
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
               <grid row="0" column="1" row-span="3" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                <minimum-size width="600" height="750"/>
-                <preferred-size width="600" height="750"/>
+                <minimum-size width="700" height="750"/>
+                <preferred-size width="700" height="750"/>
               </grid>
             </constraints>
             <properties/>
@@ -31,9 +31,9 @@
           <tabbedpane id="91706" binding="tabbedPanel">
             <constraints>
               <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="4" fill="2" indent="0" use-parent-layout="false">
-                <minimum-size width="500" height="-1"/>
-                <preferred-size width="500" height="200"/>
-                <maximum-size width="500" height="-1"/>
+                <minimum-size width="550" height="-1"/>
+                <preferred-size width="550" height="200"/>
+                <maximum-size width="550" height="-1"/>
               </grid>
             </constraints>
             <properties/>
@@ -652,7 +652,7 @@
                     <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
-                        <minimum-size width="500" height="300"/>
+                        <minimum-size width="550" height="300"/>
                       </grid>
                     </constraints>
                     <properties/>
@@ -679,7 +679,7 @@
                     <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
                       <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
-                        <minimum-size width="500" height="300"/>
+                        <minimum-size width="550" height="300"/>
                       </grid>
                     </constraints>
                     <properties/>

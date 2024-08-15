@@ -6,6 +6,7 @@ import me.n1ar4.jar.analyzer.core.ClassReference;
 import me.n1ar4.jar.analyzer.core.MethodReference;
 import me.n1ar4.jar.analyzer.engine.CoreHelper;
 import me.n1ar4.jar.analyzer.gui.MainForm;
+import me.n1ar4.jar.analyzer.utils.OSUtil;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
@@ -41,6 +42,11 @@ public class ELForm {
     public ELForm() {
         RSyntaxTextArea textArea = new RSyntaxTextArea(30, 60);
         textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
+
+        if (OSUtil.isLinux()) {
+            textArea.setFont(textArea.getFont().deriveFont(18.0f));
+        }
+
         textArea.setCodeFoldingEnabled(true);
         textArea.setEnabled(true);
         textArea.setEditable(true);

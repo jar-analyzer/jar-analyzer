@@ -26,7 +26,8 @@ public class Version {
                                 "<html>vulnerability in versions lower than Java <strong>8u191</strong><br>" +
                                         "please use a higher version<br>" +
                                         "Java 版本小于 <strong>8u191</strong> 可能存在某些安全漏洞<br>" +
-                                        "建议使用高于 <strong>8u191</strong> 版本的 Java" +
+                                        "建议使用高于 <strong>8u191</strong> 版本的 Java<br>" +
+                                        "该消息只是一个提示（点击确认正常启动）" +
                                         "</html>");
                     } else {
                         logger.info("safe - java version is higher than 191");
@@ -44,6 +45,7 @@ public class Version {
                             + version + "</strong><br>" +
                             "推荐使用 java <strong>8</strong> 版本<br>你使用的版本是 <strong>"
                             + version + "</strong><br>" +
+                            "该消息只是一个提示（点击确认正常启动）" +
                             "</html>");
         }
     }

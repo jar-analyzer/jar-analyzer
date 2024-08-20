@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("all")
@@ -569,19 +570,33 @@ public class CoreHelper {
                     "PLEASE BUILD DATABASE FIRST");
             return;
         }
-        DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
-        for (ResObj result : methods) {
-            MethodResult mr = new MethodResult();
-            mr.setClassName(result.getClassName());
-            mr.setMethodName(result.getMethod().getName());
-            mr.setMethodDesc(result.getMethod().getDesc());
-            methodsList.addElement(mr);
-        }
-        if (methodsList.isEmpty() || methodsList.size() == 0) {
+        if (methods.isEmpty()) {
             JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                     "result is null");
             return;
         }
+
+        List<MethodResult> methodResultList = methods.stream().map(new Function<ResObj, MethodResult>() {
+            @Override
+            public MethodResult apply(ResObj resObj) {
+                MethodResult methodResult = new MethodResult();
+                methodResult.setClassName(resObj.getClassName());
+                methodResult.setMethodName(resObj.getMethod().getName());
+                methodResult.setMethodDesc(resObj.getMethod().getDesc());
+                return methodResult;
+            }
+        }).collect(Collectors.toList());
+
+        if (MenuUtil.sortedByMethod()) {
+            methodResultList.sort(Comparator.comparing(MethodResult::getMethodName));
+        }
+        if (MenuUtil.sortedByClass()) {
+            methodResultList.sort(Comparator.comparing(MethodResult::getClassName));
+        }
+
+        DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
+        methodResultList.forEach(methodsList::addElement);
+
         MainForm.getInstance().getSearchList().setModel(methodsList);
         MainForm.getInstance().getSearchList().repaint();
         MainForm.getInstance().getSearchList().revalidate();

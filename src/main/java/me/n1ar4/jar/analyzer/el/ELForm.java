@@ -68,6 +68,7 @@ public class ELForm {
                 "        .isSuperClassOf(\"com.test.SomeClass\")\n" +
                 "        .hasClassAnno(\"Controller\")\n" +
                 "        .hasAnno(\"RequestMapping\")\n" +
+                "        .excludeAnno(\"Auth\")\n" +
                 "        .hasField(\"context\")");
 
         checkButton.addActionListener(e -> {

@@ -33,7 +33,6 @@ public class MethodELProcessor {
         Map<Integer, String> paramMap = condition.getParamTypes();
 
         String methodAnno = condition.getMethodAnno();
-        String excludedMethodAnno = condition.getExcludedMethodAnno();
         String classAnno = condition.getClassAnno();
 
         String isSubOf = condition.getIsSubClassOf();
@@ -109,8 +108,6 @@ public class MethodELProcessor {
                 }
             }
         }
-
-        boolean isExcludedMethod = isExcludedMethodAnno(excludedMethodAnno);
 
         if (start != null && !start.isEmpty()) {
             sw = mr.getName().startsWith(start);
@@ -190,25 +187,8 @@ public class MethodELProcessor {
                 break;
             }
         }
-        if (aa && ab && ac && ad && ae && af && ag && ah && ai && sb && sp && sw && ew && !isExcludedMethod) {
+        if (aa && ab && ac && ad && ae && af && ag && ah && ai && sb && sp && sw && ew) {
             searchList.add(new ResObj(mr.getHandle(), ch.getName()));
         }
-    }
-
-    private boolean isExcludedMethodAnno(String excludedMethodAnno) {
-        if (mr.getAnnotations() == null || mr.getAnnotations().isEmpty()) {
-            return false;
-        }
-        if (excludedMethodAnno == null || excludedMethodAnno.isEmpty()) {
-            return false;
-        }
-        boolean isExcludedMethodAnno = false;
-        for (String annotation : mr.getAnnotations()) {
-            if (annotation.contains(excludedMethodAnno)) {
-                isExcludedMethodAnno = true;
-                break;
-            }
-        }
-        return isExcludedMethodAnno;
     }
 }

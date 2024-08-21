@@ -16,7 +16,6 @@ public class MethodEL {
     private Integer paramsNum;
     private Boolean isStatic;
     private String methodAnno;
-    private String excludedMethodAnno;
     private String classAnno;
     private String field;
 
@@ -121,14 +120,6 @@ public class MethodEL {
         this.methodAnno = methodAnno;
     }
 
-    public String getExcludedMethodAnno() {
-        return excludedMethodAnno;
-    }
-
-    public void setExcludedMethodAnno(String excludedMethodAnno) {
-        this.excludedMethodAnno = excludedMethodAnno;
-    }
-
     public String getClassAnno() {
         return classAnno;
     }
@@ -205,11 +196,6 @@ public class MethodEL {
 
     public MethodEL hasAnno(String s) {
         this.methodAnno = s;
-        return this;
-    }
-
-    public MethodEL excludeAnno(String s) {
-        this.excludedMethodAnno = s;
         return this;
     }
 

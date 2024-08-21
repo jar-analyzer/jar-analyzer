@@ -4,11 +4,14 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.Opcodes;
 
 public interface Const {
+    String version = "3.0";
+
     int ASMVersion = Opcodes.ASM9;
+
     int GlobalASMOptions = ClassReader.SKIP_FRAMES | ClassReader.SKIP_DEBUG;
     int AnalyzeASMOptions = ClassReader.EXPAND_FRAMES;
-    String app = "Jar Analyzer - 4ra1n";
-    String version = "3.0";
+
+    String app = "Jar Analyzer - 4ra1n - " + version;
     String checkUpdateUrl = "https://jar-analyzer.oss-cn-hangzhou.aliyuncs.com/jar-analyzer/version.txt";
     String authorUrl = "https://github.com/4ra1n";
     String projectUrl = "https://github.com/jar-analyzer/jar-analyzer";

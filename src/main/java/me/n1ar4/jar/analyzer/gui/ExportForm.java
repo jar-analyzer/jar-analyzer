@@ -45,9 +45,11 @@ public class ExportForm {
             }
             new Thread(() -> {
                 isRunning = true;
-                DecompileEngine.decompileJars(path, outputDirText.getText());
-                JOptionPane.showMessageDialog(masterPanel, "jars decompiled successfully");
-                isRunning = false;
+                boolean success = DecompileEngine.decompileJars(path, outputDirText.getText());
+                if (success) {
+                    JOptionPane.showMessageDialog(masterPanel, "jars decompiled successfully");
+                    isRunning = false;
+                }
             }).start();
             JOptionPane.showMessageDialog(masterPanel, "decompiling please wait...");
         });
@@ -57,7 +59,7 @@ public class ExportForm {
         JFrame frame = new JFrame(Const.ExportForm);
         frame.setContentPane(new ExportForm().masterPanel);
         frame.pack();
-        frame.setAlwaysOnTop(true);
+        frame.setAlwaysOnTop(false);
         frame.setLocationRelativeTo(MainForm.getInstance().getMasterPanel());
         frame.setVisible(true);
     }

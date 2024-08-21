@@ -4,13 +4,16 @@
 
 更新日志：
 
+- [功能] 表达式搜索新增 `excludeAnno` 语法
 - [BUG] `UBUNTU` 主界面右侧显示不全问题
 - [BUG] `UBUNTU CODE` 区域字体过小问题
+- [BUG] 修复表达式搜索排序设置无效的问题
 - [优化] 启动检测 `JAVA` 版本的文字内容优化
 
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
+- sensensen404 (https://github.com/sensensen404)
 
 所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
 

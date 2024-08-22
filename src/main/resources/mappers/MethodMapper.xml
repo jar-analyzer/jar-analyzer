@@ -8,13 +8,14 @@
         <result column="method_desc" property="methodDesc"/>
         <result column="is_static" property="isStaticInt"/>
         <result column="access" property="accessInt"/>
+        <result column="line_number" property="lineNumber"/>
     </resultMap>
     <insert id="insertMethod" parameterType="MethodEntity">
         INSERT INTO method_table
-        (method_name, method_desc, is_static, class_name, access)
+        (method_name, method_desc, is_static, class_name, access, line_number)
         VALUES
         <foreach collection="list" separator="," item="item">
-            (#{item.methodName}, #{item.methodDesc}, #{item.isStatic}, #{item.className}, #{item.access})
+            (#{item.methodName}, #{item.methodDesc}, #{item.isStatic}, #{item.className}, #{item.access}, #{item.lineNumber})
         </foreach>
     </insert>
     <select id="selectMethodsByClassName" resultMap="methodMap">

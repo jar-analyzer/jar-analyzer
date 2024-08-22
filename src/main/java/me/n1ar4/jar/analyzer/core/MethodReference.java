@@ -10,6 +10,7 @@ public class MethodReference {
     private final String desc;
     private final int access;
     private final boolean isStatic;
+    private int lineNumber = -1;
 
     public MethodReference(ClassReference.Handle classReference,
                            String name, String desc, boolean isStatic,
@@ -113,5 +114,13 @@ public class MethodReference {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (desc != null ? desc.hashCode() : 0);
         return result;
+    }
+
+    public int getLineNumber() {
+        return lineNumber;
+    }
+
+    public void setLineNumber(int lineNumber) {
+        this.lineNumber = lineNumber;
     }
 }

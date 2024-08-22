@@ -7,6 +7,7 @@ import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 import org.jetbrains.java.decompiler.main.decompiler.ConsoleDecompiler;
 
+import javax.swing.*;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
@@ -33,8 +34,19 @@ public class DecompileEngine {
         lruCache = new LRUCache(30);
     }
 
-    public static void decompileJars(List<String> jarsPath, String outputDir) {
+    public static boolean decompileJars(List<String> jarsPath, String outputDir) {
         for (String jarPath : jarsPath) {
+            // 2024/08/21
+            // 对于非 JAR 文件不进行处理（仅支持 JAR 文件）
+            if (!jarPath.toLowerCase().endsWith(".jar")) {
+                JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                        "<html>" +
+                                "<p>ONLY SUPPORT <strong>JAR</strong> FILE</p>" +
+                                "<p>只支持 JAR 文件（其他类型的文件可以手动压缩成 JAR 后尝试）</p>" +
+                                "</html>");
+                return false;
+            }
+
             List<String> cmd = new ArrayList<>();
             Path jarPathPath = Paths.get(jarPath);
             cmd.add(jarPathPath.toAbsolutePath().toString());
@@ -64,6 +76,7 @@ public class DecompileEngine {
             } catch (Exception ignored) {
             }
         }
+        return true;
     }
 
     /**

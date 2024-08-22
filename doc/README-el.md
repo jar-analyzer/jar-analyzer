@@ -21,6 +21,7 @@
 | isSubClassOf      | String     | 是谁的子类    |
 | isSuperClassOf    | String     | 是谁的父类    |
 | hasAnno           | String     | 方法的注解    |
+| excludeAnno       | String     | 排除方法的注解  |
 | hasClassAnno      | String     | 类的注解     |
 | hasField          | String     | 类字段      |
 

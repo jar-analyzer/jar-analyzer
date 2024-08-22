@@ -7,6 +7,7 @@ public class MethodEntity {
     private boolean isStatic;
     private String className;
     private int access;
+    private int lineNumber;
 
     public int getAccess() {
         return access;
@@ -54,6 +55,14 @@ public class MethodEntity {
 
     public void setClassName(String className) {
         this.className = className;
+    }
+
+    public int getLineNumber() {
+        return lineNumber;
+    }
+
+    public void setLineNumber(int lineNumber) {
+        this.lineNumber = lineNumber;
     }
 
     @Override

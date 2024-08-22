@@ -51,7 +51,8 @@
             method_desc TEXT NOT NULL,
             is_static INTEGER NOT NULL,
             class_name TEXT NOT NULL,
-            access INTEGER NOT NULL
+            access INTEGER NOT NULL,
+            line_number INTEGER NOT NULL
         );
     </update>
     <update id="createAnnoTable">

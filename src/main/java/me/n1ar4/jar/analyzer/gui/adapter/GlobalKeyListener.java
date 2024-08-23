@@ -10,7 +10,8 @@ import java.awt.event.KeyEvent;
 public class GlobalKeyListener extends KeyAdapter {
     @Override
     public void keyPressed(KeyEvent e) {
-        if ((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0) {
+        if ((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0 ||
+                (e.getModifiersEx() & KeyEvent.META_DOWN_MASK) != 0) {
             if (e.getKeyCode() == KeyEvent.VK_X) {
                 if (MainForm.getCurMethod() == null) {
                     JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
@@ -21,7 +22,8 @@ public class GlobalKeyListener extends KeyAdapter {
                 MainForm.getInstance().getTabbedPanel().setSelectedIndex(2);
             }
         }
-        if ((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0) {
+        if ((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0 ||
+                (e.getModifiersEx() & KeyEvent.META_DOWN_MASK) != 0) {
             if (e.getKeyCode() == KeyEvent.VK_F) {
                 SearchForm.start();
             }

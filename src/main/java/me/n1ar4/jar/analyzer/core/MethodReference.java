@@ -41,6 +41,14 @@ public class MethodReference {
         return desc;
     }
 
+    public int getLineNumber() {
+        return lineNumber;
+    }
+
+    public void setLineNumber(int lineNumber) {
+        this.lineNumber = lineNumber;
+    }
+
     public Set<String> getAnnotations() {
         return annotations;
     }
@@ -115,13 +123,5 @@ public class MethodReference {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (desc != null ? desc.hashCode() : 0);
         return result;
-    }
-
-    public int getLineNumber() {
-        return lineNumber;
-    }
-
-    public void setLineNumber(int lineNumber) {
-        this.lineNumber = lineNumber;
     }
 }

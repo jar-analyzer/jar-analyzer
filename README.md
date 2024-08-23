@@ -77,18 +77,28 @@
 
 想深入交流可以发联系方式到邮箱后我拉你进群：`ZW15aXFpbmdAZ21haWwuY29t`
 
-时间
+### 感谢列表
+
+<a href="https://github.com/jar-analyzer/jar-analyzer/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=jar-analyzer/jar-analyzer"  alt="contributors"/>
+</a>
+
+### 时间
 
 - `Jar Analyzer V1` 最初版诞生于 `2022.11.27`
 - `Jar Analyzer V2` 在 `2023.10.23` 第一次提交
 - `Jar Analyzer v2` 正式版在 `2023.12.07` 发布
 - `Jar Analyzer V2` 在 `2024.08.15` 发布 `3.0` 版本
 
-发版时间（目前版本 `3.X` 计划每三周发一次）
+### 发版时间
+
+目前版本 `3.X` 计划每三周发一次
 
 - 2024.09.05
 - 2024.09.26
 - 2024.10.17
+
+### 文章视频
 
 用户使用文章
 
@@ -101,9 +111,11 @@
 - [通过 jar-analyzer 分析漏洞 CVE-2022-42889](https://www.bilibili.com/video/BV1a94y1E7Nn)
 - [Jar Analyzer V2 新版本功能介绍](https://www.bilibili.com/video/BV1Dm421G75i)
 
-性能测试：参考 [性能测试文档](doc/README-test.md) 对比分析 `G1GC` 和 `ZGC` 情况
+### 性能测试
 
-漏洞公告
+参考 [性能测试文档](doc/README-test.md) 对比分析 `G1GC` 和 `ZGC` 情况
+
+### 漏洞公告
 
 - [\[GHSA-43rf-3hm4-hv5f\] 反编译恶意的 CLASS 文件可能导致程序不可用](https://github.com/jar-analyzer/jar-analyzer/security/advisories/GHSA-43rf-3hm4-hv5f)
 - [\[GHSA-x5h2-78p8-w943\] Jar Analyzer 2.13 版本之前存在 SQL 注入漏洞](https://github.com/jar-analyzer/jar-analyzer/security/advisories/GHSA-x5h2-78p8-w943)

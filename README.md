@@ -75,6 +75,8 @@
 
 ## 相关
 
+想深入交流可以发联系方式到邮箱后我拉你进群：`ZW15aXFpbmdAZ21haWwuY29t`
+
 时间
 
 - `Jar Analyzer V1` 最初版诞生于 `2022.11.27`
@@ -108,6 +110,8 @@
 - [\[GHSA-jmcg-r2c5-7m29\] Jar Analyzer 存在 ZIP SLIP 漏洞（最坏情况可导致 RCE 风险）](https://github.com/jar-analyzer/jar-analyzer/security/advisories/GHSA-jmcg-r2c5-7m29)
 
 注意：当 `Jar` 数量较多或巨大时**可能导致临时目录和数据库文件巨大**
+
+有 `UI` 兼容性问题请查看 `ISSUE` 部分的置顶
 
 ## 表达式
 

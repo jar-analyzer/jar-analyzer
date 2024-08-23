@@ -15,13 +15,14 @@ public class MethodReference {
     public MethodReference(ClassReference.Handle classReference,
                            String name, String desc, boolean isStatic,
                            Set<String> annotations,
-                           int access) {
+                           int access, int lineNumber) {
         this.classReference = classReference;
         this.name = name;
         this.desc = desc;
         this.isStatic = isStatic;
         this.annotations = annotations;
         this.access = access;
+        this.lineNumber = lineNumber;
     }
 
     public int getAccess() {

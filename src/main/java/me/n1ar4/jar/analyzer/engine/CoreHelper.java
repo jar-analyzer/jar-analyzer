@@ -1,5 +1,6 @@
 package me.n1ar4.jar.analyzer.engine;
 
+import me.n1ar4.jar.analyzer.core.MethodReference;
 import me.n1ar4.jar.analyzer.el.ResObj;
 import me.n1ar4.jar.analyzer.entity.ClassResult;
 import me.n1ar4.jar.analyzer.entity.MethodResult;
@@ -11,10 +12,7 @@ import me.n1ar4.jar.analyzer.gui.util.MenuUtil;
 import me.n1ar4.jar.analyzer.utils.StringUtil;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -579,10 +577,12 @@ public class CoreHelper {
         List<MethodResult> methodResultList = methods.stream().map(new Function<ResObj, MethodResult>() {
             @Override
             public MethodResult apply(ResObj resObj) {
+                MethodReference.Handle methodHandler = resObj.getMethod();
                 MethodResult methodResult = new MethodResult();
                 methodResult.setClassName(resObj.getClassName());
-                methodResult.setMethodName(resObj.getMethod().getName());
-                methodResult.setMethodDesc(resObj.getMethod().getDesc());
+                methodResult.setMethodName(methodHandler.getName());
+                methodResult.setMethodDesc(methodHandler.getDesc());
+                methodResult.setLineNumber(resObj.getLineNumber());
                 return methodResult;
             }
         }).collect(Collectors.toList());
@@ -591,7 +591,8 @@ public class CoreHelper {
             methodResultList.sort(Comparator.comparing(MethodResult::getMethodName));
         }
         if (MenuUtil.sortedByClass()) {
-            methodResultList.sort(Comparator.comparing(MethodResult::getClassName));
+            Collections.sort(methodResultList, Comparator.comparing(MethodResult::getClassName)
+                    .thenComparing(MethodResult::getLineNumber));
         }
 
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();

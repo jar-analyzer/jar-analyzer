@@ -191,7 +191,7 @@ public class MethodELProcessor {
             }
         }
         if (aa && ab && ac && ad && ae && af && ag && ah && ai && sb && sp && sw && ew && !isExcludedMethod) {
-            searchList.add(new ResObj(mr.getHandle(), ch.getName()));
+            searchList.add(new ResObj(mr.getHandle(), ch.getName(), mr.getLineNumber()));
         }
     }
 

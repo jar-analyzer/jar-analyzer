@@ -25,6 +25,7 @@ public interface Const {
     String CFGForm = "Jar Analyzer - CFG";
     String FrameForm = "Jar Analyzer - Frame";
     String SQLiteForm = "Jar Analyzer - SQLite";
+    String BcelForm = "Jar Analyzer - BCEL Util";
     String StringForm = "Jar Analyzer - String";
     String RemoteForm = "Jar Analyzer - Remote Load";
     String PartForm = "Jar Analyzer - Partition Config";

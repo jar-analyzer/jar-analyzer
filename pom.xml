@@ -50,6 +50,7 @@
         <hutool.version>5.8.31</hutool.version>
         <jfreechart.version>1.5.5</jfreechart.version>
         <oshi.version>6.6.3</oshi.version>
+        <bcel.version>6.10.0</bcel.version>
         <!-- Maven Build Version -->
         <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-resources-plugin -->
         <maven.resources.version>3.3.1</maven.resources.version>
@@ -69,6 +70,11 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.apache.bcel</groupId>
+            <artifactId>bcel</artifactId>
+            <version>${bcel.version}</version>
+        </dependency>
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>

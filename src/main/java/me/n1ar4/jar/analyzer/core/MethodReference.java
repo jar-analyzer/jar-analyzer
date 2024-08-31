@@ -10,17 +10,19 @@ public class MethodReference {
     private final String desc;
     private final int access;
     private final boolean isStatic;
+    private int lineNumber = -1;
 
     public MethodReference(ClassReference.Handle classReference,
                            String name, String desc, boolean isStatic,
                            Set<String> annotations,
-                           int access) {
+                           int access, int lineNumber) {
         this.classReference = classReference;
         this.name = name;
         this.desc = desc;
         this.isStatic = isStatic;
         this.annotations = annotations;
         this.access = access;
+        this.lineNumber = lineNumber;
     }
 
     public int getAccess() {
@@ -37,6 +39,14 @@ public class MethodReference {
 
     public String getDesc() {
         return desc;
+    }
+
+    public int getLineNumber() {
+        return lineNumber;
+    }
+
+    public void setLineNumber(int lineNumber) {
+        this.lineNumber = lineNumber;
     }
 
     public Set<String> getAnnotations() {

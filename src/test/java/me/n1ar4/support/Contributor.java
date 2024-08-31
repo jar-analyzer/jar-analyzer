@@ -1,5 +1,6 @@
 package me.n1ar4.support;
 
+import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import me.n1ar4.jar.analyzer.core.Proxy;
@@ -33,8 +34,12 @@ public class Contributor {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < array.size(); i++) {
             JSONObject obj = array.getJSONObject(i);
+            String url = (String) obj.get("url");
+            req.setUrl(new URL(url));
+            resp = client.request(req);
+            JSONObject newObject = JSON.parseObject(new String(resp.getBody(), StandardCharsets.UTF_8));
             sb.append(" -> ");
-            sb.append(ColorUtil.blue((String) obj.get("login")));
+            sb.append(ColorUtil.blue((String) newObject.get("name")));
             sb.append(ColorUtil.yellow(" (" + obj.get("html_url") + ") "));
             sb.append(ColorUtil.red("COMMITS: " + (int) obj.get("contributions")));
             sb.append("\n");

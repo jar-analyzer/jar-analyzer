@@ -51,6 +51,7 @@
 - 自从 `3.0` 版本后支持代码区域选中字符串右键搜索（参考 [示例图](img/0054.png)）
 - 自从 `3.0` 版本后支持方法右键添加备忘录（参考 [示例图](img/0055.png)）
 - 自从 `3.0` 版本后新增多种常见的 `JAVA RCE` 漏洞调用一键搜索功能
+- 自从 `3.1` 版本后支持 `BCEL` 字符串一键反编译 `Java` 代码（参考 [示例图](img/0061.png)）
 
 更多的功能正在开发中
 
@@ -75,18 +76,30 @@
 
 ## 相关
 
-时间
+想深入交流可以发联系方式到邮箱后我拉你进群：`ZW15aXFpbmdAZ21haWwuY29t`
+
+### 感谢列表
+
+<a href="https://github.com/jar-analyzer/jar-analyzer/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=jar-analyzer/jar-analyzer"  alt="contributors"/>
+</a>
+
+### 时间
 
 - `Jar Analyzer V1` 最初版诞生于 `2022.11.27`
 - `Jar Analyzer V2` 在 `2023.10.23` 第一次提交
 - `Jar Analyzer v2` 正式版在 `2023.12.07` 发布
 - `Jar Analyzer V2` 在 `2024.08.15` 发布 `3.0` 版本
 
-发版时间（目前版本 `3.X` 计划每三周发一次）
+### 发版时间
+
+目前版本 `3.X` 计划每三周发一次
 
 - 2024.09.05
 - 2024.09.26
 - 2024.10.17
+
+### 文章视频
 
 用户使用文章
 
@@ -99,15 +112,19 @@
 - [通过 jar-analyzer 分析漏洞 CVE-2022-42889](https://www.bilibili.com/video/BV1a94y1E7Nn)
 - [Jar Analyzer V2 新版本功能介绍](https://www.bilibili.com/video/BV1Dm421G75i)
 
-性能测试：参考 [性能测试文档](doc/README-test.md) 对比分析 `G1GC` 和 `ZGC` 情况
+### 性能测试
 
-漏洞公告
+参考 [性能测试文档](doc/README-test.md) 对比分析 `G1GC` 和 `ZGC` 情况
+
+### 漏洞公告
 
 - [\[GHSA-43rf-3hm4-hv5f\] 反编译恶意的 CLASS 文件可能导致程序不可用](https://github.com/jar-analyzer/jar-analyzer/security/advisories/GHSA-43rf-3hm4-hv5f)
 - [\[GHSA-x5h2-78p8-w943\] Jar Analyzer 2.13 版本之前存在 SQL 注入漏洞](https://github.com/jar-analyzer/jar-analyzer/security/advisories/GHSA-x5h2-78p8-w943)
 - [\[GHSA-jmcg-r2c5-7m29\] Jar Analyzer 存在 ZIP SLIP 漏洞（最坏情况可导致 RCE 风险）](https://github.com/jar-analyzer/jar-analyzer/security/advisories/GHSA-jmcg-r2c5-7m29)
 
 注意：当 `Jar` 数量较多或巨大时**可能导致临时目录和数据库文件巨大**
+
+有 `UI` 兼容性问题请查看 `ISSUE` 部分的置顶
 
 ## 表达式
 

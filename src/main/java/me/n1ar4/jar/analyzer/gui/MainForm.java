@@ -243,6 +243,8 @@ public class MainForm {
     private JButton sqlExecNoPrepareButton;
     private JButton sqlExecButton;
     private JButton xStreamButton;
+    private JButton bcelBtn;
+    private JLabel bcelLabel;
     private static DefaultListModel<MethodResult> favData;
 
     public static String getCurClass() {
@@ -657,6 +659,10 @@ public class MainForm {
         return serUtilBtn;
     }
 
+    public JButton getBcelBtn() {
+        return bcelBtn;
+    }
+
     public static State getPrevState() {
         return prevState;
     }
@@ -999,6 +1005,7 @@ public class MainForm {
                 instance.startELSearchButton.setText("开始表达式搜索");
                 instance.obfLabel.setText("一个 Java 序列化数据混淆工具");
                 instance.serUtilLabel.setText("一个分析 Java 序列化数据中字节码的工具");
+                instance.bcelLabel.setText("一个分析 BCEL 字节码转为 Java 代码的工具");
 
                 instance.scaTipLabel.setText(" 不建议一次分析开启多个模块");
 
@@ -1119,6 +1126,7 @@ public class MainForm {
                 instance.startELSearchButton.setText("Start EL Search");
                 instance.obfLabel.setText("A tool for obfuscate java serialization data");
                 instance.serUtilLabel.setText("A tool for bytecodes in Java Serialization Data");
+                instance.bcelLabel.setText("A tool for parse BCEL bytecode to Java code");
 
                 instance.scaTipLabel.setText(" not recommended to enable multiple modules in one analysis");
 
@@ -1678,7 +1686,7 @@ public class MainForm {
         final Spacer spacer2 = new Spacer();
         advancePanel.add(spacer2, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         piPanel = new JPanel();
-        piPanel.setLayout(new GridLayoutManager(7, 2, new Insets(0, 0, 0, 0), -1, -1));
+        piPanel.setLayout(new GridLayoutManager(8, 2, new Insets(0, 0, 0, 0), -1, -1));
         advancePanel.add(piPanel, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         piPanel.setBorder(BorderFactory.createTitledBorder(null, "Plugins", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         encoderLabel = new JLabel();
@@ -1723,22 +1731,28 @@ public class MainForm {
         serUtilBtn = new JButton();
         serUtilBtn.setText("Start");
         piPanel.add(serUtilBtn, new GridConstraints(6, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        bcelLabel = new JLabel();
+        bcelLabel.setText("A tool for parse BCEL bytecode to Java code");
+        piPanel.add(bcelLabel, new GridConstraints(7, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        bcelBtn = new JButton();
+        bcelBtn.setText("Start");
+        piPanel.add(bcelBtn, new GridConstraints(7, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         analysis = new JPanel();
-        analysis.setLayout(new GridLayoutManager(2, 6, new Insets(0, 0, 0, 0), -1, -1));
+        analysis.setLayout(new GridLayoutManager(1, 10, new Insets(0, 0, 0, 0), -1, -1));
         advancePanel.add(analysis, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         analysis.setBorder(BorderFactory.createTitledBorder(null, "Analysis", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         frameBtn = new JButton();
         frameBtn.setText("Full Frame");
-        analysis.add(frameBtn, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, new Dimension(150, -1), 0, false));
+        analysis.add(frameBtn, new GridConstraints(0, 7, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, new Dimension(150, -1), 0, false));
         cfgBtn = new JButton();
         cfgBtn.setText("Show CFG");
         analysis.add(cfgBtn, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, new Dimension(150, -1), 0, false));
         simpleFrameButton = new JButton();
         simpleFrameButton.setText("Simple Frame");
-        analysis.add(simpleFrameButton, new GridConstraints(0, 2, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, new Dimension(150, -1), 0, false));
+        analysis.add(simpleFrameButton, new GridConstraints(0, 5, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, new Dimension(150, -1), 0, false));
         htmlGraphBtn = new JButton();
         htmlGraphBtn.setText("HTML Graph");
-        analysis.add(htmlGraphBtn, new GridConstraints(1, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, new Dimension(150, -1), 0, false));
+        analysis.add(htmlGraphBtn, new GridConstraints(0, 2, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, new Dimension(150, -1), 0, false));
         leftPanel = new JPanel();
         leftPanel.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
         corePanel.add(leftPanel, new GridConstraints(0, 0, 4, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_VERTICAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));

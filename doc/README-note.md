@@ -38,36 +38,3 @@
 ![](../img/0001.png)
 
 注意：当 `Jar` 数量较多或巨大时**可能导致临时目录和数据库文件巨大**
-
-### 命令行使用
-
-如果你不想使用 `GUI` 版本，本项目也支持命令行方式:
-
-```text
-Usage: java -jar jar-analyzer.jar [command] [command options]
-  Commands:
-    build      build database
-      Usage: build [options]
-        Options:
-          --del-cache
-            delete old cache
-            Default: false
-          --del-exist
-            delete old database
-            Default: false
-          -j, --jar
-            jar file/dir
-
-    gui      start jar-analyzer gui
-      Usage: gui
-```
-
-示例：对当前目录的 `test.jar` 进行分析和构建数据库，并删除缓存和当前目录旧数据库
-
-```shell
-java -jar jar-analyzer.jar build --jar 1.jar --del-cache --del-exist
-```
-
-### 视频演示
-
-[B站视频教程](https://www.bilibili.com/video/BV1ac411S7q4/)

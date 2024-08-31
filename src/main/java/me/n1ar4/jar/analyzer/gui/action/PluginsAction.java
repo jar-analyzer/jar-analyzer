@@ -2,6 +2,7 @@ package me.n1ar4.jar.analyzer.gui.action;
 
 import me.n1ar4.jar.analyzer.el.ELForm;
 import me.n1ar4.jar.analyzer.gui.MainForm;
+import me.n1ar4.jar.analyzer.plugins.bcel.BcelForm;
 import me.n1ar4.jar.analyzer.plugins.encoder.EncodeUtilForm;
 import me.n1ar4.jar.analyzer.plugins.listener.ListenUtilForm;
 import me.n1ar4.jar.analyzer.plugins.obfuscate.ObfuscateForm;
@@ -38,5 +39,7 @@ public class PluginsAction {
         MainForm.getInstance().getObfBtn().addActionListener(e -> ObfuscateForm.start());
 
         MainForm.getInstance().getSerUtilBtn().addActionListener(e -> SerUtilForm.start());
+
+        MainForm.getInstance().getBcelBtn().addActionListener(e -> BcelForm.start());
     }
 }

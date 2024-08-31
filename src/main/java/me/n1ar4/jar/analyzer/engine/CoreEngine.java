@@ -313,7 +313,7 @@ public class CoreEngine {
             MethodReference mr = new MethodReference(mh.getClassReference(),
                     mh.getName(), mh.getDesc(),
                     result.getIsStaticInt() == 1,
-                    new HashSet<>(ma), result.getAccessInt());
+                    new HashSet<>(ma), result.getAccessInt(), result.getLineNumber());
             list.add(mr);
         }
         session.close();

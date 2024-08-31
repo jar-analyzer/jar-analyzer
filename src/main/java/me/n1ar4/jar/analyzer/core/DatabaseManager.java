@@ -191,6 +191,7 @@ public class DatabaseManager {
             methodEntity.setClassName(reference.getClassReference().getName());
             methodEntity.setStatic(reference.isStatic());
             methodEntity.setAccess(reference.getAccess());
+            methodEntity.setLineNumber(reference.getLineNumber());
             mList.add(methodEntity);
             for (String anno : reference.getAnnotations()) {
                 AnnoEntity annoEntity = new AnnoEntity();

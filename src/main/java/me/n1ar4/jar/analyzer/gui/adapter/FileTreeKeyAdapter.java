@@ -12,11 +12,14 @@ public class FileTreeKeyAdapter extends KeyAdapter {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if ((e.getModifiers() & KeyEvent.CTRL_MASK) != 0 && e.getKeyCode() == KeyEvent.VK_F) {
-            fileTreeSearchPanel.setVisible(!fileTreeSearchPanel.isShowing());
-            if (fileTreeSearchPanel.isShowing()) {
-                fileTreeSearchTextField.selectAll();
-                fileTreeSearchTextField.requestFocus();
+        if ((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0 ||
+                (e.getModifiersEx() & KeyEvent.META_DOWN_MASK) != 0) {
+            if (e.getKeyCode() == KeyEvent.VK_F) {
+                fileTreeSearchPanel.setVisible(!fileTreeSearchPanel.isShowing());
+                if (fileTreeSearchPanel.isShowing()) {
+                    fileTreeSearchTextField.selectAll();
+                    fileTreeSearchTextField.requestFocus();
+                }
             }
         }
     }

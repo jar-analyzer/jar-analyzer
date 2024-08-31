@@ -18,6 +18,8 @@ public class MethodResult {
     @JSONField(serialize = false)
     private String path;
 
+    private int lineNumber;
+
     public String getPath() {
         this.path = this.path.trim();
         if (this.path.isEmpty()) {
@@ -87,6 +89,14 @@ public class MethodResult {
 
     public void setAccessInt(int accessInt) {
         this.accessInt = accessInt;
+    }
+
+    public int getLineNumber() {
+        return lineNumber;
+    }
+
+    public void setLineNumber(int lineNumber) {
+        this.lineNumber = lineNumber;
     }
 
     @Override

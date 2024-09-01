@@ -88,7 +88,8 @@ public class CoreRunner {
             }
             MainForm.getInstance().getTotalJarVal().setText(String.valueOf(files.size()));
             for (String s : files) {
-                if (s.toLowerCase().endsWith(".jar")) {
+                if (s.toLowerCase().endsWith(".jar") ||
+                        s.toLowerCase().endsWith(".war")) {
                     DatabaseManager.saveJar(s);
                 }
             }

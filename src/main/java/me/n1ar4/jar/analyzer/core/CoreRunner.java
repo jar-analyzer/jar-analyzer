@@ -116,15 +116,16 @@ public class CoreRunner {
         // BUG CLASS NAME
         for (ClassFileEntity cf : cfs) {
             String className = cf.getClassName();
-            if(!fixClass){
+            if (!fixClass) {
                 int i = className.indexOf("classes");
-                if (className.contains("BOOT-INF")) {
+                if (className.contains("BOOT-INF") || className.contains("WEB-INF")) {
+                    // 从 BOOT-INF/classes 开始取
+                    // 从 WEB-INF/classes 开始取
                     className = className.substring(i + 8);
-                } else if (className.contains("WEB-INF")) {
-                    className = className.substring(i + 7);
                 }
+                // 如果 i 小于 0 (不包含 classes 目录) 直接设置
                 cf.setClassName(className);
-            }else{
+            } else {
                 // fix class name
                 Path parPath = Paths.get(Const.tempDir);
                 FixClassVisitor cv = new FixClassVisitor();

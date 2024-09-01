@@ -51,10 +51,8 @@ public class DecompileHelper {
         String className = classNameBuilder.toString();
         int i = className.indexOf("classes");
 
-        if (className.contains("BOOT-INF")) {
+        if (className.contains("BOOT-INF") || className.contains("WEB-INF")) {
             className = className.substring(i + 8, className.length() - 7);
-        } else if (className.contains("WEB-INF")) {
-            className = className.substring(i + 7, className.length() - 7);
         } else {
             className = className.substring(0, className.length() - 7);
         }

@@ -16,12 +16,16 @@
 - [优化] 导出代码功能遇到非 `JAR` 增加提示
 - [优化] 启动检测 `JAVA` 版本的文字内容优化
 - [优化] 启动时默认使用 `INFO` 日志级别
+- [优化] 解析 `JAR` 时的逻辑问题和性能优化
+- [优化] 优化分析继承关系部分代码的性能
+- [优化] 优化分析字符串信息部分代码的性能
 - [其他] 升级 `oshi` 依赖
 
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
 - phil (https://github.com/sensensen404)
+- fantasy (https://github.com/ly-test-fuzz)
 
 所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
 

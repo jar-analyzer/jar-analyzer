@@ -116,7 +116,7 @@ public class CoreRunner {
         // BUG CLASS NAME
         for (ClassFileEntity cf : cfs) {
             String className = cf.getClassName();
-            if(fixClass == false){
+            if(!fixClass){
                 int i = className.indexOf("classes");
                 if (className.contains("BOOT-INF")) {
                     className = className.substring(i + 8);

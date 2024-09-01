@@ -9,12 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public class StringMethodVisitor extends MethodVisitor {
-    private final String ownerName;
-    private final String methodName;
-    private final String methodDesc;
     private final Map<MethodReference.Handle, List<String>> strMap;
-    private final Map<ClassReference.Handle, ClassReference> classMap;
-    private final Map<MethodReference.Handle, MethodReference> methodMap;
 
     private MethodReference ownerHandle = null;
     public StringMethodVisitor(int api, MethodVisitor methodVisitor,
@@ -24,15 +19,9 @@ public class StringMethodVisitor extends MethodVisitor {
                                Map<MethodReference.Handle, MethodReference> methodMap) {
         super(api, methodVisitor);
         this.strMap = strMap;
-        this.ownerName = owner;
-        this.methodName = methodName;
-        this.methodDesc = desc;
-        this.classMap = classMap;
-        this.methodMap = methodMap;
-
-        ClassReference.Handle ch = new ClassReference.Handle(ownerName);
+        ClassReference.Handle ch = new ClassReference.Handle(owner);
         if (classMap.get(ch) != null) {
-            MethodReference m = methodMap.get(new MethodReference.Handle(ch, methodName, methodDesc));
+            MethodReference m = methodMap.get(new MethodReference.Handle(ch, methodName, desc));
             if (m != null) {
                 this.ownerHandle = m;
             }
@@ -48,17 +37,6 @@ public class StringMethodVisitor extends MethodVisitor {
         if(this.ownerHandle == null)
             return;
         if (o instanceof String) {
-//            MethodReference mr = null;
-//            ClassReference.Handle ch = new ClassReference.Handle(ownerName);
-//            if (classMap.get(ch) != null) {
-//                MethodReference m = methodMap.get(new MethodReference.Handle(ch, methodName, methodDesc));
-//                if (m != null) {
-//                    mr = m;
-//                }
-//            }
-//            if (mr == null) {
-//                return;
-//            }
             String str = (String) o;
             if (str.trim().isEmpty()) {
                 return;

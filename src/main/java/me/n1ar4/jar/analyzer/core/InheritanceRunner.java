@@ -41,18 +41,6 @@ public class InheritanceRunner {
     public static Map<MethodReference.Handle, Set<MethodReference.Handle>> getAllMethodImplementations(
             InheritanceMap inheritanceMap, Map<MethodReference.Handle, MethodReference> methodMap) {
         Map<ClassReference.Handle, Set<MethodReference.Handle>> methodsByClass = getMethodsByClass(methodMap);
-//        Map<ClassReference.Handle, Set<ClassReference.Handle>> subClassMap = new HashMap<>();
-//        for (Map.Entry<ClassReference.Handle, Set<ClassReference.Handle>> entry : inheritanceMap.entrySet()) {
-//            for (ClassReference.Handle parent : entry.getValue()) {
-//                if (!subClassMap.containsKey(parent)) {
-//                    Set<ClassReference.Handle> subClasses = new HashSet<>();
-//                    subClasses.add(entry.getKey());
-//                    subClassMap.put(parent, subClasses);
-//                } else {
-//                    subClassMap.get(parent).add(entry.getKey());
-//                }
-//            }
-//        }
         Map<ClassReference.Handle, Set<ClassReference.Handle>> subClassMap = inheritanceMap.getSubClassMap();
         Map<MethodReference.Handle, Set<MethodReference.Handle>> methodImplMap = new HashMap<>();
         for (MethodReference method : methodMap.values()) {

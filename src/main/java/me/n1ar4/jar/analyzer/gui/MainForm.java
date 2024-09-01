@@ -1296,6 +1296,7 @@ public class MainForm {
         classBlackArea = new JTextArea();
         classBlackArea.setBackground(new Color(-12895429));
         classBlackArea.setForeground(new Color(-16711931));
+        classBlackArea.setLineWrap(true);
         classBlackArea.setRows(0);
         classBlackPanel.setViewportView(classBlackArea);
         classWhiteListLabel = new JLabel();
@@ -1306,6 +1307,7 @@ public class MainForm {
         classWhiteArea = new JTextArea();
         classWhiteArea.setBackground(new Color(-12895429));
         classWhiteArea.setForeground(new Color(-853761));
+        classWhiteArea.setLineWrap(true);
         classWhiteArea.setRows(0);
         classWhiteArea.setText("");
         classWhitePanel.setViewportView(classWhiteArea);

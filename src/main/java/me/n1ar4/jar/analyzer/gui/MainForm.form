@@ -191,6 +191,7 @@
                             <properties>
                               <background color="-12895429"/>
                               <foreground color="-16711931"/>
+                              <lineWrap value="true"/>
                               <rows value="0"/>
                             </properties>
                           </component>
@@ -220,6 +221,7 @@
                             <properties>
                               <background color="-12895429"/>
                               <foreground color="-853761"/>
+                              <lineWrap value="true"/>
                               <rows value="0"/>
                               <text value=""/>
                             </properties>

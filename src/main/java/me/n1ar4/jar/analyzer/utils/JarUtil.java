@@ -26,10 +26,11 @@ public class JarUtil {
     public static List<ClassFileEntity> resolveNormalJarFile(String jarPath) {
         try {
             Path tmpDir = Paths.get(Const.tempDir);
-            try {
-                Files.createDirectory(tmpDir);
-            } catch (Exception ignored) {
-            }
+//            try {
+//                Files.createDirectory(tmpDir);
+//            } catch (Exception ignored) {
+//            }
+            classFileSet.clear();
             resolve(jarPath, tmpDir);
             return new ArrayList<>(classFileSet);
         } catch (Exception e) {
@@ -145,7 +146,7 @@ public class JarUtil {
                     return;
                 }
             }
-            if (jarPathStr.toLowerCase(Locale.ROOT).endsWith(".jar") ||
+            else if (jarPathStr.toLowerCase(Locale.ROOT).endsWith(".jar") ||
                     jarPathStr.toLowerCase(Locale.ROOT).endsWith(".war")) {
                 InputStream is = Files.newInputStream(jarPath);
                 JarInputStream jarInputStream = new JarInputStream(is);

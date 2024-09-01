@@ -16,6 +16,7 @@ public class StringMethodVisitor extends MethodVisitor {
     private final Map<ClassReference.Handle, ClassReference> classMap;
     private final Map<MethodReference.Handle, MethodReference> methodMap;
 
+    private MethodReference ownerHandle = null;
     public StringMethodVisitor(int api, MethodVisitor methodVisitor,
                                String owner, String methodName, String desc,
                                Map<MethodReference.Handle, List<String>> strMap,
@@ -28,6 +29,14 @@ public class StringMethodVisitor extends MethodVisitor {
         this.methodDesc = desc;
         this.classMap = classMap;
         this.methodMap = methodMap;
+
+        ClassReference.Handle ch = new ClassReference.Handle(ownerName);
+        if (classMap.get(ch) != null) {
+            MethodReference m = methodMap.get(new MethodReference.Handle(ch, methodName, methodDesc));
+            if (m != null) {
+                this.ownerHandle = m;
+            }
+        }
     }
 
     public static boolean isPrintable(String str) {
@@ -36,18 +45,20 @@ public class StringMethodVisitor extends MethodVisitor {
 
     @Override
     public void visitLdcInsn(Object o) {
+        if(this.ownerHandle == null)
+            return;
         if (o instanceof String) {
-            MethodReference mr = null;
-            ClassReference.Handle ch = new ClassReference.Handle(ownerName);
-            if (classMap.get(ch) != null) {
-                MethodReference m = methodMap.get(new MethodReference.Handle(ch, methodName, methodDesc));
-                if (m != null) {
-                    mr = m;
-                }
-            }
-            if (mr == null) {
-                return;
-            }
+//            MethodReference mr = null;
+//            ClassReference.Handle ch = new ClassReference.Handle(ownerName);
+//            if (classMap.get(ch) != null) {
+//                MethodReference m = methodMap.get(new MethodReference.Handle(ch, methodName, methodDesc));
+//                if (m != null) {
+//                    mr = m;
+//                }
+//            }
+//            if (mr == null) {
+//                return;
+//            }
             String str = (String) o;
             if (str.trim().isEmpty()) {
                 return;
@@ -55,9 +66,9 @@ public class StringMethodVisitor extends MethodVisitor {
             if (!isPrintable(str)) {
                 return;
             }
-            List<String> mList = strMap.getOrDefault(mr.getHandle(), new ArrayList<>());
+            List<String> mList = strMap.getOrDefault(this.ownerHandle.getHandle(), new ArrayList<>());
             mList.add(str);
-            strMap.put(mr.getHandle(), mList);
+            strMap.put(this.ownerHandle.getHandle(), mList);
         }
         super.visitLdcInsn(o);
     }

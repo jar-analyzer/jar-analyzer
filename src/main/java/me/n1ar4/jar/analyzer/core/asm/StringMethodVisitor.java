@@ -12,6 +12,7 @@ public class StringMethodVisitor extends MethodVisitor {
     private final Map<MethodReference.Handle, List<String>> strMap;
 
     private MethodReference ownerHandle = null;
+
     public StringMethodVisitor(int api, MethodVisitor methodVisitor,
                                String owner, String methodName, String desc,
                                Map<MethodReference.Handle, List<String>> strMap,
@@ -34,7 +35,7 @@ public class StringMethodVisitor extends MethodVisitor {
 
     @Override
     public void visitLdcInsn(Object o) {
-        if(this.ownerHandle == null)
+        if (this.ownerHandle == null)
             return;
         if (o instanceof String) {
             String str = (String) o;

@@ -130,7 +130,11 @@
 
 表达式搜索是 `jar-analzyer` 重要的高级功能：可以自定义多种条件组合搜索方法
 
-[文档](doc/README-el.md)
+表达式搜索位于首页以及 `Advance` 的 `Plugins` 部分
+
+![](img/0028.png)
+
+[详细文档](doc/README-el.md)
 
 ## 截图
 

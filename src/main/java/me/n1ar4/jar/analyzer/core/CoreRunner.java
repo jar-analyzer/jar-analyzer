@@ -266,6 +266,10 @@ public class CoreRunner {
         AnalyzeEnv.controllers.clear();
         System.gc();
 
+        // DISABLE WHITE/BLACK LIST
+        MainForm.getInstance().getClassBlackArea().setEditable(false);
+        MainForm.getInstance().getClassWhiteArea().setEditable(false);
+
         CoreHelper.refreshSpringC();
     }
 

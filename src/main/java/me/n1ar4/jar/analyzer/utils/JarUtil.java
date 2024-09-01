@@ -35,8 +35,18 @@ public class JarUtil {
         return new ArrayList<>();
     }
 
-    private static boolean shouldRun(String whiteText, String text, String saveClass) {
+    private static boolean shouldRun(String whiteText, String blackText, String saveClass) {
         boolean whiteDoIt = false;
+
+        // 处理 BOOT-INF WEB-INF 的问题
+        int i = saveClass.indexOf("classes");
+        if (i > 0) {
+            if (saveClass.contains("BOOT-INF") || saveClass.contains("WEB-INF")) {
+                saveClass = saveClass.substring(i + 8, saveClass.length() - 6);
+            } else {
+                saveClass = saveClass.substring(0, saveClass.length() - 6);
+            }
+        }
 
         if (whiteText != null && !StringUtil.isNull(whiteText)) {
             ArrayList<String> data = ListParser.parse(whiteText);
@@ -71,8 +81,8 @@ public class JarUtil {
         }
 
         boolean doIt = true;
-        if (text != null && !StringUtil.isNull(text)) {
-            ArrayList<String> data = ListParser.parse(text);
+        if (blackText != null && !StringUtil.isNull(blackText)) {
+            ArrayList<String> data = ListParser.parse(blackText);
             String className = saveClass;
             if (className.endsWith(".class")) {
                 className = className.substring(0, className.length() - 6);

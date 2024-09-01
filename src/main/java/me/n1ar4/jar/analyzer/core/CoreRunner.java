@@ -36,26 +36,19 @@ public class CoreRunner {
     public static void run(Path jarPath, Path rtJarPath, boolean fixClass) {
         // 2024-07-05 不允许太大的 JAR 文件
         long totalSize = 0;
+        List<String> beforeJarList = new ArrayList<>();
         if (Files.isDirectory(jarPath)) {
-            List<String> files = DirUtil.GetFiles(jarPath.toAbsolutePath().toString());
-            if (rtJarPath != null) {
-                files.add(rtJarPath.toAbsolutePath().toString());
-            }
-            for (String s : files) {
-                if (s.toLowerCase().endsWith(".jar") || s.toLowerCase().endsWith(".war")) {
-                    totalSize += Paths.get(s).toFile().length();
-                }
-            }
+            beforeJarList.addAll(DirUtil.GetFiles(jarPath.toAbsolutePath().toString()));
         } else {
-            List<String> jarList = new ArrayList<>();
-            if (rtJarPath != null) {
-                jarList.add(rtJarPath.toAbsolutePath().toString());
-            }
-            jarList.add(jarPath.toAbsolutePath().toString());
-            for (String s : jarList) {
-                if (s.toLowerCase().endsWith(".jar") || s.toLowerCase().endsWith(".war")) {
-                    totalSize += Paths.get(s).toFile().length();
-                }
+            beforeJarList.add(jarPath.toAbsolutePath().toString());
+
+        }
+        if (rtJarPath != null) {
+            beforeJarList.add(rtJarPath.toAbsolutePath().toString());
+        }
+        for (String s : beforeJarList) {
+            if (s.toLowerCase().endsWith(".jar") || s.toLowerCase().endsWith(".war")) {
+                totalSize += Paths.get(s).toFile().length();
             }
         }
 
@@ -123,13 +116,15 @@ public class CoreRunner {
         // BUG CLASS NAME
         for (ClassFileEntity cf : cfs) {
             String className = cf.getClassName();
-            int i = className.indexOf("classes");
-            if (className.contains("BOOT-INF")) {
-                className = className.substring(i + 8);
-            } else if (className.contains("WEB-INF")) {
-                className = className.substring(i + 7);
-            }
-            if (fixClass) {
+            if(fixClass == false){
+                int i = className.indexOf("classes");
+                if (className.contains("BOOT-INF")) {
+                    className = className.substring(i + 8);
+                } else if (className.contains("WEB-INF")) {
+                    className = className.substring(i + 7);
+                }
+                cf.setClassName(className);
+            }else{
                 // fix class name
                 Path parPath = Paths.get(Const.tempDir);
                 FixClassVisitor cv = new FixClassVisitor();
@@ -151,8 +146,6 @@ public class CoreRunner {
                 }
                 cf.setClassName(className);
                 cf.setPath(Paths.get(className));
-            } else {
-                cf.setClassName(className);
             }
         }
 

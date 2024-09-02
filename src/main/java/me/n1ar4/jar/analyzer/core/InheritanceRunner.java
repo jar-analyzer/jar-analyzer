@@ -50,10 +50,14 @@ public class InheritanceRunner {
             Set<MethodReference.Handle> overridingMethods = new HashSet<>();
             Set<ClassReference.Handle> subClasses = subClassMap.get(method.getClassReference());
             if (subClasses != null) {
+                // 遍历某个方法的所有子类
                 for (ClassReference.Handle subClass : subClasses) {
                     Set<MethodReference.Handle> subClassMethods = methodsByClass.get(subClass);
                     if (subClassMethods != null) {
+                        // 所有子类的方法
                         for (MethodReference.Handle subClassMethod : subClassMethods) {
+                            // 子类方法名和 DESC 完全一致
+                            // 这是 override 方法
                             if (subClassMethod.getName().equals(method.getName()) &&
                                     subClassMethod.getDesc().equals(method.getDesc())) {
                                 overridingMethods.add(subClassMethod);
@@ -62,6 +66,7 @@ public class InheritanceRunner {
                     }
                 }
             }
+            // 方法 -> [所有子类 override 方法列表]
             if (!overridingMethods.isEmpty()) {
                 methodImplMap.put(method.getHandle(), overridingMethods);
             }

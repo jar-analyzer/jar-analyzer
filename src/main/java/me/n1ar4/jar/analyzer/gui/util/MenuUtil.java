@@ -32,6 +32,10 @@ public class MenuUtil {
     private static final JCheckBoxMenuItem logAllSqlConfig = new JCheckBoxMenuItem("save all sql statement");
     private static final JCheckBoxMenuItem chineseConfig = new JCheckBoxMenuItem("Chinese");
     private static final JCheckBoxMenuItem englishConfig = new JCheckBoxMenuItem("English");
+    private static final JCheckBoxMenuItem enableFixMethodImplConfig = new JCheckBoxMenuItem(
+            "enable fix methods impl/override");
+    private static final JCheckBoxMenuItem disableFixMethodImplConfig = new JCheckBoxMenuItem(
+            "disable fix methods impl/override");
 
     public static void setLangFlag() {
         if (GlobalOptions.getLang() == GlobalOptions.CHINESE) {
@@ -47,6 +51,7 @@ public class MenuUtil {
         sortedByMethodConfig.setState(false);
         sortedByClassConfig.setState(true);
         logAllSqlConfig.setSelected(true);
+        enableFixMethodImplConfig.setSelected(true);
 
         chineseConfig.addActionListener(e -> {
             chineseConfig.setState(chineseConfig.getState());
@@ -95,6 +100,16 @@ public class MenuUtil {
             sortedByClassConfig.setState(sortedByClassConfig.getState());
             sortedByMethodConfig.setState(!sortedByClassConfig.getState());
         });
+
+        enableFixMethodImplConfig.addActionListener(e -> {
+            enableFixMethodImplConfig.setState(enableFixMethodImplConfig.getState());
+            disableFixMethodImplConfig.setState(!enableFixMethodImplConfig.getState());
+        });
+
+        disableFixMethodImplConfig.addActionListener(e -> {
+            disableFixMethodImplConfig.setState(disableFixMethodImplConfig.getState());
+            enableFixMethodImplConfig.setState(!disableFixMethodImplConfig.getState());
+        });
     }
 
     public static JCheckBoxMenuItem getShowInnerConfig() {
@@ -115,6 +130,14 @@ public class MenuUtil {
 
     public static boolean sortedByClass() {
         return sortedByClassConfig.getState();
+    }
+
+    public static boolean enableFixMethodImpl() {
+        return enableFixMethodImplConfig.getState();
+    }
+
+    public static boolean disableFixMethodImpl() {
+        return disableFixMethodImplConfig.getState();
     }
 
     public static JMenuBar createMenuBar() {
@@ -220,6 +243,8 @@ public class MenuUtil {
             configMenu.add(fixClassPathConfig);
             configMenu.add(sortedByMethodConfig);
             configMenu.add(sortedByClassConfig);
+            configMenu.add(enableFixMethodImplConfig);
+            configMenu.add(disableFixMethodImplConfig);
             configMenu.add(logAllSqlConfig);
             JMenuItem partitionConfig = new JMenuItem("partition config");
             partitionConfig.setIcon(IconManager.javaIcon);

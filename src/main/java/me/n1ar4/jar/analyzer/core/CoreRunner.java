@@ -10,6 +10,7 @@ import me.n1ar4.jar.analyzer.engine.CoreHelper;
 import me.n1ar4.jar.analyzer.entity.ClassFileEntity;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
+import me.n1ar4.jar.analyzer.gui.util.MenuUtil;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.utils.CoreUtil;
 import me.n1ar4.jar.analyzer.utils.DirUtil;
@@ -188,13 +189,25 @@ public class CoreRunner {
                 InheritanceRunner.getAllMethodImplementations(AnalyzeEnv.inheritanceMap, AnalyzeEnv.methodMap);
         DatabaseManager.saveImpls(implMap);
         MainForm.getInstance().getBuildBar().setValue(60);
-        for (Map.Entry<MethodReference.Handle, Set<MethodReference.Handle>> entry :
-                implMap.entrySet()) {
-            MethodReference.Handle k = entry.getKey();
-            Set<MethodReference.Handle> v = entry.getValue();
-            HashSet<MethodReference.Handle> calls = AnalyzeEnv.methodCalls.get(k);
-            calls.addAll(v);
+
+        // 2024/09/02
+        // 自动处理方法实现是可选的
+        // 具体参考 doc/README-others.md
+        if (MenuUtil.enableFixMethodImpl()) {
+            // 方法 -> [所有子类 override 方法列表]
+            for (Map.Entry<MethodReference.Handle, Set<MethodReference.Handle>> entry :
+                    implMap.entrySet()) {
+                MethodReference.Handle k = entry.getKey();
+                Set<MethodReference.Handle> v = entry.getValue();
+                // 当前方法的所有 callee 列表
+                HashSet<MethodReference.Handle> calls = AnalyzeEnv.methodCalls.get(k);
+                // 增加所有的 override 方法
+                calls.addAll(v);
+            }
+        } else {
+            logger.warn("enable fix method impl/override is recommend");
         }
+
         DatabaseManager.saveMethodCalls(AnalyzeEnv.methodCalls);
         MainForm.getInstance().getBuildBar().setValue(70);
         logger.info("build extra inheritance");

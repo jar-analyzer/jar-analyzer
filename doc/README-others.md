@@ -105,3 +105,7 @@ class Cat extends Animal {
 首先确保数据不会丢失，然后我们可以自行手动分析反编译的代码
 - `Zoo.run -> Animal.eat`
 - `Animal.eat -> Dog.eat`/`Animal.eat -> Cat.eat`
+
+注意：以上的配置在 `3.0` 及以前的版本中是必须且无法取消的
+
+但是在 `3.1` 版本中新增了配置，通过左上角 `config` 可以勾选 `enable/disable`

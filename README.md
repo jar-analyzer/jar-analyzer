@@ -219,6 +219,8 @@ set "theme_name=default"
 
 ## 其他
 
+解释一些内部的原理和注意事项
+
 [文档](doc/README-others.md)
 
 ## 参考

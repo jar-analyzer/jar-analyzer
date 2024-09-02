@@ -55,9 +55,9 @@ jobs:
           curl -L "https://github.com/jar-analyzer/workflow_jre/releases/download/temurin-8u422/jre.zip" -o "jre-8.zip"
         working-directory: jar-analyzer
 
-      - name: download jre-21
+      - name: download jre-22
         run: |
-          curl -L "https://github.com/jar-analyzer/workflow_jre/releases/download/temurin-21.0.4/jre.zip" -o "jre-21.zip"
+          curl -L "https://github.com/jar-analyzer/workflow_jre/releases/download/temurin-22.0.2/jre.zip" -o "jre-22.zip"
         working-directory: jar-analyzer
 
       - name: unpack jre-8
@@ -65,9 +65,9 @@ jobs:
           unzip jre-8.zip -d release\jar-analyzer-${{ env.VERSION }}-windows-full\
         working-directory: jar-analyzer
 
-      - name: unpack jre-21
+      - name: unpack jre-22
         run: >
-          unzip jre-21.zip -d release\jar-analyzer-${{ env.VERSION }}-windows-21\
+          unzip jre-22.zip -d release\jar-analyzer-${{ env.VERSION }}-windows-22\
         working-directory: jar-analyzer
 
       - name: zip release
@@ -75,7 +75,7 @@ jobs:
           dir
           Compress-Archive -Path "jar-analyzer-${{ env.VERSION }}-windows-system\" -DestinationPath "jar-analyzer-${{ env.VERSION }}-windows-system.zip" -CompressionLevel Optimal
           Compress-Archive -Path "jar-analyzer-${{ env.VERSION }}-windows-full\" -DestinationPath "jar-analyzer-${{ env.VERSION }}-windows-full.zip" -CompressionLevel Optimal
-          Compress-Archive -Path "jar-analyzer-${{ env.VERSION }}-windows-21\" -DestinationPath "jar-analyzer-${{ env.VERSION }}-windows-21.zip" -CompressionLevel Optimal
+          Compress-Archive -Path "jar-analyzer-${{ env.VERSION }}-windows-22\" -DestinationPath "jar-analyzer-${{ env.VERSION }}-windows-22.zip" -CompressionLevel Optimal
           Compress-Archive -Path "jar-analyzer-${{ env.VERSION }}\" -DestinationPath "jar-analyzer-${{ env.VERSION }}.zip" -CompressionLevel Optimal
         working-directory: jar-analyzer/release
         shell: pwsh
@@ -87,6 +87,6 @@ jobs:
           name: jar-analyzer
           path: |
             jar-analyzer/release/jar-analyzer-${{ env.VERSION }}-windows-full.zip
-            jar-analyzer/release/jar-analyzer-${{ env.VERSION }}-windows-21.zip
+            jar-analyzer/release/jar-analyzer-${{ env.VERSION }}-windows-22.zip
             jar-analyzer/release/jar-analyzer-${{ env.VERSION }}-windows-system.zip
             jar-analyzer/release/jar-analyzer-${{ env.VERSION }}.zip

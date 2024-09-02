@@ -47,7 +47,7 @@ if __name__ == '__main__':
     print("[*] make new release dir: {}".format(VERSION))
     release_win_system_dir = "jar-analyzer-{}-windows-system".format(VERSION)
     release_win_full_dir = "jar-analyzer-{}-windows-full".format(VERSION)
-    release_win_21_dir = "jar-analyzer-{}-windows-21".format(VERSION)
+    release_win_22_dir = "jar-analyzer-{}-windows-22".format(VERSION)
     release_zip_dir = "jar-analyzer-{}".format(VERSION)
 
     print("[*] make dirs")
@@ -55,30 +55,30 @@ if __name__ == '__main__':
     subprocess.run("mkdir {}\\{}".format(release_win_system_dir, "lib"), shell=True, cwd=target_directory)
     subprocess.run("mkdir {}".format(release_win_full_dir), shell=True, cwd=target_directory)
     subprocess.run("mkdir {}\\{}".format(release_win_full_dir, "lib"), shell=True, cwd=target_directory)
-    subprocess.run("mkdir {}".format(release_win_21_dir), shell=True, cwd=target_directory)
-    subprocess.run("mkdir {}\\{}".format(release_win_21_dir, "lib"), shell=True, cwd=target_directory)
+    subprocess.run("mkdir {}".format(release_win_22_dir), shell=True, cwd=target_directory)
+    subprocess.run("mkdir {}\\{}".format(release_win_22_dir, "lib"), shell=True, cwd=target_directory)
     subprocess.run("mkdir {}".format(release_zip_dir), shell=True, cwd=target_directory)
     subprocess.run("mkdir {}\\{}".format(release_zip_dir, "lib"), shell=True, cwd=target_directory)
 
     print("[*] copy file")
     copy_jar_files(java_target_directory, "{}/{}/{}".format(target_directory, release_win_system_dir, "lib"))
     copy_jar_files(java_target_directory, "{}/{}/{}".format(target_directory, release_win_full_dir, "lib"))
-    copy_jar_files(java_target_directory, "{}/{}/{}".format(target_directory, release_win_21_dir, "lib"))
+    copy_jar_files(java_target_directory, "{}/{}/{}".format(target_directory, release_win_22_dir, "lib"))
     copy_jar_files(java_target_directory, "{}/{}/{}".format(target_directory, release_zip_dir, "lib"))
 
     copy_exe_files("{}/{}".format(target_directory, release_win_system_dir))
     copy_exe_files("{}/{}".format(target_directory, release_win_full_dir))
-    copy_exe_files("{}/{}".format(target_directory, release_win_21_dir))
+    copy_exe_files("{}/{}".format(target_directory, release_win_22_dir))
 
     print("[*] build start scripts")
     copy_file("build\\start-system.bat", "release\\" + release_win_system_dir + "\\start.bat")
     copy_file("build\\start-full.bat", "release\\" + release_win_full_dir + "\\start.bat")
-    copy_file("build\\start-21.bat", "release\\" + release_win_21_dir + "\\start.bat")
+    copy_file("build\\start-22.bat", "release\\" + release_win_22_dir + "\\start.bat")
 
     print("[*] build license")
     copy_file("LICENSE", "release\\" + release_win_system_dir + "\\LICENSE")
     copy_file("LICENSE", "release\\" + release_win_full_dir + "\\LICENSE")
-    copy_file("LICENSE", "release\\" + release_win_21_dir + "\\LICENSE")
+    copy_file("LICENSE", "release\\" + release_win_22_dir + "\\LICENSE")
     copy_file("LICENSE", "release\\" + release_zip_dir + "\\LICENSE")
 
     print("[*] build version")
@@ -87,7 +87,7 @@ if __name__ == '__main__':
     subprocess.run("echo {} > {}".format(VERSION, "VERSION.txt"), shell=True,
                    cwd="{}/{}".format(target_directory, release_win_full_dir))
     subprocess.run("echo {} > {}".format(VERSION, "VERSION.txt"), shell=True,
-                   cwd="{}/{}".format(target_directory, release_win_21_dir))
+                   cwd="{}/{}".format(target_directory, release_win_22_dir))
     subprocess.run("echo {} > {}".format(VERSION, "VERSION.txt"), shell=True,
                    cwd="{}/{}".format(target_directory, release_zip_dir))
 
@@ -97,7 +97,7 @@ if __name__ == '__main__':
     subprocess.run("echo {} > {}".format(PROJECT, "ABOUT.txt"), shell=True,
                    cwd="{}/{}".format(target_directory, release_win_full_dir))
     subprocess.run("echo {} > {}".format(PROJECT, "ABOUT.txt"), shell=True,
-                   cwd="{}/{}".format(target_directory, release_win_21_dir))
+                   cwd="{}/{}".format(target_directory, release_win_22_dir))
     subprocess.run("echo {} > {}".format(PROJECT, "ABOUT.txt"), shell=True,
                    cwd="{}/{}".format(target_directory, release_zip_dir))
 

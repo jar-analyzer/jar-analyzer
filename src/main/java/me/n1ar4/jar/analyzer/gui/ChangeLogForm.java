@@ -2,7 +2,6 @@ package me.n1ar4.jar.analyzer.gui;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import me.n1ar4.jar.analyzer.starter.Const;
 
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
@@ -15,8 +14,8 @@ public class ChangeLogForm {
     private JScrollPane scroll;
     private JEditorPane text;
 
-    public static void start(String code) {
-        JFrame frame = new JFrame(Const.ChangeLogForm);
+    public static void start(String title, String code) {
+        JFrame frame = new JFrame(title);
         ChangeLogForm instance = new ChangeLogForm();
 
         instance.text.setContentType("text/html");

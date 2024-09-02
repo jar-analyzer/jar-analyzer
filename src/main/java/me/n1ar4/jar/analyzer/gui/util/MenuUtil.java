@@ -299,12 +299,38 @@ public class MenuUtil {
                     for (int numRead; (numRead = in.read(buffer, 0, buffer.length)) > 0; ) {
                         out.append(buffer, 0, numRead);
                     }
-                    ChangeLogForm.start(Processor.process(out.toString()));
+                    ChangeLogForm.start(Const.ChangeLogForm, Processor.process(out.toString()));
                 } catch (Exception ex) {
                     logger.error("error: {}", ex.toString());
                 }
             });
             aboutMenu.add(changelogItem);
+            JMenuItem thanksItem = new JMenuItem("thanks");
+            is = MainForm.class.getClassLoader().getResourceAsStream("img/github.png");
+            if (is == null) {
+                return null;
+            }
+            imageIcon = new ImageIcon(ImageIO.read(is));
+            thanksItem.setIcon(imageIcon);
+            thanksItem.addActionListener(e -> {
+                try {
+                    InputStream i = MenuUtil.class.getClassLoader().getResourceAsStream("thanks.md");
+                    if (i == null) {
+                        return;
+                    }
+                    int bufferSize = 1024;
+                    char[] buffer = new char[bufferSize];
+                    StringBuilder out = new StringBuilder();
+                    Reader in = new InputStreamReader(i, StandardCharsets.UTF_8);
+                    for (int numRead; (numRead = in.read(buffer, 0, buffer.length)) > 0; ) {
+                        out.append(buffer, 0, numRead);
+                    }
+                    ChangeLogForm.start("THANKS", Processor.process(out.toString()));
+                } catch (Exception ex) {
+                    logger.error("error: {}", ex.toString());
+                }
+            });
+            aboutMenu.add(thanksItem);
             JMenuItem checkUpdateItem = new JMenuItem("check update");
             is = MainForm.class.getClassLoader().getResourceAsStream("img/normal.png");
             if (is == null) {

@@ -1165,7 +1165,7 @@ public class MainForm {
             @Override
             public void windowClosing(WindowEvent e) {
                 int resp = JOptionPane.showConfirmDialog(frame, "CONFIRM EXIT?",
-                        "Exit Confirmation", JOptionPane.OK_CANCEL_OPTION);
+                        "EXIT", JOptionPane.OK_CANCEL_OPTION);
                 if (resp == JOptionPane.OK_OPTION) {
                     frame.dispose();
                     System.exit(0);

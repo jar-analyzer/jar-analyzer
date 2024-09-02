@@ -3,66 +3,66 @@
     <FlappyBird>
         <view>
             <FBMainFrame>
-                <frame_title>FlappyBird</frame_title>    <!-- 主窗体标题 -->
-                <frame_width>350</frame_width>            <!-- 主窗体宽度 -->
-                <frame_height>600</frame_height>        <!-- 主窗体高度 -->
-                <png_bg_width>288</png_bg_width>        <!-- 背景图片宽度 -->
-                <png_bg_height>512</png_bg_height>        <!-- 背景图片高度 -->
-                <png_land_width>336</png_land_width>    <!-- 地面图片宽度 -->
-                <png_land_height>112</png_land_height>    <!-- 地面图片高度 -->
-                <png_title_width>178</png_title_width>    <!-- 游戏界面标题图片宽度 -->
-                <png_title_height>48</png_title_height>    <!-- 游戏界面标题图片高度 -->
-                <png_play_width>107</png_play_width>    <!-- 游戏界面开始按钮图片宽度 -->
-                <png_play_height>60</png_play_height>    <!-- 游戏界面开始按钮图片高度 -->
-                <png_rank_width>107</png_rank_width>    <!-- 游戏界面开始按钮图片宽度 -->
-                <png_rank_height>60</png_rank_height>    <!-- 游戏界面开始按钮图片高度 -->
-                <png_ready_width>196</png_ready_width>    <!-- 游戏准备界面提示图片宽度 -->
-                <png_ready_height>62</png_ready_height>    <!-- 游戏准备界面提示图片高度 -->
-                <png_over_width>204</png_over_width>    <!-- 游戏结束界面提示图片宽度 -->
-                <png_over_height>54</png_over_height>    <!-- 游戏结束界面提示图片高度 -->
-                <png_tab_width>114</png_tab_width>        <!-- 游戏准备界面提示图片宽度 -->
-                <png_tab_height>98</png_tab_height>        <!-- 游戏准备界面提示图片高度 -->
-                <png_bg_url>game/flappy/flappy_bird/bg_day.png</png_bg_url>            <!-- 背景图片URL -->
-                <png_land_url>game/flappy/flappy_bird/land.png</png_land_url>        <!-- 土地图片URL -->
-                <png_title_url>game/flappy/flappy_bird/title.png</png_title_url>        <!-- 标题图片URL -->
-                <png_play_url>game/flappy/flappy_bird/btn_play.png</png_play_url>    <!-- 开始图片URL -->
-                <png_rank_url>game/flappy/flappy_bird/btn_rank.png</png_rank_url>    <!-- 排名图片URL -->
-                <png_ready_url>game/flappy/flappy_bird/game_ready.png</png_ready_url><!-- 预备图片URL -->
-                <png_over_url>game/flappy/flappy_bird/game_over.png</png_over_url>    <!-- 结束图片URL -->
-                <png_tab_url>game/flappy/flappy_bird/tab.png</png_tab_url>            <!-- 预备点击图片URL -->
+                <frame_title>FlappyBird</frame_title>
+                <frame_width>350</frame_width>
+                <frame_height>600</frame_height>
+                <png_bg_width>288</png_bg_width>
+                <png_bg_height>512</png_bg_height>
+                <png_land_width>336</png_land_width>
+                <png_land_height>112</png_land_height>
+                <png_title_width>178</png_title_width>
+                <png_title_height>48</png_title_height>
+                <png_play_width>107</png_play_width>
+                <png_play_height>60</png_play_height>
+                <png_rank_width>107</png_rank_width>
+                <png_rank_height>60</png_rank_height>
+                <png_ready_width>196</png_ready_width>
+                <png_ready_height>62</png_ready_height>
+                <png_over_width>204</png_over_width>
+                <png_over_height>54</png_over_height>
+                <png_tab_width>114</png_tab_width>
+                <png_tab_height>98</png_tab_height>
+                <png_bg_url>game/flappy/flappy_bird/bg_day.png</png_bg_url>
+                <png_land_url>game/flappy/flappy_bird/land.png</png_land_url>
+                <png_title_url>game/flappy/flappy_bird/title.png</png_title_url>
+                <png_play_url>game/flappy/flappy_bird/btn_play.png</png_play_url>
+                <png_rank_url>game/flappy/flappy_bird/btn_rank.png</png_rank_url>
+                <png_ready_url>game/flappy/flappy_bird/game_ready.png</png_ready_url>
+                <png_over_url>game/flappy/flappy_bird/game_over.png</png_over_url>
+                <png_tab_url>game/flappy/flappy_bird/tab.png</png_tab_url>
             </FBMainFrame>
         </view>
         <model>
             <Bird>
-                <png_bird_width>32</png_bird_width>        <!-- 每张小鸟图片宽度 -->
-                <png_bird_height>24</png_bird_height>    <!-- 每张小鸟图片高度 -->
-                <png_bird00_url>game/flappy/flappy_bird/bird0_0.png</png_bird00_url>    <!-- 小鸟0图片0 -->
-                <png_bird01_url>game/flappy/flappy_bird/bird0_1.png</png_bird01_url>    <!-- 小鸟0图片1 -->
-                <png_bird02_url>game/flappy/flappy_bird/bird0_2.png</png_bird02_url>    <!-- 小鸟0图片2 -->
-                <png_bird10_url>game/flappy/flappy_bird/bird1_0.png</png_bird10_url>    <!-- 小鸟1图片0 -->
-                <png_bird11_url>game/flappy/flappy_bird/bird1_1.png</png_bird11_url>    <!-- 小鸟1图片1 -->
-                <png_bird12_url>game/flappy/flappy_bird/bird1_2.png</png_bird12_url>    <!-- 小鸟1图片2 -->
-                <png_bird20_url>game/flappy/flappy_bird/bird2_0.png</png_bird20_url>    <!-- 小鸟2图片0 -->
-                <png_bird21_url>game/flappy/flappy_bird/bird2_1.png</png_bird21_url>    <!-- 小鸟2图片1 -->
-                <png_bird22_url>game/flappy/flappy_bird/bird2_2.png</png_bird22_url>    <!-- 小鸟2图片2 -->
+                <png_bird_width>32</png_bird_width>
+                <png_bird_height>24</png_bird_height>
+                <png_bird00_url>game/flappy/flappy_bird/bird0_0.png</png_bird00_url>
+                <png_bird01_url>game/flappy/flappy_bird/bird0_1.png</png_bird01_url>
+                <png_bird02_url>game/flappy/flappy_bird/bird0_2.png</png_bird02_url>
+                <png_bird10_url>game/flappy/flappy_bird/bird1_0.png</png_bird10_url>
+                <png_bird11_url>game/flappy/flappy_bird/bird1_1.png</png_bird11_url>
+                <png_bird12_url>game/flappy/flappy_bird/bird1_2.png</png_bird12_url>
+                <png_bird20_url>game/flappy/flappy_bird/bird2_0.png</png_bird20_url>
+                <png_bird21_url>game/flappy/flappy_bird/bird2_1.png</png_bird21_url>
+                <png_bird22_url>game/flappy/flappy_bird/bird2_2.png</png_bird22_url>
             </Bird>
-            <Pipe>        <!-- Pipe类 -->
-                <png_pipe_width>52</png_pipe_width>        <!-- 管道图片宽度 -->
-                <png_pipe_height>320</png_pipe_height>    <!-- 管道图片高度 -->
-                <pipe_up_url>game/flappy/flappy_bird/pipe_up.png</pipe_up_url>        <!-- 管道上部 -->
-                <pipe_down_url>game/flappy/flappy_bird/pipe_down.png</pipe_down_url>    <!-- 管道上部 -->
+            <Pipe>
+                <png_pipe_width>52</png_pipe_width>
+                <png_pipe_height>320</png_pipe_height>
+                <pipe_up_url>game/flappy/flappy_bird/pipe_up.png</pipe_up_url>
+                <pipe_down_url>game/flappy/flappy_bird/pipe_down.png</pipe_down_url>
             </Pipe>
-            <Score>        <!-- Score类 -->
-                <png_num0_url>game/flappy/flappy_bird/num0.png</png_num0_url>        <!-- 数组0url -->
-                <png_num1_url>game/flappy/flappy_bird/num1.png</png_num1_url>        <!-- 数组1url -->
-                <png_num2_url>game/flappy/flappy_bird/num2.png</png_num2_url>        <!-- 数组2url -->
-                <png_num3_url>game/flappy/flappy_bird/num3.png</png_num3_url>        <!-- 数组3url -->
-                <png_num4_url>game/flappy/flappy_bird/num4.png</png_num4_url>        <!-- 数组4url -->
-                <png_num5_url>game/flappy/flappy_bird/num5.png</png_num5_url>        <!-- 数组5url -->
-                <png_num6_url>game/flappy/flappy_bird/num6.png</png_num6_url>        <!-- 数组6url -->
-                <png_num7_url>game/flappy/flappy_bird/num7.png</png_num7_url>        <!-- 数组7url -->
-                <png_num8_url>game/flappy/flappy_bird/num8.png</png_num8_url>        <!-- 数组8url -->
-                <png_num9_url>game/flappy/flappy_bird/num9.png</png_num9_url>        <!-- 数组9url -->
+            <Score>
+                <png_num0_url>game/flappy/flappy_bird/num0.png</png_num0_url>
+                <png_num1_url>game/flappy/flappy_bird/num1.png</png_num1_url>
+                <png_num2_url>game/flappy/flappy_bird/num2.png</png_num2_url>
+                <png_num3_url>game/flappy/flappy_bird/num3.png</png_num3_url>
+                <png_num4_url>game/flappy/flappy_bird/num4.png</png_num4_url>
+                <png_num5_url>game/flappy/flappy_bird/num5.png</png_num5_url>
+                <png_num6_url>game/flappy/flappy_bird/num6.png</png_num6_url>
+                <png_num7_url>game/flappy/flappy_bird/num7.png</png_num7_url>
+                <png_num8_url>game/flappy/flappy_bird/num8.png</png_num8_url>
+                <png_num9_url>game/flappy/flappy_bird/num9.png</png_num9_url>
             </Score>
         </model>
     </FlappyBird>

@@ -36,7 +36,7 @@
     <description>Jar Analyzer Project</description>
 
     <contributors>
-        <!-- CONTRIBUTOR 按照贡献量排序 -->
+        <!-- CONTRIBUTOR 按照贡献行数排序 -->
         <contributor>
             <name>4ra1n</name>
             <url>https://github.com/4ra1n</url>
@@ -48,6 +48,10 @@
         <contributor>
             <name>phil</name>
             <url>https://github.com/sensensen404</url>
+        </contributor>
+        <contributor>
+            <name>fantasy</name>
+            <url>https://github.com/ly-test-fuzz</url>
         </contributor>
         <contributor>
             <name>whw1sfb</name>
@@ -190,13 +194,6 @@
             <version>${nano.version}</version>
         </dependency>
         <dependency>
-            <groupId>tools</groupId>
-            <artifactId>tools</artifactId>
-            <version>0.0.1</version>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/lib/tools.jar</systemPath>
-        </dependency>
-        <dependency>
             <groupId>com.intellij</groupId>
             <artifactId>forms_rt</artifactId>
             <version>${idea.forms.version}</version>
@@ -215,6 +212,13 @@
                     <artifactId>asm-tree</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>tools</groupId>
+            <artifactId>tools</artifactId>
+            <version>0.0.1</version>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/lib/tools.jar</systemPath>
         </dependency>
     </dependencies>
 

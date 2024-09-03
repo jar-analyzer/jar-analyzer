@@ -92,20 +92,20 @@
     }
     .carousel {
         width: 100%;
-        max-width: 600px;
-        height: 400px;
+        max-width: 800px; /* Increased width */
+        height: 500px; /* Increased height */
         margin: 20px auto;
         position: relative;
         overflow: hidden;
     }
     .carousel-inner {
-        width: 600%; /* Changed from 400% to 600% */
+        width: 600%;
         height: 100%;
         display: flex;
         transition: transform 0.5s ease-in-out;
     }
     .carousel-item {
-        width: 16.67%; /* Changed from 25% to 16.67% */
+        width: 16.67%;
         height: 100%;
     }
     .carousel-item img {
@@ -200,7 +200,7 @@
         <div class="feature">反编译JAR包一键导出</div>
         <div class="feature">一键提取序列化数据恶意代码</div>
     </div>
-    <a href="https://jar-analyzer.example.com/start" class="button">开始使用</a>
+    <a href="https://github.com/jar-analyzer/jar-analyzer/releases" class="button">开始使用</a>
     <br>
     <a href="https://github.com/jar-analyzer/jar-analyzer" class="github-link" target="_blank">
         GitHub 仓库
@@ -221,7 +221,6 @@
         function showSlide(index) {
             carousel.style.transform = `translateX(-${index * (100 / totalSlides)}%)`;
         }
-
         prevBtn.addEventListener('click', (e) => {
             e.preventDefault();
             currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;

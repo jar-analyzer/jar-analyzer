@@ -34,12 +34,20 @@ public class Agent {
     public static String PASSWORD;
     public static Instrumentation staticIns;
     public static Class<?>[] staticClasses;
+    private static final String DEFAULT_PASSWD = "12345678";
 
+    /**
+     * 动态的 Agent 方式
+     * 通过 tools 的 attach
+     *
+     * @param agentArgs
+     * @param ins
+     */
     @SuppressWarnings("all")
     public static void agentmain(String agentArgs, Instrumentation ins) {
         if (agentArgs == null || agentArgs.trim().equals("")) {
-            agentArgs = "12345678";
-            System.out.println("default password : " + agentArgs);
+            agentArgs = DEFAULT_PASSWD;
+            System.out.println("default password : " + DEFAULT_PASSWD);
         }
         if (agentArgs.length() != 8) {
             return;
@@ -71,8 +79,16 @@ public class Agent {
             }
         }).start();
     }
+
+    /**
+     * 启动前的 Agent
+     * 通过 -javaagent 参数启动
+     * -javaagent:agent.jar
+     *
+     * @param agentArgs 输入参数
+     * @param inst      inst
+     */
     public static void premain(String agentArgs, final Instrumentation inst) {
         agentmain(agentArgs, inst);
     }
-
 }

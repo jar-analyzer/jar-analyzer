@@ -55,6 +55,12 @@
 | Listener | javax.servlet.ServletRequestListener | requestInitialized | 
 | Valve    | org.apache.catalina.Valve            | invoke             |
 
+注意在 `3.1` 版本后支持 `premain` 方式的静态的 `tomcat-analyzer`
+
+- 启动时添加参数 `-javaagent:agent.jar`
+- 打开 `tomcat-analyzer` 面板输入默认密码 `12345678` 
+- 点击刷新开始分析
+
 ### Y4-LOG
 
 该项目位于`me.n1ar4.log`中，这是一个模仿`Log4j2 API`的日志库

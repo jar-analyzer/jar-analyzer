@@ -107,15 +107,3 @@ if __name__ == '__main__':
     print("[*] copy windows agent.jar")
     copy_file("lib\\agent.jar", "release\\" + release_win_system_dir + "\\lib\\agent.jar")
     copy_file("lib\\agent.jar", "release\\" + release_win_full_dir + "\\lib\\agent.jar")
-
-    print("[*] copy windows tools.jar")
-    copy_file("lib\\tools.jar", "release\\" + release_win_system_dir + "\\lib\\tools.jar")
-    copy_file("lib\\tools.jar", "release\\" + release_win_full_dir + "\\lib\\tools.jar")
-
-    print("[*] copy windows attach.dll")
-    subprocess.run("mkdir {}\\jre\\bin".format(release_win_full_dir), shell=True, cwd=target_directory)
-    copy_file("lib\\attach.dll", "release\\" + release_win_full_dir + "\\jre\\bin\\attach.dll")
-
-    # JAVA 21 NOT SUPPORT SHELL ANALYZER
-
-    print("[*] build finish")

@@ -213,13 +213,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
-            <groupId>tools</groupId>
-            <artifactId>tools</artifactId>
-            <version>0.0.1</version>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/lib/tools.jar</systemPath>
-        </dependency>
     </dependencies>
 
     <build>

@@ -26,14 +26,11 @@ package me.n1ar4.shell.analyzer.form;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import com.sun.tools.attach.VirtualMachine;
-import com.sun.tools.attach.VirtualMachineDescriptor;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.starter.Version;
 import me.n1ar4.jar.analyzer.utils.OSUtil;
 import me.n1ar4.jar.analyzer.utils.SocketUtil;
 import me.n1ar4.shell.analyzer.model.ClassObj;
-import me.n1ar4.shell.analyzer.model.ProcessObj;
 import me.n1ar4.shell.analyzer.start.SocketHelper;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
@@ -58,6 +55,8 @@ import java.util.Locale;
 import java.util.Random;
 
 public class ShellForm {
+    private static final String DEFAULT_PASSWD = "P4sSW0rD";
+
     class CommonMouse extends MouseAdapter {
         public void mouseClicked(MouseEvent evt) {
             JList<?> list = (JList<?>) evt.getSource();
@@ -324,16 +323,15 @@ public class ShellForm {
         processTable.getColumnModel().getColumn(0).setMaxWidth(100);
 
         genButton.addActionListener(e -> {
-            int length = 8;
-            String str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            Random random = new Random();
-            random.setSeed(System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer();
-            for (int i = 0; i < length; i++) {
-                int number = random.nextInt(62);
-                sb.append(str.charAt(number));
-            }
-            passText.setText(sb.toString());
+            // 修改为弹出一个框允许用户复制
+            // java -javaagnent:agent.jar
+            String command = "java -javaagent:agent.jar=PassW0Rd";
+            JTextArea textArea = new JTextArea(command);
+            textArea.setEditable(false);
+            textArea.setLineWrap(true);
+            textArea.setWrapStyleWord(true);
+
+            JOptionPane.showMessageDialog(codePanel, new JScrollPane(textArea), "复制命令", JOptionPane.INFORMATION_MESSAGE);
         });
 
         this.processTable.addMouseListener(new MouseAdapter() {
@@ -348,91 +346,21 @@ public class ShellForm {
         });
 
         runningButton.addActionListener(e -> {
-            List<List<String>> dataList = new ArrayList<>();
-            List<VirtualMachineDescriptor> list = VirtualMachine.list();
-            for (VirtualMachineDescriptor v : list) {
-                ProcessObj p = new ProcessObj();
-                p.setId(v.id());
-
-                String t = v.displayName();
-                if (t == null || t.equals("")) {
-                    continue;
-                }
-
-                if (!t.toLowerCase().endsWith(".jar")) {
-                    String[] s = t.split("\\.");
-                    t = s[s.length - 1];
-
-                    if (t.contains("/")) {
-                        s = t.split("/");
-                        t = s[s.length - 1];
-                    }
-                }
-
-                p.setName(t);
-                List<String> temp = new ArrayList<>();
-                temp.add(p.getId());
-                temp.add(p.getName());
-                dataList.add(temp);
-            }
-            String[][] z = new String[dataList.size()][];
-            for (int i = 0; i < dataList.size(); i++) {
-                String[] a = dataList.get(i).toArray(new String[0]);
-                z[i] = a;
-            }
-
-            log("当前运行的Java进程数量: " + z.length);
-
-            rows = z;
-            model = new DefaultTableModel(rows, columns) {
-                public boolean isCellEditable(int row, int column) {
-                    return false;
-                }
-            };
-            processTable.setModel(model);
-            processTable.getColumnModel().getColumn(0).setMaxWidth(100);
+            log("已取消动态 AGENT 功能（参考 3.1 版本公告）");
         });
         attachButton.addActionListener(e -> {
-            String pid = pidText.getText();
             String pass = passText.getText();
             if (pass.length() != 8) {
                 JOptionPane.showMessageDialog(shellPanel, "请输入长度为8的密码");
                 return;
             }
             SocketHelper.setPass(pass);
-            log("开始Attach到目标: " + pid);
-            try {
-                VirtualMachine vm = VirtualMachine.attach(pid);
-                log("正在加载Agent程序...");
-
-                Path agentPath = Paths.get("lib").resolve(
-                        Paths.get("agent.jar"));
-                Path agentDepPath = Paths.get("lib").resolve(
-                        Paths.get("agent-jar-with-dependencies.jar"));
-
-                String path;
-                if (Files.exists(agentPath)) {
-                    path = agentPath.toAbsolutePath().toString();
-                } else if (Files.exists(agentDepPath)) {
-                    path = agentDepPath.toAbsolutePath().toString();
-                } else {
-                    log("请检查当前目录的agent文件");
-                    return;
-                }
-                log("加载Agent: " + path);
-                vm.loadAgent(path, pass);
-                vm.detach();
-                log("加载Agent程序完成");
-
-                if (SocketHelper.check()) {
-                    log("成功目标建立TCP连接");
-                } else {
-                    log("无法与目标建立TCP连接");
-                }
-
-            } catch (Exception ignored) {
-                new Thread(this::analyze).start();
+            if (SocketHelper.check()) {
+                log("成功目标建立TCP连接");
+            } else {
+                log("无法与目标建立TCP连接");
             }
+            new Thread(this::analyze).start();
         });
         filterList.addMouseListener(new CommonMouse());
         valveList.addMouseListener(new CommonMouse());
@@ -504,29 +432,6 @@ public class ShellForm {
                 return;
             }
             SocketHelper.setPass(pass);
-            try {
-                VirtualMachine vm = VirtualMachine.attach(pid);
-                Path agentPath = Paths.get("lib").resolve(
-                        Paths.get("agent.jar"));
-                Path agentDepPath = Paths.get("lib").resolve(
-                        Paths.get("agent-jar-with-dependencies.jar"));
-
-                String path;
-                if (Files.exists(agentPath)) {
-                    path = agentPath.toAbsolutePath().toString();
-                } else if (Files.exists(agentDepPath)) {
-                    path = agentDepPath.toAbsolutePath().toString();
-                } else {
-                    log("请检查当前目录的agent文件");
-                    return;
-                }
-                vm.loadAgent(path, pass);
-                vm.detach();
-                new Thread(this::analyze).start();
-                log("已刷新");
-            } catch (Exception ignored) {
-                new Thread(this::analyze).start();
-            }
         });
     }
 
@@ -598,44 +503,12 @@ public class ShellForm {
         instance.logArea.append(text);
     }
 
-    /**
-     * 之前的检查逻辑
-     * 现在可以放开不做检查
-     *
-     * @return 是否允许
-     */
-    @SuppressWarnings("unused")
-    private static boolean checkEnv() {
-        if (!OSUtil.isWindows() || !Version.isJava8()) {
-            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
-                    "<html>" +
-                            "only support jdk8/windows<br>" +
-                            "目前只支持 jdk8/windows 系统<br>" +
-                            "更多信息参考原始项目地址：<br>" +
-                            "https://github.com/4ra1n/shell-analyzer" +
-                            "</html>");
-            return false;
-        }
-
-        // 检查端口 10033 端口是否被占用
-        if (SocketUtil.isPortInUse("localhost", 10033)) {
-            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
-                    "<html>" +
-                            "10033 port in use<br>" +
-                            "10033 端口被占用<br>" +
-                            "该功能需要使用该端口" +
-                            "</html>");
-            return false;
-        }
-        return true;
-    }
-
     public static void start0() {
-        // check windows
-        // 先不做检查 给其他系统也可以使用
-
         JFrame frame = new JFrame("tomcat-analyzer by 4ra1n");
         instance = new ShellForm();
+
+        instance.passText.setText(DEFAULT_PASSWD);
+
         frame.setContentPane(instance.shellPanel);
         frame.setLocationRelativeTo(MainForm.getInstance().getMasterPanel());
         frame.pack();
@@ -684,9 +557,11 @@ public class ShellForm {
         processTable.setFillsViewportHeight(false);
         processScroll.setViewportView(processTable);
         pidText = new JTextField();
+        pidText.setEditable(false);
+        pidText.setEnabled(false);
         topPanel.add(pidText, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         attachButton = new JButton();
-        attachButton.setText("开始Attach");
+        attachButton.setText("连接");
         topPanel.add(attachButton, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         pidLabel = new JLabel();
         pidLabel.setText("PID");

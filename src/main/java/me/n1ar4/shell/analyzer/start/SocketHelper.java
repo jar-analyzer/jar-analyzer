@@ -40,7 +40,7 @@ import java.util.List;
 public class SocketHelper {
     private static final Logger logger = LogManager.getLogger();
     private static String host;
-    private static final int port = 10033;
+    private static final int port = 10433;
     private static String pass;
 
     public static void setHost(String h) {

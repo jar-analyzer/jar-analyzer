@@ -29,6 +29,10 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectStreamClass;
 
+/**
+ * 防止被人 RCE
+ * 因为功能实现基于原生反序列化
+ */
 public class FilterObjectInputStream extends ObjectInputStream {
     public FilterObjectInputStream(InputStream in) throws IOException {
         super(in);

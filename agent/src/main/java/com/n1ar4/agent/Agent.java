@@ -35,6 +35,7 @@ public class Agent {
     public static Instrumentation staticIns;
     public static Class<?>[] staticClasses;
     private static final String DEFAULT_PASSWD = "12345678";
+    private static final int DEFAULT_PORT = 10033;
 
     /**
      * 动态的 Agent 方式
@@ -45,22 +46,45 @@ public class Agent {
      */
     @SuppressWarnings("all")
     public static void agentmain(String agentArgs, Instrumentation ins) {
+        String passwd = null;
+        int port = -1;
         if (agentArgs == null || agentArgs.trim().equals("")) {
-            agentArgs = DEFAULT_PASSWD;
-            System.out.println("default password : " + DEFAULT_PASSWD);
+            passwd = DEFAULT_PASSWD;
+            port = DEFAULT_PORT;
+        } else {
+            // usage: java -javaagent:agent.jar=port=10033;password=P4sSW0rD
+            agentArgs = agentArgs.trim();
+            String[] parts = agentArgs.split(";");
+            for (String part : parts) {
+                if (part.contains("=")) {
+                    String key = part.split("=")[0];
+                    String val = part.split("=")[1];
+                    if (key.equals("password")) {
+                        passwd = val;
+                    }
+                    if (key.equals("port")) {
+                        port = Integer.parseInt(val);
+                    }
+                }
+            }
         }
-        if (agentArgs.length() != 8) {
+        if (passwd == null || port == -1) {
             return;
         }
-        PASSWORD = agentArgs;
+        PASSWORD = passwd;
         staticIns = ins;
 
+        System.out.println("###################### JAR ANALYZER ######################");
+        System.out.println("[*] agent password : " + passwd);
+        System.out.println("[*] agent port : " + port);
+        System.out.println("##########################################################");
+
+        int finalPort = port;
         new Thread(() -> {
             try {
-                int port = 10033;
                 ServerSocket s = null;
                 try {
-                    s = new ServerSocket(port);
+                    s = new ServerSocket(finalPort);
                 } catch (Exception e) {
                     return;
                 } finally {
@@ -68,7 +92,7 @@ public class Agent {
                         s.close();
                     }
                 }
-                ServerSocket ss = new ServerSocket(port);
+                ServerSocket ss = new ServerSocket(finalPort);
                 while (true) {
                     Socket socket = ss.accept();
                     staticClasses = (Class<?>[]) ins.getAllLoadedClasses();

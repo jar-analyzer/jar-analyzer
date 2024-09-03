@@ -58,14 +58,17 @@
                 <constraints>
                   <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
-                <properties/>
+                <properties>
+                  <editable value="false"/>
+                  <enabled value="false"/>
+                </properties>
               </component>
               <component id="89870" class="javax.swing.JButton" binding="attachButton">
                 <constraints>
                   <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="开始Attach"/>
+                  <text value="连接"/>
                 </properties>
               </component>
               <component id="ae976" class="javax.swing.JLabel" binding="pidLabel">

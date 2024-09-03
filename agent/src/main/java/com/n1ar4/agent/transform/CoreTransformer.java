@@ -40,6 +40,7 @@ public class CoreTransformer implements ClassFileTransformer {
     }
 
     @Override
+    @SuppressWarnings("all")
     public byte[] transform(ClassLoader loader,
                             String className,
                             Class<?> classBeingRedefined,
@@ -47,10 +48,10 @@ public class CoreTransformer implements ClassFileTransformer {
                             byte[] classfileBuffer) {
         className = className.replace("/", ".");
         if (className.equals(targetClass)) {
-            System.out.println("get bytecode form: " + className);
+            System.out.println("[*] get bytecode form: " + className);
             data = new byte[classfileBuffer.length + 1];
             System.arraycopy(classfileBuffer, 0, data, 0, classfileBuffer.length);
-            System.out.println("bytecode length: " + data.length);
+            System.out.println("[*] bytecode length: " + data.length);
         }
         return classfileBuffer;
     }

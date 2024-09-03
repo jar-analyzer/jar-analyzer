@@ -99,13 +99,13 @@
         overflow: hidden;
     }
     .carousel-inner {
-        width: 400%;
+        width: 600%; /* Changed from 400% to 600% */
         height: 100%;
         display: flex;
         transition: transform 0.5s ease-in-out;
     }
     .carousel-item {
-        width: 25%;
+        width: 16.67%; /* Changed from 25% to 16.67% */
         height: 100%;
     }
     .carousel-item img {
@@ -125,10 +125,6 @@
     }
     .carousel-control.prev { left: 10px; }
     .carousel-control.next { right: 10px; }
-    @keyframes rotate {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
     @keyframes fadeInUp {
         to {
             opacity: 1;
@@ -170,22 +166,22 @@
     <div class="carousel">
         <div class="carousel-inner">
             <div class="carousel-item">
-                <img src="001.png" width="600" height="400">
+                <img src="001.png">
             </div>
             <div class="carousel-item">
-                <img src="002.png" width="600" height="400">
+                <img src="002.png">
             </div>
             <div class="carousel-item">
-                <img src="003.png" width="600" height="400">
+                <img src="003.png">
             </div>
             <div class="carousel-item">
-                <img src="004.png" width="600" height="400">
+                <img src="004.png">
             </div>
             <div class="carousel-item">
-                <img src="005.png" width="600" height="400">
+                <img src="005.png">
             </div>
             <div class="carousel-item">
-                <img src="006.png" width="600" height="400">
+                <img src="006.png">
             </div>
         </div>
         <a href="#" class="carousel-control prev">&lt;</a>
@@ -221,21 +217,23 @@
         const prevBtn = document.querySelector('.carousel-control.prev');
         const nextBtn = document.querySelector('.carousel-control.next');
         let currentSlide = 0;
+        const totalSlides = 6;
         function showSlide(index) {
-            carousel.style.transform = `translateX(-${index * 25}%)`;
+            carousel.style.transform = `translateX(-${index * (100 / totalSlides)}%)`;
         }
+
         prevBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            currentSlide = (currentSlide - 1 + 4) % 4;
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
             showSlide(currentSlide);
         });
         nextBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            currentSlide = (currentSlide + 1) % 4;
+            currentSlide = (currentSlide + 1) % totalSlides;
             showSlide(currentSlide);
         });
         setInterval(() => {
-            currentSlide = (currentSlide + 1) % 4;
+            currentSlide = (currentSlide + 1) % totalSlides;
             showSlide(currentSlide);
         }, 5000);
         setTimeout(() => {

@@ -104,6 +104,8 @@ if __name__ == '__main__':
     print("[*] copy build agent.jar")
     copy_file("agent-jar-with-dependencies.jar", "lib\\agent.jar")
 
-    print("[*] copy windows agent.jar")
+    print("[*] copy agent.jar")
     copy_file("lib\\agent.jar", "release\\" + release_win_system_dir + "\\lib\\agent.jar")
     copy_file("lib\\agent.jar", "release\\" + release_win_full_dir + "\\lib\\agent.jar")
+    copy_file("lib\\agent.jar", "release\\" + release_win_22_dir + "\\lib\\agent.jar")
+    copy_file("lib\\agent.jar", "release\\" + release_zip_dir + "\\lib\\agent.jar")

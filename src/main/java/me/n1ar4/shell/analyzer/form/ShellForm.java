@@ -292,15 +292,15 @@ public class ShellForm {
         codePanel.add(sp, new GridConstraints());
 
         genButton.addActionListener(e -> {
-            // 修改为弹出一个框允许用户复制
-            // java -javaagnent:agent.jar
-            String command = "java -javaagent:agent.jar=PassW0Rd";
+            String command = "java ... -javaagent:agent.jar=port=%s;password=%s ...";
+            command = String.format(command, targetPortText.getText(), passText.getText());
             JTextArea textArea = new JTextArea(command);
-            textArea.setEditable(false);
+            textArea.setEditable(true);
             textArea.setLineWrap(true);
             textArea.setWrapStyleWord(true);
-
-            JOptionPane.showMessageDialog(codePanel, new JScrollPane(textArea), "复制命令", JOptionPane.INFORMATION_MESSAGE);
+            textArea.setSize(500, 50);
+            JOptionPane.showMessageDialog(codePanel,
+                    new JScrollPane(textArea), "GENERATE", JOptionPane.INFORMATION_MESSAGE);
         });
 
         attachButton.addActionListener(e -> {
@@ -459,11 +459,11 @@ public class ShellForm {
         passLabel = new JLabel();
         passLabel.setText("TOKEN");
         panel1.add(passLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        passText = new JTextField();
-        panel1.add(passText, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         genButton = new JButton();
         genButton.setText("GENERATE CMD");
         panel1.add(genButton, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        passText = new JTextField();
+        panel1.add(passText, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         targetIPLabel = new JLabel();
         targetIPLabel.setText("TARGET IP");
         topPanel.add(targetIPLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));

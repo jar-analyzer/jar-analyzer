@@ -109,3 +109,7 @@ if __name__ == '__main__':
     copy_file("lib\\agent.jar", "release\\" + release_win_full_dir + "\\lib\\agent.jar")
     copy_file("lib\\agent.jar", "release\\" + release_win_22_dir + "\\lib\\agent.jar")
     copy_file("lib\\agent.jar", "release\\" + release_zip_dir + "\\lib\\agent.jar")
+
+    print("[*] copy windows tools.jar")
+    copy_file("lib\\tools.jar", "release\\" + release_win_system_dir + "\\lib\\tools.jar")
+    copy_file("lib\\tools.jar", "release\\" + release_win_full_dir + "\\lib\\tools.jar")

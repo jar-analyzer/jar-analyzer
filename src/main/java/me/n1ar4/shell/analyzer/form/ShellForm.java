@@ -601,27 +601,27 @@ public class ShellForm {
     public static void start0() {
         // check windows
         // 目前该功能仅给 Windows 使用
-        if (!OSUtil.isWindows() || !Version.isJava8()) {
-            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
-                    "<html>" +
-                            "only support jdk8/windows<br>" +
-                            "目前只支持 jdk8/windows 系统<br>" +
-                            "更多信息参考原始项目地址：<br>" +
-                            "https://github.com/4ra1n/shell-analyzer" +
-                            "</html>");
-            return;
-        }
+//        if (!OSUtil.isWindows() || !Version.isJava8()) {
+//            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+//                    "<html>" +
+//                            "only support jdk8/windows<br>" +
+//                            "目前只支持 jdk8/windows 系统<br>" +
+//                            "更多信息参考原始项目地址：<br>" +
+//                            "https://github.com/4ra1n/shell-analyzer" +
+//                            "</html>");
+//            return;
+//        }
 
-        // 检查端口 10033 端口是否被占用
-        if (SocketUtil.isPortInUse("localhost", 10033)) {
-            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
-                    "<html>" +
-                            "10033 port in use<br>" +
-                            "10033 端口被占用<br>" +
-                            "该功能需要使用该端口" +
-                            "</html>");
-            return;
-        }
+//        // 检查端口 10033 端口是否被占用
+//        if (SocketUtil.isPortInUse("localhost", 10033)) {
+//            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+//                    "<html>" +
+//                            "10033 port in use<br>" +
+//                            "10033 端口被占用<br>" +
+//                            "该功能需要使用该端口" +
+//                            "</html>");
+//            return;
+//        }
 
         JFrame frame = new JFrame("tomcat-analyzer by 4ra1n");
         instance = new ShellForm();

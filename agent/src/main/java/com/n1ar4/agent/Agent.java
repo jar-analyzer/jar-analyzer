@@ -38,14 +38,15 @@ public class Agent {
     @SuppressWarnings("all")
     public static void agentmain(String agentArgs, Instrumentation ins) {
         if (agentArgs == null || agentArgs.trim().equals("")) {
-            return;
+            agentArgs = "12345678";
+            System.out.println("default password : " + agentArgs);
         }
         if (agentArgs.length() != 8) {
             return;
         }
         PASSWORD = agentArgs;
         staticIns = ins;
-        staticClasses = (Class<?>[]) ins.getAllLoadedClasses();
+
         new Thread(() -> {
             try {
                 int port = 10033;
@@ -62,6 +63,7 @@ public class Agent {
                 ServerSocket ss = new ServerSocket(port);
                 while (true) {
                     Socket socket = ss.accept();
+                    staticClasses = (Class<?>[]) ins.getAllLoadedClasses();
                     new Thread(new Task(socket)).start();
                 }
             } catch (Exception ex) {
@@ -69,4 +71,8 @@ public class Agent {
             }
         }).start();
     }
+    public static void premain(String agentArgs, final Instrumentation inst) {
+        agentmain(agentArgs, inst);
+    }
+
 }

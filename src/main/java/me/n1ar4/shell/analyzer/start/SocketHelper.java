@@ -40,11 +40,15 @@ import java.util.List;
 public class SocketHelper {
     private static final Logger logger = LogManager.getLogger();
     private static String host;
-    private static final int port = 10433;
+    private static int port;
     private static String pass;
 
     public static void setHost(String h) {
         host = h;
+    }
+
+    public static void setPort(String p) {
+        port = Integer.parseInt(p);
     }
 
     public static void setPass(String p) {

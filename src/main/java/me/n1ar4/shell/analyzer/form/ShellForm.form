@@ -34,7 +34,7 @@
                   <text value="CONNECT"/>
                 </properties>
               </component>
-              <grid id="c2c59" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+              <grid id="c2c59" binding="initPanel" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                 <margin top="0" left="0" bottom="0" right="0"/>
                 <constraints>
                   <grid row="1" column="0" row-span="1" col-span="5" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -100,11 +100,16 @@
                 </constraints>
                 <properties/>
               </component>
-              <vspacer id="8e7">
+              <component id="4a2d6" class="javax.swing.JTextArea" binding="cmdArea">
                 <constraints>
-                  <grid row="2" column="0" row-span="1" col-span="5" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                  <grid row="2" column="0" row-span="1" col-span="5" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="50"/>
+                  </grid>
                 </constraints>
-              </vspacer>
+                <properties>
+                  <lineWrap value="true"/>
+                </properties>
+              </component>
             </children>
           </grid>
           <grid id="d18d3" binding="normalPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">

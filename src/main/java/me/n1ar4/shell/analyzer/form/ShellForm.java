@@ -316,12 +316,18 @@ public class ShellForm {
             SocketHelper.setPort(port);
             SocketHelper.setPass(pass);
 
-            if (SocketHelper.check()) {
-                log("成功目标建立TCP连接");
-            } else {
-                log("无法与目标建立TCP连接");
-            }
-            new Thread(this::analyze).start();
+            new Thread() {
+                @Override
+                public void run() {
+                    if (SocketHelper.check()) {
+                        log("成功目标建立TCP连接");
+                        analyze();
+                    } else {
+                        log("无法与目标建立TCP连接");
+                        JOptionPane.showMessageDialog(rootPanel, "无法建立连接");
+                    }
+                }
+            }.start();
         });
 
 

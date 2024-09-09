@@ -62,11 +62,11 @@ public class ConnectForm {
 
     public static void start() {
         frame = new JFrame("ConnectForm");
+        frame.pack();
         frame.setLocationRelativeTo(MainForm.getInstance().getMasterPanel());
         instance = new ConnectForm();
         instance.init();
         frame.setContentPane(instance.masterPanel);
-        frame.pack();
         frame.setVisible(true);
     }
 

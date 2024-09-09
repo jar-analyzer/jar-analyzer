@@ -113,8 +113,11 @@ public class SerUtilForm {
         JFrame frame = new JFrame(Const.SerUtilForm);
         instance = new SerUtilForm();
         frame.setContentPane(instance.masterPanel);
-        frame.setLocationRelativeTo(MainForm.getInstance().getMasterPanel());
+
         frame.pack();
+
+        frame.setLocationRelativeTo(MainForm.getInstance().getMasterPanel());
+
         frame.setVisible(true);
     }
 

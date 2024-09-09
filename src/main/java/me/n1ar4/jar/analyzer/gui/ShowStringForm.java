@@ -101,8 +101,11 @@ public class ShowStringForm {
 
         frame.setContentPane(instance.masterPanel);
         dialog.dispose();
-        frame.setLocationRelativeTo(MainForm.getInstance().getMasterPanel());
+
         frame.pack();
+
+        frame.setLocationRelativeTo(MainForm.getInstance().getMasterPanel());
+
         frame.setVisible(true);
     }
 

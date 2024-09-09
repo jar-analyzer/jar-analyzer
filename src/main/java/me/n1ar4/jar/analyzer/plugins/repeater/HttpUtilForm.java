@@ -80,8 +80,11 @@ public class HttpUtilForm {
         JFrame frame = new JFrame("Jar Analyzer V2 - Repeater");
         frame.setContentPane(new HttpUtilForm().httpUtilPanel);
         frame.setResizable(false);
-        frame.setLocationRelativeTo(MainForm.getInstance().getMasterPanel());
+
         frame.pack();
+
+        frame.setLocationRelativeTo(MainForm.getInstance().getMasterPanel());
+
         frame.setVisible(true);
     }
 

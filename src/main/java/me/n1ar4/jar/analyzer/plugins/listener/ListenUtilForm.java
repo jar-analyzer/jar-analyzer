@@ -81,8 +81,11 @@ public class ListenUtilForm {
         JFrame frame = new JFrame("Jar Analyzer - Listener");
         frame.setContentPane(new ListenUtilForm().listenUtilPanel);
         frame.setResizable(false);
-        frame.setLocationRelativeTo(MainForm.getInstance().getMasterPanel());
+
         frame.pack();
+
+        frame.setLocationRelativeTo(MainForm.getInstance().getMasterPanel());
+
         frame.setVisible(true);
     }
 

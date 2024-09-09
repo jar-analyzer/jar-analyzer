@@ -56,8 +56,11 @@ public class CFGForm {
 
         frame.setContentPane(instance.masterPanel);
         frame.setResizable(true);
-        frame.setLocationRelativeTo(MainForm.getInstance().getMasterPanel());
+
         frame.pack();
+
+        frame.setLocationRelativeTo(MainForm.getInstance().getMasterPanel());
+
         frame.setVisible(true);
     }
 

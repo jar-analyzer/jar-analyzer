@@ -49,8 +49,11 @@ public class OpcodeForm {
 
         frame.setContentPane(instance.masterPanel);
         frame.setResizable(false);
-        frame.setLocationRelativeTo(MainForm.getInstance().getMasterPanel());
+
         frame.pack();
+
+        frame.setLocationRelativeTo(MainForm.getInstance().getMasterPanel());
+
         frame.setVisible(true);
     }
 

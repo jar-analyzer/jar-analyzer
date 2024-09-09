@@ -68,8 +68,11 @@ public class ProxyForm {
         frame.setContentPane(instance.rootPanel);
         instance.init();
         frame.setAlwaysOnTop(true);
-        frame.setLocationRelativeTo(MainForm.getInstance().getMasterPanel());
+
         frame.pack();
+
+        frame.setLocationRelativeTo(MainForm.getInstance().getMasterPanel());
+
         frame.setResizable(false);
         frame.setVisible(true);
     }

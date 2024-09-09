@@ -132,8 +132,11 @@ public class BcelForm {
     public static void start() {
         JFrame frame = new JFrame(Const.BcelForm);
         frame.setContentPane(new BcelForm().masterPanel);
-        frame.setLocationRelativeTo(MainForm.getInstance().getMasterPanel());
+
         frame.pack();
+
+        frame.setLocationRelativeTo(MainForm.getInstance().getMasterPanel());
+
         frame.setVisible(true);
     }
 

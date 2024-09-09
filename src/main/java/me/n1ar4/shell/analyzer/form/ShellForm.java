@@ -428,8 +428,10 @@ public class ShellForm {
         instance.targetPortText.setText("10033");
 
         frame.setContentPane(instance.shellPanel);
-        frame.setLocationRelativeTo(MainForm.getInstance().getMasterPanel());
+
         frame.pack();
+
+        frame.setLocationRelativeTo(MainForm.getInstance().getMasterPanel());
 
         frame.setResizable(false);
         frame.setSize(1400, 800);

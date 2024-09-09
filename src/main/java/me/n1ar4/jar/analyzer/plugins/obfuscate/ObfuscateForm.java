@@ -85,8 +85,11 @@ public class ObfuscateForm {
     public static void start() {
         JFrame frame = new JFrame("ObfuscateForm");
         frame.setContentPane(new ObfuscateForm().mainPanel);
-        frame.setLocationRelativeTo(MainForm.getInstance().getMasterPanel());
+
         frame.pack();
+
+        frame.setLocationRelativeTo(MainForm.getInstance().getMasterPanel());
+
         frame.setVisible(true);
     }
 

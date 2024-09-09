@@ -28,6 +28,7 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import me.n1ar4.jar.analyzer.gui.MainForm;
+import me.n1ar4.jar.analyzer.gui.util.ProcessDialog;
 import me.n1ar4.shell.analyzer.model.ClassObj;
 import me.n1ar4.shell.analyzer.start.SocketHelper;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
@@ -292,7 +293,7 @@ public class ShellForm {
         codePanel.add(sp, new GridConstraints());
 
         genButton.addActionListener(e -> {
-            String command = "java ... -javaagent:agent.jar=port=%s;password=%s ...";
+            String command = "java [VM ARGS] -javaagent:agent.jar=port=%s;password=%s [USER ARGS]";
             command = String.format(command, targetPortText.getText(), passText.getText());
             JTextArea textArea = new JTextArea(command);
             textArea.setEditable(true);
@@ -316,14 +317,19 @@ public class ShellForm {
             SocketHelper.setPort(port);
             SocketHelper.setPass(pass);
 
+            ProcessDialog.createProgressDialog(rootPanel);
+            JDialog dialog = ProcessDialog.createProgressDialog(MainForm.getInstance().getMasterPanel());
+            new Thread(() -> dialog.setVisible(true)).start();
             new Thread() {
                 @Override
                 public void run() {
                     if (SocketHelper.check()) {
                         log("成功目标建立TCP连接");
+                        dialog.dispose();
                         analyze();
                     } else {
                         log("无法与目标建立TCP连接");
+                        dialog.dispose();
                         JOptionPane.showMessageDialog(rootPanel, "无法建立连接");
                     }
                 }

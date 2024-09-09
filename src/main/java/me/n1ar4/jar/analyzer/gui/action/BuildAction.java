@@ -28,6 +28,7 @@ import me.n1ar4.jar.analyzer.core.CoreRunner;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
 import me.n1ar4.jar.analyzer.gui.util.MenuUtil;
+import me.n1ar4.jar.analyzer.gui.util.ProcessDialog;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.utils.DirUtil;
 import me.n1ar4.jar.analyzer.utils.StringUtil;
@@ -90,6 +91,9 @@ public class BuildAction {
 
         boolean fixClass = MenuUtil.getFixClassPathConfig().getState();
 
+        ProcessDialog.createProgressDialog(MainForm.getInstance().getMasterPanel());
+        JDialog dialog = ProcessDialog.createProgressDialog(MainForm.getInstance().getMasterPanel());
+
         if (MainForm.getInstance().getAddRtJarWhenCheckBox().isSelected()) {
             String text = MainForm.getInstance().getRtText().getText();
             if (StringUtil.isNull(text)) {
@@ -103,9 +107,9 @@ public class BuildAction {
                         "rt.jar file not exist");
                 return;
             }
-            new Thread(() -> CoreRunner.run(Paths.get(path), rtJarPath, fixClass)).start();
+            new Thread(() -> CoreRunner.run(Paths.get(path), rtJarPath, fixClass, dialog)).start();
         } else {
-            new Thread(() -> CoreRunner.run(Paths.get(path), null, fixClass)).start();
+            new Thread(() -> CoreRunner.run(Paths.get(path), null, fixClass, dialog)).start();
         }
         MainForm.getInstance().getStartBuildDatabaseButton().setEnabled(false);
     }

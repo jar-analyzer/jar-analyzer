@@ -33,7 +33,11 @@ public class ProcessDialog {
         JProgressBar progressBar = new JProgressBar();
         progressBar.setIndeterminate(true);
 
-        JLabel label = new JLabel("running please wait ...");
+        JLabel label = new JLabel("<html>" +
+                "<p>running please wait ... </p>" +
+                "<p>请耐心等待任务完成 ... </p>" +
+                "<p>关闭该进度条不会影响任务执行</p>" +
+                "</html>");
 
         JPanel contentPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();

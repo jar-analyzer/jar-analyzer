@@ -76,7 +76,7 @@ public class Client {
                         logger.warn("delete old db fail");
                     }
                 }
-                CoreRunner.run(jarPathPath, null, false);
+                CoreRunner.run(jarPathPath, null, false, null);
                 logger.info("write file to: {}", Const.dbFile);
                 System.exit(0);
             case StartCmd.CMD:

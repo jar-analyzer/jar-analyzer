@@ -58,7 +58,7 @@ import java.util.*;
 public class CoreRunner {
     private static final Logger logger = LogManager.getLogger();
 
-    public static void run(Path jarPath, Path rtJarPath, boolean fixClass) {
+    public static void run(Path jarPath, Path rtJarPath, boolean fixClass, JDialog dialog) {
         // 2024-07-05 不允许太大的 JAR 文件
         long totalSize = 0;
         List<String> beforeJarList = new ArrayList<>();
@@ -97,6 +97,10 @@ public class CoreRunner {
         if (chose != 0) {
             MainForm.getInstance().getStartBuildDatabaseButton().setEnabled(true);
             return;
+        }
+
+        if (dialog != null) {
+            new Thread(() -> dialog.setVisible(true)).start();
         }
 
         MainForm.getInstance().getStartBuildDatabaseButton().setEnabled(false);
@@ -308,6 +312,10 @@ public class CoreRunner {
         MainForm.getInstance().getClassWhiteArea().setEditable(false);
 
         CoreHelper.refreshSpringC();
+
+        if (dialog != null) {
+            dialog.dispose();
+        }
     }
 
     private static long getFileSize() {

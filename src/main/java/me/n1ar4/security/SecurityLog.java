@@ -24,8 +24,6 @@
 
 package me.n1ar4.security;
 
-import me.n1ar4.jar.analyzer.utils.ColorUtil;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;

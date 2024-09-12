@@ -32,6 +32,9 @@ import javax.swing.*;
 import java.util.List;
 
 public class CodeMenuHelper {
+    final static JPanel fileTreeSearchPanel = MainForm.getInstance().getFileTreeSearchPanel();
+    final static JTextField fileTreeSearchTextField = MainForm.getInstance().getFileTreeSearchTextField();
+
     public static void run() {
         RSyntaxTextArea rArea = (RSyntaxTextArea) MainForm.getCodeArea();
         JPopupMenu popupMenu = new JPopupMenu();
@@ -98,6 +101,25 @@ public class CodeMenuHelper {
 
                 MainForm.getInstance().getTabbedPanel().setSelectedIndex(2);
             }).start();
+        });
+
+        JMenuItem classItem = new JMenuItem("SEARCH CLASS FROM JARS");
+        popupMenu.add(classItem);
+
+        classItem.addActionListener(e -> {
+            String className = rArea.getSelectedText();
+
+            if (className == null) {
+                JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                        "SELECTED STRING IS NULL");
+                return;
+            }
+
+            className = className.trim();
+
+            fileTreeSearchPanel.setVisible(true);
+
+            fileTreeSearchTextField.setText(className);
         });
         rArea.setPopupMenu(popupMenu);
     }

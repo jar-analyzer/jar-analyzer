@@ -37,6 +37,7 @@ import java.text.MessageFormat;
 public class ChangeLogForm {
     public static final String HTML_TEMPLATE = "<html><head><meta charset=\"UTF-8\"></head>" +
             "<body style='font-family:{0};'>{1}</body></html>";
+    public static final String FONT_SIM_SUN = "SimSun";
     private JPanel masterPanel;
     private JScrollPane scroll;
     private JEditorPane text;
@@ -47,7 +48,7 @@ public class ChangeLogForm {
 
         instance.text.setContentType("text/html");
         if (OSUtil.isMac()) {
-            code = MessageFormat.format(HTML_TEMPLATE, "SimSun", code);
+            code = MessageFormat.format(HTML_TEMPLATE, FONT_SIM_SUN, code);
         }
         instance.text.setText(code);
         instance.text.setCaretPosition(0);

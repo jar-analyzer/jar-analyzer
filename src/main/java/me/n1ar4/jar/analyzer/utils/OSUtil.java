@@ -24,6 +24,8 @@
 
 package me.n1ar4.jar.analyzer.utils;
 
+import java.util.Locale;
+
 public class OSUtil {
     public static boolean isWindows() {
         String osName = System.getProperty("os.name");
@@ -33,5 +35,10 @@ public class OSUtil {
     public static boolean isLinux() {
         String osName = System.getProperty("os.name");
         return osName.toLowerCase().contains("linux");
+    }
+
+    public static boolean isMac() {
+        String osName = System.getProperty("os.name", "");
+        return osName.toLowerCase(Locale.ENGLISH).startsWith("mac");
     }
 }

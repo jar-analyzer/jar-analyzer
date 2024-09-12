@@ -26,14 +26,17 @@ package me.n1ar4.jar.analyzer.gui;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
+import me.n1ar4.jar.analyzer.utils.OSUtil;
 
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
 import java.awt.*;
-import java.util.Locale;
+import java.text.MessageFormat;
 
 public class ChangeLogForm {
+    public static final String HTML_TEMPLATE = "<html><head><meta charset=\"UTF-8\"></head>" +
+            "<body style='font-family:{0};'>{1}</body></html>";
     private JPanel masterPanel;
     private JScrollPane scroll;
     private JEditorPane text;
@@ -43,6 +46,9 @@ public class ChangeLogForm {
         ChangeLogForm instance = new ChangeLogForm();
 
         instance.text.setContentType("text/html");
+        if (OSUtil.isMac()) {
+            code = MessageFormat.format(HTML_TEMPLATE, "SimSun", code);
+        }
         instance.text.setText(code);
         instance.text.setCaretPosition(0);
 
@@ -99,8 +105,7 @@ public class ChangeLogForm {
             }
         }
         Font font = new Font(resultName, style >= 0 ? style : currentFont.getStyle(), size >= 0 ? size : currentFont.getSize());
-        boolean isMac = System.getProperty("os.name", "").toLowerCase(Locale.ENGLISH).startsWith("mac");
-        Font fontWithFallback = isMac ? new Font(font.getFamily(), font.getStyle(), font.getSize()) : new StyleContext().getFont(font.getFamily(), font.getStyle(), font.getSize());
+        Font fontWithFallback = OSUtil.isMac() ? new Font(font.getFamily(), font.getStyle(), font.getSize()) : new StyleContext().getFont(font.getFamily(), font.getStyle(), font.getSize());
         return fontWithFallback instanceof FontUIResource ? fontWithFallback : new FontUIResource(fontWithFallback);
     }
 

@@ -98,9 +98,12 @@ public class SearchInputListener implements DocumentListener {
     private void filterInput() {
         String text = fileTreeSearchTextField.getText();
         // 处理输入是中文的问题
-        if (text.contains("'") || text.contains("\"") || text.trim().isEmpty()) {
+        if (text.contains("'") || text.contains("\"")) {
             LogUtil.warn("check your input (invalid chars)");
             SwingUtilities.invokeLater(new Thread(() -> fileTreeSearchTextField.setText("")));
+            return;
+        }
+        if (text.trim().isEmpty()) {
             return;
         }
         search(text, true);

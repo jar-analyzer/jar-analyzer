@@ -1,5 +1,5 @@
- -> [34m4ra1n[0m[33m (https://github.com/4ra1n) [0m[31mCOMMITS: 686[0m
+ -> [34m4ra1n[0m[33m (https://github.com/4ra1n) [0m[31mCOMMITS: 698[0m
  -> [34mHoney Baby[0m[33m (https://github.com/Gosiu) [0m[31mCOMMITS: 11[0m
- -> [34mphil[0m[33m (https://github.com/sensensen404) [0m[31mCOMMITS: 3[0m
+ -> [34mphil[0m[33m (https://github.com/sensensen404) [0m[31mCOMMITS: 6[0m
  -> [34mfantasy[0m[33m (https://github.com/ly-test-fuzz) [0m[31mCOMMITS: 2[0m
  -> [34mwhw1sfb[0m[33m (https://github.com/whwlsfb) [0m[31mCOMMITS: 2[0m

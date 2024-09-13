@@ -28,6 +28,8 @@ import me.n1ar4.jar.analyzer.engine.CoreHelper;
 import me.n1ar4.jar.analyzer.engine.DecompileEngine;
 import me.n1ar4.jar.analyzer.entity.ClassResult;
 import me.n1ar4.jar.analyzer.gui.MainForm;
+import me.n1ar4.jar.analyzer.gui.util.IconManager;
+import me.n1ar4.jar.analyzer.utils.OpenUtil;
 import me.n1ar4.jar.analyzer.utils.StringUtil;
 
 import javax.swing.*;
@@ -48,13 +50,37 @@ public class TreeRightMenuAdapter extends MouseAdapter {
     private final JTree fileTree = MainForm.getInstance().getFileTree();
     private final JPopupMenu popupMenu;
 
-    @SuppressWarnings("all")
+
     public TreeRightMenuAdapter() {
         popupMenu = new JPopupMenu();
-        JMenuItem decompileItem = new JMenuItem("Decompile");
-        JMenuItem superClassItem = new JMenuItem("Super Class");
+        JMenuItem decompileItem = new JMenuItem("DECOMPILE");
+        decompileItem.setIcon(IconManager.javaIcon);
+        JMenuItem superClassItem = new JMenuItem("SUPER CLASS");
+        superClassItem.setIcon(IconManager.javaIcon);
+        JMenuItem openItem = new JMenuItem("OPEN IN EXPLORER");
+        openItem.setIcon(IconManager.javaIcon);
         popupMenu.add(decompileItem);
         popupMenu.add(superClassItem);
+        popupMenu.add(openItem);
+
+        openItem.addActionListener(e -> {
+            TreePath selectedPath = fileTree.getSelectionPath();
+            if (selectedPath != null) {
+                String sel = selectedPath.toString();
+                sel = sel.substring(1, sel.length() - 1);
+                String[] selArray = sel.split(",");
+                ArrayList<String> pathList = new ArrayList<>();
+                for (String s : selArray) {
+                    s = s.trim();
+                    pathList.add(s);
+                }
+
+                String[] path = pathList.toArray(new String[0]);
+                String filePath = String.join(File.separator, path);
+
+                OpenUtil.openFileInExplorer(Paths.get(filePath).toAbsolutePath().toString());
+            }
+        });
 
         decompileItem.addActionListener(e -> {
             TreePath selectedPath = fileTree.getSelectionPath();

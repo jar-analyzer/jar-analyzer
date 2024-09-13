@@ -26,6 +26,7 @@ package me.n1ar4.jar.analyzer.gui.util;
 
 import me.n1ar4.jar.analyzer.entity.MethodResult;
 import me.n1ar4.jar.analyzer.gui.MainForm;
+import me.n1ar4.jar.analyzer.utils.OpenUtil;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 import javax.swing.*;
@@ -40,6 +41,7 @@ public class CodeMenuHelper {
         JPopupMenu popupMenu = new JPopupMenu();
 
         JMenuItem selectItem = new JMenuItem("SELECT STRING (LDC)");
+        selectItem.setIcon(IconManager.javaIcon);
         popupMenu.add(selectItem);
 
         selectItem.addActionListener(e -> {
@@ -64,6 +66,7 @@ public class CodeMenuHelper {
         });
 
         JMenuItem searchCallItem = new JMenuItem("SEARCH CALL INFO");
+        searchCallItem.setIcon(IconManager.javaIcon);
         popupMenu.add(searchCallItem);
 
         searchCallItem.addActionListener(e -> {
@@ -104,6 +107,7 @@ public class CodeMenuHelper {
         });
 
         JMenuItem classItem = new JMenuItem("SEARCH CLASS FROM JARS");
+        classItem.setIcon(IconManager.javaIcon);
         popupMenu.add(classItem);
 
         classItem.addActionListener(e -> {
@@ -121,6 +125,12 @@ public class CodeMenuHelper {
 
             fileTreeSearchTextField.setText(className);
         });
+
+        JMenuItem openItem = new JMenuItem("OPEN IN EXPLORER");
+        openItem.setIcon(IconManager.javaIcon);
+        popupMenu.add(openItem);
+
+        openItem.addActionListener(e -> OpenUtil.openCurrent());
         rArea.setPopupMenu(popupMenu);
     }
 }

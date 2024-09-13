@@ -238,6 +238,10 @@ set "theme_name=default"
 
 ## BUILD
 
+注意：首先对你的 `IDEA` 进行设置（本项目不支持 `Eclipse/VS Code` 等 `IDE` 环境）
+
+![](img/0063.png)
+
 编译和构建过程如下：
 
 1. 构建核心项目 `mvn -B clean package -DskipTests --file pom.xml`

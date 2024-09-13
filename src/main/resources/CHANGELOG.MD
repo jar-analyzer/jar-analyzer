@@ -6,6 +6,7 @@
 
 - [功能] 代码区域选中部分右键搜索定位 `class` 位置
 - [BUG] 修复文件树底部搜索区域某些情况下 `UI` 抖动
+- [BUG] 修复致谢页面和更新日志在 `mac` 中乱码
 - [BUG] 修复 `tomcat` 分析卡住的问题
 - [优化] 添加分析 `jar` 时的进度条展示
 - [优化] 优化 `tomcat` 分析的命令生成
@@ -18,6 +19,7 @@
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
+- phil (https://github.com/sensensen404)
 
 所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
 

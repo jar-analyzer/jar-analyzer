@@ -33,6 +33,7 @@ import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.text.MessageFormat;
+import java.util.Locale;
 
 public class ChangeLogForm {
     public static final String HTML_TEMPLATE = "<html><head><meta charset=\"UTF-8\"></head>" +
@@ -105,7 +106,8 @@ public class ChangeLogForm {
             }
         }
         Font font = new Font(resultName, style >= 0 ? style : currentFont.getStyle(), size >= 0 ? size : currentFont.getSize());
-        Font fontWithFallback = OSUtil.isMac() ? new Font(font.getFamily(), font.getStyle(), font.getSize()) : new StyleContext().getFont(font.getFamily(), font.getStyle(), font.getSize());
+        boolean isMac = System.getProperty("os.name", "").toLowerCase(Locale.ENGLISH).startsWith("mac");
+        Font fontWithFallback = isMac ? new Font(font.getFamily(), font.getStyle(), font.getSize()) : new StyleContext().getFont(font.getFamily(), font.getStyle(), font.getSize());
         return fontWithFallback instanceof FontUIResource ? fontWithFallback : new FontUIResource(fontWithFallback);
     }
 

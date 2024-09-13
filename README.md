@@ -127,6 +127,24 @@
 
 有 `UI` 兼容性问题请查看 `ISSUE` 部分的置顶
 
+### BUILD
+
+注意：首先对你的 `IDEA` 进行设置（本项目不支持 `Eclipse/VS Code` 等 `IDE` 环境）
+
+![](img/0063.png)
+
+编译和构建过程如下：（以 `Windows` 为例其他环境类似）
+
+1. 重要：确保你安装了 `JDK 8 64位` （无论 `Oracle JDK` 或 `OpenJDK` 都可）
+2. 重要：如果你修改了代码请确保在 `IDEA` 环境中至少启动一次（生成 `GUI` 代码）
+3. 重要：确保你安装了 `Maven 3.X` 并正确配置了 `PATH` 变量（需要使用 `mvn` 命令）
+4. 可选：运行 `Contributor` 和 `ContributorMD` 生成最新贡献者信息
+5. 可选：构建 `agent` 子项目 `cd agent && package.bat`
+6. 重要：构建核心项目 `package.bat`
+7. 可选：使用 `cmake` 构建 `native` 目录生成 `dll` 文件放入 `resources`
+8. 可选：使用 `winres` 和 `gcc` 构建启动 `exe` 文件和图标信息
+9. 可选：完整发版参考 `build.py` 和 `build.yml` 文件
+
 ## 表达式
 
 表达式搜索是 `jar-analzyer` 重要的高级功能：可以自定义多种条件组合搜索方法
@@ -235,20 +253,6 @@ set "theme_name=default"
 ## API
 
 [文档](doc/README-api.md)
-
-## BUILD
-
-注意：首先对你的 `IDEA` 进行设置（本项目不支持 `Eclipse/VS Code` 等 `IDE` 环境）
-
-![](img/0063.png)
-
-编译和构建过程如下：
-
-1. 构建核心项目 `mvn -B clean package -DskipTests --file pom.xml`
-2. 构建`agent`子项目 `mvn -B clean package -DskipTests --file agent\pom.xml`
-3. 使用`cmake`构建`native`目录的`C`代码生成`dll`文件放入`resources`
-4. 使用`winres`和`gcc`构建启动`exe`文件和图标信息 
-5. 参考`build.py`和`build.yml`文件进行最终的文件合并和版本构建
 
 ## Thanks
 

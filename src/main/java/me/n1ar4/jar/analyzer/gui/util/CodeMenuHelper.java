@@ -121,6 +121,12 @@ public class CodeMenuHelper {
 
             className = className.trim();
 
+            if (className.isEmpty()) {
+                JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                        "SELECTED STRING IS NULL");
+                return;
+            }
+
             fileTreeSearchPanel.setVisible(true);
 
             fileTreeSearchTextField.setText(className);

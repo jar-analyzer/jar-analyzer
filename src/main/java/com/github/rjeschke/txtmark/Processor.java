@@ -136,7 +136,14 @@ public class Processor {
      * @see Configuration#DEFAULT
      */
     public final static String process(final String input) {
-        return process(input, Configuration.DEFAULT);
+        // 给所有的 MARKDOWN 开头做特殊处理
+        String prefix = "***\n\n" +
+                "PROJECT: https://github.com/jar-analyzer/jar-analyzer\n\n" +
+                "** 本项目是免费开源软件，不存在任何商业版本/收费版本 **\n\n" +
+                "** This project is free and open-source software **\n\n" +
+                "** There are no commercial or paid versions **\n\n" +
+                "***\n\n";
+        return process(prefix + input, Configuration.DEFAULT);
     }
 
     /**

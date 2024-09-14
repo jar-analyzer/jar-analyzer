@@ -398,9 +398,15 @@ public class MenuUtil {
                 String ver = body.trim();
                 LogUtil.info("latest: " + ver);
                 String output;
-                output = String.format("%s: %s\n%s: %s",
-                        "Current Version", Const.version,
-                        "Latest Version", ver);
+                output = String.format("<html>" +
+                                "<p>本项目是免费开源软件，不存在任何商业版本/收费版本</p>" +
+                                "<p>This project is free and open-source software</p>" +
+                                "<p>There are no commercial or paid versions</p>" +
+                                "<p>%s: %s</p>" +
+                                "<p>%s: %s</p>" +
+                                "</html>",
+                        "当前版本 / Current Version", Const.version,
+                        "最新版本 / Latest Version", ver);
                 JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(), output);
             }).start());
             aboutMenu.add(checkUpdateItem);

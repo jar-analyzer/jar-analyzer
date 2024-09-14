@@ -54,7 +54,7 @@ public class Version {
                                         "该消息只是一个提示（点击确认正常启动）" +
                                         "</html>");
                     } else {
-                        logger.info("safe - java version is higher than 191");
+                        logger.debug("safe - java version is higher than 191");
                     }
                 } catch (NumberFormatException e) {
                     logger.warn("error java update version {}", versionComponents[1]);

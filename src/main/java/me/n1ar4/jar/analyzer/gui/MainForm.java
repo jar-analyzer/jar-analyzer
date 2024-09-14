@@ -727,6 +727,10 @@ public class MainForm {
         }
     }
 
+    public JTextPane getLogArea() {
+        return logArea;
+    }
+
     public static MethodResult getCurMethod() {
         return curMethod;
     }
@@ -1196,6 +1200,14 @@ public class MainForm {
                 }
             }
         });
+
+        LogUtil.info("###############################################");
+        LogUtil.info("本项目是免费开源软件，不存在任何商业版本/收费版本");
+        LogUtil.info("This project is free and open-source software");
+        LogUtil.info("There are no commercial or paid versions");
+        LogUtil.info("###############################################");
+
+        LogCleanHelper.build();
 
         UpdateChecker.check();
 

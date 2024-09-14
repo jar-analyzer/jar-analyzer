@@ -24,34 +24,10 @@
 
 package me.n1ar4.security;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import me.n1ar4.jar.analyzer.utils.CommonLogUtil;
 
 public class SecurityLog {
     static void log(String info) {
-        String timestamp = LocalDateTime.now().format(
-                DateTimeFormatter.ofPattern("HH:mm:ss"));
-        String datestamp = LocalDateTime.now().format(
-                DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        String logInfo = String.format("[%s] %s", timestamp, info);
-        try {
-            File logDirectory = new File("logs");
-            if (!logDirectory.exists()) {
-                boolean success = logDirectory.mkdirs();
-                if (!success) {
-                    throw new RuntimeException("make dirs error");
-                }
-            }
-            File logFile = new File(logDirectory, datestamp + "-security.log");
-            try (PrintWriter out = new PrintWriter(new FileWriter(logFile, true))) {
-                out.println(logInfo);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("cannot write log file");
-        }
+        CommonLogUtil.log(info, "security");
     }
 }

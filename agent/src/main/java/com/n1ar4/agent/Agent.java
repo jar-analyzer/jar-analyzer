@@ -24,11 +24,15 @@
 
 package com.n1ar4.agent;
 
+import arthas.VmTool;
 import com.n1ar4.agent.core.Task;
+import com.n1ar4.agent.vmtools.VmToolUtils;
 
 import java.lang.instrument.Instrumentation;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import static com.n1ar4.agent.vmtools.VmToolUtils.getVmToolInstances;
 
 public class Agent {
     public static String PASSWORD;
@@ -78,10 +82,16 @@ public class Agent {
         System.out.println("[*] agent password : " + passwd);
         System.out.println("[*] agent port : " + port);
         System.out.println("##########################################################");
+        VmTool vmToolInstances = getVmToolInstances();
+        if (vmToolInstances == null) {
+            System.out.println("Load VmTool lib error : " + VmToolUtils.detectLibName());
+            return;
+        }
 
         int finalPort = port;
         new Thread(() -> {
             try {
+
                 ServerSocket s = null;
                 try {
                     s = new ServerSocket(finalPort);
@@ -96,7 +106,7 @@ public class Agent {
                 while (true) {
                     Socket socket = ss.accept();
                     staticClasses = (Class<?>[]) ins.getAllLoadedClasses();
-                    new Thread(new Task(socket)).start();
+                    new Thread(new Task(socket , vmToolInstances , ins)).start();
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();

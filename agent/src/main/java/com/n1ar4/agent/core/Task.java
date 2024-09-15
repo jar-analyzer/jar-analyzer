@@ -24,13 +24,18 @@
 
 package com.n1ar4.agent.core;
 
+import arthas.VmTool;
 import com.n1ar4.agent.Agent;
+import com.n1ar4.agent.ServerDiscovery.ServerDiscovery;
+import com.n1ar4.agent.ServerDiscovery.ServerDiscoveryType;
+import com.n1ar4.agent.sourceResult.SourceResult;
 import com.n1ar4.agent.transform.CoreTransformer;
 import com.n1ar4.agent.util.FilterObjectInputStream;
 
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.lang.instrument.Instrumentation;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,9 +43,13 @@ import java.util.List;
 @SuppressWarnings("all")
 public class Task implements Runnable {
     private final Socket socket;
+    private final VmTool vmTool;
+    private Instrumentation instLocal;
 
-    public Task(Socket socket) {
+    public Task(Socket socket , VmTool vmTool , Instrumentation instLocal) {
         this.socket = socket;
+        this.vmTool = vmTool;
+        this.instLocal = instLocal;
     }
 
     @Override
@@ -48,6 +57,7 @@ public class Task implements Runnable {
         try {
             handleSocket();
         } catch (Exception ignored) {
+            ignored.printStackTrace();
         }
     }
 
@@ -80,6 +90,32 @@ public class Task implements Runnable {
             ObjectOutputStream oos = new ObjectOutputStream(bao);
             oos.writeObject(classNameList);
             System.out.printf("[*] write length %d to socket\n", classNameList.size());
+            socket.getOutputStream().write(bao.toByteArray());
+            return;
+        }
+
+        if (targetClass.startsWith("<GETALL>")){
+            String PASS = targetClass.split("<GETALL>")[1];
+            if (!PASS.equals(Agent.PASSWORD)) {
+                System.out.println("[-] ERROR PASSWORD");
+                return;
+            }
+
+            ArrayList<SourceResult> sourceResults = new ArrayList<SourceResult>();
+            for (ServerDiscoveryType serverDiscoveryType : ServerDiscoveryType.values()) {
+                ServerDiscovery serverDiscovery = serverDiscoveryType.getServerDiscovery();
+                if(serverDiscovery.CanLoad(vmTool , instLocal) == false)
+                    continue;
+
+                sourceResults.addAll(serverDiscovery.getServerSources(vmTool , instLocal));
+
+            }
+
+            ByteArrayOutputStream bao = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(bao);
+            oos.writeObject(sourceResults);
+            oos.close();
+            System.out.printf("[*] write length %d to socket\n", sourceResults.size());
             socket.getOutputStream().write(bao.toByteArray());
             return;
         }

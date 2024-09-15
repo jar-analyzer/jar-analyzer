@@ -29,6 +29,7 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.ProcessDialog;
 import me.n1ar4.shell.analyzer.model.ClassObj;
+import com.n1ar4.agent.sourceResult.SourceResult;
 import me.n1ar4.shell.analyzer.start.SocketHelper;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
@@ -134,118 +135,148 @@ public class ShellForm {
         }
 
         try {
-            List<String> filters = SocketHelper.getAllFilters();
-            for (String filter : filters) {
-                if (igApache && filter.startsWith("org.apache")) {
+            List<SourceResult> sourceResults = SocketHelper.getSourceResults();
+            for (SourceResult sourceResult : sourceResults) {
+                if(sourceResult.getSourceClass() == "null")
                     continue;
-                }
-                if (igSpring && filter.startsWith("org.springframework")) {
-                    continue;
-                }
-                if (igJava) {
-                    if (filter.startsWith("java.")) {
-                        continue;
-                    }
-                    if (filter.startsWith("javax.")) {
-                        continue;
-                    }
-                    if (filter.startsWith("sun.")) {
-                        continue;
-                    }
-                }
-                boolean blackF = false;
-                for (String s : black) {
-                    if (filter.contains(s)) {
-                        blackF = true;
+                ClassObj co = null;
+                switch (sourceResult.type){
+                    case TomcatFilter:
+                        co = new ClassObj(sourceResult.getSourceClass(), "FILTER");
+                        filtersModel.addElement(co);
                         break;
-                    }
+                    case TomcatServlet:
+                        co = new ClassObj(sourceResult.getSourceClass(), "SERVLET");
+                        servletsModel.addElement(co);
+                        break;
+                    case TomcatListener:
+                        co = new ClassObj(sourceResult.getSourceClass(), "LISTENER");
+                        listenersModel.addElement(co);
+                        break;
                 }
-                if (!blackF) {
-                    continue;
-                }
-                ClassObj co = new ClassObj(filter, "FILTER");
-                filtersModel.addElement(co);
+                System.out.println(sourceResult.toString());
             }
+
             filterList.setModel(filtersModel);
-        } catch (Exception ex) {
-            log("无法获得信息");
-        }
-
-        try {
-            List<String> servlets = SocketHelper.getAllServlets();
-            for (String servlet : servlets) {
-                if (igApache && servlet.startsWith("org.apache")) {
-                    continue;
-                }
-                if (igSpring && servlet.startsWith("org.springframework")) {
-                    continue;
-                }
-                if (igJava) {
-                    if (servlet.startsWith("java.")) {
-                        continue;
-                    }
-                    if (servlet.startsWith("javax.")) {
-                        continue;
-                    }
-                    if (servlet.startsWith("sun.")) {
-                        continue;
-                    }
-                }
-                boolean blackF = false;
-                for (String s : black) {
-                    if (servlet.contains(s)) {
-                        blackF = true;
-                        break;
-                    }
-                }
-                if (!blackF) {
-                    continue;
-                }
-                ClassObj co = new ClassObj(servlet, "SERVLET");
-                servletsModel.addElement(co);
-            }
             servletList.setModel(servletsModel);
-        } catch (Exception ex) {
-            log("无法获得信息");
-        }
-
-        try {
-            List<String> listeners = SocketHelper.getAllListeners();
-            for (String li : listeners) {
-                if (igApache && li.startsWith("org.apache")) {
-                    continue;
-                }
-                if (igSpring && li.startsWith("org.springframework")) {
-                    continue;
-                }
-                if (igJava) {
-                    if (li.startsWith("java.")) {
-                        continue;
-                    }
-                    if (li.startsWith("javax.")) {
-                        continue;
-                    }
-                    if (li.startsWith("sun.")) {
-                        continue;
-                    }
-                }
-                boolean blackF = false;
-                for (String s : black) {
-                    if (li.contains(s)) {
-                        blackF = true;
-                        break;
-                    }
-                }
-                if (!blackF) {
-                    continue;
-                }
-                ClassObj co = new ClassObj(li, "LISTENER");
-                listenersModel.addElement(co);
-            }
             listenerList.setModel(listenersModel);
         } catch (Exception ex) {
             log("无法获得信息");
         }
+//
+//        try {
+//            List<String> filters = SocketHelper.getAllFilters();
+//            for (String filter : filters) {
+//                if (igApache && filter.startsWith("org.apache")) {
+//                    continue;
+//                }
+//                if (igSpring && filter.startsWith("org.springframework")) {
+//                    continue;
+//                }
+//                if (igJava) {
+//                    if (filter.startsWith("java.")) {
+//                        continue;
+//                    }
+//                    if (filter.startsWith("javax.")) {
+//                        continue;
+//                    }
+//                    if (filter.startsWith("sun.")) {
+//                        continue;
+//                    }
+//                }
+//                boolean blackF = false;
+//                for (String s : black) {
+//                    if (filter.contains(s)) {
+//                        blackF = true;
+//                        break;
+//                    }
+//                }
+//                if (!blackF) {
+//                    continue;
+//                }
+//                ClassObj co = new ClassObj(filter, "FILTER");
+//                filtersModel.addElement(co);
+//            }
+//            filterList.setModel(filtersModel);
+//        } catch (Exception ex) {
+//            log("无法获得信息");
+//        }
+//
+//        try {
+//            List<String> servlets = SocketHelper.getAllServlets();
+//            for (String servlet : servlets) {
+//                if (igApache && servlet.startsWith("org.apache")) {
+//                    continue;
+//                }
+//                if (igSpring && servlet.startsWith("org.springframework")) {
+//                    continue;
+//                }
+//                if (igJava) {
+//                    if (servlet.startsWith("java.")) {
+//                        continue;
+//                    }
+//                    if (servlet.startsWith("javax.")) {
+//                        continue;
+//                    }
+//                    if (servlet.startsWith("sun.")) {
+//                        continue;
+//                    }
+//                }
+//                boolean blackF = false;
+//                for (String s : black) {
+//                    if (servlet.contains(s)) {
+//                        blackF = true;
+//                        break;
+//                    }
+//                }
+//                if (!blackF) {
+//                    continue;
+//                }
+//                ClassObj co = new ClassObj(servlet, "SERVLET");
+//                servletsModel.addElement(co);
+//            }
+//            servletList.setModel(servletsModel);
+//        } catch (Exception ex) {
+//            log("无法获得信息");
+//        }
+//
+//        try {
+//            List<String> listeners = SocketHelper.getAllListeners();
+//            for (String li : listeners) {
+//                if (igApache && li.startsWith("org.apache")) {
+//                    continue;
+//                }
+//                if (igSpring && li.startsWith("org.springframework")) {
+//                    continue;
+//                }
+//                if (igJava) {
+//                    if (li.startsWith("java.")) {
+//                        continue;
+//                    }
+//                    if (li.startsWith("javax.")) {
+//                        continue;
+//                    }
+//                    if (li.startsWith("sun.")) {
+//                        continue;
+//                    }
+//                }
+//                boolean blackF = false;
+//                for (String s : black) {
+//                    if (li.contains(s)) {
+//                        blackF = true;
+//                        break;
+//                    }
+//                }
+//                if (!blackF) {
+//                    continue;
+//                }
+//                ClassObj co = new ClassObj(li, "LISTENER");
+//                listenersModel.addElement(co);
+//            }
+//            listenerList.setModel(listenersModel);
+//        } catch (Exception ex) {
+//            log("无法获得信息");
+//        }
 
         try {
             List<String> valves = SocketHelper.getAllValves();

@@ -26,6 +26,7 @@ package me.n1ar4.shell.analyzer.start;
 
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
+import com.n1ar4.agent.sourceResult.SourceResult;
 
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
@@ -165,6 +166,18 @@ public class SocketHelper {
 
         ObjectInputStream ois = new ObjectInputStream(client.getInputStream());
         ArrayList<String> arrayList = (ArrayList<String>) ois.readObject();
+        return arrayList;
+    }
+
+    public static List<SourceResult> getSourceResults() throws Exception{
+        Socket client = new Socket(host, port);
+        ByteArrayOutputStream bao = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(bao);
+        oos.writeObject("<GETALL>" + pass);
+        client.getOutputStream().write(bao.toByteArray());
+
+        ObjectInputStream ois = new ObjectInputStream(client.getInputStream());
+        ArrayList<SourceResult> arrayList = (ArrayList<SourceResult>) ois.readObject();
         return arrayList;
     }
 }

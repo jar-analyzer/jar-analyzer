@@ -41,6 +41,7 @@ import me.n1ar4.shell.analyzer.form.ShellForm;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -410,6 +411,38 @@ public class MenuUtil {
                 JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(), output);
             }).start());
             aboutMenu.add(checkUpdateItem);
+            JMenuItem aboutItem = new JMenuItem("about");
+            is = MainForm.class.getClassLoader().getResourceAsStream("img/java.png");
+            if (is == null) {
+                return null;
+            }
+            imageIcon = new ImageIcon(ImageIO.read(is));
+            aboutItem.setIcon(imageIcon);
+            aboutItem.addActionListener(e -> new Thread(() -> {
+                InputStream aboutIs = MainForm.class.getClassLoader().getResourceAsStream("img/about.png");
+                if (aboutIs != null) {
+                    try {
+                        ImageIcon aboutIcon = new ImageIcon(ImageIO.read(aboutIs));
+                        JFrame aboutFrame = new JFrame(String.format("about - jar-analyzer v%s @ 4ra1n", Const.version));
+                        aboutFrame.setResizable(false);
+                        aboutFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                        aboutFrame.setSize(450, 530);
+                        aboutFrame.setLayout(new BorderLayout());
+                        JLabel imageLabel = new JLabel(aboutIcon);
+                        aboutFrame.add(imageLabel, BorderLayout.NORTH);
+                        JLabel infoLabel = new JLabel("jar-analyzer project @ 4ra1n", JLabel.CENTER);
+                        aboutFrame.add(infoLabel, BorderLayout.CENTER);
+                        JTextField linkField = new JTextField("https://github.com/jar-analyzer/jar-analyzer");
+                        linkField.setEditable(false);
+                        linkField.setHorizontalAlignment(JTextField.CENTER);
+                        aboutFrame.add(linkField, BorderLayout.SOUTH);
+                        aboutFrame.setLocationRelativeTo(null);
+                        aboutFrame.setVisible(true);
+                    } catch (IOException ignored) {
+                    }
+                }
+            }).start());
+            aboutMenu.add(aboutItem);
             return aboutMenu;
         } catch (Exception ex) {
             return null;

@@ -35,6 +35,7 @@ import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
 import org.jetbrains.java.decompiler.main.decompiler.ConsoleDecompiler;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.FontUIResource;
@@ -42,7 +43,9 @@ import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -300,9 +303,23 @@ public class ShellForm {
             String output = "1. 远程启动你的 JAVA 程序\n" +
                     "请在你的启动参数中添加 " + command + "\n" +
                     "2. 配置 IP 和 PASSWORD 信息后点击 CONNECT\n" +
-                    "3. 如果没有自动显示信息可以尝试点击右侧的 刷新 按钮";
+                    "3. 如果没有自动显示信息可以尝试点击右侧的 刷新 按钮\n" +
+                    "注意：在 Tomcat 中修改的是 catalina.bat/sh 参考弹出图片";
 
             cmdArea.setText(output);
+
+            InputStream tomcatIs = ShellForm.class.getClassLoader().getResourceAsStream("img/tomcat.png");
+            try {
+                BufferedImage image = ImageIO.read(tomcatIs);
+                JFrame frame = new JFrame("config");
+                frame.setSize(882, 539);
+                JLabel imageLabel = new JLabel(new ImageIcon(image));
+                frame.add(imageLabel);
+                frame.setLocationRelativeTo(null);
+                frame.setVisible(true);
+
+            } catch (Exception ignored) {
+            }
         });
 
         attachButton.addActionListener(e -> {

@@ -12,6 +12,10 @@
 
 只需要你在 `tomcat` 启动时指定监听端口和密码即可远程分析
 
+修改 `catalina.bat/sh` 启动文件
+
+![](../img/0064.png)
+
 ```shell
 -javaagent:agent.jar=port=[port];password=[password]
 ```

@@ -24,10 +24,13 @@
 
 package me.n1ar4.shell.analyzer.start;
 
+import com.n1ar4.agent.sourceResult.ResultReturn;
+import me.n1ar4.dbg.utils.Base64Util;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 import com.n1ar4.agent.sourceResult.SourceResult;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -169,7 +172,7 @@ public class SocketHelper {
         return arrayList;
     }
 
-    public static List<SourceResult> getSourceResults() throws Exception{
+    public static ArrayList<SourceResult> getSourceResults() throws Exception{
         Socket client = new Socket(host, port);
         ByteArrayOutputStream bao = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(bao);
@@ -177,7 +180,19 @@ public class SocketHelper {
         client.getOutputStream().write(bao.toByteArray());
 
         ObjectInputStream ois = new ObjectInputStream(client.getInputStream());
-        ArrayList<SourceResult> arrayList = (ArrayList<SourceResult>) ois.readObject();
-        return arrayList;
+        ResultReturn resultReturn = (ResultReturn) ois.readObject();
+
+        if(resultReturn.ConsoleOutput != ""){
+            System.out.println("remote error stack trace : " + resultReturn.ConsoleOutput);
+        }
+        if(resultReturn.objectString != ""){
+            byte[] objBytes = Base64Util.decode(resultReturn.objectString);
+            ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(objBytes));
+            ArrayList<SourceResult> sourceResults = (ArrayList<SourceResult>) objectInputStream.readObject();
+            objectInputStream.close();
+            return sourceResults;
+        }else{
+            return new ArrayList<SourceResult>();
+        }
     }
 }

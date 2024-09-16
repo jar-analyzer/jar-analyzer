@@ -26,4 +26,5 @@ public class ResultReturn implements Serializable {
     public void setConsoleOutput(String consoleOutput) {
         ConsoleOutput = consoleOutput;
     }
+
 }

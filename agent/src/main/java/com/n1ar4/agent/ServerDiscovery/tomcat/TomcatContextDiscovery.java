@@ -16,7 +16,6 @@ public class TomcatContextDiscovery {
     private final Object context;
     ArrayList<SourceResult> sourceList;
     private ContextInfo contextUrlInfo;
-    // for Filter Get Url
     HashMap<String, EndPointUrlInfo> servletUrlInfoMap;
 
     public TomcatContextDiscovery(Object contextInstance, HostInfo hostUrlInfo) {
@@ -130,7 +129,6 @@ public class TomcatContextDiscovery {
         if (wrappers == null) return;
 
         int servletNumber = wrappers.length;
-//        OutputUtils.getPrintStream().println("Servlet Numbers : " + servletNumber);
 
         if (servletNumber > 0) {
             HashMap<String, String> servletMappings = (HashMap<String, String>) ReflectUtils.getDeclaredField(context, "servletMappings");
@@ -143,7 +141,7 @@ public class TomcatContextDiscovery {
                 if (this.servletUrlInfoMap.containsKey(servletName) == false) {
                     servletUrlInfoMap.put(servletName, new EndPointUrlInfo(contextUrlInfo));
                 }
-                servletUrlInfoMap.getOrDefault(servletName, new EndPointUrlInfo(contextUrlInfo)).urlPatterns.add(servletMapping);
+                servletUrlInfoMap.get(servletName).urlPatterns.add(servletMapping);
             }
 
             for (Object wrapper : wrappers) {
@@ -193,8 +191,8 @@ public class TomcatContextDiscovery {
 
     public ArrayList<SourceResult> getSourceResults() {
         getAllListener();
-        getFilters();
         getAllServlets();
+        getFilters();
 
         return sourceList;
     }

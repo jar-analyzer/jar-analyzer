@@ -1,5 +1,8 @@
 package com.n1ar4.agent.sourceResult;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 public class ResultReturn implements Serializable {
@@ -26,4 +29,5 @@ public class ResultReturn implements Serializable {
     public void setConsoleOutput(String consoleOutput) {
         ConsoleOutput = consoleOutput;
     }
+
 }

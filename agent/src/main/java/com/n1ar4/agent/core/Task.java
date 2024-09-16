@@ -28,13 +28,14 @@ import arthas.VmTool;
 import com.n1ar4.agent.Agent;
 import com.n1ar4.agent.ServerDiscovery.ServerDiscovery;
 import com.n1ar4.agent.ServerDiscovery.ServerDiscoveryType;
+import com.n1ar4.agent.sourceResult.ResultReturn;
 import com.n1ar4.agent.sourceResult.SourceResult;
 import com.n1ar4.agent.transform.CoreTransformer;
+import com.n1ar4.agent.util.Base64Util;
+import com.n1ar4.agent.util.CustomOutputStream;
 import com.n1ar4.agent.util.FilterObjectInputStream;
 
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.lang.instrument.Instrumentation;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -95,27 +96,39 @@ public class Task implements Runnable {
         }
 
         if (targetClass.startsWith("<GETALL>")){
-            String PASS = targetClass.split("<GETALL>")[1];
-            if (!PASS.equals(Agent.PASSWORD)) {
-                System.out.println("[-] ERROR PASSWORD");
-                return;
-            }
+            ResultReturn resultReturn = new ResultReturn("" , "");
+            try {
+                String PASS = targetClass.split("<GETALL>")[1];
+                if (!PASS.equals(Agent.PASSWORD)) {
+                    System.out.println("[-] ERROR PASSWORD");
+                    return;
+                }
 
-            ArrayList<SourceResult> sourceResults = new ArrayList<SourceResult>();
-            for (ServerDiscoveryType serverDiscoveryType : ServerDiscoveryType.values()) {
-                ServerDiscovery serverDiscovery = serverDiscoveryType.getServerDiscovery();
-                if(serverDiscovery.CanLoad(vmTool , instLocal) == false)
-                    continue;
+                ArrayList<SourceResult> sourceResults = new ArrayList<SourceResult>();
+                for (ServerDiscoveryType serverDiscoveryType : ServerDiscoveryType.values()) {
+                    ServerDiscovery serverDiscovery = serverDiscoveryType.getServerDiscovery();
+                    if(serverDiscovery.CanLoad(vmTool , instLocal) == false)
+                        continue;
 
-                sourceResults.addAll(serverDiscovery.getServerSources(vmTool , instLocal));
-
+                    sourceResults.addAll(serverDiscovery.getServerSources(vmTool , instLocal));
+                }
+                ByteArrayOutputStream bao = new ByteArrayOutputStream();
+                ObjectOutputStream oos = new ObjectOutputStream(bao);
+                oos.writeObject(sourceResults);
+                oos.close();
+                resultReturn.setObjectString(Base64Util.encode(bao.toByteArray()));
+            }catch (Exception e){
+                CustomOutputStream customOutputStream = new CustomOutputStream();
+                PrintStream printStream = new PrintStream(customOutputStream);
+                e.printStackTrace(printStream);
+                resultReturn.setConsoleOutput(customOutputStream.getResult());
             }
 
             ByteArrayOutputStream bao = new ByteArrayOutputStream();
             ObjectOutputStream oos = new ObjectOutputStream(bao);
-            oos.writeObject(sourceResults);
+            oos.writeObject(resultReturn);
             oos.close();
-            System.out.printf("[*] write length %d to socket\n", sourceResults.size());
+            System.out.printf("[*] write obj length %d to socket\n", resultReturn.getObjectString().length());
             socket.getOutputStream().write(bao.toByteArray());
             return;
         }

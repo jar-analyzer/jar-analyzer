@@ -182,7 +182,7 @@ public class SocketHelper {
         ObjectInputStream ois = new ObjectInputStream(client.getInputStream());
         ResultReturn resultReturn = (ResultReturn) ois.readObject();
 
-        if(resultReturn.ConsoleOutput.equals("")){
+        if(resultReturn.ConsoleOutput.equals("") == false){
             System.out.println("remote error stack trace : " + resultReturn.ConsoleOutput);
         }
         if(resultReturn.objectString.equals("") == false){

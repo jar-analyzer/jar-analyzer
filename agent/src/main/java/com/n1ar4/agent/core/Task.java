@@ -24,7 +24,6 @@
 
 package com.n1ar4.agent.core;
 
-import arthas.VmTool;
 import com.n1ar4.agent.Agent;
 import com.n1ar4.agent.ServerDiscovery.ServerDiscovery;
 import com.n1ar4.agent.ServerDiscovery.ServerDiscoveryType;
@@ -44,12 +43,10 @@ import java.util.List;
 @SuppressWarnings("all")
 public class Task implements Runnable {
     private final Socket socket;
-    private final VmTool vmTool;
     private Instrumentation instLocal;
 
-    public Task(Socket socket , VmTool vmTool , Instrumentation instLocal) {
+    public Task(Socket socket, Instrumentation instLocal) {
         this.socket = socket;
-        this.vmTool = vmTool;
         this.instLocal = instLocal;
     }
 
@@ -95,8 +92,8 @@ public class Task implements Runnable {
             return;
         }
 
-        if (targetClass.startsWith("<GETALL>")){
-            ResultReturn resultReturn = new ResultReturn("" , "");
+        if (targetClass.startsWith("<GETALL>")) {
+            ResultReturn resultReturn = new ResultReturn("", "");
             try {
                 String PASS = targetClass.split("<GETALL>")[1];
                 if (!PASS.equals(Agent.PASSWORD)) {
@@ -107,17 +104,17 @@ public class Task implements Runnable {
                 ArrayList<SourceResult> sourceResults = new ArrayList<SourceResult>();
                 for (ServerDiscoveryType serverDiscoveryType : ServerDiscoveryType.values()) {
                     ServerDiscovery serverDiscovery = serverDiscoveryType.getServerDiscovery();
-                    if(serverDiscovery.CanLoad(vmTool , instLocal) == false)
+                    if (serverDiscovery.CanLoad() == false)
                         continue;
 
-                    sourceResults.addAll(serverDiscovery.getServerSources(vmTool , instLocal));
+                    sourceResults.addAll(serverDiscovery.getServerSources());
                 }
                 ByteArrayOutputStream bao = new ByteArrayOutputStream();
                 ObjectOutputStream oos = new ObjectOutputStream(bao);
                 oos.writeObject(sourceResults);
                 oos.close();
                 resultReturn.setObjectString(Base64Util.encode(bao.toByteArray()));
-            }catch (Exception e){
+            } catch (Exception e) {
                 CustomOutputStream customOutputStream = new CustomOutputStream();
                 PrintStream printStream = new PrintStream(customOutputStream);
                 e.printStackTrace(printStream);

@@ -182,10 +182,10 @@ public class SocketHelper {
         ObjectInputStream ois = new ObjectInputStream(client.getInputStream());
         ResultReturn resultReturn = (ResultReturn) ois.readObject();
 
-        if(resultReturn.ConsoleOutput != ""){
+        if(resultReturn.ConsoleOutput.equals("")){
             System.out.println("remote error stack trace : " + resultReturn.ConsoleOutput);
         }
-        if(resultReturn.objectString != ""){
+        if(resultReturn.objectString.equals("") == false){
             byte[] objBytes = Base64Util.decode(resultReturn.objectString);
             ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(objBytes));
             ArrayList<SourceResult> sourceResults = (ArrayList<SourceResult>) objectInputStream.readObject();

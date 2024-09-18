@@ -22,37 +22,53 @@
  * SOFTWARE.
  */
 
-package com.n1ar4.agent.util;
+package com.n1ar4.agent.dto;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.Serializable;
 
-public class CustomOutputStream extends OutputStream {
+public class UrlInfo implements Serializable {
+    public String url;
+    public String descrition;
 
-    public StringBuilder stringBuilder;
-
-    public CustomOutputStream(){
-        this.stringBuilder = new StringBuilder();
+    public UrlInfo(String url) {
+        this(url , "");
     }
 
-    @Override
-    public void write(int b) throws IOException {
-        this.stringBuilder.append(Character.valueOf((char) b));
+    public UrlInfo(String url, String descrition) {
+        this.url = url;
+        this.descrition = descrition;
     }
 
-    @Override
-    public void write(byte[] b) throws IOException {
-        this.stringBuilder.append(b);
+    public String getUrl() {
+        return url;
     }
 
-    public void clearBuffer(){
-        stringBuilder.delete(0 , stringBuilder.length());
+    public void setUrl(String url) {
+        this.url = url;
     }
 
-    public String getResult(){
-        String result = stringBuilder.toString();
-        this.clearBuffer();
-
-        return result;
+    public void appendRawUrl(String append){
+        this.url += append;
     }
+
+    public void appendUrl(String urlPattern){
+        if (urlPattern.startsWith("/") == false)
+            url += "/";
+        this.appendRawUrl(urlPattern);
+    }
+
+
+    public String getDescrition() {
+        return descrition;
+    }
+
+    public void setDescrition(String descrition) {
+        this.descrition = descrition;
+    }
+
+    public void appendDescrition(String append){
+        this.descrition += " | " + append;
+    }
+
+
 }

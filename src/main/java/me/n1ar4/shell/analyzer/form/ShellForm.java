@@ -26,7 +26,7 @@ package me.n1ar4.shell.analyzer.form;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import com.n1ar4.agent.sourceResult.SourceResult;
+import com.n1ar4.agent.dto.SourceResult;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.ProcessDialog;
 import me.n1ar4.shell.analyzer.model.ClassObj;
@@ -277,7 +277,7 @@ public class ShellForm {
             urlArea.setText("NONE");
         }
 
-        log("尝试获取字节码进行反编译");
+        log("尝试获取字节码进行反编译: " + res.getClassName());
 
         new Thread(() -> {
             try {

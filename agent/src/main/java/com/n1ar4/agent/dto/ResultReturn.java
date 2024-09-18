@@ -22,37 +22,33 @@
  * SOFTWARE.
  */
 
-package com.n1ar4.agent.util;
+package com.n1ar4.agent.dto;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.Serializable;
 
-public class CustomOutputStream extends OutputStream {
+public class ResultReturn implements Serializable {
+    public String objectString;
+    public String ConsoleOutput;
 
-    public StringBuilder stringBuilder;
-
-    public CustomOutputStream(){
-        this.stringBuilder = new StringBuilder();
+    public ResultReturn(String objectString, String consoleOutput) {
+        this.objectString = objectString;
+        ConsoleOutput = consoleOutput;
     }
 
-    @Override
-    public void write(int b) throws IOException {
-        this.stringBuilder.append(Character.valueOf((char) b));
+    public String getObjectString() {
+        return objectString;
     }
 
-    @Override
-    public void write(byte[] b) throws IOException {
-        this.stringBuilder.append(b);
+    public void setObjectString(String objectString) {
+        this.objectString = objectString;
     }
 
-    public void clearBuffer(){
-        stringBuilder.delete(0 , stringBuilder.length());
+    public String getConsoleOutput() {
+        return ConsoleOutput;
     }
 
-    public String getResult(){
-        String result = stringBuilder.toString();
-        this.clearBuffer();
-
-        return result;
+    public void setConsoleOutput(String consoleOutput) {
+        ConsoleOutput = consoleOutput;
     }
+
 }

@@ -41,6 +41,10 @@ public class Agent {
     private static final String DEFAULT_PASSWD = "12345678";
     private static final int DEFAULT_PORT = 10033;
 
+    public static void refreshClass() {
+        staticClasses = (Class<?>[]) staticIns.getAllLoadedClasses();
+    }
+
     /**
      * 动态的 Agent 方式
      * 通过 tools 的 attach
@@ -106,7 +110,7 @@ public class Agent {
                 while (true) {
                     Socket socket = ss.accept();
                     staticClasses = (Class<?>[]) ins.getAllLoadedClasses();
-                    new Thread(new Task(socket , vmToolInstances , ins)).start();
+                    new Thread(new Task(socket, vmToolInstances, ins)).start();
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();

@@ -26,16 +26,19 @@ package com.n1ar4.agent.core;
 
 import arthas.VmTool;
 import com.n1ar4.agent.Agent;
-import com.n1ar4.agent.ServerDiscovery.ServerDiscovery;
-import com.n1ar4.agent.ServerDiscovery.ServerDiscoveryType;
-import com.n1ar4.agent.sourceResult.ResultReturn;
-import com.n1ar4.agent.sourceResult.SourceResult;
+import com.n1ar4.agent.dto.ResultReturn;
+import com.n1ar4.agent.dto.SourceResult;
+import com.n1ar4.agent.service.ServerDiscovery;
+import com.n1ar4.agent.service.ServerDiscoveryType;
 import com.n1ar4.agent.transform.CoreTransformer;
 import com.n1ar4.agent.util.Base64Util;
 import com.n1ar4.agent.util.CustomOutputStream;
 import com.n1ar4.agent.util.FilterObjectInputStream;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.PrintStream;
 import java.lang.instrument.Instrumentation;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -47,7 +50,7 @@ public class Task implements Runnable {
     private final VmTool vmTool;
     private Instrumentation instLocal;
 
-    public Task(Socket socket , VmTool vmTool , Instrumentation instLocal) {
+    public Task(Socket socket, VmTool vmTool, Instrumentation instLocal) {
         this.socket = socket;
         this.vmTool = vmTool;
         this.instLocal = instLocal;
@@ -72,6 +75,7 @@ public class Task implements Runnable {
         String targetClass = (String) ois.readObject();
 
         if (targetClass.startsWith("<ALL>")) {
+            Agent.refreshClass();
             String PASS = targetClass.split("<ALL>")[1];
             if (!PASS.equals(Agent.PASSWORD)) {
                 System.out.println("[-] ERROR PASSWORD");
@@ -95,8 +99,9 @@ public class Task implements Runnable {
             return;
         }
 
-        if (targetClass.startsWith("<GET-ALL>")){
-            ResultReturn resultReturn = new ResultReturn("" , "");
+        if (targetClass.startsWith("<GET-ALL>")) {
+            Agent.refreshClass();
+            ResultReturn resultReturn = new ResultReturn("", "");
             try {
                 String PASS = targetClass.split("<GET-ALL>")[1];
                 if (!PASS.equals(Agent.PASSWORD)) {
@@ -107,17 +112,17 @@ public class Task implements Runnable {
                 ArrayList<SourceResult> sourceResults = new ArrayList<SourceResult>();
                 for (ServerDiscoveryType serverDiscoveryType : ServerDiscoveryType.values()) {
                     ServerDiscovery serverDiscovery = serverDiscoveryType.getServerDiscovery();
-                    if(serverDiscovery.CanLoad(vmTool , instLocal) == false)
+                    if (serverDiscovery.CanLoad(vmTool, instLocal) == false)
                         continue;
 
-                    sourceResults.addAll(serverDiscovery.getServerSources(vmTool , instLocal));
+                    sourceResults.addAll(serverDiscovery.getServerSources(vmTool, instLocal));
                 }
                 ByteArrayOutputStream bao = new ByteArrayOutputStream();
                 ObjectOutputStream oos = new ObjectOutputStream(bao);
                 oos.writeObject(sourceResults);
                 oos.close();
                 resultReturn.setObjectString(Base64Util.encode(bao.toByteArray()));
-            }catch (Exception e){
+            } catch (Exception e) {
                 CustomOutputStream customOutputStream = new CustomOutputStream();
                 PrintStream printStream = new PrintStream(customOutputStream);
                 e.printStackTrace(printStream);
@@ -134,6 +139,7 @@ public class Task implements Runnable {
         }
 
         if (targetClass.startsWith("<FILTERS>")) {
+            Agent.refreshClass();
             String PASS = targetClass.split("<FILTERS>")[1];
             if (!PASS.equals(Agent.PASSWORD)) {
                 System.out.println("[-] ERROR PASSWORD");
@@ -171,6 +177,7 @@ public class Task implements Runnable {
         }
 
         if (targetClass.startsWith("<VALVES>")) {
+            Agent.refreshClass();
             String PASS = targetClass.split("<VALVES>")[1];
             if (!PASS.equals(Agent.PASSWORD)) {
                 System.out.println("[-] ERROR PASSWORD");
@@ -208,6 +215,7 @@ public class Task implements Runnable {
         }
 
         if (targetClass.startsWith("<SERVLETS>")) {
+            Agent.refreshClass();
             String PASS = targetClass.split("<SERVLETS>")[1];
             if (!PASS.equals(Agent.PASSWORD)) {
                 System.out.println("[-] ERROR PASSWORD");
@@ -245,6 +253,7 @@ public class Task implements Runnable {
         }
 
         if (targetClass.startsWith("<LISTENERS>")) {
+            Agent.refreshClass();
             String PASS = targetClass.split("<LISTENERS>")[1];
             if (!PASS.equals(Agent.PASSWORD)) {
                 System.out.println("[-] ERROR PASSWORD");
@@ -285,8 +294,13 @@ public class Task implements Runnable {
             return;
         }
         targetClass = targetClass.split("\\|")[1];
+        Agent.refreshClass();
+
+        boolean found = false;
+
         for (Class<?> c : Agent.staticClasses) {
             if (c.getName().equals(targetClass)) {
+                found = true;
                 CoreTransformer coreTransformer = new CoreTransformer(targetClass);
                 Agent.staticIns.addTransformer(coreTransformer, true);
                 Agent.staticIns.retransformClasses(c);
@@ -300,6 +314,10 @@ public class Task implements Runnable {
                 }
                 Agent.staticIns.removeTransformer(coreTransformer);
             }
+        }
+
+        if (!found) {
+            System.out.printf("[*] CLASS NOT FOUND: \n" + targetClass);
         }
     }
 }

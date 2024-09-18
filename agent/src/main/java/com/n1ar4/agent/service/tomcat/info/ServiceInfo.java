@@ -22,37 +22,30 @@
  * SOFTWARE.
  */
 
-package com.n1ar4.agent.util;
+package com.n1ar4.agent.service.tomcat.info;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import com.n1ar4.agent.dto.UrlInfo;
 
-public class CustomOutputStream extends OutputStream {
+import java.util.ArrayList;
 
-    public StringBuilder stringBuilder;
+public class ServiceInfo {
+    public ArrayList<UrlInfo> connectorList;
+    public String defaultHost;
 
-    public CustomOutputStream(){
-        this.stringBuilder = new StringBuilder();
+    public ServiceInfo(){
+        this(new ArrayList<UrlInfo>() , "");
     }
 
-    @Override
-    public void write(int b) throws IOException {
-        this.stringBuilder.append(Character.valueOf((char) b));
+    public ServiceInfo(ArrayList<UrlInfo> connectorList){
+        this(connectorList , "");
     }
 
-    @Override
-    public void write(byte[] b) throws IOException {
-        this.stringBuilder.append(b);
+    public ServiceInfo(ArrayList<UrlInfo> connectorList , String defaultHost){
+        this.connectorList = connectorList;
+        this.defaultHost = defaultHost;
     }
 
-    public void clearBuffer(){
-        stringBuilder.delete(0 , stringBuilder.length());
-    }
-
-    public String getResult(){
-        String result = stringBuilder.toString();
-        this.clearBuffer();
-
-        return result;
+    public ArrayList<UrlInfo> getConnectorList () {
+        return connectorList;
     }
 }

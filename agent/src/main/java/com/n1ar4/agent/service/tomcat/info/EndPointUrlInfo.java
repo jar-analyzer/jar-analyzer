@@ -22,37 +22,31 @@
  * SOFTWARE.
  */
 
-package com.n1ar4.agent.util;
+package com.n1ar4.agent.service.tomcat.info;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import com.n1ar4.agent.dto.UrlInfo;
 
-public class CustomOutputStream extends OutputStream {
+import java.util.ArrayList;
 
-    public StringBuilder stringBuilder;
+public class EndPointUrlInfo {
+    public ContextInfo contextUrlInfo;
+    public ArrayList<String> urlPatterns;
 
-    public CustomOutputStream(){
-        this.stringBuilder = new StringBuilder();
+    public EndPointUrlInfo(ContextInfo contextUrlInfo) {
+        this.urlPatterns = new ArrayList<String>();
+        this.contextUrlInfo = contextUrlInfo;
     }
 
-    @Override
-    public void write(int b) throws IOException {
-        this.stringBuilder.append(Character.valueOf((char) b));
+    public ArrayList<UrlInfo> toUrlInfos() {
+        ArrayList<UrlInfo> urlInfos = new ArrayList<>();
+        for (UrlInfo contextUrlInfo : this.contextUrlInfo.getContextUrlInfoList()) {
+            for (String urlPattern : urlPatterns) {
+                UrlInfo nowUrlInfo = new UrlInfo(contextUrlInfo.getUrl(), contextUrlInfo.getDescrition());
+                nowUrlInfo.appendUrl(urlPattern);
+                urlInfos.add(nowUrlInfo);
+            }
+        }
+        return urlInfos;
     }
 
-    @Override
-    public void write(byte[] b) throws IOException {
-        this.stringBuilder.append(b);
-    }
-
-    public void clearBuffer(){
-        stringBuilder.delete(0 , stringBuilder.length());
-    }
-
-    public String getResult(){
-        String result = stringBuilder.toString();
-        this.clearBuffer();
-
-        return result;
-    }
 }

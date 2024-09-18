@@ -22,37 +22,20 @@
  * SOFTWARE.
  */
 
-package com.n1ar4.agent.util;
+package com.n1ar4.agent.service;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import com.n1ar4.agent.service.tomcat.TomcatServerDiscovery;
 
-public class CustomOutputStream extends OutputStream {
+public enum ServerDiscoveryType {
+    Tomcat(new TomcatServerDiscovery("org.apache.catalina.core.StandardServer"))
+    ;
+    private ServerDiscovery serverDiscovery;
 
-    public StringBuilder stringBuilder;
-
-    public CustomOutputStream(){
-        this.stringBuilder = new StringBuilder();
+    private ServerDiscoveryType(ServerDiscovery serverDiscovery){
+        this.serverDiscovery = serverDiscovery;
     }
 
-    @Override
-    public void write(int b) throws IOException {
-        this.stringBuilder.append(Character.valueOf((char) b));
-    }
-
-    @Override
-    public void write(byte[] b) throws IOException {
-        this.stringBuilder.append(b);
-    }
-
-    public void clearBuffer(){
-        stringBuilder.delete(0 , stringBuilder.length());
-    }
-
-    public String getResult(){
-        String result = stringBuilder.toString();
-        this.clearBuffer();
-
-        return result;
+    public ServerDiscovery getServerDiscovery() {
+        return serverDiscovery;
     }
 }

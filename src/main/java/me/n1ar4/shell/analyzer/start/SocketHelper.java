@@ -24,8 +24,8 @@
 
 package me.n1ar4.shell.analyzer.start;
 
-import com.n1ar4.agent.sourceResult.ResultReturn;
-import com.n1ar4.agent.sourceResult.SourceResult;
+import com.n1ar4.agent.dto.ResultReturn;
+import com.n1ar4.agent.dto.SourceResult;
 import me.n1ar4.dbg.utils.Base64Util;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;

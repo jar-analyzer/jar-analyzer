@@ -34,6 +34,8 @@ import me.n1ar4.jar.analyzer.gui.state.State;
 import me.n1ar4.jar.analyzer.gui.util.ProcessDialog;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.utils.StringUtil;
+import me.n1ar4.log.LogManager;
+import me.n1ar4.log.Logger;
 import org.objectweb.asm.Type;
 
 import javax.swing.*;
@@ -45,6 +47,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class CommonMouseAdapter extends MouseAdapter {
+    private static final Logger logger = LogManager.getLogger();
+
     @SuppressWarnings("all")
     public void mouseClicked(MouseEvent evt) {
         JList<?> list = (JList<?>) evt.getSource();
@@ -59,12 +63,18 @@ public class CommonMouseAdapter extends MouseAdapter {
             if (res == null) {
                 return;
             }
+
+            // FIX BUG 2024/09/18
+            // 子类通过 this.method 调用父类的 method
             ClassResult nowClass = MainForm.getEngine().getClassByClass(res.getClassName());
-            while (nowClass != null){
-                ArrayList<MethodResult> method = MainForm.getEngine().getMethod(nowClass.getClassName(), res.getMethodName(), res.getMethodDesc());
-                if(method.size() > 0){
+            while (nowClass != null) {
+                ArrayList<MethodResult> method = MainForm.getEngine().getMethod(
+                        nowClass.getClassName(),
+                        res.getMethodName(),
+                        res.getMethodDesc());
+                if (method.size() > 0) {
                     res = method.get(0);
-                    System.out.println("now find target Method in class : " + nowClass.getClassName());
+                    logger.info("find target method in class: {}", nowClass.getClassName());
                     break;
                 }
                 nowClass = MainForm.getEngine().getClassByClass(nowClass.getSuperClassName());

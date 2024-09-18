@@ -13,7 +13,6 @@ public class SourceResult implements Serializable, Comparable<SourceResult> {
     public ArrayList<String> description = null;
 
     public SourceResult() {
-
     }
 
     public SourceResult(SourceResultType type, String name, String sourceClass, ArrayList<UrlInfo> urlInfos) {
@@ -95,29 +94,27 @@ public class SourceResult implements Serializable, Comparable<SourceResult> {
         if (o == null || getClass() != o.getClass()) return false;
 
         SourceResult targetSourceResult = (SourceResult) o;
-        if (targetSourceResult.type.equals(this.type) == false)
+        if (!targetSourceResult.type.equals(this.type))
             return false;
-        if(targetSourceResult.name == null){
-            if(this.name != null) {
+        if (targetSourceResult.name == null) {
+            if (this.name != null) {
                 return false;
             }
-        }else if (targetSourceResult.name.equals(this.name) == false){
+        } else if (!targetSourceResult.name.equals(this.name)) {
             return false;
         }
 
-        if (targetSourceResult.sourceClass.equals(this.sourceClass) == false)
+        if (!targetSourceResult.sourceClass.equals(this.sourceClass))
             return false;
         if (targetSourceResult.methodInfo != null) {
-            if (targetSourceResult.methodInfo.equals(this.methodInfo) == false) {
+            if (!targetSourceResult.methodInfo.equals(this.methodInfo)) {
                 return false;
             }
         } else {
             if (this.methodInfo != null)
                 return false;
         }
-        if (targetSourceResult.getUrlInfos().toString().equals(this.getUrlInfos().toString()) == false)
-            return false;
-        return true;
+        return targetSourceResult.getUrlInfos().toString().equals(this.getUrlInfos().toString());
     }
 
     private int hashResult = -1;
@@ -155,26 +152,36 @@ public class SourceResult implements Serializable, Comparable<SourceResult> {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Source Type : " + this.getType().toString() + "\n");
-        sb.append("\t Source Name : " + this.getName() + "\n");
-        sb.append("\t Source Class : " + this.getSourceClass() + "\n");
-        if(this.urlInfos != null && this.urlInfos.size() > 0){
+        sb.append("Source Type : ").append(this.getType().toString()).append("\n");
+        sb.append("\t Source Name : ").append(this.getName()).append("\n");
+        sb.append("\t Source Class : ").append(this.getSourceClass()).append("\n");
+        if (this.urlInfos != null && !this.urlInfos.isEmpty()) {
             sb.append("\t Source UrlInfo : \n");
             for (UrlInfo urlInfo : this.urlInfos) {
-                sb.append("\t\t Url : " + urlInfo.getUrl() + "\n");
-                if(urlInfo.getDescrition().equals(""))
+                sb.append("\t\t Url : ").append(urlInfo.getUrl()).append("\n");
+                if (urlInfo.getDescrition().isEmpty())
                     continue;
-
                 for (String oneLineDesc : urlInfo.descrition.split("\\|")) {
-                    sb.append("\t\t\t desc : " + oneLineDesc + "\n");
+                    sb.append("\t\t\t desc : ").append(oneLineDesc).append("\n");
                 }
             }
         }
-        ArrayList<String> descripton = this.getDescription();
-        if ( descripton!= null && descripton.size() > 0) {
+        ArrayList<String> description = this.getDescription();
+        if (description != null && !description.isEmpty()) {
             sb.append("\t Source Description : \n");
-            for (String desc : descripton) {
-                sb.append("\t\t " + desc + "\n");
+            for (String desc : description) {
+                sb.append("\t\t ").append(desc).append("\n");
+            }
+        }
+        return sb.toString();
+    }
+
+    public String generateUrlInfo() {
+        StringBuilder sb = new StringBuilder();
+        if (this.urlInfos != null && !this.urlInfos.isEmpty()) {
+            for (UrlInfo urlInfo : this.urlInfos) {
+                sb.append(urlInfo.getUrl());
+                sb.append("\n");
             }
         }
         return sb.toString();

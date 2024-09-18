@@ -24,6 +24,8 @@
 
 package me.n1ar4.shell.analyzer.model;
 
+import java.util.Objects;
+
 @SuppressWarnings("all")
 public class ClassObj {
     private String className;
@@ -54,5 +56,21 @@ public class ClassObj {
     @Override
     public String toString() {
         return getClassName();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ClassObj classObj = (ClassObj) o;
+        return Objects.equals(className, classObj.className) && Objects.equals(type, classObj.type);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hashCode(className);
+        result = 31 * result + Objects.hashCode(type);
+        return result;
     }
 }

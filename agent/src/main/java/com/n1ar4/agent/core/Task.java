@@ -95,10 +95,10 @@ public class Task implements Runnable {
             return;
         }
 
-        if (targetClass.startsWith("<GETALL>")){
+        if (targetClass.startsWith("<GET-ALL>")){
             ResultReturn resultReturn = new ResultReturn("" , "");
             try {
-                String PASS = targetClass.split("<GETALL>")[1];
+                String PASS = targetClass.split("<GET-ALL>")[1];
                 if (!PASS.equals(Agent.PASSWORD)) {
                     System.out.println("[-] ERROR PASSWORD");
                     return;

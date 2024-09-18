@@ -27,6 +27,7 @@ package me.n1ar4.jar.analyzer.gui.adapter;
 import me.n1ar4.jar.analyzer.core.FinderRunner;
 import me.n1ar4.jar.analyzer.engine.CoreHelper;
 import me.n1ar4.jar.analyzer.engine.DecompileEngine;
+import me.n1ar4.jar.analyzer.entity.ClassResult;
 import me.n1ar4.jar.analyzer.entity.MethodResult;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.state.State;
@@ -41,6 +42,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 public class CommonMouseAdapter extends MouseAdapter {
     @SuppressWarnings("all")
@@ -57,6 +59,17 @@ public class CommonMouseAdapter extends MouseAdapter {
             if (res == null) {
                 return;
             }
+            ClassResult nowClass = MainForm.getEngine().getClassByClass(res.getClassName());
+            while (nowClass != null){
+                ArrayList<MethodResult> method = MainForm.getEngine().getMethod(nowClass.getClassName(), res.getMethodName(), res.getMethodDesc());
+                if(method.size() > 0){
+                    res = method.get(0);
+                    System.out.println("now find target Method in class : " + nowClass.getClassName());
+                    break;
+                }
+                nowClass = MainForm.getEngine().getClassByClass(nowClass.getSuperClassName());
+            }
+
             String className = res.getClassName();
             String tempPath = className.replace("/", File.separator);
             String classPath;

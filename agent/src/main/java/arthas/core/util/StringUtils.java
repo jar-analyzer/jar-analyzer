@@ -17,7 +17,6 @@
 package arthas.core.util;
 
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
@@ -216,6 +215,7 @@ public abstract class StringUtils {
 
     /**
      * Represents a failed index search.
+     *
      * @since 2.1
      */
     public static final int INDEX_NOT_FOUND = -1;
@@ -232,17 +232,17 @@ public abstract class StringUtils {
     }
 
     public static boolean hasLength(String str) {
-        return hasLength((CharSequence)str);
+        return hasLength((CharSequence) str);
     }
 
     public static boolean hasText(CharSequence str) {
-        if(!hasLength(str)) {
+        if (!hasLength(str)) {
             return false;
         } else {
             int strLen = str.length();
 
-            for(int i = 0; i < strLen; ++i) {
-                if(!Character.isWhitespace(str.charAt(i))) {
+            for (int i = 0; i < strLen; ++i) {
+                if (!Character.isWhitespace(str.charAt(i))) {
                     return true;
                 }
             }
@@ -252,17 +252,17 @@ public abstract class StringUtils {
     }
 
     public static boolean hasText(String str) {
-        return hasText((CharSequence)str);
+        return hasText((CharSequence) str);
     }
 
     public static boolean containsWhitespace(CharSequence str) {
-        if(!hasLength(str)) {
+        if (!hasLength(str)) {
             return false;
         } else {
             int strLen = str.length();
 
-            for(int i = 0; i < strLen; ++i) {
-                if(Character.isWhitespace(str.charAt(i))) {
+            for (int i = 0; i < strLen; ++i) {
+                if (Character.isWhitespace(str.charAt(i))) {
                     return true;
                 }
             }
@@ -272,20 +272,20 @@ public abstract class StringUtils {
     }
 
     public static boolean containsWhitespace(String str) {
-        return containsWhitespace((CharSequence)str);
+        return containsWhitespace((CharSequence) str);
     }
 
     public static String trimWhitespace(String str) {
-        if(!hasLength(str)) {
+        if (!hasLength(str)) {
             return str;
         } else {
             StringBuilder sb = new StringBuilder(str);
 
-            while(sb.length() > 0 && Character.isWhitespace(sb.charAt(0))) {
+            while (sb.length() > 0 && Character.isWhitespace(sb.charAt(0))) {
                 sb.deleteCharAt(0);
             }
 
-            while(sb.length() > 0 && Character.isWhitespace(sb.charAt(sb.length() - 1))) {
+            while (sb.length() > 0 && Character.isWhitespace(sb.charAt(sb.length() - 1))) {
                 sb.deleteCharAt(sb.length() - 1);
             }
 
@@ -294,14 +294,14 @@ public abstract class StringUtils {
     }
 
     public static String trimAllWhitespace(String str) {
-        if(!hasLength(str)) {
+        if (!hasLength(str)) {
             return str;
         } else {
             StringBuilder sb = new StringBuilder(str);
             int index = 0;
 
-            while(sb.length() > index) {
-                if(Character.isWhitespace(sb.charAt(index))) {
+            while (sb.length() > index) {
+                if (Character.isWhitespace(sb.charAt(index))) {
                     sb.deleteCharAt(index);
                 } else {
                     ++index;
@@ -313,12 +313,12 @@ public abstract class StringUtils {
     }
 
     public static String trimLeadingWhitespace(String str) {
-        if(!hasLength(str)) {
+        if (!hasLength(str)) {
             return str;
         } else {
             StringBuilder sb = new StringBuilder(str);
 
-            while(sb.length() > 0 && Character.isWhitespace(sb.charAt(0))) {
+            while (sb.length() > 0 && Character.isWhitespace(sb.charAt(0))) {
                 sb.deleteCharAt(0);
             }
 
@@ -327,12 +327,12 @@ public abstract class StringUtils {
     }
 
     public static String trimTrailingWhitespace(String str) {
-        if(!hasLength(str)) {
+        if (!hasLength(str)) {
             return str;
         } else {
             StringBuilder sb = new StringBuilder(str);
 
-            while(sb.length() > 0 && Character.isWhitespace(sb.charAt(sb.length() - 1))) {
+            while (sb.length() > 0 && Character.isWhitespace(sb.charAt(sb.length() - 1))) {
                 sb.deleteCharAt(sb.length() - 1);
             }
 
@@ -341,12 +341,12 @@ public abstract class StringUtils {
     }
 
     public static String trimLeadingCharacter(String str, char leadingCharacter) {
-        if(!hasLength(str)) {
+        if (!hasLength(str)) {
             return str;
         } else {
             StringBuilder sb = new StringBuilder(str);
 
-            while(sb.length() > 0 && sb.charAt(0) == leadingCharacter) {
+            while (sb.length() > 0 && sb.charAt(0) == leadingCharacter) {
                 sb.deleteCharAt(0);
             }
 
@@ -355,12 +355,12 @@ public abstract class StringUtils {
     }
 
     public static String trimTrailingCharacter(String str, char trailingCharacter) {
-        if(!hasLength(str)) {
+        if (!hasLength(str)) {
             return str;
         } else {
             StringBuilder sb = new StringBuilder(str);
 
-            while(sb.length() > 0 && sb.charAt(sb.length() - 1) == trailingCharacter) {
+            while (sb.length() > 0 && sb.charAt(sb.length() - 1) == trailingCharacter) {
                 sb.deleteCharAt(sb.length() - 1);
             }
 
@@ -369,10 +369,10 @@ public abstract class StringUtils {
     }
 
     public static boolean startsWithIgnoreCase(String str, String prefix) {
-        if(str != null && prefix != null) {
-            if(str.startsWith(prefix)) {
+        if (str != null && prefix != null) {
+            if (str.startsWith(prefix)) {
                 return true;
-            } else if(str.length() < prefix.length()) {
+            } else if (str.length() < prefix.length()) {
                 return false;
             } else {
                 String lcStr = str.substring(0, prefix.length()).toLowerCase();
@@ -385,10 +385,10 @@ public abstract class StringUtils {
     }
 
     public static boolean endsWithIgnoreCase(String str, String suffix) {
-        if(str != null && suffix != null) {
-            if(str.endsWith(suffix)) {
+        if (str != null && suffix != null) {
+            if (str.endsWith(suffix)) {
                 return true;
-            } else if(str.length() < suffix.length()) {
+            } else if (str.length() < suffix.length()) {
                 return false;
             } else {
                 String lcStr = str.substring(str.length() - suffix.length()).toLowerCase();
@@ -401,9 +401,9 @@ public abstract class StringUtils {
     }
 
     public static boolean substringMatch(CharSequence str, int index, CharSequence substring) {
-        for(int j = 0; j < substring.length(); ++j) {
+        for (int j = 0; j < substring.length(); ++j) {
             int i = index + j;
-            if(i >= str.length() || str.charAt(i) != substring.charAt(j)) {
+            if (i >= str.length() || str.charAt(i) != substring.charAt(j)) {
                 return false;
             }
         }
@@ -457,11 +457,11 @@ public abstract class StringUtils {
     }
 
     public static int countOccurrencesOf(String str, String sub) {
-        if(str != null && sub != null && str.length() != 0 && sub.length() != 0) {
+        if (str != null && sub != null && str.length() != 0 && sub.length() != 0) {
             int count = 0;
 
             int idx;
-            for(int pos = 0; (idx = str.indexOf(sub, pos)) != -1; pos = idx + sub.length()) {
+            for (int pos = 0; (idx = str.indexOf(sub, pos)) != -1; pos = idx + sub.length()) {
                 ++count;
             }
 
@@ -472,7 +472,7 @@ public abstract class StringUtils {
     }
 
     public static String replace(String inString, String oldPattern, String newPattern) {
-        if(hasLength(inString) && hasLength(oldPattern) && newPattern != null) {
+        if (hasLength(inString) && hasLength(oldPattern) && newPattern != null) {
             int pos = 0;
             int index = inString.indexOf(oldPattern);
             if (index < 0) {
@@ -481,7 +481,7 @@ public abstract class StringUtils {
             }
 
             StringBuilder sb = new StringBuilder();
-            for(int patLen = oldPattern.length(); index >= 0; index = inString.indexOf(oldPattern, pos)) {
+            for (int patLen = oldPattern.length(); index >= 0; index = inString.indexOf(oldPattern, pos)) {
                 sb.append(inString, pos, index);
                 sb.append(newPattern);
                 pos = index + patLen;
@@ -499,12 +499,12 @@ public abstract class StringUtils {
     }
 
     public static String deleteAny(String inString, String charsToDelete) {
-        if(hasLength(inString) && hasLength(charsToDelete)) {
+        if (hasLength(inString) && hasLength(charsToDelete)) {
             StringBuilder sb = new StringBuilder();
 
-            for(int i = 0; i < inString.length(); ++i) {
+            for (int i = 0; i < inString.length(); ++i) {
                 char c = inString.charAt(i);
-                if(charsToDelete.indexOf(c) == -1) {
+                if (charsToDelete.indexOf(c) == -1) {
                     sb.append(c);
                 }
             }
@@ -516,11 +516,11 @@ public abstract class StringUtils {
     }
 
     public static String quote(String str) {
-        return str != null?"\'" + str + "\'":null;
+        return str != null ? "\'" + str + "\'" : null;
     }
 
     public static Object quoteIfString(Object obj) {
-        return obj instanceof String?quote((String)obj):obj;
+        return obj instanceof String ? quote((String) obj) : obj;
     }
 
     public static String unqualify(String qualifiedName) {
@@ -540,9 +540,9 @@ public abstract class StringUtils {
     }
 
     private static String changeFirstCharacterCase(String str, boolean capitalize) {
-        if(str != null && str.length() != 0) {
+        if (str != null && str.length() != 0) {
             StringBuilder sb = new StringBuilder(str.length());
-            if(capitalize) {
+            if (capitalize) {
                 sb.append(Character.toUpperCase(str.charAt(0)));
             } else {
                 sb.append(Character.toLowerCase(str.charAt(0)));
@@ -556,13 +556,13 @@ public abstract class StringUtils {
     }
 
     public static String[] toStringArray(Collection<String> collection) {
-        return collection == null?null:(String[])collection.toArray(new String[0]);
+        return collection == null ? null : (String[]) collection.toArray(new String[0]);
     }
 
     public static String[] split(String toSplit, String delimiter) {
-        if(hasLength(toSplit) && hasLength(delimiter)) {
+        if (hasLength(toSplit) && hasLength(delimiter)) {
             int offset = toSplit.indexOf(delimiter);
-            if(offset < 0) {
+            if (offset < 0) {
                 return null;
             } else {
                 String beforeDelimiter = toSplit.substring(0, offset);
@@ -575,25 +575,25 @@ public abstract class StringUtils {
     }
 
     public static Properties splitArrayElementsIntoProperties(String[] array, String delimiter) {
-        return splitArrayElementsIntoProperties(array, delimiter, (String)null);
+        return splitArrayElementsIntoProperties(array, delimiter, (String) null);
     }
 
     public static Properties splitArrayElementsIntoProperties(String[] array, String delimiter, String charsToDelete) {
-        if(ObjectUtils.isEmpty(array)) {
+        if (ObjectUtils.isEmpty(array)) {
             return null;
         } else {
             Properties result = new Properties();
             String[] var4 = array;
             int var5 = array.length;
 
-            for(int var6 = 0; var6 < var5; ++var6) {
+            for (int var6 = 0; var6 < var5; ++var6) {
                 String element = var4[var6];
-                if(charsToDelete != null) {
+                if (charsToDelete != null) {
                     element = deleteAny(element, charsToDelete);
                 }
 
                 String[] splittedElement = split(element, delimiter);
-                if(splittedElement != null) {
+                if (splittedElement != null) {
                     result.setProperty(splittedElement[0].trim(), splittedElement[1].trim());
                 }
             }
@@ -607,24 +607,24 @@ public abstract class StringUtils {
     }
 
     public static String[] tokenizeToStringArray(String str, String delimiters, boolean trimTokens, boolean ignoreEmptyTokens) {
-        if(str == null) {
+        if (str == null) {
             return null;
         } else {
             StringTokenizer st = new StringTokenizer(str, delimiters);
             ArrayList<String> tokens = new ArrayList<String>();
 
-            while(true) {
+            while (true) {
                 String token;
                 do {
-                    if(!st.hasMoreTokens()) {
+                    if (!st.hasMoreTokens()) {
                         return toStringArray(tokens);
                     }
 
                     token = st.nextToken();
-                    if(trimTokens) {
+                    if (trimTokens) {
                         token = token.trim();
                     }
-                } while(ignoreEmptyTokens && token.length() <= 0);
+                } while (ignoreEmptyTokens && token.length() <= 0);
 
                 tokens.add(token);
             }
@@ -632,28 +632,28 @@ public abstract class StringUtils {
     }
 
     public static String[] delimitedListToStringArray(String str, String delimiter) {
-        return delimitedListToStringArray(str, delimiter, (String)null);
+        return delimitedListToStringArray(str, delimiter, (String) null);
     }
 
     public static String[] delimitedListToStringArray(String str, String delimiter, String charsToDelete) {
-        if(str == null) {
+        if (str == null) {
             return new String[0];
-        } else if(delimiter == null) {
+        } else if (delimiter == null) {
             return new String[]{str};
         } else {
             ArrayList<String> result = new ArrayList<String>();
             int pos;
-            if("".equals(delimiter)) {
-                for(pos = 0; pos < str.length(); ++pos) {
+            if ("".equals(delimiter)) {
+                for (pos = 0; pos < str.length(); ++pos) {
                     result.add(deleteAny(str.substring(pos, pos + 1), charsToDelete));
                 }
             } else {
                 int delPos;
-                for(pos = 0; (delPos = str.indexOf(delimiter, pos)) != -1; pos = delPos + delimiter.length()) {
+                for (pos = 0; (delPos = str.indexOf(delimiter, pos)) != -1; pos = delPos + delimiter.length()) {
                     result.add(deleteAny(str.substring(pos, delPos), charsToDelete));
                 }
 
-                if(str.length() > 0 && pos <= str.length()) {
+                if (str.length() > 0 && pos <= str.length()) {
                     result.add(deleteAny(str.substring(pos), charsToDelete));
                 }
             }
@@ -682,7 +682,7 @@ public abstract class StringUtils {
      * blank String.
      * </p>
      *
-     * @param array the array of values to join together
+     * @param array     the array of values to join together
      * @param separator the separator character to use
      * @return the joined String
      */
@@ -714,7 +714,7 @@ public abstract class StringUtils {
      * StringUtils.isBlank("  bob  ") = false
      * </pre>
      *
-     * @param cs  the CharSequence to check, may be null
+     * @param cs the CharSequence to check, may be null
      * @return {@code true} if the CharSequence is null, empty or whitespace
      * @since 2.0
      * @since 3.0 Changed signature from isBlank(String) to isBlank(CharSequence)
@@ -749,8 +749,8 @@ public abstract class StringUtils {
      * consider using {@link #repeat(String, int)} instead.
      * </p>
      *
-     * @param ch  character to repeat
-     * @param repeat  number of times to repeat char, negative treated as zero
+     * @param ch     character to repeat
+     * @param repeat number of times to repeat char, negative treated as zero
      * @return String with repeated character
      * @see #repeat(String, int)
      */
@@ -775,10 +775,10 @@ public abstract class StringUtils {
      * StringUtils.repeat("a", -2) = ""
      * </pre>
      *
-     * @param str  the String to repeat, may be null
-     * @param repeat  number of times to repeat str, negative treated as zero
+     * @param str    the String to repeat, may be null
+     * @param repeat number of times to repeat str, negative treated as zero
      * @return a new String consisting of the original String repeated,
-     *  {@code null} if null String input
+     * {@code null} if null String input
      */
     public static String repeat(final String str, final int repeat) {
         // Performance tuned for 2.0 (JDK1.4)
@@ -799,9 +799,9 @@ public abstract class StringUtils {
 
         final int outputLength = inputLength * repeat;
         switch (inputLength) {
-            case 1 :
+            case 1:
                 return repeat(str.charAt(0), repeat);
-            case 2 :
+            case 2:
                 final char ch0 = str.charAt(0);
                 final char ch1 = str.charAt(1);
                 final char[] output2 = new char[outputLength];
@@ -810,7 +810,7 @@ public abstract class StringUtils {
                     output2[i + 1] = ch1;
                 }
                 return new String(output2);
-            default :
+            default:
                 final StringBuilder buf = new StringBuilder(outputLength);
                 for (int i = 0; i < repeat; i++) {
                     buf.append(str);
@@ -823,10 +823,9 @@ public abstract class StringUtils {
      * Gets a CharSequence length or {@code 0} if the CharSequence is
      * {@code null}.
      *
-     * @param cs
-     *            a CharSequence or {@code null}
+     * @param cs a CharSequence or {@code null}
      * @return CharSequence length or {@code 0} if the CharSequence is
-     *         {@code null}.
+     * {@code null}.
      * @since 2.4
      * @since 3.0 Changed signature from length(String) to length(CharSequence)
      */
@@ -855,8 +854,8 @@ public abstract class StringUtils {
      * StringUtils.stripEnd("120.00", ".0")   = "12"
      * </pre>
      *
-     * @param str  the String to remove characters from, may be null
-     * @param stripChars  the set of characters to remove, null treated as whitespace
+     * @param str        the String to remove characters from, may be null
+     * @param stripChars the set of characters to remove, null treated as whitespace
      * @return the stripped String, {@code null} if null String input
      */
     public static String stripEnd(final String str, final String stripChars) {
@@ -888,8 +887,9 @@ public abstract class StringUtils {
 
     /**
      * format byte size to human readable format. https://stackoverflow.com/a/3758880
+     *
      * @param bytes byets
-     * @return  human readable format
+     * @return human readable format
      */
     public static String humanReadableByteCount(long bytes) {
         return bytes < 1024L ? bytes + " B"
@@ -935,7 +935,7 @@ public abstract class StringUtils {
      * @param text   the text
      * @param before the token
      * @return the text before the token, or <tt>null</tt> if text does not contain
-     *         the token
+     * the token
      */
     public static String before(String text, String before) {
         int pos = text.indexOf(before);
@@ -948,7 +948,7 @@ public abstract class StringUtils {
      * @param text  the text
      * @param after the token
      * @return the text after the token, or <tt>null</tt> if text does not contain
-     *         the token
+     * the token
      */
     public static String after(String text, String after) {
         int pos = text.indexOf(after);
@@ -961,7 +961,7 @@ public abstract class StringUtils {
     // print|(ILjava/util/List;)V
     public static String[] splitMethodInfo(String methodInfo) {
         int index = methodInfo.indexOf('|');
-        return new String[] { methodInfo.substring(0, index), methodInfo.substring(index + 1) };
+        return new String[]{methodInfo.substring(0, index), methodInfo.substring(index + 1)};
     }
 
     // demo/MathGame|primeFactors|(I)Ljava/util/List;|24
@@ -969,8 +969,8 @@ public abstract class StringUtils {
         int index1 = invokeInfo.indexOf('|');
         int index2 = invokeInfo.indexOf('|', index1 + 1);
         int index3 = invokeInfo.indexOf('|', index2 + 1);
-        return new String[] { invokeInfo.substring(0, index1), invokeInfo.substring(index1 + 1, index2),
-                invokeInfo.substring(index2 + 1, index3), invokeInfo.substring(index3 + 1) };
+        return new String[]{invokeInfo.substring(0, index1), invokeInfo.substring(index1 + 1, index2),
+                invokeInfo.substring(index2 + 1, index3), invokeInfo.substring(index3 + 1)};
     }
 
     public static String beautifyName(String name) {

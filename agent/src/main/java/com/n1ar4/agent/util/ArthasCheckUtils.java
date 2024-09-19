@@ -24,6 +24,7 @@
 
 package com.n1ar4.agent.util;
 
+@SuppressWarnings("all")
 public class ArthasCheckUtils {
 
     /**

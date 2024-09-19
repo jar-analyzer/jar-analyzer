@@ -22,31 +22,35 @@
  * SOFTWARE.
  */
 
-package com.n1ar4.agent.service.tomcat.info;
+package me.n1ar4.shell.analyzer.model;
 
-import com.n1ar4.agent.dto.UrlInfo;
+public class InfoObj {
+    private String url;
+    private String all;
 
-import java.util.ArrayList;
-
-@SuppressWarnings("unused")
-public class ServiceInfo {
-    public ArrayList<UrlInfo> connectorList;
-    public String defaultHost;
-
-    public ServiceInfo() {
-        this(new ArrayList<>(), "");
+    public InfoObj(String url, String all) {
+        this.url = url;
+        this.all = all;
     }
 
-    public ServiceInfo(ArrayList<UrlInfo> connectorList) {
-        this(connectorList, "");
+    public String getUrl() {
+        return url;
     }
 
-    public ServiceInfo(ArrayList<UrlInfo> connectorList, String defaultHost) {
-        this.connectorList = connectorList;
-        this.defaultHost = defaultHost;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
-    public ArrayList<UrlInfo> getConnectorList() {
-        return connectorList;
+    public String getAll() {
+        return all;
+    }
+
+    public void setAll(String all) {
+        this.all = all;
+    }
+
+    @Override
+    public String toString() {
+        return this.url;
     }
 }

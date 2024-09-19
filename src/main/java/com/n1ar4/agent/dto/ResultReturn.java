@@ -26,6 +26,7 @@ package com.n1ar4.agent.dto;
 
 import java.io.Serializable;
 
+@SuppressWarnings("unused")
 public class ResultReturn implements Serializable {
     public String objectString;
     public String ConsoleOutput;
@@ -50,5 +51,4 @@ public class ResultReturn implements Serializable {
     public void setConsoleOutput(String consoleOutput) {
         ConsoleOutput = consoleOutput;
     }
-
 }

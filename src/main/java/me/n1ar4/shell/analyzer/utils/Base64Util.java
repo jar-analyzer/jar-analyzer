@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.n1ar4.agent.util;
+package me.n1ar4.shell.analyzer.utils;
 
 /**
  * This class provides encode/decode for RFC 2045 Base64 as

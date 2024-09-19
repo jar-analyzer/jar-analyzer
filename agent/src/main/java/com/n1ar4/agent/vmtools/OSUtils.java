@@ -28,10 +28,9 @@ import java.io.File;
 import java.util.Locale;
 
 /**
- *
  * @author hengyunabc 2018-11-08
- *
  */
+@SuppressWarnings("all")
 public class OSUtils {
     private static final String OPERATING_SYSTEM_NAME = System.getProperty("os.name").toLowerCase(Locale.ENGLISH);
     private static final String OPERATING_SYSTEM_ARCH = System.getProperty("os.arch").toLowerCase(Locale.ENGLISH);
@@ -163,7 +162,7 @@ public class OSUtils {
         File ld_musl_x86_64_file = new File("/lib/ld-musl-x86_64.so.1");
         File ld_musl_aarch64_file = new File("/lib/ld-musl-aarch64.so.1");
 
-        if(ld_musl_x86_64_file.exists() || ld_musl_aarch64_file.exists()){
+        if (ld_musl_x86_64_file.exists() || ld_musl_aarch64_file.exists()) {
             return true;
         }
 

@@ -27,11 +27,12 @@ package com.n1ar4.agent.util;
 import java.io.IOException;
 import java.io.OutputStream;
 
+@SuppressWarnings("all")
 public class CustomOutputStream extends OutputStream {
 
     public StringBuilder stringBuilder;
 
-    public CustomOutputStream(){
+    public CustomOutputStream() {
         this.stringBuilder = new StringBuilder();
     }
 
@@ -45,11 +46,11 @@ public class CustomOutputStream extends OutputStream {
         this.stringBuilder.append(b);
     }
 
-    public void clearBuffer(){
-        stringBuilder.delete(0 , stringBuilder.length());
+    public void clearBuffer() {
+        stringBuilder.delete(0, stringBuilder.length());
     }
 
-    public String getResult(){
+    public String getResult() {
         String result = stringBuilder.toString();
         this.clearBuffer();
 

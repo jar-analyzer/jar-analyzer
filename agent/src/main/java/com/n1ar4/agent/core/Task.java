@@ -83,7 +83,7 @@ public class Task implements Runnable {
                 ArrayList<UrlInfo> nowUrlInfos = sourceResult.getUrlInfos();
                 if (nowUrlInfos != null) {
                     for (UrlInfo s : nowUrlInfos) {
-                        s.appendDescrition(SourceResult.SourceResultTag + sourceResult.hashCode());
+                        s.appendDescription(SourceResult.SourceResultTag + sourceResult.hashCode());
                         urlInfos.add(s);
                     }
                 }
@@ -247,7 +247,7 @@ public class Task implements Runnable {
         }
 
         if (!found) {
-            System.out.printf("[*] CLASS NOT FOUND: \n" + targetClass);
+            System.out.printf("[*] CLASS NOT FOUND: %s\n", targetClass);
         }
     }
 }

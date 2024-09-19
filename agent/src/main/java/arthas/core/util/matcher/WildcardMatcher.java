@@ -2,6 +2,7 @@ package arthas.core.util.matcher;
 
 /**
  * wildcard matcher
+ *
  * @author ralf0131 2017-01-06 13:17.
  */
 public class WildcardMatcher implements Matcher<String> {
@@ -11,7 +12,6 @@ public class WildcardMatcher implements Matcher<String> {
     private static final Character ASTERISK = '*';
     private static final Character QUESTION_MARK = '?';
     private static final Character ESCAPE = '\\';
-
 
 
     public WildcardMatcher(String pattern) {
@@ -29,7 +29,7 @@ public class WildcardMatcher implements Matcher<String> {
      */
     private boolean match(String target, String pattern, int stringStartNdx, int patternStartNdx) {
         //#135
-        if(target==null || pattern==null){
+        if (target == null || pattern == null) {
             return false;
         }
         int pNdx = patternStartNdx;

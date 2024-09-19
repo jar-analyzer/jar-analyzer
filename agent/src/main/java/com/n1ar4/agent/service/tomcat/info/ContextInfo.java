@@ -32,21 +32,22 @@ public class ContextInfo {
     public HostInfo parentHostInfo;
     public String ContextUrlBase;
     private ArrayList<UrlInfo> contextUrlInfoList;
-    public ContextInfo(HostInfo hostUrlInfo , String ContextUrlBase) {
+
+    public ContextInfo(HostInfo hostUrlInfo, String ContextUrlBase) {
         this.ContextUrlBase = ContextUrlBase;
         this.parentHostInfo = hostUrlInfo;
         this.contextUrlInfoList = null;
     }
 
     public ContextInfo(HostInfo tomcatHostUrlInfo) {
-        this(tomcatHostUrlInfo ,"");
+        this(tomcatHostUrlInfo, "");
     }
 
-    public ArrayList<UrlInfo> getContextUrlInfoList(){
-        if(contextUrlInfoList == null){
+    public ArrayList<UrlInfo> getContextUrlInfoList() {
+        if (contextUrlInfoList == null) {
             this.contextUrlInfoList = new ArrayList<>();
             for (UrlInfo hostUrlInfo : this.parentHostInfo.getHostUrlInfoList()) {
-                UrlInfo nowContextUrlInfo = new UrlInfo(hostUrlInfo.getUrl() , hostUrlInfo.getDescrition());
+                UrlInfo nowContextUrlInfo = new UrlInfo(hostUrlInfo.getUrl(), hostUrlInfo.getDescription());
                 nowContextUrlInfo.appendUrl(this.ContextUrlBase);
                 this.contextUrlInfoList.add(nowContextUrlInfo);
             }
@@ -56,8 +57,6 @@ public class ContextInfo {
 
     @Override
     public String toString() {
-        return String.format("%s,urlPattern: %s",this.parentHostInfo.toString() , ContextUrlBase);
+        return String.format("%s,urlPattern: %s", this.parentHostInfo.toString(), ContextUrlBase);
     }
-
-
 }

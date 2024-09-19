@@ -30,10 +30,9 @@ import com.n1ar4.agent.Agent;
 import java.io.*;
 
 /**
- *
  * @author hengyunabc 2021-04-27
- *
  */
+@SuppressWarnings("all")
 public class VmToolUtils {
     private static String libName = null;
     public static String fileSeparator;
@@ -50,7 +49,7 @@ public class VmToolUtils {
                 libName = "libArthasJniLibrary-aarch64.so";
             } else if (OSUtils.isX86_64()) {
                 libName = "libArthasJniLibrary-x64.so";
-            }else {
+            } else {
                 libName = "libArthasJniLibrary-" + OSUtils.arch() + ".so";
             }
         }
@@ -60,7 +59,6 @@ public class VmToolUtils {
                 libName = "libArthasJniLibrary-x86.dll";
             }
         }
-
         fileSeparator = System.getProperty("file.separator");
         tmpDir = System.getProperty("java.io.tmpdir");
     }
@@ -69,9 +67,10 @@ public class VmToolUtils {
         return libName;
     }
 
-    public static String getlibFullTempPath(){
+    public static String getlibFullTempPath() {
         return tmpDir + fileSeparator + libName;
     }
+
     public static VmTool getVmToolInstances() {
         String libname = VmToolUtils.detectLibName();
         String libpath = VmToolUtils.getlibFullTempPath();

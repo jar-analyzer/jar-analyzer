@@ -30,6 +30,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 
+@SuppressWarnings("unused")
 public class SourceResult implements Serializable, Comparable<SourceResult> {
     public SourceResultType type;
     public String name;
@@ -42,7 +43,10 @@ public class SourceResult implements Serializable, Comparable<SourceResult> {
     public SourceResult() {
     }
 
-    public SourceResult(SourceResultType type, String name, String sourceClass, ArrayList<UrlInfo> urlInfos) {
+    public SourceResult(SourceResultType type,
+                        String name,
+                        String sourceClass,
+                        ArrayList<UrlInfo> urlInfos) {
         this.type = type;
         this.name = name;
         this.sourceClass = sourceClass;
@@ -51,18 +55,31 @@ public class SourceResult implements Serializable, Comparable<SourceResult> {
         this.description = null;
     }
 
-    public SourceResult(SourceResultType type, String name, String sourceClass, String methodInfo, ArrayList<UrlInfo> urlInfos) {
+    public SourceResult(SourceResultType type,
+                        String name,
+                        String sourceClass,
+                        String methodInfo,
+                        ArrayList<UrlInfo> urlInfos) {
         this(type, name, sourceClass, urlInfos);
         this.methodInfo = methodInfo;
     }
 
-    public SourceResult(SourceResultType type, String name, String sourceClass, ArrayList<UrlInfo> urlInfos, ArrayList<String> description) {
+    public SourceResult(SourceResultType type,
+                        String name,
+                        String sourceClass,
+                        ArrayList<UrlInfo> urlInfos,
+                        ArrayList<String> description) {
         this(type, name, sourceClass, urlInfos);
         if (description != null && !description.isEmpty())
             this.description = description;
     }
 
-    public SourceResult(SourceResultType type, String name, String sourceClass, String methodInfo, ArrayList<UrlInfo> urlInfos, ArrayList<String> description) {
+    public SourceResult(SourceResultType type,
+                        String name,
+                        String sourceClass,
+                        String methodInfo,
+                        ArrayList<UrlInfo> urlInfos,
+                        ArrayList<String> description) {
         this(type, name, sourceClass, urlInfos, description);
         this.methodInfo = methodInfo;
     }
@@ -117,12 +134,16 @@ public class SourceResult implements Serializable, Comparable<SourceResult> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        SourceResult targetSourceResult = (SourceResult) o;
-        if (!targetSourceResult.type.equals(this.type))
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
             return false;
+        }
+        SourceResult targetSourceResult = (SourceResult) o;
+        if (!targetSourceResult.type.equals(this.type)) {
+            return false;
+        }
         if (targetSourceResult.name == null) {
             if (this.name != null) {
                 return false;
@@ -130,16 +151,17 @@ public class SourceResult implements Serializable, Comparable<SourceResult> {
         } else if (!targetSourceResult.name.equals(this.name)) {
             return false;
         }
-
-        if (!targetSourceResult.sourceClass.equals(this.sourceClass))
+        if (!targetSourceResult.sourceClass.equals(this.sourceClass)) {
             return false;
+        }
         if (targetSourceResult.methodInfo != null) {
             if (!targetSourceResult.methodInfo.equals(this.methodInfo)) {
                 return false;
             }
         } else {
-            if (this.methodInfo != null)
+            if (this.methodInfo != null) {
                 return false;
+            }
         }
         return targetSourceResult.getUrlInfos().toString().equals(this.getUrlInfos().toString());
     }
@@ -147,10 +169,11 @@ public class SourceResult implements Serializable, Comparable<SourceResult> {
     private int hashResult = -1;
 
     private int type_hash(Object data) {
-        if (data == null)
+        if (data == null) {
             return 0;
-        else
+        } else {
             return data.hashCode();
+        }
     }
 
     public int hashCode() {
@@ -172,7 +195,8 @@ public class SourceResult implements Serializable, Comparable<SourceResult> {
         if (this.type.ordinal() != o.type.ordinal()) {
             return this.type.ordinal() - o.type.ordinal();
         } else {
-            return Arrays.toString(new ArrayList[]{this.urlInfos}).compareTo(Arrays.toString(new ArrayList[]{o.getUrlInfos()}));
+            return Arrays.toString(new ArrayList[]{this.urlInfos}).compareTo(
+                    Arrays.toString(new ArrayList[]{o.getUrlInfos()}));
         }
     }
 
@@ -230,7 +254,7 @@ public class SourceResult implements Serializable, Comparable<SourceResult> {
                 sb.append("\t\t Source UrlInfo : \n");
                 for (UrlInfo urlInfo : value.urlInfos) {
                     sb.append("\t\t\t Url : ").append(urlInfo.getUrl()).append("\n");
-                    if (urlInfo.getDescrition().isEmpty())
+                    if (urlInfo.getDescription().isEmpty())
                         continue;
                     for (String oneLineDesc : urlInfo.getDescritionList()) {
                         if (oneLineDesc.startsWith(SourceResultTag) == false)
@@ -246,7 +270,6 @@ public class SourceResult implements Serializable, Comparable<SourceResult> {
                 }
             }
         }
-
         return sb.toString();
     }
 

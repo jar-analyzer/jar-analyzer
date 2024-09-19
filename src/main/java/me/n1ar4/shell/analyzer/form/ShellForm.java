@@ -27,9 +27,11 @@ package me.n1ar4.shell.analyzer.form;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.n1ar4.agent.dto.SourceResult;
+import com.n1ar4.agent.dto.UrlInfo;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.ProcessDialog;
 import me.n1ar4.shell.analyzer.model.ClassObj;
+import me.n1ar4.shell.analyzer.model.InfoObj;
 import me.n1ar4.shell.analyzer.start.SocketHelper;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
@@ -61,6 +63,15 @@ public class ShellForm {
             JList<?> list = (JList<?>) evt.getSource();
             if (evt.getClickCount() == 2) {
                 core(evt, list);
+            }
+        }
+    }
+
+    class UrlInfoMouse extends MouseAdapter {
+        public void mouseClicked(MouseEvent evt) {
+            JList<?> list = (JList<?>) evt.getSource();
+            if (evt.getClickCount() == 2) {
+                doUrlInfo(evt, list);
             }
         }
     }
@@ -101,9 +112,11 @@ public class ShellForm {
     private JPanel infoPanel;
     private JLabel urlLabel;
     private JTextField scText;
-    private JTextArea urlArea;
     private JLabel scLabel;
     private JScrollPane urlScroll;
+    private JList<InfoObj> urlList;
+
+    private static final DefaultListModel<InfoObj> infoModel = new DefaultListModel<>();
 
     private static final Map<String, List<SourceResult>> staticMap = new HashMap<>();
 
@@ -167,6 +180,8 @@ public class ShellForm {
         } catch (Exception ex) {
             log("无法获得信息: " + ex.getMessage());
         }
+
+        urlList.setModel(infoModel);
     }
 
     private static RSyntaxTextArea codeArea;
@@ -200,7 +215,6 @@ public class ShellForm {
                 frame.add(imageLabel);
                 frame.setLocationRelativeTo(null);
                 frame.setVisible(true);
-
             } catch (Exception ignored) {
             }
         });
@@ -243,6 +257,21 @@ public class ShellForm {
         valveList.addMouseListener(new CommonMouse());
         listenerList.addMouseListener(new CommonMouse());
         servletList.addMouseListener(new CommonMouse());
+        urlList.addMouseListener(new UrlInfoMouse());
+    }
+
+    public void doUrlInfo(MouseEvent evt, JList<?> list) {
+        String pass = passText.getText();
+        if (pass.length() != 8) {
+            JOptionPane.showMessageDialog(shellPanel, "请输入密码");
+        }
+        SocketHelper.setPass(pass);
+
+        int index = list.locationToIndex(evt.getPoint());
+        InfoObj res = (InfoObj) list.getModel().getElementAt(index);
+
+        JOptionPane.showMessageDialog(rootPanel,
+                res.getUrl() + "\n" + res.getAll());
     }
 
     public void core(MouseEvent evt, JList<?> list) {
@@ -262,20 +291,22 @@ public class ShellForm {
                 SourceResult sr = results.get(0);
                 scText.setText(sr.getSourceClass());
                 scNameText.setText(sr.getName());
-                urlArea.setText(sr.generateUrlInfo());
+                for (UrlInfo u : sr.urlInfos) {
+                    infoModel.addElement(new InfoObj(u.url, u.description));
+                }
             } else {
                 scText.setText(results.get(0).getSourceClass());
                 scNameText.setText(results.get(0).getName());
-                StringBuilder sb = new StringBuilder();
                 for (SourceResult sr : results) {
-                    sb.append(sr.generateUrlInfo());
+                    for (UrlInfo u : sr.urlInfos) {
+                        infoModel.addElement(new InfoObj(u.url, u.description));
+                    }
                 }
-                urlArea.setText(sb.toString());
             }
         } else {
             scText.setText("NONE");
             scNameText.setText("NONE");
-            urlArea.setText("NONE");
+            infoModel.clear();
         }
 
         log("尝试获取字节码进行反编译: " + res.getClassName());
@@ -480,9 +511,8 @@ public class ShellForm {
         infoPanel.add(scText, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         urlScroll = new JScrollPane();
         infoPanel.add(urlScroll, new GridConstraints(2, 0, 2, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        urlArea = new JTextArea();
-        urlArea.setEditable(false);
-        urlScroll.setViewportView(urlArea);
+        urlList = new JList();
+        urlScroll.setViewportView(urlList);
     }
 
     /**

@@ -22,55 +22,31 @@
  * SOFTWARE.
  */
 
-package me.n1ar4.shell.analyzer.model;
+package com.n1ar4.agent.service.tomcat.info;
 
-import java.util.Objects;
+import com.n1ar4.agent.dto.UrlInfo;
 
-@SuppressWarnings("all")
-public class ClassObj {
-    private String className;
+import java.util.ArrayList;
 
-    private String type;
+public class EndPointUrlInfo {
+    public ContextInfo contextUrlInfo;
+    public ArrayList<String> urlPatterns;
 
-    public ClassObj(String name, String type) {
-        this.className = name;
-        this.type = type;
+    public EndPointUrlInfo(ContextInfo contextUrlInfo) {
+        this.urlPatterns = new ArrayList<String>();
+        this.contextUrlInfo = contextUrlInfo;
     }
 
-    public String getType() {
-        return type;
+    public ArrayList<UrlInfo> toUrlInfos() {
+        ArrayList<UrlInfo> urlInfos = new ArrayList<>();
+        for (UrlInfo contextUrlInfo : this.contextUrlInfo.getContextUrlInfoList()) {
+            for (String urlPattern : urlPatterns) {
+                UrlInfo nowUrlInfo = new UrlInfo(contextUrlInfo.getUrl(), contextUrlInfo.getDescrition());
+                nowUrlInfo.appendUrl(urlPattern);
+                urlInfos.add(nowUrlInfo);
+            }
+        }
+        return urlInfos;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getClassName() {
-        return className;
-    }
-
-    public void setClassName(String className) {
-        this.className = className;
-    }
-
-    @Override
-    public String toString() {
-        return getClassName();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        ClassObj classObj = (ClassObj) o;
-        return Objects.equals(className, classObj.className) && Objects.equals(type, classObj.type);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = Objects.hashCode(className);
-        result = 31 * result + Objects.hashCode(type);
-        return result;
-    }
 }

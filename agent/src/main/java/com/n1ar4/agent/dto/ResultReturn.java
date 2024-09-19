@@ -22,55 +22,33 @@
  * SOFTWARE.
  */
 
-package me.n1ar4.shell.analyzer.model;
+package com.n1ar4.agent.dto;
 
-import java.util.Objects;
+import java.io.Serializable;
 
-@SuppressWarnings("all")
-public class ClassObj {
-    private String className;
+public class ResultReturn implements Serializable {
+    public String objectString;
+    public String ConsoleOutput;
 
-    private String type;
-
-    public ClassObj(String name, String type) {
-        this.className = name;
-        this.type = type;
+    public ResultReturn(String objectString, String consoleOutput) {
+        this.objectString = objectString;
+        ConsoleOutput = consoleOutput;
     }
 
-    public String getType() {
-        return type;
+    public String getObjectString() {
+        return objectString;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setObjectString(String objectString) {
+        this.objectString = objectString;
     }
 
-    public String getClassName() {
-        return className;
+    public String getConsoleOutput() {
+        return ConsoleOutput;
     }
 
-    public void setClassName(String className) {
-        this.className = className;
+    public void setConsoleOutput(String consoleOutput) {
+        ConsoleOutput = consoleOutput;
     }
 
-    @Override
-    public String toString() {
-        return getClassName();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        ClassObj classObj = (ClassObj) o;
-        return Objects.equals(className, classObj.className) && Objects.equals(type, classObj.type);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = Objects.hashCode(className);
-        result = 31 * result + Objects.hashCode(type);
-        return result;
-    }
 }

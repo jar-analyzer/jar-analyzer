@@ -22,55 +22,42 @@
  * SOFTWARE.
  */
 
-package me.n1ar4.shell.analyzer.model;
+package com.n1ar4.agent.service.tomcat.info;
 
-import java.util.Objects;
+import com.n1ar4.agent.dto.UrlInfo;
 
-@SuppressWarnings("all")
-public class ClassObj {
-    private String className;
+import java.util.ArrayList;
 
-    private String type;
-
-    public ClassObj(String name, String type) {
-        this.className = name;
-        this.type = type;
+public class ContextInfo {
+    public HostInfo parentHostInfo;
+    public String ContextUrlBase;
+    private ArrayList<UrlInfo> contextUrlInfoList;
+    public ContextInfo(HostInfo hostUrlInfo , String ContextUrlBase) {
+        this.ContextUrlBase = ContextUrlBase;
+        this.parentHostInfo = hostUrlInfo;
+        this.contextUrlInfoList = null;
     }
 
-    public String getType() {
-        return type;
+    public ContextInfo(HostInfo tomcatHostUrlInfo) {
+        this(tomcatHostUrlInfo ,"");
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getClassName() {
-        return className;
-    }
-
-    public void setClassName(String className) {
-        this.className = className;
+    public ArrayList<UrlInfo> getContextUrlInfoList(){
+        if(contextUrlInfoList == null){
+            this.contextUrlInfoList = new ArrayList<>();
+            for (UrlInfo hostUrlInfo : this.parentHostInfo.getHostUrlInfoList()) {
+                UrlInfo nowContextUrlInfo = new UrlInfo(hostUrlInfo.getUrl() , hostUrlInfo.getDescrition());
+                nowContextUrlInfo.appendUrl(this.ContextUrlBase);
+                this.contextUrlInfoList.add(nowContextUrlInfo);
+            }
+        }
+        return this.contextUrlInfoList;
     }
 
     @Override
     public String toString() {
-        return getClassName();
+        return String.format("%s,urlPattern: %s",this.parentHostInfo.toString() , ContextUrlBase);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
 
-        ClassObj classObj = (ClassObj) o;
-        return Objects.equals(className, classObj.className) && Objects.equals(type, classObj.type);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = Objects.hashCode(className);
-        result = 31 * result + Objects.hashCode(type);
-        return result;
-    }
 }

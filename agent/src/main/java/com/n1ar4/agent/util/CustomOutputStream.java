@@ -22,55 +22,37 @@
  * SOFTWARE.
  */
 
-package me.n1ar4.shell.analyzer.model;
+package com.n1ar4.agent.util;
 
-import java.util.Objects;
+import java.io.IOException;
+import java.io.OutputStream;
 
-@SuppressWarnings("all")
-public class ClassObj {
-    private String className;
+public class CustomOutputStream extends OutputStream {
 
-    private String type;
+    public StringBuilder stringBuilder;
 
-    public ClassObj(String name, String type) {
-        this.className = name;
-        this.type = type;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getClassName() {
-        return className;
-    }
-
-    public void setClassName(String className) {
-        this.className = className;
+    public CustomOutputStream(){
+        this.stringBuilder = new StringBuilder();
     }
 
     @Override
-    public String toString() {
-        return getClassName();
+    public void write(int b) throws IOException {
+        this.stringBuilder.append(Character.valueOf((char) b));
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        ClassObj classObj = (ClassObj) o;
-        return Objects.equals(className, classObj.className) && Objects.equals(type, classObj.type);
+    public void write(byte[] b) throws IOException {
+        this.stringBuilder.append(b);
     }
 
-    @Override
-    public int hashCode() {
-        int result = Objects.hashCode(className);
-        result = 31 * result + Objects.hashCode(type);
+    public void clearBuffer(){
+        stringBuilder.delete(0 , stringBuilder.length());
+    }
+
+    public String getResult(){
+        String result = stringBuilder.toString();
+        this.clearBuffer();
+
         return result;
     }
 }

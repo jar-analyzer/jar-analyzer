@@ -22,55 +22,53 @@
  * SOFTWARE.
  */
 
-package me.n1ar4.shell.analyzer.model;
+package com.n1ar4.agent.dto;
 
-import java.util.Objects;
+import java.io.Serializable;
 
-@SuppressWarnings("all")
-public class ClassObj {
-    private String className;
+public class UrlInfo implements Serializable {
+    public String url;
+    public String descrition;
 
-    private String type;
-
-    public ClassObj(String name, String type) {
-        this.className = name;
-        this.type = type;
+    public UrlInfo(String url) {
+        this(url , "");
     }
 
-    public String getType() {
-        return type;
+    public UrlInfo(String url, String descrition) {
+        this.url = url;
+        this.descrition = descrition;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public String getUrl() {
+        return url;
     }
 
-    public String getClassName() {
-        return className;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
-    public void setClassName(String className) {
-        this.className = className;
+    public void appendRawUrl(String append){
+        this.url += append;
     }
 
-    @Override
-    public String toString() {
-        return getClassName();
+    public void appendUrl(String urlPattern){
+        if (urlPattern.startsWith("/") == false)
+            url += "/";
+        this.appendRawUrl(urlPattern);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
 
-        ClassObj classObj = (ClassObj) o;
-        return Objects.equals(className, classObj.className) && Objects.equals(type, classObj.type);
+    public String getDescrition() {
+        return descrition;
     }
 
-    @Override
-    public int hashCode() {
-        int result = Objects.hashCode(className);
-        result = 31 * result + Objects.hashCode(type);
-        return result;
+    public void setDescrition(String descrition) {
+        this.descrition = descrition;
     }
+
+    public void appendDescrition(String append){
+        this.descrition += " | " + append;
+    }
+
+
 }

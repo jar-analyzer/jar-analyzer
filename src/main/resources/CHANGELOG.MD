@@ -4,8 +4,10 @@
 
 更新日志：
 
+- [功能] 增强 `tomcat` 分析能力（例如 `URL` 信息）
 - [功能] 代码区域选中部分右键搜索定位 `class` 位置
 - [功能] 代码区域和文件树区域支持在文件管理器中打开
+- [BUG] 修复子类 `this.父类方法` 时找不到 `caller`
 - [BUG] 修复文件树底部搜索区域某些情况下 `UI` 抖动
 - [BUG] 修复致谢页面和更新日志在 `mac` 中乱码
 - [BUG] 修复 `tomcat` 分析卡住的问题
@@ -24,6 +26,7 @@
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
+- fantasy (https://github.com/ly-test-fuzz)
 - phil (https://github.com/sensensen404)
 
 所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:

@@ -27,12 +27,15 @@ package me.n1ar4.jar.analyzer.gui.adapter;
 import me.n1ar4.jar.analyzer.core.FinderRunner;
 import me.n1ar4.jar.analyzer.engine.CoreHelper;
 import me.n1ar4.jar.analyzer.engine.DecompileEngine;
+import me.n1ar4.jar.analyzer.entity.ClassResult;
 import me.n1ar4.jar.analyzer.entity.MethodResult;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.state.State;
 import me.n1ar4.jar.analyzer.gui.util.ProcessDialog;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.utils.StringUtil;
+import me.n1ar4.log.LogManager;
+import me.n1ar4.log.Logger;
 import org.objectweb.asm.Type;
 
 import javax.swing.*;
@@ -41,8 +44,11 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 public class CommonMouseAdapter extends MouseAdapter {
+    private static final Logger logger = LogManager.getLogger();
+
     @SuppressWarnings("all")
     public void mouseClicked(MouseEvent evt) {
         JList<?> list = (JList<?>) evt.getSource();
@@ -57,6 +63,23 @@ public class CommonMouseAdapter extends MouseAdapter {
             if (res == null) {
                 return;
             }
+
+            // FIX BUG 2024/09/18
+            // 子类通过 this.method 调用父类的 method
+            ClassResult nowClass = MainForm.getEngine().getClassByClass(res.getClassName());
+            while (nowClass != null) {
+                ArrayList<MethodResult> method = MainForm.getEngine().getMethod(
+                        nowClass.getClassName(),
+                        res.getMethodName(),
+                        res.getMethodDesc());
+                if (method.size() > 0) {
+                    res = method.get(0);
+                    logger.info("find target method in class: {}", nowClass.getClassName());
+                    break;
+                }
+                nowClass = MainForm.getEngine().getClassByClass(nowClass.getSuperClassName());
+            }
+
             String className = res.getClassName();
             String tempPath = className.replace("/", File.separator);
             String classPath;

@@ -29,7 +29,8 @@ import java.io.Serializable;
 public class UrlInfo implements Serializable {
     public String url;
     public String descrition;
-
+    private static String urlInfoDescTag = "^&*$#@";
+    private static String urlInfoDescSplitTag = "\\^&\\*\\$#@";
     public UrlInfo(String url) {
         this(url , "");
     }
@@ -62,13 +63,15 @@ public class UrlInfo implements Serializable {
         return descrition;
     }
 
+    public String[] getDescritionList() {
+        return descrition.split(urlInfoDescSplitTag);
+    }
+
     public void setDescrition(String descrition) {
         this.descrition = descrition;
     }
 
     public void appendDescrition(String append){
-        this.descrition += " | " + append;
+        this.descrition += urlInfoDescTag + append;
     }
-
-
 }

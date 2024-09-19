@@ -148,7 +148,6 @@ public class TomcatContextDiscovery {
     }
 
     void getAllServlets() {
-        HashMap<String, ArrayList<String>> filterDescs = new HashMap<String, ArrayList<String>>();
         Object[] wrappers = (Object[]) ReflectUtils.callMethod(context, "findChildren");
         if (wrappers == null) return;
 
@@ -176,10 +175,21 @@ public class TomcatContextDiscovery {
                     continue;
                 }
 
+                ArrayList<String> servletDesc = new ArrayList<String>();
+                HashMap<String, String> paramters = (HashMap<String, String>) ReflectUtils.getDeclaredField(wrapper, "parameters");
+                if (paramters != null && paramters.size() > 0) {
+                    servletDesc.add("parameters : ");
+                    for (Map.Entry<String, String> parameter : paramters.entrySet()) {
+                        String parameterKey = parameter.getKey();
+                        String paramterValue = parameter.getValue();
+                        servletDesc.add(String.format("\t %s => %s", parameterKey, paramterValue));
+                    }
+                }
+
                 if (isNeedGetWebService(servletName)) {
                     getAllWebService();
                 } else {
-                    sourceList.add(new SourceResult(SourceResultType.TomcatServlet, servletName, servletClass, nowTomcatEndPointUrlInfo.toUrlInfos(), filterDescs.get(servletName)));
+                    sourceList.add(new SourceResult(SourceResultType.TomcatServlet, servletName, servletClass, nowTomcatEndPointUrlInfo.toUrlInfos(), servletDesc));
                 }
             }
         }

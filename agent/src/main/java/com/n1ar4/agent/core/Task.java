@@ -28,6 +28,7 @@ import arthas.VmTool;
 import com.n1ar4.agent.Agent;
 import com.n1ar4.agent.dto.ResultReturn;
 import com.n1ar4.agent.dto.SourceResult;
+import com.n1ar4.agent.dto.UrlInfo;
 import com.n1ar4.agent.service.ServerDiscovery;
 import com.n1ar4.agent.service.ServerDiscoveryType;
 import com.n1ar4.agent.transform.CoreTransformer;
@@ -41,8 +42,7 @@ import java.io.ObjectOutputStream;
 import java.io.PrintStream;
 import java.lang.instrument.Instrumentation;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @SuppressWarnings("all")
 public class Task implements Runnable {
@@ -63,6 +63,46 @@ public class Task implements Runnable {
         } catch (Exception ignored) {
             ignored.printStackTrace();
         }
+    }
+
+    public static ArrayList<SourceResult> MergeSourceResults(HashSet<SourceResult> results) {
+        ArrayList<SourceResult> new_result = new ArrayList<SourceResult>();
+        HashMap<String, ArrayList<SourceResult>> SourceCollectList = new HashMap<String, ArrayList<SourceResult>>();
+        for (SourceResult resultItem : results) {
+            String index = String.format("%s|%s+%s", resultItem.getType().toString(), resultItem.getSourceClass(), resultItem.getMethodInfo());
+            if (SourceCollectList.containsKey(index) == false)
+                SourceCollectList.put(index, new ArrayList<SourceResult>());
+            SourceCollectList.get(index).add(resultItem);
+        }
+        for (ArrayList<SourceResult> sourceResults : SourceCollectList.values()) {
+            SourceResult originalSourceResult = sourceResults.get(0);
+            ArrayList<UrlInfo> urlInfos = new ArrayList<UrlInfo>();
+            ArrayList<String> descriptions = new ArrayList<String>();
+
+            for (SourceResult sourceResult : sourceResults) {
+                ArrayList<UrlInfo> nowUrlInfos = sourceResult.getUrlInfos();
+                if (nowUrlInfos != null) {
+                    for (UrlInfo s : nowUrlInfos) {
+                        s.appendDescrition(SourceResult.SourceResultTag + sourceResult.hashCode());
+                        urlInfos.add(s);
+                    }
+                }
+                ArrayList<String> value = null;
+                descriptions.add(SourceResult.SourceResultTag + sourceResult.hashCode());
+                ArrayList<String> description = sourceResult.getDescription();
+                if ((value = description) != null) {
+                    for (String s : value) {
+                        descriptions.add("\t" + s);
+                    }
+                }
+            }
+            new_result.add(new SourceResult(
+                    originalSourceResult.getType(), originalSourceResult.getName(), originalSourceResult.getSourceClass(), originalSourceResult.getMethodInfo(),
+                    urlInfos,
+                    descriptions
+            ));
+        }
+        return new_result;
     }
 
     private void handleSocket() throws Exception {
@@ -117,9 +157,13 @@ public class Task implements Runnable {
 
                     sourceResults.addAll(serverDiscovery.getServerSources(vmTool, instLocal));
                 }
+
+                ArrayList<SourceResult> sourceResultsFinnal = MergeSourceResults(new HashSet<SourceResult>(sourceResults));
+                Collections.sort(sourceResultsFinnal);
+
                 ByteArrayOutputStream bao = new ByteArrayOutputStream();
                 ObjectOutputStream oos = new ObjectOutputStream(bao);
-                oos.writeObject(sourceResults);
+                oos.writeObject(sourceResultsFinnal);
                 oos.close();
                 resultReturn.setObjectString(Base64Util.encode(bao.toByteArray()));
             } catch (Exception e) {
@@ -134,44 +178,6 @@ public class Task implements Runnable {
             oos.writeObject(resultReturn);
             oos.close();
             System.out.printf("[*] write obj length %d to socket\n", resultReturn.getObjectString().length());
-            socket.getOutputStream().write(bao.toByteArray());
-            return;
-        }
-
-        if (targetClass.startsWith("<FILTERS>")) {
-            Agent.refreshClass();
-            String PASS = targetClass.split("<FILTERS>")[1];
-            if (!PASS.equals(Agent.PASSWORD)) {
-                System.out.println("[-] ERROR PASSWORD");
-                return;
-            }
-            List<String> classList = new ArrayList<>();
-            for (Class<?> c : Agent.staticClasses) {
-                try {
-                    ClassLoader classLoader;
-                    if (c.getClassLoader() != null) {
-                        classLoader = c.getClassLoader();
-                    } else {
-                        classLoader = Thread.currentThread().getContextClassLoader();
-                    }
-
-                    Class<?> clsFilter = null;
-                    try {
-                        clsFilter = classLoader.loadClass("javax.servlet.Filter");
-                    } catch (Exception ignored) {
-                    }
-
-                    if (clsFilter != null && clsFilter.isAssignableFrom(c)) {
-                        classList.add(c.getName());
-                    }
-                } catch (Exception ignored) {
-                }
-            }
-
-            ByteArrayOutputStream bao = new ByteArrayOutputStream();
-            ObjectOutputStream oos = new ObjectOutputStream(bao);
-            oos.writeObject(classList);
-            System.out.printf("[*] write length %d to socket\n", classList.size());
             socket.getOutputStream().write(bao.toByteArray());
             return;
         }
@@ -196,82 +202,6 @@ public class Task implements Runnable {
                     Class<?> clsFilter = null;
                     try {
                         clsFilter = classLoader.loadClass("org.apache.catalina.Valve");
-                    } catch (Exception ignored) {
-                    }
-
-                    if (clsFilter != null && clsFilter.isAssignableFrom(c)) {
-                        classList.add(c.getName());
-                    }
-                } catch (Exception ignored) {
-                }
-            }
-
-            ByteArrayOutputStream bao = new ByteArrayOutputStream();
-            ObjectOutputStream oos = new ObjectOutputStream(bao);
-            oos.writeObject(classList);
-            System.out.printf("[*] write length %d to socket\n", classList.size());
-            socket.getOutputStream().write(bao.toByteArray());
-            return;
-        }
-
-        if (targetClass.startsWith("<SERVLETS>")) {
-            Agent.refreshClass();
-            String PASS = targetClass.split("<SERVLETS>")[1];
-            if (!PASS.equals(Agent.PASSWORD)) {
-                System.out.println("[-] ERROR PASSWORD");
-                return;
-            }
-            List<String> classList = new ArrayList<>();
-            for (Class<?> c : Agent.staticClasses) {
-                try {
-                    ClassLoader classLoader;
-                    if (c.getClassLoader() != null) {
-                        classLoader = c.getClassLoader();
-                    } else {
-                        classLoader = Thread.currentThread().getContextClassLoader();
-                    }
-
-                    Class<?> clsFilter = null;
-                    try {
-                        clsFilter = classLoader.loadClass("javax.servlet.Servlet");
-                    } catch (Exception ignored) {
-                    }
-
-                    if (clsFilter != null && clsFilter.isAssignableFrom(c)) {
-                        classList.add(c.getName());
-                    }
-                } catch (Exception ignored) {
-                }
-            }
-
-            ByteArrayOutputStream bao = new ByteArrayOutputStream();
-            ObjectOutputStream oos = new ObjectOutputStream(bao);
-            oos.writeObject(classList);
-            System.out.printf("[*] write length %d to socket\n", classList.size());
-            socket.getOutputStream().write(bao.toByteArray());
-            return;
-        }
-
-        if (targetClass.startsWith("<LISTENERS>")) {
-            Agent.refreshClass();
-            String PASS = targetClass.split("<LISTENERS>")[1];
-            if (!PASS.equals(Agent.PASSWORD)) {
-                System.out.println("[-] ERROR PASSWORD");
-                return;
-            }
-            List<String> classList = new ArrayList<>();
-            for (Class<?> c : Agent.staticClasses) {
-                try {
-                    ClassLoader classLoader;
-                    if (c.getClassLoader() != null) {
-                        classLoader = c.getClassLoader();
-                    } else {
-                        classLoader = Thread.currentThread().getContextClassLoader();
-                    }
-
-                    Class<?> clsFilter = null;
-                    try {
-                        clsFilter = classLoader.loadClass("javax.servlet.ServletRequestListener");
                     } catch (Exception ignored) {
                     }
 

@@ -27,6 +27,8 @@ package com.n1ar4.agent.dto;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
 
 public class SourceResult implements Serializable, Comparable<SourceResult> {
     public SourceResultType type;
@@ -35,6 +37,7 @@ public class SourceResult implements Serializable, Comparable<SourceResult> {
     public String methodInfo;
     public ArrayList<UrlInfo> urlInfos = null;
     public ArrayList<String> description = null;
+    public static String SourceResultTag = "sourceTag:";
 
     public SourceResult() {
     }
@@ -173,30 +176,77 @@ public class SourceResult implements Serializable, Comparable<SourceResult> {
         }
     }
 
+    public HashMap<String, UrlInfoAndDescMapValue> getSourceTagMapForUrlInfosAndDesc() {
+        HashMap<String, UrlInfoAndDescMapValue> tagHashMap = new HashMap<>();
+        ArrayList<String> descList = this.getDescription();
+        String nowTag = "";
+        for (String oneLineDesc : descList) {
+            if (oneLineDesc.startsWith(SourceResultTag)) {
+                String tag = oneLineDesc.split(SourceResultTag)[1];
+                tagHashMap.put(tag, new UrlInfoAndDescMapValue(tag));
+                nowTag = tag;
+            } else {
+                UrlInfoAndDescMapValue urlInfoAndDescMapValue = tagHashMap.get(nowTag);
+                if (urlInfoAndDescMapValue == null) {
+                    System.out.println("error out : not found taget tag : " + nowTag);
+                    continue;
+                }
+                urlInfoAndDescMapValue.desc.add(oneLineDesc);
+            }
+        }
+
+        for (UrlInfo urlInfo : this.getUrlInfos()) {
+            String[] descritionList = urlInfo.getDescritionList();
+            String lastUrlDesc = descritionList[descritionList.length - 1];
+            if (lastUrlDesc.startsWith(SourceResultTag) == false) {
+                System.out.println("not found tag in Url : " + urlInfo.getUrl());
+                continue;
+            }
+            String tag = lastUrlDesc.split(SourceResultTag)[1];
+            UrlInfoAndDescMapValue urlInfoAndDescMapValue = tagHashMap.get(tag);
+            if (urlInfoAndDescMapValue == null) {
+                System.out.println("error out : not found taget tag in urlList: " + nowTag);
+                continue;
+            }
+            urlInfoAndDescMapValue.urlInfos.add(urlInfo);
+        }
+
+        return tagHashMap;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Source Type : ").append(this.getType().toString()).append("\n");
         sb.append("\t Source Name : ").append(this.getName()).append("\n");
         sb.append("\t Source Class : ").append(this.getSourceClass()).append("\n");
-        if (this.urlInfos != null && !this.urlInfos.isEmpty()) {
-            sb.append("\t Source UrlInfo : \n");
-            for (UrlInfo urlInfo : this.urlInfos) {
-                sb.append("\t\t Url : ").append(urlInfo.getUrl()).append("\n");
-                if (urlInfo.getDescrition().isEmpty())
-                    continue;
-                for (String oneLineDesc : urlInfo.descrition.split("\\|")) {
-                    sb.append("\t\t\t desc : ").append(oneLineDesc).append("\n");
+
+        HashMap<String, UrlInfoAndDescMapValue> sourceTagMapForUrlInfosAndDesc = getSourceTagMapForUrlInfosAndDesc();
+
+        Collection<UrlInfoAndDescMapValue> values = sourceTagMapForUrlInfosAndDesc.values();
+        for (UrlInfoAndDescMapValue value : values) {
+            sb.append("\t Source Result Tag : " + value.tag + "\n");
+            if (value.urlInfos != null && !value.urlInfos.isEmpty()) {
+                sb.append("\t\t Source UrlInfo : \n");
+                for (UrlInfo urlInfo : value.urlInfos) {
+                    sb.append("\t\t\t Url : ").append(urlInfo.getUrl()).append("\n");
+                    if (urlInfo.getDescrition().isEmpty())
+                        continue;
+                    for (String oneLineDesc : urlInfo.getDescritionList()) {
+                        if (oneLineDesc.startsWith(SourceResultTag) == false)
+                            sb.append("\t\t\t\t desc : ").append(oneLineDesc.trim()).append("\n");
+                    }
+                }
+            }
+            ArrayList<String> description = value.desc;
+            if (description != null && !description.isEmpty()) {
+                sb.append("\t\t Source Description : \n");
+                for (String desc : description) {
+                    sb.append("\t\t\t ").append(desc).append("\n");
                 }
             }
         }
-        ArrayList<String> description = this.getDescription();
-        if (description != null && !description.isEmpty()) {
-            sb.append("\t Source Description : \n");
-            for (String desc : description) {
-                sb.append("\t\t ").append(desc).append("\n");
-            }
-        }
+
         return sb.toString();
     }
 

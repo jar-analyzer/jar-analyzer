@@ -48,5 +48,4 @@ public class EndPointUrlInfo {
         }
         return urlInfos;
     }
-
 }

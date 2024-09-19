@@ -28,12 +28,13 @@ import com.n1ar4.agent.dto.UrlInfo;
 
 import java.util.ArrayList;
 
+@SuppressWarnings("unused")
 public class ServiceInfo {
     public ArrayList<UrlInfo> connectorList;
     public String defaultHost;
 
     public ServiceInfo(){
-        this(new ArrayList<UrlInfo>() , "");
+        this(new ArrayList<>() , "");
     }
 
     public ServiceInfo(ArrayList<UrlInfo> connectorList){

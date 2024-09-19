@@ -58,6 +58,4 @@ public class ContextInfo {
     public String toString() {
         return String.format("%s,urlPattern: %s",this.parentHostInfo.toString() , ContextUrlBase);
     }
-
-
 }

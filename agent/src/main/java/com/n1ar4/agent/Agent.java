@@ -26,7 +26,6 @@ package com.n1ar4.agent;
 
 import arthas.VmTool;
 import com.n1ar4.agent.core.Task;
-import com.n1ar4.agent.vmtools.VmToolUtils;
 
 import java.lang.instrument.Instrumentation;
 import java.net.ServerSocket;
@@ -88,14 +87,13 @@ public class Agent {
         System.out.println("##########################################################");
         VmTool vmToolInstances = getVmToolInstances();
         if (vmToolInstances == null) {
-            System.out.println("Load VmTool lib error : " + VmToolUtils.detectLibName());
+            System.out.println("[-] LOAD ERROR");
             return;
         }
 
         int finalPort = port;
         new Thread(() -> {
             try {
-
                 ServerSocket s = null;
                 try {
                     s = new ServerSocket(finalPort);

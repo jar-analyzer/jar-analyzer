@@ -24,6 +24,7 @@
 
 package com.n1ar4.agent.vmtools;
 
+@SuppressWarnings("all")
 public enum PlatformEnum {
     /**
      * Microsoft Windows

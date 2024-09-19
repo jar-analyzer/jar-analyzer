@@ -42,6 +42,7 @@ package com.n1ar4.agent.util;
  * @author Sandy Gao
  * @version $Id: Base64.java,v 1.4 2007/07/19 04:38:32 ofung Exp $
  */
+@SuppressWarnings("all")
 public final class Base64Util {
 
     static private final int  BASELENGTH         = 128;

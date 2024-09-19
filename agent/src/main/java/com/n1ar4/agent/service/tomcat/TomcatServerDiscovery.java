@@ -40,7 +40,7 @@ public class TomcatServerDiscovery extends ServerDiscovery {
         Object standardServer = instances[0];
         Object[] services = (Object[]) ReflectUtils.getDeclaredField(standardServer, "services");
         if (services != null) {
-            ArrayList<SourceResult> sourceResults = new ArrayList<SourceResult>();
+            ArrayList<SourceResult> sourceResults = new ArrayList<>();
             for (Object service : services) {
                 TomcatServiceDiscovery tomcatServiceSourceDiscovery = new TomcatServiceDiscovery(service);
                 sourceResults.addAll(tomcatServiceSourceDiscovery.getSourceResults());

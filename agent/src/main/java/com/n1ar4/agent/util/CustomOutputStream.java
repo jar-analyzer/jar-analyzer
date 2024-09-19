@@ -27,6 +27,7 @@ package com.n1ar4.agent.util;
 import java.io.IOException;
 import java.io.OutputStream;
 
+@SuppressWarnings("all")
 public class CustomOutputStream extends OutputStream {
 
     public StringBuilder stringBuilder;

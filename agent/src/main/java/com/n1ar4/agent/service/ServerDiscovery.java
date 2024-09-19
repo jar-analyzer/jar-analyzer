@@ -39,27 +39,29 @@ public abstract class ServerDiscovery {
     }
 
     public boolean CanLoad(VmTool vmTool, Instrumentation inst) {
-        ArrayList<Class<?>> matchedClasses = new ArrayList<Class<?>>(SearchUtils.searchClassOnly(inst, serverClass, false, null));
-        if (matchedClasses.size() == 0)
+        ArrayList<Class<?>> matchedClasses = new ArrayList<Class<?>>(SearchUtils.searchClassOnly(
+                inst, serverClass, false, null));
+        if (matchedClasses.isEmpty())
             return false;
         Object[] instances = vmTool.getInstances(matchedClasses.get(0));
         return instances.length > 0;
     }
 
     public Object[] getLoadedClasses(VmTool vmTool, Instrumentation inst) {
-        ArrayList<Class<?>> matchedClasses = new ArrayList<Class<?>>(SearchUtils.searchClassOnly(inst, serverClass, false, null));
+        ArrayList<Class<?>> matchedClasses = new ArrayList<Class<?>>(SearchUtils.searchClassOnly(
+                inst, serverClass, false, null));
         Class<?> contextClass = matchedClasses.get(0);
-        Object[] instances = vmTool.getInstances(contextClass);
-        return instances;
+        return vmTool.getInstances(contextClass);
     }
 
     public ArrayList<SourceResult> getServerSources(VmTool vmTool, Instrumentation inst) {
-        Object[] instaces = getLoadedClasses(vmTool, inst);
-        if(instaces == null)
-            return new ArrayList<SourceResult>();
-        ArrayList<SourceResult> sourceResults = this.getServerSourceInternal(instaces);
-        return sourceResults != null ? sourceResults : new ArrayList<SourceResult>();
+        Object[] instances = getLoadedClasses(vmTool, inst);
+        if (instances == null) {
+            return new ArrayList<>();
+        }
+        ArrayList<SourceResult> sourceResults = this.getServerSourceInternal(instances);
+        return sourceResults != null ? sourceResults : new ArrayList<>();
     }
-    protected abstract ArrayList<SourceResult> getServerSourceInternal(Object[] instances);
 
+    protected abstract ArrayList<SourceResult> getServerSourceInternal(Object[] instances);
 }

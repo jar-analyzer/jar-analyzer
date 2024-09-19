@@ -93,6 +93,7 @@ public class TomcatContextDiscovery {
                     sourceList.add(new SourceResult(SourceResultType.TomcatListener,
                             listenerClassName, listenerClassName, endPointUrlInfo.toUrlInfos()));
                 }
+
             }
         }
     }
@@ -104,6 +105,7 @@ public class TomcatContextDiscovery {
             return;
         }
         Object[] filterMapArray = (Object[]) ReflectUtils.getDeclaredField(FilterMaps, "array");
+
         if (filterMapArray != null && filterMapArray.length > 0) {
             HashMap<String, Object> filterDefs = (HashMap<String, Object>)
                     ReflectUtils.getDeclaredField(context, "filterDefs");
@@ -165,12 +167,22 @@ public class TomcatContextDiscovery {
                 if (nowTomcatEndPointUrlInfo == null) {
                     continue;
                 }
+
+                ArrayList<String> servletDesc = new ArrayList<String>();
+                HashMap<String, String> paramters = (HashMap<String, String>) ReflectUtils.getDeclaredField(wrapper, "parameters");
+                if (paramters != null && paramters.size() > 0) {
+                    servletDesc.add("parameters : ");
+                    for (Map.Entry<String, String> parameter : paramters.entrySet()) {
+                        String parameterKey = parameter.getKey();
+                        String paramterValue = parameter.getValue();
+                        servletDesc.add(String.format("\t %s => %s", parameterKey, paramterValue));
+                    }
+                }
+
                 if (isNeedGetWebService(servletName)) {
                     getAllWebService();
                 } else {
-                    // NULL BUG
-                    sourceList.add(new SourceResult(SourceResultType.TomcatServlet, servletName,
-                            servletClass, nowTomcatEndPointUrlInfo.toUrlInfos(), null));
+                    sourceList.add(new SourceResult(SourceResultType.TomcatServlet, servletName, servletClass, nowTomcatEndPointUrlInfo.toUrlInfos(), servletDesc));
                 }
             }
         }

@@ -161,6 +161,7 @@ public class ShellForm {
                 } else {
                     staticMap.get(sourceResult.getSourceClass()).add(sourceResult);
                 }
+                System.out.println(sourceResult.toString());
             }
             filterList.setModel(filtersModel);
             servletList.setModel(servletsModel);

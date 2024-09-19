@@ -26,9 +26,9 @@ package me.n1ar4.shell.analyzer.start;
 
 import com.n1ar4.agent.dto.ResultReturn;
 import com.n1ar4.agent.dto.SourceResult;
-import me.n1ar4.shell.analyzer.utils.Base64Util;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
+import me.n1ar4.shell.analyzer.utils.Base64Util;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

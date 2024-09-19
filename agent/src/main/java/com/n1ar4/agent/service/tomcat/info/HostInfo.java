@@ -48,8 +48,8 @@ public class HostInfo {
             this.hostUrlInfoList = new ArrayList<>();
             for (UrlInfo serviceInfo : this.serviceUrlInfo.getConnectorList()) {
                 String nowHostDescription = String.format("hostname:%s,isDefaultHost:%s" , hostName, String.valueOf(isDefaultHost()));
-                UrlInfo nowHostUrlInfo = new UrlInfo(serviceInfo.getUrl(), serviceInfo.getDescrition());
-                nowHostUrlInfo.appendDescrition(nowHostDescription);
+                UrlInfo nowHostUrlInfo = new UrlInfo(serviceInfo.getUrl(), serviceInfo.getDescription());
+                nowHostUrlInfo.appendDescription(nowHostDescription);
                 this.hostUrlInfoList.add(nowHostUrlInfo);
             }
         }

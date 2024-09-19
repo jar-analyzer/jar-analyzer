@@ -46,7 +46,7 @@ public class ContextInfo {
         if(contextUrlInfoList == null){
             this.contextUrlInfoList = new ArrayList<>();
             for (UrlInfo hostUrlInfo : this.parentHostInfo.getHostUrlInfoList()) {
-                UrlInfo nowContextUrlInfo = new UrlInfo(hostUrlInfo.getUrl() , hostUrlInfo.getDescrition());
+                UrlInfo nowContextUrlInfo = new UrlInfo(hostUrlInfo.getUrl() , hostUrlInfo.getDescription());
                 nowContextUrlInfo.appendUrl(this.ContextUrlBase);
                 this.contextUrlInfoList.add(nowContextUrlInfo);
             }

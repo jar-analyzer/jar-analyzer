@@ -26,17 +26,18 @@ package com.n1ar4.agent.dto;
 
 import java.io.Serializable;
 
+@SuppressWarnings("unused")
 public class UrlInfo implements Serializable {
     public String url;
-    public String descrition;
+    public String description;
 
     public UrlInfo(String url) {
-        this(url , "");
+        this(url, "");
     }
 
-    public UrlInfo(String url, String descrition) {
+    public UrlInfo(String url, String description) {
         this.url = url;
-        this.descrition = descrition;
+        this.description = description;
     }
 
     public String getUrl() {
@@ -47,28 +48,26 @@ public class UrlInfo implements Serializable {
         this.url = url;
     }
 
-    public void appendRawUrl(String append){
+    public void appendRawUrl(String append) {
         this.url += append;
     }
 
-    public void appendUrl(String urlPattern){
-        if (urlPattern.startsWith("/") == false)
+    public void appendUrl(String urlPattern) {
+        if (!urlPattern.startsWith("/")) {
             url += "/";
+        }
         this.appendRawUrl(urlPattern);
     }
 
-
-    public String getDescrition() {
-        return descrition;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescrition(String descrition) {
-        this.descrition = descrition;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public void appendDescrition(String append){
-        this.descrition += " | " + append;
+    public void appendDescription(String append) {
+        this.description += " | " + append;
     }
-
-
 }

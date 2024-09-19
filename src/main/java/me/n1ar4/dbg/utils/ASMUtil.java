@@ -26,6 +26,7 @@ package me.n1ar4.dbg.utils;
 
 import org.objectweb.asm.Type;
 
+@SuppressWarnings("all")
 public class ASMUtil {
     public static String convertMethodDesc(String methodName, String methodDesc) {
         StringBuilder sb = new StringBuilder();

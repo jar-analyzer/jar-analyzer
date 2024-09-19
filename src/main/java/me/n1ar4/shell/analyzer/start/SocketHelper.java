@@ -26,7 +26,7 @@ package me.n1ar4.shell.analyzer.start;
 
 import com.n1ar4.agent.dto.ResultReturn;
 import com.n1ar4.agent.dto.SourceResult;
-import me.n1ar4.dbg.utils.Base64Util;
+import me.n1ar4.shell.analyzer.utils.Base64Util;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 
@@ -106,7 +106,7 @@ public class SocketHelper {
         ObjectInputStream ois = new ObjectInputStream(client.getInputStream());
         ResultReturn resultReturn = (ResultReturn) ois.readObject();
         if (!resultReturn.ConsoleOutput.isEmpty()) {
-            System.out.println("remote error stack trace : " + resultReturn.ConsoleOutput);
+            logger.error("remote error stack trace : " + resultReturn.ConsoleOutput);
         }
         if (!resultReturn.objectString.isEmpty()) {
             byte[] objBytes = Base64Util.decode(resultReturn.objectString);

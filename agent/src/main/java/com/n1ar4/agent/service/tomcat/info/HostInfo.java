@@ -32,22 +32,23 @@ public class HostInfo {
     public String hostName;
     public ServiceInfo serviceUrlInfo;
     private ArrayList<UrlInfo> hostUrlInfoList;
-    public HostInfo(ServiceInfo serviceUrlInfo , String hostName) {
+
+    public HostInfo(ServiceInfo serviceUrlInfo, String hostName) {
         this.serviceUrlInfo = serviceUrlInfo;
         this.hostName = hostName;
         this.hostUrlInfoList = null;
     }
 
-    public boolean isDefaultHost(){
+    public boolean isDefaultHost() {
         return this.serviceUrlInfo.defaultHost.equals(hostName);
     }
 
 
-    public ArrayList<UrlInfo> getHostUrlInfoList(){
-        if(hostUrlInfoList == null){
+    public ArrayList<UrlInfo> getHostUrlInfoList() {
+        if (hostUrlInfoList == null) {
             this.hostUrlInfoList = new ArrayList<>();
             for (UrlInfo serviceInfo : this.serviceUrlInfo.getConnectorList()) {
-                String nowHostDescription = String.format("hostname:%s,isDefaultHost:%s" , hostName, isDefaultHost());
+                String nowHostDescription = String.format("hostname:%s,isDefaultHost:%s", hostName, isDefaultHost());
                 UrlInfo nowHostUrlInfo = new UrlInfo(serviceInfo.getUrl(), serviceInfo.getDescription());
                 nowHostUrlInfo.appendDescription(nowHostDescription);
                 this.hostUrlInfoList.add(nowHostUrlInfo);

@@ -4,9 +4,7 @@ import java.lang.management.ManagementFactory;
 import java.util.Map;
 
 /**
- *
  * @author hengyunabc 2019-02-16
- *
  */
 public class PidUtils {
     private static String PID = "-1";

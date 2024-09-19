@@ -33,20 +33,20 @@ public class ServiceInfo {
     public ArrayList<UrlInfo> connectorList;
     public String defaultHost;
 
-    public ServiceInfo(){
-        this(new ArrayList<>() , "");
+    public ServiceInfo() {
+        this(new ArrayList<>(), "");
     }
 
-    public ServiceInfo(ArrayList<UrlInfo> connectorList){
-        this(connectorList , "");
+    public ServiceInfo(ArrayList<UrlInfo> connectorList) {
+        this(connectorList, "");
     }
 
-    public ServiceInfo(ArrayList<UrlInfo> connectorList , String defaultHost){
+    public ServiceInfo(ArrayList<UrlInfo> connectorList, String defaultHost) {
         this.connectorList = connectorList;
         this.defaultHost = defaultHost;
     }
 
-    public ArrayList<UrlInfo> getConnectorList () {
+    public ArrayList<UrlInfo> getConnectorList() {
         return connectorList;
     }
 }

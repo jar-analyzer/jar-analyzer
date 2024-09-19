@@ -29,9 +29,11 @@ import com.n1ar4.agent.service.tomcat.TomcatServerDiscovery;
 public enum ServerDiscoveryType {
     Tomcat(new TomcatServerDiscovery("org.apache.catalina.core.StandardServer"));
     private final ServerDiscovery serverDiscovery;
-    ServerDiscoveryType(ServerDiscovery serverDiscovery){
+
+    ServerDiscoveryType(ServerDiscovery serverDiscovery) {
         this.serverDiscovery = serverDiscovery;
     }
+
     public ServerDiscovery getServerDiscovery() {
         return serverDiscovery;
     }

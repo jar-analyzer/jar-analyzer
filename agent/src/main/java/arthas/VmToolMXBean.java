@@ -11,6 +11,7 @@ package arthas;
  *     );
  * }
  * </pre>
+ *
  * @author hengyunabc 2021-04-26
  */
 public interface VmToolMXBean {
@@ -31,6 +32,7 @@ public interface VmToolMXBean {
 
     /**
      * 获取某个class在jvm中当前所有存活实例
+     *
      * @param <T>
      * @param klass
      * @param limit 如果小于 0 ，则不限制

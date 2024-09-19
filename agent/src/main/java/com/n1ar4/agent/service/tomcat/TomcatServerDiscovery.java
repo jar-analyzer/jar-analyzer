@@ -24,8 +24,8 @@
 
 package com.n1ar4.agent.service.tomcat;
 
-import com.n1ar4.agent.service.ServerDiscovery;
 import com.n1ar4.agent.dto.SourceResult;
+import com.n1ar4.agent.service.ServerDiscovery;
 import com.n1ar4.agent.util.ReflectUtils;
 
 import java.util.ArrayList;

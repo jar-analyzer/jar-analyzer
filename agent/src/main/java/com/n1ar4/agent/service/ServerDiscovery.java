@@ -39,7 +39,7 @@ public abstract class ServerDiscovery {
     }
 
     public boolean CanLoad(VmTool vmTool, Instrumentation inst) {
-        ArrayList<Class<?>> matchedClasses = new ArrayList<Class<?>>(SearchUtils.searchClassOnly(
+        ArrayList<Class<?>> matchedClasses = new ArrayList<>(SearchUtils.searchClassOnly(
                 inst, serverClass, false, null));
         if (matchedClasses.isEmpty())
             return false;
@@ -48,7 +48,7 @@ public abstract class ServerDiscovery {
     }
 
     public Object[] getLoadedClasses(VmTool vmTool, Instrumentation inst) {
-        ArrayList<Class<?>> matchedClasses = new ArrayList<Class<?>>(SearchUtils.searchClassOnly(
+        ArrayList<Class<?>> matchedClasses = new ArrayList<>(SearchUtils.searchClassOnly(
                 inst, serverClass, false, null));
         Class<?> contextClass = matchedClasses.get(0);
         return vmTool.getInstances(contextClass);

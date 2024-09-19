@@ -212,7 +212,7 @@ public class SourceResult implements Serializable, Comparable<SourceResult> {
             } else {
                 UrlInfoAndDescMapValue urlInfoAndDescMapValue = tagHashMap.get(nowTag);
                 if (urlInfoAndDescMapValue == null) {
-                    System.out.println("error out : not found taget tag : " + nowTag);
+                    System.out.println("error out : not found target tag : " + nowTag);
                     continue;
                 }
                 urlInfoAndDescMapValue.desc.add(oneLineDesc);
@@ -220,16 +220,16 @@ public class SourceResult implements Serializable, Comparable<SourceResult> {
         }
 
         for (UrlInfo urlInfo : this.getUrlInfos()) {
-            String[] descritionList = urlInfo.getDescritionList();
-            String lastUrlDesc = descritionList[descritionList.length - 1];
-            if (lastUrlDesc.startsWith(SourceResultTag) == false) {
+            String[] descriptionList = urlInfo.getDescriptionList();
+            String lastUrlDesc = descriptionList[descriptionList.length - 1];
+            if (!lastUrlDesc.startsWith(SourceResultTag)) {
                 System.out.println("not found tag in Url : " + urlInfo.getUrl());
                 continue;
             }
             String tag = lastUrlDesc.split(SourceResultTag)[1];
             UrlInfoAndDescMapValue urlInfoAndDescMapValue = tagHashMap.get(tag);
             if (urlInfoAndDescMapValue == null) {
-                System.out.println("error out : not found taget tag in urlList: " + nowTag);
+                System.out.println("error out : not found target tag in urlList: " + nowTag);
                 continue;
             }
             urlInfoAndDescMapValue.urlInfos.add(urlInfo);
@@ -244,20 +244,18 @@ public class SourceResult implements Serializable, Comparable<SourceResult> {
         sb.append("Source Type : ").append(this.getType().toString()).append("\n");
         sb.append("\t Source Name : ").append(this.getName()).append("\n");
         sb.append("\t Source Class : ").append(this.getSourceClass()).append("\n");
-
         HashMap<String, UrlInfoAndDescMapValue> sourceTagMapForUrlInfosAndDesc = getSourceTagMapForUrlInfosAndDesc();
-
         Collection<UrlInfoAndDescMapValue> values = sourceTagMapForUrlInfosAndDesc.values();
         for (UrlInfoAndDescMapValue value : values) {
-            sb.append("\t Source Result Tag : " + value.tag + "\n");
+            sb.append("\t Source Result Tag : ").append(value.tag).append("\n");
             if (value.urlInfos != null && !value.urlInfos.isEmpty()) {
                 sb.append("\t\t Source UrlInfo : \n");
                 for (UrlInfo urlInfo : value.urlInfos) {
                     sb.append("\t\t\t Url : ").append(urlInfo.getUrl()).append("\n");
                     if (urlInfo.getDescription().isEmpty())
                         continue;
-                    for (String oneLineDesc : urlInfo.getDescritionList()) {
-                        if (oneLineDesc.startsWith(SourceResultTag) == false)
+                    for (String oneLineDesc : urlInfo.getDescriptionList()) {
+                        if (!oneLineDesc.startsWith(SourceResultTag))
                             sb.append("\t\t\t\t desc : ").append(oneLineDesc.trim()).append("\n");
                     }
                 }

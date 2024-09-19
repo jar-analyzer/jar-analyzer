@@ -98,7 +98,7 @@ public class TomcatContextDiscovery {
         }
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("all")
     void getFilters() {
         Object FilterMaps = ReflectUtils.getDeclaredField(context, "filterMaps");
         if (FilterMaps == null) {
@@ -140,7 +140,7 @@ public class TomcatContextDiscovery {
         }
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("all")
     void getAllServlets() {
         Object[] wrappers = (Object[]) ReflectUtils.callMethod(context, "findChildren");
         if (wrappers == null) {
@@ -148,7 +148,8 @@ public class TomcatContextDiscovery {
         }
         int servletNumber = wrappers.length;
         if (servletNumber > 0) {
-            HashMap<String, String> servletMappings = (HashMap<String, String>) ReflectUtils.getDeclaredField(context, "servletMappings");
+            HashMap<String, String> servletMappings = (HashMap<String, String>)
+                    ReflectUtils.getDeclaredField(context, "servletMappings");
             if (servletMappings == null) {
                 return;
             }
@@ -167,22 +168,22 @@ public class TomcatContextDiscovery {
                 if (nowTomcatEndPointUrlInfo == null) {
                     continue;
                 }
-
                 ArrayList<String> servletDesc = new ArrayList<String>();
-                HashMap<String, String> paramters = (HashMap<String, String>) ReflectUtils.getDeclaredField(wrapper, "parameters");
-                if (paramters != null && paramters.size() > 0) {
+                HashMap<String, String> parameters = (HashMap<String, String>)
+                        ReflectUtils.getDeclaredField(wrapper, "parameters");
+                if (parameters != null && !parameters.isEmpty()) {
                     servletDesc.add("parameters : ");
-                    for (Map.Entry<String, String> parameter : paramters.entrySet()) {
+                    for (Map.Entry<String, String> parameter : parameters.entrySet()) {
                         String parameterKey = parameter.getKey();
-                        String paramterValue = parameter.getValue();
-                        servletDesc.add(String.format("\t %s => %s", parameterKey, paramterValue));
+                        String parameterValue = parameter.getValue();
+                        servletDesc.add(String.format("\t %s => %s", parameterKey, parameterValue));
                     }
                 }
-
                 if (isNeedGetWebService(servletName)) {
                     getAllWebService();
                 } else {
-                    sourceList.add(new SourceResult(SourceResultType.TomcatServlet, servletName, servletClass, nowTomcatEndPointUrlInfo.toUrlInfos(), servletDesc));
+                    sourceList.add(new SourceResult(SourceResultType.TomcatServlet,
+                            servletName, servletClass, nowTomcatEndPointUrlInfo.toUrlInfos(), servletDesc));
                 }
             }
         }

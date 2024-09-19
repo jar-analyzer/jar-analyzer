@@ -44,11 +44,10 @@ import java.lang.instrument.Instrumentation;
 import java.net.Socket;
 import java.util.*;
 
-@SuppressWarnings("all")
 public class Task implements Runnable {
     private final Socket socket;
     private final VmTool vmTool;
-    private Instrumentation instLocal;
+    private final Instrumentation instLocal;
 
     public Task(Socket socket, VmTool vmTool, Instrumentation instLocal) {
         this.socket = socket;
@@ -61,24 +60,23 @@ public class Task implements Runnable {
         try {
             handleSocket();
         } catch (Exception ignored) {
-            ignored.printStackTrace();
         }
     }
 
     public static ArrayList<SourceResult> MergeSourceResults(HashSet<SourceResult> results) {
-        ArrayList<SourceResult> new_result = new ArrayList<SourceResult>();
-        HashMap<String, ArrayList<SourceResult>> SourceCollectList = new HashMap<String, ArrayList<SourceResult>>();
+        ArrayList<SourceResult> new_result = new ArrayList<>();
+        HashMap<String, ArrayList<SourceResult>> SourceCollectList = new HashMap<>();
         for (SourceResult resultItem : results) {
-            String index = String.format("%s|%s+%s", resultItem.getType().toString(), resultItem.getSourceClass(), resultItem.getMethodInfo());
-            if (SourceCollectList.containsKey(index) == false)
-                SourceCollectList.put(index, new ArrayList<SourceResult>());
+            String index = String.format("%s|%s+%s", resultItem.getType().toString(),
+                    resultItem.getSourceClass(), resultItem.getMethodInfo());
+            if (!SourceCollectList.containsKey(index))
+                SourceCollectList.put(index, new ArrayList<>());
             SourceCollectList.get(index).add(resultItem);
         }
         for (ArrayList<SourceResult> sourceResults : SourceCollectList.values()) {
             SourceResult originalSourceResult = sourceResults.get(0);
-            ArrayList<UrlInfo> urlInfos = new ArrayList<UrlInfo>();
-            ArrayList<String> descriptions = new ArrayList<String>();
-
+            ArrayList<UrlInfo> urlInfos = new ArrayList<>();
+            ArrayList<String> descriptions = new ArrayList<>();
             for (SourceResult sourceResult : sourceResults) {
                 ArrayList<UrlInfo> nowUrlInfos = sourceResult.getUrlInfos();
                 if (nowUrlInfos != null) {
@@ -87,7 +85,7 @@ public class Task implements Runnable {
                         urlInfos.add(s);
                     }
                 }
-                ArrayList<String> value = null;
+                ArrayList<String> value;
                 descriptions.add(SourceResult.SourceResultTag + sourceResult.hashCode());
                 ArrayList<String> description = sourceResult.getDescription();
                 if ((value = description) != null) {
@@ -97,7 +95,10 @@ public class Task implements Runnable {
                 }
             }
             new_result.add(new SourceResult(
-                    originalSourceResult.getType(), originalSourceResult.getName(), originalSourceResult.getSourceClass(), originalSourceResult.getMethodInfo(),
+                    originalSourceResult.getType(),
+                    originalSourceResult.getName(),
+                    originalSourceResult.getSourceClass(),
+                    originalSourceResult.getMethodInfo(),
                     urlInfos,
                     descriptions
             ));
@@ -148,22 +149,19 @@ public class Task implements Runnable {
                     System.out.println("[-] ERROR PASSWORD");
                     return;
                 }
-
-                ArrayList<SourceResult> sourceResults = new ArrayList<SourceResult>();
+                ArrayList<SourceResult> sourceResults = new ArrayList<>();
                 for (ServerDiscoveryType serverDiscoveryType : ServerDiscoveryType.values()) {
                     ServerDiscovery serverDiscovery = serverDiscoveryType.getServerDiscovery();
-                    if (serverDiscovery.CanLoad(vmTool, instLocal) == false)
+                    if (!serverDiscovery.CanLoad(vmTool, instLocal)) {
                         continue;
-
+                    }
                     sourceResults.addAll(serverDiscovery.getServerSources(vmTool, instLocal));
                 }
-
-                ArrayList<SourceResult> sourceResultsFinnal = MergeSourceResults(new HashSet<SourceResult>(sourceResults));
-                Collections.sort(sourceResultsFinnal);
-
+                ArrayList<SourceResult> sourceResultsFinal = MergeSourceResults(new HashSet<>(sourceResults));
+                Collections.sort(sourceResultsFinal);
                 ByteArrayOutputStream bao = new ByteArrayOutputStream();
                 ObjectOutputStream oos = new ObjectOutputStream(bao);
-                oos.writeObject(sourceResultsFinnal);
+                oos.writeObject(sourceResultsFinal);
                 oos.close();
                 resultReturn.setObjectString(Base64Util.encode(bao.toByteArray()));
             } catch (Exception e) {

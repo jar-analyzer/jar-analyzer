@@ -317,7 +317,7 @@ public class Task implements Runnable {
         }
 
         if (!found) {
-            System.out.printf("[*] CLASS NOT FOUND: \n" + targetClass);
+            System.out.printf("[*] CLASS NOT FOUND: %s\n", targetClass);
         }
     }
 }

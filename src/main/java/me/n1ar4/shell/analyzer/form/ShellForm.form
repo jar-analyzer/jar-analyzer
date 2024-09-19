@@ -317,11 +317,9 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="cf7cd" class="javax.swing.JTextArea" binding="urlArea">
+                  <component id="293a9" class="javax.swing.JList" binding="urlList">
                     <constraints/>
-                    <properties>
-                      <editable value="false"/>
-                    </properties>
+                    <properties/>
                   </component>
                 </children>
               </scrollpane>

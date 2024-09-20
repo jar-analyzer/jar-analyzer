@@ -49,10 +49,21 @@ public class Task implements Runnable {
     private final VmTool vmTool;
     private final Instrumentation instLocal;
 
+    private static final HashSet<ClassLoader> loaders = new HashSet<>();
+
     public Task(Socket socket, VmTool vmTool, Instrumentation instLocal) {
         this.socket = socket;
         this.vmTool = vmTool;
         this.instLocal = instLocal;
+        Set<ClassLoader> classLoaders = new HashSet<>();
+        Class<?>[] allLoadedClasses = Agent.staticIns.getAllLoadedClasses();
+        for (Class<?> loadedClass : allLoadedClasses) {
+            ClassLoader classLoader = loadedClass.getClassLoader();
+            if (classLoader != null) {
+                classLoaders.add(classLoader);
+            }
+        }
+        loaders.addAll(classLoaders);
     }
 
     @Override
@@ -135,7 +146,7 @@ public class Task implements Runnable {
             ByteArrayOutputStream bao = new ByteArrayOutputStream();
             ObjectOutputStream oos = new ObjectOutputStream(bao);
             oos.writeObject(classNameList);
-            System.out.printf("[*] write length %d to socket\n", classNameList.size());
+            System.out.printf("[*] WRITE TOTAL CLASS %d\n", classNameList.size());
             socket.getOutputStream().write(bao.toByteArray());
             return;
         }
@@ -175,7 +186,7 @@ public class Task implements Runnable {
             ObjectOutputStream oos = new ObjectOutputStream(bao);
             oos.writeObject(resultReturn);
             oos.close();
-            System.out.printf("[*] write obj length %d to socket\n", resultReturn.getObjectString().length());
+            System.out.printf("[*] WRITE OBJECT LENGTH %d\n", resultReturn.getObjectString().length());
             socket.getOutputStream().write(bao.toByteArray());
             return;
         }
@@ -209,11 +220,10 @@ public class Task implements Runnable {
                 } catch (Exception ignored) {
                 }
             }
-
             ByteArrayOutputStream bao = new ByteArrayOutputStream();
             ObjectOutputStream oos = new ObjectOutputStream(bao);
             oos.writeObject(classList);
-            System.out.printf("[*] write length %d to socket\n", classList.size());
+            System.out.printf("[*] WRITE TOTAL CLASS %d\n", classList.size());
             socket.getOutputStream().write(bao.toByteArray());
             return;
         }
@@ -224,28 +234,34 @@ public class Task implements Runnable {
         targetClass = targetClass.split("\\|")[1];
         Agent.refreshClass();
 
-        boolean found = false;
+        try {
+            Class<?> c = loadClassUsingAllClassLoaders(targetClass);
+            if (c == null) {
+                throw new RuntimeException("CLASS NOT FOUND");
+            }
+            CoreTransformer coreTransformer = new CoreTransformer(targetClass);
+            Agent.staticIns.addTransformer(coreTransformer, true);
+            Agent.staticIns.retransformClasses(c);
+            if (coreTransformer.data != null && coreTransformer.data.length != 0) {
+                ByteArrayOutputStream bao = new ByteArrayOutputStream();
+                ObjectOutputStream oos = new ObjectOutputStream(bao);
+                oos.writeObject(coreTransformer.data);
+                System.out.printf("[*] WRITE BYTECODE LENGTH %d\n", coreTransformer.data.length);
+                socket.getOutputStream().write(bao.toByteArray());
+            }
+            Agent.staticIns.removeTransformer(coreTransformer);
+        } catch (Exception ignored) {
+            System.out.println("[-] CLASS NOT FOUND: " + targetClass);
+        }
+    }
 
-        for (Class<?> c : Agent.staticClasses) {
-            if (c.getName().equals(targetClass)) {
-                found = true;
-                CoreTransformer coreTransformer = new CoreTransformer(targetClass);
-                Agent.staticIns.addTransformer(coreTransformer, true);
-                Agent.staticIns.retransformClasses(c);
-
-                if (coreTransformer.data != null && coreTransformer.data.length != 0) {
-                    ByteArrayOutputStream bao = new ByteArrayOutputStream();
-                    ObjectOutputStream oos = new ObjectOutputStream(bao);
-                    oos.writeObject(coreTransformer.data);
-                    System.out.printf("[*] write length %d to socket\n", coreTransformer.data.length);
-                    socket.getOutputStream().write(bao.toByteArray());
-                }
-                Agent.staticIns.removeTransformer(coreTransformer);
+    public static Class<?> loadClassUsingAllClassLoaders(String className) {
+        for (ClassLoader classLoader : loaders) {
+            try {
+                return Class.forName(className, true, classLoader);
+            } catch (ClassNotFoundException ignored) {
             }
         }
-
-        if (!found) {
-            System.out.printf("[*] CLASS NOT FOUND: %s\n", targetClass);
-        }
+        return null;
     }
 }

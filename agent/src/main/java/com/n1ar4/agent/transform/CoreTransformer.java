@@ -48,10 +48,9 @@ public class CoreTransformer implements ClassFileTransformer {
                             byte[] classfileBuffer) {
         className = className.replace("/", ".");
         if (className.equals(targetClass)) {
-            System.out.println("[*] get bytecode form: " + className);
+            System.out.println("[*] GET BYTECODE : " + className);
             data = new byte[classfileBuffer.length + 1];
             System.arraycopy(classfileBuffer, 0, data, 0, classfileBuffer.length);
-            System.out.println("[*] bytecode length: " + data.length);
         }
         return classfileBuffer;
     }

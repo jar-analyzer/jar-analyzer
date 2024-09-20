@@ -168,7 +168,7 @@ public class SourceResult implements Serializable, Comparable<SourceResult> {
 
     private int hashResult = -1;
 
-    private int type_hash(Object data) {
+    private int typeHash(Object data) {
         if (data == null) {
             return 0;
         } else {
@@ -179,10 +179,9 @@ public class SourceResult implements Serializable, Comparable<SourceResult> {
     public int hashCode() {
         if (hashResult == -1) {
             hashResult = 1;
-            hashResult = 31 * hashResult + type_hash(type);
-            hashResult = 31 * hashResult + type_hash(name);
-
-            hashResult = 31 * hashResult + type_hash(sourceClass);
+            hashResult = 31 * hashResult + typeHash(type);
+            hashResult = 31 * hashResult + typeHash(name);
+            hashResult = 31 * hashResult + typeHash(sourceClass);
             hashResult = 31 * hashResult + (methodInfo == null ? "".hashCode() : methodInfo.hashCode());
             hashResult = 31 * hashResult + (urlInfos == null ? 0 : Arrays.hashCode(getUrlInfos().toArray()));
             hashResult = 31 * hashResult + (description == null ? 0 : Arrays.hashCode(getDescription().toArray()));
@@ -212,7 +211,7 @@ public class SourceResult implements Serializable, Comparable<SourceResult> {
             } else {
                 UrlInfoAndDescMapValue urlInfoAndDescMapValue = tagHashMap.get(nowTag);
                 if (urlInfoAndDescMapValue == null) {
-                    System.out.println("error out : not found target tag : " + nowTag);
+                    System.out.println("[-] error out : not found target tag : " + nowTag);
                     continue;
                 }
                 urlInfoAndDescMapValue.desc.add(oneLineDesc);
@@ -223,13 +222,13 @@ public class SourceResult implements Serializable, Comparable<SourceResult> {
             String[] descriptionList = urlInfo.getDescriptionList();
             String lastUrlDesc = descriptionList[descriptionList.length - 1];
             if (!lastUrlDesc.startsWith(SourceResultTag)) {
-                System.out.println("not found tag in Url : " + urlInfo.getUrl());
+                System.out.println("[-] not found tag in url : " + urlInfo.getUrl());
                 continue;
             }
             String tag = lastUrlDesc.split(SourceResultTag)[1];
             UrlInfoAndDescMapValue urlInfoAndDescMapValue = tagHashMap.get(tag);
             if (urlInfoAndDescMapValue == null) {
-                System.out.println("error out : not found target tag in urlList: " + nowTag);
+                System.out.println("[-] error out : not found target tag in url list: " + nowTag);
                 continue;
             }
             urlInfoAndDescMapValue.urlInfos.add(urlInfo);
@@ -252,8 +251,9 @@ public class SourceResult implements Serializable, Comparable<SourceResult> {
                 sb.append("\t\t Source UrlInfo : \n");
                 for (UrlInfo urlInfo : value.urlInfos) {
                     sb.append("\t\t\t Url : ").append(urlInfo.getUrl()).append("\n");
-                    if (urlInfo.getDescription().isEmpty())
+                    if (urlInfo.getDescription().isEmpty()) {
                         continue;
+                    }
                     for (String oneLineDesc : urlInfo.getDescriptionList()) {
                         if (!oneLineDesc.startsWith(SourceResultTag))
                             sb.append("\t\t\t\t desc : ").append(oneLineDesc.trim()).append("\n");

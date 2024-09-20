@@ -33,7 +33,7 @@ public class EndPointUrlInfo {
     public ArrayList<String> urlPatterns;
 
     public EndPointUrlInfo(ContextInfo contextUrlInfo) {
-        this.urlPatterns = new ArrayList<String>();
+        this.urlPatterns = new ArrayList<>();
         this.contextUrlInfo = contextUrlInfo;
     }
 

@@ -53,6 +53,7 @@
 - 自从 `3.0` 版本后新增多种常见的 `JAVA RCE` 漏洞调用一键搜索功能
 - 自从 `3.1` 版本后支持 `BCEL` 字符串一键反编译 `Java` 代码（参考 [示例图](img/0061.png)）
 - 自从 `3.1` 版本后远程 `Tomcat` 分析改为 `premain` 方式（参考 [示例图](img/0062.png)）
+- 自从 `3.2` 版本后远程 `Tomcat` 分析功能大幅增强（参考 [示例图](img/0065.png)）
 
 更多的功能正在开发中
 
@@ -74,6 +75,58 @@
 - 场景10：你有一个 `Tomcat` 需要远程分析其中的 `Servlet/Filter/Listener` 信息
 - 场景11：查实现接口 `A` 继承接口 `B` 类注解 `C` 且方法名 `test` 方法内调用 `D` 类 `a` 方法的方法（表达式搜索）
 - 测试功能：字节码指令级别的调试 | 远程分析 | 一键导出反编译代码
+
+## 截图
+
+方法调用关系
+
+![](img/0004.png)
+
+方法调用搜索 (支持 `equals/like` 选项，支持黑名单过滤)
+
+![](img/0012.png)
+
+分析 `Spring Framework`
+
+![](img/0009.png)
+
+`Jar Analyzer 2.15` 版本以后支持代码区域的搜索
+
+![](img/0033.png)
+
+`Jar Analyzer 2.15` 版本以后支持远程 `Jar` 文件加载
+
+![](img/0034.png)
+
+`Jar Analyzer 2.17` 版本以后支持从序列化数据中一键提取恶意代码
+
+![](img/0036.png)
+
+`Jar Analyzer 2.18` 版本以后支持 `HTTP API`
+
+[示例图 1](img/0038.png) [示例图 2](img/0037.png)
+
+`Jar Analyzer 2.19` 版本以后支持实时的 `CPU` 和内存占用分析
+
+![](img/0040.png)
+
+`Jar Analyzer 2.20` 版本后支持选中字符串全局高亮显示
+
+![](img/0041.png)
+
+`Jar Analyzer 3.2` 版本后 `Tomcat` 分析能力大幅增强
+
+![](img/0065.png)
+
+## 表达式
+
+表达式搜索是 `jar-analzyer` 重要的高级功能：可以自定义多种条件组合搜索方法
+
+表达式搜索位于首页以及 `Advance` 的 `Plugins` 部分
+
+![](img/0028.png)
+
+[详细文档](doc/README-el.md)
 
 ## 相关
 
@@ -144,54 +197,6 @@
 7. 可选：使用 `cmake` 构建 `native` 目录生成 `dll` 文件放入 `resources`
 8. 可选：使用 `winres` 和 `gcc` 构建启动 `exe` 文件和图标信息
 9. 可选：完整发版参考 `build.py` 和 `build.yml` 文件
-
-## 表达式
-
-表达式搜索是 `jar-analzyer` 重要的高级功能：可以自定义多种条件组合搜索方法
-
-表达式搜索位于首页以及 `Advance` 的 `Plugins` 部分
-
-![](img/0028.png)
-
-[详细文档](doc/README-el.md)
-
-## 截图
-
-方法调用关系
-
-![](img/0004.png)
-
-方法调用搜索 (支持 `equals/like` 选项，支持黑名单过滤)
-
-![](img/0012.png)
-
-分析 `Spring Framework`
-
-![](img/0009.png)
-
-`Jar Analyzer 2.15` 版本以后支持代码区域的搜索
-
-![](img/0033.png)
-
-`Jar Analyzer 2.15` 版本以后支持远程 `Jar` 文件加载
-
-![](img/0034.png)
-
-`Jar Analyzer 2.17` 版本以后支持从序列化数据中一键提取恶意代码
-
-![](img/0036.png)
-
-`Jar Analyzer 2.18` 版本以后支持 `HTTP API`
-
-[示例图 1](img/0038.png) [示例图 2](img/0037.png)
-
-`Jar Analyzer 2.19` 版本以后支持实时的 `CPU` 和内存占用分析
-
-![](img/0040.png)
-
-`Jar Analyzer 2.20` 版本后支持选中字符串全局高亮显示
-
-![](img/0041.png)
 
 ## 进阶功能
 

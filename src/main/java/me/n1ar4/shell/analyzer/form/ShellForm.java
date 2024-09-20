@@ -162,7 +162,6 @@ public class ShellForm {
                 } else {
                     staticMap.get(sourceResult.getSourceClass()).add(sourceResult);
                 }
-                System.out.println(sourceResult);
             }
             filterList.setModel(filtersModel);
             servletList.setModel(servletsModel);
@@ -291,7 +290,8 @@ public class ShellForm {
             SourceResult sr = results.get(0);
             scText.setText(sr.getSourceClass());
             scNameText.setText(sr.getName());
-            HashMap<String, UrlInfoAndDescMapValue> sourceTagMapForUrlInfosAndDesc = sr.getSourceTagMapForUrlInfosAndDesc();
+            HashMap<String, UrlInfoAndDescMapValue> sourceTagMapForUrlInfosAndDesc =
+                    sr.getSourceTagMapForUrlInfosAndDesc();
             for (UrlInfoAndDescMapValue value : sourceTagMapForUrlInfosAndDesc.values()) {
                 for (UrlInfo u : value.urlInfos) {
                     InfoObj infoObj = new InfoObj();

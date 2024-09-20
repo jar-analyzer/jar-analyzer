@@ -56,7 +56,7 @@ public class MessageForm {
         String[] data = obj.getUrlDesc().split(urlInfoDescSplitTag);
         StringBuilder sb = new StringBuilder();
         for (String d : data) {
-            if(d.startsWith(SourceResult.SourceResultTag) == true){
+            if (d.startsWith(SourceResult.SourceResultTag)) {
                 continue;
             }
             sb.append(d);
@@ -114,12 +114,14 @@ public class MessageForm {
         descScroll = new JScrollPane();
         msgPanel.add(descScroll, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         descArea = new JTextArea();
+        descArea.setEditable(false);
         descArea.setLineWrap(true);
         descScroll.setViewportView(descArea);
         hashLabel = new JLabel();
         hashLabel.setText("HASH");
         msgPanel.add(hashLabel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
         hashText = new JTextField();
+        hashText.setEditable(false);
         msgPanel.add(hashText, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         globalLabel = new JLabel();
         globalLabel.setText("GLOBAL DESC");
@@ -127,6 +129,7 @@ public class MessageForm {
         globalScroll = new JScrollPane();
         msgPanel.add(globalScroll, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         globalArea = new JTextArea();
+        globalArea.setEditable(false);
         globalScroll.setViewportView(globalArea);
     }
 

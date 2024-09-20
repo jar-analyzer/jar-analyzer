@@ -57,6 +57,7 @@
               <component id="8d86a" class="javax.swing.JTextArea" binding="descArea">
                 <constraints/>
                 <properties>
+                  <editable value="false"/>
                   <lineWrap value="true"/>
                 </properties>
               </component>
@@ -76,7 +77,9 @@
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
-            <properties/>
+            <properties>
+              <editable value="false"/>
+            </properties>
           </component>
           <component id="54080" class="javax.swing.JLabel" binding="globalLabel">
             <constraints>
@@ -95,7 +98,9 @@
             <children>
               <component id="3a000" class="javax.swing.JTextArea" binding="globalArea">
                 <constraints/>
-                <properties/>
+                <properties>
+                  <editable value="false"/>
+                </properties>
               </component>
             </children>
           </scrollpane>

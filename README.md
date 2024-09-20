@@ -20,6 +20,18 @@
 
 ![](img/0060.png)
 
+静态分析 `spring` 项目
+
+![](img/0009.png)
+
+通过 `agent` 分析 `tomcat` 
+
+![](img/0065.png)
+
+自定义表达式搜索
+
+![](img/0028.png)
+
 `Jar Analyzer` 是一个分析 `Jar` 文件的 `GUI` 工具：
 
 - 支持大 `Jar` 以及批量 `Jars` 分析
@@ -86,10 +98,6 @@
 
 ![](img/0012.png)
 
-分析 `Spring Framework`
-
-![](img/0009.png)
-
 `Jar Analyzer 2.15` 版本以后支持代码区域的搜索
 
 ![](img/0033.png)
@@ -114,17 +122,11 @@
 
 ![](img/0041.png)
 
-`Jar Analyzer 3.2` 版本后 `Tomcat` 分析能力大幅增强
-
-![](img/0065.png)
-
 ## 表达式
 
 表达式搜索是 `jar-analzyer` 重要的高级功能：可以自定义多种条件组合搜索方法
 
 表达式搜索位于首页以及 `Advance` 的 `Plugins` 部分
-
-![](img/0028.png)
 
 [详细文档](doc/README-el.md)
 

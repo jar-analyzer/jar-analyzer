@@ -74,7 +74,7 @@ public class Task implements Runnable {
         }
     }
 
-    public static ArrayList<SourceResult> MergeSourceResults(HashSet<SourceResult> results) {
+    public static ArrayList<SourceResult> mergeSourceResults(HashSet<SourceResult> results) {
         ArrayList<SourceResult> newResult = new ArrayList<>();
         HashMap<String, ArrayList<SourceResult>> SourceCollectList = new HashMap<>();
         for (SourceResult resultItem : results) {
@@ -168,7 +168,7 @@ public class Task implements Runnable {
                     }
                     sourceResults.addAll(serverDiscovery.getServerSources(vmTool, instLocal));
                 }
-                ArrayList<SourceResult> sourceResultsFinal = MergeSourceResults(new HashSet<>(sourceResults));
+                ArrayList<SourceResult> sourceResultsFinal = mergeSourceResults(new HashSet<>(sourceResults));
                 Collections.sort(sourceResultsFinal);
                 ByteArrayOutputStream bao = new ByteArrayOutputStream();
                 ObjectOutputStream oos = new ObjectOutputStream(bao);
@@ -256,7 +256,28 @@ public class Task implements Runnable {
     }
 
     public static Class<?> loadClassUsingAllClassLoaders(String className) {
+        // 使用缓存 LOADERS 先找一遍
         for (ClassLoader classLoader : loaders) {
+            try {
+                return Class.forName(className, true, classLoader);
+            } catch (ClassNotFoundException ignored) {
+            }
+        }
+        // 如果所有 classLoader 都找不到 刷新一次
+        Agent.refreshClass();
+        Set<ClassLoader> classLoaders = new HashSet<>();
+        Class<?>[] allLoadedClasses = Agent.staticIns.getAllLoadedClasses();
+        for (Class<?> loadedClass : allLoadedClasses) {
+            ClassLoader classLoader = loadedClass.getClassLoader();
+            if (classLoader != null) {
+                classLoaders.add(classLoader);
+            }
+        }
+        // 刷新全局 LOADERS
+        loaders.clear();
+        loaders.addAll(classLoaders);
+        // 再重新找一次
+        for (ClassLoader classLoader : classLoaders) {
             try {
                 return Class.forName(className, true, classLoader);
             } catch (ClassNotFoundException ignored) {

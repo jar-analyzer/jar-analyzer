@@ -127,6 +127,10 @@ public class ShellForm {
         DefaultListModel<ClassObj> servletsModel = new DefaultListModel<>();
         DefaultListModel<ClassObj> valvesModel = new DefaultListModel<>();
 
+        List<ClassObj> filterCache = new ArrayList<>();
+        List<ClassObj> listenerCache = new ArrayList<>();
+        List<ClassObj> servletCache = new ArrayList<>();
+        List<ClassObj> valvesCache = new ArrayList<>();
         try {
             List<SourceResult> sourceResults = SocketHelper.getSourceResults();
             for (SourceResult sourceResult : sourceResults) {
@@ -137,20 +141,20 @@ public class ShellForm {
                 switch (sourceResult.type) {
                     case TomcatFilter:
                         co = new ClassObj(sourceResult.getSourceClass(), "FILTER");
-                        if (!filtersModel.contains(co)) {
-                            filtersModel.addElement(co);
+                        if (!filterCache.contains(co)) {
+                            filterCache.add(co);
                         }
                         break;
                     case TomcatServlet:
                         co = new ClassObj(sourceResult.getSourceClass(), "SERVLET");
-                        if (!servletsModel.contains(co)) {
-                            servletsModel.addElement(co);
+                        if (!servletCache.contains(co)) {
+                            servletCache.add(co);
                         }
                         break;
                     case TomcatListener:
                         co = new ClassObj(sourceResult.getSourceClass(), "LISTENER");
-                        if (!listenersModel.contains(co)) {
-                            listenersModel.addElement(co);
+                        if (!listenerCache.contains(co)) {
+                            listenerCache.add(co);
                         }
                         break;
                 }
@@ -163,6 +167,20 @@ public class ShellForm {
                     staticMap.get(sourceResult.getSourceClass()).add(sourceResult);
                 }
             }
+            Collections.sort(filterCache);
+            Collections.sort(servletCache);
+            Collections.sort(listenerCache);
+
+            for (ClassObj co : filterCache) {
+                filtersModel.addElement(co);
+            }
+            for (ClassObj co : listenerCache) {
+                listenersModel.addElement(co);
+            }
+            for (ClassObj co : servletCache) {
+                servletsModel.addElement(co);
+            }
+
             filterList.setModel(filtersModel);
             servletList.setModel(servletsModel);
             listenerList.setModel(listenersModel);
@@ -174,6 +192,10 @@ public class ShellForm {
             List<String> valves = SocketHelper.getAllValves();
             for (String v : valves) {
                 ClassObj co = new ClassObj(v, "VALVE");
+                valvesCache.add(co);
+            }
+            Collections.sort(valvesCache);
+            for (ClassObj co : valvesCache) {
                 valvesModel.addElement(co);
             }
             valveList.setModel(valvesModel);
@@ -284,6 +306,9 @@ public class ShellForm {
         int index = list.locationToIndex(evt.getPoint());
         ClassObj res = (ClassObj) list.getModel().getElementAt(index);
         infoModel.clear();
+
+        List<InfoObj> infoCache = new ArrayList<>();
+
         // 渲染具体信息
         List<SourceResult> results = staticMap.get(res.getClassName());
         if (results != null && !results.isEmpty()) {
@@ -299,8 +324,14 @@ public class ShellForm {
                     infoObj.setUrlDesc(u.description);
                     infoObj.setHash(value.tag);
                     infoObj.setGlobalDesc(value.desc);
-                    infoModel.addElement(infoObj);
+                    infoCache.add(infoObj);
                 }
+            }
+
+            Collections.sort(infoCache);
+
+            for (InfoObj infoObj : infoCache) {
+                infoModel.addElement(infoObj);
             }
         } else {
             scText.setText("NONE");

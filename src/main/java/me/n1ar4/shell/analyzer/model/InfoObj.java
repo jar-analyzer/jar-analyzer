@@ -24,9 +24,11 @@
 
 package me.n1ar4.shell.analyzer.model;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 
-public class InfoObj {
+public class InfoObj implements Comparable<InfoObj> {
     private String url;
     private String hash;
     private String urlDesc;
@@ -73,5 +75,11 @@ public class InfoObj {
                 "   URL: " +
                 "<font style=\"color: red; font-weight: bold;\">%s</font>" +
                 "</html>", hexHash, this.url);
+    }
+
+
+    @Override
+    public int compareTo(@NotNull InfoObj o) {
+        return this.url.compareTo(o.url);
     }
 }

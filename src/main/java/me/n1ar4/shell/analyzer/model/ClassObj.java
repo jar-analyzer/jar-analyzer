@@ -24,10 +24,12 @@
 
 package me.n1ar4.shell.analyzer.model;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Objects;
 
 @SuppressWarnings("all")
-public class ClassObj {
+public class ClassObj implements Comparable<ClassObj> {
     private String className;
 
     private String type;
@@ -72,5 +74,10 @@ public class ClassObj {
         int result = Objects.hashCode(className);
         result = 31 * result + Objects.hashCode(type);
         return result;
+    }
+
+    @Override
+    public int compareTo(@NotNull ClassObj o) {
+        return this.className.compareTo(o.className);
     }
 }

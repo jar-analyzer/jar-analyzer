@@ -64,7 +64,7 @@ public class Task implements Runnable {
     }
 
     public static ArrayList<SourceResult> MergeSourceResults(HashSet<SourceResult> results) {
-        ArrayList<SourceResult> new_result = new ArrayList<>();
+        ArrayList<SourceResult> newResult = new ArrayList<>();
         HashMap<String, ArrayList<SourceResult>> SourceCollectList = new HashMap<>();
         for (SourceResult resultItem : results) {
             String index = String.format("%s|%s+%s", resultItem.getType().toString(),
@@ -94,7 +94,7 @@ public class Task implements Runnable {
                     }
                 }
             }
-            new_result.add(new SourceResult(
+            newResult.add(new SourceResult(
                     originalSourceResult.getType(),
                     originalSourceResult.getName(),
                     originalSourceResult.getSourceClass(),
@@ -103,7 +103,7 @@ public class Task implements Runnable {
                     descriptions
             ));
         }
-        return new_result;
+        return newResult;
     }
 
     private void handleSocket() throws Exception {

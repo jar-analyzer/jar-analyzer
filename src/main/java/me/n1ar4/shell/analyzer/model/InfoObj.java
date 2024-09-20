@@ -24,14 +24,13 @@
 
 package me.n1ar4.shell.analyzer.model;
 
+import java.util.ArrayList;
+
 public class InfoObj {
     private String url;
-    private String all;
-
-    public InfoObj(String url, String all) {
-        this.url = url;
-        this.all = all;
-    }
+    private String hash;
+    private String urlDesc;
+    private ArrayList<String> globalDesc;
 
     public String getUrl() {
         return url;
@@ -41,16 +40,38 @@ public class InfoObj {
         this.url = url;
     }
 
-    public String getAll() {
-        return all;
+    public String getHash() {
+        return hash;
     }
 
-    public void setAll(String all) {
-        this.all = all;
+    public void setHash(String hash) {
+        this.hash = hash;
+    }
+
+    public String getUrlDesc() {
+        return urlDesc;
+    }
+
+    public void setUrlDesc(String urlDesc) {
+        this.urlDesc = urlDesc;
+    }
+
+    public ArrayList<String> getGlobalDesc() {
+        return globalDesc;
+    }
+
+    public void setGlobalDesc(ArrayList<String> globalDesc) {
+        this.globalDesc = globalDesc;
     }
 
     @Override
     public String toString() {
-        return this.url;
+        String hexHash = Integer.toHexString(Integer.parseInt(hash));
+        return String.format("<html>" +
+                "HASH: " +
+                "<font style=\"color: blue; font-weight: bold;\">%s</font>" +
+                "   URL: " +
+                "<font style=\"color: red; font-weight: bold;\">%s</font>" +
+                "</html>", hexHash, this.url);
     }
 }

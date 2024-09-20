@@ -270,11 +270,10 @@ public class ShellForm {
 
         int index = list.locationToIndex(evt.getPoint());
         InfoObj res = (InfoObj) list.getModel().getElementAt(index);
-
-        JOptionPane.showMessageDialog(rootPanel,
-                res.getUrl() + "\n" + res.getAll());
+        MessageForm.start0(res);
     }
 
+    @SuppressWarnings("all")
     public void core(MouseEvent evt, JList<?> list) {
         String pass = passText.getText();
         if (pass.length() != 8) {
@@ -293,14 +292,24 @@ public class ShellForm {
                 scText.setText(sr.getSourceClass());
                 scNameText.setText(sr.getName());
                 for (UrlInfo u : sr.urlInfos) {
-                    infoModel.addElement(new InfoObj(u.url, u.description));
+                    InfoObj infoObj = new InfoObj();
+                    infoObj.setUrl(u.url);
+                    infoObj.setUrlDesc(u.description);
+                    infoObj.setHash(String.valueOf(sr.hashCode()));
+                    infoObj.setGlobalDesc(sr.getDescription());
+                    infoModel.addElement(infoObj);
                 }
             } else {
                 scText.setText(results.get(0).getSourceClass());
                 scNameText.setText(results.get(0).getName());
                 for (SourceResult sr : results) {
                     for (UrlInfo u : sr.urlInfos) {
-                        infoModel.addElement(new InfoObj(u.url, u.description));
+                        InfoObj infoObj = new InfoObj();
+                        infoObj.setUrl(u.url);
+                        infoObj.setUrlDesc(u.description);
+                        infoObj.setHash(String.valueOf(sr.hashCode()));
+                        infoObj.setGlobalDesc(sr.getDescription());
+                        infoModel.addElement(infoObj);
                     }
                 }
             }

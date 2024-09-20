@@ -27,6 +27,7 @@ package me.n1ar4.shell.analyzer.form;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
+import com.n1ar4.agent.dto.SourceResult;
 import me.n1ar4.shell.analyzer.model.InfoObj;
 
 import javax.swing.*;
@@ -55,6 +56,9 @@ public class MessageForm {
         String[] data = obj.getUrlDesc().split(urlInfoDescSplitTag);
         StringBuilder sb = new StringBuilder();
         for (String d : data) {
+            if(d.startsWith(SourceResult.SourceResultTag) == true){
+                continue;
+            }
             sb.append(d);
             sb.append("\n");
         }

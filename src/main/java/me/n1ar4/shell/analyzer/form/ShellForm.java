@@ -28,6 +28,7 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.n1ar4.agent.dto.SourceResult;
 import com.n1ar4.agent.dto.UrlInfo;
+import com.n1ar4.agent.dto.UrlInfoAndDescMapValue;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.ProcessDialog;
 import me.n1ar4.shell.analyzer.model.ClassObj;
@@ -283,34 +284,22 @@ public class ShellForm {
 
         int index = list.locationToIndex(evt.getPoint());
         ClassObj res = (ClassObj) list.getModel().getElementAt(index);
-
+        infoModel.clear();
         // 渲染具体信息
         List<SourceResult> results = staticMap.get(res.getClassName());
         if (results != null && !results.isEmpty()) {
-            if (results.size() == 1) {
-                SourceResult sr = results.get(0);
-                scText.setText(sr.getSourceClass());
-                scNameText.setText(sr.getName());
-                for (UrlInfo u : sr.urlInfos) {
+            SourceResult sr = results.get(0);
+            scText.setText(sr.getSourceClass());
+            scNameText.setText(sr.getName());
+            HashMap<String, UrlInfoAndDescMapValue> sourceTagMapForUrlInfosAndDesc = sr.getSourceTagMapForUrlInfosAndDesc();
+            for (UrlInfoAndDescMapValue value : sourceTagMapForUrlInfosAndDesc.values()) {
+                for (UrlInfo u : value.urlInfos) {
                     InfoObj infoObj = new InfoObj();
                     infoObj.setUrl(u.url);
                     infoObj.setUrlDesc(u.description);
-                    infoObj.setHash(String.valueOf(sr.hashCode()));
-                    infoObj.setGlobalDesc(sr.getDescription());
+                    infoObj.setHash(value.tag);
+                    infoObj.setGlobalDesc(value.desc);
                     infoModel.addElement(infoObj);
-                }
-            } else {
-                scText.setText(results.get(0).getSourceClass());
-                scNameText.setText(results.get(0).getName());
-                for (SourceResult sr : results) {
-                    for (UrlInfo u : sr.urlInfos) {
-                        InfoObj infoObj = new InfoObj();
-                        infoObj.setUrl(u.url);
-                        infoObj.setUrlDesc(u.description);
-                        infoObj.setHash(String.valueOf(sr.hashCode()));
-                        infoObj.setGlobalDesc(sr.getDescription());
-                        infoModel.addElement(infoObj);
-                    }
                 }
             }
         } else {

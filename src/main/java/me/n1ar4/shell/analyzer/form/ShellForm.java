@@ -59,11 +59,40 @@ import java.util.*;
 public class ShellForm {
     private static final String DEFAULT_PASSWD = "P4sSW0rD";
 
-    class CommonMouse extends MouseAdapter {
+    public class CommonMouse extends MouseAdapter {
         public void mouseClicked(MouseEvent evt) {
             JList<?> list = (JList<?>) evt.getSource();
             if (evt.getClickCount() == 2) {
                 core(evt, list);
+            }
+        }
+    }
+
+    class PanelInfo {
+        public String title;
+        public JPanel panel;
+        public JList dataList;
+        public DefaultListModel<ClassObj> dataModel;
+        public List<ClassObj> dataCache;
+
+        public PanelInfo(String title){
+            this.title = title;
+            this.panel = new JPanel();
+            panel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+            panel.setBorder(BorderFactory.createTitledBorder(null, "", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+            JScrollPane newJScroll = new JScrollPane();
+            this.dataList = new JList();
+            panel.add(newJScroll, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+            newJScroll.setViewportView(this.dataList);
+            this.dataList.addMouseListener(new CommonMouse());
+            this.dataModel = new DefaultListModel<>();
+            this.dataCache = new ArrayList<>();
+        }
+
+        public void dataSort(){
+            Collections.sort(this.dataCache);
+            for (ClassObj co : this.dataCache) {
+                this.dataModel.addElement(co);
             }
         }
     }
@@ -85,21 +114,12 @@ public class ShellForm {
     private JList<ClassObj> filterList;
     private JList<ClassObj> listenerList;
     private JTabbedPane tabbedPane;
+    private HashMap<String , PanelInfo> sourceResultPannelMap;
     private JPanel normalPanel;
-    private JPanel filtersPane;
-    private JPanel servletsPane;
-    private JPanel listenerPane;
-    private JPanel valvePane;
     private JPanel codePanel;
     private JPanel logPanel;
     private JScrollPane logScroll;
     private JTextArea logArea;
-    private JScrollPane filterScroll;
-    private JScrollPane servletScroll;
-    private JList<ClassObj> servletList;
-    private JScrollPane listenerScroll;
-    private JScrollPane valveScroll;
-    private JList<ClassObj> valveList;
     private JTextField passText;
     private JLabel passLabel;
     private JButton genButton;
@@ -122,41 +142,24 @@ public class ShellForm {
     private static final Map<String, List<SourceResult>> staticMap = new HashMap<>();
 
     private void analyze() {
-        DefaultListModel<ClassObj> filtersModel = new DefaultListModel<>();
-        DefaultListModel<ClassObj> listenersModel = new DefaultListModel<>();
-        DefaultListModel<ClassObj> servletsModel = new DefaultListModel<>();
-        DefaultListModel<ClassObj> valvesModel = new DefaultListModel<>();
 
-        List<ClassObj> filterCache = new ArrayList<>();
-        List<ClassObj> listenerCache = new ArrayList<>();
-        List<ClassObj> servletCache = new ArrayList<>();
-        List<ClassObj> valvesCache = new ArrayList<>();
         try {
+            sourceResultPannelMap.clear();
             List<SourceResult> sourceResults = SocketHelper.getSourceResults();
             for (SourceResult sourceResult : sourceResults) {
                 if (sourceResult.getSourceClass().equals("null")) {
                     continue;
                 }
-                ClassObj co;
-                switch (sourceResult.type) {
-                    case TomcatFilter:
-                        co = new ClassObj(sourceResult.getSourceClass(), "FILTER");
-                        if (!filterCache.contains(co)) {
-                            filterCache.add(co);
-                        }
-                        break;
-                    case TomcatServlet:
-                        co = new ClassObj(sourceResult.getSourceClass(), "SERVLET");
-                        if (!servletCache.contains(co)) {
-                            servletCache.add(co);
-                        }
-                        break;
-                    case TomcatListener:
-                        co = new ClassObj(sourceResult.getSourceClass(), "LISTENER");
-                        if (!listenerCache.contains(co)) {
-                            listenerCache.add(co);
-                        }
-                        break;
+                String sourceResultType = sourceResult.type.name();
+                PanelInfo panelInfo = sourceResultPannelMap.get(sourceResultType);
+                if(panelInfo == null){
+                    panelInfo = new PanelInfo(sourceResultType);
+                    sourceResultPannelMap.put(sourceResultType , panelInfo);
+                }
+
+                ClassObj co = new ClassObj(sourceResult.getSourceClass(), sourceResultType);
+                if(!panelInfo.dataCache.contains(co)){
+                    panelInfo.dataCache.add(co);
                 }
                 // ADD TO MAP
                 if (staticMap.get(sourceResult.getSourceClass()) == null) {
@@ -167,40 +170,30 @@ public class ShellForm {
                     staticMap.get(sourceResult.getSourceClass()).add(sourceResult);
                 }
             }
-            Collections.sort(filterCache);
-            Collections.sort(servletCache);
-            Collections.sort(listenerCache);
-
-            for (ClassObj co : filterCache) {
-                filtersModel.addElement(co);
-            }
-            for (ClassObj co : listenerCache) {
-                listenersModel.addElement(co);
-            }
-            for (ClassObj co : servletCache) {
-                servletsModel.addElement(co);
-            }
-
-            filterList.setModel(filtersModel);
-            servletList.setModel(servletsModel);
-            listenerList.setModel(listenersModel);
         } catch (Exception ex) {
             log("无法获得信息: " + ex.getMessage());
         }
 
         try {
             List<String> valves = SocketHelper.getAllValves();
+            PanelInfo panelInfo = sourceResultPannelMap.get("Value");
+            if(panelInfo == null){
+                panelInfo = new PanelInfo("Valve");
+                sourceResultPannelMap.put("Valve" , panelInfo);
+            }
             for (String v : valves) {
                 ClassObj co = new ClassObj(v, "VALVE");
-                valvesCache.add(co);
+                panelInfo.dataCache.add(co);
             }
-            Collections.sort(valvesCache);
-            for (ClassObj co : valvesCache) {
-                valvesModel.addElement(co);
-            }
-            valveList.setModel(valvesModel);
         } catch (Exception ex) {
             log("无法获得信息: " + ex.getMessage());
+        }
+
+        tabbedPane.removeAll();
+        for (PanelInfo nowPannelInfo : sourceResultPannelMap.values()) {
+            nowPannelInfo.dataSort();
+            nowPannelInfo.dataList.setModel(nowPannelInfo.dataModel);
+            tabbedPane.add(nowPannelInfo.title , nowPannelInfo.panel);
         }
 
         urlList.setModel(infoModel);
@@ -276,10 +269,6 @@ public class ShellForm {
             }.start();
         });
 
-        filterList.addMouseListener(new CommonMouse());
-        valveList.addMouseListener(new CommonMouse());
-        listenerList.addMouseListener(new CommonMouse());
-        servletList.addMouseListener(new CommonMouse());
         urlList.addMouseListener(new UrlInfoMouse());
     }
 
@@ -472,40 +461,9 @@ public class ShellForm {
         normalPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         rootPanel.add(normalPanel, new GridConstraints(0, 1, 1, 5, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, new Dimension(450, -1), null, null, 0, false));
         normalPanel.setBorder(BorderFactory.createTitledBorder(null, "COMPONENTS", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+        sourceResultPannelMap = new HashMap<>();
         tabbedPane = new JTabbedPane();
         normalPanel.add(tabbedPane, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1, false));
-        filtersPane = new JPanel();
-        filtersPane.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-        tabbedPane.addTab("Filter", filtersPane);
-        filtersPane.setBorder(BorderFactory.createTitledBorder(null, "", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
-        filterScroll = new JScrollPane();
-        filtersPane.add(filterScroll, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        filterList = new JList();
-        filterScroll.setViewportView(filterList);
-        servletsPane = new JPanel();
-        servletsPane.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-        tabbedPane.addTab("Servlet", servletsPane);
-        servletsPane.setBorder(BorderFactory.createTitledBorder(null, "", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
-        servletScroll = new JScrollPane();
-        servletsPane.add(servletScroll, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        servletList = new JList();
-        servletScroll.setViewportView(servletList);
-        listenerPane = new JPanel();
-        listenerPane.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-        tabbedPane.addTab("Listener", listenerPane);
-        listenerPane.setBorder(BorderFactory.createTitledBorder(null, "", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
-        listenerScroll = new JScrollPane();
-        listenerPane.add(listenerScroll, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        listenerList = new JList();
-        listenerScroll.setViewportView(listenerList);
-        valvePane = new JPanel();
-        valvePane.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-        tabbedPane.addTab("Valve", valvePane);
-        valvePane.setBorder(BorderFactory.createTitledBorder(null, "", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
-        valveScroll = new JScrollPane();
-        valvePane.add(valveScroll, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        valveList = new JList();
-        valveScroll.setViewportView(valveList);
         codePanel = new JPanel();
         codePanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         rootPanel.add(codePanel, new GridConstraints(1, 1, 1, 7, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, new Dimension(500, 400), null, null, 0, false));
@@ -544,6 +502,7 @@ public class ShellForm {
         urlList = new JList();
         urlScroll.setViewportView(urlList);
     }
+
 
     /**
      * @noinspection ALL

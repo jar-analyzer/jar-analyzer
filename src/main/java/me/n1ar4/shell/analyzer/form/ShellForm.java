@@ -59,7 +59,7 @@ import java.util.*;
 public class ShellForm {
     private static final String DEFAULT_PASSWD = "P4sSW0rD";
 
-    public class CommonMouse extends MouseAdapter {
+    class CommonMouse extends MouseAdapter {
         public void mouseClicked(MouseEvent evt) {
             JList<?> list = (JList<?>) evt.getSource();
             if (evt.getClickCount() == 2) {

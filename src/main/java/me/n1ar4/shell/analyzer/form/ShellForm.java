@@ -71,25 +71,34 @@ public class ShellForm {
     class PanelInfo {
         public String title;
         public JPanel panel;
-        public JList dataList;
+        public JList<ClassObj> dataList;
         public DefaultListModel<ClassObj> dataModel;
         public List<ClassObj> dataCache;
 
-        public PanelInfo(String title){
+        public PanelInfo(String title) {
             this.title = title;
             this.panel = new JPanel();
-            panel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-            panel.setBorder(BorderFactory.createTitledBorder(null, "", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+            panel.setLayout(new GridLayoutManager(1, 1,
+                    new Insets(0, 0, 0, 0), -1, -1));
+            panel.setBorder(BorderFactory.createTitledBorder(null, "",
+                    TitledBorder.DEFAULT_JUSTIFICATION,
+                    TitledBorder.DEFAULT_POSITION, null, null));
             JScrollPane newJScroll = new JScrollPane();
-            this.dataList = new JList();
-            panel.add(newJScroll, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+            this.dataList = new JList<>();
+            panel.add(newJScroll, new GridConstraints(0, 0,
+                    1, 1, GridConstraints.ANCHOR_CENTER,
+                    GridConstraints.FILL_BOTH,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW,
+                    null, null,
+                    null, 0, false));
             newJScroll.setViewportView(this.dataList);
             this.dataList.addMouseListener(new CommonMouse());
             this.dataModel = new DefaultListModel<>();
             this.dataCache = new ArrayList<>();
         }
 
-        public void dataSort(){
+        public void dataSort() {
             Collections.sort(this.dataCache);
             for (ClassObj co : this.dataCache) {
                 this.dataModel.addElement(co);
@@ -112,7 +121,6 @@ public class ShellForm {
     private JPanel topPanel;
     private JButton attachButton;
     private JTabbedPane tabbedPane;
-    private HashMap<String , PanelInfo> sourceResultPannelMap;
     private JPanel normalPanel;
     private JPanel codePanel;
     private JPanel logPanel;
@@ -135,28 +143,28 @@ public class ShellForm {
     private JScrollPane urlScroll;
     private JList<InfoObj> urlList;
 
+    private final HashMap<String, PanelInfo> srpMap = new HashMap<>();
+
     private static final DefaultListModel<InfoObj> infoModel = new DefaultListModel<>();
 
     private static final Map<String, List<SourceResult>> staticMap = new HashMap<>();
 
     private void analyze() {
-
         try {
-            sourceResultPannelMap.clear();
+            srpMap.clear();
             List<SourceResult> sourceResults = SocketHelper.getSourceResults();
             for (SourceResult sourceResult : sourceResults) {
                 if (sourceResult.getSourceClass().equals("null")) {
                     continue;
                 }
                 String sourceResultType = sourceResult.type.name();
-                PanelInfo panelInfo = sourceResultPannelMap.get(sourceResultType);
-                if(panelInfo == null){
+                PanelInfo panelInfo = srpMap.get(sourceResultType);
+                if (panelInfo == null) {
                     panelInfo = new PanelInfo(sourceResultType);
-                    sourceResultPannelMap.put(sourceResultType , panelInfo);
+                    srpMap.put(sourceResultType, panelInfo);
                 }
-
                 ClassObj co = new ClassObj(sourceResult.getSourceClass(), sourceResultType);
-                if(!panelInfo.dataCache.contains(co)){
+                if (!panelInfo.dataCache.contains(co)) {
                     panelInfo.dataCache.add(co);
                 }
                 // ADD TO MAP
@@ -171,13 +179,12 @@ public class ShellForm {
         } catch (Exception ex) {
             log("无法获得信息: " + ex.getMessage());
         }
-
         try {
             List<String> valves = SocketHelper.getAllValves();
-            PanelInfo panelInfo = sourceResultPannelMap.get("Value");
-            if(panelInfo == null){
+            PanelInfo panelInfo = srpMap.get("Value");
+            if (panelInfo == null) {
                 panelInfo = new PanelInfo("Valve");
-                sourceResultPannelMap.put("Valve" , panelInfo);
+                srpMap.put("Valve", panelInfo);
             }
             for (String v : valves) {
                 ClassObj co = new ClassObj(v, "VALVE");
@@ -186,14 +193,12 @@ public class ShellForm {
         } catch (Exception ex) {
             log("无法获得信息: " + ex.getMessage());
         }
-
         tabbedPane.removeAll();
-        for (PanelInfo nowPannelInfo : sourceResultPannelMap.values()) {
-            nowPannelInfo.dataSort();
-            nowPannelInfo.dataList.setModel(nowPannelInfo.dataModel);
-            tabbedPane.add(nowPannelInfo.title , nowPannelInfo.panel);
+        for (PanelInfo nowPanelInfo : srpMap.values()) {
+            nowPanelInfo.dataSort();
+            nowPanelInfo.dataList.setModel(nowPanelInfo.dataModel);
+            tabbedPane.add(nowPanelInfo.title, nowPanelInfo.panel);
         }
-
         urlList.setModel(infoModel);
     }
 
@@ -459,7 +464,6 @@ public class ShellForm {
         normalPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         rootPanel.add(normalPanel, new GridConstraints(0, 1, 1, 5, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, new Dimension(450, -1), null, null, 0, false));
         normalPanel.setBorder(BorderFactory.createTitledBorder(null, "COMPONENTS", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
-        sourceResultPannelMap = new HashMap<>();
         tabbedPane = new JTabbedPane();
         normalPanel.add(tabbedPane, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1, false));
         codePanel = new JPanel();
@@ -501,7 +505,6 @@ public class ShellForm {
         urlScroll.setViewportView(urlList);
     }
 
-
     /**
      * @noinspection ALL
      */
@@ -530,5 +533,6 @@ public class ShellForm {
     public JComponent $$$getRootComponent$$$() {
         return shellPanel;
     }
+
 
 }

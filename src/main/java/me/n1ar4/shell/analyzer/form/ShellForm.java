@@ -111,8 +111,6 @@ public class ShellForm {
     private JPanel rootPanel;
     private JPanel topPanel;
     private JButton attachButton;
-    private JList<ClassObj> filterList;
-    private JList<ClassObj> listenerList;
     private JTabbedPane tabbedPane;
     private HashMap<String , PanelInfo> sourceResultPannelMap;
     private JPanel normalPanel;

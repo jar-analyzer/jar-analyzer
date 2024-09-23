@@ -57,6 +57,7 @@ public class SocketHelper {
 
     public static void setPass(String p) {
         pass = p;
+        pass = Base64Util.encode(pass.getBytes());
     }
 
     public static boolean check() {
@@ -75,6 +76,7 @@ public class SocketHelper {
         try (Socket client = new Socket(host, port)) {
             ByteArrayOutputStream bao = new ByteArrayOutputStream();
             ObjectOutputStream oos = new ObjectOutputStream(bao);
+            className = Base64Util.encode(className.getBytes());
             oos.writeObject(pass + "|" + className);
             client.getOutputStream().write(bao.toByteArray());
             ois = new ObjectInputStream(client.getInputStream());

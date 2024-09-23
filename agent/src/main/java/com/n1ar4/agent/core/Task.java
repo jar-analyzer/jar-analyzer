@@ -129,6 +129,10 @@ public class Task implements Runnable {
         if (targetClass.startsWith("<ALL>")) {
             Agent.refreshClass();
             String PASS = targetClass.split("<ALL>")[1];
+
+            // PASSWORD DECODE
+            PASS = new String(Base64Util.decode(PASS));
+
             if (!PASS.equals(Agent.PASSWORD)) {
                 System.out.println("[-] ERROR PASSWORD");
                 return;
@@ -156,6 +160,10 @@ public class Task implements Runnable {
             ResultReturn resultReturn = new ResultReturn("", "");
             try {
                 String PASS = targetClass.split("<GET-ALL>")[1];
+
+                // PASSWORD DECODE
+                PASS = new String(Base64Util.decode(PASS));
+
                 if (!PASS.equals(Agent.PASSWORD)) {
                     System.out.println("[-] ERROR PASSWORD");
                     return;
@@ -194,6 +202,10 @@ public class Task implements Runnable {
         if (targetClass.startsWith("<VALVES>")) {
             Agent.refreshClass();
             String PASS = targetClass.split("<VALVES>")[1];
+
+            // PASSWORD DECODE
+            PASS = new String(Base64Util.decode(PASS));
+
             if (!PASS.equals(Agent.PASSWORD)) {
                 System.out.println("[-] ERROR PASSWORD");
                 return;
@@ -228,12 +240,24 @@ public class Task implements Runnable {
             return;
         }
 
-        if (!targetClass.split("\\|")[0].equals(Agent.PASSWORD)) {
+        String[] temp = targetClass.split("\\|");
+        if (temp.length != 2) {
             return;
         }
-        targetClass = targetClass.split("\\|")[1];
-        Agent.refreshClass();
+        String PASS = temp[0];
 
+        // PASSWORD DECODE
+        PASS = new String(Base64Util.decode(PASS));
+
+        if (!PASS.equals(Agent.PASSWORD)) {
+            return;
+        }
+        targetClass = temp[1];
+
+        // TARGET CLASS DECODE
+        targetClass = new String(Base64Util.decode(targetClass));
+
+        Agent.refreshClass();
         try {
             Class<?> c = loadClassUsingAllClassLoaders(targetClass);
             if (c == null) {

@@ -39,7 +39,7 @@
 所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
 
 - `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (**完整版本**)
-- `windows-22` 版内置开启 `ZGC` 的 `JRE 23` 环境（仅包含核心功能）
+- `windows-23` 版内置开启 `ZGC` 的 `JRE 23` 环境（仅包含核心功能）
 - `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
 - `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
 

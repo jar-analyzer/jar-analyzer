@@ -367,13 +367,22 @@ public class ShellForm {
                     if (total.trim().isEmpty()) {
                         total = tips;
                     } else {
-                        total = "// FernFlower by Jar Analyzer V2\n" + total;
+                        total = "// Decompiled by FernFlower\n" +
+                                "// Tomcat Analyzer from Jar Analyzer V2 @ 4ra1n\n" +
+                                "// PROJECT: https://github.com/jar-analyzer/jar-analyzer\n" +
+                                total;
                     }
                 } catch (Exception ignored) {
                     total = tips;
                 }
                 try {
                     Files.delete(javaPathPath);
+                } catch (IOException ignored) {
+                }
+                // 2024/09/24 FIX
+                // DELETE TEMP CLASS FILE
+                try {
+                    Files.delete(Paths.get(classPath));
                 } catch (IOException ignored) {
                 }
 

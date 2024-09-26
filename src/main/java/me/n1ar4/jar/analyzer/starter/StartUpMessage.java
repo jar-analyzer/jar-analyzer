@@ -100,13 +100,19 @@ public class StartUpMessage {
                 splashWindow.setVisible(false);
                 splashWindow.dispose();
                 SwingUtilities.invokeLater(new Thread(() -> {
-                    if (frameList.size() != 1) {
-                        logger.error("main form frame init error");
-                        return;
+                    if (frameList.isEmpty()) {
+                        logger.warn("main form frame init error");
+                        logger.warn("start gui directly");
+                        // 2024/09/26 BUG
+                        // 如果这个 frameList 加载有问题 直接启动
+                        JFrame f = MainForm.start();
+                        f.setVisible(true);
+                    } else {
+                        // 如果 frameList 里面有东西只取第一个进行显示
+                        JFrame frame = frameList.get(0);
+                        logger.info("set main form frame visible");
+                        frame.setVisible(true);
                     }
-                    JFrame frame = frameList.get(0);
-                    logger.info("set main form frame visible");
-                    frame.setVisible(true);
                 }));
             } else {
                 splashWindow.setOpacity(opacity);

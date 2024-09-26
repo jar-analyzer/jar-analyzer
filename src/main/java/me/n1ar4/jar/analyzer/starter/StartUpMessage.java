@@ -28,6 +28,7 @@ import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.IconManager;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,12 +36,14 @@ import java.util.ArrayList;
 
 public class StartUpMessage {
     private static final Logger logger = LogManager.getLogger();
+    private static final org.slf4j.Logger log = LoggerFactory.getLogger(StartUpMessage.class);
 
     public static void run() {
         // 异步加载 MainForm 组件
         logger.info("async load main form instance");
         final ArrayList<JFrame> frameList = new ArrayList<>();
-        new Thread(() -> frameList.add(MainForm.start())).start();
+        // 不开新线程 直接添加 避免可能的并发问题
+        frameList.add(MainForm.start());
 
         JWindow splashWindow = new JWindow();
         JLabel splashLabel = new JLabel(IconManager.startUpIcon);

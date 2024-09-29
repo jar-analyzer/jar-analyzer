@@ -392,6 +392,9 @@ public class MenuUtil {
             checkUpdateItem.addActionListener(e -> new Thread(() -> {
                 logger.info("check update from aliyun oss");
                 HttpResponse resp = Y4Client.INSTANCE.get(Const.checkUpdateUrl);
+                if (resp == null) {
+                    return;
+                }
                 String body = new String(resp.getBody());
                 if (body.isEmpty()) {
                     return;

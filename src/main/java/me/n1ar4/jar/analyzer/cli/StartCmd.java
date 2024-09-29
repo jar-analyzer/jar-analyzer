@@ -41,6 +41,9 @@ public class StartCmd {
     @Parameter(names = {"-l", "--log-level"}, description = "set log level (debug|info|warn|error)")
     public String logLevel;
 
+    @Parameter(names = {"-n", "--no-check"}, description = "disable all update http request")
+    public boolean noHttp;
+
     public StartCmd() {
 
     }
@@ -65,7 +68,7 @@ public class StartCmd {
         return logLevel;
     }
 
-    public void setLogLevel(String logLevel) {
-        this.logLevel = logLevel;
+    public boolean isNoHttp() {
+        return noHttp;
     }
 }

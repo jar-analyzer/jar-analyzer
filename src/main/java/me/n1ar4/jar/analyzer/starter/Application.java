@@ -29,6 +29,7 @@ import me.n1ar4.jar.analyzer.cli.BuildCmd;
 import me.n1ar4.jar.analyzer.cli.Client;
 import me.n1ar4.jar.analyzer.cli.StartCmd;
 import me.n1ar4.jar.analyzer.gui.GlobalOptions;
+import me.n1ar4.jar.analyzer.http.Y4Client;
 import me.n1ar4.jar.analyzer.server.HttpServer;
 import me.n1ar4.jar.analyzer.utils.*;
 import me.n1ar4.log.LogLevel;
@@ -90,6 +91,11 @@ public class Application {
         } catch (Exception ignored) {
             commander.usage();
             return;
+        }
+
+        // DISABLE HTTP
+        if (startCmd.isNoHttp()) {
+            Y4Client.enabled = false;
         }
 
         // SET LOG LEVEL (debug|info|warn|error)

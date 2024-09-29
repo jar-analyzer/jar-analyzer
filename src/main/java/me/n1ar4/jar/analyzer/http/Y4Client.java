@@ -41,6 +41,8 @@ public class Y4Client {
     private OkHttpClient client;
     public static Map<String, String> baseHeaders = new HashMap<>();
 
+    public static boolean enabled = true;
+
     static {
         baseHeaders.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) " +
                 "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36");
@@ -49,53 +51,66 @@ public class Y4Client {
     public static final Y4Client INSTANCE = new Y4Client();
 
     public Y4Client() {
-        this.reConfig();
+        if (enabled) {
+            this.reConfig();
+        }
     }
 
     public void reConfig() {
-        this.client = new OkHttpClient.Builder()
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(10, TimeUnit.SECONDS)
-                .writeTimeout(10, TimeUnit.SECONDS)
-                .build();
+        if (enabled) {
+            this.client = new OkHttpClient.Builder()
+                    .connectTimeout(10, TimeUnit.SECONDS)
+                    .readTimeout(10, TimeUnit.SECONDS)
+                    .writeTimeout(10, TimeUnit.SECONDS)
+                    .build();
+        }
     }
 
     public HttpResponse get(String url) {
-        try {
-            Request.Builder requestBuilder = new Request.Builder()
-                    .url(url)
-                    .get();
-            return getHttpResponse(baseHeaders, requestBuilder);
-        } catch (Exception ex) {
-            logger.error("http get error: {}", ex.toString());
-            return null;
+        if (enabled) {
+            try {
+                Request.Builder requestBuilder = new Request.Builder()
+                        .url(url)
+                        .get();
+                return getHttpResponse(baseHeaders, requestBuilder);
+            } catch (Exception ex) {
+                logger.error("http get error: {}", ex.toString());
+                return null;
+            }
         }
+        return null;
     }
 
     public HttpResponse post(String url, Map<String, String> headers, RequestBody body) throws IOException {
-        Request.Builder requestBuilder = new Request.Builder()
-                .url(url)
-                .post(body);
-        return getHttpResponse(headers, requestBuilder);
+        if (enabled) {
+            Request.Builder requestBuilder = new Request.Builder()
+                    .url(url)
+                    .post(body);
+            return getHttpResponse(headers, requestBuilder);
+        }
+        return null;
     }
 
     public HttpResponse request(HttpRequest request) {
-        try {
-            Request.Builder requestBuilder;
-            if (request.getMethod().equals("GET")) {
-                requestBuilder = new Request.Builder()
-                        .url(request.getUrl())
-                        .method(request.getMethod(), null);
-            } else {
-                requestBuilder = new Request.Builder()
-                        .url(request.getUrl())
-                        .method(request.getMethod(), RequestBody.create(request.getBody()));
+        if (enabled) {
+            try {
+                Request.Builder requestBuilder;
+                if (request.getMethod().equals("GET")) {
+                    requestBuilder = new Request.Builder()
+                            .url(request.getUrl())
+                            .method(request.getMethod(), null);
+                } else {
+                    requestBuilder = new Request.Builder()
+                            .url(request.getUrl())
+                            .method(request.getMethod(), RequestBody.create(request.getBody()));
+                }
+                return getHttpResponse(request.getHeaders(), requestBuilder);
+            } catch (Exception ex) {
+                logger.error("http request error: {}", ex.toString());
+                return null;
             }
-            return getHttpResponse(request.getHeaders(), requestBuilder);
-        } catch (Exception ex) {
-            logger.error("http request error: {}", ex.toString());
-            return null;
         }
+        return null;
     }
 
     private HttpResponse getHttpResponse(Map<String, String> headers, Request.Builder requestBuilder) throws IOException {

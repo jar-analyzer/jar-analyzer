@@ -15,7 +15,7 @@ rem http api server port
 set "api_server_port=10032"
 rem log level (debug info warn error)
 set "log_level=info"
-rem program args
+rem program args (add --no-check to disable update check)
 set "program_args=--theme %theme_name% --port %api_server_port% --log-level %log_level%"
 
 rem get java home

@@ -7,7 +7,7 @@ public class UrlInfoAndDescMapValue {
     public ArrayList<UrlInfo> urlInfos;
     public ArrayList<String> desc;
 
-    public UrlInfoAndDescMapValue(String tag){
+    public UrlInfoAndDescMapValue(String tag) {
         this.tag = tag;
         this.urlInfos = new ArrayList<>();
         this.desc = new ArrayList<>();

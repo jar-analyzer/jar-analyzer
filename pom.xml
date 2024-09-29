@@ -77,7 +77,7 @@
         <fastjson.version>2.0.53</fastjson.version>
         <hutool.version>5.8.32</hutool.version>
         <jfreechart.version>1.5.5</jfreechart.version>
-        <oshi.version>6.6.4</oshi.version>
+        <oshi.version>6.6.5</oshi.version>
         <bcel.version>6.10.0</bcel.version>
         <!-- Maven Build Version -->
         <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-resources-plugin -->

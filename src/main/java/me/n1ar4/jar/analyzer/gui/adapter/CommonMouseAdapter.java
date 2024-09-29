@@ -39,6 +39,9 @@ import me.n1ar4.log.Logger;
 import org.objectweb.asm.Type;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -167,6 +170,7 @@ public class CommonMouseAdapter extends MouseAdapter {
             MainForm.setNextState(null);
         } else if (SwingUtilities.isRightMouseButton(evt)) {
             JPopupMenu popupMenu = new JPopupMenu();
+
             JMenuItem addToFavorite = new JMenuItem("add to favorite");
             popupMenu.add(addToFavorite);
             addToFavorite.addActionListener(e -> {
@@ -178,6 +182,41 @@ public class CommonMouseAdapter extends MouseAdapter {
                 }
                 MainForm.getFavData().addElement(selectedItem);
             });
+
+            JMenuItem copyThis = new JMenuItem("copy this");
+            popupMenu.add(copyThis);
+            copyThis.addActionListener(e -> {
+                MethodResult selectedItem = (MethodResult) list.getSelectedValue();
+                if (selectedItem == null) {
+                    JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                            "SELECTED METHOD IS NULL");
+                    return;
+                }
+                StringSelection stringSelection = new StringSelection(selectedItem.getCopyString());
+                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                clipboard.setContents(stringSelection, null);
+                JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(), "COPY OK");
+            });
+
+            JMenuItem copyAll = new JMenuItem("copy all");
+            popupMenu.add(copyAll);
+            copyAll.addActionListener(e -> {
+                ListModel<?> all = list.getModel();
+                if (all.getSize() == 0) {
+                    return;
+                }
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < all.getSize(); i++) {
+                    MethodResult mr = (MethodResult) all.getElementAt(i);
+                    sb.append(mr.getCopyString());
+                    sb.append("\n");
+                }
+                StringSelection stringSelection = new StringSelection(sb.toString());
+                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                clipboard.setContents(stringSelection, null);
+                JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(), "COPY OK");
+            });
+
             int index = list.locationToIndex(evt.getPoint());
             list.setSelectedIndex(index);
             popupMenu.show(list, evt.getX(), evt.getY());

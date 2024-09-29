@@ -24,10 +24,13 @@
 
 package me.n1ar4.jar.analyzer.entity;
 
+import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.annotation.JSONField;
 import me.n1ar4.jar.analyzer.utils.ASMUtil;
 
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MethodResult {
     private String className;
@@ -127,5 +130,13 @@ public class MethodResult {
     public String toString() {
         return "<html>" + ASMUtil.convertMethodDesc(
                 getMethodName(), getMethodDesc()) + "</html>";
+    }
+
+    public String getCopyString() {
+        Map<String, String> data = new HashMap<>();
+        data.put("className", getClassName());
+        data.put("methodName", getMethodName());
+        data.put("methodDesc", getMethodDesc());
+        return JSON.toJSONString(data);
     }
 }

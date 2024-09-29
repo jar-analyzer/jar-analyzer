@@ -248,6 +248,12 @@ public class CoreHelper {
                     filtered = true;
                     break;
                 }
+                // CHECK PACAKGE
+                b = b.replace(".", "/");
+                if (m.getClassName().startsWith(b)) {
+                    filtered = true;
+                    break;
+                }
             }
             if (!filtered) {
                 newReulst.add(m);
@@ -311,6 +317,12 @@ public class CoreHelper {
                     filtered = true;
                     break;
                 }
+                // CHECK PACAKGE
+                b = b.replace(".", "/");
+                if (m.getClassName().startsWith(b)) {
+                    filtered = true;
+                    break;
+                }
             }
             if (!filtered) {
                 newReulst.add(m);
@@ -368,6 +380,12 @@ public class CoreHelper {
                     filtered = true;
                     break;
                 }
+                // CHECK PACAKGE
+                b = b.replace(".", "/");
+                if (m.getClassName().startsWith(b)) {
+                    filtered = true;
+                    break;
+                }
             }
             if (!filtered) {
                 newReulst.add(m);
@@ -418,6 +436,12 @@ public class CoreHelper {
             boolean filtered = false;
             for (String b : bl) {
                 if (m.getClassName().equals(b)) {
+                    filtered = true;
+                    break;
+                }
+                // CHECK PACAKGE
+                b = b.replace(".", "/");
+                if (m.getClassName().startsWith(b)) {
                     filtered = true;
                     break;
                 }
@@ -494,6 +518,12 @@ public class CoreHelper {
                     filtered = true;
                     break;
                 }
+                // CHECK PACAKGE
+                b = b.replace(".", "/");
+                if (m.getClassName().startsWith(b)) {
+                    filtered = true;
+                    break;
+                }
             }
             if (!filtered) {
                 newReulst.add(m);
@@ -548,6 +578,12 @@ public class CoreHelper {
             boolean filtered = false;
             for (String b : bl) {
                 if (m.getClassName().equals(b)) {
+                    filtered = true;
+                    break;
+                }
+                // CHECK PACAKGE
+                b = b.replace(".", "/");
+                if (m.getClassName().startsWith(b)) {
                     filtered = true;
                     break;
                 }

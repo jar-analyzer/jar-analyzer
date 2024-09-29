@@ -81,12 +81,19 @@ public class ListParser {
                         if (item.isEmpty()) {
                             continue;
                         }
+                        // 2024/09/29 兼容 java.lang.*; 类型（一个或多个 * 都要考虑）
+                        while (item.endsWith("*")) {
+                            item = item.substring(0, item.length() - 1);
+                        }
                         item = item.replace(".", "/");
                         list.add(item);
                     }
                     // 直接跳过
                     continue;
                 }
+            }
+            while (s.endsWith("*")) {
+                s = s.substring(0, s.length() - 1);
             }
             // 2024/08/23
             // 兼容性增强 不使用分号也允许

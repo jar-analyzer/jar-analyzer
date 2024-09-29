@@ -9,7 +9,7 @@ env:
 jobs:
 
   build:
-    runs-on: windows-2019
+    runs-on: windows-latest
     steps:
       - name: checkout the source
         uses: actions/checkout@v4

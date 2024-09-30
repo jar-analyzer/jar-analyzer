@@ -146,6 +146,7 @@
 - `Jar Analyzer V2` 在 `2023.10.23` 第一次提交
 - `Jar Analyzer v2` 正式版在 `2023.12.07` 发布
 - `Jar Analyzer V2` 在 `2024.08.15` 发布 `3.0` 版本
+- `Jar Analyzer V2` 在 `2024.09.30` 总 `Star` 破千
 
 ### 发版时间
 

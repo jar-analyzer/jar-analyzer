@@ -71,6 +71,7 @@ public class SearchInputListener implements DocumentListener {
                             "<p> class: {} </p>" +
                             "</html>",
                     count, collect.size(), innerClass ? "inner class" : "normal", temp[temp.length - 1]));
+            fileTreeSearchLabel.setToolTipText(temp[temp.length - 1]);
             return;
         }
         count = 0;
@@ -89,8 +90,10 @@ public class SearchInputListener implements DocumentListener {
                             "<p> class: {} </p>" +
                             "</html>",
                     1, collect.size(), innerClass ? "inner class" : "normal", temp[temp.length - 1]));
+            fileTreeSearchLabel.setToolTipText(temp[temp.length - 1]);
             fileTreeSearchLabel.setVisible(true);
         } else {
+            fileTreeSearchLabel.setToolTipText(null);
             fileTreeSearchLabel.setVisible(false);
         }
     }

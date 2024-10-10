@@ -121,9 +121,7 @@ public class CommonMouseAdapter extends MouseAdapter {
                     String[] c = finalRes.getClassName().split("/");
                     methodName = c[c.length - 1];
                 }
-                int paramNum = Type.getMethodType(
-                        finalRes.getMethodDesc()).getArgumentTypes().length;
-                int pos = FinderRunner.find(code, methodName, paramNum);
+                int pos = FinderRunner.find(code, methodName, finalRes.getMethodDesc());
 
                 // SET FILE TREE HIGHLIGHT
                 SearchInputListener.getFileTree().searchPathTarget(className);

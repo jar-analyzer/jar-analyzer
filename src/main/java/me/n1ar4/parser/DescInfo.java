@@ -22,34 +22,28 @@
  * SOFTWARE.
  */
 
-package me.n1ar4.jar.analyzer.core;
+package me.n1ar4.parser;
 
-import com.github.javaparser.Position;
-import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.body.MethodDeclaration;
-import me.n1ar4.parser.JarAnalyzerParser;
+import java.util.ArrayList;
+import java.util.List;
 
-public class FinderRunner {
-    public static int find(String total, String methodName, String methodDesc) {
-        CompilationUnit cu = JarAnalyzerParser.buildInstance(total);
-        MethodDeclaration md = JarAnalyzerParser.getMethod(cu, methodName, methodDesc);
-        if (md == null) {
-            return 0;
-        }
-        if (md.getBegin().isPresent()) {
-            return getCur(total, md.getBegin().get());
-        } else {
-            return 0;
-        }
+public class DescInfo {
+    private List<String> params = new ArrayList<>();
+    private String ret;
+
+    public List<String> getParams() {
+        return params;
     }
 
-    public static int getCur(String code, Position position) {
-        String[] lines = code.split("\n");
-        int charCount = 0;
-        for (int i = 0; i < position.line - 1; i++) {
-            charCount += lines[i].length() + 1;
-        }
-        charCount += position.column;
-        return charCount;
+    public void setParams(List<String> params) {
+        this.params = params;
+    }
+
+    public String getRet() {
+        return ret;
+    }
+
+    public void setRet(String ret) {
+        this.ret = ret;
     }
 }

@@ -22,34 +22,29 @@
  * SOFTWARE.
  */
 
-package me.n1ar4.jar.analyzer.core;
+package me.n1ar4.parser;
 
-import com.github.javaparser.Position;
-import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.body.MethodDeclaration;
-import me.n1ar4.parser.JarAnalyzerParser;
+import jdk.internal.org.objectweb.asm.Type;
 
-public class FinderRunner {
-    public static int find(String total, String methodName, String methodDesc) {
-        CompilationUnit cu = JarAnalyzerParser.buildInstance(total);
-        MethodDeclaration md = JarAnalyzerParser.getMethod(cu, methodName, methodDesc);
-        if (md == null) {
-            return 0;
+public class DescUtil {
+    public static DescInfo parseDesc(String desc) {
+        DescInfo ret = new DescInfo();
+        Type methodType = Type.getMethodType(desc);
+        Type[] argumentTypes = methodType.getArgumentTypes();
+        for (Type argumentType : argumentTypes) {
+            ret.getParams().add(argumentType.getClassName());
         }
-        if (md.getBegin().isPresent()) {
-            return getCur(total, md.getBegin().get());
-        } else {
-            return 0;
-        }
+        Type returnType = methodType.getReturnType();
+        ret.setRet(returnType.getClassName());
+        return ret;
     }
 
-    public static int getCur(String code, Position position) {
-        String[] lines = code.split("\n");
-        int charCount = 0;
-        for (int i = 0; i < position.line - 1; i++) {
-            charCount += lines[i].length() + 1;
+    public static String cleanJavaLang(String c) {
+        int lastIndex = c.lastIndexOf('.');
+        if (lastIndex != -1) {
+            return c.substring(lastIndex + 1);
+        } else {
+            return c;
         }
-        charCount += position.column;
-        return charCount;
     }
 }

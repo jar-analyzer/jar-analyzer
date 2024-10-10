@@ -36,6 +36,7 @@ import me.n1ar4.jar.analyzer.starter.Const;
 import org.objectweb.asm.Type;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -120,9 +121,7 @@ public class PrevNextAction {
                     String[] c = m.getClassName().split("/");
                     methodName = c[c.length - 1];
                 }
-                int paramNum = Type.getMethodType(
-                        m.getMethodDesc()).getArgumentTypes().length;
-                int pos = FinderRunner.find(code, methodName, paramNum);
+                int pos = FinderRunner.find(code, methodName, m.getMethodDesc());
 
                 // SET FILE TREE HIGHLIGHT
                 SearchInputListener.getFileTree().searchPathTarget(className);
@@ -220,9 +219,7 @@ public class PrevNextAction {
                     String[] c = m.getClassName().split("/");
                     methodName = c[c.length - 1];
                 }
-                int paramNum = Type.getMethodType(
-                        m.getMethodDesc()).getArgumentTypes().length;
-                int pos = FinderRunner.find(code, methodName, paramNum);
+                int pos = FinderRunner.find(code, methodName, m.getMethodDesc());
 
                 // SET FILE TREE HIGHLIGHT
 

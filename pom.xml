@@ -79,6 +79,7 @@
         <jfreechart.version>1.5.5</jfreechart.version>
         <oshi.version>6.6.5</oshi.version>
         <bcel.version>6.10.0</bcel.version>
+        <java.parser.version>3.26.2</java.parser.version>
         <!-- Maven Build Version -->
         <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-resources-plugin -->
         <maven.resources.version>3.3.1</maven.resources.version>
@@ -187,6 +188,11 @@
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
             <version>${okhttp3.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.javaparser</groupId>
+            <artifactId>javaparser-symbol-solver-core</artifactId>
+            <version>${java.parser.version}</version>
         </dependency>
         <dependency>
             <groupId>org.nanohttpd</groupId>

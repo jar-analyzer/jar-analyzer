@@ -24,7 +24,7 @@
 
 package me.n1ar4.parser;
 
-import jdk.internal.org.objectweb.asm.Type;
+import org.objectweb.asm.Type;
 
 public class DescUtil {
     public static DescInfo parseDesc(String desc) {

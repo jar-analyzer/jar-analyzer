@@ -46,6 +46,9 @@ public class ASMUtil {
         if (methodName.equals("<init>")) {
             methodName = "[init]";
         }
+        if (methodName.equals("<clinit>")) {
+            methodName = "[clinit]";
+        }
         sb.append(methodName);
         sb.append("</font>");
         sb.append("(");

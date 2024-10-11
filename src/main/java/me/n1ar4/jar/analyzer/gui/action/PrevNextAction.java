@@ -115,10 +115,7 @@ public class PrevNextAction {
                     return;
                 }
                 String methodName = m.getMethodName();
-                if (methodName.equals("<init>")) {
-                    String[] c = m.getClassName().split("/");
-                    methodName = c[c.length - 1];
-                }
+
                 int pos = FinderRunner.find(code, methodName, m.getMethodDesc());
 
                 // SET FILE TREE HIGHLIGHT
@@ -213,10 +210,7 @@ public class PrevNextAction {
                     return;
                 }
                 String methodName = m.getMethodName();
-                if (methodName.equals("<init>")) {
-                    String[] c = m.getClassName().split("/");
-                    methodName = c[c.length - 1];
-                }
+
                 int pos = FinderRunner.find(code, methodName, m.getMethodDesc());
 
                 // SET FILE TREE HIGHLIGHT

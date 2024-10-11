@@ -28,6 +28,8 @@ import com.github.javaparser.Position;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.body.ConstructorDeclaration;
+import com.github.javaparser.ast.body.InitializerDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.expr.MethodCallExpr;
@@ -48,6 +50,47 @@ public class JarAnalyzerParser {
 
     private static List<MethodDeclaration> getAllMethods(CompilationUnit cu) {
         return cu.findAll(MethodDeclaration.class);
+    }
+
+    public static List<ConstructorDeclaration> getAllConstructors(CompilationUnit cu) {
+        return cu.findAll(ConstructorDeclaration.class);
+    }
+
+    public static InitializerDeclaration getStaticInitializerDeclaration(CompilationUnit cu) {
+        List<InitializerDeclaration> ids = cu.findAll(InitializerDeclaration.class);
+        for (InitializerDeclaration i : ids) {
+            if (i.isStatic()) {
+                return i;
+            }
+        }
+        return null;
+    }
+
+    public static ConstructorDeclaration getConstructor(CompilationUnit cu, String desc) {
+        List<ConstructorDeclaration> constructors = getAllConstructors(cu);
+        DescInfo di = DescUtil.parseDesc(desc);
+        for (ConstructorDeclaration constructor : constructors) {
+            List<String> typeList = di.getParams();
+            NodeList<Parameter> np = constructor.getParameters();
+            if (np.size() != typeList.size()) {
+                continue;
+            }
+            boolean match = true;
+            for (int i = 0; i < np.size(); i++) {
+                String a = typeList.get(i);
+                a = DescUtil.cleanJavaLang(a);
+                String b = np.get(i).getTypeAsString();
+                b = DescUtil.cleanJavaLang(b);
+                if (!a.equals(b)) {
+                    match = false;
+                    break;
+                }
+            }
+            if (match) {
+                return constructor;
+            }
+        }
+        return null;
     }
 
     public static MethodDeclaration getMethod(CompilationUnit cu, String name, String desc) {

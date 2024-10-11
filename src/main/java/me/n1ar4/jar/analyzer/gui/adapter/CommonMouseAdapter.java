@@ -116,10 +116,7 @@ public class CommonMouseAdapter extends MouseAdapter {
             new Thread(() -> {
                 String code = DecompileEngine.decompile(Paths.get(finalClassPath));
                 String methodName = finalRes.getMethodName();
-                if (methodName.equals("<init>")) {
-                    String[] c = finalRes.getClassName().split("/");
-                    methodName = c[c.length - 1];
-                }
+
                 int pos = FinderRunner.find(code, methodName, finalRes.getMethodDesc());
 
                 // SET FILE TREE HIGHLIGHT

@@ -40,7 +40,7 @@ public class DescUtil {
     }
 
     public static String cleanJavaLang(String c) {
-        int lastIndex = c.lastIndexOf('.');
+        int lastIndex = Math.max(c.lastIndexOf('.'), c.lastIndexOf('$'));
         if (lastIndex != -1) {
             return c.substring(lastIndex + 1);
         } else {

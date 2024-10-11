@@ -26,12 +26,37 @@ package me.n1ar4.jar.analyzer.core;
 
 import com.github.javaparser.Position;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.body.ConstructorDeclaration;
+import com.github.javaparser.ast.body.InitializerDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import me.n1ar4.parser.JarAnalyzerParser;
 
 public class FinderRunner {
     public static int find(String total, String methodName, String methodDesc) {
+        // FIX <init> CLASS NAME
         CompilationUnit cu = JarAnalyzerParser.buildInstance(total);
+        if (methodName.equals("<clinit>")) {
+            InitializerDeclaration id = JarAnalyzerParser.getStaticInitializerDeclaration(cu);
+            if (id == null) {
+                return 0;
+            }
+            if (id.getBegin().isPresent()) {
+                return getCur(total, id.getBegin().get());
+            } else {
+                return 0;
+            }
+        }
+        if (methodName.equals("<init>")) {
+            ConstructorDeclaration cd = JarAnalyzerParser.getConstructor(cu, methodDesc);
+            if (cd == null) {
+                return 0;
+            }
+            if (cd.getBegin().isPresent()) {
+                return getCur(total, cd.getBegin().get());
+            } else {
+                return 0;
+            }
+        }
         MethodDeclaration md = JarAnalyzerParser.getMethod(cu, methodName, methodDesc);
         if (md == null) {
             return 0;

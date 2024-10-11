@@ -267,7 +267,17 @@ public class CoreHelper {
         } else {
             throw new RuntimeException("invalid sort");
         }
-
+        if (MainForm.getInstance().getNullParamBox().isSelected()) {
+            ArrayList<MethodResult> newResults = new ArrayList<>();
+            for (MethodResult result : newReulst) {
+                if (result.getMethodDesc().contains("()")) {
+                    continue;
+                }
+                newResults.add(result);
+            }
+            newReulst.clear();
+            newReulst.addAll(newResults);
+        }
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
         for (MethodResult result : newReulst) {
             methodsList.addElement(result);
@@ -337,6 +347,18 @@ public class CoreHelper {
             throw new RuntimeException("invalid sort");
         }
 
+        if (MainForm.getInstance().getNullParamBox().isSelected()) {
+            ArrayList<MethodResult> newResults = new ArrayList<>();
+            for (MethodResult result : newReulst) {
+                if (result.getMethodDesc().contains("()")) {
+                    continue;
+                }
+                newResults.add(result);
+            }
+            newReulst.clear();
+            newReulst.addAll(newResults);
+        }
+
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
         for (MethodResult result : newReulst) {
             methodsList.addElement(result);
@@ -400,6 +422,18 @@ public class CoreHelper {
             throw new RuntimeException("invalid sort");
         }
 
+        if (MainForm.getInstance().getNullParamBox().isSelected()) {
+            ArrayList<MethodResult> newResults = new ArrayList<>();
+            for (MethodResult result : newReulst) {
+                if (result.getMethodDesc().contains("()")) {
+                    continue;
+                }
+                newResults.add(result);
+            }
+            newReulst.clear();
+            newReulst.addAll(newResults);
+        }
+
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
         for (MethodResult result : newReulst) {
             methodsList.addElement(result);
@@ -457,6 +491,18 @@ public class CoreHelper {
             newReulst.sort(Comparator.comparing(MethodResult::getClassName));
         } else {
             throw new RuntimeException("invalid sort");
+        }
+
+        if (MainForm.getInstance().getNullParamBox().isSelected()) {
+            ArrayList<MethodResult> newResults = new ArrayList<>();
+            for (MethodResult result : newReulst) {
+                if (result.getMethodDesc().contains("()")) {
+                    continue;
+                }
+                newResults.add(result);
+            }
+            newReulst.clear();
+            newReulst.addAll(newResults);
         }
 
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
@@ -538,6 +584,18 @@ public class CoreHelper {
             throw new RuntimeException("invalid sort");
         }
 
+        if (MainForm.getInstance().getNullParamBox().isSelected()) {
+            ArrayList<MethodResult> newResults = new ArrayList<>();
+            for (MethodResult result : newReulst) {
+                if (result.getMethodDesc().contains("()")) {
+                    continue;
+                }
+                newResults.add(result);
+            }
+            newReulst.clear();
+            newReulst.addAll(newResults);
+        }
+
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
         for (MethodResult result : newReulst) {
             methodsList.addElement(result);
@@ -599,6 +657,18 @@ public class CoreHelper {
             newReulst.sort(Comparator.comparing(MethodResult::getClassName));
         } else {
             throw new RuntimeException("invalid sort");
+        }
+
+        if (MainForm.getInstance().getNullParamBox().isSelected()) {
+            ArrayList<MethodResult> newResults = new ArrayList<>();
+            for (MethodResult result : newReulst) {
+                if (result.getMethodDesc().contains("()")) {
+                    continue;
+                }
+                newResults.add(result);
+            }
+            newReulst.clear();
+            newReulst.addAll(newResults);
         }
 
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();

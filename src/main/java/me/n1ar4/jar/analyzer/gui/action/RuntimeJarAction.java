@@ -51,6 +51,16 @@ public class RuntimeJarAction {
                     rtText.setText(rtJarPath);
                 } else {
                     LogUtil.warn("rt.jar file not found");
+                    JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                            "<html>" +
+                                    "<p><strong>rt.jar</strong> file not found</p>" +
+                                    "<p><strong>rt.jar</strong> 文件找不到</p>" +
+                                    "<p>可能的原因：<strong>JAVA 9+</strong> 不使用 <strong>rt.jar</strong> 文件，" +
+                                    "而是使用 <strong>jmod</strong> 等格式</p>" +
+                                    "<p>本项目暂不支持非 <strong>jar</strong> 方式的 runtime lib 分析</p>" +
+                                    "<p>请考虑使用 <strong>windows-full</strong> 版本或" +
+                                    "下载 <strong>JDK/JRE 8</strong></p>" +
+                                    "</html>");
                     rtText.setText(NOT_FOUND);
                 }
             } else {

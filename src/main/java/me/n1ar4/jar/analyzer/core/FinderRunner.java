@@ -29,6 +29,7 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.InitializerDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.expr.SimpleName;
 import me.n1ar4.parser.JarAnalyzerParser;
 
 public class FinderRunner {
@@ -51,8 +52,9 @@ public class FinderRunner {
             if (cd == null) {
                 return 0;
             }
-            if (cd.getBegin().isPresent()) {
-                return getCur(total, cd.getBegin().get());
+            SimpleName sn = cd.getName();
+            if (sn.getBegin().isPresent()) {
+                return getCur(total, sn.getBegin().get());
             } else {
                 return 0;
             }
@@ -61,8 +63,9 @@ public class FinderRunner {
         if (md == null) {
             return 0;
         }
-        if (md.getBegin().isPresent()) {
-            return getCur(total, md.getBegin().get());
+        SimpleName sn = md.getName();
+        if (sn.getBegin().isPresent()) {
+            return getCur(total, sn.getBegin().get());
         } else {
             return 0;
         }

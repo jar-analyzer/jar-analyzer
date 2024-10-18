@@ -33,6 +33,7 @@ import me.n1ar4.jar.analyzer.core.StateLinkedList;
 import me.n1ar4.jar.analyzer.engine.CoreEngine;
 import me.n1ar4.jar.analyzer.engine.DecompileEngine;
 import me.n1ar4.jar.analyzer.entity.ClassResult;
+import me.n1ar4.jar.analyzer.entity.LeakResult;
 import me.n1ar4.jar.analyzer.entity.MethodResult;
 import me.n1ar4.jar.analyzer.graph.HtmlGraph;
 import me.n1ar4.jar.analyzer.gui.action.*;
@@ -47,6 +48,7 @@ import me.n1ar4.jar.analyzer.gui.tree.FileTree;
 import me.n1ar4.jar.analyzer.gui.update.UpdateChecker;
 import me.n1ar4.jar.analyzer.gui.util.*;
 import me.n1ar4.jar.analyzer.gui.vul.*;
+import me.n1ar4.jar.analyzer.leak.LeakAction;
 import me.n1ar4.jar.analyzer.sca.SCAAction;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.utils.DirUtil;
@@ -275,7 +277,92 @@ public class MainForm {
     private JLabel bcelLabel;
     private JCheckBox nullParamBox;
     private JLabel nullParamLabel;
+    private JPanel leakPanel;
+    private JCheckBox leakUrlBox;
+    private JCheckBox leakJdbcBox;
+    private JCheckBox leakFileBox;
+    private JCheckBox leakCloudBox;
+    private JCheckBox leakMacBox;
+    private JCheckBox leakIpBox;
+    private JCheckBox leakPhoneBox;
+    private JCheckBox leakIdBox;
+    private JCheckBox leakEmailBox;
+    private JCheckBox leakDetBase64Box;
+    private JList<LeakResult> leakResultList;
+    private JButton leakCleanBtn;
+    private JButton leakStartBtn;
+    private JPanel leakRulesPanel;
+    private JPanel leakConfigPanel;
+    private JPanel leakResultPanel;
+    private JScrollPane leakResultScroll;
+    private JCheckBox leakLdcBox;
+    private JCheckBox leakCpBox;
+    private JCheckBox leakCodeBox;
     private static DefaultListModel<MethodResult> favData;
+
+    public JCheckBox getLeakUrlBox() {
+        return leakUrlBox;
+    }
+
+    public JCheckBox getLeakJdbcBox() {
+        return leakJdbcBox;
+    }
+
+    public JCheckBox getLeakFileBox() {
+        return leakFileBox;
+    }
+
+    public JCheckBox getLeakCloudBox() {
+        return leakCloudBox;
+    }
+
+    public JCheckBox getLeakMacBox() {
+        return leakMacBox;
+    }
+
+    public JCheckBox getLeakIpBox() {
+        return leakIpBox;
+    }
+
+    public JCheckBox getLeakPhoneBox() {
+        return leakPhoneBox;
+    }
+
+    public JCheckBox getLeakIdBox() {
+        return leakIdBox;
+    }
+
+    public JCheckBox getLeakEmailBox() {
+        return leakEmailBox;
+    }
+
+    public JCheckBox getLeakDetBase64Box() {
+        return leakDetBase64Box;
+    }
+
+    public JList<LeakResult> getLeakResultList() {
+        return leakResultList;
+    }
+
+    public JButton getLeakCleanBtn() {
+        return leakCleanBtn;
+    }
+
+    public JButton getLeakStartBtn() {
+        return leakStartBtn;
+    }
+
+    public JCheckBox getLeakLdcBox() {
+        return leakLdcBox;
+    }
+
+    public JCheckBox getLeakCpBox() {
+        return leakCpBox;
+    }
+
+    public JCheckBox getLeakCodeBox() {
+        return leakCodeBox;
+    }
 
     public static String getCurClass() {
         return curClass;
@@ -853,6 +940,7 @@ public class MainForm {
         HtmlGraph.run();
 
         SCAAction.register();
+        LeakAction.register();
         JNDIVulAction.register();
         RuntimeExecAction.register();
         ProcessBuilderAction.register();
@@ -933,7 +1021,7 @@ public class MainForm {
                                 null, null));
 
                 int c = instance.tabbedPanel.getTabCount();
-                if (c != 8) {
+                if (c != 9) {
                     throw new RuntimeException("tabbed panel error");
                 }
                 instance.tabbedPanel.setTitleAt(0, "开始");
@@ -943,7 +1031,8 @@ public class MainForm {
                 instance.tabbedPanel.setTitleAt(4, "spring");
                 instance.tabbedPanel.setTitleAt(5, "记录");
                 instance.tabbedPanel.setTitleAt(6, "SCA");
-                instance.tabbedPanel.setTitleAt(7, "高级");
+                instance.tabbedPanel.setTitleAt(7, "泄露");
+                instance.tabbedPanel.setTitleAt(8, "高级");
 
                 instance.chosePanel.setBorder(
                         BorderFactory.createTitledBorder(null,
@@ -1054,7 +1143,7 @@ public class MainForm {
                                 null, null));
 
                 int c = instance.tabbedPanel.getTabCount();
-                if (c != 8) {
+                if (c != 9) {
                     throw new RuntimeException("tabbed panel error");
                 }
                 instance.tabbedPanel.setTitleAt(0, "start");
@@ -1064,7 +1153,8 @@ public class MainForm {
                 instance.tabbedPanel.setTitleAt(4, "spring");
                 instance.tabbedPanel.setTitleAt(5, "note");
                 instance.tabbedPanel.setTitleAt(6, "SCA");
-                instance.tabbedPanel.setTitleAt(7, "advance");
+                instance.tabbedPanel.setTitleAt(7, "leak");
+                instance.tabbedPanel.setTitleAt(8, "advance");
 
                 instance.chosePanel.setBorder(
                         BorderFactory.createTitledBorder(null,
@@ -1652,6 +1742,72 @@ public class MainForm {
         scaResultOpenBtn = new JButton();
         scaResultOpenBtn.setText("OPEN");
         scaActionPanel.add(scaResultOpenBtn, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        leakPanel = new JPanel();
+        leakPanel.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 0, 0), -1, -1));
+        tabbedPanel.addTab("leak", leakPanel);
+        leakRulesPanel = new JPanel();
+        leakRulesPanel.setLayout(new GridLayoutManager(3, 3, new Insets(0, 0, 0, 0), -1, -1));
+        leakPanel.add(leakRulesPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        leakRulesPanel.setBorder(BorderFactory.createTitledBorder(null, "Rules", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+        leakUrlBox = new JCheckBox();
+        leakUrlBox.setText("Url Info");
+        leakRulesPanel.add(leakUrlBox, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        leakJdbcBox = new JCheckBox();
+        leakJdbcBox.setText("JDBC Connection");
+        leakRulesPanel.add(leakJdbcBox, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        leakFileBox = new JCheckBox();
+        leakFileBox.setText("File Path");
+        leakRulesPanel.add(leakFileBox, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        leakCloudBox = new JCheckBox();
+        leakCloudBox.setText("Cloud AK/SK");
+        leakRulesPanel.add(leakCloudBox, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        leakMacBox = new JCheckBox();
+        leakMacBox.setText("MAC Address");
+        leakRulesPanel.add(leakMacBox, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        leakIpBox = new JCheckBox();
+        leakIpBox.setText("IP Address");
+        leakRulesPanel.add(leakIpBox, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        leakPhoneBox = new JCheckBox();
+        leakPhoneBox.setText("Phone Number");
+        leakRulesPanel.add(leakPhoneBox, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        leakIdBox = new JCheckBox();
+        leakIdBox.setText("IP Card");
+        leakRulesPanel.add(leakIdBox, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        leakEmailBox = new JCheckBox();
+        leakEmailBox.setText("Email");
+        leakRulesPanel.add(leakEmailBox, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final Spacer spacer2 = new Spacer();
+        leakPanel.add(spacer2, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        leakConfigPanel = new JPanel();
+        leakConfigPanel.setLayout(new GridLayoutManager(2, 3, new Insets(0, 0, 0, 0), -1, -1));
+        leakPanel.add(leakConfigPanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        leakConfigPanel.setBorder(BorderFactory.createTitledBorder(null, "Config", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+        leakDetBase64Box = new JCheckBox();
+        leakDetBase64Box.setText("Detect Base64");
+        leakConfigPanel.add(leakDetBase64Box, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        leakCleanBtn = new JButton();
+        leakCleanBtn.setText("CLEAN");
+        leakConfigPanel.add(leakCleanBtn, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        leakStartBtn = new JButton();
+        leakStartBtn.setText("START");
+        leakConfigPanel.add(leakStartBtn, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        leakLdcBox = new JCheckBox();
+        leakLdcBox.setText("Check LDC String");
+        leakConfigPanel.add(leakLdcBox, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        leakCpBox = new JCheckBox();
+        leakCpBox.setText("Check ConstantPool");
+        leakConfigPanel.add(leakCpBox, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        leakCodeBox = new JCheckBox();
+        leakCodeBox.setText("Check Java Code");
+        leakConfigPanel.add(leakCodeBox, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        leakResultPanel = new JPanel();
+        leakResultPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        leakPanel.add(leakResultPanel, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        leakResultPanel.setBorder(BorderFactory.createTitledBorder(null, "Result", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+        leakResultScroll = new JScrollPane();
+        leakResultPanel.add(leakResultScroll, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(-1, 300), null, null, 0, false));
+        leakResultList = new JList();
+        leakResultScroll.setViewportView(leakResultList);
         advancePanel = new JPanel();
         advancePanel.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPanel.addTab("advance", advancePanel);
@@ -1725,8 +1881,8 @@ public class MainForm {
         xStreamButton = new JButton();
         xStreamButton.setText("XStream");
         javaVulSearchPanel.add(xStreamButton, new GridConstraints(7, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final Spacer spacer2 = new Spacer();
-        advancePanel.add(spacer2, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        final Spacer spacer3 = new Spacer();
+        advancePanel.add(spacer3, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         piPanel = new JPanel();
         piPanel.setLayout(new GridLayoutManager(8, 2, new Insets(0, 0, 0, 0), -1, -1));
         advancePanel.add(piPanel, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));

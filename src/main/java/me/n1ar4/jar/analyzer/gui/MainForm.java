@@ -29,6 +29,7 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import me.n1ar4.jar.analyzer.config.ConfigEngine;
 import me.n1ar4.jar.analyzer.config.ConfigFile;
+import me.n1ar4.jar.analyzer.core.StateLinkedList;
 import me.n1ar4.jar.analyzer.engine.CoreEngine;
 import me.n1ar4.jar.analyzer.engine.DecompileEngine;
 import me.n1ar4.jar.analyzer.entity.ClassResult;
@@ -62,6 +63,7 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.LinkedList;
 import java.util.Locale;
 
 public class MainForm {
@@ -74,9 +76,11 @@ public class MainForm {
     private static JTextArea codeArea;
     private static MethodResult curMethod;
     private static String curClass;
-    private static State prevState;
-    private static State nextState;
-    private static State curState;
+
+    // STATE
+    private static int curStateIndex = 0;
+    private static final LinkedList<State> stateList = new StateLinkedList();
+
     private static DefaultListModel<MethodResult> historyListData;
     private JPanel masterPanel;
     private JTabbedPane tabbedPanel;
@@ -689,28 +693,16 @@ public class MainForm {
         return bcelBtn;
     }
 
-    public static State getPrevState() {
-        return prevState;
+    public static LinkedList<State> getStateList() {
+        return stateList;
     }
 
-    public static void setPrevState(State prevState) {
-        MainForm.prevState = prevState;
+    public static int getCurStateIndex() {
+        return curStateIndex;
     }
 
-    public static State getNextState() {
-        return nextState;
-    }
-
-    public static void setNextState(State nextState) {
-        MainForm.nextState = nextState;
-    }
-
-    public static State getCurState() {
-        return curState;
-    }
-
-    public static void setCurState(State curState) {
-        MainForm.curState = curState;
+    public static void setCurStateIndex(int curStateIndex) {
+        MainForm.curStateIndex = curStateIndex;
     }
 
     public JTextField getOutputFileText() {

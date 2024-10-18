@@ -33,6 +33,8 @@ import me.n1ar4.jar.analyzer.gui.state.State;
 import me.n1ar4.jar.analyzer.gui.util.ProcessDialog;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.utils.StringUtil;
+import me.n1ar4.log.LogManager;
+import me.n1ar4.log.Logger;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
@@ -42,6 +44,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class FavMouseAdapter extends MouseAdapter {
+    private static final Logger logger = LogManager.getLogger();
+
     @SuppressWarnings("all")
     public void mouseClicked(MouseEvent evt) {
         JList<?> list = (JList<?>) evt.getSource();
@@ -133,9 +137,31 @@ public class FavMouseAdapter extends MouseAdapter {
             newState.setMethodDesc(res.getMethodDesc());
             newState.setMethodName(res.getMethodName());
 
-            MainForm.setPrevState(MainForm.getCurState());
-            MainForm.setCurState(newState);
-            MainForm.setNextState(null);
+            int curSI = MainForm.getCurStateIndex();
+            if (curSI == -1) {
+                MethodResult next = MainForm.getCurMethod();
+                MainForm.getStateList().add(curSI + 1, newState);
+                MainForm.setCurStateIndex(curSI + 1);
+            } else {
+                if (curSI >= MainForm.getStateList().size()) {
+                    curSI = MainForm.getStateList().size() - 1;
+                }
+                State state = MainForm.getStateList().get(curSI);
+                if (state != null) {
+                    MethodResult next = MainForm.getCurMethod();
+                    int a = MainForm.getStateList().size();
+                    MainForm.getStateList().add(curSI + 1, newState);
+                    int b = MainForm.getStateList().size();
+                    // 达到最大容量
+                    if (a == b) {
+                        MainForm.setCurStateIndex(curSI);
+                    } else {
+                        MainForm.setCurStateIndex(curSI + 1);
+                    }
+                } else {
+                    logger.warn("current state is null");
+                }
+            }
         } else if (SwingUtilities.isRightMouseButton(evt)) {
             JPopupMenu popupMenu = new JPopupMenu();
             JMenuItem cleanAllFavorite = new JMenuItem("clean all favorite");

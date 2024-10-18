@@ -76,7 +76,7 @@ public class CommonMouseAdapter extends MouseAdapter {
                         res.getMethodDesc());
                 if (method.size() > 0) {
                     res = method.get(0);
-                    logger.info("find target method in class: {}", nowClass.getClassName());
+                    logger.debug("find target method in class: {}", nowClass.getClassName());
                     break;
                 }
                 nowClass = MainForm.getEngine().getClassByClass(nowClass.getSuperClassName());
@@ -159,9 +159,31 @@ public class CommonMouseAdapter extends MouseAdapter {
             newState.setMethodDesc(res.getMethodDesc());
             newState.setMethodName(res.getMethodName());
 
-            MainForm.setPrevState(MainForm.getCurState());
-            MainForm.setCurState(newState);
-            MainForm.setNextState(null);
+            int curSI = MainForm.getCurStateIndex();
+            if (curSI == -1) {
+                MethodResult next = MainForm.getCurMethod();
+                MainForm.getStateList().add(curSI + 1, newState);
+                MainForm.setCurStateIndex(curSI + 1);
+            } else {
+                if (curSI >= MainForm.getStateList().size()) {
+                    curSI = MainForm.getStateList().size() - 1;
+                }
+                State state = MainForm.getStateList().get(curSI);
+                if (state != null) {
+                    MethodResult next = MainForm.getCurMethod();
+                    int a = MainForm.getStateList().size();
+                    MainForm.getStateList().add(curSI + 1, newState);
+                    int b = MainForm.getStateList().size();
+                    // 达到最大容量
+                    if (a == b) {
+                        MainForm.setCurStateIndex(curSI);
+                    } else {
+                        MainForm.setCurStateIndex(curSI + 1);
+                    }
+                } else {
+                    logger.warn("current state is null");
+                }
+            }
         } else if (SwingUtilities.isRightMouseButton(evt)) {
             JPopupMenu popupMenu = new JPopupMenu();
 

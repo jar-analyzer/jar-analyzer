@@ -43,32 +43,34 @@ import java.nio.file.Paths;
 public class PrevNextAction {
     public static void run() {
         MainForm instance = MainForm.getInstance();
-        MainForm.setPrevState(null);
-        MainForm.setNextState(null);
-        MainForm.setCurState(null);
+        MainForm.setCurStateIndex(-1);
+        MainForm.getStateList().clear();
         instance.getPrevBtn().addActionListener(e -> {
-            if (MainForm.getPrevState() == null) {
-                JOptionPane.showMessageDialog(instance.getMasterPanel(), "you cannot do it");
+            // 当前是 0 或者上一个是 null 不允许上一步
+            if (MainForm.getCurStateIndex() <= 0 ||
+                    MainForm.getStateList().get(MainForm.getCurStateIndex() - 1) == null) {
+                JOptionPane.showMessageDialog(instance.getMasterPanel(), String.format("<html>" +
+                        "<p>you cannot do it</p>" +
+                        "<p>current idx: %d</p>" +
+                        "<p>total length: %d</p>" +
+                        "</html>", MainForm.getCurStateIndex(), MainForm.getStateList().size()));
                 return;
             }
 
-            // SAVE CURRENT STATE
-            State cur = new State();
             if (MainForm.getCurMethod() == null) {
                 JOptionPane.showMessageDialog(instance.getMasterPanel(), "current method is null");
                 return;
             }
-            cur.setClassName(MainForm.getCurMethod().getClassName());
-            cur.setClassPath(MainForm.getCurMethod().getClassPath());
-            cur.setJarName(MainForm.getCurMethod().getJarName());
-            cur.setMethodName(MainForm.getCurMethod().getMethodName());
-            cur.setMethodDesc(MainForm.getCurMethod().getMethodDesc());
-            MainForm.setNextState(cur);
 
-            // CHANGE STATE
-            State prev = MainForm.getPrevState();
-            MainForm.setPrevState(null);
-            MainForm.setCurState(prev);
+            // 改变指针不改变内容
+            MainForm.setCurStateIndex(MainForm.getCurStateIndex() - 1);
+
+            // 变更状态
+            State prev = MainForm.getStateList().get(MainForm.getCurStateIndex());
+            if (prev == null) {
+                JOptionPane.showMessageDialog(instance.getMasterPanel(), "invalid previous state");
+                return;
+            }
             instance.getCurJarText().setText(prev.getJarName());
             instance.getCurClassText().setText(prev.getClassName());
             instance.getCurMethodText().setText(prev.getMethodName());
@@ -142,28 +144,25 @@ public class PrevNextAction {
 
 
         instance.getNextBtn().addActionListener(e -> {
-            if (MainForm.getNextState() == null) {
-                JOptionPane.showMessageDialog(instance.getMasterPanel(), "you cannot do it");
+            // 当前是最后一个元素 或 下一个元素是空
+            if (MainForm.getCurStateIndex() >= MainForm.getStateList().size() - 1 ||
+                    MainForm.getStateList().get(MainForm.getCurStateIndex() + 1) == null) {
+                JOptionPane.showMessageDialog(instance.getMasterPanel(), String.format("<html>" +
+                        "<p>you cannot do it</p>" +
+                        "<p>current idx: %d</p>" +
+                        "<p>total length: %d</p>" +
+                        "</html>", MainForm.getCurStateIndex(), MainForm.getStateList().size()));
                 return;
             }
 
-            // SAVE CURRENT STATE
-            State cur = new State();
-            if (MainForm.getCurMethod() == null) {
-                JOptionPane.showMessageDialog(instance.getMasterPanel(), "current method is null");
+            // 改变指针不改变内容
+            MainForm.setCurStateIndex(MainForm.getCurStateIndex() + 1);
+
+            State next = MainForm.getStateList().get(MainForm.getCurStateIndex());
+            if (next == null) {
+                JOptionPane.showMessageDialog(instance.getMasterPanel(), "invalid next state");
                 return;
             }
-            cur.setClassName(MainForm.getCurMethod().getClassName());
-            cur.setClassPath(MainForm.getCurMethod().getClassPath());
-            cur.setJarName(MainForm.getCurMethod().getJarName());
-            cur.setMethodName(MainForm.getCurMethod().getMethodName());
-            cur.setMethodDesc(MainForm.getCurMethod().getMethodDesc());
-            MainForm.setPrevState(cur);
-
-            // CHANGE STATE
-            State next = MainForm.getNextState();
-            MainForm.setCurState(next);
-            MainForm.setNextState(null);
             instance.getCurJarText().setText(next.getJarName());
             instance.getCurClassText().setText(next.getClassName());
             instance.getCurMethodText().setText(next.getMethodName());

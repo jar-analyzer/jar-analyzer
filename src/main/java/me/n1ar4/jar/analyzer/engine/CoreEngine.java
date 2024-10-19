@@ -343,4 +343,30 @@ public class CoreEngine {
         session.close();
         return list;
     }
+
+    public List<MemberEntity> getAllMembersInfo() {
+        SqlSession session = factory.openSession(true);
+        MemberMapper memberMapper = session.getMapper(MemberMapper.class);
+        ArrayList<MemberEntity> members = memberMapper.selectMembers();
+        session.close();
+        ArrayList<MemberEntity> list = new ArrayList<>();
+        for (MemberEntity me : members) {
+            if (me.getTypeClassName().equals("java/lang/String")) {
+                list.add(me);
+            }
+        }
+        return list;
+    }
+
+    public Map<String, String> getStringMap() {
+        SqlSession session = factory.openSession(true);
+        StringMapper stringMapper = session.getMapper(StringMapper.class);
+        List<MethodResult> res = stringMapper.selectStringInfos();
+        session.close();
+        Map<String, String> strMap = new HashMap<>();
+        for (MethodResult m : res) {
+            strMap.put(m.getClassName(), m.getStrValue());
+        }
+        return strMap;
+    }
 }

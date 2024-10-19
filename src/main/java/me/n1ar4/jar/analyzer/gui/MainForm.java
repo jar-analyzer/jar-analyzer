@@ -295,9 +295,8 @@ public class MainForm {
     private JPanel leakConfigPanel;
     private JPanel leakResultPanel;
     private JScrollPane leakResultScroll;
-    private JCheckBox leakLdcBox;
-    private JCheckBox leakCpBox;
-    private JCheckBox leakCodeBox;
+    private JTextArea leakLogArea;
+    private JScrollPane leakLogScroll;
     private static DefaultListModel<MethodResult> favData;
 
     public JCheckBox getLeakUrlBox() {
@@ -350,18 +349,6 @@ public class MainForm {
 
     public JButton getLeakStartBtn() {
         return leakStartBtn;
-    }
-
-    public JCheckBox getLeakLdcBox() {
-        return leakLdcBox;
-    }
-
-    public JCheckBox getLeakCpBox() {
-        return leakCpBox;
-    }
-
-    public JCheckBox getLeakCodeBox() {
-        return leakCodeBox;
     }
 
     public static String getCurClass() {
@@ -808,6 +795,10 @@ public class MainForm {
         }
     }
 
+    public JTextArea getLeakLogArea() {
+        return leakLogArea;
+    }
+
     public JTextPane getLogArea() {
         return logArea;
     }
@@ -982,6 +973,7 @@ public class MainForm {
         instance.historyList.addMouseListener(new CommonMouseAdapter());
         instance.springCList.addMouseListener(new ControllerMouseAdapter());
         instance.springMList.addMouseListener(new CommonMouseAdapter());
+        instance.getLeakResultList().addMouseListener(new LeakResultMouseAdapter());
         instance.favList.addMouseListener(new FavMouseAdapter());
         instance.fileTreeSearchTextField.getDocument().addDocumentListener(new SearchInputListener());
         instance.fileTreeSearchTextField.addKeyListener(new SearchTextFieldKeyAdapter());
@@ -1771,15 +1763,13 @@ public class MainForm {
         leakPhoneBox.setText("Phone Number");
         leakRulesPanel.add(leakPhoneBox, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         leakIdBox = new JCheckBox();
-        leakIdBox.setText("IP Card");
+        leakIdBox.setText("ID Card");
         leakRulesPanel.add(leakIdBox, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         leakEmailBox = new JCheckBox();
         leakEmailBox.setText("Email");
         leakRulesPanel.add(leakEmailBox, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final Spacer spacer2 = new Spacer();
-        leakPanel.add(spacer2, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         leakConfigPanel = new JPanel();
-        leakConfigPanel.setLayout(new GridLayoutManager(2, 3, new Insets(0, 0, 0, 0), -1, -1));
+        leakConfigPanel.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
         leakPanel.add(leakConfigPanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         leakConfigPanel.setBorder(BorderFactory.createTitledBorder(null, "Config", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         leakDetBase64Box = new JCheckBox();
@@ -1791,15 +1781,6 @@ public class MainForm {
         leakStartBtn = new JButton();
         leakStartBtn.setText("START");
         leakConfigPanel.add(leakStartBtn, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        leakLdcBox = new JCheckBox();
-        leakLdcBox.setText("Check LDC String");
-        leakConfigPanel.add(leakLdcBox, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        leakCpBox = new JCheckBox();
-        leakCpBox.setText("Check ConstantPool");
-        leakConfigPanel.add(leakCpBox, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        leakCodeBox = new JCheckBox();
-        leakCodeBox.setText("Check Java Code");
-        leakConfigPanel.add(leakCodeBox, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         leakResultPanel = new JPanel();
         leakResultPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         leakPanel.add(leakResultPanel, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
@@ -1808,6 +1789,14 @@ public class MainForm {
         leakResultPanel.add(leakResultScroll, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(-1, 300), null, null, 0, false));
         leakResultList = new JList();
         leakResultScroll.setViewportView(leakResultList);
+        leakLogScroll = new JScrollPane();
+        leakPanel.add(leakLogScroll, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        leakLogArea = new JTextArea();
+        leakLogArea.setBackground(new Color(-12895429));
+        leakLogArea.setColumns(30);
+        leakLogArea.setEditable(false);
+        leakLogArea.setForeground(new Color(-16718519));
+        leakLogScroll.setViewportView(leakLogArea);
         advancePanel = new JPanel();
         advancePanel.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPanel.addTab("advance", advancePanel);
@@ -1881,8 +1870,8 @@ public class MainForm {
         xStreamButton = new JButton();
         xStreamButton.setText("XStream");
         javaVulSearchPanel.add(xStreamButton, new GridConstraints(7, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final Spacer spacer3 = new Spacer();
-        advancePanel.add(spacer3, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        final Spacer spacer2 = new Spacer();
+        advancePanel.add(spacer2, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         piPanel = new JPanel();
         piPanel.setLayout(new GridLayoutManager(8, 2, new Insets(0, 0, 0, 0), -1, -1));
         advancePanel.add(piPanel, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));

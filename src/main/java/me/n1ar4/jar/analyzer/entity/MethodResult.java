@@ -45,7 +45,12 @@ public class MethodResult {
     @JSONField(serialize = false)
     private String path;
 
+    @JSONField(serialize = false)
     private int lineNumber;
+
+    // for string search
+    @JSONField(serialize = false)
+    private String strValue;
 
     public String getPath() {
         this.path = this.path.trim();
@@ -56,6 +61,14 @@ public class MethodResult {
             path = "/" + path;
         }
         return "path: " + path;
+    }
+
+    public String getStrValue() {
+        return strValue;
+    }
+
+    public void setStrValue(String strValue) {
+        this.strValue = strValue;
     }
 
     public void setPath(String path) {

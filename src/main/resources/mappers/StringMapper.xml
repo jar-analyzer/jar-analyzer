@@ -32,6 +32,7 @@
         <result column="method_desc" property="methodDesc"/>
         <result column="is_static" property="isStaticInt"/>
         <result column="access" property="accessInt"/>
+        <result column="str_value" property="strValue"/>
     </resultMap>
     <insert id="insertString" parameterType="StringEntity">
         INSERT INTO string_table
@@ -59,6 +60,10 @@
         FROM string_table s
         ORDER BY value COLLATE NOCASE LIMIT 100
         OFFSET #{offset}
+    </select>
+    <select id="selectStringInfos" resultMap="methodMap">
+        SELECT method_name, method_desc, access, class_name, value as str_value, jar_name
+        FROM string_table
     </select>
     <select id="selectCount">
         SELECT COUNT(DISTINCT s.value)

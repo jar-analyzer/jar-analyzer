@@ -27,9 +27,13 @@ package me.n1ar4.jar.analyzer.leak;
 import java.util.List;
 
 public class IPAddressRule {
-    private final static String regex = "[^0-9]((127\\.0\\.0\\.1)|(10\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})|(172\\.((1[6-9])|(2\\d)|(3[01]))\\.\\d{1,3}\\.\\d{1,3})|(192\\.168\\.\\d{1,3}\\.\\d{1,3}))";
+    private final static String ipv4Pattern =
+            "\\b((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\b";
+    private final static String ipv6Pattern =
+            "\\b(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|(::[0-9a-fA-F]{1,4}){1,7}::?)\\b";
+    private final static String regex = ipv4Pattern + "|" + ipv6Pattern;
 
     public static List<String> match(String input) {
-        return BaseRule.matchGroup1(regex, input);
+        return BaseRule.matchGroup0(regex, input);
     }
 }

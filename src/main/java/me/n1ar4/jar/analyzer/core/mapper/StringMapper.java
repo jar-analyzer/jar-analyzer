@@ -37,5 +37,7 @@ public interface StringMapper {
 
     List<String> selectStrings(int offset);
 
+    List<MethodResult> selectStringInfos();
+
     int selectCount();
 }

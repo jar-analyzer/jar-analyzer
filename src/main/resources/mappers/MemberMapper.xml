@@ -29,6 +29,7 @@
         <result column="type_class_name" property="typeClassName"/>
         <result column="member_name" property="memberName"/>
         <result column="modifiers" property="modifiers"/>
+        <result column="class_name" property="className"/>
     </resultMap>
     <insert id="insertMember" parameterType="MemberEntity">
         INSERT INTO member_table
@@ -42,5 +43,9 @@
         SELECT DISTINCT member_name, modifiers, value, type_class_name
         FROM member_table
         WHERE class_name = #{className}
+    </select>
+    <select id="selectMembers" resultMap="memberMap">
+        SELECT DISTINCT member_name, modifiers, value, type_class_name, class_name
+        FROM member_table
     </select>
 </mapper>

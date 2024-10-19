@@ -24,6 +24,7 @@
 
 package me.n1ar4.jar.analyzer.core.mapper;
 
+import me.n1ar4.jar.analyzer.core.ClassReference;
 import me.n1ar4.jar.analyzer.entity.MemberEntity;
 import org.apache.ibatis.annotations.Param;
 
@@ -34,4 +35,6 @@ public interface MemberMapper {
     int insertMember(List<MemberEntity> Member);
 
     ArrayList<MemberEntity> selectMembersByClass(@Param("className") String className);
+
+    ArrayList<MemberEntity> selectMembers();
 }

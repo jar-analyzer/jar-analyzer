@@ -24,6 +24,7 @@
 
 package me.n1ar4.jar.analyzer.leak;
 
+import me.n1ar4.jar.analyzer.engine.CoreEngine;
 import me.n1ar4.jar.analyzer.entity.LeakResult;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.log.LogManager;
@@ -59,7 +60,8 @@ public class LeakAction {
 
         logger.info("registering leak action");
         instance.getLeakStartBtn().addActionListener(e -> {
-            JOptionPane.showMessageDialog(instance.getMasterPanel(), "not support yet");
+            CoreEngine engine = MainForm.getEngine();
+
         });
         instance.getLeakCleanBtn().addActionListener(e -> {
             leakList.setModel(new DefaultListModel<>());

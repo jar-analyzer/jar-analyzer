@@ -28,6 +28,7 @@ public class MemberEntity {
     private int mid;
     private String memberName;
     private int modifiers;
+    private String value;
     private String typeClassName;
     private String className;
 
@@ -37,6 +38,14 @@ public class MemberEntity {
 
     public void setMid(int mid) {
         this.mid = mid;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 
     public String getMemberName() {

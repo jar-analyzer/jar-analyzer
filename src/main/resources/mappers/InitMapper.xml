@@ -62,6 +62,7 @@
             CONSTRAINT member_table_pk PRIMARY KEY AUTOINCREMENT,
             member_name TEXT NOT NULL,
             modifiers INTEGER NOT NULL,
+            value TEXT NOT NULL,
             type_class_name TEXT NOT NULL,
             class_name TEXT NOT NULL
         );

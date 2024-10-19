@@ -41,11 +41,13 @@ public class ClassReference {
     public static class Member {
         private final String name;
         private final int modifiers;
+        private final String value;
         private final Handle type;
 
-        public Member(String name, int modifiers, Handle type) {
+        public Member(String name, int modifiers, String value, Handle type) {
             this.name = name;
             this.modifiers = modifiers;
+            this.value = value;
             this.type = type;
         }
 
@@ -55,6 +57,10 @@ public class ClassReference {
 
         public int getModifiers() {
             return modifiers;
+        }
+
+        public String getValue() {
+            return value;
         }
 
         public Handle getType() {

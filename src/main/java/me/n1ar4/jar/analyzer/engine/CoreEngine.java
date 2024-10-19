@@ -304,7 +304,7 @@ public class CoreEngine {
         ArrayList<ClassReference.Member> members = new ArrayList<>();
         for (MemberEntity me : memberEntities) {
             ClassReference.Member member = new ClassReference.Member
-                    (me.getMemberName(), me.getModifiers(),
+                    (me.getMemberName(), me.getModifiers(), me.getValue(),
                             new ClassReference.Handle(me.getTypeClassName()));
             members.add(member);
         }

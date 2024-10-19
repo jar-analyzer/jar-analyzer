@@ -154,6 +154,7 @@ public class DatabaseManager {
                 MemberEntity memberEntity = new MemberEntity();
                 memberEntity.setMemberName(member.getName());
                 memberEntity.setModifiers(member.getModifiers());
+                memberEntity.setValue(member.getValue());
                 memberEntity.setTypeClassName(member.getType().getName());
                 memberEntity.setClassName(reference.getName());
                 mList.add(memberEntity);

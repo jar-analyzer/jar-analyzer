@@ -73,16 +73,20 @@ public class DiscoveryClassVisitor extends ClassVisitor {
 
     public FieldVisitor visitField(int access, String name, String desc,
                                    String signature, Object value) {
-        if ((access & Opcodes.ACC_STATIC) == 0) {
-            Type type = Type.getType(desc);
-            String typeName;
-            if (type.getSort() == Type.OBJECT || type.getSort() == Type.ARRAY) {
-                typeName = type.getInternalName();
-            } else {
-                typeName = type.getDescriptor();
-            }
-            members.add(new ClassReference.Member(name, access, new ClassReference.Handle(typeName)));
+        Type type = Type.getType(desc);
+        String typeName;
+        if (type.getSort() == Type.OBJECT || type.getSort() == Type.ARRAY) {
+            typeName = type.getInternalName();
+        } else {
+            typeName = type.getDescriptor();
         }
+        String realValue;
+        if (value instanceof String) {
+            realValue = (String) value;
+        } else {
+            realValue = String.valueOf(value);
+        }
+        members.add(new ClassReference.Member(name, access, realValue, new ClassReference.Handle(typeName)));
         return super.visitField(access, name, desc, signature, value);
     }
 

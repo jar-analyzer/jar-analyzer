@@ -281,7 +281,7 @@ public class MainForm {
     private JCheckBox leakUrlBox;
     private JCheckBox leakJdbcBox;
     private JCheckBox leakFileBox;
-    private JCheckBox leakCloudBox;
+    private JCheckBox leakJWTBox;
     private JCheckBox leakMacBox;
     private JCheckBox leakIpBox;
     private JCheckBox leakPhoneBox;
@@ -312,8 +312,8 @@ public class MainForm {
         return leakFileBox;
     }
 
-    public JCheckBox getLeakCloudBox() {
-        return leakCloudBox;
+    public JCheckBox getLeakJWTBox() {
+        return leakJWTBox;
     }
 
     public JCheckBox getLeakMacBox() {
@@ -1758,9 +1758,9 @@ public class MainForm {
         leakFileBox = new JCheckBox();
         leakFileBox.setText("File Path");
         leakRulesPanel.add(leakFileBox, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        leakCloudBox = new JCheckBox();
-        leakCloudBox.setText("Cloud AK/SK");
-        leakRulesPanel.add(leakCloudBox, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        leakJWTBox = new JCheckBox();
+        leakJWTBox.setText("JWT");
+        leakRulesPanel.add(leakJWTBox, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         leakMacBox = new JCheckBox();
         leakMacBox.setText("MAC Address");
         leakRulesPanel.add(leakMacBox, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));

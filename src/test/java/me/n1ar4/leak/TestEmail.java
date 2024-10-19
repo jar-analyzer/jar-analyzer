@@ -22,10 +22,16 @@
  * SOFTWARE.
  */
 
-package me.n1ar4.test.dbg;
+package me.n1ar4.leak;
 
-public class Hello {
-    public void hello(int i) {
-        System.out.println(i);
+import me.n1ar4.jar.analyzer.leak.EmailRule;
+
+import java.util.List;
+
+public class TestEmail {
+    public static void main(String[] args) {
+        String text = "Contact us at support@example.com or sales@my-site.org!";
+        List<String> emails = EmailRule.match(text);
+        System.out.println("Matched Emails: " + emails);
     }
 }

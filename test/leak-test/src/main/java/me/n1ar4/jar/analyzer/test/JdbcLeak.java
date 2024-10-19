@@ -22,10 +22,13 @@
  * SOFTWARE.
  */
 
-package me.n1ar4.test.dbg;
+package me.n1ar4.jar.analyzer.test;
 
-public class Hello {
-    public void hello(int i) {
-        System.out.println(i);
+public class JDBCLeak {
+    private static final String test = "jdbc:mysql://localhost:3306/mydatabase";
+
+    public static void testLeak() {
+        System.out.println(test);
+        System.out.println("jdbc:postgresql://user:password@localhost:5432/mydb");
     }
 }

@@ -22,10 +22,14 @@
  * SOFTWARE.
  */
 
-package me.n1ar4.test.dbg;
+package me.n1ar4.jar.analyzer.leak;
 
-public class Hello {
-    public void hello(int i) {
-        System.out.println(i);
+import java.util.List;
+
+public class EmailRule {
+    private final static String regex = "(([a-z0-9]+[_|.])*[a-z0-9]+@([a-z0-9]+[-|_.])*[a-z0-9]+\\.((?!js|css|jpg|jpeg|png|ico)[a-z]{2,5}))";
+
+    public static List<String> match(String input) {
+        return BaseRule.matchGroup0(regex, input);
     }
 }

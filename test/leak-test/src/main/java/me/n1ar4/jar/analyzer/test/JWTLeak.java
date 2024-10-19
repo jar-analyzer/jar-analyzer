@@ -22,10 +22,13 @@
  * SOFTWARE.
  */
 
-package me.n1ar4.test.dbg;
+package me.n1ar4.jar.analyzer.test;
 
-public class Hello {
-    public void hello(int i) {
-        System.out.println(i);
+public class JWTLeak {
+    private static final String test = "eyJabc1234567890.def4567890.ghijklmnop";
+
+    public static void testLeak() {
+        System.out.println(test);
+        System.out.println("eyJabc_def-1234567/890+xyz.1234567890.abc_def");
     }
 }

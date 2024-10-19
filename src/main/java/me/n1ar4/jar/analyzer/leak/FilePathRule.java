@@ -22,10 +22,14 @@
  * SOFTWARE.
  */
 
-package me.n1ar4.test.dbg;
+package me.n1ar4.jar.analyzer.leak;
 
-public class Hello {
-    public void hello(int i) {
-        System.out.println(i);
+import java.util.List;
+
+public class FilePathRule {
+    private final static String regex = "([a-zA-Z]:\\\\(?:\\w+[ \\w]*\\\\?)*\\w+\\.\\w+)";
+
+    public static List<String> match(String input) {
+        return BaseRule.matchGroup1(regex, input);
     }
 }

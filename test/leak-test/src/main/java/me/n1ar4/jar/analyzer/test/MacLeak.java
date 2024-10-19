@@ -22,10 +22,13 @@
  * SOFTWARE.
  */
 
-package me.n1ar4.test.dbg;
+package me.n1ar4.jar.analyzer.test;
 
-public class Hello {
-    public void hello(int i) {
-        System.out.println(i);
+public class MacLeak {
+    private static final String test = "00:1A:2B:3C:4D:5E";
+
+    public static void testLeak() {
+        System.out.println(test);
+        System.out.println("FF:EE:DD:CC:BB:AA");
     }
 }

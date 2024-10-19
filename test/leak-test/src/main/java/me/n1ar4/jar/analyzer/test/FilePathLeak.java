@@ -22,10 +22,13 @@
  * SOFTWARE.
  */
 
-package me.n1ar4.test.dbg;
+package me.n1ar4.jar.analyzer.test;
 
-public class Hello {
-    public void hello(int i) {
-        System.out.println(i);
+public class FilePathLeak {
+    private final static String path = "C:\\Users\\Public\\Documents\\file.txt";
+
+    public static void test() {
+        System.out.println(path);
+        System.out.println("D:\\Program Files\\MyApp\\");
     }
 }

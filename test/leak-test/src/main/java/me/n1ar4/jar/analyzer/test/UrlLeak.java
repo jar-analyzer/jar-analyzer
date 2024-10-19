@@ -22,10 +22,18 @@
  * SOFTWARE.
  */
 
-package me.n1ar4.test.dbg;
+package me.n1ar4.jar.analyzer.test;
 
-public class Hello {
-    public void hello(int i) {
-        System.out.println(i);
+public class UrlLeak {
+    private static final String leakUrl = "https://example.com";
+    private static final String localUrl = "http://localhost:12345";
+
+    public static void testLeak() {
+        // test https
+        System.out.println(leakUrl);
+        // test http
+        System.out.println(localUrl);
+        // test ldc
+        System.out.println("https://github.com/jar-analyzer");
     }
 }

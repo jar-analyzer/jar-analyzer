@@ -24,6 +24,7 @@
 
 package me.n1ar4.jar.analyzer.leak;
 
+import me.n1ar4.jar.analyzer.entity.LeakResult;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
@@ -38,12 +39,31 @@ public class LeakAction {
         if (instance == null) {
             return;
         }
+
+        JCheckBox codeBox = instance.getLeakCodeBox();
+        JCheckBox jwtBox = instance.getLeakJWTBox();
+        JCheckBox idCardBox = instance.getLeakIdBox();
+        JCheckBox ipAddrBox = instance.getLeakIpBox();
+        JCheckBox emailBox = instance.getLeakEmailBox();
+        JCheckBox urlBox = instance.getLeakUrlBox();
+        JCheckBox jdbcBox = instance.getLeakJdbcBox();
+        JCheckBox filePathBox = instance.getLeakFileBox();
+        JCheckBox macAddrBox = instance.getLeakMacBox();
+        JCheckBox phoneBox = instance.getLeakPhoneBox();
+
+        JCheckBox useCpBox = instance.getLeakCpBox();
+        JCheckBox useLdcBox = instance.getLeakLdcBox();
+        JCheckBox useBase64Box = instance.getLeakDetBase64Box();
+
+        JList<LeakResult> leakList = instance.getLeakResultList();
+
         logger.info("registering leak action");
         instance.getLeakStartBtn().addActionListener(e -> {
             JOptionPane.showMessageDialog(instance.getMasterPanel(), "not support yet");
         });
         instance.getLeakCleanBtn().addActionListener(e -> {
-            JOptionPane.showMessageDialog(instance.getMasterPanel(), "not support yet");
+            leakList.setModel(new DefaultListModel<>());
+            JOptionPane.showMessageDialog(instance.getMasterPanel(), "clean data finish");
         });
     }
 }

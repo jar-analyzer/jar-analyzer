@@ -22,10 +22,17 @@
  * SOFTWARE.
  */
 
-package me.n1ar4.test.dbg;
+package me.n1ar4.leak;
 
-public class Hello {
-    public void hello(int i) {
-        System.out.println(i);
+import me.n1ar4.jar.analyzer.leak.FilePathRule;
+
+import java.util.List;
+
+public class TestFile {
+    public static void main(String[] args) {
+        String input = "Here are some paths: C:\\Users\\Public\\Documents\\file.txt and D:\\Program Files\\MyApp\\test.asp \nInvalid Path: D:\\Invalid Path\\file.txt";        List<String> paths = FilePathRule.match(input);
+        for (String path : paths) {
+            System.out.println(path);
+        }
     }
 }

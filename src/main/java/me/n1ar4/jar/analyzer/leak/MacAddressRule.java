@@ -22,10 +22,14 @@
  * SOFTWARE.
  */
 
-package me.n1ar4.test.dbg;
+package me.n1ar4.jar.analyzer.leak;
 
-public class Hello {
-    public void hello(int i) {
-        System.out.println(i);
+import java.util.List;
+
+public class MacAddressRule {
+    private final static String regex = "(^([a-fA-F0-9]{2}(:[a-fA-F0-9]{2}){5})|[^a-zA-Z0-9]([a-fA-F0-9]{2}(:[a-fA-F0-9]{2}){5}))";
+
+    public static List<String> match(String input) {
+        return BaseRule.matchGroup1(regex, input);
     }
 }

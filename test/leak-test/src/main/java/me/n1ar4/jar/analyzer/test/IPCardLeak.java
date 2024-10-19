@@ -22,10 +22,13 @@
  * SOFTWARE.
  */
 
-package me.n1ar4.test.dbg;
+package me.n1ar4.jar.analyzer.test;
 
-public class Hello {
-    public void hello(int i) {
-        System.out.println(i);
+public class IPCardLeak {
+    private static final String test = "123456789012345678";
+
+    public static void testLeak() {
+        System.out.println(test);
+        System.out.println("123456781234567");
     }
 }

@@ -22,10 +22,13 @@
  * SOFTWARE.
  */
 
-package me.n1ar4.test.dbg;
+package me.n1ar4.jar.analyzer.test;
 
-public class Hello {
-    public void hello(int i) {
-        System.out.println(i);
+public class EmailLeak {
+    private static final String localEmail = "user.name@example.com";
+
+    public static void testLeak() {
+        System.out.println(localEmail);
+        System.out.println("user-name@sub.domain.org");
     }
 }

@@ -1118,12 +1118,12 @@
                           <text value="File Path"/>
                         </properties>
                       </component>
-                      <component id="a612f" class="javax.swing.JCheckBox" binding="leakCloudBox">
+                      <component id="a612f" class="javax.swing.JCheckBox" binding="leakJWTBox">
                         <constraints>
                           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="Cloud AK/SK"/>
+                          <text value="JWT"/>
                         </properties>
                       </component>
                       <component id="5b6af" class="javax.swing.JCheckBox" binding="leakMacBox">

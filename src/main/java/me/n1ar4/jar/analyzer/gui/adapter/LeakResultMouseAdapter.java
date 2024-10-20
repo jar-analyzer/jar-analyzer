@@ -89,8 +89,11 @@ public class LeakResultMouseAdapter extends MouseAdapter {
                     MainForm.getCodeArea().setText(code);
                     MainForm.getCodeArea().setSelectionStart(idx);
                     MainForm.getCodeArea().setSelectionEnd(idx + value.length());
+                    // FIX BUG
+                    MainForm.getCodeArea().setCaretPosition(idx);
                 } else {
                     MainForm.getCodeArea().setText(code);
+                    MainForm.getCodeArea().setCaretPosition(0);
                 }
             }).start();
 

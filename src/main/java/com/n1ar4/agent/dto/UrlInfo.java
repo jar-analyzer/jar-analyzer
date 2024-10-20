@@ -1,27 +1,3 @@
-/*
- * MIT License
- *
- * Copyright (c) 2023-2024 4ra1n (Jar Analyzer Team)
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
-
 package com.n1ar4.agent.dto;
 
 import java.io.Serializable;
@@ -35,6 +11,10 @@ public class UrlInfo implements Serializable {
 
     public UrlInfo(String url) {
         this(url, "");
+    }
+
+    public UrlInfo(UrlInfo base) {
+        this(base.url, base.description);
     }
 
     public UrlInfo(String url, String description) {
@@ -54,9 +34,36 @@ public class UrlInfo implements Serializable {
         this.url += append;
     }
 
+    private String getLastUri() {
+        return this.url.substring(this.url.lastIndexOf("/"));
+    }
+
+    private boolean appendRegexPattern(String urlPattern) {
+        String lastUri = getLastUri();
+        if (lastUri.startsWith("/*")) {
+            String baseRegexUrl = this.url.substring(0, this.url.lastIndexOf(lastUri));
+            String ext = "";
+            if (lastUri.length() > 2) {
+                ext = lastUri.substring(2);
+            }
+            this.appendDescription(String.format("baseUrl : %s | urlPattern : %s", this.url, urlPattern));
+            this.setUrl(String.format("%s%s%s", baseRegexUrl, urlPattern, ext));
+            return true;
+        }
+        return false;
+    }
+
     public void appendUrl(String urlPattern) {
-        if (!urlPattern.startsWith("/")) {
-            url += "/";
+        if (appendRegexPattern(urlPattern))
+            return;
+        if (this.url.endsWith("/")) {
+            if (urlPattern.startsWith("/")) {
+                urlPattern = urlPattern.substring(1);
+            }
+        }else{
+            if(!urlPattern.startsWith("/")){
+                urlPattern = "/" + urlPattern;
+            }
         }
         this.appendRawUrl(urlPattern);
     }
@@ -74,6 +81,10 @@ public class UrlInfo implements Serializable {
     }
 
     public void appendDescription(String append) {
-        this.description += urlInfoDescTag + append;
+        StringBuilder appendDesc = new StringBuilder();
+        if(!this.description.equals(""))
+            appendDesc.append(urlInfoDescTag);
+        appendDesc.append(append);
+        this.description = appendDesc.toString();
     }
 }

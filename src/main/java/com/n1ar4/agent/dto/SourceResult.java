@@ -1,27 +1,3 @@
-/*
- * MIT License
- *
- * Copyright (c) 2023-2024 4ra1n (Jar Analyzer Team)
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
-
 package com.n1ar4.agent.dto;
 
 import java.io.Serializable;
@@ -200,7 +176,7 @@ public class SourceResult implements Serializable, Comparable<SourceResult> {
     }
 
     public HashMap<String, UrlInfoAndDescMapValue> getSourceTagMapForUrlInfosAndDesc() {
-        HashMap<String, UrlInfoAndDescMapValue> tagHashMap = new HashMap<>();
+        HashMap<String, UrlInfoAndDescMapValue> tagHashMap = new HashMap<String, UrlInfoAndDescMapValue>();
         ArrayList<String> descList = this.getDescription();
         String nowTag = "";
         for (String oneLineDesc : descList) {
@@ -243,6 +219,9 @@ public class SourceResult implements Serializable, Comparable<SourceResult> {
         sb.append("Source Type : ").append(this.getType().toString()).append("\n");
         sb.append("\t Source Name : ").append(this.getName()).append("\n");
         sb.append("\t Source Class : ").append(this.getSourceClass()).append("\n");
+        if(this.methodInfo != null && !this.methodInfo.equals("")){
+            sb.append("\t Source MethodInfo : " + this.getMethodInfo() + "\n");
+        }
         HashMap<String, UrlInfoAndDescMapValue> sourceTagMapForUrlInfosAndDesc = getSourceTagMapForUrlInfosAndDesc();
         Collection<UrlInfoAndDescMapValue> values = sourceTagMapForUrlInfosAndDesc.values();
         for (UrlInfoAndDescMapValue value : values) {
@@ -266,17 +245,6 @@ public class SourceResult implements Serializable, Comparable<SourceResult> {
                 for (String desc : description) {
                     sb.append("\t\t\t ").append(desc).append("\n");
                 }
-            }
-        }
-        return sb.toString();
-    }
-
-    public String generateUrlInfo() {
-        StringBuilder sb = new StringBuilder();
-        if (this.urlInfos != null && !this.urlInfos.isEmpty()) {
-            for (UrlInfo urlInfo : this.urlInfos) {
-                sb.append(urlInfo.getUrl());
-                sb.append("\n");
             }
         }
         return sb.toString();

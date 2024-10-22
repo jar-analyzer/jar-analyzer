@@ -78,6 +78,7 @@
         <hutool.version>5.8.32</hutool.version>
         <jfreechart.version>1.5.5</jfreechart.version>
         <oshi.version>6.6.5</oshi.version>
+        <lucene.version>7.7.3</lucene.version>
         <bcel.version>6.10.0</bcel.version>
         <java.parser.version>3.26.2</java.parser.version>
         <!-- Maven Build Version -->
@@ -99,6 +100,20 @@
     </properties>
 
     <dependencies>
+        <!--10.22 引入Lucene依赖 -->
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-core</artifactId>
+            <version>${lucene.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-queryparser</artifactId>
+            <version>${lucene.version}</version>
+        </dependency>
+        <!-- End -->
+
         <dependency>
             <groupId>org.apache.bcel</groupId>
             <artifactId>bcel</artifactId>

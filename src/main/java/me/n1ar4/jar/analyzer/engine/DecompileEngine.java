@@ -51,8 +51,11 @@ public class DecompileEngine {
             "// Jar Analyzer by 4ra1n\n" +
             "// (powered by FernFlower decompiler)\n" +
             "//\n";
-
     private static LRUCache lruCache = new LRUCache(30);
+
+    public static String getFERN_PREFIX() {
+        return FERN_PREFIX;
+    }
 
     public static void cleanCache() {
         lruCache = new LRUCache(30);

@@ -42,6 +42,7 @@ public interface Const {
     String newIssueUrl = "https://github.com/jar-analyzer/jar-analyzer/issues/new/choose";
     String dbFile = "jar-analyzer.db";
     String tempDir = "jar-analyzer-temp";
+    String indexDir = "jar-analyzer-document";
     String downDir = "jar-analyzer-download";
     String OpcodeForm = "Jar Analyzer - Method Opcode";
     String SPELSearch = "Jar Analyzer - SPEL Search";

@@ -52,12 +52,12 @@ jobs:
 
       - name: download jre-8
         run: |
-          curl -L "https://github.com/jar-analyzer/workflow_jre/releases/download/temurin-8u422/jre.zip" -o "jre-8.zip"
+          curl -L "https://github.com/jar-analyzer/workflow_jre/releases/download/temurin-8u432/jre.zip" -o "jre-8.zip"
         working-directory: jar-analyzer
 
       - name: download jre-23
         run: |
-          curl -L "https://github.com/jar-analyzer/workflow_jre/releases/download/temurin-23.0.0/jre.zip" -o "jre-23.zip"
+          curl -L "https://github.com/jar-analyzer/workflow_jre/releases/download/temurin-23.0.1/jre.zip" -o "jre-23.zip"
         working-directory: jar-analyzer
 
       - name: unpack jre-8

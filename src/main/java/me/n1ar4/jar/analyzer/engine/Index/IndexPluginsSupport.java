@@ -1,7 +1,12 @@
 package me.n1ar4.jar.analyzer.engine.Index;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.thread.ExecutorBuilder;
+import cn.hutool.core.util.StrUtil;
 import me.n1ar4.jar.analyzer.engine.DecompileEngine;
+import me.n1ar4.jar.analyzer.engine.Index.entity.Result;
+import me.n1ar4.jar.analyzer.gui.util.LogUtil;
 import me.n1ar4.jar.analyzer.starter.Const;
 import org.apache.lucene.queryparser.classic.ParseException;
 
@@ -13,11 +18,24 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class IndexPluginsSupport {
     public final static String CurrentPath = System.getProperty("user.dir");
     public final static String DocumentPath = CurrentPath + FileUtil.FILE_SEPARATOR + Const.indexDir;
     public final static String TempPath = CurrentPath + FileUtil.FILE_SEPARATOR + Const.tempDir;
+
+
+    private static final Integer MAX_CORE = Runtime.getRuntime().availableProcessors();
+    private static final Integer MAX_SIZE_GROUP = 40;
+    private static final ExecutorService executorService = ExecutorBuilder.create()
+            .setCorePoolSize(MAX_CORE * 2)
+            .setMaxPoolSize(MAX_CORE * 3)
+            .setWorkQueue(new LinkedBlockingQueue<>())
+            .build();
+
 
     static {
         Path curPath = Paths.get(CurrentPath);
@@ -40,11 +58,7 @@ public class IndexPluginsSupport {
     }
 
     public static List<File> getJarAnalyzerPluginsSupportAllFiles() {
-        // 获取目录中的所有文件 包含子目录 可以排除特定文件 返回File对象列表
-        return FileUtil.loopFiles(TempPath, pathname -> {
-            //只返回.class文件
-            return pathname.getName().endsWith(".class");
-        });
+        return FileUtil.loopFiles(TempPath, pathname -> pathname.getName().endsWith(".class"));
     }
 
     /**
@@ -54,26 +68,44 @@ public class IndexPluginsSupport {
      * @return code
      */
     public static String getCode(File file) {
-        String decompile = DecompileEngine.decompile(file.toPath());
-        if (decompile == null) {
-            return null;
+        String decompile = null;
+        try {
+            decompile = DecompileEngine.decompile(file.toPath());
+        } catch (Exception e) {
+            LogUtil.error(e.getMessage());
         }
-        return decompile.replace(DecompileEngine.getFERN_PREFIX(), "");
+        return StrUtil.isNotBlank(decompile) ? decompile.replace(DecompileEngine.getFERN_PREFIX(), "") : null;
     }
 
-    public static void initIndex() throws IOException {
+    public static void initIndex() throws IOException, InterruptedException {
+        FileUtil.del(DocumentPath);
+        int size = MAX_SIZE_GROUP;
         List<File> jarAnalyzerPluginsSupportAllFiles = getJarAnalyzerPluginsSupportAllFiles();
-        Map<String, String> codeMap = new HashMap<>();
-        jarAnalyzerPluginsSupportAllFiles.forEach(file -> {
-            String code = getCode(file);
-            String path = file.getPath();
-            codeMap.put(path, code);
-        });
         IndexEngine.createIndex(DocumentPath);
-        IndexEngine.addIndexCollection(DocumentPath, codeMap);
+        List<List<File>> split = CollUtil.split(jarAnalyzerPluginsSupportAllFiles, size);
+        CountDownLatch latch = new CountDownLatch(split.size());
+        for (List<File> files : split) {
+            executorService.execute(() -> {
+                Map<String, String> codeMap = new HashMap<>();
+                files.forEach(file -> {
+                    String code = getCode(file);
+                    if (StrUtil.isNotBlank(code)) {
+                        codeMap.put(file.getPath(), code);
+                    }
+                });
+                try {
+                    IndexEngine.addIndexCollection(DocumentPath, codeMap);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } finally {
+                    latch.countDown();
+                }
+            });
+        }
+        latch.await();
     }
 
-    public static String search(String keyword) throws IOException, ParseException {
+    public static Result search(String keyword) throws IOException, ParseException {
         return IndexEngine.search(DocumentPath, keyword);
     }
 }

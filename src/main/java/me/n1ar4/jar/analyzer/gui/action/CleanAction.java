@@ -44,6 +44,7 @@ public class CleanAction {
                             "do you want to clean jar-analyzer?<br>" +
                             "delete jar-analyzer.db <br>" +
                             "delete jar-analyzer-temp <br>" +
+                            "delete jar-analyzer-document <br>" +
                             "delete .jar-analyzer file <br>" +
                             "</html>");
             if (res == JOptionPane.OK_OPTION) {
@@ -57,6 +58,10 @@ public class CleanAction {
                 }
                 try {
                     DirUtil.removeDir(new File(Const.tempDir));
+                } catch (Exception ignored) {
+                }
+                try {
+                    DirUtil.removeDir(new File(Const.indexDir));
                 } catch (Exception ignored) {
                 }
                 JOptionPane.showMessageDialog(

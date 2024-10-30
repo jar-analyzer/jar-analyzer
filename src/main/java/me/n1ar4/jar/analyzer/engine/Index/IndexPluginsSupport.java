@@ -81,8 +81,8 @@ public class IndexPluginsSupport {
         FileUtil.del(DocumentPath);
         int size = MAX_SIZE_GROUP;
         List<File> jarAnalyzerPluginsSupportAllFiles = getJarAnalyzerPluginsSupportAllFiles();
-        if(jarAnalyzerPluginsSupportAllFiles.isEmpty()) {
-            LogUtil.info("未找到任何Class待解析文件");
+        if (jarAnalyzerPluginsSupportAllFiles.isEmpty()) {
+            LogUtil.info("未找到任何 class 文件 无法搜索");
             return false;
         }
         IndexEngine.createIndex(DocumentPath);
@@ -111,6 +111,6 @@ public class IndexPluginsSupport {
     }
 
     public static Result search(String keyword) throws IOException, ParseException {
-        return IndexEngine.search(DocumentPath, keyword);
+        return IndexEngine.search(keyword);
     }
 }

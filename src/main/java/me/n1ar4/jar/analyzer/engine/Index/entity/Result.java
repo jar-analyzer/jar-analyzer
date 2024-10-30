@@ -23,4 +23,11 @@ public class Result {
         this.data = data;
     }
 
+    @Override
+    public String toString() {
+        return "Result{" +
+                "total=" + total +
+                ", data=" + data +
+                '}';
+    }
 }

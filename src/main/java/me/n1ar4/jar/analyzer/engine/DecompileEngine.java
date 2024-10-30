@@ -167,25 +167,36 @@ public class DecompileEngine {
 
                 LogUtil.info("decompile class: " + classFilePath.getFileName().toString());
 
-                // FERN FLOWER API
-                ConsoleDecompiler.main(cmd.toArray(new String[0]));
-                byte[] code = Files.readAllBytes(newFilePath);
-                String codeStr = new String(code);
-                codeStr = FERN_PREFIX + codeStr;
-                // TRY DELETE CACHE
                 try {
-                    Files.delete(newFilePath);
-                } catch (Exception ignored) {
+                    // FERN FLOWER API
+                    ConsoleDecompiler.main(cmd.toArray(new String[0]));
+                } catch (Throwable t) {
+                    // 允许反编译出现任何错误
+                    // 如果有错误忽略即可
+                    logger.warn("fern flower fail: " + t.getMessage());
                 }
-                logger.debug("save cache");
-                lruCache.put(key, codeStr);
-                return codeStr;
+
+                if (Files.exists(newFilePath)) {
+                    byte[] code = Files.readAllBytes(newFilePath);
+                    String codeStr = new String(code);
+                    codeStr = FERN_PREFIX + codeStr;
+                    // TRY DELETE CACHE
+                    try {
+                        Files.delete(newFilePath);
+                    } catch (Exception ignored) {
+                    }
+                    logger.debug("save cache");
+                    lruCache.put(key, codeStr);
+                    return codeStr;
+                } else {
+                    return null;
+                }
             } else {
                 LogUtil.warn("unknown error");
                 return null;
             }
         } catch (Exception ex) {
-            logger.warn("decompile fail");
+            logger.warn("decompile fail: " + ex.getMessage());
         }
         return null;
     }

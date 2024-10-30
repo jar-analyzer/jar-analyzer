@@ -56,13 +56,12 @@ public class IndexEngine {
     }
 
 
-    public static Result search(String documentPath, String keyword) throws IOException, ParseException {
+    public static Result search(String keyword) throws IOException, ParseException {
         IndexReader reader = IndexSingletonClass.getReader();
         keyword = StrUtil.removeAllLineBreaks(keyword);
 
         WildcardQuery query = new WildcardQuery(new Term("content", "*" + keyword + "*"));
-//        keyword = ReUtil.escape(keyword);
-        //RegexpQuery query = new RegexpQuery(new Term("content", ".*" + keyword+".*"));
+
         TopDocs topDocs = IndexSingletonClass.getSearcher().search(query, 110);
         ScoreDoc[] scoreDocs = topDocs.scoreDocs;
         List<Map<String, Object>> arrayList = new ArrayList<>();

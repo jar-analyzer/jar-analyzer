@@ -13,6 +13,7 @@
 - [重要] 记录每一步操作且可以进行任意前进后退 @4ra1n
 - [功能] 数据库记录 `class` 中所有 `field` 的值 @4ra1n
 - [功能] 搜索结果筛选空参方法（空参一般不存在漏洞） @4ra1n
+- [功能] 基于 `Lucene` 的全局搜索引擎底层支持 @Gosiu
 - [BUG] 方法跳转定位时内部类定位异常的问题 @4ra1n
 - [BUG] 方法跳转定位时构造方法定位异常的问题 @4ra1n
 - [BUG] 方法跳转定位时包含注解时定位异常的问题 @4ra1n
@@ -26,6 +27,7 @@
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
+- Honey Baby (https://github.com/Gosiu)
 
 所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
 

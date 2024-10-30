@@ -23,6 +23,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class IndexPluginsSupport {
+    public final static String VERSION = "0.1";
     public final static String CurrentPath = System.getProperty("user.dir");
     public final static String DocumentPath = CurrentPath + FileUtil.FILE_SEPARATOR + Const.indexDir;
     public final static String TempPath = CurrentPath + FileUtil.FILE_SEPARATOR + Const.tempDir;

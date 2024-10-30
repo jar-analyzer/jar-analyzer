@@ -77,10 +77,14 @@ public class IndexPluginsSupport {
         return StrUtil.isNotBlank(decompile) ? decompile.replace(DecompileEngine.getFERN_PREFIX(), "") : null;
     }
 
-    public static void initIndex() throws IOException, InterruptedException {
+    public static boolean initIndex() throws IOException, InterruptedException {
         FileUtil.del(DocumentPath);
         int size = MAX_SIZE_GROUP;
         List<File> jarAnalyzerPluginsSupportAllFiles = getJarAnalyzerPluginsSupportAllFiles();
+        if(jarAnalyzerPluginsSupportAllFiles.isEmpty()) {
+            LogUtil.info("未找到任何Class待解析文件");
+            return false;
+        }
         IndexEngine.createIndex(DocumentPath);
         List<List<File>> split = CollUtil.split(jarAnalyzerPluginsSupportAllFiles, size);
         CountDownLatch latch = new CountDownLatch(split.size());
@@ -103,6 +107,7 @@ public class IndexPluginsSupport {
             });
         }
         latch.await();
+        return true;
     }
 
     public static Result search(String keyword) throws IOException, ParseException {

@@ -1,5 +1,7 @@
 package me.n1ar4.jar.analyzer.engine.Index;
 
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.file.PathUtil;
 import cn.hutool.core.util.StrUtil;
 import me.n1ar4.jar.analyzer.engine.Index.entity.Result;
 import org.apache.lucene.analysis.Analyzer;
@@ -30,12 +32,13 @@ public class IndexEngine {
         Collection<Document> documents = new ArrayList<>();
         analyzerMap.forEach((key, value) -> {
             value = StrUtil.removeAllLineBreaks(value);
-            String[] cut = StrUtil.cut(value, 30000);
+            String[] cut = StrUtil.cut(value, 5000);
             for (int i = 0; i < cut.length; i++) {
                 Document doc = new Document();
-                doc.add(new StringField("order", i + "", Field.Store.YES));
+                doc.add(new StringField("order", String.valueOf(i), Field.Store.YES));
                 doc.add(new StringField("content", cut[i], Field.Store.YES));
                 doc.add(new StringField("codePath", key, Field.Store.YES));
+                doc.add(new StringField("title", StrUtil.removeSuffix(FileUtil.getName(key),".class"), Field.Store.YES));
                 documents.add(doc);
             }
         });
@@ -49,7 +52,9 @@ public class IndexEngine {
         Analyzer analyzer = new StandardAnalyzer();
         IndexWriterConfig conf = new IndexWriterConfig(analyzer);
         IndexWriter indexWriter = new IndexWriter(directory, conf);
-
+        Document doc = new Document();
+        doc.add(new StringField("version",IndexPluginsSupport.VERSION, Field.Store.YES));
+        indexWriter.addDocument(doc);
         indexWriter.commit();
         indexWriter.close();
         return null;
@@ -69,7 +74,9 @@ public class IndexEngine {
             int docID = scoreDoc.doc;
             Document doc = reader.document(docID);
             Map<String, Object> map = new java.util.HashMap<>();
-            map.put(doc.get("codePath"), doc.get("content"));
+            map.put("path", doc.get("codePath"));
+            map.put("content", doc.get("content"));
+            map.put("title", doc.get("title"));
             map.put("order", Integer.parseInt(doc.get("order")));
             arrayList.add(map);
         }

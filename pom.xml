@@ -280,6 +280,15 @@
                                     <version>[6-9].*</version>
                                 </ignoreVersion>
                             </rule>
+                            <!-- LUCENE 7 + 需要 JRE 8 + -->
+                            <!-- 本项目必须兼容 JAVA 8 所以这样设置 -->
+                            <rule>
+                                <groupId>org.apache.lucene</groupId>
+                                <ignoreVersion>
+                                    <type>regex</type>
+                                    <version>[8|9|1\d].*</version>
+                                </ignoreVersion>
+                            </rule>
                         </rules>
                         <ignoreVersions>
                             <ignoreVersion>

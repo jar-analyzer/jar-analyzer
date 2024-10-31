@@ -4,6 +4,7 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import me.n1ar4.jar.analyzer.entity.LuceneSearchResult;
 import me.n1ar4.jar.analyzer.gui.util.IconManager;
+import me.n1ar4.jar.analyzer.lucene.LuceneIndexWatcher;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -28,6 +29,26 @@ public class LuceneSearchForm {
     private static LuceneSearchForm instance;
     private static JFrame instanceFrame;
 
+    public static boolean usePaLucene() {
+        return instance.paLuceneRadio.isSelected();
+    }
+
+    public static boolean useNoLucene() {
+        return instance.noLuceneRadio.isSelected();
+    }
+
+    public static boolean useContains() {
+        return instance.containsRadio.isSelected();
+    }
+
+    public static boolean useRegex() {
+        return instance.regexRadio.isSelected();
+    }
+
+    public static JButton getBuildButton() {
+        return instance.luceneBuildBtn;
+    }
+
     public static LuceneSearchForm getInstance() {
         return instance;
     }
@@ -40,20 +61,26 @@ public class LuceneSearchForm {
         containsRadio.setSelected(true);
         paLuceneRadio.setSelected(true);
         searchIconLabel.setIcon(IconManager.gsIcon);
+        new LuceneIndexWatcher(luceneSizeLabel).start();
     }
 
     public static void start() {
-        instanceFrame = new JFrame();
-        instanceFrame.setUndecorated(true);
+        // 全局只有一个 LuceneSearchForm GUI 对象
+        if (instanceFrame == null) {
+            instanceFrame = new JFrame();
+            instanceFrame.setUndecorated(true);
 
-        Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
-        instanceFrame.setLocation(mouseLocation.x + 10, mouseLocation.y + 10);
+            Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
+            instanceFrame.setLocation(mouseLocation.x + 10, mouseLocation.y + 10);
 
-        instance = new LuceneSearchForm();
-        instance.init();
-        instanceFrame.setContentPane(instance.rootPanel);
-        instanceFrame.pack();
-        instanceFrame.setVisible(true);
+            instance = new LuceneSearchForm();
+            instance.init();
+            instanceFrame.setContentPane(instance.rootPanel);
+            instanceFrame.pack();
+            instanceFrame.setVisible(true);
+        } else {
+            instanceFrame.setVisible(true);
+        }
     }
 
     {

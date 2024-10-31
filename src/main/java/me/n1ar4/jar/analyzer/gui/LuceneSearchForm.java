@@ -19,6 +19,11 @@ public class LuceneSearchForm {
     private JPanel searchOptionPanel;
     private JRadioButton containsRadio;
     private JRadioButton regexRadio;
+    private JButton luceneBuildBtn;
+    private JRadioButton noLuceneRadio;
+    private JRadioButton paLuceneRadio;
+    private JPanel searchOptionsPanel;
+    private JLabel luceneSizeLabel;
 
     private static LuceneSearchForm instance;
     private static JFrame instanceFrame;
@@ -33,6 +38,7 @@ public class LuceneSearchForm {
 
     private void init() {
         containsRadio.setSelected(true);
+        paLuceneRadio.setSelected(true);
         searchIconLabel.setIcon(IconManager.gsIcon);
     }
 
@@ -69,7 +75,7 @@ public class LuceneSearchForm {
         rootPanel.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
         rootPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         searchInputPanel = new JPanel();
-        searchInputPanel.setLayout(new GridLayoutManager(1, 3, new Insets(8, 3, 3, 3), -1, -1));
+        searchInputPanel.setLayout(new GridLayoutManager(2, 3, new Insets(8, 3, 3, 3), -1, -1));
         rootPanel.add(searchInputPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         searchIconLabel = new JLabel();
         searchIconLabel.setText("");
@@ -85,6 +91,22 @@ public class LuceneSearchForm {
         regexRadio = new JRadioButton();
         regexRadio.setText("regexp");
         searchOptionPanel.add(regexRadio, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        searchOptionsPanel = new JPanel();
+        searchOptionsPanel.setLayout(new GridLayoutManager(2, 2, new Insets(3, 3, 3, 3), -1, -1));
+        searchInputPanel.add(searchOptionsPanel, new GridConstraints(1, 0, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        searchOptionsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "索引设置", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+        noLuceneRadio = new JRadioButton();
+        noLuceneRadio.setText("不使用 Lucene 索引 (仅搜索类名和方法名)");
+        searchOptionsPanel.add(noLuceneRadio, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        paLuceneRadio = new JRadioButton();
+        paLuceneRadio.setText("被动构建 Lucene 索引 (每次反编译代码自动提交)");
+        searchOptionsPanel.add(paLuceneRadio, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        luceneSizeLabel = new JLabel();
+        luceneSizeLabel.setText("当前索引大小：0 MB");
+        searchOptionsPanel.add(luceneSizeLabel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        luceneBuildBtn = new JButton();
+        luceneBuildBtn.setText("手动构建完整索引");
+        searchOptionsPanel.add(luceneBuildBtn, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         searchScroll = new JScrollPane();
         rootPanel.add(searchScroll, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(600, 400), new Dimension(600, 400), new Dimension(600, 400), 0, false));
         searchResultList = new JList();
@@ -93,6 +115,9 @@ public class LuceneSearchForm {
         buttonGroup = new ButtonGroup();
         buttonGroup.add(containsRadio);
         buttonGroup.add(regexRadio);
+        buttonGroup = new ButtonGroup();
+        buttonGroup.add(noLuceneRadio);
+        buttonGroup.add(paLuceneRadio);
     }
 
     /**

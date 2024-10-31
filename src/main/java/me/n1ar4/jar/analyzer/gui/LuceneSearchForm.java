@@ -4,7 +4,7 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import me.n1ar4.jar.analyzer.entity.LuceneSearchResult;
 import me.n1ar4.jar.analyzer.gui.util.IconManager;
-import me.n1ar4.jar.analyzer.lucene.LuceneIndexWatcher;
+import me.n1ar4.jar.analyzer.lucene.*;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -60,7 +60,14 @@ public class LuceneSearchForm {
     private void init() {
         containsRadio.setSelected(true);
         paLuceneRadio.setSelected(true);
+
+        luceneBuildBtn.addActionListener(new LuceneBuildListener());
+        searchResultList.setCellRenderer(new LuceneResultRender());
+        searchResultList.addMouseListener(new LuceneMouseListener());
+
         searchIconLabel.setIcon(IconManager.gsIcon);
+        LuceneSearchListener listener = new LuceneSearchListener(searchText, searchResultList);
+        searchText.getDocument().addDocumentListener(listener);
         new LuceneIndexWatcher(luceneSizeLabel).start();
     }
 
@@ -123,7 +130,7 @@ public class LuceneSearchForm {
         searchInputPanel.add(searchOptionsPanel, new GridConstraints(1, 0, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         searchOptionsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "索引设置", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         noLuceneRadio = new JRadioButton();
-        noLuceneRadio.setText("不使用 Lucene 索引 (仅搜索类名和方法名)");
+        noLuceneRadio.setText("不使用 Lucene 索引 (仅搜索类名/文件名)");
         searchOptionsPanel.add(noLuceneRadio, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         paLuceneRadio = new JRadioButton();
         paLuceneRadio.setText("被动构建 Lucene 索引 (每次反编译代码自动提交)");

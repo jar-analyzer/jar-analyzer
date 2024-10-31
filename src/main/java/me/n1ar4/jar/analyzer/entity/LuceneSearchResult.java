@@ -25,8 +25,11 @@
 package me.n1ar4.jar.analyzer.entity;
 
 public class LuceneSearchResult {
-    public static final int TYPE_FILE_NAME = 0xf0;
-    public static final int TYPE_CONTENT = 0xf1;
+    // 反编译后的代码的文件内容
+    public static final int TYPE_CONTENT = 0xf0;
+    // 类名：也可以理解成文件名 是一个东西
+    public static final int TYPE_CLASS_NAME = 0xf1;
+
     private int type;
     private String absPathStr;
     private String fileName;

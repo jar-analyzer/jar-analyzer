@@ -29,35 +29,39 @@ import me.n1ar4.jar.analyzer.entity.LuceneSearchResult;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import java.util.List;
 
 public class LuceneSearchListener implements DocumentListener {
     private final JTextField textField;
     private final DefaultListModel<LuceneSearchResult> resultModel;
 
+    private void doSearch(String text) {
+        resultModel.clear();
+        List<LuceneSearchResult> results = LuceneSearchWrapper.searchFileName(text);
+        for (LuceneSearchResult result : results) {
+            resultModel.addElement(result);
+        }
+    }
+
     public LuceneSearchListener(JTextField text, JList<LuceneSearchResult> res) {
         this.textField = text;
         this.resultModel = new DefaultListModel<>();
         res.setModel(resultModel);
+        LuceneSearchWrapper.initEnv();
     }
 
     @Override
     public void insertUpdate(DocumentEvent e) {
-        LuceneSearchResult res = new LuceneSearchResult();
-        res.setFileName(this.textField.getText());
-        resultModel.addElement(res);
+        doSearch(textField.getText());
     }
 
     @Override
     public void removeUpdate(DocumentEvent e) {
-        LuceneSearchResult res = new LuceneSearchResult();
-        res.setFileName(this.textField.getText());
-        resultModel.addElement(res);
+        doSearch(textField.getText());
     }
 
     @Override
     public void changedUpdate(DocumentEvent e) {
-        LuceneSearchResult res = new LuceneSearchResult();
-        res.setFileName(this.textField.getText());
-        resultModel.addElement(res);
+        doSearch(textField.getText());
     }
 }

@@ -1,3 +1,27 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2023-2024 4ra1n (Jar Analyzer Team)
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package me.n1ar4.jar.analyzer.engine.index;
 
 import cn.hutool.core.io.FileUtil;
@@ -25,8 +49,7 @@ import java.util.List;
 import java.util.Map;
 
 public class IndexEngine {
-
-    public static String addIndexCollection(String documentPath, Map<String, String> analyzerMap) throws IOException {
+    public static String addIndexCollection(Map<String, String> analyzerMap) throws IOException {
         IndexWriter indexWriter = IndexSingletonClass.getIndexWriter();
         Collection<Document> documents = new ArrayList<>();
         analyzerMap.forEach((key, value) -> {
@@ -37,7 +60,8 @@ public class IndexEngine {
                 doc.add(new StringField("order", String.valueOf(i), Field.Store.YES));
                 doc.add(new StringField("content", cut[i], Field.Store.YES));
                 doc.add(new StringField("codePath", key, Field.Store.YES));
-                doc.add(new StringField("title", StrUtil.removeSuffix(FileUtil.getName(key),".class"), Field.Store.YES));
+                doc.add(new StringField("title",
+                        StrUtil.removeSuffix(FileUtil.getName(key), ".class"), Field.Store.YES));
                 documents.add(doc);
             }
         });
@@ -52,7 +76,7 @@ public class IndexEngine {
         IndexWriterConfig conf = new IndexWriterConfig(analyzer);
         IndexWriter indexWriter = new IndexWriter(directory, conf);
         Document doc = new Document();
-        doc.add(new StringField("version",IndexPluginsSupport.VERSION, Field.Store.YES));
+        doc.add(new StringField("version", IndexPluginsSupport.VERSION, Field.Store.YES));
         indexWriter.addDocument(doc);
         indexWriter.commit();
         indexWriter.close();

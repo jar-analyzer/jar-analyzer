@@ -1,9 +1,8 @@
-package me.n1ar4.jar.analyzer.engine.Index;
+package me.n1ar4.jar.analyzer.engine.index;
 
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.file.PathUtil;
 import cn.hutool.core.util.StrUtil;
-import me.n1ar4.jar.analyzer.engine.Index.entity.Result;
+import me.n1ar4.jar.analyzer.engine.index.entity.Result;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;

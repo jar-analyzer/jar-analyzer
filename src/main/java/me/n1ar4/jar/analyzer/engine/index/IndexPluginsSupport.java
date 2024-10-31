@@ -1,11 +1,11 @@
-package me.n1ar4.jar.analyzer.engine.Index;
+package me.n1ar4.jar.analyzer.engine.index;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.thread.ExecutorBuilder;
 import cn.hutool.core.util.StrUtil;
 import me.n1ar4.jar.analyzer.engine.DecompileEngine;
-import me.n1ar4.jar.analyzer.engine.Index.entity.Result;
+import me.n1ar4.jar.analyzer.engine.index.entity.Result;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
 import me.n1ar4.jar.analyzer.starter.Const;
 import org.apache.lucene.queryparser.classic.ParseException;

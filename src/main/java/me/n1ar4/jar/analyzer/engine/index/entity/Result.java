@@ -1,4 +1,4 @@
-package me.n1ar4.jar.analyzer.engine.Index.entity;
+package me.n1ar4.jar.analyzer.engine.index.entity;
 
 import java.util.List;
 import java.util.Map;

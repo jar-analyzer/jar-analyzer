@@ -1,7 +1,7 @@
 package me.n1ar4.index;
 
-import me.n1ar4.jar.analyzer.engine.Index.IndexPluginsSupport;
-import me.n1ar4.jar.analyzer.engine.Index.entity.Result;
+import me.n1ar4.jar.analyzer.engine.index.IndexPluginsSupport;
+import me.n1ar4.jar.analyzer.engine.index.entity.Result;
 
 import java.io.IOException;
 

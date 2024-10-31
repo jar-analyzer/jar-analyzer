@@ -2,6 +2,7 @@ package me.n1ar4.jar.analyzer.gui;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
+import me.n1ar4.jar.analyzer.entity.LuceneSearchResult;
 import me.n1ar4.jar.analyzer.gui.util.IconManager;
 
 import javax.swing.*;
@@ -14,10 +15,10 @@ public class LuceneSearchForm {
     private JLabel searchIconLabel;
     private JTextField searchText;
     private JScrollPane searchScroll;
-    private JList searchResultList;
+    private JList<LuceneSearchResult> searchResultList;
     private JPanel searchOptionPanel;
-    private JRadioButton containsRadioButton;
-    private JRadioButton regexpRadioButton;
+    private JRadioButton containsRadio;
+    private JRadioButton regexRadio;
 
     private static LuceneSearchForm instance;
     private static JFrame instanceFrame;
@@ -31,15 +32,16 @@ public class LuceneSearchForm {
     }
 
     private void init() {
+        containsRadio.setSelected(true);
         searchIconLabel.setIcon(IconManager.gsIcon);
     }
 
     public static void start() {
-        instanceFrame = new JFrame("LuceneSearchForm");
+        instanceFrame = new JFrame();
         instanceFrame.setUndecorated(true);
 
-        Point masterPanelLocation = MainForm.getInstance().getMasterPanel().getLocationOnScreen();
-        instanceFrame.setLocation(masterPanelLocation.x + 300, masterPanelLocation.y + 100);
+        Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
+        instanceFrame.setLocation(mouseLocation.x + 10, mouseLocation.y + 10);
 
         instance = new LuceneSearchForm();
         instance.init();
@@ -77,16 +79,20 @@ public class LuceneSearchForm {
         searchOptionPanel = new JPanel();
         searchOptionPanel.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
         searchInputPanel.add(searchOptionPanel, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        containsRadioButton = new JRadioButton();
-        containsRadioButton.setText("contains");
-        searchOptionPanel.add(containsRadioButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        regexpRadioButton = new JRadioButton();
-        regexpRadioButton.setText("regexp");
-        searchOptionPanel.add(regexpRadioButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        containsRadio = new JRadioButton();
+        containsRadio.setText("contains");
+        searchOptionPanel.add(containsRadio, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        regexRadio = new JRadioButton();
+        regexRadio.setText("regexp");
+        searchOptionPanel.add(regexRadio, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         searchScroll = new JScrollPane();
         rootPanel.add(searchScroll, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(600, 400), new Dimension(600, 400), new Dimension(600, 400), 0, false));
         searchResultList = new JList();
         searchScroll.setViewportView(searchResultList);
+        ButtonGroup buttonGroup;
+        buttonGroup = new ButtonGroup();
+        buttonGroup.add(containsRadio);
+        buttonGroup.add(regexRadio);
     }
 
     /**

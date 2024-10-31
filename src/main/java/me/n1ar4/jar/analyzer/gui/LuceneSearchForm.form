@@ -41,7 +41,7 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="5c4d7" class="javax.swing.JRadioButton" binding="containsRadioButton" default-binding="true">
+              <component id="5c4d7" class="javax.swing.JRadioButton" binding="containsRadio">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -49,7 +49,7 @@
                   <text value="contains"/>
                 </properties>
               </component>
-              <component id="556f2" class="javax.swing.JRadioButton" binding="regexpRadioButton" default-binding="true">
+              <component id="556f2" class="javax.swing.JRadioButton" binding="regexRadio">
                 <constraints>
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -80,4 +80,10 @@
       </scrollpane>
     </children>
   </grid>
+  <buttonGroups>
+    <group name="searchGroup">
+      <member id="5c4d7"/>
+      <member id="556f2"/>
+    </group>
+  </buttonGroups>
 </form>

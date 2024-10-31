@@ -2,8 +2,10 @@ package me.n1ar4.jar.analyzer.gui;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
+import me.n1ar4.jar.analyzer.gui.util.IconManager;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 
 public class LuceneSearchForm {
@@ -29,12 +31,16 @@ public class LuceneSearchForm {
     }
 
     private void init() {
+        searchIconLabel.setIcon(IconManager.gsIcon);
     }
 
     public static void start() {
         instanceFrame = new JFrame("LuceneSearchForm");
         instanceFrame.setUndecorated(true);
-        instanceFrame.setLocationRelativeTo(MainForm.getInstance().getMasterPanel());
+
+        Point masterPanelLocation = MainForm.getInstance().getMasterPanel().getLocationOnScreen();
+        instanceFrame.setLocation(masterPanelLocation.x + 300, masterPanelLocation.y + 100);
+
         instance = new LuceneSearchForm();
         instance.init();
         instanceFrame.setContentPane(instance.rootPanel);
@@ -59,8 +65,9 @@ public class LuceneSearchForm {
     private void $$$setupUI$$$() {
         rootPanel = new JPanel();
         rootPanel.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
+        rootPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         searchInputPanel = new JPanel();
-        searchInputPanel.setLayout(new GridLayoutManager(1, 3, new Insets(3, 3, 3, 3), -1, -1));
+        searchInputPanel.setLayout(new GridLayoutManager(1, 3, new Insets(8, 3, 3, 3), -1, -1));
         rootPanel.add(searchInputPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         searchIconLabel = new JLabel();
         searchIconLabel.setText("");

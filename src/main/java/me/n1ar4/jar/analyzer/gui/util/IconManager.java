@@ -42,6 +42,7 @@ public class IconManager {
     public static ImageIcon whiteIcon;
     public static ImageIcon nextIcon;
     public static ImageIcon prevIcon;
+    public static ImageIcon gsIcon;
 
     static {
         try {
@@ -98,6 +99,12 @@ public class IconManager {
             nextIcon = new ImageIcon(ImageIO.read(
                     Objects.requireNonNull(IconManager.class
                             .getClassLoader().getResourceAsStream("img/next.png"))));
+
+            gsIcon = new ImageIcon(ImageIO.read(
+                    Objects.requireNonNull(IconManager.class
+                            .getClassLoader().getResourceAsStream("img/gs.png"))));
+            resizedImage = gsIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+            gsIcon = new ImageIcon(resizedImage);
         } catch (Exception ignored) {
         }
     }

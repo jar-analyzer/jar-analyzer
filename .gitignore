@@ -48,6 +48,7 @@ target/
 jar-analyzer-temp/
 jar-analyzer-export/
 jar-analyzer-download/
+jar-analyzer-document/
 build/jre/jre/
 jar-analyzer-lockfile
 *.h

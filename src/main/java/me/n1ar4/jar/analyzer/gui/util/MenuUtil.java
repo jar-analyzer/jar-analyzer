@@ -315,7 +315,13 @@ public class MenuUtil {
                         "<span style='color:red;'>[Start EL Search]</span> 是进阶表达式搜索</div>" +
                         "<div>更多功能欢迎摸索哦</div>" +
                         "</html>";
-                JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(), quickStartText);
+                JOptionPane.showMessageDialog(
+                        MainForm.getInstance().getMasterPanel(),
+                        quickStartText,
+                        "Quick Start",
+                        JOptionPane.INFORMATION_MESSAGE,
+                        IconManager.auIcon
+                       );
             });
             aboutMenu.add(quickStartItem);
 

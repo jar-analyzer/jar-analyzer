@@ -56,11 +56,11 @@ public class TreeRightMenuAdapter extends MouseAdapter {
     public TreeRightMenuAdapter() {
         popupMenu = new JPopupMenu();
         JMenuItem decompileItem = new JMenuItem("DECOMPILE");
-        decompileItem.setIcon(IconManager.javaIcon);
+        decompileItem.setIcon(IconManager.engineIcon);
         JMenuItem superClassItem = new JMenuItem("SUPER CLASS");
-        superClassItem.setIcon(IconManager.javaIcon);
+        superClassItem.setIcon(IconManager.pubIcon);
         JMenuItem openItem = new JMenuItem("OPEN IN EXPLORER");
-        openItem.setIcon(IconManager.javaIcon);
+        openItem.setIcon(IconManager.fileIcon);
         popupMenu.add(decompileItem);
         popupMenu.add(superClassItem);
         popupMenu.add(openItem);

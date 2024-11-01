@@ -101,9 +101,9 @@ public class LuceneSearchResult {
         String suffix = finalClassPath.split(Const.tempDir)[1];
         int i = suffix.indexOf("classes");
         if (suffix.contains("BOOT-INF") || suffix.contains("WEB-INF")) {
-            suffix = suffix.substring(i + 8, suffix.length() - 7);
+            suffix = suffix.substring(i + 8, suffix.length() - 6);
         } else {
-            suffix = suffix.substring(1, suffix.length() - 7);
+            suffix = suffix.substring(1, suffix.length() - 6);
         }
         String className = suffix.replace("\\", "/");
         className = className.replace("/", ".");

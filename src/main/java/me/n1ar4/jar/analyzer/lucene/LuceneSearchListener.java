@@ -25,6 +25,7 @@
 package me.n1ar4.jar.analyzer.lucene;
 
 import me.n1ar4.jar.analyzer.entity.LuceneSearchResult;
+import me.n1ar4.jar.analyzer.gui.LuceneSearchForm;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -40,7 +41,9 @@ public class LuceneSearchListener implements DocumentListener {
         // 直接的类名优先
         List<LuceneSearchResult> results = LuceneSearchWrapper.searchFileName(text);
         // 其次是文件内容
-        results.addAll(LuceneSearchWrapper.searchLucene(text));
+        if (!LuceneSearchForm.useNoLucene()) {
+            results.addAll(LuceneSearchWrapper.searchLucene(text));
+        }
         for (LuceneSearchResult result : results) {
             resultModel.addElement(result);
         }

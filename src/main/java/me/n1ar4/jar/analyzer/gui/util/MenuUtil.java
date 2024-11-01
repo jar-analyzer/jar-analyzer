@@ -173,19 +173,23 @@ public class MenuUtil {
         menuBar.add(loadRemote());
         menuBar.add(exportJava());
         menuBar.add(createGames());
-        JMenu system = new JMenu("system info");
-        JMenuItem systemItem = new JMenuItem("open");
-        systemItem.setIcon(IconManager.javaIcon);
+        JMenu plugins = new JMenu("plugins");
+        JMenuItem systemItem = new JMenuItem("system info");
+        systemItem.setIcon(IconManager.systemIcon);
         systemItem.addActionListener(e -> SystemChart.start0());
-        system.add(systemItem);
-        menuBar.add(system);
+        plugins.add(systemItem);
+        JMenuItem luceneItem = new JMenuItem("global search");
+        luceneItem.setIcon(IconManager.luceneIcon);
+        luceneItem.addActionListener(e -> LuceneSearchForm.start(1));
+        plugins.add(luceneItem);
+        menuBar.add(plugins);
         return menuBar;
     }
 
     private static JMenu exportJava() {
         JMenu export = new JMenu("export");
         JMenuItem proxyItem = new JMenuItem("decompile and export");
-        proxyItem.setIcon(IconManager.javaIcon);
+        proxyItem.setIcon(IconManager.engineIcon);
         proxyItem.addActionListener(e -> {
             if (MainForm.getEngine() == null) {
                 JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
@@ -201,19 +205,19 @@ public class MenuUtil {
     private static JMenu loadRemote() {
         JMenu loadRemote = new JMenu("remote");
         JMenuItem loadByHttp = new JMenuItem("load jars (http)");
-        loadByHttp.setIcon(IconManager.javaIcon);
+        loadByHttp.setIcon(IconManager.remoteIcon);
         loadByHttp.addActionListener(e -> RemoteHttp.start());
         loadRemote.add(loadByHttp);
         JMenuItem start = new JMenuItem("start tomcat analyzer");
-        start.setIcon(IconManager.javaIcon);
+        start.setIcon(IconManager.tomcatIcon);
         start.addActionListener(e -> ShellForm.start0());
         loadRemote.add(start);
         JMenuItem dbgItem = new JMenuItem("open bytecode debugger");
-        dbgItem.setIcon(IconManager.javaIcon);
+        dbgItem.setIcon(IconManager.debugIcon);
         dbgItem.addActionListener(e -> me.n1ar4.dbg.gui.MainForm.start());
         loadRemote.add(dbgItem);
         JMenuItem proxyItem = new JMenuItem("open proxy config");
-        proxyItem.setIcon(IconManager.javaIcon);
+        proxyItem.setIcon(IconManager.proxyIcon);
         proxyItem.addActionListener(e -> ProxyForm.start());
         loadRemote.add(proxyItem);
         return loadRemote;

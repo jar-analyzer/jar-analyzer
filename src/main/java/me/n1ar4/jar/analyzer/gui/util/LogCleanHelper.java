@@ -36,7 +36,7 @@ public class LogCleanHelper {
     public static void build() {
         JPopupMenu popupMenu = new JPopupMenu();
         JMenuItem cleanItem = new JMenuItem("CLEAN");
-        cleanItem.setIcon(IconManager.javaIcon);
+        cleanItem.setIcon(IconManager.cleanIcon);
         cleanItem.addActionListener(e -> instance.getLogArea().setText(null));
         popupMenu.add(cleanItem);
 

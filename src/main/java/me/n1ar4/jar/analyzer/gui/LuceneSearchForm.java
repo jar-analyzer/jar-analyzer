@@ -100,14 +100,18 @@ public class LuceneSearchForm {
         new LuceneIndexWatcher(luceneSizeLabel).start();
     }
 
-    public static void start() {
+    public static void start(int position) {
         // 全局只有一个 LuceneSearchForm GUI 对象
         if (instanceFrame == null) {
             instanceFrame = new JFrame();
             instanceFrame.setUndecorated(true);
 
-            Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
-            instanceFrame.setLocation(mouseLocation.x + 10, mouseLocation.y + 10);
+            if (position == 0) {
+                Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
+                instanceFrame.setLocation(mouseLocation.x + 10, mouseLocation.y + 10);
+            } else if (position == 1) {
+                instanceFrame.setLocationRelativeTo(null);
+            }
 
             instance = new LuceneSearchForm();
             instance.init();
@@ -115,8 +119,12 @@ public class LuceneSearchForm {
             instanceFrame.pack();
             instanceFrame.setVisible(true);
         } else {
-            Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
-            instanceFrame.setLocation(mouseLocation.x + 10, mouseLocation.y + 10);
+            if (position == 0) {
+                Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
+                instanceFrame.setLocation(mouseLocation.x + 10, mouseLocation.y + 10);
+            } else if (position == 1) {
+                instanceFrame.setLocationRelativeTo(null);
+            }
             instanceFrame.setVisible(true);
         }
     }

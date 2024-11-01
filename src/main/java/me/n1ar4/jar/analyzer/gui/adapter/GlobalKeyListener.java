@@ -59,7 +59,7 @@ public class GlobalKeyListener extends KeyAdapter {
             }
         }, AWTEvent.MOUSE_EVENT_MASK);
         LuceneSearchWrapper.initEnv();
-        LuceneSearchForm.start();
+        LuceneSearchForm.start(0);
     }
 
     @Override

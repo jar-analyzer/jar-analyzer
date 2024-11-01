@@ -25,6 +25,7 @@
 package me.n1ar4.jar.analyzer.gui.util;
 
 import me.n1ar4.jar.analyzer.entity.MethodResult;
+import me.n1ar4.jar.analyzer.gui.LuceneSearchForm;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.utils.OpenUtil;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
@@ -41,9 +42,7 @@ public class CodeMenuHelper {
         JPopupMenu popupMenu = new JPopupMenu();
 
         JMenuItem selectItem = new JMenuItem("SELECT STRING (LDC)");
-        selectItem.setIcon(IconManager.javaIcon);
-        popupMenu.add(selectItem);
-
+        selectItem.setIcon(IconManager.stringIcon);
         selectItem.addActionListener(e -> {
             String str = rArea.getSelectedText();
 
@@ -64,11 +63,10 @@ public class CodeMenuHelper {
                 MainForm.getInstance().getTabbedPanel().setSelectedIndex(1);
             }).start();
         });
+        popupMenu.add(selectItem);
 
         JMenuItem searchCallItem = new JMenuItem("SEARCH CALL INFO");
-        searchCallItem.setIcon(IconManager.javaIcon);
-        popupMenu.add(searchCallItem);
-
+        searchCallItem.setIcon(IconManager.callIcon);
         searchCallItem.addActionListener(e -> {
             String methodName = rArea.getSelectedText();
 
@@ -105,11 +103,10 @@ public class CodeMenuHelper {
                 MainForm.getInstance().getTabbedPanel().setSelectedIndex(2);
             }).start();
         });
+        popupMenu.add(searchCallItem);
 
         JMenuItem classItem = new JMenuItem("SEARCH CLASS FROM JARS");
-        classItem.setIcon(IconManager.javaIcon);
-        popupMenu.add(classItem);
-
+        classItem.setIcon(IconManager.pubIcon);
         classItem.addActionListener(e -> {
             String className = rArea.getSelectedText();
 
@@ -131,12 +128,18 @@ public class CodeMenuHelper {
 
             fileTreeSearchTextField.setText(className);
         });
+        popupMenu.add(classItem);
 
         JMenuItem openItem = new JMenuItem("OPEN IN EXPLORER");
-        openItem.setIcon(IconManager.javaIcon);
+        openItem.setIcon(IconManager.fileIcon);
+        openItem.addActionListener(e -> OpenUtil.openCurrent());
         popupMenu.add(openItem);
 
-        openItem.addActionListener(e -> OpenUtil.openCurrent());
+        JMenuItem luceneItem = new JMenuItem("OPEN GLOBAL SEARCH");
+        luceneItem.setIcon(IconManager.luceneIcon);
+        luceneItem.addActionListener(e -> LuceneSearchForm.start(1));
+        popupMenu.add(luceneItem);
+
         rArea.setPopupMenu(popupMenu);
     }
 }

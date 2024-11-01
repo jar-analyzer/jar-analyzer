@@ -38,15 +38,17 @@ public class LuceneSearchListener implements DocumentListener {
 
     private void doSearch(String text) {
         resultModel.clear();
-        // 直接的类名优先
-        List<LuceneSearchResult> results = LuceneSearchWrapper.searchFileName(text);
-        // 其次是文件内容
-        if (!LuceneSearchForm.useNoLucene()) {
-            results.addAll(LuceneSearchWrapper.searchLucene(text));
-        }
-        for (LuceneSearchResult result : results) {
-            resultModel.addElement(result);
-        }
+        new Thread(() -> {
+            // 直接的类名优先
+            List<LuceneSearchResult> results = LuceneSearchWrapper.searchFileName(text);
+            // 其次是文件内容
+            if (!LuceneSearchForm.useNoLucene()) {
+                results.addAll(LuceneSearchWrapper.searchLucene(text));
+            }
+            for (LuceneSearchResult result : results) {
+                resultModel.addElement(result);
+            }
+        }).start();
     }
 
     public LuceneSearchListener(JTextArea text, JList<LuceneSearchResult> res) {

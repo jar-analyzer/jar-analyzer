@@ -36,6 +36,10 @@
 
 ![](img/0066.png)
 
+从 `4.0` 版本开始可以和 `IDEA` 一样快捷键两次 `shift` 调出 `Lucene` 全局搜索
+
+![](img/0067.png)
+
 `Jar Analyzer` 是一个分析 `Jar` 文件的 `GUI` 工具：
 
 - 支持大 `Jar` 以及批量 `Jars` 分析

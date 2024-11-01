@@ -64,7 +64,7 @@ public class LuceneSearchWrapper {
                 internalResult = IndexEngine.search(input);
             } else if (LuceneSearchForm.useRegex()) {
                 internalResult = IndexEngine.searchRegex(input);
-            }else{
+            } else {
                 logger.error("invalid lucene search type");
                 return results;
             }

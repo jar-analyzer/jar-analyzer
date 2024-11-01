@@ -58,7 +58,7 @@ public interface Const {
     String ExportForm = "Jar Analyzer - Export Java Code";
     String blackAreaText = "# package black list\n" +
             "java.util.;\n" +
-            "# class white list\n" +
+            "# class black list\n" +
             "java.lang.Object;\n";
     String classBlackAreaText = "# package black list\n" +
             "com.test.a.;\n" +

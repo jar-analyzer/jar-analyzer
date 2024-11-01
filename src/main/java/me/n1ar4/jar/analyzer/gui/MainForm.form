@@ -631,27 +631,29 @@
                                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                                 </constraints>
                                 <properties>
-                                  <text value="Class Name Black List (split by ; and \n)"/>
+                                  <text value=" class / package black list (split by ; and \n) 类名包名黑名单 (按照 ; 和 \n 分割)"/>
                                 </properties>
                               </component>
                             </children>
                           </grid>
-                          <component id="830e6" class="javax.swing.JCheckBox" binding="nullParamBox">
+                          <grid id="920a5" binding="npbPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                            <margin top="0" left="0" bottom="0" right="0"/>
                             <constraints>
-                              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                              <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                             </constraints>
-                            <properties>
-                              <text value="except null parameter method"/>
-                            </properties>
-                          </component>
-                          <component id="ae43a" class="javax.swing.JLabel" binding="nullParamLabel">
-                            <constraints>
-                              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                            </constraints>
-                            <properties>
-                              <text value="排除空参方法 (空参方法一般无漏洞)"/>
-                            </properties>
-                          </component>
+                            <properties/>
+                            <border type="none"/>
+                            <children>
+                              <component id="830e6" class="javax.swing.JCheckBox" binding="nullParamBox">
+                                <constraints>
+                                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties>
+                                  <text value="except null parameter method / 排除空参方法 (空参方法一般无漏洞)"/>
+                                </properties>
+                              </component>
+                            </children>
+                          </grid>
                         </children>
                       </grid>
                     </children>
@@ -895,7 +897,7 @@
               <grid id="8326a" binding="scaPanel" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                 <margin top="0" left="0" bottom="0" right="0"/>
                 <constraints>
-                  <tabbedpane title="SCA"/>
+                  <tabbedpane title="sca"/>
                 </constraints>
                 <properties/>
                 <border type="none"/>

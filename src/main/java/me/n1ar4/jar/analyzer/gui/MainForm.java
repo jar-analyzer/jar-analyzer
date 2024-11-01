@@ -276,7 +276,6 @@ public class MainForm {
     private JButton bcelBtn;
     private JLabel bcelLabel;
     private JCheckBox nullParamBox;
-    private JLabel nullParamLabel;
     private JPanel leakPanel;
     private JCheckBox leakUrlBox;
     private JCheckBox leakJdbcBox;
@@ -297,6 +296,7 @@ public class MainForm {
     private JScrollPane leakResultScroll;
     private JTextArea leakLogArea;
     private JScrollPane leakLogScroll;
+    private JPanel npbPanel;
     private static DefaultListModel<MethodResult> favData;
 
     public JCheckBox getLeakUrlBox() {
@@ -1020,7 +1020,7 @@ public class MainForm {
                 instance.tabbedPanel.setTitleAt(1, "搜索");
                 instance.tabbedPanel.setTitleAt(2, "调用");
                 instance.tabbedPanel.setTitleAt(3, "实现");
-                instance.tabbedPanel.setTitleAt(4, "spring");
+                instance.tabbedPanel.setTitleAt(4, "Spring");
                 instance.tabbedPanel.setTitleAt(5, "记录");
                 instance.tabbedPanel.setTitleAt(6, "SCA");
                 instance.tabbedPanel.setTitleAt(7, "泄露");
@@ -1096,7 +1096,8 @@ public class MainForm {
                 instance.curClassLabel.setText("当前类");
                 instance.curMethodLabel.setText("当前方法");
 
-                instance.classBlackLabel.setText("类名黑名单 (完整类名并使用 ; 和 \\n 分割)");
+                instance.classBlackLabel.setText(" class / package black list (split by ; and \\n) " +
+                        "类名包名黑名单 (按照 ; 和 \\n 分割)");
                 instance.startSearchButton.setText("开始搜索");
                 instance.springLabel.setText("分析 JAR/JARS 中的 Spring Controller/Mapping 信息");
                 instance.pathSearchButton.setText("查找");
@@ -1144,7 +1145,7 @@ public class MainForm {
                 instance.tabbedPanel.setTitleAt(3, "impl");
                 instance.tabbedPanel.setTitleAt(4, "spring");
                 instance.tabbedPanel.setTitleAt(5, "note");
-                instance.tabbedPanel.setTitleAt(6, "SCA");
+                instance.tabbedPanel.setTitleAt(6, "sca");
                 instance.tabbedPanel.setTitleAt(7, "leak");
                 instance.tabbedPanel.setTitleAt(8, "advance");
 
@@ -1218,7 +1219,8 @@ public class MainForm {
                 instance.curClassLabel.setText("Class");
                 instance.curMethodLabel.setText("Method");
 
-                instance.classBlackLabel.setText("Class Name Black List (full class name and split by ; and \\n)");
+                instance.classBlackLabel.setText(" class / package black list (split by ; and \\n) " +
+                        "类名包名黑名单 (按照 ; 和 \\n 分割)");
                 instance.startSearchButton.setText("Start Search");
                 instance.springLabel.setText(" Analyze Spring Controllers and Mappings in Jar/Jars");
                 instance.pathSearchButton.setText("Search");
@@ -1574,14 +1576,14 @@ public class MainForm {
         blackArea.setForeground(new Color(-16711931));
         blackScroll.setViewportView(blackArea);
         classBlackLabel = new JLabel();
-        classBlackLabel.setText("Class Name Black List (split by ; and \\n)");
+        classBlackLabel.setText(" class / package black list (split by ; and \\n) 类名包名黑名单 (按照 ; 和 \\n 分割)");
         blackListPanel.add(classBlackLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        npbPanel = new JPanel();
+        npbPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        soPanel.add(npbPanel, new GridConstraints(1, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         nullParamBox = new JCheckBox();
-        nullParamBox.setText("except null parameter method");
-        soPanel.add(nullParamBox, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        nullParamLabel = new JLabel();
-        nullParamLabel.setText("排除空参方法 (空参方法一般无漏洞)");
-        soPanel.add(nullParamLabel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        nullParamBox.setText("except null parameter method / 排除空参方法 (空参方法一般无漏洞)");
+        npbPanel.add(nullParamBox, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         callPanel = new JPanel();
         callPanel.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPanel.addTab("call", callPanel);

@@ -25,18 +25,24 @@
 package me.n1ar4.jar.analyzer.lucene;
 
 import cn.hutool.core.io.FileUtil;
+import me.n1ar4.jar.analyzer.engine.index.IndexEngine;
+import me.n1ar4.jar.analyzer.engine.index.entity.Result;
 import me.n1ar4.jar.analyzer.entity.LuceneSearchResult;
 import me.n1ar4.jar.analyzer.gui.LuceneSearchForm;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.utils.DirUtil;
+import me.n1ar4.log.LogManager;
+import me.n1ar4.log.Logger;
 
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LuceneSearchWrapper {
+    private static final Logger logger = LogManager.getLogger();
     private static final List<String> files = new ArrayList<>();
 
     public static void initEnv() {
@@ -50,7 +56,41 @@ public class LuceneSearchWrapper {
         return matcher.find();
     }
 
-    public static  List<LuceneSearchResult> searchFileName(String input) {
+    public static List<LuceneSearchResult> searchLucene(String input) {
+        List<LuceneSearchResult> results = new ArrayList<>();
+        try {
+            Result internalResult;
+            if (LuceneSearchForm.useContains()) {
+                internalResult = IndexEngine.search(input);
+            } else if (LuceneSearchForm.useRegex()) {
+                internalResult = IndexEngine.searchRegex(input);
+            }else{
+                logger.error("invalid lucene search type");
+                return results;
+            }
+
+            for (Map<String, Object> data : internalResult.getData()) {
+                String content = (String) data.get("content");
+                String codePath = (String) data.get("path");
+                String title = (String) data.get("title");
+                int order = (int) data.get("order");
+
+                LuceneSearchResult res = new LuceneSearchResult();
+                res.setType(LuceneSearchResult.TYPE_CONTENT);
+                res.setAbsPathStr(codePath);
+                res.setFileName(FileUtil.getName(codePath));
+                res.setContentStr(content);
+                res.setTitle(title);
+                res.setOrder(order);
+                results.add(res);
+            }
+        } catch (Exception ex) {
+            logger.error("lucene search error: {}", ex.toString());
+        }
+        return results;
+    }
+
+    public static List<LuceneSearchResult> searchFileName(String input) {
         List<LuceneSearchResult> results = new ArrayList<>();
         for (String file : files) {
             if (LuceneSearchForm.useContains()) {

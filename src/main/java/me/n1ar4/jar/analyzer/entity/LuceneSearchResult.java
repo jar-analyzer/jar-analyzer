@@ -24,6 +24,8 @@
 
 package me.n1ar4.jar.analyzer.entity;
 
+import me.n1ar4.jar.analyzer.starter.Const;
+
 public class LuceneSearchResult {
     // 反编译后的代码的文件内容
     public static final int TYPE_CONTENT = 0xf0;
@@ -34,6 +36,24 @@ public class LuceneSearchResult {
     private String absPathStr;
     private String fileName;
     private String contentStr;
+    private String title;
+    private int order;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
 
     public int getType() {
         return type;
@@ -65,6 +85,21 @@ public class LuceneSearchResult {
 
     public void setContentStr(String contentStr) {
         this.contentStr = contentStr;
+    }
+
+    public String getClassName() {
+        String finalClassPath = this.getAbsPathStr();
+        String suffix = finalClassPath.split(Const.tempDir)[1];
+        int i = suffix.indexOf("classes");
+        if (suffix.contains("BOOT-INF") || suffix.contains("WEB-INF")) {
+            suffix = suffix.substring(i + 8, suffix.length() - 7);
+        } else {
+            suffix = suffix.substring(1, suffix.length() - 7);
+        }
+        String className = suffix.replace("\\", "/");
+        className = className.replace("/", ".");
+        className = className.replace(".class", "");
+        return className;
     }
 
     @Override

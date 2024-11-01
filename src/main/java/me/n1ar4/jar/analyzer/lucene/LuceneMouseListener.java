@@ -52,15 +52,22 @@ public class LuceneMouseListener extends MouseAdapter {
                 return;
             }
 
+            String content;
+            if (res.getType() == LuceneSearchResult.TYPE_CONTENT) {
+                content = res.getContentStr();
+            } else {
+                content = null;
+            }
+
             String finalClassPath = res.getAbsPathStr();
             String suffix = finalClassPath.split(Const.tempDir)[1];
             int i = suffix.indexOf("classes");
             if (suffix.contains("BOOT-INF") || suffix.contains("WEB-INF")) {
-                suffix = suffix.substring(i + 8, suffix.length() - 7);
+                suffix = suffix.substring(i + 8, suffix.length() - 6);
             } else {
-                suffix = suffix.substring(1, suffix.length() - 7);
+                suffix = suffix.substring(1, suffix.length() - 6);
             }
-            String className = suffix.replace("\\","/");
+            String className = suffix.replace("\\", "/");
 
             new Thread(() -> {
                 String code = DecompileEngine.decompile(Paths.get(finalClassPath));
@@ -70,6 +77,16 @@ public class LuceneMouseListener extends MouseAdapter {
 
                 MainForm.getCodeArea().setText(code);
                 MainForm.getCodeArea().setCaretPosition(0);
+
+                // 对于 Content 部分搜索的高亮展示
+                if (code != null && content != null) {
+                    int idx = code.indexOf(content);
+                    if (idx != -1) {
+                        MainForm.getCodeArea().setText(code);
+                        MainForm.getCodeArea().setSelectionStart(idx);
+                        MainForm.getCodeArea().setSelectionEnd(idx + content.length());
+                    }
+                }
             }).start();
 
             JDialog dialog = ProcessDialog.createProgressDialog(MainForm.getInstance().getMasterPanel());

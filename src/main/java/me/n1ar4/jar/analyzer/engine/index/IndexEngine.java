@@ -34,10 +34,7 @@ import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.index.*;
 import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TopDocs;
-import org.apache.lucene.search.WildcardQuery;
+import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
@@ -47,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class IndexEngine {
     public static String addIndexCollection(Map<String, String> analyzerMap) throws IOException {
@@ -89,6 +87,31 @@ public class IndexEngine {
         keyword = StrUtil.removeAllLineBreaks(keyword);
 
         WildcardQuery query = new WildcardQuery(new Term("content", "*" + keyword + "*"));
+
+        TopDocs topDocs = IndexSingletonClass.getSearcher().search(query, 110);
+        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+        List<Map<String, Object>> arrayList = new ArrayList<>();
+        for (ScoreDoc scoreDoc : scoreDocs) {
+            int docID = scoreDoc.doc;
+            Document doc = reader.document(docID);
+            Map<String, Object> map = new java.util.HashMap<>();
+            map.put("path", doc.get("codePath"));
+            map.put("content", doc.get("content"));
+            map.put("title", doc.get("title"));
+            map.put("order", Integer.parseInt(doc.get("order")));
+            arrayList.add(map);
+        }
+        Result result = new Result();
+        result.setTotal(topDocs.totalHits);
+        result.setData(arrayList);
+        return result;
+    }
+
+    public static Result searchRegex(String keyword) throws IOException {
+        IndexReader reader = IndexSingletonClass.getReader();
+        keyword = StrUtil.removeAllLineBreaks(keyword);
+
+        RegexpQuery query = new RegexpQuery(new Term("content", ".*" + Pattern.quote(keyword) + ".*"));
 
         TopDocs topDocs = IndexSingletonClass.getSearcher().search(query, 110);
         ScoreDoc[] scoreDocs = topDocs.scoreDocs;

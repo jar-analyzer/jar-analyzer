@@ -32,22 +32,24 @@ import javax.swing.event.DocumentListener;
 import java.util.List;
 
 public class LuceneSearchListener implements DocumentListener {
-    private final JTextField textField;
+    private final JTextArea textField;
     private final DefaultListModel<LuceneSearchResult> resultModel;
 
     private void doSearch(String text) {
         resultModel.clear();
+        // 直接的类名优先
         List<LuceneSearchResult> results = LuceneSearchWrapper.searchFileName(text);
+        // 其次是文件内容
+        results.addAll(LuceneSearchWrapper.searchLucene(text));
         for (LuceneSearchResult result : results) {
             resultModel.addElement(result);
         }
     }
 
-    public LuceneSearchListener(JTextField text, JList<LuceneSearchResult> res) {
+    public LuceneSearchListener(JTextArea text, JList<LuceneSearchResult> res) {
         this.textField = text;
         this.resultModel = new DefaultListModel<>();
         res.setModel(resultModel);
-        LuceneSearchWrapper.initEnv();
     }
 
     @Override

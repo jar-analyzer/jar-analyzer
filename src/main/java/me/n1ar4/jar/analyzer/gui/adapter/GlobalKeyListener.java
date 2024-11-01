@@ -27,6 +27,7 @@ package me.n1ar4.jar.analyzer.gui.adapter;
 import me.n1ar4.jar.analyzer.gui.LuceneSearchForm;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.SearchForm;
+import me.n1ar4.jar.analyzer.lucene.LuceneSearchWrapper;
 
 import javax.swing.*;
 import java.awt.*;
@@ -57,6 +58,7 @@ public class GlobalKeyListener extends KeyAdapter {
                 }
             }
         }, AWTEvent.MOUSE_EVENT_MASK);
+        LuceneSearchWrapper.initEnv();
         LuceneSearchForm.start();
     }
 
@@ -82,8 +84,6 @@ public class GlobalKeyListener extends KeyAdapter {
         }
         if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
             shiftPressCount++;
-
-            // 如果检测到两次 Shift 按键，则触发搜索
             if (shiftPressCount == 2) {
                 triggerGlobalSearch();
                 shiftPressCount = 0;

@@ -58,6 +58,7 @@ public class LuceneMouseListener extends MouseAdapter {
             } else {
                 content = null;
             }
+            String searchKey = res.getSearchKey().trim().replace("\n", "\r\n");
 
             String finalClassPath = res.getAbsPathStr();
             String suffix = finalClassPath.split(Const.tempDir)[1];
@@ -80,11 +81,10 @@ public class LuceneMouseListener extends MouseAdapter {
 
                 // 对于 Content 部分搜索的高亮展示
                 if (code != null && content != null) {
-                    int idx = code.indexOf(content);
+                    int idx = code.indexOf(searchKey);
                     if (idx != -1) {
-                        MainForm.getCodeArea().setText(code);
                         MainForm.getCodeArea().setSelectionStart(idx);
-                        MainForm.getCodeArea().setSelectionEnd(idx + content.length());
+                        MainForm.getCodeArea().setSelectionEnd(idx + searchKey.length());
                     }
                 }
             }).start();

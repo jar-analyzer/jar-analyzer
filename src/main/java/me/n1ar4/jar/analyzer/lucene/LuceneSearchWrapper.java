@@ -82,6 +82,7 @@ public class LuceneSearchWrapper {
                 res.setContentStr(content);
                 res.setTitle(title);
                 res.setOrder(order);
+                res.setSearchKey(input);
                 results.add(res);
             }
         } catch (Exception ex) {
@@ -101,6 +102,7 @@ public class LuceneSearchWrapper {
                     result.setFileName(fileName);
                     result.setAbsPathStr(file);
                     result.setContentStr(null);
+                    result.setSearchKey(input);
                     results.add(result);
                 }
             }
@@ -112,6 +114,7 @@ public class LuceneSearchWrapper {
                     result.setFileName(fileName);
                     result.setAbsPathStr(file);
                     result.setContentStr(null);
+                    result.setSearchKey(input);
                     results.add(result);
                 }
             }

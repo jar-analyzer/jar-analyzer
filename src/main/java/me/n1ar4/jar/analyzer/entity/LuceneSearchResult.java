@@ -38,6 +38,15 @@ public class LuceneSearchResult {
     private String contentStr;
     private String title;
     private int order;
+    private String searchKey;
+
+    public String getSearchKey() {
+        return searchKey;
+    }
+
+    public void setSearchKey(String searchKey) {
+        this.searchKey = searchKey;
+    }
 
     public String getTitle() {
         return title;

@@ -32,6 +32,8 @@ import me.n1ar4.jar.analyzer.engine.DecompileEngine;
 import me.n1ar4.jar.analyzer.engine.index.entity.Result;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
 import me.n1ar4.jar.analyzer.starter.Const;
+import me.n1ar4.log.LogManager;
+import me.n1ar4.log.Logger;
 import org.apache.lucene.queryparser.classic.ParseException;
 
 import java.io.File;
@@ -47,11 +49,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class IndexPluginsSupport {
+    private static final Logger logger = LogManager.getLogger();
+
     public final static String VERSION = "0.1";
     public final static String CurrentPath = System.getProperty("user.dir");
     public final static String DocumentPath = CurrentPath + FileUtil.FILE_SEPARATOR + Const.indexDir;
     public final static String TempPath = CurrentPath + FileUtil.FILE_SEPARATOR + Const.tempDir;
-
 
     private static final Integer MAX_CORE = Runtime.getRuntime().availableProcessors();
     private static final Integer MAX_SIZE_GROUP = 40;
@@ -60,6 +63,8 @@ public class IndexPluginsSupport {
             .setMaxPoolSize(MAX_CORE * 3)
             .setWorkQueue(new LinkedBlockingQueue<>())
             .build();
+
+    private static boolean created = false;
 
 
     static {
@@ -100,6 +105,41 @@ public class IndexPluginsSupport {
             LogUtil.error(e.getMessage());
         }
         return StrUtil.isNotBlank(decompile) ? decompile.replace(DecompileEngine.getFERN_PREFIX(), "") : null;
+    }
+
+    public static boolean create() {
+        try {
+            IndexEngine.createIndex(DocumentPath);
+            logger.info("create index ok");
+            created = true;
+            return true;
+        } catch (Exception ex) {
+            logger.error("create index error: {}", ex.getMessage());
+            created = false;
+            return false;
+        }
+    }
+
+    public static boolean addIndex(File file) {
+        if (!created) {
+            create();
+        }
+
+        Map<String, String> codeMap = new HashMap<>();
+
+        String code = getCode(file);
+        if (StrUtil.isNotBlank(code)) {
+            codeMap.put(file.getPath(), code);
+        }
+
+        try {
+            IndexEngine.addIndexCollection(codeMap);
+            logger.info("add index {} ok", FileUtil.getName(file));
+            return true;
+        } catch (IOException ex) {
+            logger.error("add index error: {}", ex.getMessage());
+            return false;
+        }
     }
 
     public static boolean initIndex() throws IOException, InterruptedException {

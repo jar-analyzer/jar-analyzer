@@ -74,6 +74,10 @@ public class LuceneSearchForm {
         return instance.luceneBuildBtn;
     }
 
+    public JPanel getRootPanel() {
+        return rootPanel;
+    }
+
     public static LuceneSearchForm getInstance() {
         return instance;
     }

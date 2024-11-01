@@ -1,8 +1,25 @@
 ## 其他
 
+早期的一些文章和视频
+
+### 文章视频
+
+用户使用文章
+
+- [利用 jar-analyzer 分析 CVE-2022-42889](https://zone.huoxian.cn/d/2884-jar-analyzer-cve-2022-42889)
+- [某人力系统的代码审计](https://forum.butian.net/share/3109)
+
+用户使用视频
+
+- [Jar Analyzer V2 教程（早期版本）](https://www.bilibili.com/video/BV1ac411S7q4)
+- [通过 jar-analyzer 分析漏洞 CVE-2022-42889](https://www.bilibili.com/video/BV1a94y1E7Nn)
+- [Jar Analyzer V2 新版本功能介绍](https://www.bilibili.com/video/BV1Dm421G75i)
+
 如果你希望体验老版本 (不再维护) 的 `Jar Analyzer` 可以访问：
 - https://github.com/4ra1n/jar-analyzer-cli
 - https://github.com/4ra1n/jar-analyzer-gui
+
+### 说明
 
 为什么我不选择 `IDEA` 而要选择 `Jar Analyzer V2` 工具：
 - 因为 `IDEA` 不支持分析无源码的 `Jar` 包

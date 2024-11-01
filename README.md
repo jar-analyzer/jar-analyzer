@@ -163,26 +163,13 @@
 
 ### 发版时间
 
-目前版本 `3.X` 计划每月更新一次（一般情况下在当天的 `0` 点发布）
+目前版本 `4.X` 计划每月更新一次（一般情况下在当天的 `0` 点发布）
 
 如果当天是非工作日则延期至之后第一个工作日
 
 - 2024.11.08
 - 2024.12.08
 - 2025.01.08
-
-### 文章视频
-
-用户使用文章
-
-- [利用 jar-analyzer 分析 CVE-2022-42889](https://zone.huoxian.cn/d/2884-jar-analyzer-cve-2022-42889)
-- [某人力系统的代码审计](https://forum.butian.net/share/3109)
-
-用户使用视频
-
-- [Jar Analyzer V2 教程（早期版本）](https://www.bilibili.com/video/BV1ac411S7q4)
-- [通过 jar-analyzer 分析漏洞 CVE-2022-42889](https://www.bilibili.com/video/BV1a94y1E7Nn)
-- [Jar Analyzer V2 新版本功能介绍](https://www.bilibili.com/video/BV1Dm421G75i)
 
 ### 性能测试
 
@@ -265,7 +252,7 @@ set "theme_name=default"
 
 ## 其他
 
-解释一些内部的原理和注意事项
+早期文章视频以及解释一些内部的原理和注意事项
 
 [文档](doc/README-others.md)
 

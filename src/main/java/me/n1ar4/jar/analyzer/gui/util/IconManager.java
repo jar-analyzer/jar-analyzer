@@ -38,6 +38,7 @@ public class IconManager {
     public static ImageIcon jarIcon;
     public static ImageIcon curIcon;
     public static ImageIcon auIcon;
+    public static ImageIcon ausIcon;
     public static ImageIcon githubIcon;
     public static ImageIcon whiteIcon;
     public static ImageIcon nextIcon;
@@ -95,6 +96,8 @@ public class IconManager {
             image = auIcon.getImage();
             resizedImage = image.getScaledInstance(80, 80, Image.SCALE_SMOOTH);
             auIcon = new ImageIcon(resizedImage);
+            resizedImage = image.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+            ausIcon = new ImageIcon(resizedImage);
 
             githubIcon = new ImageIcon(ImageIO.read(
                     Objects.requireNonNull(IconManager.class

@@ -42,10 +42,13 @@ public class CleanAction {
             int res = JOptionPane.showConfirmDialog(MainForm.getInstance().getMasterPanel(),
                     "<html>" +
                             "do you want to clean jar-analyzer?<br>" +
-                            "delete jar-analyzer.db <br>" +
-                            "delete jar-analyzer-temp <br>" +
-                            "delete jar-analyzer-document <br>" +
+                            "delete jar-analyzer.db file <br>" +
                             "delete .jar-analyzer file <br>" +
+                            "delete jar-analyzer-lockfile file <br>" +
+                            "delete JAR-ANALYZER-ERROR.txt file <br>" +
+                            "delete jar-analyzer-temp dir <br>" +
+                            "delete jar-analyzer-document dir <br>" +
+                            "delete jar-analyzer-export dir <br>" +
                             "</html>");
             if (res == JOptionPane.OK_OPTION) {
                 try {
@@ -57,11 +60,23 @@ public class CleanAction {
                 } catch (Exception ignored) {
                 }
                 try {
+                    Files.delete(Paths.get("jar-analyzer-lockfile"));
+                } catch (Exception ignored) {
+                }
+                try {
+                    Files.delete(Paths.get("JAR-ANALYZER-ERROR.txt"));
+                } catch (Exception ignored) {
+                }
+                try {
                     DirUtil.removeDir(new File(Const.tempDir));
                 } catch (Exception ignored) {
                 }
                 try {
                     DirUtil.removeDir(new File(Const.indexDir));
+                } catch (Exception ignored) {
+                }
+                try {
+                    DirUtil.removeDir(new File("jar-analyzer-export"));
                 } catch (Exception ignored) {
                 }
                 JOptionPane.showMessageDialog(

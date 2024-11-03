@@ -110,10 +110,14 @@ public class IconManager {
             prevIcon = new ImageIcon(ImageIO.read(
                     Objects.requireNonNull(IconManager.class
                             .getClassLoader().getResourceAsStream("img/prev.png"))));
+            resizedImage = prevIcon.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+            prevIcon = new ImageIcon(resizedImage);
 
             nextIcon = new ImageIcon(ImageIO.read(
                     Objects.requireNonNull(IconManager.class
                             .getClassLoader().getResourceAsStream("img/next.png"))));
+            resizedImage = nextIcon.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+            nextIcon = new ImageIcon(resizedImage);
 
             gsIcon = new ImageIcon(ImageIO.read(
                     Objects.requireNonNull(IconManager.class

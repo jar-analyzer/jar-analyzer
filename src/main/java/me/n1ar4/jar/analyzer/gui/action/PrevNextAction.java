@@ -31,6 +31,7 @@ import me.n1ar4.jar.analyzer.entity.MethodResult;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.adapter.SearchInputListener;
 import me.n1ar4.jar.analyzer.gui.state.State;
+import me.n1ar4.jar.analyzer.gui.util.IconManager;
 import me.n1ar4.jar.analyzer.gui.util.ProcessDialog;
 import me.n1ar4.jar.analyzer.starter.Const;
 
@@ -40,6 +41,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+@SuppressWarnings("all")
 public class PrevNextAction {
     public static void run() {
         MainForm instance = MainForm.getInstance();
@@ -50,13 +52,12 @@ public class PrevNextAction {
             if (MainForm.getCurStateIndex() <= 0 ||
                     MainForm.getStateList().get(MainForm.getCurStateIndex() - 1) == null) {
                 JOptionPane.showMessageDialog(instance.getMasterPanel(), String.format("<html>" +
-                        "<p>you cannot do it</p>" +
-                        "<p>current idx: %d</p>" +
-                        "<p>total length: %d</p>" +
-                        "</html>", MainForm.getCurStateIndex(), MainForm.getStateList().size()));
-                return;
+                                "<p style='color: red; font-weight: bold;'>You cannot do it</p>" +
+                                "<p>Current idx: <span style='color: blue; font-weight: bold;'>%d</span></p>" +
+                                "<p>Total length: <span style='color: blue; font-weight: bold;'>%d</span></p>" +
+                                "</html>", MainForm.getCurStateIndex(), MainForm.getStateList().size()),
+                        "prev next action", JOptionPane.INFORMATION_MESSAGE, IconManager.ausIcon);
             }
-
             if (MainForm.getCurMethod() == null) {
                 JOptionPane.showMessageDialog(instance.getMasterPanel(), "current method is null");
                 return;
@@ -64,6 +65,9 @@ public class PrevNextAction {
 
             // 改变指针不改变内容
             MainForm.setCurStateIndex(MainForm.getCurStateIndex() - 1);
+            if (MainForm.getCurStateIndex() < 0) {
+                MainForm.setCurStateIndex(0);
+            }
 
             // 变更状态
             State prev = MainForm.getStateList().get(MainForm.getCurStateIndex());
@@ -148,15 +152,19 @@ public class PrevNextAction {
             if (MainForm.getCurStateIndex() >= MainForm.getStateList().size() - 1 ||
                     MainForm.getStateList().get(MainForm.getCurStateIndex() + 1) == null) {
                 JOptionPane.showMessageDialog(instance.getMasterPanel(), String.format("<html>" +
-                        "<p>you cannot do it</p>" +
-                        "<p>current idx: %d</p>" +
-                        "<p>total length: %d</p>" +
-                        "</html>", MainForm.getCurStateIndex(), MainForm.getStateList().size()));
+                                "<p style='color: red; font-weight: bold;'>You cannot do it</p>" +
+                                "<p>Current idx: <span style='color: blue; font-weight: bold;'>%d</span></p>" +
+                                "<p>Total length: <span style='color: blue; font-weight: bold;'>%d</span></p>" +
+                                "</html>", MainForm.getCurStateIndex(), MainForm.getStateList().size()),
+                        "prev next action", JOptionPane.INFORMATION_MESSAGE, IconManager.ausIcon);
                 return;
             }
 
             // 改变指针不改变内容
             MainForm.setCurStateIndex(MainForm.getCurStateIndex() + 1);
+            if (MainForm.getCurStateIndex() >= MainForm.getStateList().size()) {
+                MainForm.setCurStateIndex(MainForm.getStateList().size() - 1);
+            }
 
             State next = MainForm.getStateList().get(MainForm.getCurStateIndex());
             if (next == null) {

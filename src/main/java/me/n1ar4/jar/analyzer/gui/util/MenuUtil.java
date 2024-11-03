@@ -190,14 +190,7 @@ public class MenuUtil {
         JMenu export = new JMenu("export");
         JMenuItem proxyItem = new JMenuItem("decompile and export");
         proxyItem.setIcon(IconManager.engineIcon);
-        proxyItem.addActionListener(e -> {
-            if (MainForm.getEngine() == null) {
-                JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
-                        "PLEASE LOAD JAR FIRST");
-                return;
-            }
-            ExportForm.start();
-        });
+        proxyItem.addActionListener(e -> ExportForm.start());
         export.add(proxyItem);
         return export;
     }

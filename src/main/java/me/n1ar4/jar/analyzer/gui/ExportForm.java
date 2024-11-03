@@ -62,15 +62,19 @@ public class ExportForm {
         outputDirText.setText("jar-analyzer-export");
 
         // 初始参数
-        ArrayList<String> path = MainForm.getEngine().getJarsPath();
-        StringBuilder sb = new StringBuilder();
-        for (String s : path) {
-            sb.append(s);
-            sb.append("\n");
-        }
-        String s = sb.toString();
-        if (!s.trim().isEmpty()) {
-            jarsText.setText(s.substring(0, s.length() - 1).trim());
+        try {
+            ArrayList<String> path = MainForm.getEngine().getJarsPath();
+            StringBuilder sb = new StringBuilder();
+            for (String s : path) {
+                sb.append(s);
+                sb.append("\n");
+            }
+            String s = sb.toString();
+            if (!s.trim().isEmpty()) {
+                jarsText.setText(s.substring(0, s.length() - 1).trim());
+            }
+        } catch (Exception ignored) {
+            jarsText.setText(null);
         }
 
         startBtn.addActionListener(e -> {
@@ -80,6 +84,11 @@ public class ExportForm {
             }
             if (isRunning) {
                 JOptionPane.showMessageDialog(masterPanel, "decompile is running...");
+                return;
+            }
+
+            if (jarsText.getText() == null || jarsText.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(masterPanel, "need jar input");
                 return;
             }
 

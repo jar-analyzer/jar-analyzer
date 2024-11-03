@@ -295,7 +295,7 @@ public class MenuUtil {
             // QUICK START
             JMenuItem quickStartItem = new JMenuItem("quick start");
             quickStartItem.setIcon(IconManager.ausIcon);
-            quickStartItem.addActionListener(e->{
+            quickStartItem.addActionListener(e -> {
                 String quickStartText = "<html>" +
                         "<h1>快速开始</h1>" +
                         "<div><strong>第一步:</strong> 点击右侧 <span style='color:red;'>[Starter]</span> 的 " +
@@ -321,7 +321,7 @@ public class MenuUtil {
                         "Quick Start",
                         JOptionPane.INFORMATION_MESSAGE,
                         IconManager.auIcon
-                       );
+                );
             });
             aboutMenu.add(quickStartItem);
 

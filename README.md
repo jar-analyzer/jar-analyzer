@@ -16,9 +16,19 @@
 
 ![](img/0046.png)
 
-一键快速搜索
+一键快速搜索（自从 `4.0` 版本后支持通过配置动态生成 `GUI` 按钮）
 
 ![](img/0060.png)
+
+例如一个 `Runtime.exec` 的动态规则（配好后直接生成按钮和搜索逻辑）
+
+```yaml
+  Runtime.exec:
+    - !!me.n1ar4.jar.analyzer.engine.SearchCondition
+      className: java/lang/Runtime
+      methodName: exec
+      methodDesc: null
+```
 
 静态分析 `spring` 项目
 

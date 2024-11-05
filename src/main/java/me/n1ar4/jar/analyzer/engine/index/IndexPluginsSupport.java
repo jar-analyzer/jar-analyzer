@@ -31,6 +31,7 @@ import cn.hutool.core.util.StrUtil;
 import me.n1ar4.jar.analyzer.engine.DecompileEngine;
 import me.n1ar4.jar.analyzer.engine.index.entity.Result;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
+import me.n1ar4.jar.analyzer.lucene.LuceneBuildListener;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
@@ -135,6 +136,9 @@ public class IndexPluginsSupport {
         try {
             IndexEngine.addIndexCollection(codeMap);
             logger.info("add index {} ok", FileUtil.getName(file));
+
+            LuceneBuildListener.usePass = true;
+
             return true;
         } catch (IOException ex) {
             logger.error("add index error: {}", ex.getMessage());

@@ -34,6 +34,10 @@ import me.n1ar4.jar.analyzer.utils.DirUtil;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 
+import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +48,8 @@ import java.util.regex.Pattern;
 public class LuceneSearchWrapper {
     private static final Logger logger = LogManager.getLogger();
     private static final List<String> files = new ArrayList<>();
+    public final static String CurrentPath = System.getProperty("user.dir");
+    public final static String DocumentPath = CurrentPath + FileUtil.FILE_SEPARATOR + Const.indexDir;
 
     public static void initEnv() {
         files.clear();
@@ -58,6 +64,13 @@ public class LuceneSearchWrapper {
 
     public static List<LuceneSearchResult> searchLucene(String input) {
         List<LuceneSearchResult> results = new ArrayList<>();
+        // FIX BUG
+        if (input == null || input.isEmpty()) {
+            return results;
+        }
+        if (!checkValid()) {
+            return results;
+        }
         try {
             Result internalResult;
             if (LuceneSearchForm.useContains()) {
@@ -89,6 +102,26 @@ public class LuceneSearchWrapper {
             logger.error("lucene search error: {}", ex.toString());
         }
         return results;
+    }
+
+    private static boolean checkValid() {
+        Path docPath = Paths.get(DocumentPath);
+        if (!Files.exists(docPath)) {
+            return false;
+        }
+        if (!Files.isDirectory(docPath)) {
+            return false;
+        }
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(docPath)) {
+            for (Path entry : stream) {
+                if (Files.isRegularFile(entry) && Files.size(entry) > 0) {
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            return false;
+        }
+        return false;
     }
 
     public static List<LuceneSearchResult> searchFileName(String input) {

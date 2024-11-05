@@ -38,6 +38,9 @@ public class LuceneSearchListener implements DocumentListener {
 
     private void doSearch(String text) {
         resultModel.clear();
+        if (text == null || text.isEmpty()) {
+            return;
+        }
         new Thread(() -> {
             // 直接的类名优先
             List<LuceneSearchResult> results = LuceneSearchWrapper.searchFileName(text);

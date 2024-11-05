@@ -27,21 +27,25 @@ package me.n1ar4.jar.analyzer.lucene;
 import me.n1ar4.jar.analyzer.engine.index.IndexPluginsSupport;
 import me.n1ar4.jar.analyzer.gui.LuceneSearchForm;
 import me.n1ar4.jar.analyzer.gui.util.ProcessDialog;
-import me.n1ar4.log.LogManager;
-import me.n1ar4.log.Logger;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class LuceneBuildListener implements ActionListener {
-    private static final Logger logger = LogManager.getLogger();
+    public static volatile boolean usePass = false;
 
     @Override
     public void actionPerformed(ActionEvent e) {
         JDialog dialog = ProcessDialog.createProgressDialog(LuceneSearchForm.getInstance().getRootPanel());
         new Thread(() -> dialog.setVisible(true)).start();
         new Thread(() -> {
+            if (usePass) {
+                dialog.dispose();
+                JOptionPane.showMessageDialog(LuceneSearchForm.getInstance().getRootPanel(),
+                        "请在启动时构建（无法在开启被动构建后主动构建）");
+                return;
+            }
             try {
                 boolean ok = IndexPluginsSupport.initIndex();
                 if (!ok) {
@@ -54,8 +58,9 @@ public class LuceneBuildListener implements ActionListener {
                     dialog.dispose();
                 }
             } catch (Exception ex) {
-                logger.error("lucene build error: {}", ex.toString());
                 dialog.dispose();
+                JOptionPane.showMessageDialog(LuceneSearchForm.getInstance().getRootPanel(),
+                        "请在启动时构建（无法在开启被动构建后主动构建）");
             }
         }).start();
     }

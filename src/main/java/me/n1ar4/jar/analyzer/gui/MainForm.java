@@ -47,7 +47,7 @@ import me.n1ar4.jar.analyzer.gui.state.State;
 import me.n1ar4.jar.analyzer.gui.tree.FileTree;
 import me.n1ar4.jar.analyzer.gui.update.UpdateChecker;
 import me.n1ar4.jar.analyzer.gui.util.*;
-import me.n1ar4.jar.analyzer.gui.vul.*;
+import me.n1ar4.jar.analyzer.gui.vul.VulnerabilityBuilder;
 import me.n1ar4.jar.analyzer.leak.LeakAction;
 import me.n1ar4.jar.analyzer.sca.SCAAction;
 import me.n1ar4.jar.analyzer.starter.Const;
@@ -149,15 +149,6 @@ public class MainForm {
     private JCheckBox addRtJarWhenCheckBox;
     private JButton opcodeBtn;
     private JButton javaAsmBtn;
-    private JButton JNDIButton;
-    private JButton runtimeExecButton;
-    private JButton processBuilderStartButton;
-    private JButton spELGetValueButton;
-    private JButton readObjectButton;
-    private JButton scriptEngineEvalButton;
-    private JButton BCELLoadClassButton;
-    private JButton defineClassButton;
-    private JButton OGNLGetValueButton;
     private JPanel javaVulSearchPanel;
     private JLabel javaVulLabel;
     private JLabel logoLabel;
@@ -185,7 +176,6 @@ public class MainForm {
     private JButton cfgBtn;
     private JButton frameBtn;
     private JButton encoderBtn;
-    private JButton repeaterBtn;
     private JButton listenerBtn;
     private JPanel springPanel;
     private JPanel springCPanel;
@@ -196,7 +186,6 @@ public class MainForm {
     private JList<MethodResult> springMList;
     private JPanel piPanel;
     private JLabel encoderLabel;
-    private JLabel repeaterLabel;
     private JLabel listenerLabel;
     private JButton prevBtn;
     private JButton nextBtn;
@@ -218,14 +207,10 @@ public class MainForm {
     private JLabel sqliteLabel;
     private JButton cleanButton;
     private JButton showStringListButton;
-    private JButton fastjsonButton;
-    private JButton unzipButton;
-    private JButton hessianButton;
     private JButton springELStartButton;
     @SuppressWarnings("all")
     private JLabel spelLabel;
     private JButton startELSearchButton;
-    private JButton obfBtn;
     private JLabel obfLabel;
     private JButton serUtilBtn;
     private JLabel serUtilLabel;
@@ -264,15 +249,6 @@ public class MainForm {
     private JScrollPane favScroll;
     private JList<MethodResult> favList;
     private JButton addToFavoritesButton;
-    private JButton freeMarkerButton;
-    private JButton JEXLButton;
-    private JButton rhinoEvalButton;
-    private JButton aviatorExecuteButton;
-    private JButton mvelEvalButton;
-    private JButton qlExpressButton;
-    private JButton sqlExecNoPrepareButton;
-    private JButton sqlExecButton;
-    private JButton xStreamButton;
     private JButton bcelBtn;
     private JLabel bcelLabel;
     private JCheckBox nullParamBox;
@@ -298,6 +274,10 @@ public class MainForm {
     private JScrollPane leakLogScroll;
     private JPanel npbPanel;
     private static DefaultListModel<MethodResult> favData;
+
+    public JPanel getJavaVulSearchPanel() {
+        return javaVulSearchPanel;
+    }
 
     public JCheckBox getLeakUrlBox() {
         return leakUrlBox;
@@ -437,10 +417,6 @@ public class MainForm {
 
     public JButton getEncoderBtn() {
         return encoderBtn;
-    }
-
-    public JButton getRepeaterBtn() {
-        return repeaterBtn;
     }
 
     public JButton getListenerBtn() {
@@ -651,74 +627,6 @@ public class MainForm {
         return refreshButton;
     }
 
-    public JButton getJNDIButton() {
-        return JNDIButton;
-    }
-
-    public JButton getRuntimeExecButton() {
-        return runtimeExecButton;
-    }
-
-    public JButton getProcessBuilderStartButton() {
-        return processBuilderStartButton;
-    }
-
-    public JButton getSpELGetValueButton() {
-        return spELGetValueButton;
-    }
-
-    public JButton getReadObjectButton() {
-        return readObjectButton;
-    }
-
-    public JButton getOGNLGetValueButton() {
-        return OGNLGetValueButton;
-    }
-
-    public JButton getBCELLoadClassButton() {
-        return BCELLoadClassButton;
-    }
-
-    public JButton getJEXLButton() {
-        return JEXLButton;
-    }
-
-    public JButton getRhinoEvalButton() {
-        return rhinoEvalButton;
-    }
-
-    public JButton getAviatorExecuteButton() {
-        return aviatorExecuteButton;
-    }
-
-    public JButton getMvelEvalButton() {
-        return mvelEvalButton;
-    }
-
-    public JButton getQlExpressButton() {
-        return qlExpressButton;
-    }
-
-    public JButton getSqlExecButton() {
-        return sqlExecButton;
-    }
-
-    public JButton getSqlExecNoPrepareButton() {
-        return sqlExecNoPrepareButton;
-    }
-
-    public JButton getXStreamButton() {
-        return xStreamButton;
-    }
-
-    public JButton getDefineClassButton() {
-        return defineClassButton;
-    }
-
-    public JButton getScriptEngineEvalButton() {
-        return scriptEngineEvalButton;
-    }
-
     public JButton getSqliteButton() {
         return sqliteButton;
     }
@@ -735,28 +643,8 @@ public class MainForm {
         return showStringListButton;
     }
 
-    public JButton getFastjsonButton() {
-        return fastjsonButton;
-    }
-
-    public JButton getUnzipButton() {
-        return unzipButton;
-    }
-
-    public JButton getHessianButton() {
-        return hessianButton;
-    }
-
-    public JButton getFreeMarkerButton() {
-        return freeMarkerButton;
-    }
-
     public JButton getStartELSearchButton() {
         return startELSearchButton;
-    }
-
-    public JButton getObfBtn() {
-        return obfBtn;
     }
 
     public JButton getSerUtilBtn() {
@@ -907,6 +795,8 @@ public class MainForm {
 
         likeSearchRadioButton.setSelected(true);
 
+        VulnerabilityBuilder.build(this);
+
         logger.info("init main form success");
     }
 
@@ -932,27 +822,6 @@ public class MainForm {
 
         SCAAction.register();
         LeakAction.register();
-        JNDIVulAction.register();
-        RuntimeExecAction.register();
-        ProcessBuilderAction.register();
-        SpELAction.register();
-        OGNLAction.register();
-        BCELVulAction.register();
-        DefineClassAction.register();
-        ReadObjectVulAction.register();
-        ScriptEngineAction.register();
-        FastjsonVulAction.register();
-        ZIPVulAction.register();
-        HessianAction.register();
-        FreeMarkerAction.register();
-        JEXLAction.register();
-        RhinoAction.register();
-        AviatorAction.register();
-        MvelAction.register();
-        QLExpressAction.register();
-        XStreamAction.register();
-        SQLExecAction.register();
-        SQLExecNoPrepareAction.register();
 
         Font codeFont = FontHelper.getFont();
         instance.blackArea.setFont(codeFont);
@@ -1107,11 +976,9 @@ public class MainForm {
 
                 instance.sqliteLabel.setText("一个 SQLITE 查询工具");
                 instance.encoderLabel.setText("一个编码解码加密解密工具");
-                instance.repeaterLabel.setText("一个 HTTP 发送工具");
                 instance.listenerLabel.setText("一个 SOCKET 监听工具");
                 instance.spelLabel.setText("一个 SPEL 表达式搜索工具");
                 instance.startELSearchButton.setText("开始表达式搜索");
-                instance.obfLabel.setText("一个 Java 序列化数据混淆工具");
                 instance.serUtilLabel.setText("一个分析 Java 序列化数据中字节码的工具");
                 instance.bcelLabel.setText("一个分析 BCEL 字节码转为 Java 代码的工具");
 
@@ -1230,11 +1097,9 @@ public class MainForm {
 
                 instance.sqliteLabel.setText("A tool for run custom query in SQLite database");
                 instance.encoderLabel.setText("A tool for encode/decode encrypt/decrypt operations");
-                instance.repeaterLabel.setText("A tool for sending http request and get response");
                 instance.listenerLabel.setText("A tool for listening port and send by socket");
                 instance.spelLabel.setText("A tool for Spring EL search");
                 instance.startELSearchButton.setText("Start EL Search");
-                instance.obfLabel.setText("A tool for obfuscate java serialization data");
                 instance.serUtilLabel.setText("A tool for bytecodes in Java Serialization Data");
                 instance.bcelLabel.setText("A tool for parse BCEL bytecode to Java code");
 
@@ -1803,79 +1668,16 @@ public class MainForm {
         advancePanel.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPanel.addTab("advance", advancePanel);
         javaVulSearchPanel = new JPanel();
-        javaVulSearchPanel.setLayout(new GridLayoutManager(8, 3, new Insets(0, 0, 0, 0), -1, -1));
+        javaVulSearchPanel.setLayout(new GridLayoutManager(10, 3, new Insets(0, 0, 0, 0), -1, -1));
         advancePanel.add(javaVulSearchPanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         javaVulSearchPanel.setBorder(BorderFactory.createTitledBorder(null, "Java Vulnerability", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
-        JNDIButton = new JButton();
-        JNDIButton.setText("JNDI");
-        javaVulSearchPanel.add(JNDIButton, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        runtimeExecButton = new JButton();
-        runtimeExecButton.setText("Runtime exec");
-        javaVulSearchPanel.add(runtimeExecButton, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        processBuilderStartButton = new JButton();
-        processBuilderStartButton.setText("ProcessBuilder start");
-        javaVulSearchPanel.add(processBuilderStartButton, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        spELGetValueButton = new JButton();
-        spELGetValueButton.setText("SpEL getValue");
-        javaVulSearchPanel.add(spELGetValueButton, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        readObjectButton = new JButton();
-        readObjectButton.setText("readObject");
-        javaVulSearchPanel.add(readObjectButton, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        scriptEngineEvalButton = new JButton();
-        scriptEngineEvalButton.setText("ScriptEngine eval");
-        javaVulSearchPanel.add(scriptEngineEvalButton, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        BCELLoadClassButton = new JButton();
-        BCELLoadClassButton.setText("BCEL loadClass");
-        javaVulSearchPanel.add(BCELLoadClassButton, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        defineClassButton = new JButton();
-        defineClassButton.setText("defineClass");
-        javaVulSearchPanel.add(defineClassButton, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        OGNLGetValueButton = new JButton();
-        OGNLGetValueButton.setText("OGNL getValue");
-        javaVulSearchPanel.add(OGNLGetValueButton, new GridConstraints(3, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         javaVulLabel = new JLabel();
         javaVulLabel.setText("Quickly Search Commons Java Vulnerabilities Call");
         javaVulSearchPanel.add(javaVulLabel, new GridConstraints(0, 0, 1, 3, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        fastjsonButton = new JButton();
-        fastjsonButton.setText("Fastjson");
-        javaVulSearchPanel.add(fastjsonButton, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        unzipButton = new JButton();
-        unzipButton.setText("Unzip Code");
-        javaVulSearchPanel.add(unzipButton, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        hessianButton = new JButton();
-        hessianButton.setText("Hessian readObject");
-        javaVulSearchPanel.add(hessianButton, new GridConstraints(4, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        freeMarkerButton = new JButton();
-        freeMarkerButton.setText("FreeMarker");
-        javaVulSearchPanel.add(freeMarkerButton, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        JEXLButton = new JButton();
-        JEXLButton.setText("JEXL eval");
-        javaVulSearchPanel.add(JEXLButton, new GridConstraints(5, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        rhinoEvalButton = new JButton();
-        rhinoEvalButton.setText("Rhino eval");
-        javaVulSearchPanel.add(rhinoEvalButton, new GridConstraints(5, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        aviatorExecuteButton = new JButton();
-        aviatorExecuteButton.setText("Aviator execute");
-        javaVulSearchPanel.add(aviatorExecuteButton, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        mvelEvalButton = new JButton();
-        mvelEvalButton.setText("MVEL eval");
-        javaVulSearchPanel.add(mvelEvalButton, new GridConstraints(6, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        qlExpressButton = new JButton();
-        qlExpressButton.setText("QLExpress");
-        javaVulSearchPanel.add(qlExpressButton, new GridConstraints(6, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        sqlExecNoPrepareButton = new JButton();
-        sqlExecNoPrepareButton.setText("SQL exec (no prepare)");
-        javaVulSearchPanel.add(sqlExecNoPrepareButton, new GridConstraints(7, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        sqlExecButton = new JButton();
-        sqlExecButton.setText("SQL exec");
-        javaVulSearchPanel.add(sqlExecButton, new GridConstraints(7, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        xStreamButton = new JButton();
-        xStreamButton.setText("XStream");
-        javaVulSearchPanel.add(xStreamButton, new GridConstraints(7, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer2 = new Spacer();
         advancePanel.add(spacer2, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         piPanel = new JPanel();
-        piPanel.setLayout(new GridLayoutManager(8, 2, new Insets(0, 0, 0, 0), -1, -1));
+        piPanel.setLayout(new GridLayoutManager(6, 2, new Insets(0, 0, 0, 0), -1, -1));
         advancePanel.add(piPanel, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         piPanel.setBorder(BorderFactory.createTitledBorder(null, "Plugins", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         encoderLabel = new JLabel();
@@ -1884,18 +1686,12 @@ public class MainForm {
         encoderBtn = new JButton();
         encoderBtn.setText("Start");
         piPanel.add(encoderBtn, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        repeaterLabel = new JLabel();
-        repeaterLabel.setText("A tool for sending http request and get response");
-        piPanel.add(repeaterLabel, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        repeaterBtn = new JButton();
-        repeaterBtn.setText("Start");
-        piPanel.add(repeaterBtn, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         listenerLabel = new JLabel();
         listenerLabel.setText("A tool for listening port and send by socket");
-        piPanel.add(listenerLabel, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        piPanel.add(listenerLabel, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         listenerBtn = new JButton();
         listenerBtn.setText("Start");
-        piPanel.add(listenerBtn, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        piPanel.add(listenerBtn, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         sqliteButton = new JButton();
         sqliteButton.setText("Start");
         piPanel.add(sqliteButton, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -1908,24 +1704,18 @@ public class MainForm {
         springELStartButton = new JButton();
         springELStartButton.setText("Start");
         piPanel.add(springELStartButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        obfLabel = new JLabel();
-        obfLabel.setText("A tool for obfuscate java serialization data");
-        piPanel.add(obfLabel, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        obfBtn = new JButton();
-        obfBtn.setText("Start");
-        piPanel.add(obfBtn, new GridConstraints(5, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         serUtilLabel = new JLabel();
         serUtilLabel.setText("A tool for bytecodes in Java Serialization Data");
-        piPanel.add(serUtilLabel, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        piPanel.add(serUtilLabel, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         serUtilBtn = new JButton();
         serUtilBtn.setText("Start");
-        piPanel.add(serUtilBtn, new GridConstraints(6, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        piPanel.add(serUtilBtn, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         bcelLabel = new JLabel();
         bcelLabel.setText("A tool for parse BCEL bytecode to Java code");
-        piPanel.add(bcelLabel, new GridConstraints(7, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        piPanel.add(bcelLabel, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         bcelBtn = new JButton();
         bcelBtn.setText("Start");
-        piPanel.add(bcelBtn, new GridConstraints(7, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        piPanel.add(bcelBtn, new GridConstraints(5, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         analysis = new JPanel();
         analysis.setLayout(new GridLayoutManager(1, 10, new Insets(0, 0, 0, 0), -1, -1));
         advancePanel.add(analysis, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));

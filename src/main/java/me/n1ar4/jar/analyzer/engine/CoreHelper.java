@@ -310,6 +310,15 @@ public class CoreHelper {
             String className = condition.getClassName();
             String methodName = condition.getMethodName();
             String methodDesc = condition.getMethodDesc();
+            if (className == null || className.trim().equals("null")) {
+                className = null;
+            }
+            if (methodName == null || methodName.trim().equals("null")) {
+                methodName = null;
+            }
+            if (methodDesc == null || methodDesc.trim().equals("null")) {
+                methodDesc = null;
+            }
             // java.lang.String java/lang/String
             if (className != null) {
                 className = className.replace(".", "/");

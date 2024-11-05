@@ -24,24 +24,28 @@
 
 package me.n1ar4.jar.analyzer.gui.vul;
 
-import me.n1ar4.jar.analyzer.engine.CoreHelper;
-import me.n1ar4.jar.analyzer.gui.MainForm;
+import me.n1ar4.jar.analyzer.engine.SearchCondition;
 
-public class ReadObjectVulAction {
-    public static void register() {
-        MainForm instance = MainForm.getInstance();
+import java.util.List;
+import java.util.Map;
 
-        instance.getReadObjectButton().addActionListener(e -> {
-            if (MainForm.getEngine() == null || !MainForm.getEngine().isEnabled()) {
-                return;
-            }
+public class Rule {
+    private String name;
+    private Map<String, List<SearchCondition>> vulnerabilities;
 
-            String className = "java/io/ObjectInputStream";
-            String methodName = "readObject";
-            String methodDesc = "()Ljava/lang/Object;";
+    public String getName() {
+        return name;
+    }
 
-            new Thread(() -> CoreHelper.refreshCallSearch(
-                    className, methodName, methodDesc)).start();
-        });
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Map<String, List<SearchCondition>> getVulnerabilities() {
+        return vulnerabilities;
+    }
+
+    public void setVulnerabilities(Map<String, List<SearchCondition>> vulnerabilities) {
+        this.vulnerabilities = vulnerabilities;
     }
 }

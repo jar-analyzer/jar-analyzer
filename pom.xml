@@ -75,7 +75,7 @@
         <okhttp3.version>4.12.0</okhttp3.version>
         <nano.version>2.3.1</nano.version>
         <fastjson.version>2.0.53</fastjson.version>
-        <hutool.version>5.8.32</hutool.version>
+        <hutool.version>5.8.33</hutool.version>
         <jfreechart.version>1.5.5</jfreechart.version>
         <oshi.version>6.6.5</oshi.version>
         <lucene.version>7.7.3</lucene.version>

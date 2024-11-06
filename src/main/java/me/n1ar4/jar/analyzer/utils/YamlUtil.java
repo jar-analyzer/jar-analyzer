@@ -22,32 +22,44 @@
  * SOFTWARE.
  */
 
-package me.n1ar4.rule;
+package me.n1ar4.jar.analyzer.utils;
 
 import me.n1ar4.jar.analyzer.engine.SearchCondition;
 import me.n1ar4.jar.analyzer.gui.vul.Rule;
-import me.n1ar4.jar.analyzer.utils.YamlUtil;
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.LoaderOptions;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.inspector.TagInspector;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.FileWriter;
 
-public class RuleExporter {
-    public static void main(String[] args) throws Exception {
-        Rule rule = new Rule();
-        rule.setName("jar-analyzer-vulnerability-rule");
+public class YamlUtil {
+    private static final LoaderOptions lOptions = new LoaderOptions();
+    private static final DumperOptions dOptions = new DumperOptions();
+    private static final Yaml yaml;
 
-        Map<String, List<SearchCondition>> map = new HashMap<>();
-        List<SearchCondition> conditions = new ArrayList<>();
-        SearchCondition sc1 = new SearchCondition();
-        sc1.setClassName("javax/naming/Context");
-        sc1.setMethodName("lookup");
-        sc1.setMethodDesc("(Ljava/lang/String;)Ljava/lang/Object;");
-        conditions.add(sc1);
-        map.put("JNDI", conditions);
-        rule.setVulnerabilities(map);
+    static {
+        // 允许反序列化的类
+        TagInspector taginspector = tag ->
+                // Rule
+                tag.getClassName().equals(Rule.class.getName()) ||
+                        // SearchCondition
+                        tag.getClassName().equals(SearchCondition.class.getName());
+        lOptions.setTagInspector(taginspector);
+        // 输出格式
+        dOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+        dOptions.setPrettyFlow(true);
+        yaml = new Yaml(lOptions, dOptions);
+    }
 
-        YamlUtil.dumpFile(rule, "test.yaml");
+    public static Rule loadAs(byte[] data) {
+        return yaml.loadAs(new String(data), Rule.class);
+    }
+
+    public static void dumpFile(Rule rule, String output) {
+        try {
+            yaml.dump(rule, new FileWriter(output));
+        } catch (Exception ignored) {
+        }
     }
 }

@@ -1,7 +1,7 @@
 @echo off
 setlocal
 
-set "jar-analyzer=jar-analyzer-3.2.jar"
+set "jar-analyzer=jar-analyzer-4.0.jar"
 
 rem jvm args
 set "other_args=-Dfile.encoding=UTF-8"

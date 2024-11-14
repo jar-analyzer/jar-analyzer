@@ -36,14 +36,14 @@
     <description>Jar Analyzer Project</description>
 
     <contributors>
-        <!-- CONTRIBUTOR 按照贡献行数排序 -->
+        <!-- CONTRIBUTOR 按照贡献时间顺序排序 -->
         <contributor>
             <name>4ra1n</name>
             <url>https://github.com/4ra1n</url>
         </contributor>
         <contributor>
-            <name>fantasy</name>
-            <url>https://github.com/ly-test-fuzz</url>
+            <name>whw1sfb</name>
+            <url>https://github.com/whwlsfb</url>
         </contributor>
         <contributor>
             <name>Honey Baby</name>
@@ -54,8 +54,12 @@
             <url>https://github.com/sensensen404</url>
         </contributor>
         <contributor>
-            <name>whw1sfb</name>
-            <url>https://github.com/whwlsfb</url>
+            <name>fantasy</name>
+            <url>https://github.com/ly-test-fuzz</url>
+        </contributor>
+        <contributor>
+            <name>MyDynasty</name>
+            <url>https://github.com/MyDynasty</url>
         </contributor>
     </contributors>
 

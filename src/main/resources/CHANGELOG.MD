@@ -4,11 +4,12 @@
 
 更新日志：
 
-- todo
+- [优化] 修复高分辨率下缩放导致 `GUI` 显示不完整的问题 @MyDynasty
 
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
+- MyDynasty (https://github.com/MyDynasty)
 
 所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
 

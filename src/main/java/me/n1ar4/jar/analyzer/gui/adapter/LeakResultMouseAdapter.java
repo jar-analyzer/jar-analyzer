@@ -116,6 +116,8 @@ public class LeakResultMouseAdapter extends MouseAdapter {
             MainForm.getInstance().getCurMethodText().setText(null);
             MainForm.setCurMethod(null);
 
+            MainForm.setCurClass(className);
+
             // 重置所有内容
             MainForm.getInstance().getMethodImplList().setModel(new DefaultListModel<>());
             MainForm.getInstance().getSuperImplList().setModel(new DefaultListModel<>());

@@ -24,6 +24,7 @@
 
 package me.n1ar4.jar.analyzer.utils;
 
+import me.n1ar4.jar.analyzer.entity.MethodResult;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
 import me.n1ar4.jar.analyzer.starter.Const;
@@ -58,7 +59,20 @@ public class OpenUtil {
 
     public static void openCurrent() {
         String className = MainForm.getCurClass();
-        openClass(className);
+        if (className == null || className.isEmpty()) {
+            MethodResult cur = MainForm.getCurMethod();
+            if (cur != null) {
+                className = cur.getClassName();
+                if (className == null || className.isEmpty()) {
+                    JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                            "找不到当前类 无法打开");
+                    return;
+                }
+                openClass(className);
+            }
+        } else {
+            openClass(className);
+        }
     }
 
     public static void openClass(String className) {

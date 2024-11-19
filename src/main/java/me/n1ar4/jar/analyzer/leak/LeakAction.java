@@ -32,9 +32,7 @@ import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 
 import javax.swing.*;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class LeakAction {
     private static final Logger logger = LogManager.getLogger();
@@ -82,7 +80,7 @@ public class LeakAction {
             List<MemberEntity> members = engine.getAllMembersInfo();
             Map<String, String> stringMap = engine.getStringMap();
 
-            HashSet<LeakResult> results = new HashSet<>();
+            Set<LeakResult> results = new LinkedHashSet<>();
 
             if (jwtBox.isSelected()) {
                 log("jwt-token leak start");

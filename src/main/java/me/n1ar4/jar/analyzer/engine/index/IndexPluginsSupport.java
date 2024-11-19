@@ -66,7 +66,11 @@ public class IndexPluginsSupport {
             .build();
 
     private static boolean created = false;
+    private static boolean useActive = false;
 
+    public static void setUseActive(boolean useActive) {
+        IndexPluginsSupport.useActive = useActive;
+    }
 
     static {
         Path curPath = Paths.get(CurrentPath);
@@ -122,6 +126,10 @@ public class IndexPluginsSupport {
     }
 
     public static boolean addIndex(File file) {
+        if (useActive) {
+            return true;
+        }
+
         if (!created) {
             create();
         }

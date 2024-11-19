@@ -62,6 +62,11 @@ public class LuceneBuildListener implements ActionListener {
                     dialog.dispose();
                 } else {
                     once = true;
+
+                    // FIX 2024/11/19
+                    // 主动构建结束后不应该再次尝试被动方式
+                    IndexPluginsSupport.setUseActive(true);
+
                     JOptionPane.showMessageDialog(LuceneSearchForm.getInstance().getRootPanel(),
                             "create lucene index finish");
                     dialog.dispose();

@@ -35,6 +35,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class SearchAction {
     public static void run() {
@@ -96,6 +98,9 @@ public class SearchAction {
             if (binaryRadio.isSelected()) {
                 String search = ssText.getText();
                 ArrayList<String> jars = engine.getJarsPath();
+
+                Set<String> result = new HashSet<>();
+
                 for (String jarPath : jars) {
                     try {
                         Path path = Paths.get(jarPath);
@@ -114,9 +119,10 @@ public class SearchAction {
                                     }
                                     if (found) {
                                         fis.close();
-                                        JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
-                                                "found: " + jarPath);
-                                        return;
+                                        // FIX 2024/11/19
+                                        // 可能弹出一大堆很多次
+                                        // 去重保证一次即可
+                                        result.add(jarPath);
                                     }
                                 }
                             }
@@ -133,15 +139,33 @@ public class SearchAction {
                                     }
                                 }
                                 if (found) {
-                                    JOptionPane.showMessageDialog(
-                                            MainForm.getInstance().getMasterPanel(), "found: " + jarPath);
+                                    // FIX 2024/11/19
+                                    // 可能弹出一大堆很多次
+                                    // 去重保证一次即可
+                                    result.add(jarPath);
                                 }
                             }
                         }
-                        JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(), "not found");
                     } catch (Exception ignored) {
                     }
                 }
+
+                if (result.isEmpty()) {
+                    JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                            "<html>not found</html>");
+                    return;
+                }
+
+                StringBuilder jarBuilder = new StringBuilder();
+                for (String data : result) {
+                    jarBuilder.append(data);
+                    jarBuilder.append("<br>");
+                }
+
+                JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                        "<html>search string [" + search + "] result:<br>"
+                                + jarBuilder + "</html>");
+
                 // not need to select search panel
                 return;
             }

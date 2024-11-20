@@ -44,6 +44,9 @@ public class StartCmd {
     @Parameter(names = {"-n", "--no-check"}, description = "disable all update http request")
     public boolean noHttp;
 
+    @Parameter(names = {"-sl", "--skip-load"}, description = "disable loading")
+    public boolean skipLoad;
+
     public StartCmd() {
 
     }
@@ -70,5 +73,9 @@ public class StartCmd {
 
     public boolean isNoHttp() {
         return noHttp;
+    }
+
+    public boolean isSkipLoad() {
+        return skipLoad;
     }
 }

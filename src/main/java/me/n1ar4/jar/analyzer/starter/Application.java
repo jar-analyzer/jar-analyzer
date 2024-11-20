@@ -29,6 +29,7 @@ import me.n1ar4.jar.analyzer.cli.BuildCmd;
 import me.n1ar4.jar.analyzer.cli.Client;
 import me.n1ar4.jar.analyzer.cli.StartCmd;
 import me.n1ar4.jar.analyzer.gui.GlobalOptions;
+import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.http.Y4Client;
 import me.n1ar4.jar.analyzer.server.HttpServer;
 import me.n1ar4.jar.analyzer.utils.*;
@@ -37,6 +38,8 @@ import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 import me.n1ar4.log.LoggingStream;
 import me.n1ar4.security.Security;
+
+import javax.swing.*;
 
 public class Application {
     private static final Logger logger = LogManager.getLogger();
@@ -161,7 +164,14 @@ public class Application {
             // SET AWT EVENT EXCEPTION
             Thread.setDefaultUncaughtExceptionHandler(new ExpHandler());
 
-            StartUpMessage.run();
+            // FIX 2024/11/20
+            // 修复 UBUNTU 不支持 SWING 某些功能的问题
+            if (startCmd.isSkipLoad()) {
+                JFrame frame = MainForm.start();
+                frame.setVisible(true);
+            } else {
+                StartUpMessage.run();
+            }
         } catch (Exception ex) {
             logger.error("start jar analyzer error: {}", ex.toString());
         }

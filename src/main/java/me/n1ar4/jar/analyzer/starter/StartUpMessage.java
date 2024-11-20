@@ -36,7 +36,6 @@ import java.util.ArrayList;
 
 public class StartUpMessage {
     private static final Logger logger = LogManager.getLogger();
-    private static final org.slf4j.Logger log = LoggerFactory.getLogger(StartUpMessage.class);
 
     public static void run() {
         // 异步加载 MainForm 组件

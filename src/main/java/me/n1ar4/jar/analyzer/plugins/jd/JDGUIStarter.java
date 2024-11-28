@@ -17,6 +17,8 @@ import java.util.List;
 public class JDGUIStarter {
     private static final Logger logger = LogManager.getLogger();
 
+    public static String jdGUIFileName = "jd-gui-1.6.6.jar";
+
     public static void start() {
         String javaHome = System.getProperty("java.home");
         Path java;
@@ -25,13 +27,13 @@ public class JDGUIStarter {
         } else {
             java = Paths.get(javaHome, "bin", "java");
         }
-        Path jd = Paths.get("lib", "jd-gui-1.6.6.jar");
+        Path jd = Paths.get("lib", jdGUIFileName);
 
         if (!Files.exists(jd)) {
-            jd = Paths.get("jd-gui-1.6.6.jar");
+            jd = Paths.get(jdGUIFileName);
             if (!Files.exists(jd)) {
-                logger.warn("jd-gui-1.6.6.jar not found");
-                logger.warn("jd-gui-1.6.6.jar should be in current dir or lib dir");
+                logger.warn("{} not found",jdGUIFileName);
+                logger.warn("{} should be in current dir or lib dir",jdGUIFileName);
                 JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                         "JD-GUI 文件找不到（请查看日志信息）");
                 return;
@@ -57,7 +59,7 @@ public class JDGUIStarter {
         try {
             pb.start();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            logger.error("start jd-gui error: {}",e.getMessage());
         }
     }
 }

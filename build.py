@@ -125,3 +125,15 @@ if __name__ == '__main__':
     copy_file("lib\\jd-gui-1.6.6.jar", "release\\" + release_win_full_dir + "\\lib\\jd-gui-1.6.6.jar")
     copy_file("lib\\jd-gui-1.6.6.jar", "release\\" + release_win_23_dir + "\\lib\\jd-gui-1.6.6.jar")
     copy_file("lib\\jd-gui-1.6.6.jar", "release\\" + release_zip_dir + "\\lib\\jd-gui-1.6.6.jar")
+
+    print("[*] copy jd-gui readme")
+    copy_file("lib\\README.md", "release\\" + release_win_system_dir + "\\lib\\README.md")
+    copy_file("lib\\README.md", "release\\" + release_win_full_dir + "\\lib\\README.md")
+    copy_file("lib\\README.md", "release\\" + release_win_23_dir + "\\lib\\README.md")
+    copy_file("lib\\README.md", "release\\" + release_zip_dir + "\\lib\\README.md")
+
+    print("[*] copy jd-gui license")
+    copy_file("lib\\LICENSE", "release\\" + release_win_system_dir + "\\lib\\LICENSE")
+    copy_file("lib\\LICENSE", "release\\" + release_win_full_dir + "\\lib\\LICENSE")
+    copy_file("lib\\LICENSE", "release\\" + release_win_23_dir + "\\lib\\LICENSE")
+    copy_file("lib\\LICENSE", "release\\" + release_zip_dir + "\\lib\\LICENSE")

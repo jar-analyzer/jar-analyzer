@@ -33,6 +33,7 @@ import me.n1ar4.jar.analyzer.gui.*;
 import me.n1ar4.jar.analyzer.http.HttpResponse;
 import me.n1ar4.jar.analyzer.http.Y4Client;
 import me.n1ar4.jar.analyzer.os.SystemChart;
+import me.n1ar4.jar.analyzer.plugins.jd.JDGUIStarter;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
@@ -182,6 +183,10 @@ public class MenuUtil {
         luceneItem.setIcon(IconManager.luceneIcon);
         luceneItem.addActionListener(e -> LuceneSearchForm.start(1));
         plugins.add(luceneItem);
+        JMenuItem jdItem = new JMenuItem("start jd-gui");
+        jdItem.setIcon(IconManager.jdIcon);
+        jdItem.addActionListener(e -> JDGUIStarter.start());
+        plugins.add(jdItem);
         menuBar.add(plugins);
         return menuBar;
     }

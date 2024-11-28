@@ -43,7 +43,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <grid id="a1ac5" binding="chosePanel" layout-manager="GridLayoutManager" row-count="9" column-count="6" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                  <grid id="a1ac5" binding="chosePanel" layout-manager="GridLayoutManager" row-count="9" column-count="7" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -61,7 +61,7 @@
                       </component>
                       <component id="c299f" class="javax.swing.JTextField" binding="fileText">
                         <constraints>
-                          <grid row="0" column="1" row-span="1" col-span="5" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                          <grid row="0" column="1" row-span="1" col-span="6" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                             <preferred-size width="150" height="-1"/>
                           </grid>
                         </constraints>
@@ -80,7 +80,7 @@
                       </component>
                       <component id="d1994" class="javax.swing.JProgressBar" binding="buildBar">
                         <constraints>
-                          <grid row="7" column="0" row-span="1" col-span="6" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                          <grid row="7" column="0" row-span="1" col-span="7" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
                           <foreground color="-9524737"/>
@@ -105,7 +105,7 @@
                       </component>
                       <component id="44a65" class="javax.swing.JTextField" binding="loadDBText">
                         <constraints>
-                          <grid row="1" column="1" row-span="1" col-span="5" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                          <grid row="1" column="1" row-span="1" col-span="6" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                             <preferred-size width="150" height="-1"/>
                           </grid>
                         </constraints>
@@ -123,7 +123,7 @@
                       </component>
                       <component id="fa973" class="javax.swing.JTextField" binding="rtText">
                         <constraints>
-                          <grid row="2" column="1" row-span="1" col-span="5" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                          <grid row="2" column="1" row-span="1" col-span="6" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                             <preferred-size width="150" height="-1"/>
                           </grid>
                         </constraints>
@@ -147,22 +147,6 @@
                           <text value="Add rt.jar to Analyze"/>
                         </properties>
                       </component>
-                      <component id="27531" class="javax.swing.JButton" binding="startEngineButton">
-                        <constraints>
-                          <grid row="6" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                        </constraints>
-                        <properties>
-                          <text value="Start Engine"/>
-                        </properties>
-                      </component>
-                      <component id="8558b" class="javax.swing.JCheckBox" binding="deleteTempCheckBox" default-binding="true">
-                        <constraints>
-                          <grid row="5" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                        </constraints>
-                        <properties>
-                          <text value="Delete Temp"/>
-                        </properties>
-                      </component>
                       <component id="6f017" class="javax.swing.JLabel" binding="classBlackListLabel">
                         <constraints>
                           <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="1" use-parent-layout="false"/>
@@ -173,7 +157,7 @@
                       </component>
                       <scrollpane id="89c67" binding="classBlackPanel">
                         <constraints>
-                          <grid row="4" column="1" row-span="1" col-span="5" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                          <grid row="4" column="1" row-span="1" col-span="6" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
                             <minimum-size width="-1" height="75"/>
                             <preferred-size width="-1" height="75"/>
                             <maximum-size width="-1" height="75"/>
@@ -203,7 +187,7 @@
                       </component>
                       <scrollpane id="85ab8" binding="classWhitePanel">
                         <constraints>
-                          <grid row="3" column="1" row-span="1" col-span="5" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                          <grid row="3" column="1" row-span="1" col-span="6" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
                             <minimum-size width="-1" height="75"/>
                             <preferred-size width="-1" height="75"/>
                             <maximum-size width="-1" height="75"/>
@@ -227,7 +211,7 @@
                       <grid id="652e0" binding="decompilerPanel" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                         <margin top="0" left="0" bottom="0" right="0"/>
                         <constraints>
-                          <grid row="8" column="0" row-span="1" col-span="6" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                          <grid row="8" column="0" row-span="1" col-span="7" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties/>
                         <border type="none" title="Decompiler"/>
@@ -260,6 +244,40 @@
                           </component>
                         </children>
                       </grid>
+                      <grid id="d4292" binding="enginePanel" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="0" left="0" bottom="0" right="0"/>
+                        <constraints>
+                          <grid row="6" column="5" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="27531" class="javax.swing.JButton" binding="startEngineButton">
+                            <constraints>
+                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Start"/>
+                            </properties>
+                          </component>
+                          <component id="41885" class="javax.swing.JButton" binding="openJDBtn">
+                            <constraints>
+                              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="JD-GUI"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </grid>
+                      <component id="8558b" class="javax.swing.JCheckBox" binding="deleteTempCheckBox" default-binding="true">
+                        <constraints>
+                          <grid row="5" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Delete Temp Dir Before Build"/>
+                        </properties>
+                      </component>
                     </children>
                   </grid>
                   <grid id="8c3bd" binding="infoPanel" layout-manager="GridLayoutManager" row-count="5" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">

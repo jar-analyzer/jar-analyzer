@@ -57,6 +57,7 @@ public class IconManager {
     public static ImageIcon proxyIcon;
     public static ImageIcon tomcatIcon;
     public static ImageIcon jdIcon;
+    public static ImageIcon jdStartIcon;
 
     static {
         try {
@@ -199,6 +200,12 @@ public class IconManager {
                             .getClassLoader().getResourceAsStream("img/jd.png"))));
             resizedImage = jdIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
             jdIcon = new ImageIcon(resizedImage);
+
+            jdStartIcon = new ImageIcon(ImageIO.read(
+                    Objects.requireNonNull(IconManager.class
+                            .getClassLoader().getResourceAsStream("img/jd.png"))));
+            resizedImage = jdStartIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+            jdStartIcon = new ImageIcon(resizedImage);
         } catch (Exception ignored) {
         }
     }

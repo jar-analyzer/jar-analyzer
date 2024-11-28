@@ -23,6 +23,7 @@
 
 - 4ra1n (https://github.com/4ra1n)
 - MyDynasty (https://github.com/MyDynasty)
+- hacats (https://github.com/hacats)
 
 所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
 

@@ -782,6 +782,7 @@ public class MainForm {
         jreRuntimeLabel.setIcon(IconManager.javaIcon);
         dbPathLabel.setIcon(IconManager.dbIcon);
         startEngineButton.setIcon(IconManager.startIcon);
+        openJDBtn.setIcon(IconManager.jdStartIcon);
         curJarLabel.setIcon(IconManager.jarIcon);
         curClassLabel.setIcon(IconManager.curIcon);
         curMethodLabel.setIcon(IconManager.curIcon);

@@ -32,8 +32,8 @@ public class JDGUIStarter {
         if (!Files.exists(jd)) {
             jd = Paths.get(jdGUIFileName);
             if (!Files.exists(jd)) {
-                logger.warn("{} not found",jdGUIFileName);
-                logger.warn("{} should be in current dir or lib dir",jdGUIFileName);
+                logger.warn("{} not found", jdGUIFileName);
+                logger.warn("{} should be in current dir or lib dir", jdGUIFileName);
                 JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                         "JD-GUI 文件找不到（请查看日志信息）");
                 return;
@@ -59,7 +59,7 @@ public class JDGUIStarter {
         try {
             pb.start();
         } catch (IOException e) {
-            logger.error("start jd-gui error: {}",e.getMessage());
+            logger.error("start jd-gui error: {}", e.getMessage());
         }
     }
 }

@@ -14,7 +14,6 @@ import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.IconManager;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;

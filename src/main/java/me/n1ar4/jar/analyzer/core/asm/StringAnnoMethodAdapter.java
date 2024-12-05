@@ -25,7 +25,7 @@ public class StringAnnoMethodAdapter extends MethodVisitor {
     @Override
     public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
         AnnotationVisitor av = super.visitAnnotation(descriptor, visible);
-        return new StringAnnoAnnoAdapter(av,mh,stringAnnoMap);
+        return new StringAnnoAnnoAdapter(av, mh, stringAnnoMap);
     }
 
     @Override

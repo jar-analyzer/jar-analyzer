@@ -153,11 +153,6 @@ public class CoreEngine {
         StringMapper stringMapper = session.getMapper(StringMapper.class);
         ArrayList<MethodResult> results = new ArrayList<>(
                 stringMapper.selectMethodByString(val));
-
-        // 2024/12/05 FIX
-        // 从注解表里面查出来方法 处理注解字符串搜不到的问题
-
-
         session.close();
         return results;
     }

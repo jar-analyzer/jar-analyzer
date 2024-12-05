@@ -173,7 +173,8 @@ public class CoreRunner {
         DatabaseManager.saveClassFiles(AnalyzeEnv.classFileList);
         MainForm.getInstance().getBuildBar().setValue(20);
         DiscoveryRunner.start(AnalyzeEnv.classFileList, AnalyzeEnv.discoveredClasses,
-                AnalyzeEnv.discoveredMethods, AnalyzeEnv.classMap, AnalyzeEnv.methodMap);
+                AnalyzeEnv.discoveredMethods, AnalyzeEnv.classMap,
+                AnalyzeEnv.methodMap, AnalyzeEnv.stringAnnoMap);
         DatabaseManager.saveClassInfo(AnalyzeEnv.discoveredClasses);
         MainForm.getInstance().getBuildBar().setValue(25);
         DatabaseManager.saveMethods(AnalyzeEnv.discoveredMethods);
@@ -236,7 +237,7 @@ public class CoreRunner {
             }
         }
         MainForm.getInstance().getBuildBar().setValue(80);
-        DatabaseManager.saveStrMap(AnalyzeEnv.strMap);
+        DatabaseManager.saveStrMap(AnalyzeEnv.strMap, AnalyzeEnv.stringAnnoMap);
 
         SpringService.start(AnalyzeEnv.classFileList, AnalyzeEnv.controllers, AnalyzeEnv.classMap, AnalyzeEnv.methodMap);
         DatabaseManager.saveSpring(AnalyzeEnv.controllers);

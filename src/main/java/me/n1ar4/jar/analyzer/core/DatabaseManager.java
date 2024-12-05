@@ -280,8 +280,11 @@ public class DatabaseManager {
         logger.info("save method impl success");
     }
 
-    public static void saveStrMap(Map<MethodReference.Handle, List<String>> strMap) {
+    public static void saveStrMap(Map<MethodReference.Handle, List<String>> strMap,
+                                  Map<MethodReference.Handle, List<String>> stringAnnoMap) {
         List<StringEntity> mList = new ArrayList<>();
+
+        logger.info("save str map length: {}", strMap.size());
         for (Map.Entry<MethodReference.Handle, List<String>> strEntry : strMap.entrySet()) {
             MethodReference.Handle method = strEntry.getKey();
             List<String> strList = strEntry.getValue();
@@ -298,6 +301,26 @@ public class DatabaseManager {
                 mList.add(stringEntity);
             }
         }
+
+        // 2024/12/05 处理注解部分的字符串搜索
+        logger.info("save string anno map length: {}", stringAnnoMap.size());
+        for (Map.Entry<MethodReference.Handle, List<String>> strEntry : stringAnnoMap.entrySet()) {
+            MethodReference.Handle method = strEntry.getKey();
+            List<String> strList = strEntry.getValue();
+            for (String s : strList) {
+                MethodReference mr = AnalyzeEnv.methodMap.get(method);
+                ClassReference cr = AnalyzeEnv.classMap.get(mr.getClassReference());
+                StringEntity stringEntity = new StringEntity();
+                stringEntity.setValue(s);
+                stringEntity.setAccess(mr.getAccess());
+                stringEntity.setClassName(cr.getName());
+                stringEntity.setJarName(cr.getJar());
+                stringEntity.setMethodDesc(mr.getDesc());
+                stringEntity.setMethodName(mr.getName());
+                mList.add(stringEntity);
+            }
+        }
+
         List<List<StringEntity>> mPartition = PartitionUtils.partition(mList, PART_SIZE);
         for (List<StringEntity> data : mPartition) {
             int a = stringMapper.insertString(data);

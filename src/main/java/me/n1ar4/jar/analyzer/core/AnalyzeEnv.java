@@ -28,4 +28,5 @@ public class AnalyzeEnv {
     public static InheritanceMap inheritanceMap;
     public static Map<MethodReference.Handle, List<String>> strMap = new HashMap<>();
     public static ArrayList<SpringController> controllers = new ArrayList<>();
+    public static Map<MethodReference.Handle, List<String>> stringAnnoMap = new HashMap<>();
 }

@@ -11,12 +11,14 @@
 package me.n1ar4.jar.analyzer.core;
 
 import me.n1ar4.jar.analyzer.core.asm.DiscoveryClassVisitor;
+import me.n1ar4.jar.analyzer.core.asm.StringAnnoClassVisitor;
 import me.n1ar4.jar.analyzer.entity.ClassFileEntity;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 import org.objectweb.asm.ClassReader;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -27,7 +29,8 @@ public class DiscoveryRunner {
                              Set<ClassReference> discoveredClasses,
                              Set<MethodReference> discoveredMethods,
                              Map<ClassReference.Handle, ClassReference> classMap,
-                             Map<MethodReference.Handle, MethodReference> methodMap) {
+                             Map<MethodReference.Handle, MethodReference> methodMap,
+                             Map<MethodReference.Handle, List<String>> stringAnnoMap) {
         logger.info("start class analyze");
         for (ClassFileEntity file : classFileList) {
             try {
@@ -44,6 +47,16 @@ public class DiscoveryRunner {
         }
         for (MethodReference method : discoveredMethods) {
             methodMap.put(method.getHandle(), method);
+        }
+        logger.info("start string annotation analyze");
+        for (ClassFileEntity file : classFileList) {
+            try {
+                StringAnnoClassVisitor sav = new StringAnnoClassVisitor(stringAnnoMap);
+                ClassReader cr = new ClassReader(file.getFile());
+                cr.accept(sav, Const.AnalyzeASMOptions);
+            } catch (Exception e) {
+                logger.error("discovery error: {}", e.toString());
+            }
         }
     }
 }

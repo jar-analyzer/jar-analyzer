@@ -123,7 +123,7 @@ public class SyntaxAreaHelper {
     }
 
     public static void buildJavaOpcode(JPanel codePanel) {
-        RSyntaxTextArea textArea = new RSyntaxTextArea(30, 100);
+        RSyntaxTextArea textArea = new RSyntaxTextArea(400, 400);
         textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
         textArea.setCodeFoldingEnabled(false);
 

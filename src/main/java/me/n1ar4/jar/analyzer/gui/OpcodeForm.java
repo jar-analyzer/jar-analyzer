@@ -33,8 +33,16 @@ public class OpcodeForm {
         codeArea.setText(code);
         codeArea.setCaretPosition(0);
 
+        codeArea.setPreferredSize(new Dimension(900, 600));
+        codeArea.setMaximumSize(new Dimension(900, 600));
+        codeArea.setMinimumSize(new Dimension(900, 600));
+
+        instance.masterPanel.setPreferredSize(new Dimension(900, 600));
+        instance.masterPanel.setMaximumSize(new Dimension(900, 600));
+        instance.masterPanel.setMinimumSize(new Dimension(900, 600));
+
         frame.setContentPane(instance.masterPanel);
-        frame.setResizable(false);
+        frame.setResizable(true);
 
         frame.pack();
 
@@ -68,4 +76,5 @@ public class OpcodeForm {
     public JComponent $$$getRootComponent$$$() {
         return masterPanel;
     }
+
 }

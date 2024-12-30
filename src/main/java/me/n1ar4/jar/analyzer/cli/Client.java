@@ -11,6 +11,7 @@
 package me.n1ar4.jar.analyzer.cli;
 
 import com.beust.jcommander.JCommander;
+import me.n1ar4.jar.analyzer.core.AnalyzeEnv;
 import me.n1ar4.jar.analyzer.core.CoreRunner;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.utils.DirUtil;
@@ -62,6 +63,8 @@ public class Client {
                         logger.warn("delete old db fail");
                     }
                 }
+                AnalyzeEnv.jarsInJar = buildCmd.enableInnerJars();
+                AnalyzeEnv.isCli = true;
                 CoreRunner.run(jarPathPath, null, false, null);
                 logger.info("write file to: {}", Const.dbFile);
                 System.exit(0);

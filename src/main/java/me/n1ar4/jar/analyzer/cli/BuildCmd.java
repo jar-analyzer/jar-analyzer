@@ -22,6 +22,8 @@ public class BuildCmd {
     private boolean delExist;
     @Parameter(names = {"--del-cache"}, description = "delete old cache")
     private boolean delCache;
+    @Parameter(names = {"--inner-jars"}, description = "resolve jars in jar")
+    private boolean innerJars;
 
     public BuildCmd() {
 
@@ -37,5 +39,9 @@ public class BuildCmd {
 
     public boolean delCache() {
         return delCache;
+    }
+
+    public boolean enableInnerJars() {
+        return innerJars;
     }
 }

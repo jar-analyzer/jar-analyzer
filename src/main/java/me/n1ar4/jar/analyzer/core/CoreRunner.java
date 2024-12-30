@@ -45,51 +45,55 @@ public class CoreRunner {
     private static final Logger logger = LogManager.getLogger();
 
     public static void run(Path jarPath, Path rtJarPath, boolean fixClass, JDialog dialog) {
-        // 2024-07-05 不允许太大的 JAR 文件
-        long totalSize = 0;
-        List<String> beforeJarList = new ArrayList<>();
-        if (Files.isDirectory(jarPath)) {
-            beforeJarList.addAll(DirUtil.GetFiles(jarPath.toAbsolutePath().toString()));
-        } else {
-            beforeJarList.add(jarPath.toAbsolutePath().toString());
+        // 2024-12-30
+        // 非 CLI 才会弹窗
+        if (!AnalyzeEnv.isCli) {
+            // 2024-07-05 不允许太大的 JAR 文件
+            long totalSize = 0;
+            List<String> beforeJarList = new ArrayList<>();
+            if (Files.isDirectory(jarPath)) {
+                beforeJarList.addAll(DirUtil.GetFiles(jarPath.toAbsolutePath().toString()));
+            } else {
+                beforeJarList.add(jarPath.toAbsolutePath().toString());
 
-        }
-        if (rtJarPath != null) {
-            beforeJarList.add(rtJarPath.toAbsolutePath().toString());
-        }
-        for (String s : beforeJarList) {
-            if (s.toLowerCase().endsWith(".jar") || s.toLowerCase().endsWith(".war")) {
-                totalSize += Paths.get(s).toFile().length();
             }
-        }
+            if (rtJarPath != null) {
+                beforeJarList.add(rtJarPath.toAbsolutePath().toString());
+            }
+            for (String s : beforeJarList) {
+                if (s.toLowerCase().endsWith(".jar") || s.toLowerCase().endsWith(".war")) {
+                    totalSize += Paths.get(s).toFile().length();
+                }
+            }
 
-        int totalM = (int) (totalSize / 1024 / 1024);
+            int totalM = (int) (totalSize / 1024 / 1024);
 
-        int chose;
-        if (totalM > 1024) {
-            // 对于大于 1G 的 JAR 输入进行提示
-            chose = JOptionPane.showConfirmDialog(MainForm.getInstance().getMasterPanel(),
-                    "<html>加载 JAR/WAR 总大小 <strong>" + totalM + "</strong> MB<br>" +
-                            "文件内容过大，可能产生巨大的临时文件和数据库，可能非常消耗内存<br>" +
-                            "请确认是否要继续进行分析" +
-                            "</html>");
-        } else if (totalM == 0) {
-            chose = JOptionPane.showConfirmDialog(MainForm.getInstance().getMasterPanel(),
-                    "加载 JAR/WAR 总大小不足 1MB 是否继续");
-        } else {
-            chose = JOptionPane.showConfirmDialog(MainForm.getInstance().getMasterPanel(),
-                    "加载 JAR/WAR 总大小 " + totalM + " MB 是否继续");
-        }
-        if (chose != 0) {
-            MainForm.getInstance().getStartBuildDatabaseButton().setEnabled(true);
-            return;
-        }
+            int chose;
+            if (totalM > 1024) {
+                // 对于大于 1G 的 JAR 输入进行提示
+                chose = JOptionPane.showConfirmDialog(MainForm.getInstance().getMasterPanel(),
+                        "<html>加载 JAR/WAR 总大小 <strong>" + totalM + "</strong> MB<br>" +
+                                "文件内容过大，可能产生巨大的临时文件和数据库，可能非常消耗内存<br>" +
+                                "请确认是否要继续进行分析" +
+                                "</html>");
+            } else if (totalM == 0) {
+                chose = JOptionPane.showConfirmDialog(MainForm.getInstance().getMasterPanel(),
+                        "加载 JAR/WAR 总大小不足 1MB 是否继续");
+            } else {
+                chose = JOptionPane.showConfirmDialog(MainForm.getInstance().getMasterPanel(),
+                        "加载 JAR/WAR 总大小 " + totalM + " MB 是否继续");
+            }
+            if (chose != 0) {
+                MainForm.getInstance().getStartBuildDatabaseButton().setEnabled(true);
+                return;
+            }
 
-        if (dialog != null) {
-            new Thread(() -> dialog.setVisible(true)).start();
-        }
+            if (dialog != null) {
+                new Thread(() -> dialog.setVisible(true)).start();
+            }
 
-        MainForm.getInstance().getStartBuildDatabaseButton().setEnabled(false);
+            MainForm.getInstance().getStartBuildDatabaseButton().setEnabled(false);
+        }
 
         List<ClassFileEntity> cfs;
         MainForm.getInstance().getBuildBar().setValue(10);

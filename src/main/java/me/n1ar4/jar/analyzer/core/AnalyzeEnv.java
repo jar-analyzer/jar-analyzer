@@ -16,6 +16,7 @@ import me.n1ar4.jar.analyzer.entity.ClassFileEntity;
 import java.util.*;
 
 public class AnalyzeEnv {
+    public static boolean isCli = false;
     public static boolean jarsInJar = false;
     public static Set<ClassFileEntity> classFileList = new HashSet<>();
     public static final Set<ClassReference> discoveredClasses = new HashSet<>();

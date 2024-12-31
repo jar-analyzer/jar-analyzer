@@ -128,6 +128,26 @@
 
 [前往下载](https://github.com/jar-analyzer/jar-analyzer/releases/latest)
 
+## 评价
+
+(1) 我发现 `jar-analyzer` 性能方面很出色（某知名安全研究员）
+
+(2) 某些场景 `jar-analyzer` 的表达式功能比 `codeql` 更好用（某安全研究员）
+
+(3) 我使用 `jar-analyzer` 挖了不少的 `0 day` 漏洞，推荐使用 (某知名安全研究员)
+
+(4) 大佬的 `jar-analyzer` 很好用 （某乙方安全工程师）
+
+(5) 师傅的 `jar-analyzer` 太强了 （某知名安全研究员）
+
+(6) 刚才老板大力表扬了 `jar-analyzer` 说超级好用（某甲方安全工程师）
+
+(7) 大佬，先说一句 `jar-analyzer` 真好用（某乙方安全工程师）
+
+(8) `jar-analyzer` 最好用（某乙方安全工程师）
+
+(9) `Java` 漏洞挖掘神器 `jar-analyzer`（某乙方安全工程师）
+
 ## 截图
 
 方法调用关系

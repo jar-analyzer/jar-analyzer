@@ -160,6 +160,7 @@ public class MenuUtil {
         menuBar.add(loadRemote());
         menuBar.add(exportJava());
         menuBar.add(createGames());
+        menuBar.add(createTheme());
         JMenu plugins = new JMenu("plugins");
         JMenuItem systemItem = new JMenuItem("system info");
         systemItem.setIcon(IconManager.systemIcon);
@@ -175,6 +176,22 @@ public class MenuUtil {
         plugins.add(jdItem);
         menuBar.add(plugins);
         return menuBar;
+    }
+
+    private static JMenu createTheme() {
+        JMenu theme = new JMenu("theme");
+        Color origin = MainForm.getCodeArea().getBackground();
+        JCheckBoxMenuItem themeItem = new JCheckBoxMenuItem("use dark ui");;
+        themeItem.addActionListener(e -> {
+            if (themeItem.getState()) {
+                JarAnalyzerLaf.setupDark();
+            }else{
+                MainForm.getCodeArea().setBackground(origin);
+                JarAnalyzerLaf.setupLight();
+            }
+        });
+        theme.add(themeItem);
+        return theme;
     }
 
     private static JMenu exportJava() {

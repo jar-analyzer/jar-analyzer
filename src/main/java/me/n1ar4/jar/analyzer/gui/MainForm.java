@@ -198,7 +198,6 @@ public class MainForm {
     @SuppressWarnings("all")
     private JLabel spelLabel;
     private JButton startELSearchButton;
-    private JLabel obfLabel;
     private JButton serUtilBtn;
     private JLabel serUtilLabel;
     private JScrollPane classWhitePanel;

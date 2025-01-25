@@ -1151,6 +1151,13 @@ public class MainForm {
 
         UpdateChecker.check();
 
+        // 最后一步 处理 UI
+        if (config != null && config.getTheme() != null && config.getTheme().equals("dark")) {
+            MenuUtil.useDark();
+        } else {
+            MenuUtil.useDefault();
+        }
+
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setResizable(true);

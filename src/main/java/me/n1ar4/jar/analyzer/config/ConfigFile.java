@@ -19,6 +19,7 @@ public class ConfigFile {
     private String totalClass;
     private String totalMethod;
     private String lang;
+    private String theme;
 
     public String getLang() {
         return lang;
@@ -84,6 +85,14 @@ public class ConfigFile {
         this.totalMethod = totalMethod;
     }
 
+    public String getTheme() {
+        return theme;
+    }
+
+    public void setTheme(String theme) {
+        this.theme = theme;
+    }
+
     @Override
     public String toString() {
         return "ConfigFile{" +
@@ -94,6 +103,8 @@ public class ConfigFile {
                 ", totalJar='" + totalJar + '\'' +
                 ", totalClass='" + totalClass + '\'' +
                 ", totalMethod='" + totalMethod + '\'' +
+                ", lang='" + lang + '\'' +
+                ", theme='" + theme + '\'' +
                 '}';
     }
 }

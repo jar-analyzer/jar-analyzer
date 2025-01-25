@@ -10,6 +10,7 @@
 
 package me.n1ar4.jar.analyzer.gui.util;
 
+import com.formdev.flatlaf.FlatLaf;
 import com.github.rjeschke.txtmark.Processor;
 import me.n1ar4.games.flappy.FBMainFrame;
 import me.n1ar4.games.pocker.Main;
@@ -49,12 +50,24 @@ public class MenuUtil {
     private static final JCheckBoxMenuItem disableFixMethodImplConfig = new JCheckBoxMenuItem(
             "disable fix methods impl/override");
 
+    private static final JCheckBoxMenuItem themeItem = new JCheckBoxMenuItem("use dark ui");
+
     public static void setLangFlag() {
         if (GlobalOptions.getLang() == GlobalOptions.CHINESE) {
             chineseConfig.setState(true);
         } else if (GlobalOptions.getLang() == GlobalOptions.ENGLISH) {
             englishConfig.setState(true);
         }
+    }
+
+    public static void useDark() {
+        themeItem.setState(true);
+        JarAnalyzerLaf.setupDark();
+    }
+
+    public static void useDefault() {
+        themeItem.setState(false);
+        JarAnalyzerLaf.setupLight(false);
     }
 
     static {
@@ -180,16 +193,25 @@ public class MenuUtil {
 
     private static JMenu createTheme() {
         JMenu theme = new JMenu("theme");
-        Color origin = MainForm.getCodeArea().getBackground();
-        JCheckBoxMenuItem themeItem = new JCheckBoxMenuItem("use dark ui");
-
         themeItem.addActionListener(e -> {
+            ConfigFile cf;
             if (themeItem.getState()) {
                 JarAnalyzerLaf.setupDark();
+                cf = MainForm.getConfig();
+                if (cf == null) {
+                    return;
+                }
+                cf.setTheme("dark");
             } else {
-                MainForm.getCodeArea().setBackground(origin);
                 JarAnalyzerLaf.setupLight(false);
+                cf = MainForm.getConfig();
+                if (cf == null) {
+                    return;
+                }
+                cf.setTheme("default");
             }
+            MainForm.setConfig(cf);
+            ConfigEngine.saveConfig(cf);
         });
         theme.add(themeItem);
         return theme;

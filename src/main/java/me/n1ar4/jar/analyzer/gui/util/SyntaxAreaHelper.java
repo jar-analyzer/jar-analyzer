@@ -44,7 +44,7 @@ public class SyntaxAreaHelper {
 
         rArea.addCaretListener(e -> {
             String selectedText = rArea.getSelectedText();
-            if (selectedText == null || selectedText.isEmpty()) {
+            if (selectedText == null || selectedText.trim().isEmpty()) {
                 Highlighter highlighter = rArea.getHighlighter();
                 highlighter.removeAllHighlights();
                 return;

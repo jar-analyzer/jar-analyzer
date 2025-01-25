@@ -68,7 +68,7 @@
         <spring.version>5.3.39</spring.version>
         <okhttp3.version>4.12.0</okhttp3.version>
         <nano.version>2.3.1</nano.version>
-        <fastjson.version>2.0.53</fastjson.version>
+        <fastjson.version>2.0.54</fastjson.version>
         <hutool.version>5.8.35</hutool.version>
         <jfreechart.version>1.5.5</jfreechart.version>
         <oshi.version>6.6.5</oshi.version>

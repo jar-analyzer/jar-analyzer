@@ -11,6 +11,7 @@
 package me.n1ar4.jar.analyzer.gui.util;
 
 import com.intellij.uiDesigner.core.GridConstraints;
+import me.n1ar4.jar.analyzer.entity.MethodResult;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.OpcodeForm;
 import me.n1ar4.jar.analyzer.utils.OSUtil;
@@ -25,7 +26,10 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 public class SyntaxAreaHelper {
     private static final Logger logger = LogManager.getLogger();
@@ -68,10 +72,80 @@ public class SyntaxAreaHelper {
         if (OSUtil.isLinux()) {
             codeArea.setFont(codeArea.getFont().deriveFont(18.0f));
         }
+        Highlighter highlighter = codeArea.getHighlighter();
+        codeArea.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.isControlDown()) {
+                    int caretPosition = codeArea.getCaretPosition();
+                    int start = findWordStart(codeArea.getText(), caretPosition);
+                    int end = findWordEnd(codeArea.getText(), caretPosition);
+                    if (start != -1 && end != -1) {
+                        String word = codeArea.getText().substring(start, end);
+                        highlighter.removeAllHighlights();
+                        try {
+                            highlighter.addHighlight(start, end,
+                                    new DefaultHighlighter.DefaultHighlightPainter(Color.BLUE));
+                        } catch (BadLocationException ignored) {
+                        }
 
+                        String methodName = word.trim();
+                        if (methodName.isEmpty()) {
+                            return;
+                        }
+                        logger.info("user selected string: {}", methodName);
+                        String className = MainForm.getCurClass();
+                        if (className.contains("/")) {
+                            String shortClassName = className.substring(className.lastIndexOf('/') + 1);
+                            if (methodName.equals(shortClassName)) {
+                                methodName = "<init>";
+                            }
+                        } else {
+                            if (methodName.equals(className)) {
+                                methodName = "<init>";
+                            }
+                        }
+                        String finalMethodName = methodName;
+                        new Thread(() -> {
+                            java.util.List<MethodResult> rL = MainForm.getEngine().getCallers(
+                                    className, finalMethodName, null);
+                            List<MethodResult> eL = MainForm.getEngine().getCallee(
+                                    className, finalMethodName, null);
+                            DefaultListModel<MethodResult> calleeData = (DefaultListModel<MethodResult>)
+                                    MainForm.getInstance().getCalleeList().getModel();
+                            DefaultListModel<MethodResult> callerData = (DefaultListModel<MethodResult>)
+                                    MainForm.getInstance().getCallerList().getModel();
+                            calleeData.clear();
+                            callerData.clear();
+                            for (MethodResult mr : rL) {
+                                callerData.addElement(mr);
+                            }
+                            for (MethodResult mr : eL) {
+                                calleeData.addElement(mr);
+                            }
+                            MainForm.getInstance().getTabbedPanel().setSelectedIndex(2);
+                        }).start();
+                    }
+                }
+            }
+        });
         RTextScrollPane sp = new RTextScrollPane(codeArea);
         codePanel.add(sp, new GridConstraints());
         MainForm.setCodeArea(codeArea);
+    }
+
+    private static int findWordStart(String text, int position) {
+        while (position > 0 && Character.isLetterOrDigit(text.charAt(position - 1))) {
+            position--;
+        }
+        return position;
+    }
+
+    private static int findWordEnd(String text, int position) {
+        while (position < text.length() && Character.isLetterOrDigit(text.charAt(position))) {
+            position++;
+        }
+        return position;
     }
 
     public static int addSearchAction(String text) {

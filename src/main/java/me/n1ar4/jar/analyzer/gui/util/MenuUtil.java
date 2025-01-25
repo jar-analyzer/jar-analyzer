@@ -181,13 +181,14 @@ public class MenuUtil {
     private static JMenu createTheme() {
         JMenu theme = new JMenu("theme");
         Color origin = MainForm.getCodeArea().getBackground();
-        JCheckBoxMenuItem themeItem = new JCheckBoxMenuItem("use dark ui");;
+        JCheckBoxMenuItem themeItem = new JCheckBoxMenuItem("use dark ui");
+
         themeItem.addActionListener(e -> {
             if (themeItem.getState()) {
                 JarAnalyzerLaf.setupDark();
-            }else{
+            } else {
                 MainForm.getCodeArea().setBackground(origin);
-                JarAnalyzerLaf.setupLight();
+                JarAnalyzerLaf.setupLight(false);
             }
         });
         theme.add(themeItem);

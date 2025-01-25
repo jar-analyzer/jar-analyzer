@@ -10,7 +10,6 @@
 
 package me.n1ar4.jar.analyzer.gui.util;
 
-import com.formdev.flatlaf.FlatLaf;
 import com.github.rjeschke.txtmark.Processor;
 import me.n1ar4.games.flappy.FBMainFrame;
 import me.n1ar4.games.pocker.Main;

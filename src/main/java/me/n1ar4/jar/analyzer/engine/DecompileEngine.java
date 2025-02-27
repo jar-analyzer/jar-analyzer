@@ -23,6 +23,8 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.swing.JOptionPane.ERROR_MESSAGE;
+
 /**
  * Decompile Engine
  */
@@ -135,6 +137,19 @@ public class DecompileEngine {
                 classNamePrefix = classNamePrefix.split("\\.")[0];
 
                 String finalClassNamePrefix = classNamePrefix;
+
+                // BUG FIX 2025/02/27
+                // 全局搜索某些不存在的类无法打开且没有报错信息
+                if (!Files.exists(classDirPath)) {
+                    JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                            "<html>" +
+                                    "<p>临时目录目录不存在，考虑可能是依赖没有导入（尝试开启 jars in jar 选项或 add rt.jar 分析）</p>" +
+                                    "<p>目录：" + classDirPath + "</p>" +
+                                    "</html>",
+                            "Jar Analyzer V2 Error", ERROR_MESSAGE);
+                    return null;
+                }
+
                 Files.walkFileTree(classDirPath, new SimpleFileVisitor<Path>() {
                     @Override
                     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {

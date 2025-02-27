@@ -118,6 +118,17 @@ public class DecompileEngine {
                 }
                 String javaDir = deDirPath.toAbsolutePath().toString();
                 String fileName = classFilePath.getFileName().toString();
+
+                if (!fileName.endsWith(".class")) {
+                    JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                            "<html>" +
+                                    "<p>你选择的目标不是 class 文件，请检查您的操作</p>" +
+                                    "<p>文件：" + fileName + "</p>" +
+                                    "</html>",
+                            "Jar Analyzer V2 Error", ERROR_MESSAGE);
+                    return null;
+                }
+
                 String[] split = fileName.split("\\.");
                 if (split.length < 2) {
                     throw new RuntimeException("decompile error");

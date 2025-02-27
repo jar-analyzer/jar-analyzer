@@ -40,7 +40,25 @@ public class ShowStringForm {
             sb.append(s);
             sb.append("\n");
         }
-        instance.stringArea.setText(sb.toString());
+
+        // 2025/02/27 处理大 STRING LIST 卡死问题
+        String data = sb.toString();
+        if (data.length() > 100000) {
+            int resp = JOptionPane.showConfirmDialog(frame,
+                    "<html>" +
+                            "<p>你的 STRING LIST 第一页数据大于 10 0000 长度</p>" +
+                            "<p>不方便展示和查看，建议您不要直接打开而是自行搜索</p>" +
+                            "<p>如果你坚持要打开可以点击 确认 按钮</p>" +
+                            "</html>",
+                    "STRING TOO LARGE", JOptionPane.OK_CANCEL_OPTION);
+            if (resp != JOptionPane.OK_OPTION) {
+                dialog.dispose();
+                frame.dispose();
+                return;
+            }
+        }
+
+        instance.stringArea.setText(data);
         instance.stringArea.setCaretPosition(0);
 
         int totalPage = total / 100 + 1;

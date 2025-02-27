@@ -35,6 +35,10 @@ public class LuceneSearchListener implements DocumentListener {
                 results.addAll(LuceneSearchWrapper.searchLucene(text));
             }
             for (LuceneSearchResult result : results) {
+                // BUG 2025/02/27 处理某些非 class 文件
+                if (!result.getFileName().endsWith(".class")) {
+                    continue;
+                }
                 resultModel.addElement(result);
             }
         }).start();

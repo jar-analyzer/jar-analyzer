@@ -14,7 +14,7 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.Opcodes;
 
 public interface Const {
-    String version = "4.3";
+    String version = "4.4";
 
     int ASMVersion = Opcodes.ASM9;
 

@@ -15,11 +15,10 @@ import cn.hutool.core.util.StrUtil;
 import me.n1ar4.jar.analyzer.engine.index.entity.Result;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.document.StringField;
+import org.apache.lucene.codecs.lucene50.Lucene50StoredFieldsFormat;
+import org.apache.lucene.codecs.lucene70.Lucene70Codec;
+import org.apache.lucene.document.*;
 import org.apache.lucene.index.*;
-import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
@@ -32,48 +31,41 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+
 public class IndexEngine {
-    public static String addIndexCollection(Map<String, String> analyzerMap) throws IOException {
+    public static String initIndex(Map<String, String> analyzerMap) throws IOException {
         IndexWriter indexWriter = IndexSingletonClass.getIndexWriter();
         Collection<Document> documents = new ArrayList<>();
         analyzerMap.forEach((key, value) -> {
-            value = StrUtil.removeAllLineBreaks(value);
-            String[] cut = StrUtil.cut(value, 5000);
-            for (int i = 0; i < cut.length; i++) {
+            List<String> split = StrUtil.split(value, "\n");
+            for (int i = 0; i < split.size(); i++) {
                 Document doc = new Document();
                 doc.add(new StringField("order", String.valueOf(i), Field.Store.YES));
-                doc.add(new StringField("content", cut[i], Field.Store.YES));
+                doc.add(new StringField("content", split.get(i).trim(), Field.Store.YES));
+                doc.add(new StringField("content_lower", split.get(i).trim().toLowerCase(), Field.Store.YES));
                 doc.add(new StringField("codePath", key, Field.Store.YES));
                 doc.add(new StringField("title",
                         StrUtil.removeSuffix(FileUtil.getName(key), ".class"), Field.Store.YES));
                 documents.add(doc);
             }
+
         });
         indexWriter.addDocuments(documents);
         indexWriter.commit();
         return null;
     }
 
-    public static String createIndex(String documentPath) throws IOException {
-        Directory directory = FSDirectory.open(Paths.get(documentPath));
-        Analyzer analyzer = new StandardAnalyzer();
-        IndexWriterConfig conf = new IndexWriterConfig(analyzer);
-        IndexWriter indexWriter = new IndexWriter(directory, conf);
-        Document doc = new Document();
-        doc.add(new StringField("version", IndexPluginsSupport.VERSION, Field.Store.YES));
-        indexWriter.addDocument(doc);
-        indexWriter.commit();
-        indexWriter.close();
-        return null;
-    }
 
-
-    public static Result search(String keyword) throws IOException, ParseException {
+    public static Result search(String keyword) throws IOException {
         IndexReader reader = IndexSingletonClass.getReader();
         keyword = StrUtil.removeAllLineBreaks(keyword);
-
-        WildcardQuery query = new WildcardQuery(new Term("content", "*" + keyword + "*"));
-
+        WildcardQuery query = null;
+        //区分/忽略大小写查询
+        if (IndexPluginsSupport.isCaseSensitive) {
+            query = new WildcardQuery(new Term("content", "*" + keyword.trim() + "*"));
+        } else {
+            query = new WildcardQuery(new Term("content_lower", "*" + keyword.trim().toLowerCase() + "*"));
+        }
         TopDocs topDocs = IndexSingletonClass.getSearcher().search(query, 110);
         ScoreDoc[] scoreDocs = topDocs.scoreDocs;
         List<Map<String, Object>> arrayList = new ArrayList<>();
@@ -96,8 +88,13 @@ public class IndexEngine {
     public static Result searchRegex(String keyword) throws IOException {
         IndexReader reader = IndexSingletonClass.getReader();
         keyword = StrUtil.removeAllLineBreaks(keyword);
-
-        RegexpQuery query = new RegexpQuery(new Term("content", ".*" + Pattern.quote(keyword) + ".*"));
+        RegexpQuery query = null;
+        //区分/忽略大小写查询
+        if (IndexPluginsSupport.isCaseSensitive) {
+            query = new RegexpQuery(new Term("content", ".*" + Pattern.quote(keyword).trim() + ".*"));
+        } else {
+            query = new RegexpQuery(new Term("content_lower", ".*" + Pattern.quote(keyword).trim().toLowerCase() + ".*"));
+        }
 
         TopDocs topDocs = IndexSingletonClass.getSearcher().search(query, 110);
         ScoreDoc[] scoreDocs = topDocs.scoreDocs;
@@ -155,6 +152,8 @@ public class IndexEngine {
                         Analyzer analyzer = new StandardAnalyzer();
                         IndexWriterConfig conf = new IndexWriterConfig(analyzer);
                         conf.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
+                        //优化了索引文件编码，提高存储效率
+                        conf.setCodec(new Lucene70Codec(Lucene50StoredFieldsFormat.Mode.BEST_COMPRESSION));
                         indexWriter = new IndexWriter(directory, conf);
                     }
                 }

@@ -10,8 +10,10 @@
 
 package me.n1ar4.jar.analyzer.lucene;
 
+import cn.hutool.core.util.StrUtil;
 import me.n1ar4.jar.analyzer.engine.CoreHelper;
 import me.n1ar4.jar.analyzer.engine.DecompileEngine;
+import me.n1ar4.jar.analyzer.engine.index.IndexPluginsSupport;
 import me.n1ar4.jar.analyzer.entity.LuceneSearchResult;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.adapter.SearchInputListener;
@@ -38,12 +40,6 @@ public class LuceneMouseListener extends MouseAdapter {
                 return;
             }
 
-            String content;
-            if (res.getType() == LuceneSearchResult.TYPE_CONTENT) {
-                content = res.getContentStr();
-            } else {
-                content = null;
-            }
             String searchKey = res.getSearchKey().trim().replace("\n", "\r\n");
 
             String finalClassPath = res.getAbsPathStr();
@@ -66,8 +62,13 @@ public class LuceneMouseListener extends MouseAdapter {
                 MainForm.getCodeArea().setCaretPosition(0);
 
                 // 对于 Content 部分搜索的高亮展示
-                if (code != null && content != null) {
-                    int idx = code.indexOf(searchKey);
+                if (StrUtil.isNotBlank(code) && StrUtil.isNotBlank(searchKey)) {
+                    int idx;
+                    if(IndexPluginsSupport.isCaseSensitive){
+                        idx = code.indexOf(searchKey);
+                    }else{
+                        idx = code.toLowerCase().indexOf(searchKey.toLowerCase());
+                    }
                     if (idx != -1) {
                         MainForm.getCodeArea().setSelectionStart(idx);
                         MainForm.getCodeArea().setSelectionEnd(idx + searchKey.length());

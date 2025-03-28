@@ -21,7 +21,6 @@ import me.n1ar4.jar.analyzer.lucene.LuceneBuildListener;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
-import org.apache.lucene.queryparser.classic.ParseException;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,7 +37,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class IndexPluginsSupport {
     private static final Logger logger = LogManager.getLogger();
 
-    public final static String VERSION = "0.1";
+    //大小写敏感开关,true区分大小写，false忽略大小写,默认为false
+    public static boolean isCaseSensitive = false;
     public final static String CurrentPath = System.getProperty("user.dir");
     public final static String DocumentPath = CurrentPath + FileUtil.FILE_SEPARATOR + Const.indexDir;
     public final static String TempPath = CurrentPath + FileUtil.FILE_SEPARATOR + Const.tempDir;
@@ -51,7 +51,6 @@ public class IndexPluginsSupport {
             .setWorkQueue(new LinkedBlockingQueue<>())
             .build();
 
-    private static boolean created = false;
     private static boolean useActive = false;
 
     public static void setUseActive(boolean useActive) {
@@ -98,41 +97,21 @@ public class IndexPluginsSupport {
         return StrUtil.isNotBlank(decompile) ? decompile.replace(DecompileEngine.getFERN_PREFIX(), "") : null;
     }
 
-    public static boolean create() {
-        try {
-            IndexEngine.createIndex(DocumentPath);
-            logger.info("create index ok");
-            created = true;
-            return true;
-        } catch (Exception ex) {
-            logger.error("create index error: {}", ex.getMessage());
-            created = false;
-            return false;
-        }
-    }
 
     public static boolean addIndex(File file) {
         if (useActive) {
             return true;
         }
-
-        if (!created) {
-            create();
-        }
-
         Map<String, String> codeMap = new HashMap<>();
-
         String code = getCode(file);
         if (StrUtil.isNotBlank(code)) {
             codeMap.put(file.getPath(), code);
         }
 
         try {
-            IndexEngine.addIndexCollection(codeMap);
+            IndexEngine.initIndex(codeMap);
             logger.info("add index {} ok", FileUtil.getName(file));
-
             LuceneBuildListener.usePass = true;
-
             return true;
         } catch (IOException ex) {
             logger.error("add index error: {}", ex.getMessage());
@@ -148,7 +127,6 @@ public class IndexPluginsSupport {
             LogUtil.info("未找到任何 class 文件 无法搜索");
             return false;
         }
-        IndexEngine.createIndex(DocumentPath);
         List<List<File>> split = CollUtil.split(jarAnalyzerPluginsSupportAllFiles, size);
         CountDownLatch latch = new CountDownLatch(split.size());
         for (List<File> files : split) {
@@ -161,7 +139,7 @@ public class IndexPluginsSupport {
                     }
                 });
                 try {
-                    IndexEngine.addIndexCollection(codeMap);
+                    IndexEngine.initIndex(codeMap);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 } finally {
@@ -173,7 +151,7 @@ public class IndexPluginsSupport {
         return true;
     }
 
-    public static Result search(String keyword) throws IOException, ParseException {
+    public static Result search(String keyword) throws IOException {
         return IndexEngine.search(keyword);
     }
 }

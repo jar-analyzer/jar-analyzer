@@ -36,6 +36,7 @@ public class LuceneSearchForm {
     private JPanel searchOptionsPanel;
     private JLabel luceneSizeLabel;
     private JScrollPane searchTextPanel;
+    private JCheckBox caseCheckBox;
 
     private static LuceneSearchForm instance;
     private static JFrame instanceFrame;
@@ -50,6 +51,10 @@ public class LuceneSearchForm {
 
     public static boolean useContains() {
         return instance.containsRadio.isSelected();
+    }
+
+    public static boolean useCaseSensitive() {
+        return instance.caseCheckBox.isSelected();
     }
 
     public static boolean useRegex() {
@@ -75,6 +80,8 @@ public class LuceneSearchForm {
     private void init() {
         containsRadio.setSelected(true);
         paLuceneRadio.setSelected(true);
+
+        caseCheckBox.setSelected(false);
 
         luceneBuildBtn.addActionListener(new LuceneBuildListener());
         searchResultList.setCellRenderer(new LuceneResultRender());
@@ -149,7 +156,7 @@ public class LuceneSearchForm {
         regexRadio.setText("regexp");
         searchOptionPanel.add(regexRadio, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         searchOptionsPanel = new JPanel();
-        searchOptionsPanel.setLayout(new GridLayoutManager(2, 2, new Insets(3, 3, 3, 3), -1, -1));
+        searchOptionsPanel.setLayout(new GridLayoutManager(2, 3, new Insets(3, 3, 3, 3), -1, -1));
         searchInputPanel.add(searchOptionsPanel, new GridConstraints(1, 0, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         searchOptionsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "索引设置", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         noLuceneRadio = new JRadioButton();
@@ -163,7 +170,10 @@ public class LuceneSearchForm {
         searchOptionsPanel.add(luceneSizeLabel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         luceneBuildBtn = new JButton();
         luceneBuildBtn.setText("手动构建完整索引");
-        searchOptionsPanel.add(luceneBuildBtn, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        searchOptionsPanel.add(luceneBuildBtn, new GridConstraints(1, 1, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        caseCheckBox = new JCheckBox();
+        caseCheckBox.setText("大小写敏感");
+        searchOptionsPanel.add(caseCheckBox, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         searchTextPanel = new JScrollPane();
         searchInputPanel.add(searchTextPanel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         searchText = new JTextArea();

@@ -4,11 +4,13 @@
 
 更新日志：
 
-- todo
+- [功能] 全局 `LUCENE` 搜索支持大小写敏感选项
+- [优化] 删减依赖并优化 `LUCENE` 索引存储和搜索性能
 
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
+- Honey Baby (https://github.com/Gosiu)
 
 所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
 

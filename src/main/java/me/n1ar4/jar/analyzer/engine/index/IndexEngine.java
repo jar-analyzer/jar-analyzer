@@ -13,6 +13,7 @@ package me.n1ar4.jar.analyzer.engine.index;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import me.n1ar4.jar.analyzer.engine.index.entity.Result;
+import me.n1ar4.jar.analyzer.gui.LuceneSearchForm;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.codecs.lucene50.Lucene50StoredFieldsFormat;
@@ -59,9 +60,9 @@ public class IndexEngine {
     public static Result search(String keyword) throws IOException {
         IndexReader reader = IndexSingletonClass.getReader();
         keyword = StrUtil.removeAllLineBreaks(keyword);
-        WildcardQuery query = null;
+        WildcardQuery query;
         //区分/忽略大小写查询
-        if (IndexPluginsSupport.isCaseSensitive) {
+        if (LuceneSearchForm.useCaseSensitive()) {
             query = new WildcardQuery(new Term("content", "*" + keyword.trim() + "*"));
         } else {
             query = new WildcardQuery(new Term("content_lower", "*" + keyword.trim().toLowerCase() + "*"));
@@ -90,7 +91,7 @@ public class IndexEngine {
         keyword = StrUtil.removeAllLineBreaks(keyword);
         RegexpQuery query = null;
         //区分/忽略大小写查询
-        if (IndexPluginsSupport.isCaseSensitive) {
+        if (LuceneSearchForm.useCaseSensitive()) {
             query = new RegexpQuery(new Term("content", ".*" + Pattern.quote(keyword).trim() + ".*"));
         } else {
             query = new RegexpQuery(new Term("content_lower", ".*" + Pattern.quote(keyword).trim().toLowerCase() + ".*"));

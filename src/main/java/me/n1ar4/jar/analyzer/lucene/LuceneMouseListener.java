@@ -15,6 +15,7 @@ import me.n1ar4.jar.analyzer.engine.CoreHelper;
 import me.n1ar4.jar.analyzer.engine.DecompileEngine;
 import me.n1ar4.jar.analyzer.engine.index.IndexPluginsSupport;
 import me.n1ar4.jar.analyzer.entity.LuceneSearchResult;
+import me.n1ar4.jar.analyzer.gui.LuceneSearchForm;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.adapter.SearchInputListener;
 import me.n1ar4.jar.analyzer.gui.util.ProcessDialog;
@@ -64,7 +65,7 @@ public class LuceneMouseListener extends MouseAdapter {
                 // 对于 Content 部分搜索的高亮展示
                 if (StrUtil.isNotBlank(code) && StrUtil.isNotBlank(searchKey)) {
                     int idx;
-                    if(IndexPluginsSupport.isCaseSensitive){
+                    if(LuceneSearchForm.useCaseSensitive()){
                         idx = code.indexOf(searchKey);
                     }else{
                         idx = code.toLowerCase().indexOf(searchKey.toLowerCase());

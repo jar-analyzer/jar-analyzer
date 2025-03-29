@@ -192,11 +192,15 @@ public class ShellForm {
 
     @SuppressWarnings("all")
     public ShellForm() {
-        codeArea = new RSyntaxTextArea(100, 150);
+        codeArea = new RSyntaxTextArea();
         codeArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
         codeArea.setCodeFoldingEnabled(true);
         RTextScrollPane sp = new RTextScrollPane(codeArea);
-        codePanel.add(sp, new GridConstraints());
+        codePanel.add(sp, new GridConstraints(0, 0, 1, 1,
+                GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+                GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                null, null, null, 0, false));
 
         genButton.addActionListener(e -> {
             String command = "-javaagent:agent.jar=port=%s;password=%s";

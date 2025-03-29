@@ -38,7 +38,7 @@ public class SyntaxAreaHelper {
     private static ArrayList<Integer> searchResults = null;
 
     public static void buildJava(JPanel codePanel) {
-        RSyntaxTextArea rArea = new RSyntaxTextArea(300, 300);
+        RSyntaxTextArea rArea = new RSyntaxTextArea();
         // 不要使用其他字体
         // 默认字体支持中文 其他的不一定
 
@@ -130,7 +130,11 @@ public class SyntaxAreaHelper {
             }
         });
         RTextScrollPane sp = new RTextScrollPane(codeArea);
-        codePanel.add(sp, new GridConstraints());
+        codePanel.add(sp, new GridConstraints(0, 0, 1, 1,
+                GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+                GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                null, null, null, 0, false));
         MainForm.setCodeArea(codeArea);
     }
 
@@ -197,7 +201,7 @@ public class SyntaxAreaHelper {
     }
 
     public static void buildJavaOpcode(JPanel codePanel) {
-        RSyntaxTextArea textArea = new RSyntaxTextArea(400, 400);
+        RSyntaxTextArea textArea = new RSyntaxTextArea();
         textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
         textArea.setCodeFoldingEnabled(false);
 
@@ -206,12 +210,16 @@ public class SyntaxAreaHelper {
         }
 
         RTextScrollPane sp = new RTextScrollPane(textArea);
-        codePanel.add(sp, new GridConstraints());
+        codePanel.add(sp, new GridConstraints(0, 0, 1, 1,
+                GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+                GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                null, null, null, 0, false));
         OpcodeForm.setCodeArea(textArea);
     }
 
     public static JTextArea buildSQL(JPanel codePanel) {
-        RSyntaxTextArea textArea = new RSyntaxTextArea(10, 80);
+        RSyntaxTextArea textArea = new RSyntaxTextArea();
         textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_SQL);
         textArea.setCodeFoldingEnabled(true);
 
@@ -220,7 +228,11 @@ public class SyntaxAreaHelper {
         }
 
         RTextScrollPane sp = new RTextScrollPane(textArea);
-        codePanel.add(sp, new GridConstraints());
+        codePanel.add(sp, new GridConstraints(0, 0, 1, 1,
+                GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+                GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                null, null, null, 0, false));
         return textArea;
     }
 }

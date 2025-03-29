@@ -50,7 +50,7 @@ public class ELForm {
     }
 
     public ELForm() {
-        RSyntaxTextArea textArea = new RSyntaxTextArea(30, 60);
+        RSyntaxTextArea textArea = new RSyntaxTextArea();
         textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
 
         if (OSUtil.isLinux()) {
@@ -61,7 +61,11 @@ public class ELForm {
         textArea.setEnabled(true);
         textArea.setEditable(true);
         RTextScrollPane sp = new RTextScrollPane(textArea);
-        elCodePanel.add(sp, new GridConstraints());
+        elCodePanel.add(sp, new GridConstraints(0, 0, 1, 1,
+                GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+                GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                null, null, null, 0, false));
         setELCodeArea(textArea);
         elCodePanel.repaint();
 

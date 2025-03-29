@@ -15,7 +15,7 @@ public class PreviewForm {
     private JPanel codePanel;
 
     public PreviewForm(String code, int pos) {
-        RSyntaxTextArea textArea = new RSyntaxTextArea(30, 60);
+        RSyntaxTextArea textArea = new RSyntaxTextArea();
         textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
 
         if (OSUtil.isLinux()) {
@@ -26,7 +26,11 @@ public class PreviewForm {
         textArea.setEnabled(true);
         textArea.setEditable(true);
         RTextScrollPane sp = new RTextScrollPane(textArea);
-        codePanel.add(sp, new GridConstraints());
+        codePanel.add(sp, new GridConstraints(0, 0, 1, 1,
+                GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+                GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                null, null, null, 0, false));
         codePanel.repaint();
 
         textArea.setText(code);

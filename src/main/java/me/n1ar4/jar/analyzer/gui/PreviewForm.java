@@ -39,8 +39,42 @@ public class PreviewForm {
         frame.setContentPane(new PreviewForm(code, pos).rootPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
+
         Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
-        frame.setLocation(mouseLocation.x + 10, mouseLocation.y + 10);
+        GraphicsDevice[] screens = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
+        Rectangle screenBounds = null;
+
+        for (GraphicsDevice screen : screens) {
+            Rectangle bounds = screen.getDefaultConfiguration().getBounds();
+            if (bounds.contains(mouseLocation)) {
+                screenBounds = bounds;
+                break;
+            }
+        }
+
+        if (screenBounds == null) {
+            screenBounds = GraphicsEnvironment.getLocalGraphicsEnvironment()
+                    .getDefaultScreenDevice().getDefaultConfiguration().getBounds();
+        }
+
+        int windowWidth = frame.getWidth();
+        int windowHeight = frame.getHeight();
+
+        int posX = mouseLocation.x + 10;
+        int posY = mouseLocation.y + 10;
+
+        if (posX + windowWidth > screenBounds.x + screenBounds.width) {
+            posX = mouseLocation.x - windowWidth - 10;
+        }
+
+        if (posY + windowHeight > screenBounds.y + screenBounds.height) {
+            posY = mouseLocation.y - windowHeight - 10;
+        }
+
+        posX = Math.max(screenBounds.x, posX);
+        posY = Math.max(screenBounds.y, posY);
+
+        frame.setLocation(posX, posY);
         frame.setVisible(true);
         return frame;
     }

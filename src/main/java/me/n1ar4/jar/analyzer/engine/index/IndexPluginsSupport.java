@@ -152,6 +152,6 @@ public class IndexPluginsSupport {
     }
 
     public static Result search(String keyword) throws IOException {
-        return IndexEngine.search(keyword);
+        return IndexEngine.searchNormal(keyword);
     }
 }

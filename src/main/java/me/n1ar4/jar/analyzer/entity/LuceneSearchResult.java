@@ -23,7 +23,6 @@ public class LuceneSearchResult {
     private String fileName;
     private String contentStr;
     private String title;
-    private int order;
     private String searchKey;
 
     public String getSearchKey() {
@@ -40,14 +39,6 @@ public class LuceneSearchResult {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public int getOrder() {
-        return order;
-    }
-
-    public void setOrder(int order) {
-        this.order = order;
     }
 
     public int getType() {

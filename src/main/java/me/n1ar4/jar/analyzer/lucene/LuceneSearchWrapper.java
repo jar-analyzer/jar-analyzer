@@ -60,7 +60,7 @@ public class LuceneSearchWrapper {
         try {
             Result internalResult;
             if (LuceneSearchForm.useContains()) {
-                internalResult = IndexEngine.search(input);
+                internalResult = IndexEngine.searchNormal(input);
             } else if (LuceneSearchForm.useRegex()) {
                 internalResult = IndexEngine.searchRegex(input);
             } else {
@@ -72,7 +72,6 @@ public class LuceneSearchWrapper {
                 String content = (String) data.get("content");
                 String codePath = (String) data.get("path");
                 String title = (String) data.get("title");
-                int order = (int) data.get("order");
 
                 LuceneSearchResult res = new LuceneSearchResult();
                 res.setType(LuceneSearchResult.TYPE_CONTENT);
@@ -80,7 +79,6 @@ public class LuceneSearchWrapper {
                 res.setFileName(FileUtil.getName(codePath));
                 res.setContentStr(content);
                 res.setTitle(title);
-                res.setOrder(order);
                 res.setSearchKey(input);
                 results.add(res);
             }

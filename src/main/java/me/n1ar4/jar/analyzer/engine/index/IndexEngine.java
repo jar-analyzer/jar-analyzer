@@ -14,7 +14,6 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import me.n1ar4.jar.analyzer.engine.index.entity.Result;
 import me.n1ar4.jar.analyzer.gui.LuceneSearchForm;
-import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.codecs.lucene50.Lucene50StoredFieldsFormat;
 import org.apache.lucene.codecs.lucene70.Lucene70Codec;
@@ -23,6 +22,7 @@ import org.apache.lucene.index.*;
 import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -36,69 +36,72 @@ import java.util.regex.Pattern;
 public class IndexEngine {
     public static String initIndex(Map<String, String> analyzerMap) throws IOException {
         IndexWriter indexWriter = IndexSingletonClass.getIndexWriter();
-        Collection<Document> documents = new ArrayList<>();
-        analyzerMap.forEach((key, value) -> {
-            List<String> split = StrUtil.split(value, "\n");
-            for (int i = 0; i < split.size(); i++) {
-                Document doc = new Document();
-                doc.add(new StringField("order", String.valueOf(i), Field.Store.YES));
-                doc.add(new StringField("content", split.get(i).trim(), Field.Store.YES));
-                doc.add(new StringField("content_lower", split.get(i).trim().toLowerCase(), Field.Store.YES));
-                doc.add(new StringField("codePath", key, Field.Store.YES));
-                doc.add(new StringField("title",
-                        StrUtil.removeSuffix(FileUtil.getName(key), ".class"), Field.Store.YES));
-                documents.add(doc);
-            }
 
+        analyzerMap.forEach((key, value) -> {
+            Collection<Document> documents = new ArrayList<>();
+            String[] cut = StrUtil.cut(StrUtil.cleanBlank(StrUtil.removeAllLineBreaks(value)), 1800);
+            for (String string : cut) {
+                addDoc(key, string, documents);
+            }
+            try {
+                indexWriter.addDocuments(documents);
+                indexWriter.commit();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         });
-        indexWriter.addDocuments(documents);
-        indexWriter.commit();
         return null;
     }
 
+    private static void addDoc(String key, String string, Collection<Document> documents) {
+        Document doc = new Document();
+        doc.add(new StringField("content", string, Field.Store.YES));
+        doc.add(new StringField("content_lower", string.toLowerCase(), Field.Store.YES));
+        doc.add(new StringField("codePath", key, Field.Store.YES));
+        doc.add(new StringField("title",
+                StrUtil.removeSuffix(FileUtil.getName(key), ".class"), Field.Store.YES));
+        documents.add(doc);
+    }
 
-    public static Result search(String keyword) throws IOException {
+
+    public static Result searchNormal(String keyword) throws IOException {
+        if (StrUtil.isBlank(keyword)) {
+            Result result = new Result();
+            result.setTotal(0L);
+            result.setData(new ArrayList<>());
+            return result;
+        }
         IndexReader reader = IndexSingletonClass.getReader();
         keyword = StrUtil.removeAllLineBreaks(keyword);
-        WildcardQuery query;
         //区分/忽略大小写查询
-        if (LuceneSearchForm.useCaseSensitive()) {
-            query = new WildcardQuery(new Term("content", "*" + keyword.trim() + "*"));
-        } else {
-            query = new WildcardQuery(new Term("content_lower", "*" + keyword.trim().toLowerCase() + "*"));
-        }
-        TopDocs topDocs = IndexSingletonClass.getSearcher().search(query, 110);
-        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
-        List<Map<String, Object>> arrayList = new ArrayList<>();
-        for (ScoreDoc scoreDoc : scoreDocs) {
-            int docID = scoreDoc.doc;
-            Document doc = reader.document(docID);
-            Map<String, Object> map = new java.util.HashMap<>();
-            map.put("path", doc.get("codePath"));
-            map.put("content", doc.get("content"));
-            map.put("title", doc.get("title"));
-            map.put("order", Integer.parseInt(doc.get("order")));
-            arrayList.add(map);
-        }
-        Result result = new Result();
-        result.setTotal(topDocs.totalHits);
-        result.setData(arrayList);
-        return result;
+        Query query = new WildcardQuery(new Term(LuceneSearchForm.useCaseSensitive() ?
+                "content" : "content_lower", LuceneSearchForm.useCaseSensitive() ?
+                "*" + StrUtil.removeAllLineBreaks(StrUtil.cleanBlank(keyword)) + "*"
+                : "*" + StrUtil.removeAllLineBreaks(StrUtil.cleanBlank(keyword.toLowerCase())) + "*"));
+        return getResult(reader, IndexSingletonClass.getSearcher().search(query, 110));
     }
 
     public static Result searchRegex(String keyword) throws IOException {
+        if (StrUtil.isBlank(keyword)) {
+            Result result = new Result();
+            result.setTotal(0L);
+            result.setData(new ArrayList<>());
+            return result;
+        }
         IndexReader reader = IndexSingletonClass.getReader();
         keyword = StrUtil.removeAllLineBreaks(keyword);
-        RegexpQuery query = null;
         //区分/忽略大小写查询
-        if (LuceneSearchForm.useCaseSensitive()) {
-            query = new RegexpQuery(new Term("content", ".*" + Pattern.quote(keyword).trim() + ".*"));
-        } else {
-            query = new RegexpQuery(new Term("content_lower", ".*" + Pattern.quote(keyword).trim().toLowerCase() + ".*"));
-        }
+        RegexpQuery query = new RegexpQuery(new Term(LuceneSearchForm.useCaseSensitive() ?
+                "content" : "content_lower", LuceneSearchForm.useCaseSensitive() ?
+                ".*" + Pattern.quote(StrUtil.removeAllLineBreaks(StrUtil.cleanBlank(keyword))) + ".*"
+                : ".*" + Pattern.quote(StrUtil.removeAllLineBreaks(StrUtil.cleanBlank(keyword.toLowerCase()))) + ".*"));
+        return getResult(reader, IndexSingletonClass.getSearcher().search(query, 110));
+    }
 
-        TopDocs topDocs = IndexSingletonClass.getSearcher().search(query, 110);
-        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+    @NotNull
+    private static Result getResult(IndexReader reader, TopDocs search) throws IOException {
+
+        ScoreDoc[] scoreDocs = search.scoreDocs;
         List<Map<String, Object>> arrayList = new ArrayList<>();
         for (ScoreDoc scoreDoc : scoreDocs) {
             int docID = scoreDoc.doc;
@@ -107,11 +110,10 @@ public class IndexEngine {
             map.put("path", doc.get("codePath"));
             map.put("content", doc.get("content"));
             map.put("title", doc.get("title"));
-            map.put("order", Integer.parseInt(doc.get("order")));
             arrayList.add(map);
         }
         Result result = new Result();
-        result.setTotal(topDocs.totalHits);
+        result.setTotal(search.totalHits);
         result.setData(arrayList);
         return result;
     }
@@ -148,10 +150,10 @@ public class IndexEngine {
         public static IndexWriter getIndexWriter() throws IOException {
             if (indexWriter == null) {
                 synchronized (IndexSingletonClass.class) {
+
                     if (indexWriter == null) {
                         Directory directory = FSDirectory.open(Paths.get(IndexPluginsSupport.DocumentPath));
-                        Analyzer analyzer = new StandardAnalyzer();
-                        IndexWriterConfig conf = new IndexWriterConfig(analyzer);
+                        IndexWriterConfig conf = new IndexWriterConfig(new StandardAnalyzer());
                         conf.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
                         //优化了索引文件编码，提高存储效率
                         conf.setCodec(new Lucene70Codec(Lucene50StoredFieldsFormat.Mode.BEST_COMPRESSION));

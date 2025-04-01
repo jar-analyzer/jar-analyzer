@@ -135,11 +135,6 @@ public class SpringMethodAdapter extends MethodVisitor {
                     param.setReqName(param.getParamName());
                 }
             });
-            for (SpringMapping mapping : currentMapping.getController().getMappings()) {
-                if (mapping.getPath().endsWith("/")) {
-                    mapping.setPath(mapping.getPath().substring(0, mapping.getPath().length() - 1));
-                }
-            }
             controller.addMapping(currentMapping);
         }
         super.visitEnd();

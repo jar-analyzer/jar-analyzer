@@ -10,6 +10,7 @@
 
 package me.n1ar4.jar.analyzer.gui.render;
 
+import cn.hutool.core.util.StrUtil;
 import me.n1ar4.jar.analyzer.entity.MethodResult;
 import me.n1ar4.jar.analyzer.utils.ASMUtil;
 
@@ -24,9 +25,11 @@ public class SpringMethodRender extends DefaultListCellRenderer {
         if (value instanceof MethodResult) {
             MethodResult result = (MethodResult) value;
             String m = ASMUtil.convertMethodDesc(result.getMethodName(), result.getMethodDesc());
+
+            String restfulType = "<font style=\"color: gray; font-weight: bold;\">" +  result.getRestfulType() + "</font>";
             m = "<font style=\"color: blue; font-weight: bold;\">" + m + "</font>";
             String path = "<font style=\"color: green; font-weight: bold;\">" + result.getPath() + "</font>";
-            setText("<html>" + m + "   " + path + "</html>");
+            setText("<html>"+ "   " + restfulType + "   " + m + "   " + path + "</html>");
         } else {
             return null;
         }

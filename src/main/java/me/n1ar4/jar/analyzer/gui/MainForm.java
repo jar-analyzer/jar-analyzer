@@ -856,6 +856,27 @@ public class MainForm {
 
         refreshLang(false);
         MenuUtil.setLangFlag();
+
+        updateIcon();
+    }
+
+    private static void updateIcon() {
+        instance.getTabbedPanel().setIconAt(0,SvgManager.StartIcon);
+        instance.getTabbedPanel().setIconAt(1,SvgManager.SearchIcon);
+        instance.getTabbedPanel().setIconAt(2,SvgManager.ConnectIcon);
+        instance.getTabbedPanel().setIconAt(3,SvgManager.InheritIcon);
+        instance.getTabbedPanel().setIconAt(4,SvgManager.SpringIcon);
+        instance.getTabbedPanel().setIconAt(5,SvgManager.NoteIcon);
+        instance.getTabbedPanel().setIconAt(6,SvgManager.ScaIcon);
+        instance.getTabbedPanel().setIconAt(7,SvgManager.LeakIcon);
+        instance.getTabbedPanel().setIconAt(8,SvgManager.AdvanceIcon);
+        instance.webTabbed.setIconAt(0,SvgManager.SpringIcon);
+        instance.webTabbed.setIconAt(1,SvgManager.SpringIcon);
+        instance.webTabbed.setIconAt(2,SvgManager.TomcatIcon);
+        instance.webTabbed.setIconAt(3,SvgManager.TomcatIcon);
+        instance.webTabbed.setIconAt(4,SvgManager.TomcatIcon);
+        instance.getTabbedPanel().setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+        instance.webTabbed.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
     }
 
     public static void refreshLang(boolean checkConfig) {

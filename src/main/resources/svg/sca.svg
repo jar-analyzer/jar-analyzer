@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg width="800px" height="800px" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" version="1.1">
+	<g transform="scale(0.521)">
+	  <path style="fill:#94776D;stroke:none" d="m 22,30 148,0 a 12 12 0 0 1 12,12  l 0,108 a 12,12 0 0 1 -12,12 l -148,0 a 12,12 0 0 1 -12,-12 l 0,-108 a 12,12 0 0 1 12,-12 z"/>  
+	  <path style="fill:#3E2723;" d="m 88,30 0,32 -4,0 0,24 24,0 0,-24 -4,0 0,-32 -6,0 0,32,-4,0 0,-32 z m 0,44 16,0 0,6 -16,0 z"/>
+	  <g transform="scale(0.6)">
+	    <g transform="translate(120,110)">
+	      <path style="fill:#9E9E9E;stroke:none" d="m 96,8 a 88 88 1 1 0 0.1,0 z m -0.1 104 a 16 16 0 1 1 0.1,0 z"/>
+	    </g>
+	  </g>
+	  <g transform="scale(0.4) translate(305,15)">
+	    <circle style="fill:#4CAF50;stroke:none" cx="96" cy="96" r="74"/>
+	    <path style="fill:#FFF;stroke:none" d="m 47,80 30,30 60,-60 20,20 -80,80 -50,-50 z"/>
+	  </g>
+	</g>
+</svg>

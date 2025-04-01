@@ -10,6 +10,7 @@
 
 package me.n1ar4.jar.analyzer.core;
 
+import cn.hutool.core.util.StrUtil;
 import me.n1ar4.jar.analyzer.analyze.spring.SpringController;
 import me.n1ar4.jar.analyzer.analyze.spring.SpringMapping;
 import me.n1ar4.jar.analyzer.core.mapper.*;
@@ -344,6 +345,17 @@ public class DatabaseManager {
                 me.setPath(mapping.getPath());
                 me.setMethodName(mapping.getMethodName().getName());
                 me.setMethodDesc(mapping.getMethodName().getDesc());
+                for (String annotation : mapping.getMethodReference().getAnnotations()) {
+                    if (annotation.contains("Lorg/springframework/web/bind/annotation/") && annotation.contains("Mapping;")) {
+                        me.setRestfulType(annotation.replace("Lorg/springframework/web/bind/annotation/", "").replace("Mapping;", ""));
+                    }
+                    if (StrUtil.isBlank(mapping.getPath()) && StrUtil.isNotBlank(mapping.getController().getBasePath())) {
+                        me.setPath(mapping.getController().getBasePath());
+                    }
+                    if (StrUtil.isNotBlank(mapping.getPath())&&mapping.getPath().endsWith("/")) {
+                        me.setPath(mapping.getPath().substring(0, mapping.getPath().length() - 1));
+                    }
+                }
                 mList.add(me);
             }
         }

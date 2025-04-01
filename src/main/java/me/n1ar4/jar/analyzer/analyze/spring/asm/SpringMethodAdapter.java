@@ -10,6 +10,7 @@
 
 package me.n1ar4.jar.analyzer.analyze.spring.asm;
 
+import cn.hutool.core.util.StrUtil;
 import me.n1ar4.jar.analyzer.analyze.spring.SpringConstant;
 import me.n1ar4.jar.analyzer.analyze.spring.SpringController;
 import me.n1ar4.jar.analyzer.analyze.spring.SpringMapping;
@@ -136,7 +137,10 @@ public class SpringMethodAdapter extends MethodVisitor {
                 }
             });
             for (SpringMapping mapping : currentMapping.getController().getMappings()) {
-                if (mapping.getPath().endsWith("/")) {
+                if (StrUtil.isEmpty(mapping.getPath())) {
+                    mapping.setPath(null);
+                }
+                if (mapping.getPath()!=null&&mapping.getPath().endsWith("/")) {
                     mapping.setPath(mapping.getPath().substring(0, mapping.getPath().length() - 1));
                 }
             }

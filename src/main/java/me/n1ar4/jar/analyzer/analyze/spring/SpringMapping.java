@@ -23,6 +23,15 @@ public class SpringMapping {
     private MethodReference methodReference;
     private String path;
     private List<SpringParam> paramMap = new ArrayList<>();
+    private String restfulType;
+
+    public String getRestfulType() {
+        return restfulType;
+    }
+
+    public void setRestfulType(String restfulType) {
+        this.restfulType = restfulType;
+    }
 
     public List<SpringParam> getParamMap() {
         return paramMap;

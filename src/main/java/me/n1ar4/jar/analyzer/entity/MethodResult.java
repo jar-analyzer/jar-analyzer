@@ -23,6 +23,8 @@ public class MethodResult {
     private String jarName;
     private String methodName;
     private String methodDesc;
+    private String restfulType;
+
     private int isStaticInt;
     private int accessInt;
     @JSONField(serialize = false)
@@ -47,6 +49,14 @@ public class MethodResult {
             path = "/" + path;
         }
         return "path: " + path;
+    }
+
+    public String getRestfulType() {
+        return restfulType;
+    }
+
+    public void setRestfulType(String restfulType) {
+        this.restfulType = restfulType;
     }
 
     public String getStrValue() {

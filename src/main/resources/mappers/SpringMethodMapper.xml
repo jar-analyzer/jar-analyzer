@@ -16,17 +16,18 @@
         <result column="class_name" property="className"/>
         <result column="method_desc" property="methodDesc"/>
         <result column="path" property="path"/>
+        <result column="restful_type" property="restfulType"/>
     </resultMap>
     <insert id="insertMappings">
         INSERT INTO spring_method_table
-        (class_name, method_name, method_desc, path)
+        (class_name, method_name, method_desc, path,restful_type)
         VALUES
         <foreach collection="list" separator="," item="item">
-            (#{item.className}, #{item.methodName}, #{item.methodDesc}, #{item.path})
+            (#{item.className}, #{item.methodName}, #{item.methodDesc}, #{item.path},#{item.restfulType})
         </foreach>
     </insert>
     <select id="selectMappingsByClassName" resultMap="methodMap">
-        SELECT DISTINCT m.method_name, m.class_name, m.method_desc, m.path
+        SELECT m.method_name, m.class_name, m.method_desc, m.path,m.restful_type
         FROM spring_method_table m
         WHERE m.class_name = #{className}
     </select>

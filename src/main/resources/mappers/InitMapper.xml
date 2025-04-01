@@ -138,6 +138,7 @@
             class_name TEXT NOT NULL,
             method_name TEXT NOT NULL,
             method_desc TEXT NOT NULL,
+            restful_type TEXT NOT NULL,
             path TEXT NOT NULL
         );
     </update>

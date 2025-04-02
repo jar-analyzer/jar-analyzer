@@ -783,65 +783,41 @@
                             </children>
                           </grid>
                           <grid id="cffde" binding="callPanel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                            <margin top="0" left="0" bottom="0" right="0"/>
+                            <margin top="3" left="3" bottom="3" right="3"/>
                             <constraints>
                               <tabbedpane title="call"/>
                             </constraints>
                             <properties/>
                             <border type="none"/>
                             <children>
-                              <grid id="bb656" binding="callerPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                                <margin top="0" left="0" bottom="0" right="0"/>
+                              <scrollpane id="179cc" binding="callerScroll">
                                 <constraints>
-                                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
-                                    <minimum-size width="550" height="300"/>
-                                  </grid>
+                                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                                 </constraints>
                                 <properties/>
                                 <border type="none" title="Caller"/>
                                 <children>
-                                  <scrollpane id="179cc" binding="callerScroll">
-                                    <constraints>
-                                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                                    </constraints>
-                                    <properties/>
-                                    <border type="none"/>
-                                    <children>
-                                      <component id="fab11" class="javax.swing.JList" binding="callerList">
-                                        <constraints/>
-                                        <properties>
-                                          <model/>
-                                        </properties>
-                                      </component>
-                                    </children>
-                                  </scrollpane>
+                                  <component id="fab11" class="javax.swing.JList" binding="callerList">
+                                    <constraints/>
+                                    <properties>
+                                      <model/>
+                                    </properties>
+                                  </component>
                                 </children>
-                              </grid>
-                              <grid id="3f26d" binding="calleePanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                                <margin top="0" left="0" bottom="0" right="0"/>
+                              </scrollpane>
+                              <scrollpane id="2cc69" binding="calleeScroll">
                                 <constraints>
-                                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
-                                    <minimum-size width="550" height="300"/>
-                                  </grid>
+                                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                                 </constraints>
                                 <properties/>
                                 <border type="none" title="Callee"/>
                                 <children>
-                                  <scrollpane id="2cc69" binding="calleeScroll">
-                                    <constraints>
-                                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                                    </constraints>
+                                  <component id="ae296" class="javax.swing.JList" binding="calleeList">
+                                    <constraints/>
                                     <properties/>
-                                    <border type="none"/>
-                                    <children>
-                                      <component id="ae296" class="javax.swing.JList" binding="calleeList">
-                                        <constraints/>
-                                        <properties/>
-                                      </component>
-                                    </children>
-                                  </scrollpane>
+                                  </component>
                                 </children>
-                              </grid>
+                              </scrollpane>
                             </children>
                           </grid>
                           <grid id="d4f98" binding="methodImplPanel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">

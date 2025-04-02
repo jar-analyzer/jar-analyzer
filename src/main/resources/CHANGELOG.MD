@@ -8,6 +8,7 @@
 - [功能] 全局 `LUCENE` 搜索支持大小写敏感选项 @Gosiu
 - [BUG] 方法右键预览界面可能由于鼠标位置无法完全显示 @4ra1n
 - [BUG] 修复 `LUCENE` 索引创建时超过 `UTF-8` 编码限制 @Gosiu
+- [BUG] 修复 `CALL` 部分 `GUI` 放大之后界面过小问题 @4ra1n
 - [优化] 优化 `RSyntaxTextArea` 按照实际需求自动拓展大小 @4ra1n
 - [优化] 美化 `GUI` 给每个菜单添加对应的图标 @4ra1n
 - [优化] 删减依赖并优化 `LUCENE` 索引存储和搜索性能 @Gosiu

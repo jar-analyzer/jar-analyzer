@@ -1860,6 +1860,20 @@ public class MainForm {
         curMethodPanel.add(allMethodScroll, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         allMethodList = new JList();
         allMethodScroll.setViewportView(allMethodList);
+        ButtonGroup buttonGroup;
+        buttonGroup = new ButtonGroup();
+        buttonGroup.add(methodDefinitionRadioButton);
+        buttonGroup.add(methodCallRadioButton);
+        buttonGroup.add(stringContainsRadioButton);
+        buttonGroup.add(binarySearchRadioButton);
+        buttonGroup = new ButtonGroup();
+        buttonGroup.add(fernRadio);
+        buttonGroup = new ButtonGroup();
+        buttonGroup.add(likeSearchRadioButton);
+        buttonGroup.add(equalsSearchRadioButton);
+        buttonGroup = new ButtonGroup();
+        buttonGroup.add(scaOutConsoleRadio);
+        buttonGroup.add(scaOutHtmlRadio);
     }
 
     /**

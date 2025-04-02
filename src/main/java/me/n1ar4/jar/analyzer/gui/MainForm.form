@@ -1768,18 +1768,27 @@
       <member id="599d8"/>
       <member id="b71e3"/>
       <member id="20c3f"/>
+      <member id="33363"/>
+      <member id="fd63b"/>
+      <member id="bfff6"/>
+      <member id="37706"/>
     </group>
     <group name="decompileGroup">
       <member id="d9a75"/>
       <member id="f5f64"/>
+      <member id="e2de"/>
     </group>
     <group name="searchOptions">
       <member id="6186b"/>
       <member id="9d995"/>
+      <member id="d0b50"/>
+      <member id="419d1"/>
     </group>
     <group name="scaOutGroup">
       <member id="a6315"/>
       <member id="ff811"/>
+      <member id="4a5fb"/>
+      <member id="60a70"/>
     </group>
   </buttonGroups>
 </form>

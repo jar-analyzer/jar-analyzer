@@ -212,10 +212,6 @@
 
 [详细文档](doc/README-el.md)
 
-## 相关
-
-想深入交流可以发联系方式到邮箱后我拉你进群：`ZW15aXFpbmdAZ21haWwuY29t`
-
 ### 感谢列表
 
 <a href="https://github.com/jar-analyzer/jar-analyzer/graphs/contributors">

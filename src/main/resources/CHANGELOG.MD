@@ -2,7 +2,7 @@
 
 ## 5.0
 
-注意：该版本数据库结构有变动，请重新构建数据库
+注意：该版本数据库结构有变动，无法兼容之前的数据库结构，请重新构建数据库
 
 更新日志：
 
@@ -22,6 +22,8 @@
 
 - 4ra1n (https://github.com/4ra1n)
 - Honey Baby (https://github.com/Gosiu)
+- ar3h (https://github.com/ar3h)
+- 某匿名安全研究员（提出多条改进建议）
 
 所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
 

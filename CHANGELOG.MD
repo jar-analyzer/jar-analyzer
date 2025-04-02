@@ -1,11 +1,13 @@
 # CHANGELOG
 
-## 4.5
+## 5.0
 
 注意：该版本数据库结构有变动，请重新构建数据库
 
 更新日志：
 
+- [重要] 支持 `Spring Interceptor` 静态分析 @4ra1n
+- [重要] 支持 `Serlvet/Filter/Listener` 静态分析 @4ra1n
 - [重要] 支持拖动 `GUI` 便于查看 @4ra1n
 - [功能] 全局 `LUCENE` 搜索支持大小写敏感选项 @Gosiu
 - [BUG] 方法右键预览界面可能由于鼠标位置无法完全显示 @4ra1n

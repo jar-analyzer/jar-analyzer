@@ -346,13 +346,17 @@ public class DatabaseManager {
                 me.setMethodName(mapping.getMethodName().getName());
                 me.setMethodDesc(mapping.getMethodName().getDesc());
                 for (String annotation : mapping.getMethodReference().getAnnotations()) {
-                    if (annotation.contains("Lorg/springframework/web/bind/annotation/") && annotation.contains("Mapping;")) {
-                        me.setRestfulType(annotation.replace("Lorg/springframework/web/bind/annotation/", "").replace("Mapping;", ""));
+                    if (annotation.contains("Lorg/springframework/web/bind/annotation/") &&
+                            annotation.contains("Mapping;")) {
+                        me.setRestfulType(annotation
+                                .replace("Lorg/springframework/web/bind/annotation/", "")
+                                .replace("Mapping;", ""));
                     }
-                    if (StrUtil.isBlank(mapping.getPath()) && StrUtil.isNotBlank(mapping.getController().getBasePath())) {
+                    if (StrUtil.isBlank(mapping.getPath()) &&
+                            StrUtil.isNotBlank(mapping.getController().getBasePath())) {
                         me.setPath(mapping.getController().getBasePath());
                     }
-                    if (StrUtil.isNotBlank(mapping.getPath())&&mapping.getPath().endsWith("/")) {
+                    if (StrUtil.isNotBlank(mapping.getPath()) && mapping.getPath().endsWith("/")) {
                         me.setPath(mapping.getPath().substring(0, mapping.getPath().length() - 1));
                     }
                 }

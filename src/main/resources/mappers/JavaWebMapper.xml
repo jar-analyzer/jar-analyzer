@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ GPLv3 License
+  ~
+  ~ Copyright (c) 2023-2025 4ra1n (Jar Analyzer Team)
+  ~
+  ~ This project is distributed under the GPLv3 license.
+  ~
+  ~ https://github.com/jar-analyzer/jar-analyzer/blob/master/LICENSE
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.n1ar4.jar.analyzer.core.mapper.JavaWebMapper">
+    <resultMap id="classMap" type="me.n1ar4.jar.analyzer.entity.ClassResult">
+        <result column="class_name" property="className"/>
+    </resultMap>
+    <insert id="insertServlets">
+        INSERT INTO java_web_table
+        (class_name, type_name)
+        VALUES
+        <foreach collection="list" separator="," item="item">
+            (#{item}, 'servlet')
+        </foreach>
+    </insert>
+    <insert id="insertFilters">
+        INSERT INTO java_web_table
+        (class_name, type_name)
+        VALUES
+        <foreach collection="list" separator="," item="item">
+            (#{item}, 'filter')
+        </foreach>
+    </insert>
+    <insert id="insertListeners">
+        INSERT INTO java_web_table
+        (class_name, type_name)
+        VALUES
+        <foreach collection="list" separator="," item="item">
+            (#{item}, 'listener')
+        </foreach>
+    </insert>
+    <select id="selectAllServlets" resultMap="classMap">
+        SELECT DISTINCT class_name
+        FROM java_web_table
+        WHERE type_name = 'servlet'
+    </select>
+    <select id="selectAllFilters" resultMap="classMap">
+        SELECT DISTINCT class_name
+        FROM java_web_table
+        WHERE type_name = 'filter'
+    </select>
+    <select id="selectAllListeners" resultMap="classMap">
+        SELECT DISTINCT class_name
+        FROM java_web_table
+        WHERE type_name = 'listener'
+    </select>
+</mapper>

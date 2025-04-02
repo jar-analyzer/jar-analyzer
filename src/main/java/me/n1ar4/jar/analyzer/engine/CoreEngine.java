@@ -204,8 +204,32 @@ public class CoreEngine {
 
     public ArrayList<ClassResult> getAllSpringI() {
         SqlSession session = factory.openSession(true);
-        SpringControllerMapper springControllerMapper = session.getMapper(SpringControllerMapper.class);
-        List<ClassResult> res = springControllerMapper.selectAllSpringC();
+        SpringInterceptorMapper springInterceptorMapper = session.getMapper(SpringInterceptorMapper.class);
+        List<ClassResult> res = springInterceptorMapper.selectAllSpringI();
+        session.close();
+        return new ArrayList<>(res);
+    }
+
+    public ArrayList<ClassResult> getAllServlets() {
+        SqlSession session = factory.openSession(true);
+        JavaWebMapper javaWebMapper = session.getMapper(JavaWebMapper.class);
+        List<ClassResult> res = javaWebMapper.selectAllServlets();
+        session.close();
+        return new ArrayList<>(res);
+    }
+
+    public ArrayList<ClassResult> getAllFilters() {
+        SqlSession session = factory.openSession(true);
+        JavaWebMapper javaWebMapper = session.getMapper(JavaWebMapper.class);
+        List<ClassResult> res = javaWebMapper.selectAllFilters();
+        session.close();
+        return new ArrayList<>(res);
+    }
+
+    public ArrayList<ClassResult> getAllListeners() {
+        SqlSession session = factory.openSession(true);
+        JavaWebMapper javaWebMapper = session.getMapper(JavaWebMapper.class);
+        List<ClassResult> res = javaWebMapper.selectAllListeners();
         session.close();
         return new ArrayList<>(res);
     }

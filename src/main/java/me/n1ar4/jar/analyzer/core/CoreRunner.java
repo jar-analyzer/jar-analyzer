@@ -246,6 +246,14 @@ public class CoreRunner {
         SpringService.start(AnalyzeEnv.classFileList, AnalyzeEnv.controllers, AnalyzeEnv.classMap, AnalyzeEnv.methodMap);
         DatabaseManager.saveSpring(AnalyzeEnv.controllers);
 
+        OtherWebService.start(AnalyzeEnv.classFileList,
+                AnalyzeEnv.interceptors,
+                AnalyzeEnv.servlets, AnalyzeEnv.filters, AnalyzeEnv.listeners);
+        DatabaseManager.saveSpringI(AnalyzeEnv.interceptors);
+        DatabaseManager.saveServlets(AnalyzeEnv.servlets);
+        DatabaseManager.saveFilters(AnalyzeEnv.filters);
+        DatabaseManager.saveListeners(AnalyzeEnv.listeners);
+
         MainForm.getInstance().getBuildBar().setValue(90);
         logger.info("build database finish");
         LogUtil.info("build database finish");
@@ -303,6 +311,10 @@ public class CoreRunner {
         MainForm.getInstance().getClassWhiteArea().setEditable(false);
 
         CoreHelper.refreshSpringC();
+        CoreHelper.refreshSpringI();
+        CoreHelper.refreshServlets();
+        CoreHelper.refreshFilters();
+        CoreHelper.refreshLiteners();
 
         if (dialog != null) {
             dialog.dispose();

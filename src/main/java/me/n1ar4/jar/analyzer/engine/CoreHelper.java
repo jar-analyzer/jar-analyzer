@@ -158,7 +158,6 @@ public class CoreHelper {
         MainForm.getInstance().getSpringCList().setModel(springCModel);
     }
 
-
     public static void refreshSpringI() {
         if (MainForm.getInstance().getEngine() == null) {
             JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
@@ -172,6 +171,51 @@ public class CoreHelper {
             springIModel.addElement(result);
         }
         MainForm.getInstance().getSpringIList().setModel(springIModel);
+    }
+
+    public static void refreshServlets() {
+        if (MainForm.getInstance().getEngine() == null) {
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                    "PLEASE BUILD DATABASE FIRST");
+            return;
+        }
+        ArrayList<ClassResult> results = MainForm.getEngine().getAllServlets();
+        results.sort(Comparator.comparing(ClassResult::getClassName));
+        DefaultListModel<ClassResult> servletsModel = new DefaultListModel<>();
+        for (ClassResult result : results) {
+            servletsModel.addElement(result);
+        }
+        MainForm.getInstance().getServletList().setModel(servletsModel);
+    }
+
+    public static void refreshFilters() {
+        if (MainForm.getInstance().getEngine() == null) {
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                    "PLEASE BUILD DATABASE FIRST");
+            return;
+        }
+        ArrayList<ClassResult> results = MainForm.getEngine().getAllFilters();
+        results.sort(Comparator.comparing(ClassResult::getClassName));
+        DefaultListModel<ClassResult> filtersModel = new DefaultListModel<>();
+        for (ClassResult result : results) {
+            filtersModel.addElement(result);
+        }
+        MainForm.getInstance().getFilterList().setModel(filtersModel);
+    }
+
+    public static void refreshLiteners() {
+        if (MainForm.getInstance().getEngine() == null) {
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                    "PLEASE BUILD DATABASE FIRST");
+            return;
+        }
+        ArrayList<ClassResult> results = MainForm.getEngine().getAllListeners();
+        results.sort(Comparator.comparing(ClassResult::getClassName));
+        DefaultListModel<ClassResult> listenersModel = new DefaultListModel<>();
+        for (ClassResult result : results) {
+            listenersModel.addElement(result);
+        }
+        MainForm.getInstance().getListenerList().setModel(listenersModel);
     }
 
     public static void pathSearchC() {

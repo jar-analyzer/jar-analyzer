@@ -268,6 +268,14 @@ public class MainForm {
     private JPanel coreRightSplit;
     private JSplitPane coreSplit;
     private JSplitPane treeContentSplit;
+    private JList<ClassResult> springIList;
+    private JScrollPane springIScroll;
+    private JScrollPane servletScroll;
+    private JList<ClassResult> servletList;
+    private JScrollPane filterScroll;
+    private JList<ClassResult> filterList;
+    private JScrollPane listenerScroll;
+    private JList<ClassResult> listenerList;
     private static DefaultListModel<MethodResult> favData;
 
     public JPanel getJavaVulSearchPanel() {
@@ -726,6 +734,22 @@ public class MainForm {
         return historyListData;
     }
 
+    public JList<ClassResult> getSpringIList() {
+        return springIList;
+    }
+
+    public JList<ClassResult> getServletList() {
+        return servletList;
+    }
+
+    public JList<ClassResult> getListenerList() {
+        return listenerList;
+    }
+
+    public JList<ClassResult> getFilterList() {
+        return filterList;
+    }
+
     public MainForm(boolean fake) {
         if (fake) {
             logger.info("init fake instance");
@@ -758,6 +782,11 @@ public class MainForm {
         superImplList.setCellRenderer(new MethodCallRender());
         springCList.setCellRenderer(new ClassRender());
         springMList.setCellRenderer(new SpringMethodRender());
+
+        springIList.setCellRenderer(new ClassRender());
+        servletList.setCellRenderer(new ClassRender());
+        filterList.setCellRenderer(new ClassRender());
+        listenerList.setCellRenderer(new ClassRender());
 
         historyList.setCellRenderer(new MethodCallRender());
         favList.setCellRenderer(new MethodCallRender());
@@ -838,6 +867,12 @@ public class MainForm {
         instance.historyList.addMouseListener(new CommonMouseAdapter());
         instance.springCList.addMouseListener(new ControllerMouseAdapter());
         instance.springMList.addMouseListener(new CommonMouseAdapter());
+
+        instance.springIList.addMouseListener(new ClassResultAdapter());
+        instance.servletList.addMouseListener(new ClassResultAdapter());
+        instance.filterList.addMouseListener(new ClassResultAdapter());
+        instance.listenerList.addMouseListener(new ClassResultAdapter());
+
         instance.getLeakResultList().addMouseListener(new LeakResultMouseAdapter());
         instance.favList.addMouseListener(new FavMouseAdapter());
         instance.fileTreeSearchTextField.getDocument().addDocumentListener(new SearchInputListener());
@@ -862,20 +897,20 @@ public class MainForm {
     }
 
     private static void updateIcon() {
-        instance.getTabbedPanel().setIconAt(0,SvgManager.StartIcon);
-        instance.getTabbedPanel().setIconAt(1,SvgManager.SearchIcon);
-        instance.getTabbedPanel().setIconAt(2,SvgManager.ConnectIcon);
-        instance.getTabbedPanel().setIconAt(3,SvgManager.InheritIcon);
-        instance.getTabbedPanel().setIconAt(4,SvgManager.SpringIcon);
-        instance.getTabbedPanel().setIconAt(5,SvgManager.NoteIcon);
-        instance.getTabbedPanel().setIconAt(6,SvgManager.ScaIcon);
-        instance.getTabbedPanel().setIconAt(7,SvgManager.LeakIcon);
-        instance.getTabbedPanel().setIconAt(8,SvgManager.AdvanceIcon);
-        instance.webTabbed.setIconAt(0,SvgManager.SpringIcon);
-        instance.webTabbed.setIconAt(1,SvgManager.SpringIcon);
-        instance.webTabbed.setIconAt(2,SvgManager.TomcatIcon);
-        instance.webTabbed.setIconAt(3,SvgManager.TomcatIcon);
-        instance.webTabbed.setIconAt(4,SvgManager.TomcatIcon);
+        instance.getTabbedPanel().setIconAt(0, SvgManager.StartIcon);
+        instance.getTabbedPanel().setIconAt(1, SvgManager.SearchIcon);
+        instance.getTabbedPanel().setIconAt(2, SvgManager.ConnectIcon);
+        instance.getTabbedPanel().setIconAt(3, SvgManager.InheritIcon);
+        instance.getTabbedPanel().setIconAt(4, SvgManager.SpringIcon);
+        instance.getTabbedPanel().setIconAt(5, SvgManager.NoteIcon);
+        instance.getTabbedPanel().setIconAt(6, SvgManager.ScaIcon);
+        instance.getTabbedPanel().setIconAt(7, SvgManager.LeakIcon);
+        instance.getTabbedPanel().setIconAt(8, SvgManager.AdvanceIcon);
+        instance.webTabbed.setIconAt(0, SvgManager.SpringIcon);
+        instance.webTabbed.setIconAt(1, SvgManager.SpringIcon);
+        instance.webTabbed.setIconAt(2, SvgManager.TomcatIcon);
+        instance.webTabbed.setIconAt(3, SvgManager.TomcatIcon);
+        instance.webTabbed.setIconAt(4, SvgManager.TomcatIcon);
         instance.getTabbedPanel().setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         instance.webTabbed.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
     }
@@ -1553,7 +1588,7 @@ public class MainForm {
         springPanel.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
         webTabbed.addTab("spring controller", springPanel);
         springCPanel = new JPanel();
-        springCPanel.setLayout(new GridLayoutManager(3, 3, new Insets(0, 0, 0, 0), -1, -1));
+        springCPanel.setLayout(new GridLayoutManager(3, 3, new Insets(3, 0, 0, 3), -1, -1));
         springPanel.add(springCPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         scScroll = new JScrollPane();
         springCPanel.add(scScroll, new GridConstraints(2, 0, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
@@ -1584,15 +1619,31 @@ public class MainForm {
         springIPanel = new JPanel();
         springIPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         webTabbed.addTab("spring interceptor", springIPanel);
+        springIScroll = new JScrollPane();
+        springIPanel.add(springIScroll, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        springIList = new JList();
+        springIScroll.setViewportView(springIList);
         servletPanel = new JPanel();
         servletPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         webTabbed.addTab("servlet", servletPanel);
+        servletScroll = new JScrollPane();
+        servletPanel.add(servletScroll, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        servletList = new JList();
+        servletScroll.setViewportView(servletList);
         filterPanel = new JPanel();
         filterPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         webTabbed.addTab("filter", filterPanel);
+        filterScroll = new JScrollPane();
+        filterPanel.add(filterScroll, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        filterList = new JList();
+        filterScroll.setViewportView(filterList);
         listenerPanel = new JPanel();
         listenerPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         webTabbed.addTab("listener", listenerPanel);
+        listenerScroll = new JScrollPane();
+        listenerPanel.add(listenerScroll, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        listenerList = new JList();
+        listenerScroll.setViewportView(listenerList);
         notePanel = new JPanel();
         notePanel.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPanel.addTab("note", notePanel);

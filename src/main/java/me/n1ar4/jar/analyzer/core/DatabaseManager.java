@@ -41,6 +41,7 @@ public class DatabaseManager {
     private static final MethodImplMapper methodImplMapper;
     private static final MethodCallMapper methodCallMapper;
     private static final SpringControllerMapper springCMapper;
+    private static final SpringInterceptorMapper springIMapper;
     private static final SpringMethodMapper springMMapper;
 
     static {
@@ -59,6 +60,7 @@ public class DatabaseManager {
         methodCallMapper = session.getMapper(MethodCallMapper.class);
         methodImplMapper = session.getMapper(MethodImplMapper.class);
         springCMapper = session.getMapper(SpringControllerMapper.class);
+        springIMapper = session.getMapper(SpringInterceptorMapper.class);
         springMMapper = session.getMapper(SpringMethodMapper.class);
         InitMapper initMapper = session.getMapper(InitMapper.class);
         initMapper.createJarTable();
@@ -73,6 +75,8 @@ public class DatabaseManager {
         initMapper.createStringTable();
         initMapper.createSpringControllerTable();
         initMapper.createSpringMappingTable();
+        initMapper.createSpringInterceptorTable();
+        initMapper.createJavaWebTable();
         logger.info("create database finish");
         LogUtil.info("create database finish");
     }

@@ -202,6 +202,14 @@ public class CoreEngine {
         return new ArrayList<>(res);
     }
 
+    public ArrayList<ClassResult> getAllSpringI() {
+        SqlSession session = factory.openSession(true);
+        SpringControllerMapper springControllerMapper = session.getMapper(SpringControllerMapper.class);
+        List<ClassResult> res = springControllerMapper.selectAllSpringC();
+        session.close();
+        return new ArrayList<>(res);
+    }
+
     public ArrayList<MethodResult> getSpringM(String className) {
         SqlSession session = factory.openSession(true);
         SpringMethodMapper springMethodMapper = session.getMapper(SpringMethodMapper.class);

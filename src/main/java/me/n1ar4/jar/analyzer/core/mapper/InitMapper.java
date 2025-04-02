@@ -34,4 +34,8 @@ public interface InitMapper {
     void createSpringControllerTable();
 
     void createSpringMappingTable();
+
+    void createSpringInterceptorTable();
+
+    void createJavaWebTable();
 }

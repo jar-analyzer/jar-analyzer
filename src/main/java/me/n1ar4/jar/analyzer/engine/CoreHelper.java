@@ -158,6 +158,22 @@ public class CoreHelper {
         MainForm.getInstance().getSpringCList().setModel(springCModel);
     }
 
+
+    public static void refreshSpringI() {
+        if (MainForm.getInstance().getEngine() == null) {
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                    "PLEASE BUILD DATABASE FIRST");
+            return;
+        }
+        ArrayList<ClassResult> results = MainForm.getEngine().getAllSpringI();
+        results.sort(Comparator.comparing(ClassResult::getClassName));
+        DefaultListModel<ClassResult> springIModel = new DefaultListModel<>();
+        for (ClassResult result : results) {
+            springIModel.addElement(result);
+        }
+        MainForm.getInstance().getSpringIList().setModel(springIModel);
+    }
+
     public static void pathSearchC() {
         if (MainForm.getInstance().getEngine() == null) {
             JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),

@@ -142,4 +142,21 @@
             path TEXT NOT NULL
         );
     </update>
+    <update id="createSpringInterceptorTable">
+        CREATE TABLE IF NOT EXISTS spring_interceptor_table
+        (
+            si_id INTEGER
+            CONSTRAINT spring_interceptor_table_pk PRIMARY KEY AUTOINCREMENT,
+            class_name TEXT NOT NULL
+        );
+    </update>
+    <update id="createJavaWebTable">
+        CREATE TABLE IF NOT EXISTS java_web_table
+        (
+            jw_id INTEGER
+            CONSTRAINT java_web_table_pk PRIMARY KEY AUTOINCREMENT,
+            type_name TEXT NOT NULL,
+            class_name TEXT NOT NULL
+        );
+    </update>
 </mapper>

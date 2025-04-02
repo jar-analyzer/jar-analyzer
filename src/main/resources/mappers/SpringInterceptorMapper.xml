@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ GPLv3 License
+  ~
+  ~ Copyright (c) 2023-2025 4ra1n (Jar Analyzer Team)
+  ~
+  ~ This project is distributed under the GPLv3 license.
+  ~
+  ~ https://github.com/jar-analyzer/jar-analyzer/blob/master/LICENSE
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.n1ar4.jar.analyzer.core.mapper.SpringInterceptorMapper">
+    <resultMap id="classMap" type="me.n1ar4.jar.analyzer.entity.ClassResult">
+        <result column="class_name" property="className"/>
+    </resultMap>
+    <insert id="insertInterceptors">
+        INSERT INTO spring_interceptor_table
+        (class_name)
+        VALUES
+        <foreach collection="list" separator="," item="item">
+            (#{item.className})
+        </foreach>
+    </insert>
+    <select id="selectAllSpringI" resultMap="classMap">
+        SELECT DISTINCT class_name
+        FROM spring_interceptor_table
+    </select>
+</mapper>

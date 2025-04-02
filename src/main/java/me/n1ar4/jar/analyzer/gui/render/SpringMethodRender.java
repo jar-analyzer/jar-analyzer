@@ -30,7 +30,7 @@ public class SpringMethodRender extends DefaultListCellRenderer {
                     .replace(" ", StrUtil.HTML_NBSP) + "</font>";
             m = "<font style=\"color: blue; font-weight: bold;\">" + m + "</font>";
             String path = "<font style=\"color: green; font-weight: bold;\">" + result.getPath() + "</font>";
-            setText("<html>" + " " + restfulType  + m + " " + path + "</html>");
+            setText("<html>" + " " + restfulType + m + " " + path + "</html>");
         } else {
             return null;
         }

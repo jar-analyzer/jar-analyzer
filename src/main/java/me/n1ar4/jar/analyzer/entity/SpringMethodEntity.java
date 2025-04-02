@@ -15,7 +15,7 @@ public class SpringMethodEntity {
     private String methodName;
     private String methodDesc;
     private String path;
-    private String restfulType="Unknown";
+    private String restfulType = "Unknown";
 
     public String getRestfulType() {
         return restfulType;

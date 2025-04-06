@@ -14,6 +14,7 @@
 - [BUG] 方法右键预览界面可能由于鼠标位置无法完全显示 @4ra1n
 - [BUG] 修复 `LUCENE` 索引创建时超过 `UTF-8` 编码限制 @Gosiu
 - [BUG] 修复 `CALL` 部分 `GUI` 放大之后界面过小问题 @4ra1n
+- [BUG] 修复 `Spring` 分析结果为空时点击报错的问题 @4ra1n
 - [优化] 优化 `RSyntaxTextArea` 按照实际需求自动拓展大小 @4ra1n
 - [优化] 美化 `GUI` 给每个菜单添加对应的图标 @4ra1n
 - [优化] 优化 `Spring` 分析部分支持类型显示 @Gosiu

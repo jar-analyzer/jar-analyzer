@@ -33,6 +33,13 @@ public class ClassResultAdapter extends MouseAdapter {
         JList<?> list = (JList<?>) evt.getSource();
         if (evt.getClickCount() == 2) {
             int index = list.locationToIndex(evt.getPoint());
+
+            // 2025/04/06 处理预期外报错问题
+            if (index < 0 || list == null || list.getModel() == null ||
+                    list.getModel().getElementAt(index) == null) {
+                return;
+            }
+
             ClassResult res = (ClassResult) list.getModel().getElementAt(index);
 
             String className = res.getClassName();

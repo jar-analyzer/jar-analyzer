@@ -17,36 +17,54 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class LuceneSearchListener implements DocumentListener {
     private final JTextArea textField;
+    // 给 resultModel 使用的锁
+    // 而不是给缓存 缓存本身是 synchronized 的
+    private final ReentrantLock lock;
     private final DefaultListModel<LuceneSearchResult> resultModel;
+    private final LuceneSearchCache searchCache;
 
     private void doSearch(String text) {
         resultModel.clear();
         if (text == null || text.isEmpty()) {
             return;
         }
+
         new Thread(() -> {
-            // 直接的类名优先
-            List<LuceneSearchResult> results = LuceneSearchWrapper.searchFileName(text);
-            // 其次是文件内容
-            if (!LuceneSearchForm.useNoLucene()) {
-                results.addAll(LuceneSearchWrapper.searchLucene(text));
-            }
-            for (LuceneSearchResult result : results) {
-                // BUG 2025/02/27 处理某些非 class 文件
-                if (!result.getFileName().endsWith(".class")) {
-                    continue;
+            List<LuceneSearchResult> results;
+
+            if (searchCache.containsKey(text)) {
+                results = searchCache.get(text);
+            } else {
+                results = LuceneSearchWrapper.searchFileName(text);
+                if (!LuceneSearchForm.useNoLucene()) {
+                    results.addAll(LuceneSearchWrapper.searchLucene(text));
                 }
-                resultModel.addElement(result);
+                searchCache.put(text, results);
+            }
+
+            lock.lock();
+            try {
+                for (LuceneSearchResult result : results) {
+                    if (!result.getFileName().endsWith(".class")) {
+                        continue;
+                    }
+                    resultModel.addElement(result);
+                }
+            } finally {
+                lock.unlock();
             }
         }).start();
     }
 
     public LuceneSearchListener(JTextArea text, JList<LuceneSearchResult> res) {
         this.textField = text;
+        this.lock = new ReentrantLock();
         this.resultModel = new DefaultListModel<>();
+        this.searchCache = new LuceneSearchCache();
         res.setModel(resultModel);
     }
 

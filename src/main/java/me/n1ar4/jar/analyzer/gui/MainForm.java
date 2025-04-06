@@ -1026,7 +1026,7 @@ public class MainForm {
                 instance.springLabel.setText("分析 JAR/JARS 中的 Spring Controller/Mapping 信息");
                 instance.pathSearchButton.setText("查找");
                 instance.pathSearchLabel.setText("在所有 Mapping 中查找 Path");
-                instance.refreshButton.setText("刷新");
+                instance.refreshButton.setText("刷新全部");
                 instance.javaVulLabel.setText("快速搜索通用 JAVA 漏洞相关");
 
                 instance.sqliteLabel.setText("一个 SQLITE 查询工具");
@@ -1148,7 +1148,7 @@ public class MainForm {
                 instance.springLabel.setText(" Analyze Spring Controllers and Mappings in Jar/Jars");
                 instance.pathSearchButton.setText("Search");
                 instance.pathSearchLabel.setText(" Search path in all Mappings");
-                instance.refreshButton.setText("Refresh");
+                instance.refreshButton.setText("Refresh All");
                 instance.javaVulLabel.setText("Quickly Search Commons Java Vulnerabilities Call");
 
                 instance.sqliteLabel.setText("A tool for run custom query in SQLite database");
@@ -1595,7 +1595,7 @@ public class MainForm {
         springCList = new JList();
         scScroll.setViewportView(springCList);
         refreshButton = new JButton();
-        refreshButton.setText("Refresh");
+        refreshButton.setText("Refresh All");
         springCPanel.add(refreshButton, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         springLabel = new JLabel();
         springLabel.setText(" Analyze Spring Controllers and Mappings in Jar/Jars");

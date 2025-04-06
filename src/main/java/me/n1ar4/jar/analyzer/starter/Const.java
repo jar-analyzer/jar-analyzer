@@ -42,6 +42,7 @@ public interface Const {
     String PartForm = "Jar Analyzer - Partition Config";
     String SerUtilForm = "Jar Analyzer - SerUtil";
     String ExportForm = "Jar Analyzer - Export Java Code";
+    String ModeForm = "Jar Analyzer - Mode";
     String blackAreaText = "# package black list\n" +
             "java.util.;\n" +
             "# class black list\n" +

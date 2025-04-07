@@ -338,11 +338,20 @@ public class CoreEngine {
                 "none");
     }
 
-    public ArrayList<MethodReference> getAllMethodRef() {
+    public int getMethodsCount() {
+        SqlSession session = factory.openSession(true);
+        MethodMapper methodMapper = session.getMapper(MethodMapper.class);
+        int count = methodMapper.selectCount();
+        session.close();
+        return count;
+    }
+
+    public ArrayList<MethodReference> getAllMethodRef(int offset) {
+        int size = 1000;
         SqlSession session = factory.openSession(true);
         MethodMapper methodMapper = session.getMapper(MethodMapper.class);
         AnnoMapper annoMapper = session.getMapper(AnnoMapper.class);
-        ArrayList<MethodResult> results = new ArrayList<>(methodMapper.selectAllMethods());
+        ArrayList<MethodResult> results = new ArrayList<>(methodMapper.selectAllMethods(offset, size));
         results.sort(Comparator.comparing(MethodResult::getMethodName));
         ArrayList<MethodReference> list = new ArrayList<>();
         for (MethodResult result : results) {

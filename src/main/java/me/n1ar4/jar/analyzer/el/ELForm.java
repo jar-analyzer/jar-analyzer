@@ -45,6 +45,11 @@ public class ELForm {
     private JProgressBar elProcess;
     private static ELForm elInstance;
 
+    private final long keepAliveTime = 1;
+    private final TimeUnit timeUnit = TimeUnit.MINUTES;
+    private final int cpuCoreCount = Runtime.getRuntime().availableProcessors();
+    private final int maximumPoolSize = cpuCoreCount * 2;
+
     public static void setVal(int val) {
         elInstance.elProcess.setValue(val);
     }
@@ -140,11 +145,7 @@ public class ELForm {
             logger.info("parse el success");
 
             if (value instanceof MethodEL) {
-                int cpuCoreCount = Runtime.getRuntime().availableProcessors();
-                int maximumPoolSize = cpuCoreCount * 2;
                 logger.info("pool size: {}", maximumPoolSize);
-                long keepAliveTime = 1;
-                TimeUnit timeUnit = TimeUnit.MINUTES;
                 BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<>(50);
                 ThreadFactory threadFactory = Executors.defaultThreadFactory();
                 RejectedExecutionHandler handler = new ThreadPoolExecutor.CallerRunsPolicy();
@@ -160,30 +161,27 @@ public class ELForm {
 
                 MethodEL condition = (MethodEL) value;
                 ConcurrentLinkedQueue<ResObj> searchList = new ConcurrentLinkedQueue<>();
-                List<MethodReference> mrs = MainForm.getEngine().getAllMethodRef();
 
-                logger.info("get all methods info finish");
-                logger.info("methods length: {}", mrs.size());
-
-                int part = mrs.size() / 80;
-                ELForm.setVal(10);
-                int index = 0;
-                int tempVal = 11;
-                for (MethodReference mr : mrs) {
-                    index++;
-                    if (part == 0) {
-                        part = 1;
+                int totalMethod = MainForm.getEngine().getMethodsCount();
+                logger.info("total method: {}", totalMethod);
+                int start = 3;
+                for (int offset = 0; offset < totalMethod; offset += 1000) {
+                    if (start > 90) {
+                        start = 90;
+                    } else {
+                        start++;
                     }
-                    if (index % part == 0) {
-                        if (tempVal < 90) {
-                            ELForm.setVal(tempVal++);
-                        }
+                    setVal(start);
+                    List<MethodReference> mrs = MainForm.getEngine().getAllMethodRef(offset);
+                    logger.info("get part methods length: {}", mrs.size());
+                    for (MethodReference mr : mrs) {
+                        ClassReference.Handle ch = mr.getClassReference();
+                        MethodELProcessor processor = new MethodELProcessor(ch, mr, searchList, condition);
+                        executor.submit(processor::process);
                     }
-                    ClassReference.Handle ch = mr.getClassReference();
-                    MethodELProcessor processor = new MethodELProcessor(ch, mr, searchList, condition);
-                    executor.submit(processor::process);
+                    executor.shutdown();
                 }
-                executor.shutdown();
+
                 try {
                     // 超时 30 秒
                     if (executor.awaitTermination(30, TimeUnit.SECONDS)) {
@@ -193,6 +191,7 @@ public class ELForm {
                             JOptionPane.showMessageDialog(this.jTextArea, "没有找到结果");
                             return;
                         } else {
+                            searchButton.setEnabled(true);
                             JOptionPane.showMessageDialog(this.jTextArea, "搜索成功：找到符合表达式的方法");
                         }
                         setVal(95);

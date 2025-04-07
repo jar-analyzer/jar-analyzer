@@ -7,6 +7,7 @@
 更新日志：
 
 - [重要] 启动时支持选择 `标准/快速` 两种方式生成数据库 @4ra1n
+- [重要] 自定义表达式搜索功能代码重构和性能提升 @4ra1n
 - [重要] 支持 `Spring Interceptor` 静态分析 @4ra1n
 - [重要] 支持 `Serlvet/Filter/Listener` 静态分析 @4ra1n
 - [重要] 支持拖动 `GUI` 便于查看 @4ra1n

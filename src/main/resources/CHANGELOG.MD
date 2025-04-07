@@ -2,42 +2,7 @@
 
 ## 5.0
 
-注意：该版本数据库结构有变动，无法兼容之前的数据库结构，请重新构建数据库
-
-更新日志：
-
-- [重要] 启动时支持选择 `标准/快速` 两种方式生成数据库 @4ra1n
-- [重要] 支持 `Spring Interceptor` 静态分析 @4ra1n
-- [重要] 支持 `Serlvet/Filter/Listener` 静态分析 @4ra1n
-- [重要] 支持拖动 `GUI` 便于查看 @4ra1n
-- [功能] 全局 `LUCENE` 搜索支持大小写敏感选项 @Gosiu
-- [BUG] 方法右键预览界面可能由于鼠标位置无法完全显示 @4ra1n
-- [BUG] 修复 `LUCENE` 索引创建时超过 `UTF-8` 编码限制 @Gosiu
-- [BUG] 修复 `CALL` 部分 `GUI` 放大之后界面过小问题 @4ra1n
-- [BUG] 修复 `Spring` 分析结果为空时点击报错的问题 @4ra1n
-- [优化] 优化 `RSyntaxTextArea` 按照实际需求自动拓展大小 @4ra1n
-- [优化] 全局 `LUCENE` 搜索加入缓存机制提高搜索效率 @4ra1n
-- [优化] 美化 `GUI` 给每个菜单添加对应的图标 @4ra1n
-- [优化] 优化 `Spring` 分析部分支持类型显示 @Gosiu
-- [优化] 删减依赖并优化 `LUCENE` 索引存储和搜索性能 @Gosiu
-
-感谢以下用户的贡献:
-
-- 4ra1n (https://github.com/4ra1n)
-- Honey Baby (https://github.com/Gosiu)
-- ar3h (https://github.com/ar3h)
-- 某匿名安全研究员（提出多条改进建议）
-
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
-
-- `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (**完整版本**)
-- `windows-23` 版内置开启 `ZGC` 的 `JRE 23` 环境（仅包含核心功能）
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-
-一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
+[TODO]
 
 ## 4.4
 

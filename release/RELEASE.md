@@ -14,6 +14,7 @@ Jar Analyzer Workflow JRE Repo
 
 Steps:
 
+- Sync `CHANGELOG.MD` file to `src/main/resources`
 - Run `go run .\github\main.go proxy` to clean actions
 - Run `me/n1ar4/support/Contributor.java` to generate thanks.txt
 - Run `me/n1ar4/support/ContributorMD.java` to generate thanks.md

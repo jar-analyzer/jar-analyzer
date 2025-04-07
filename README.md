@@ -1,6 +1,6 @@
 # Jar-Analyzer
 
-[CHANGE LOG](src/main/resources/CHANGELOG.MD)
+[CHANGE LOG](CHANGELOG.MD)
 
 <img alt="gitleaks badge" src="https://img.shields.io/badge/protected%20by-gitleaks-blue">
 

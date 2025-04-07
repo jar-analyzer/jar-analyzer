@@ -16,6 +16,7 @@
 - [BUG] 修复 `LUCENE` 索引创建时超过 `UTF-8` 编码限制 @Gosiu
 - [BUG] 修复 `CALL` 部分 `GUI` 放大之后界面过小问题 @4ra1n
 - [BUG] 修复 `Spring` 分析结果为空时点击报错的问题 @4ra1n
+- [BUG] 处理 `Tomcat` 动态分析日志部分某些情况乱码 @4ra1n
 - [优化] 优化 `RSyntaxTextArea` 按照实际需求自动拓展大小 @4ra1n
 - [优化] 全局 `LUCENE` 搜索加入缓存机制提高搜索效率 @4ra1n
 - [优化] 美化 `GUI` 给每个菜单添加对应的图标 @4ra1n

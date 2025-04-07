@@ -12,6 +12,9 @@
 - [重要] 支持拖动 `GUI` 便于查看 @4ra1n
 - [功能] 全局 `LUCENE` 搜索支持大小写敏感选项 @Gosiu
 - [功能] 一键搜索新增 `JDBC DriverManager` 相关 @4ra1n
+- [功能] 表达式搜索支持 `isPublic` 语法 @4ra1n
+- [功能] 表达式搜索支持 `nameNotContains` 语法 @4ra1n
+- [功能] 表达式搜索支持 `classNameNotContains` 语法 @4ra1n
 - [BUG] 方法右键预览界面可能由于鼠标位置无法完全显示 @4ra1n
 - [BUG] 修复 `LUCENE` 索引创建时超过 `UTF-8` 编码限制 @Gosiu
 - [BUG] 修复 `CALL` 部分 `GUI` 放大之后界面过小问题 @4ra1n

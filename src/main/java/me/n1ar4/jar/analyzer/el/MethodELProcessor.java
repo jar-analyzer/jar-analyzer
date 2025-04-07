@@ -13,6 +13,7 @@ package me.n1ar4.jar.analyzer.el;
 import me.n1ar4.jar.analyzer.core.ClassReference;
 import me.n1ar4.jar.analyzer.core.MethodReference;
 import me.n1ar4.jar.analyzer.gui.MainForm;
+import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
 import java.util.Map;
@@ -38,7 +39,9 @@ public class MethodELProcessor {
         Set<ClassReference.Handle> supers = MainForm.getEngine().getSubClasses(ch);
 
         String classCon = condition.getClassNameContains();
+        String classNoCon = condition.getClassNameNotContains();
         String mnCon = condition.getNameContains();
+        String mnNoCon = condition.getNameNotContains();
         String retCon = condition.getReturnType();
         Map<Integer, String> paramMap = condition.getParamTypes();
 
@@ -55,32 +58,40 @@ public class MethodELProcessor {
         String hasField = condition.getField();
 
         Integer i = condition.getParamsNum();
-        Boolean f = condition.isStatic();
+        Boolean f = condition.getStatic();
+        Boolean p = condition.getPublic();
         int paramNum = Type.getMethodType(mr.getDesc()).getArgumentTypes().length;
         String ret = Type.getReturnType(mr.getDesc()).getClassName();
 
-        boolean aa = true;
-        boolean ab = true;
-        boolean ac = true;
-        boolean ad = true;
-        boolean ae = true;
-        boolean af = true;
-        boolean ag = true;
-        boolean ah = true;
-        boolean ai = true;
-
-        boolean sb = true;
-        boolean sp = true;
-
-        boolean sw = true;
-        boolean ew = true;
+        boolean classNameContainsFlag = true;
+        boolean classNameNotContainsFlag = true;
+        boolean methodNameContainsFlag = true;
+        boolean methodNameNotContainsFlag = true;
+        boolean paramNumFlag = true;
+        boolean retTypeFlag = true;
+        boolean isStaticFlag = true;
+        boolean isPublicFlag = true;
+        boolean paramMapFlag = true;
+        boolean classAnnoFlag = true;
+        boolean methodAnnoFlag = true;
+        boolean fieldFlag = true;
+        boolean subClassFlag = true;
+        boolean superClassFlag = true;
+        boolean startWithFlag = true;
+        boolean endWithFlag = true;
 
         if (classCon != null && !classCon.isEmpty()) {
-            aa = ch.getName().contains(classCon);
+            classNameContainsFlag = ch.getName().contains(classCon);
+        }
+        if (classNoCon != null && !classNoCon.isEmpty()) {
+            classNameNotContainsFlag = !ch.getName().contains(classNoCon);
         }
 
         if (mnCon != null && !mnCon.isEmpty()) {
-            ab = mr.getName().contains(mnCon);
+            methodNameContainsFlag = mr.getName().contains(mnCon);
+        }
+        if (mnNoCon != null && !mnNoCon.isEmpty()) {
+            methodNameNotContainsFlag = !mr.getName().contains(mnNoCon);
         }
 
         ClassReference cr = MainForm.getEngine().getClassRef(ch);
@@ -88,7 +99,7 @@ public class MethodELProcessor {
         if (classAnno != null && !classAnno.isEmpty()) {
             if (cr.getAnnotations() == null ||
                     cr.getAnnotations().isEmpty()) {
-                ag = false;
+                classAnnoFlag = false;
             } else {
                 boolean fc = false;
                 for (String a : cr.getAnnotations()) {
@@ -98,14 +109,14 @@ public class MethodELProcessor {
                     }
                 }
                 if (!fc) {
-                    ag = false;
+                    classAnnoFlag = false;
                 }
             }
         }
 
         if (methodAnno != null && !methodAnno.isEmpty()) {
             if (mr.getAnnotations() == null || mr.getAnnotations().isEmpty()) {
-                ah = false;
+                methodAnnoFlag = false;
             } else {
                 boolean fm = false;
                 for (String a : mr.getAnnotations()) {
@@ -115,7 +126,7 @@ public class MethodELProcessor {
                     }
                 }
                 if (!fm) {
-                    ah = false;
+                    methodAnnoFlag = false;
                 }
             }
         }
@@ -123,11 +134,11 @@ public class MethodELProcessor {
         boolean isExcludedMethod = isExcludedMethodAnno(excludedMethodAnno);
 
         if (start != null && !start.isEmpty()) {
-            sw = mr.getName().startsWith(start);
+            startWithFlag = mr.getName().startsWith(start);
         }
 
         if (endWith != null && !endWith.isEmpty()) {
-            ew = mr.getName().endsWith(endWith);
+            endWithFlag = mr.getName().endsWith(endWith);
         }
 
         if (hasField != null && !hasField.isEmpty()) {
@@ -139,20 +150,25 @@ public class MethodELProcessor {
                 }
             }
             if (!ff) {
-                ai = false;
+                fieldFlag = false;
             }
         }
 
         if (i != null) {
-            ac = i == paramNum;
+            paramNumFlag = i == paramNum;
         }
 
         if (retCon != null && !retCon.isEmpty()) {
-            ad = ret.equals(retCon);
+            retTypeFlag = ret.equals(retCon);
         }
 
         if (f != null) {
-            ae = f == mr.isStatic();
+            isStaticFlag = f == mr.isStatic();
+        }
+
+        if (p != null) {
+            boolean isPublic = (mr.getAccess() & Opcodes.ACC_PUBLIC) != 0;
+            isPublicFlag = p == isPublic;
         }
 
         if (isSubOf != null && !isSubOf.isEmpty()) {
@@ -166,10 +182,10 @@ public class MethodELProcessor {
                     }
                 }
                 if (!t) {
-                    sb = false;
+                    subClassFlag = false;
                 }
             } else {
-                sb = false;
+                subClassFlag = false;
             }
         }
         if (isSuperOf != null && !isSuperOf.isEmpty()) {
@@ -183,10 +199,10 @@ public class MethodELProcessor {
                     }
                 }
                 if (!t) {
-                    sp = false;
+                    superClassFlag = false;
                 }
             } else {
-                sb = false;
+                subClassFlag = false;
             }
         }
         Type[] argTypes = Type.getArgumentTypes(mr.getDesc());
@@ -196,11 +212,19 @@ public class MethodELProcessor {
                 continue;
             }
             if (!paramMap.get(ix).equals(argTypes[ix].getClassName())) {
-                af = false;
+                paramMapFlag = false;
                 break;
             }
         }
-        if (aa && ab && ac && ad && ae && af && ag && ah && ai && sb && sp && sw && ew && !isExcludedMethod) {
+        if (classNameContainsFlag && methodNameContainsFlag &&
+                classNameNotContainsFlag && methodNameNotContainsFlag &&
+                isStaticFlag && isPublicFlag &&
+                paramNumFlag && retTypeFlag && paramMapFlag &&
+                classAnnoFlag && methodAnnoFlag &&
+                fieldFlag &&
+                subClassFlag && superClassFlag &&
+                startWithFlag && endWithFlag &&
+                !isExcludedMethod) {
             searchList.add(new ResObj(mr.getHandle(), ch.getName(), mr.getLineNumber()));
         }
     }

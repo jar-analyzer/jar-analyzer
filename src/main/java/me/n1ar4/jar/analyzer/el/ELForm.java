@@ -73,11 +73,14 @@ public class ELForm {
                 "        .startWith(\"set\")\n" +
                 "        .endWith(\"value\")\n" +
                 "        .nameContains(\"lookup\")\n" +
+                "        .nameNotContains(\"internal\")\n" +
                 "        .classNameContains(\"Context\")\n" +
+                "        .classNameNotContains(\"Abstact\")\n" +
                 "        .returnType(\"java.lang.Process\")\n" +
                 "        .paramTypeMap(0,\"java.lang.String\")\n" +
                 "        .paramsNum(1)\n" +
                 "        .isStatic(false)\n" +
+                "        .isPublic(true)\n" +
                 "        .isSubClassOf(\"java.awt.Component\")\n" +
                 "        .isSuperClassOf(\"com.test.SomeClass\")\n" +
                 "        .hasClassAnno(\"Controller\")\n" +
@@ -247,7 +250,7 @@ public class ELForm {
         searchButton.setText("使用该表达式搜索");
         opPanel.add(searchButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         editScroll = new JScrollPane();
-        elPanel.add(editScroll, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(500, 300), null, null, 0, false));
+        elPanel.add(editScroll, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(500, 350), null, null, 0, false));
         elCodePanel = new JPanel();
         elCodePanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         editScroll.setViewportView(elCodePanel);

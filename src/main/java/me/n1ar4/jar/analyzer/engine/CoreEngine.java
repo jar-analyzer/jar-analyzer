@@ -278,14 +278,14 @@ public class CoreEngine {
 
     public Set<ClassReference.Handle> getSuperClasses(ClassReference.Handle ch) {
         SqlSession session = factory.openSession(true);
-        ClassMapper classMapper = session.getMapper(ClassMapper.class);
-        List<String> tempRes = classMapper.selectSuperClassesByClassName(ch.getName());
+        MethodImplMapper miMapper = session.getMapper(MethodImplMapper.class);
+        List<String> tempRes = miMapper.selectSuperClasses(ch.getName());
         Set<ClassReference.Handle> set = new HashSet<>();
         for (String temp : tempRes) {
-            List<ClassResult> cl = classMapper.selectClassByClassName(temp);
-            for (ClassResult cr : cl) {
-                set.add(new ClassReference.Handle(cr.getClassName()));
+            if (temp.equals(ch.getName())) {
+                continue;
             }
+            set.add(new ClassReference.Handle(temp));
         }
         session.close();
         return set;
@@ -293,14 +293,14 @@ public class CoreEngine {
 
     public Set<ClassReference.Handle> getSubClasses(ClassReference.Handle ch) {
         SqlSession session = factory.openSession(true);
-        ClassMapper classMapper = session.getMapper(ClassMapper.class);
-        List<String> tempRes = classMapper.selectSubClassesByClassName(ch.getName());
+        MethodImplMapper miMapper = session.getMapper(MethodImplMapper.class);
+        List<String> tempRes = miMapper.selectSubClasses(ch.getName());
         Set<ClassReference.Handle> set = new HashSet<>();
         for (String temp : tempRes) {
-            List<ClassResult> cl = classMapper.selectClassByClassName(temp);
-            for (ClassResult cr : cl) {
-                set.add(new ClassReference.Handle(cr.getClassName()));
+            if (temp.equals(ch.getName())) {
+                continue;
             }
+            set.add(new ClassReference.Handle(temp));
         }
         session.close();
         return set;
@@ -351,7 +351,7 @@ public class CoreEngine {
         SqlSession session = factory.openSession(true);
         MethodMapper methodMapper = session.getMapper(MethodMapper.class);
         AnnoMapper annoMapper = session.getMapper(AnnoMapper.class);
-        ArrayList<MethodResult> results = new ArrayList<>(methodMapper.selectAllMethods(offset, size));
+        ArrayList<MethodResult> results = new ArrayList<>(methodMapper.selectAllMethods(size, offset));
         results.sort(Comparator.comparing(MethodResult::getMethodName));
         ArrayList<MethodReference> list = new ArrayList<>();
         for (MethodResult result : results) {

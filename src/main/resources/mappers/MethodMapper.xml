@@ -46,7 +46,7 @@
     <select id="selectAllMethods" resultMap="methodMap">
         SELECT m.method_name, m.class_name, m.method_desc, m.is_static, m.access, m.line_number
         FROM method_table m
-        LIMIT #{offset}, #{size}
+        LIMIT #{size} OFFSET #{offset}
     </select>
     <select id="selectMethods" resultMap="methodMap">
         SELECT DISTINCT cf.jar_name, m.method_name, m.class_name, m.method_desc, m.is_static, m.access, m.line_number

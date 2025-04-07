@@ -38,5 +38,5 @@ public interface MethodMapper {
 
     int selectCount();
 
-    List<MethodResult> selectAllMethods(@Param("offset") int offset, @Param("size") int size);
+    List<MethodResult> selectAllMethods(@Param("size") int size, @Param("offset") int offset);
 }

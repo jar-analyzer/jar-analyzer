@@ -31,7 +31,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class ELForm {
     private static final Logger logger = LogManager.getLogger();
@@ -43,18 +47,18 @@ public class ELForm {
     private JScrollPane editScroll;
     private JPanel elCodePanel;
     private JProgressBar elProcess;
-    private JComboBox tempCombox;
-    private JButton useBtn;
+    private JComboBox<String> tempCombo;
     private JPanel templatesPanel;
+    private JLabel builtinLabel;
+    private JLabel msgLabel;
     private static ELForm elInstance;
 
-    private final long keepAliveTime = 1;
-    private final TimeUnit timeUnit = TimeUnit.MINUTES;
-    private final int cpuCoreCount = Runtime.getRuntime().availableProcessors();
-    private final int maximumPoolSize = cpuCoreCount * 2;
-
     public static void setVal(int val) {
-        elInstance.elProcess.setValue(val);
+        SwingUtilities.invokeLater(() -> elInstance.elProcess.setValue(val));
+    }
+
+    public static String removeComments(String code) {
+        return code.replaceAll("(?m)^\\s*//.*$", "");
     }
 
     public ELForm() {
@@ -100,6 +104,7 @@ public class ELForm {
             try {
                 ExpressionParser parser = new SpelExpressionParser();
                 String spel = jTextArea.getText();
+                spel = removeComments(spel);
                 parser.parseExpression(spel);
                 JOptionPane.showMessageDialog(this.jTextArea, "解析通过，正确的表达式");
             } catch (Exception ignored) {
@@ -129,6 +134,7 @@ public class ELForm {
 
             ExpressionParser parser = new SpelExpressionParser();
             String spel = jTextArea.getText();
+            spel = removeComments(spel);
 
             Object value;
             try {
@@ -148,19 +154,7 @@ public class ELForm {
             logger.info("parse el success");
 
             if (value instanceof MethodEL) {
-                logger.info("pool size: {}", maximumPoolSize);
-                BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<>(50);
-                ThreadFactory threadFactory = Executors.defaultThreadFactory();
-                RejectedExecutionHandler handler = new ThreadPoolExecutor.CallerRunsPolicy();
-                ThreadPoolExecutor executor = new ThreadPoolExecutor(
-                        maximumPoolSize,
-                        maximumPoolSize,
-                        keepAliveTime,
-                        timeUnit,
-                        workQueue,
-                        threadFactory,
-                        handler
-                );
+                ExecutorService executor = Executors.newCachedThreadPool();
 
                 MethodEL condition = (MethodEL) value;
                 ConcurrentLinkedQueue<ResObj> searchList = new ConcurrentLinkedQueue<>();
@@ -168,26 +162,32 @@ public class ELForm {
                 int totalMethod = MainForm.getEngine().getMethodsCount();
                 logger.info("total method: {}", totalMethod);
                 int start = 3;
-                for (int offset = 0; offset < totalMethod; offset += 1000) {
-                    if (start > 90) {
+                for (int offset = 0; offset < totalMethod; ) {
+                    // ############ 进度处理 ############
+                    if (start > 89) {
                         start = 90;
                     } else {
                         start++;
                     }
                     setVal(start);
+                    // ################################
                     List<MethodReference> mrs = MainForm.getEngine().getAllMethodRef(offset);
-                    logger.info("get part methods length: {}", mrs.size());
+                    offset += mrs.size();
+                    double progress = (double) offset / totalMethod;
+                    String msg = String.format("running %d total %d - %.2f%%", offset, totalMethod, progress * 100);
+                    logger.info(msg);
+                    msgLabel.setText(msg);
                     for (MethodReference mr : mrs) {
                         ClassReference.Handle ch = mr.getClassReference();
                         MethodELProcessor processor = new MethodELProcessor(ch, mr, searchList, condition);
                         executor.submit(processor::process);
                     }
-                    executor.shutdown();
                 }
-
+                executor.shutdown();
                 try {
                     // 超时 30 秒
-                    if (executor.awaitTermination(30, TimeUnit.SECONDS)) {
+                    if (executor.awaitTermination(1, TimeUnit.MINUTES)) {
+                        logger.info("executor await termination success");
                         if (searchList.isEmpty()) {
                             setVal(100);
                             searchButton.setEnabled(true);
@@ -205,8 +205,11 @@ public class ELForm {
                         }
                         new Thread(() -> CoreHelper.refreshMethods(resObjList)).start();
                         setVal(100);
-                        return;
+                    } else {
+                        setVal(100);
+                        JOptionPane.showMessageDialog(this.jTextArea, "等待 1 分钟没有执行完");
                     }
+                    return;
                 } catch (InterruptedException ignored) {
                 }
                 JOptionPane.showMessageDialog(this.jTextArea, "没有找到结果");
@@ -219,6 +222,12 @@ public class ELForm {
         }).start());
 
         elInstance = this;
+
+        Set<String> keys = Templates.data.keySet();
+        for (String key : keys) {
+            tempCombo.addItem(key);
+        }
+        tempCombo.addActionListener(new TempActionListener(tempCombo, jTextArea));
     }
 
     private void setELCodeArea(RSyntaxTextArea textArea) {
@@ -252,13 +261,16 @@ public class ELForm {
         searchButton.setText("使用该表达式搜索");
         opPanel.add(searchButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         templatesPanel = new JPanel();
-        templatesPanel.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
+        templatesPanel.setLayout(new GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
         opPanel.add(templatesPanel, new GridConstraints(1, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        tempCombox = new JComboBox();
-        templatesPanel.add(tempCombox, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        useBtn = new JButton();
-        useBtn.setText("使用");
-        templatesPanel.add(useBtn, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        tempCombo = new JComboBox();
+        templatesPanel.add(tempCombo, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        builtinLabel = new JLabel();
+        builtinLabel.setText("内置语法");
+        templatesPanel.add(builtinLabel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        msgLabel = new JLabel();
+        msgLabel.setText("no message");
+        templatesPanel.add(msgLabel, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         editScroll = new JScrollPane();
         elPanel.add(editScroll, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(500, 350), null, null, 0, false));
         elCodePanel = new JPanel();

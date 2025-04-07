@@ -71,6 +71,12 @@ public class MethodReference {
         return new Handle(classReference, name, desc);
     }
 
+    public MethodReference cloneObj() {
+        return new MethodReference(new ClassReference.Handle(this.classReference.getName()),
+                this.name, this.desc, this.isStatic,
+                this.annotations, this.access, this.lineNumber);
+    }
+
     public static class Handle {
         private final ClassReference.Handle classReference;
         private final String name;

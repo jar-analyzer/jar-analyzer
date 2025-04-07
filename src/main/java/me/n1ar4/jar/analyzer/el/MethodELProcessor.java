@@ -13,31 +13,39 @@ package me.n1ar4.jar.analyzer.el;
 import me.n1ar4.jar.analyzer.core.ClassReference;
 import me.n1ar4.jar.analyzer.core.MethodReference;
 import me.n1ar4.jar.analyzer.gui.MainForm;
+import me.n1ar4.log.LogManager;
+import me.n1ar4.log.Logger;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class MethodELProcessor {
+    private static final Logger logger = LogManager.getLogger();
+
     private final ClassReference.Handle ch;
     private final MethodReference mr;
     private final ConcurrentLinkedQueue<ResObj> searchList;
     private final MethodEL condition;
 
+    private final Set<ClassReference.Handle> subs;
+    private final Set<ClassReference.Handle> supers;
+
     public MethodELProcessor(ClassReference.Handle ch, MethodReference mr,
                              ConcurrentLinkedQueue<ResObj> searchList, MethodEL condition) {
-        this.ch = ch;
-        this.mr = mr;
+        this.ch = ch.cloneObj();
+        this.mr = mr.cloneObj();
         this.searchList = searchList;
+        // condition 无需 clone 不存在冲突
         this.condition = condition;
+        this.subs = new HashSet<>(MainForm.getEngine().getSuperClasses(ch));
+        this.supers = new HashSet<>(MainForm.getEngine().getSubClasses(ch));
     }
 
     public void process() {
-        Set<ClassReference.Handle> subs = MainForm.getEngine().getSuperClasses(ch);
-        Set<ClassReference.Handle> supers = MainForm.getEngine().getSubClasses(ch);
-
         String classCon = condition.getClassNameContains();
         String classNoCon = condition.getClassNameNotContains();
         String mnCon = condition.getNameContains();
@@ -225,6 +233,7 @@ public class MethodELProcessor {
                 subClassFlag && superClassFlag &&
                 startWithFlag && endWithFlag &&
                 !isExcludedMethod) {
+            logger.info("found result {} - {}", ch.getName(), mr.getName());
             searchList.add(new ResObj(mr.getHandle(), ch.getName(), mr.getLineNumber()));
         }
     }

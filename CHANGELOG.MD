@@ -11,8 +11,10 @@
 - [重要] 支持 `Spring Interceptor` 静态分析 @4ra1n
 - [重要] 支持 `Serlvet/Filter/Listener` 静态分析 @4ra1n
 - [重要] 支持拖动 `GUI` 便于查看 @4ra1n
+- [重要] 表达式搜索父类子类相关语法支持跨多层 @4ra1n
 - [功能] 全局 `LUCENE` 搜索支持大小写敏感选项 @Gosiu
 - [功能] 一键搜索新增 `JDBC DriverManager` 相关 @4ra1n
+- [功能] 表达式搜索内置多种常用场景语句以供参考 @4ra1n
 - [功能] 表达式搜索支持 `isPublic` 语法 @4ra1n
 - [功能] 表达式搜索支持 `nameNotContains` 语法 @4ra1n
 - [功能] 表达式搜索支持 `classNameNotContains` 语法 @4ra1n
@@ -21,6 +23,9 @@
 - [BUG] 修复 `CALL` 部分 `GUI` 放大之后界面过小问题 @4ra1n
 - [BUG] 修复 `Spring` 分析结果为空时点击报错的问题 @4ra1n
 - [BUG] 处理 `Tomcat` 动态分析日志部分某些情况乱码 @4ra1n
+- [BUG] 解决表达式搜索某些情况下可能丢失数据的问题 @4ra1n
+- [优化] 优化表达式搜索的性能使用更合理的线程池 @4ra1n
+- [优化] 优化表达式搜索功能显示实时进度百分比 @4ra1n
 - [优化] 优化 `RSyntaxTextArea` 按照实际需求自动拓展大小 @4ra1n
 - [优化] 全局 `LUCENE` 搜索加入缓存机制提高搜索效率 @4ra1n
 - [优化] 美化 `GUI` 给每个菜单添加对应的图标 @4ra1n

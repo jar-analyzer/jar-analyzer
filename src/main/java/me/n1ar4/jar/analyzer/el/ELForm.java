@@ -80,7 +80,7 @@ public class ELForm {
                 "        .nameContains(\"lookup\")\n" +
                 "        .nameNotContains(\"internal\")\n" +
                 "        .classNameContains(\"Context\")\n" +
-                "        .classNameNotContains(\"Abstact\")\n" +
+                "        .classNameNotContains(\"Abstract\")\n" +
                 "        .returnType(\"java.lang.Process\")\n" +
                 "        .paramTypeMap(0,\"java.lang.String\")\n" +
                 "        .paramsNum(1)\n" +

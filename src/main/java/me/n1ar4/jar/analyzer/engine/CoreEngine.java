@@ -347,7 +347,7 @@ public class CoreEngine {
     }
 
     public ArrayList<MethodReference> getAllMethodRef(int offset) {
-        int size = 1000;
+        int size = 100;
         SqlSession session = factory.openSession(true);
         MethodMapper methodMapper = session.getMapper(MethodMapper.class);
         AnnoMapper annoMapper = session.getMapper(AnnoMapper.class);

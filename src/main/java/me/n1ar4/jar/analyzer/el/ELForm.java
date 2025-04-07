@@ -36,6 +36,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ELForm {
     private static final Logger logger = LogManager.getLogger();
@@ -162,57 +163,55 @@ public class ELForm {
                 int totalMethod = MainForm.getEngine().getMethodsCount();
                 logger.info("total method: {}", totalMethod);
                 int start = 3;
+                AtomicInteger taskId = new AtomicInteger(0);
                 for (int offset = 0; offset < totalMethod; ) {
-                    // ############ 进度处理 ############
-                    if (start > 89) {
-                        start = 90;
-                    } else {
-                        start++;
-                    }
-                    setVal(start);
-                    // ################################
                     List<MethodReference> mrs = MainForm.getEngine().getAllMethodRef(offset);
                     offset += mrs.size();
                     double progress = (double) offset / totalMethod;
                     String msg = String.format("running %d total %d - %.2f%%", offset, totalMethod, progress * 100);
-                    logger.info(msg);
                     msgLabel.setText(msg);
-                    for (MethodReference mr : mrs) {
-                        ClassReference.Handle ch = mr.getClassReference();
-                        MethodELProcessor processor = new MethodELProcessor(ch, mr, searchList, condition);
-                        executor.submit(processor::process);
-                    }
+                    setVal((int) (start + progress * 100));
+
+                    executor.submit(() -> {
+                        // 复制一份防止并发问题
+                        int id = taskId.incrementAndGet();
+                        List<MethodReference> mrList = new ArrayList<>(mrs);
+                        for (MethodReference mr : mrList) {
+                            ClassReference.Handle ch = mr.getClassReference();
+                            MethodELProcessor processor = new MethodELProcessor(ch, mr, searchList, condition);
+                            processor.process();
+                        }
+                        logger.info("task - {} finish", id);
+                    });
                 }
                 executor.shutdown();
+                msgLabel.setText("所有任务已加入线程池请等待执行结束");
                 try {
-                    // 超时 30 秒
-                    if (executor.awaitTermination(1, TimeUnit.MINUTES)) {
-                        logger.info("executor await termination success");
-                        if (searchList.isEmpty()) {
-                            setVal(100);
-                            searchButton.setEnabled(true);
-                            JOptionPane.showMessageDialog(this.jTextArea, "没有找到结果");
-                            return;
-                        } else {
-                            searchButton.setEnabled(true);
-                            JOptionPane.showMessageDialog(this.jTextArea, "搜索成功：找到符合表达式的方法");
-                        }
-                        setVal(95);
-                        ArrayList<ResObj> resObjList = new ArrayList<>();
-                        Object[] array = searchList.toArray();
-                        for (Object o : array) {
-                            resObjList.add((ResObj) o);
-                        }
-                        new Thread(() -> CoreHelper.refreshMethods(resObjList)).start();
-                        setVal(100);
+                    boolean allFinish = executor.awaitTermination(3, TimeUnit.MINUTES);
+                    if (!allFinish) {
+                        logger.warn("executor await termination not success");
                     } else {
-                        setVal(100);
-                        JOptionPane.showMessageDialog(this.jTextArea, "等待 1 分钟没有执行完");
+                        logger.info("executor await termination success");
                     }
-                    return;
-                } catch (InterruptedException ignored) {
+                } catch (Exception ignored) {
                 }
-                JOptionPane.showMessageDialog(this.jTextArea, "没有找到结果");
+                if (searchList.isEmpty()) {
+                    setVal(100);
+                    searchButton.setEnabled(true);
+                    JOptionPane.showMessageDialog(this.jTextArea, "没有找到结果");
+                    return;
+                } else {
+                    searchButton.setEnabled(true);
+                    JOptionPane.showMessageDialog(this.jTextArea, "搜索成功：找到符合表达式的方法");
+                }
+                ArrayList<ResObj> resObjList = new ArrayList<>();
+                Object[] array = searchList.toArray();
+                for (Object o : array) {
+                    resObjList.add((ResObj) o);
+                }
+                new Thread(() -> CoreHelper.refreshMethods(resObjList)).start();
+                setVal(100);
+                return;
             } else {
                 JOptionPane.showMessageDialog(this.jTextArea, "错误的表达式");
             }

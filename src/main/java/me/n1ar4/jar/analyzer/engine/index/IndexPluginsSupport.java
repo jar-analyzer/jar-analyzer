@@ -37,8 +37,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class IndexPluginsSupport {
     private static final Logger logger = LogManager.getLogger();
 
-    //大小写敏感开关,true区分大小写，false忽略大小写,默认为false
-    public static boolean isCaseSensitive = false;
     public final static String CurrentPath = System.getProperty("user.dir");
     public final static String DocumentPath = CurrentPath + FileUtil.FILE_SEPARATOR + Const.indexDir;
     public final static String TempPath = CurrentPath + FileUtil.FILE_SEPARATOR + Const.tempDir;

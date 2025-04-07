@@ -16,7 +16,8 @@ public class Templates {
     public static final LinkedHashMap<String, String> data = new LinkedHashMap<>();
 
     static {
-        data.put("默认模板", "#method\n" +
+        data.put("默认模板", "// 注意：过大的 JAR 文件可能非常耗时\n" +
+                "#method\n" +
                 "        .startWith(\"set\")\n" +
                 "        .endWith(\"value\")\n" +
                 "        .nameContains(\"lookup\")\n" +
@@ -34,16 +35,17 @@ public class Templates {
                 "        .hasAnno(\"RequestMapping\")\n" +
                 "        .excludeAnno(\"Auth\")\n" +
                 "        .hasField(\"context\")");
-        data.put("单 String 参数 public 构造方法",
+        data.put("单 String 参数 public 构造方法", "// 注意：过大的 JAR 文件可能非常耗时\n" +
                 "// 历史参考 PGSQL Driver RCE (CVE-2022-21724)\n" +
-                        "// 也可参考 Apache ActiveMQ RCE (CVE-2023-46604)\n" +
-                        "#method\n" +
-                        "        .nameContains(\"<init>\")\n" +
-                        "        .paramTypeMap(0,\"java.lang.String\")\n" +
-                        "        .paramsNum(1)\n" +
-                        "        .isStatic(false)\n" +
-                        "        .isPublic(true)");
-        data.put("搜索可能符合 Swing RCE 条件的方法", "// JDK CVE-2023-21939\n" +
+                "// 也可参考 Apache ActiveMQ RCE (CVE-2023-46604)\n" +
+                "#method\n" +
+                "        .nameContains(\"<init>\")\n" +
+                "        .paramTypeMap(0,\"java.lang.String\")\n" +
+                "        .paramsNum(1)\n" +
+                "        .isStatic(false)\n" +
+                "        .isPublic(true)");
+        data.put("搜索可能符合 Swing RCE 条件的方法", "// 注意：过大的 JAR 文件可能非常耗时\n" +
+                "// JDK CVE-2023-21939\n" +
                 "// 必须有一个 set 方法（以 set 开头且 public）\n" +
                 "// set 方法必须只有一个 String 类型参数\n" +
                 "// 该类必须是 Component 子类（包括间接子类）\n" +

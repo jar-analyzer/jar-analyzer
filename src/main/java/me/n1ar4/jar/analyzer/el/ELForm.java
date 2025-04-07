@@ -155,7 +155,8 @@ public class ELForm {
             logger.info("parse el success");
 
             if (value instanceof MethodEL) {
-                ExecutorService executor = Executors.newCachedThreadPool();
+                ExecutorService executor = Executors.newFixedThreadPool(
+                        Runtime.getRuntime().availableProcessors() * 3);
 
                 MethodEL condition = (MethodEL) value;
                 ConcurrentLinkedQueue<ResObj> searchList = new ConcurrentLinkedQueue<>();

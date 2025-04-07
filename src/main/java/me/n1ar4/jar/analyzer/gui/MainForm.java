@@ -894,6 +894,12 @@ public class MainForm {
         MenuUtil.setLangFlag();
 
         updateIcon();
+
+        Color elColor = new Color(198, 239, 189);
+        instance.startELSearchButton.setIcon(SvgManager.SpringIcon);
+        instance.springELStartButton.setIcon(SvgManager.SpringIcon);
+        instance.startELSearchButton.setBackground(elColor);
+        instance.springELStartButton.setBackground(elColor);
     }
 
     private static void updateIcon() {
@@ -1033,7 +1039,7 @@ public class MainForm {
                 instance.encoderLabel.setText("一个编码解码加密解密工具");
                 instance.listenerLabel.setText("一个 SOCKET 监听工具");
                 instance.spelLabel.setText("一个 SPEL 表达式搜索工具");
-                instance.startELSearchButton.setText("开始表达式搜索");
+                instance.startELSearchButton.setText("表达式搜索");
                 instance.serUtilLabel.setText("一个分析 Java 序列化数据中字节码的工具");
                 instance.bcelLabel.setText("一个分析 BCEL 字节码转为 Java 代码的工具");
 
@@ -1155,7 +1161,7 @@ public class MainForm {
                 instance.encoderLabel.setText("A tool for encode/decode encrypt/decrypt operations");
                 instance.listenerLabel.setText("A tool for listening port and send by socket");
                 instance.spelLabel.setText("A tool for Spring EL search");
-                instance.startELSearchButton.setText("Start EL Search");
+                instance.startELSearchButton.setText("EL Search");
                 instance.serUtilLabel.setText("A tool for bytecodes in Java Serialization Data");
                 instance.bcelLabel.setText("A tool for parse BCEL bytecode to Java code");
 
@@ -1471,7 +1477,7 @@ public class MainForm {
         showStringListButton.setText("All Strings");
         actionPanel.add(showStringListButton, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         startELSearchButton = new JButton();
-        startELSearchButton.setText("Start EL Search");
+        startELSearchButton.setText("EL Search");
         actionPanel.add(startELSearchButton, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         searchResPanel = new JPanel();
         searchResPanel.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));

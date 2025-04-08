@@ -194,6 +194,12 @@
 
 表达式搜索位于首页以及 `Advance` 的 `Plugins` 部分
 
+注意：如果表达式效率过低，可能是默认内存过小原因，可以考虑修改启动脚本 `-Xms` 参数
+
+```shell
+set "java_args=-XX:+UseG1GC -Xms2g -XX:MaxGCPauseMillis=200 %other_args%"
+```
+
 [详细文档](doc/README-el.md)
 
 ### 感谢列表

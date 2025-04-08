@@ -510,13 +510,25 @@ public class CoreHelper {
                 String.format("result number: %d", methodsList.size()));
     }
 
-    public static void refreshStrSearch(String val) {
+    public static void refreshStrSearch(String className, String val) {
         if (MainForm.getInstance().getEngine() == null) {
             JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                     "PLEASE BUILD DATABASE FIRST");
             return;
         }
         ArrayList<MethodResult> results = MainForm.getEngine().getMethodsByStr(val);
+        // 2025/04/08 允许字符串搜索根据类名过滤
+        if (className != null && !className.isEmpty()) {
+            className = className.replace(".", "/");
+            ArrayList<MethodResult> newReulst = new ArrayList<>();
+            for (MethodResult m : results) {
+                if (m.getClassName().equals(className)) {
+                    newReulst.add(m);
+                }
+            }
+            results.clear();
+            results.addAll(newReulst);
+        }
 
         // BALCK LIST
         ArrayList<String> bl = ListParser.parse(MainForm.getInstance().getBlackArea().getText());

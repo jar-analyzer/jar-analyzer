@@ -24,6 +24,8 @@ public class CommonSearchAction {
         methodCallR.addActionListener(e -> {
             if (methodCallR.isSelected()) {
                 LogUtil.info("select method call search");
+                MainForm.getInstance().getEqualsSearchRadioButton().setEnabled(true);
+                MainForm.getInstance().getLikeSearchRadioButton().setEnabled(true);
                 MainForm.getInstance().getSearchClassText().setEnabled(true);
                 MainForm.getInstance().getSearchMethodText().setEnabled(true);
                 MainForm.getInstance().getSearchStrText().setText(null);
@@ -33,6 +35,8 @@ public class CommonSearchAction {
         methodDefR.addActionListener(e -> {
             if (methodDefR.isSelected()) {
                 LogUtil.info("select method def search");
+                MainForm.getInstance().getEqualsSearchRadioButton().setEnabled(true);
+                MainForm.getInstance().getLikeSearchRadioButton().setEnabled(true);
                 MainForm.getInstance().getSearchClassText().setEnabled(true);
                 MainForm.getInstance().getSearchMethodText().setEnabled(true);
                 MainForm.getInstance().getSearchStrText().setText(null);
@@ -42,9 +46,14 @@ public class CommonSearchAction {
         strContainsR.addActionListener(e -> {
             if (strContainsR.isSelected()) {
                 LogUtil.info("select string contains search");
+                MainForm.getInstance().getEqualsSearchRadioButton().setEnabled(false);
+                MainForm.getInstance().getLikeSearchRadioButton().setEnabled(false);
                 MainForm.getInstance().getSearchClassText().setText(null);
                 MainForm.getInstance().getSearchMethodText().setText(null);
-                MainForm.getInstance().getSearchClassText().setEnabled(false);
+                // 2025/04/08 FIX
+                // 允许字符串搜索指定 CLASS
+                // MainForm.getInstance().getSearchClassText().setEnabled(false);
+                MainForm.getInstance().getSearchClassText().setEnabled(true);
                 MainForm.getInstance().getSearchMethodText().setEnabled(false);
                 MainForm.getInstance().getSearchStrText().setEnabled(true);
             }
@@ -52,6 +61,8 @@ public class CommonSearchAction {
         binaryR.addActionListener(e -> {
             if (binaryR.isSelected()) {
                 LogUtil.info("select binary search");
+                MainForm.getInstance().getEqualsSearchRadioButton().setEnabled(false);
+                MainForm.getInstance().getLikeSearchRadioButton().setEnabled(false);
                 MainForm.getInstance().getSearchClassText().setText(null);
                 MainForm.getInstance().getSearchMethodText().setText(null);
                 MainForm.getInstance().getSearchClassText().setEnabled(false);

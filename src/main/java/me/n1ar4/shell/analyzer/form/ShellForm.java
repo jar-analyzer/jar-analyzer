@@ -243,7 +243,6 @@ public class ShellForm {
 
             staticMap.clear();
 
-            ProcessDialog.createProgressDialog(rootPanel);
             JDialog dialog = ProcessDialog.createProgressDialog(MainForm.getInstance().getMasterPanel());
             new Thread(() -> dialog.setVisible(true)).start();
             new Thread() {

@@ -47,7 +47,7 @@ if __name__ == '__main__':
     print("[*] make new release dir: {}".format(VERSION))
     release_win_system_dir = "jar-analyzer-{}-windows-system".format(VERSION)
     release_win_full_dir = "jar-analyzer-{}-windows-full".format(VERSION)
-    release_win_23_dir = "jar-analyzer-{}-windows-23".format(VERSION)
+    release_win_24_dir = "jar-analyzer-{}-windows-24".format(VERSION)
     release_zip_dir = "jar-analyzer-{}".format(VERSION)
 
     print("[*] make dirs")
@@ -55,30 +55,30 @@ if __name__ == '__main__':
     subprocess.run("mkdir {}\\{}".format(release_win_system_dir, "lib"), shell=True, cwd=target_directory)
     subprocess.run("mkdir {}".format(release_win_full_dir), shell=True, cwd=target_directory)
     subprocess.run("mkdir {}\\{}".format(release_win_full_dir, "lib"), shell=True, cwd=target_directory)
-    subprocess.run("mkdir {}".format(release_win_23_dir), shell=True, cwd=target_directory)
-    subprocess.run("mkdir {}\\{}".format(release_win_23_dir, "lib"), shell=True, cwd=target_directory)
+    subprocess.run("mkdir {}".format(release_win_24_dir), shell=True, cwd=target_directory)
+    subprocess.run("mkdir {}\\{}".format(release_win_24_dir, "lib"), shell=True, cwd=target_directory)
     subprocess.run("mkdir {}".format(release_zip_dir), shell=True, cwd=target_directory)
     subprocess.run("mkdir {}\\{}".format(release_zip_dir, "lib"), shell=True, cwd=target_directory)
 
     print("[*] copy file")
     copy_jar_files(java_target_directory, "{}/{}/{}".format(target_directory, release_win_system_dir, "lib"))
     copy_jar_files(java_target_directory, "{}/{}/{}".format(target_directory, release_win_full_dir, "lib"))
-    copy_jar_files(java_target_directory, "{}/{}/{}".format(target_directory, release_win_23_dir, "lib"))
+    copy_jar_files(java_target_directory, "{}/{}/{}".format(target_directory, release_win_24_dir, "lib"))
     copy_jar_files(java_target_directory, "{}/{}/{}".format(target_directory, release_zip_dir, "lib"))
 
     copy_exe_files("{}/{}".format(target_directory, release_win_system_dir))
     copy_exe_files("{}/{}".format(target_directory, release_win_full_dir))
-    copy_exe_files("{}/{}".format(target_directory, release_win_23_dir))
+    copy_exe_files("{}/{}".format(target_directory, release_win_24_dir))
 
     print("[*] build start scripts")
     copy_file("build\\start-system.bat", "release\\" + release_win_system_dir + "\\start.bat")
     copy_file("build\\start-full.bat", "release\\" + release_win_full_dir + "\\start.bat")
-    copy_file("build\\start-23.bat", "release\\" + release_win_23_dir + "\\start.bat")
+    copy_file("build\\start-24.bat", "release\\" + release_win_24_dir + "\\start.bat")
 
     print("[*] build license")
     copy_file("LICENSE", "release\\" + release_win_system_dir + "\\LICENSE")
     copy_file("LICENSE", "release\\" + release_win_full_dir + "\\LICENSE")
-    copy_file("LICENSE", "release\\" + release_win_23_dir + "\\LICENSE")
+    copy_file("LICENSE", "release\\" + release_win_24_dir + "\\LICENSE")
     copy_file("LICENSE", "release\\" + release_zip_dir + "\\LICENSE")
 
     print("[*] build version")
@@ -87,7 +87,7 @@ if __name__ == '__main__':
     subprocess.run("echo {} > {}".format(VERSION, "VERSION.txt"), shell=True,
                    cwd="{}/{}".format(target_directory, release_win_full_dir))
     subprocess.run("echo {} > {}".format(VERSION, "VERSION.txt"), shell=True,
-                   cwd="{}/{}".format(target_directory, release_win_23_dir))
+                   cwd="{}/{}".format(target_directory, release_win_24_dir))
     subprocess.run("echo {} > {}".format(VERSION, "VERSION.txt"), shell=True,
                    cwd="{}/{}".format(target_directory, release_zip_dir))
 
@@ -97,7 +97,7 @@ if __name__ == '__main__':
     subprocess.run("echo {} > {}".format(PROJECT, "ABOUT.txt"), shell=True,
                    cwd="{}/{}".format(target_directory, release_win_full_dir))
     subprocess.run("echo {} > {}".format(PROJECT, "ABOUT.txt"), shell=True,
-                   cwd="{}/{}".format(target_directory, release_win_23_dir))
+                   cwd="{}/{}".format(target_directory, release_win_24_dir))
     subprocess.run("echo {} > {}".format(PROJECT, "ABOUT.txt"), shell=True,
                    cwd="{}/{}".format(target_directory, release_zip_dir))
 
@@ -107,13 +107,13 @@ if __name__ == '__main__':
     print("[*] copy agent.jar")
     copy_file("lib\\agent.jar", "release\\" + release_win_system_dir + "\\lib\\agent.jar")
     copy_file("lib\\agent.jar", "release\\" + release_win_full_dir + "\\lib\\agent.jar")
-    copy_file("lib\\agent.jar", "release\\" + release_win_23_dir + "\\lib\\agent.jar")
+    copy_file("lib\\agent.jar", "release\\" + release_win_24_dir + "\\lib\\agent.jar")
     copy_file("lib\\agent.jar", "release\\" + release_zip_dir + "\\lib\\agent.jar")
 
     print("[*] copy vulnerability.yaml file")
     copy_file("vulnerability.yaml", "release\\" + release_win_system_dir + "\\vulnerability.yaml")
     copy_file("vulnerability.yaml", "release\\" + release_win_full_dir + "\\vulnerability.yaml")
-    copy_file("vulnerability.yaml", "release\\" + release_win_23_dir + "\\vulnerability.yaml")
+    copy_file("vulnerability.yaml", "release\\" + release_win_24_dir + "\\vulnerability.yaml")
     copy_file("vulnerability.yaml", "release\\" + release_zip_dir + "\\vulnerability.yaml")
 
     print("[*] copy windows tools.jar")
@@ -123,17 +123,17 @@ if __name__ == '__main__':
     print("[*] copy jd-gui")
     copy_file("lib\\jd-gui-1.6.6.jar", "release\\" + release_win_system_dir + "\\lib\\jd-gui-1.6.6.jar")
     copy_file("lib\\jd-gui-1.6.6.jar", "release\\" + release_win_full_dir + "\\lib\\jd-gui-1.6.6.jar")
-    copy_file("lib\\jd-gui-1.6.6.jar", "release\\" + release_win_23_dir + "\\lib\\jd-gui-1.6.6.jar")
+    copy_file("lib\\jd-gui-1.6.6.jar", "release\\" + release_win_24_dir + "\\lib\\jd-gui-1.6.6.jar")
     copy_file("lib\\jd-gui-1.6.6.jar", "release\\" + release_zip_dir + "\\lib\\jd-gui-1.6.6.jar")
 
     print("[*] copy jd-gui readme")
     copy_file("lib\\README.md", "release\\" + release_win_system_dir + "\\lib\\README.md")
     copy_file("lib\\README.md", "release\\" + release_win_full_dir + "\\lib\\README.md")
-    copy_file("lib\\README.md", "release\\" + release_win_23_dir + "\\lib\\README.md")
+    copy_file("lib\\README.md", "release\\" + release_win_24_dir + "\\lib\\README.md")
     copy_file("lib\\README.md", "release\\" + release_zip_dir + "\\lib\\README.md")
 
     print("[*] copy jd-gui license")
     copy_file("lib\\LICENSE", "release\\" + release_win_system_dir + "\\lib\\LICENSE")
     copy_file("lib\\LICENSE", "release\\" + release_win_full_dir + "\\lib\\LICENSE")
-    copy_file("lib\\LICENSE", "release\\" + release_win_23_dir + "\\lib\\LICENSE")
+    copy_file("lib\\LICENSE", "release\\" + release_win_24_dir + "\\lib\\LICENSE")
     copy_file("lib\\LICENSE", "release\\" + release_zip_dir + "\\lib\\LICENSE")

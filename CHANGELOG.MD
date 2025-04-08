@@ -32,6 +32,7 @@
 - [优化] 美化 `GUI` 给每个菜单添加对应的图标 @4ra1n
 - [优化] 优化 `Spring` 分析部分支持类型显示 @Gosiu
 - [优化] 删减依赖并优化 `LUCENE` 索引存储和搜索性能 @Gosiu
+- [其他] 升级内置 `JRE-23` 为 `JRE-24` @4ra1n
 
 感谢以下用户的贡献:
 
@@ -43,7 +44,7 @@
 所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
 
 - `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (**完整版本**)
-- `windows-23` 版内置开启 `ZGC` 的 `JRE 23` 环境（仅包含核心功能）
+- `windows-24` 版内置开启 `ZGC` 的 `JRE 24` 环境（仅包含核心功能）
 - `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
 - `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
 

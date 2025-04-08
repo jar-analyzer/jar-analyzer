@@ -10,8 +10,6 @@
 
 package me.n1ar4.jar.analyzer.gui;
 
-import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONWriter;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
@@ -47,8 +45,6 @@ import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.utils.DirUtil;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVPrinter;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -58,11 +54,10 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.io.FileWriter;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.Locale;
 
 public class MainForm {
     private static final Logger logger = LogManager.getLogger();

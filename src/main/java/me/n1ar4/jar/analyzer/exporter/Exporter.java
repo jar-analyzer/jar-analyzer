@@ -12,5 +12,6 @@ package me.n1ar4.jar.analyzer.exporter;
 
 public interface Exporter {
     boolean doExport();
+
     String getFileName();
 }

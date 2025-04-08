@@ -1344,15 +1344,15 @@ public class MainForm {
         leftPanel.add(fileTreeSearchPanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, new Dimension(250, -1), new Dimension(250, -1), null, 0, false));
         searchFileNamePanel = new JPanel();
         searchFileNamePanel.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
-        fileTreeSearchPanel.add(searchFileNamePanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, new Dimension(248, -1), new Dimension(248, -1), new Dimension(248, -1), 0, false));
+        fileTreeSearchPanel.add(searchFileNamePanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, new Dimension(248, -1), new Dimension(248, -1), null, 0, false));
         searchFileNamePanel.setBorder(BorderFactory.createTitledBorder(null, "File Name (press 'ENTER' to next)", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         fileTreeSearchTextField = new JTextField();
         fileTreeSearchTextField.setVisible(true);
-        searchFileNamePanel.add(fileTreeSearchTextField, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, new Dimension(200, -1), new Dimension(200, -1), new Dimension(200, -1), 0, false));
+        searchFileNamePanel.add(fileTreeSearchTextField, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, new Dimension(200, -1), new Dimension(200, -1), null, 0, false));
         fileTreeSearchLabel = new JLabel();
         fileTreeSearchLabel.setText("");
         fileTreeSearchLabel.setVisible(false);
-        searchFileNamePanel.add(fileTreeSearchLabel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, new Dimension(246, -1), new Dimension(246, -1), new Dimension(246, -1), 0, false));
+        searchFileNamePanel.add(fileTreeSearchLabel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, new Dimension(246, -1), new Dimension(246, -1), null, 0, false));
         treeContentSplit = new JSplitPane();
         treeContentSplit.setDividerLocation(760);
         treeContentSplit.setOrientation(0);

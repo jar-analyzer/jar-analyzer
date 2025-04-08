@@ -219,7 +219,7 @@ public class SyntaxAreaHelper {
     }
 
     public static JTextArea buildSQL(JPanel codePanel) {
-        RSyntaxTextArea textArea = new RSyntaxTextArea();
+        RSyntaxTextArea textArea = new RSyntaxTextArea(10,80);
         textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_SQL);
         textArea.setCodeFoldingEnabled(true);
 

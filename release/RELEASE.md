@@ -4,9 +4,9 @@ Use `Eclipse Temurin JRE 8`
 
 - https://adoptium.net/zh-CN/temurin/releases/?os=windows&arch=x64&package=jre&version=8
 
-Use `Eclipse Temurin JRE 24`
+Use `Eclipse Temurin JRE 21`
 
-- https://adoptium.net/zh-CN/temurin/releases/?version=24&package=jre&os=windows&arch=x64
+- https://adoptium.net/zh-CN/temurin/releases/?version=21&package=jre&os=windows&arch=x64
 
 Jar Analyzer Workflow JRE Repo
 

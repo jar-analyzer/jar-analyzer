@@ -4,9 +4,9 @@ Use `Eclipse Temurin JRE 8`
 
 - https://adoptium.net/zh-CN/temurin/releases/?os=windows&arch=x64&package=jre&version=8
 
-Use `Eclipse Temurin JRE 23`
+Use `Eclipse Temurin JRE 21`
 
-- https://adoptium.net/zh-CN/temurin/releases/?version=23&package=jre&os=windows&arch=x64
+- https://adoptium.net/zh-CN/temurin/releases/?version=21&package=jre&os=windows&arch=x64
 
 Jar Analyzer Workflow JRE Repo
 
@@ -14,6 +14,7 @@ Jar Analyzer Workflow JRE Repo
 
 Steps:
 
+- Sync `CHANGELOG.MD` file to `src/main/resources`
 - Run `go run .\github\main.go proxy` to clean actions
 - Run `me/n1ar4/support/Contributor.java` to generate thanks.txt
 - Run `me/n1ar4/support/ContributorMD.java` to generate thanks.md

@@ -1,6 +1,6 @@
 # Jar-Analyzer
 
-[CHANGE LOG](src/main/resources/CHANGELOG.MD)
+[CHANGE LOG](CHANGELOG.MD)
 
 <img alt="gitleaks badge" src="https://img.shields.io/badge/protected%20by-gitleaks-blue">
 
@@ -16,6 +16,10 @@
 
 ![](img/0046.png)
 
+静态分析 `spring / java web` 项目
+
+![](img/0072.png)
+
 一键快速搜索（自从 `4.0` 版本后支持通过配置动态生成 `GUI` 按钮）
 
 ![](img/0060.png)
@@ -30,19 +34,13 @@
       methodDesc: null
 ```
 
-静态分析 `spring` 项目
-
-![](img/0009.png)
-
 通过 `agent` 分析 `tomcat`
 
 ![](img/0065.png)
 
-自定义表达式搜索
+自从 `5.0` 版本后大幅改进了表达式搜索功能
 
-![](img/0028.png)
-
-详细文档目录：[文档](doc)
+![](img/0073.png)
 
 从 `4.0` 版本后支持信息泄露检查（部分正则来源于 [HaE](https://github.com/gh0stkey/HaE) 项目）
 
@@ -51,17 +49,6 @@
 从 `4.0` 版本开始可以和 `IDEA` 一样快捷键两次 `shift` 调出 `Lucene` 全局搜索
 
 ![](img/0067.png)
-
-自从 `4.0` 版本开始修复增强批量反编译 `Jar` 导出功能
-
-![](img/0068.png)
-
-自从 `4.1` 版本后支持选择启动引擎和使用 [JD-GUI](https://github.com/java-decompiler/jd-gui) 快速查看两种方式
-
-- 启动引擎分析通常是非常耗时的操作，有时候我们没有必要完全分析
-- 启动 `JD-GUI` 可以快速反编译和查看字节码，用于某些场景
-
-![](img/0069.png)
 
 自从 `4.2` 版本后支持黑暗主题切换
 
@@ -129,6 +116,9 @@
 - 自从 `4.1` 版本后内置 `JD-GUI` 可以跳过分析快速查看
 - 自从 `4.2` 版本后支持黑暗主题切换
 - 自从 `4.4` 版本后支持不跳转情况下右键预览方法代码
+- 自从 `5.0` 版本之后 `Panel` 支持拖动拉伸缩小
+- 自从 `5.0` 版本之后支持了 `Interceptor/Servlet/Filter/Listener` 分析
+- 自从 `5.0` 版本之后大幅改进了表达式搜索相关功能
 
 更多的功能正在开发中
 
@@ -204,11 +194,13 @@
 
 表达式搜索位于首页以及 `Advance` 的 `Plugins` 部分
 
+注意：如果表达式效率过低，可能是默认内存过小原因，可以考虑修改启动脚本 `-Xms` 参数
+
+```shell
+set "java_args=-XX:+UseG1GC -Xms2g -XX:MaxGCPauseMillis=200 %other_args%"
+```
+
 [详细文档](doc/README-el.md)
-
-## 相关
-
-想深入交流可以发联系方式到邮箱后我拉你进群：`ZW15aXFpbmdAZ21haWwuY29t`
 
 ### 感谢列表
 

@@ -42,6 +42,8 @@
         <mapper resource="mappers/MethodImplMapper.xml"/>
         <mapper resource="mappers/StringMapper.xml"/>
         <mapper resource="mappers/SpringControllerMapper.xml"/>
+        <mapper resource="mappers/SpringInterceptorMapper.xml"/>
         <mapper resource="mappers/SpringMethodMapper.xml"/>
+        <mapper resource="mappers/JavaWebMapper.xml"/>
     </mappers>
 </configuration>

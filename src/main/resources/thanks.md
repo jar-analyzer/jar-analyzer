@@ -2,8 +2,8 @@ JAR ANALYZER 感谢以下贡献者
 
 感谢列表:
 
-1. 4ra1n (https://github.com/4ra1n) COMMITS: 866
-2. Honey Baby (https://github.com/Gosiu) COMMITS: 32
+1. 4ra1n (https://github.com/4ra1n) COMMITS: 912
+2. Honey Baby (https://github.com/Gosiu) COMMITS: 44
 3. fantasy (https://github.com/ly-test-fuzz) COMMITS: 15
 4. phil (https://github.com/sensensen404) COMMITS: 6
 5. whw1sfb (https://github.com/whwlsfb) COMMITS: 2

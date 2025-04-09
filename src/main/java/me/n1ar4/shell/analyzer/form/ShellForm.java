@@ -163,7 +163,7 @@ public class ShellForm {
                 }
             }
         } catch (Exception ex) {
-            log("无法获得信息: " + ex.getMessage());
+            log("cannot get message : " + ex.getMessage());
         }
         try {
             List<String> valves = SocketHelper.getAllValves();
@@ -177,7 +177,7 @@ public class ShellForm {
                 panelInfo.dataCache.add(co);
             }
         } catch (Exception ex) {
-            log("无法获得信息: " + ex.getMessage());
+            log("cannot get message : " + ex.getMessage());
         }
         tabbedPane.removeAll();
         for (PanelInfo nowPanelInfo : srpMap.values()) {
@@ -243,18 +243,17 @@ public class ShellForm {
 
             staticMap.clear();
 
-            ProcessDialog.createProgressDialog(rootPanel);
             JDialog dialog = ProcessDialog.createProgressDialog(MainForm.getInstance().getMasterPanel());
             new Thread(() -> dialog.setVisible(true)).start();
             new Thread() {
                 @Override
                 public void run() {
                     if (SocketHelper.check()) {
-                        log("成功目标建立TCP连接");
+                        log("tcp connect success");
                         dialog.dispose();
                         analyze();
                     } else {
-                        log("无法与目标建立TCP连接");
+                        log("cannot connect to target");
                         dialog.dispose();
                         JOptionPane.showMessageDialog(rootPanel, "无法建立连接");
                     }
@@ -321,19 +320,19 @@ public class ShellForm {
             infoModel.clear();
         }
 
-        log("尝试获取字节码进行反编译: " + res.getClassName());
+        log("get bytecode : " + res.getClassName());
 
         new Thread(() -> {
             try {
                 SocketHelper.getBytecode(res.getClassName());
             } catch (Exception ex) {
-                log("无法连接目标: " + ex.getMessage());
+                log("cannot connect to target : " + ex.getMessage());
             }
             String classPath = "test.class";
             String javaDir = ".";
             Path javaPathPath = Paths.get("test.java");
             if (!Files.exists(Paths.get(classPath))) {
-                log("未知的错误");
+                log("unknown error");
                 return;
             }
             try {

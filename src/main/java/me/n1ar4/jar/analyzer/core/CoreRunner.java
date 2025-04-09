@@ -19,6 +19,7 @@ import me.n1ar4.jar.analyzer.engine.CoreEngine;
 import me.n1ar4.jar.analyzer.engine.CoreHelper;
 import me.n1ar4.jar.analyzer.entity.ClassFileEntity;
 import me.n1ar4.jar.analyzer.gui.MainForm;
+import me.n1ar4.jar.analyzer.gui.ModeSelector;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
 import me.n1ar4.jar.analyzer.gui.util.MenuUtil;
 import me.n1ar4.jar.analyzer.starter.Const;
@@ -43,6 +44,8 @@ import java.util.*;
 
 public class CoreRunner {
     private static final Logger logger = LogManager.getLogger();
+
+    private static boolean quickMode = false;
 
     public static void run(Path jarPath, Path rtJarPath, boolean fixClass, JDialog dialog) {
         // 2024-12-30
@@ -86,6 +89,28 @@ public class CoreRunner {
             if (chose != 0) {
                 MainForm.getInstance().getStartBuildDatabaseButton().setEnabled(true);
                 return;
+            }
+
+            // 2025/04/06 FEAT
+            // 允许选择标准模式和快速模式两种方式
+            int res = ModeSelector.show();
+            switch (res) {
+                case 0:
+                    JOptionPane.showMessageDialog(null, "你必须选择一种模式");
+                    MainForm.getInstance().getStartBuildDatabaseButton().setEnabled(true);
+                    return;
+                case 1:
+                    quickMode = false;
+                    logger.info("use std mode");
+                    break;
+                case 2:
+                    quickMode = true;
+                    logger.info("use quick mode");
+                    break;
+                default:
+                    logger.error("unknown mode");
+                    MainForm.getInstance().getStartBuildDatabaseButton().setEnabled(true);
+                    return;
             }
 
             if (dialog != null) {
@@ -200,53 +225,69 @@ public class CoreRunner {
         MainForm.getInstance().getBuildBar().setValue(35);
         MethodCallRunner.start(AnalyzeEnv.classFileList, AnalyzeEnv.methodCalls);
         MainForm.getInstance().getBuildBar().setValue(40);
-        AnalyzeEnv.inheritanceMap = InheritanceRunner.derive(AnalyzeEnv.classMap);
-        MainForm.getInstance().getBuildBar().setValue(50);
-        logger.info("build inheritance");
-        LogUtil.info("build inheritance");
-        Map<MethodReference.Handle, Set<MethodReference.Handle>> implMap =
-                InheritanceRunner.getAllMethodImplementations(AnalyzeEnv.inheritanceMap, AnalyzeEnv.methodMap);
-        DatabaseManager.saveImpls(implMap);
-        MainForm.getInstance().getBuildBar().setValue(60);
 
-        // 2024/09/02
-        // 自动处理方法实现是可选的
-        // 具体参考 doc/README-others.md
-        if (MenuUtil.enableFixMethodImpl()) {
-            // 方法 -> [所有子类 override 方法列表]
-            for (Map.Entry<MethodReference.Handle, Set<MethodReference.Handle>> entry :
-                    implMap.entrySet()) {
-                MethodReference.Handle k = entry.getKey();
-                Set<MethodReference.Handle> v = entry.getValue();
-                // 当前方法的所有 callee 列表
-                HashSet<MethodReference.Handle> calls = AnalyzeEnv.methodCalls.get(k);
-                // 增加所有的 override 方法
-                calls.addAll(v);
+        if (!quickMode) {
+            AnalyzeEnv.inheritanceMap = InheritanceRunner.derive(AnalyzeEnv.classMap);
+            MainForm.getInstance().getBuildBar().setValue(50);
+            logger.info("build inheritance");
+            LogUtil.info("build inheritance");
+            Map<MethodReference.Handle, Set<MethodReference.Handle>> implMap =
+                    InheritanceRunner.getAllMethodImplementations(AnalyzeEnv.inheritanceMap, AnalyzeEnv.methodMap);
+            DatabaseManager.saveImpls(implMap);
+            MainForm.getInstance().getBuildBar().setValue(60);
+
+            // 2024/09/02
+            // 自动处理方法实现是可选的
+            // 具体参考 doc/README-others.md
+            if (MenuUtil.enableFixMethodImpl()) {
+                // 方法 -> [所有子类 override 方法列表]
+                for (Map.Entry<MethodReference.Handle, Set<MethodReference.Handle>> entry :
+                        implMap.entrySet()) {
+                    MethodReference.Handle k = entry.getKey();
+                    Set<MethodReference.Handle> v = entry.getValue();
+                    // 当前方法的所有 callee 列表
+                    HashSet<MethodReference.Handle> calls = AnalyzeEnv.methodCalls.get(k);
+                    // 增加所有的 override 方法
+                    calls.addAll(v);
+                }
+            } else {
+                logger.warn("enable fix method impl/override is recommend");
             }
+
+            DatabaseManager.saveMethodCalls(AnalyzeEnv.methodCalls);
+            MainForm.getInstance().getBuildBar().setValue(70);
+            logger.info("build extra inheritance");
+            LogUtil.info("build extra inheritance");
+            for (ClassFileEntity file : AnalyzeEnv.classFileList) {
+                try {
+                    StringClassVisitor dcv = new StringClassVisitor(AnalyzeEnv.strMap, AnalyzeEnv.classMap, AnalyzeEnv.methodMap);
+                    ClassReader cr = new ClassReader(file.getFile());
+                    cr.accept(dcv, Const.AnalyzeASMOptions);
+                } catch (Exception ex) {
+                    logger.error("string analyze error: {}", ex.toString());
+                }
+            }
+
+            MainForm.getInstance().getBuildBar().setValue(80);
+            DatabaseManager.saveStrMap(AnalyzeEnv.strMap, AnalyzeEnv.stringAnnoMap);
+
+            SpringService.start(AnalyzeEnv.classFileList, AnalyzeEnv.controllers, AnalyzeEnv.classMap, AnalyzeEnv.methodMap);
+            DatabaseManager.saveSpring(AnalyzeEnv.controllers);
+
+            OtherWebService.start(AnalyzeEnv.classFileList,
+                    AnalyzeEnv.interceptors,
+                    AnalyzeEnv.servlets, AnalyzeEnv.filters, AnalyzeEnv.listeners);
+            DatabaseManager.saveSpringI(AnalyzeEnv.interceptors);
+            DatabaseManager.saveServlets(AnalyzeEnv.servlets);
+            DatabaseManager.saveFilters(AnalyzeEnv.filters);
+            DatabaseManager.saveListeners(AnalyzeEnv.listeners);
+
+            MainForm.getInstance().getBuildBar().setValue(90);
         } else {
-            logger.warn("enable fix method impl/override is recommend");
+            MainForm.getInstance().getBuildBar().setValue(70);
+            DatabaseManager.saveMethodCalls(AnalyzeEnv.methodCalls);
         }
 
-        DatabaseManager.saveMethodCalls(AnalyzeEnv.methodCalls);
-        MainForm.getInstance().getBuildBar().setValue(70);
-        logger.info("build extra inheritance");
-        LogUtil.info("build extra inheritance");
-        for (ClassFileEntity file : AnalyzeEnv.classFileList) {
-            try {
-                StringClassVisitor dcv = new StringClassVisitor(AnalyzeEnv.strMap, AnalyzeEnv.classMap, AnalyzeEnv.methodMap);
-                ClassReader cr = new ClassReader(file.getFile());
-                cr.accept(dcv, Const.AnalyzeASMOptions);
-            } catch (Exception ex) {
-                logger.error("string analyze error: {}", ex.toString());
-            }
-        }
-        MainForm.getInstance().getBuildBar().setValue(80);
-        DatabaseManager.saveStrMap(AnalyzeEnv.strMap, AnalyzeEnv.stringAnnoMap);
-
-        SpringService.start(AnalyzeEnv.classFileList, AnalyzeEnv.controllers, AnalyzeEnv.classMap, AnalyzeEnv.methodMap);
-        DatabaseManager.saveSpring(AnalyzeEnv.controllers);
-
-        MainForm.getInstance().getBuildBar().setValue(90);
         logger.info("build database finish");
         LogUtil.info("build database finish");
 
@@ -293,8 +334,10 @@ public class CoreRunner {
         AnalyzeEnv.methodMap.clear();
         AnalyzeEnv.methodCalls.clear();
         AnalyzeEnv.strMap.clear();
-        AnalyzeEnv.inheritanceMap.getInheritanceMap().clear();
-        AnalyzeEnv.inheritanceMap.getSubClassMap().clear();
+        if (!quickMode) {
+            AnalyzeEnv.inheritanceMap.getInheritanceMap().clear();
+            AnalyzeEnv.inheritanceMap.getSubClassMap().clear();
+        }
         AnalyzeEnv.controllers.clear();
         System.gc();
 
@@ -303,6 +346,10 @@ public class CoreRunner {
         MainForm.getInstance().getClassWhiteArea().setEditable(false);
 
         CoreHelper.refreshSpringC();
+        CoreHelper.refreshSpringI();
+        CoreHelper.refreshServlets();
+        CoreHelper.refreshFilters();
+        CoreHelper.refreshLiteners();
 
         if (dialog != null) {
             dialog.dispose();

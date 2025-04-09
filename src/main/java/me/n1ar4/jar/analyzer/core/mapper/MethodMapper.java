@@ -36,5 +36,7 @@ public interface MethodMapper {
                      @Param("methodDesc") String methodDesc,
                      @Param("newItem") String newItem);
 
-    List<MethodResult> selectAllMethods();
+    int selectCount();
+
+    List<MethodResult> selectAllMethods(@Param("size") int size, @Param("offset") int offset);
 }

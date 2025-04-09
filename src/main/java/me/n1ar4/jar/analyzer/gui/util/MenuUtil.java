@@ -74,7 +74,7 @@ public class MenuUtil {
         fixClassPathConfig.setState(false);
         sortedByMethodConfig.setState(false);
         sortedByClassConfig.setState(true);
-        logAllSqlConfig.setSelected(true);
+        logAllSqlConfig.setSelected(false);
         enableFixMethodImplConfig.setSelected(true);
 
         chineseConfig.addActionListener(e -> {

@@ -16,8 +16,10 @@ import java.util.Map;
 @SuppressWarnings("unused")
 public class MethodEL {
     private String classNameContains;
+    private String classNameNotContains;
     private Map<Integer, String> paramTypes;
     private String nameContains;
+    private String nameNotContains;
     private String startWith;
     private String endWith;
     private String returnType;
@@ -25,62 +27,27 @@ public class MethodEL {
     private String isSuperClassOf;
     private Integer paramsNum;
     private Boolean isStatic;
+    private Boolean isPublic;
     private String methodAnno;
     private String excludedMethodAnno;
     private String classAnno;
     private String field;
 
     // -------------------- GETTER/SETTER -------------------- //
-    public String getStartWith() {
-        return startWith;
-    }
-
-    public void setStartWith(String startWith) {
-        this.startWith = startWith;
-    }
-
-    public String getEndWith() {
-        return endWith;
-    }
-
-    public void setEndWith(String endWith) {
-        this.endWith = endWith;
-    }
-
-    public String getIsSubClassOf() {
-        return isSubClassOf;
-    }
-
-    public void setIsSubClassOf(String isSubClassOf) {
-        this.isSubClassOf = isSubClassOf;
-    }
-
-    public String getIsSuperClassOf() {
-        return isSuperClassOf;
-    }
-
-    public void setIsSuperClassOf(String isSuperClassOf) {
-        this.isSuperClassOf = isSuperClassOf;
-    }
-
-    public void setParamsNum(Integer paramsNum) {
-        this.paramsNum = paramsNum;
-    }
-
-    public Boolean getStatic() {
-        return isStatic;
-    }
-
-    public void setStatic(Boolean aStatic) {
-        isStatic = aStatic;
-    }
-
     public String getClassNameContains() {
         return classNameContains;
     }
 
     public void setClassNameContains(String classNameContains) {
         this.classNameContains = classNameContains;
+    }
+
+    public String getClassNameNotContains() {
+        return classNameNotContains;
+    }
+
+    public void setClassNameNotContains(String classNameNotContains) {
+        this.classNameNotContains = classNameNotContains;
     }
 
     public Map<Integer, String> getParamTypes() {
@@ -99,6 +66,30 @@ public class MethodEL {
         this.nameContains = nameContains;
     }
 
+    public String getNameNotContains() {
+        return nameNotContains;
+    }
+
+    public void setNameNotContains(String nameNotContains) {
+        this.nameNotContains = nameNotContains;
+    }
+
+    public String getStartWith() {
+        return startWith;
+    }
+
+    public void setStartWith(String startWith) {
+        this.startWith = startWith;
+    }
+
+    public String getEndWith() {
+        return endWith;
+    }
+
+    public void setEndWith(String endWith) {
+        this.endWith = endWith;
+    }
+
     public String getReturnType() {
         return returnType;
     }
@@ -107,20 +98,44 @@ public class MethodEL {
         this.returnType = returnType;
     }
 
+    public String getIsSubClassOf() {
+        return isSubClassOf;
+    }
+
+    public void setIsSubClassOf(String isSubClassOf) {
+        this.isSubClassOf = isSubClassOf;
+    }
+
+    public String getIsSuperClassOf() {
+        return isSuperClassOf;
+    }
+
+    public void setIsSuperClassOf(String isSuperClassOf) {
+        this.isSuperClassOf = isSuperClassOf;
+    }
+
     public Integer getParamsNum() {
         return paramsNum;
     }
 
-    public void setParamsNum(int paramsNum) {
+    public void setParamsNum(Integer paramsNum) {
         this.paramsNum = paramsNum;
     }
 
-    public Boolean isStatic() {
+    public Boolean getStatic() {
         return isStatic;
     }
 
-    public void setStatic(boolean aStatic) {
+    public void setStatic(Boolean aStatic) {
         isStatic = aStatic;
+    }
+
+    public Boolean getPublic() {
+        return isPublic;
+    }
+
+    public void setPublic(Boolean aPublic) {
+        isPublic = aPublic;
     }
 
     public String getMethodAnno() {
@@ -159,12 +174,18 @@ public class MethodEL {
         this.paramTypes = new HashMap<>();
         this.paramsNum = null;
         this.isStatic = null;
+        this.isPublic = null;
     }
 
     // -------------------- EL -------------------- //
 
     public MethodEL nameContains(String str) {
         this.nameContains = str;
+        return this;
+    }
+
+    public MethodEL nameNotContains(String str) {
+        this.nameNotContains = str;
         return this;
     }
 
@@ -180,6 +201,11 @@ public class MethodEL {
 
     public MethodEL classNameContains(String str) {
         this.classNameContains = str;
+        return this;
+    }
+
+    public MethodEL classNameNotContains(String str) {
+        this.classNameNotContains = str;
         return this;
     }
 
@@ -200,6 +226,11 @@ public class MethodEL {
 
     public MethodEL isStatic(boolean flag) {
         this.isStatic = flag;
+        return this;
+    }
+
+    public MethodEL isPublic(boolean flag) {
+        this.isPublic = flag;
         return this;
     }
 

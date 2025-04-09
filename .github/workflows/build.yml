@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  VERSION: "4.4"
+  VERSION: "5.0"
 
 jobs:
 
@@ -55,9 +55,9 @@ jobs:
           curl -L "https://github.com/jar-analyzer/workflow_jre/releases/download/temurin-8u442/jre.zip" -o "jre-8.zip"
         working-directory: jar-analyzer
 
-      - name: download jre-23
+      - name: download jre-21
         run: |
-          curl -L "https://github.com/jar-analyzer/workflow_jre/releases/download/temurin-23.0.2/jre.zip" -o "jre-23.zip"
+          curl -L "https://github.com/jar-analyzer/workflow_jre/releases/download/temurin-21.0.6/jre.zip" -o "jre-21.zip"
         working-directory: jar-analyzer
 
       - name: unpack jre-8
@@ -65,9 +65,9 @@ jobs:
           unzip jre-8.zip -d release\jar-analyzer-${{ env.VERSION }}-windows-full\
         working-directory: jar-analyzer
 
-      - name: unpack jre-23
+      - name: unpack jre-21
         run: >
-          unzip jre-23.zip -d release\jar-analyzer-${{ env.VERSION }}-windows-23\
+          unzip jre-21.zip -d release\jar-analyzer-${{ env.VERSION }}-windows-21\
         working-directory: jar-analyzer
 
       - name: zip release
@@ -75,7 +75,7 @@ jobs:
           dir
           Compress-Archive -Path "jar-analyzer-${{ env.VERSION }}-windows-system\" -DestinationPath "jar-analyzer-${{ env.VERSION }}-windows-system.zip" -CompressionLevel Optimal
           Compress-Archive -Path "jar-analyzer-${{ env.VERSION }}-windows-full\" -DestinationPath "jar-analyzer-${{ env.VERSION }}-windows-full.zip" -CompressionLevel Optimal
-          Compress-Archive -Path "jar-analyzer-${{ env.VERSION }}-windows-23\" -DestinationPath "jar-analyzer-${{ env.VERSION }}-windows-23.zip" -CompressionLevel Optimal
+          Compress-Archive -Path "jar-analyzer-${{ env.VERSION }}-windows-21\" -DestinationPath "jar-analyzer-${{ env.VERSION }}-windows-21.zip" -CompressionLevel Optimal
           Compress-Archive -Path "jar-analyzer-${{ env.VERSION }}\" -DestinationPath "jar-analyzer-${{ env.VERSION }}.zip" -CompressionLevel Optimal
         working-directory: jar-analyzer/release
         shell: pwsh
@@ -87,6 +87,6 @@ jobs:
           name: jar-analyzer
           path: |
             jar-analyzer/release/jar-analyzer-${{ env.VERSION }}-windows-full.zip
-            jar-analyzer/release/jar-analyzer-${{ env.VERSION }}-windows-23.zip
+            jar-analyzer/release/jar-analyzer-${{ env.VERSION }}-windows-21.zip
             jar-analyzer/release/jar-analyzer-${{ env.VERSION }}-windows-system.zip
             jar-analyzer/release/jar-analyzer-${{ env.VERSION }}.zip

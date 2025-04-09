@@ -1,3 +1,13 @@
+/*
+ * GPLv3 License
+ *
+ * Copyright (c) 2023-2025 4ra1n (Jar Analyzer Team)
+ *
+ * This project is distributed under the GPLv3 license.
+ *
+ * https://github.com/jar-analyzer/jar-analyzer/blob/master/LICENSE
+ */
+
 package me.n1ar4.jar.analyzer.gui;
 
 import com.intellij.uiDesigner.core.GridConstraints;
@@ -15,7 +25,7 @@ public class PreviewForm {
     private JPanel codePanel;
 
     public PreviewForm(String code, int pos) {
-        RSyntaxTextArea textArea = new RSyntaxTextArea();
+        RSyntaxTextArea textArea = new RSyntaxTextArea(30, 60);
         textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
 
         if (OSUtil.isLinux()) {
@@ -26,6 +36,7 @@ public class PreviewForm {
         textArea.setEnabled(true);
         textArea.setEditable(true);
         RTextScrollPane sp = new RTextScrollPane(textArea);
+        codePanel.add(sp, new GridConstraints());
         codePanel.add(sp, new GridConstraints(0, 0, 1, 1,
                 GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                 GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,

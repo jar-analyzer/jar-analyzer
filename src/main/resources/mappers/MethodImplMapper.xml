@@ -67,4 +67,14 @@
             </if>
         </where>
     </select>
+    <select id="selectSuperClasses">
+        SELECT DISTINCT
+        m.class_name FROM method_impl_table m
+        WHERE m.impl_class_name = #{className}
+    </select>
+    <select id="selectSubClasses">
+        SELECT DISTINCT
+        m.impl_class_name FROM method_impl_table m
+        WHERE m.class_name = #{className}
+    </select>
 </mapper>

@@ -78,7 +78,6 @@ public class BuildAction {
 
         boolean fixClass = MenuUtil.getFixClassPathConfig().getState();
 
-        ProcessDialog.createProgressDialog(MainForm.getInstance().getMasterPanel());
         JDialog dialog = ProcessDialog.createProgressDialog(MainForm.getInstance().getMasterPanel());
 
         if (MainForm.getInstance().getAddRtJarWhenCheckBox().isSelected()) {

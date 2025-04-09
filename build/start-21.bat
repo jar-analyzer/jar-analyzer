@@ -2,7 +2,7 @@
 setlocal
 
 rem set file name
-set "jar-analyzer=jar-analyzer-4.4.jar"
+set "jar-analyzer=jar-analyzer-5.0.jar"
 
 rem env
 set "jre_bin=jre\bin\java.exe"
@@ -25,7 +25,7 @@ rem program args (add --no-check to disable update check)
 set "program_args=--theme %theme_name% --port %api_server_port% --log-level %log_level%"
 
 rem start jar
-echo [*] RUN %jar-analyzer% ON JAVA 23
+echo [*] RUN %jar-analyzer% ON JAVA 21
 echo [*] JVM ARGS: %java_args%
 %jre_bin_abs% %java_args% -cp %java_cp% %main_class% gui %program_args%
 

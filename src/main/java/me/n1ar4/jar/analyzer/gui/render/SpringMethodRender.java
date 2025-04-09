@@ -25,12 +25,12 @@ public class SpringMethodRender extends DefaultListCellRenderer {
         if (value instanceof MethodResult) {
             MethodResult result = (MethodResult) value;
             String m = ASMUtil.convertMethodDesc(result.getMethodName(), result.getMethodDesc());
-            //使restfulType的长度固定在6个字符(Delete)，如果不足则用空格填充，并且适配DefaultListCellRenderer.setText的html格式,html请使用HTML_NBSP代替空格
-            String restfulType = "<font style=\"color: #996666; font-weight: bold;\">" + StrUtil.fixLength(result.getRestfulType(), ' ', 7)
+            // 使restfulType的长度固定在6个字符(Delete)，如果不足则用空格填充，并且适配DefaultListCellRenderer.setText的html格式,html请使用HTML_NBSP代替空格
+            String restfulType = "<font style=\"color: #996666; font-weight: bold;\">" + StrUtil.fixLength(result.getRestfulType(), ' ', 8)
                     .replace(" ", StrUtil.HTML_NBSP) + "</font>";
             m = "<font style=\"color: blue; font-weight: bold;\">" + m + "</font>";
             String path = "<font style=\"color: green; font-weight: bold;\">" + result.getPath() + "</font>";
-            setText("<html>" + " " + restfulType  + m + " " + path + "</html>");
+            setText("<html>" + " " + restfulType + m + " " + path + "</html>");
         } else {
             return null;
         }

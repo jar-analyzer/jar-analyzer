@@ -18,7 +18,13 @@ import javax.swing.*;
 public class SpringAction {
     public static void run() {
         JButton spRefreshBtn = MainForm.getInstance().getRefreshButton();
-        spRefreshBtn.addActionListener(e -> CoreHelper.refreshSpringC());
+        spRefreshBtn.addActionListener(e -> {
+            CoreHelper.refreshSpringC();
+            CoreHelper.refreshSpringI();
+            CoreHelper.refreshServlets();
+            CoreHelper.refreshFilters();
+            CoreHelper.refreshLiteners();
+        });
 
         JButton pathSearchButton = MainForm.getInstance().getPathSearchButton();
         pathSearchButton.addActionListener(e -> CoreHelper.pathSearchC());

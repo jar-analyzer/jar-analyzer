@@ -20,14 +20,14 @@
     </resultMap>
     <insert id="insertMappings">
         INSERT INTO spring_method_table
-        (class_name, method_name, method_desc, path,restful_type)
+        (class_name, method_name, method_desc, path, restful_type)
         VALUES
         <foreach collection="list" separator="," item="item">
-            (#{item.className}, #{item.methodName}, #{item.methodDesc}, #{item.path},#{item.restfulType})
+            (#{item.className}, #{item.methodName}, #{item.methodDesc}, #{item.path}, #{item.restfulType})
         </foreach>
     </insert>
     <select id="selectMappingsByClassName" resultMap="methodMap">
-        SELECT m.method_name, m.class_name, m.method_desc, m.path,m.restful_type
+        SELECT m.method_name, m.class_name, m.method_desc, m.path, m.restful_type
         FROM spring_method_table m
         WHERE m.class_name = #{className}
     </select>

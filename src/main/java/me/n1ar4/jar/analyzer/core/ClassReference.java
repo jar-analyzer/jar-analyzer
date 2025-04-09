@@ -124,6 +124,10 @@ public class ClassReference {
         public int hashCode() {
             return name != null ? name.hashCode() : 0;
         }
+
+        public Handle cloneObj() {
+            return new Handle(this.name);
+        }
     }
 
     @Override

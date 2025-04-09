@@ -4,22 +4,25 @@
 
 由于该功能从 `Jar Analyzer V1` 版本迁移过滤，老版本使用内存数据库效率较高，新版使用 `sqlite` 查询速度会降低
 
-| 表达式               | 参数         | 作用       | 
-|:------------------|:-----------|:---------|
-| nameContains      | String     | 方法名包含    |
-| startWith         | String     | 方法前缀     |
-| endWith           | String     | 方法后缀     |
-| classNameContains | String     | 类名包含     |
-| returnType        | String     | 方法返回类型   |
-| paramTypeMap      | int String | 方法参数对应关系 |
-| paramsNum         | int        | 方法参数个数   |
-| isStatic          | boolean    | 方法是否静态   |
-| isSubClassOf      | String     | 是谁的子类    |
-| isSuperClassOf    | String     | 是谁的父类    |
-| hasAnno           | String     | 方法的注解    |
-| excludeAnno       | String     | 排除方法的注解  |
-| hasClassAnno      | String     | 类的注解     |
-| hasField          | String     | 类字段      |
+| 表达式                  | 参数         | 作用           | 
+|:---------------------|:-----------|:-------------|
+| nameContains         | String     | 方法名包含        |
+| nameNotContains      | String     | 方法名不包含       |
+| startWith            | String     | 方法前缀         |
+| endWith              | String     | 方法后缀         |
+| classNameContains    | String     | 类名包含         |
+| classNameNotContains | String     | 类名不包含        |
+| returnType           | String     | 方法返回类型       |
+| paramTypeMap         | int String | 方法参数对应关系     |
+| paramsNum            | int        | 方法参数个数       |
+| isStatic             | boolean    | 方法是否静态       |
+| isPublic             | boolean    | 方法是否为 PUBLIC |
+| isSubClassOf         | String     | 是谁的子类        |
+| isSuperClassOf       | String     | 是谁的父类        |
+| hasAnno              | String     | 方法的注解        |
+| excludeAnno          | String     | 排除方法的注解      |
+| hasClassAnno         | String     | 类的注解         |
+| hasField             | String     | 类字段          |
 
 注意：
 - `returnType`和`paramTypeMap`要求类似是完整类名，例如`java.lang.String`，基础类型直接写即可例如`int`

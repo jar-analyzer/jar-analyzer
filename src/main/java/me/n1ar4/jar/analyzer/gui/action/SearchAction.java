@@ -78,7 +78,7 @@ public class SearchAction {
             }
 
             if (stringRadio.isSelected()) {
-                new Thread(() -> CoreHelper.refreshStrSearch(ssText.getText())).start();
+                new Thread(() -> CoreHelper.refreshStrSearch(scText.getText(), ssText.getText())).start();
             }
 
             if (binaryRadio.isSelected()) {

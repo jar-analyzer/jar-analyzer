@@ -26,4 +26,8 @@ public interface MethodImplMapper {
     List<MethodResult> selectSuperImpls(@Param("className") String className,
                                         @Param("methodName") String methodName,
                                         @Param("methodDesc") String methodDesc);
+
+    List<String> selectSuperClasses(@Param("className") String className);
+
+    List<String> selectSubClasses(@Param("className") String className);
 }

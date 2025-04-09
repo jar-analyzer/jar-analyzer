@@ -202,6 +202,38 @@ public class CoreEngine {
         return new ArrayList<>(res);
     }
 
+    public ArrayList<ClassResult> getAllSpringI() {
+        SqlSession session = factory.openSession(true);
+        SpringInterceptorMapper springInterceptorMapper = session.getMapper(SpringInterceptorMapper.class);
+        List<ClassResult> res = springInterceptorMapper.selectAllSpringI();
+        session.close();
+        return new ArrayList<>(res);
+    }
+
+    public ArrayList<ClassResult> getAllServlets() {
+        SqlSession session = factory.openSession(true);
+        JavaWebMapper javaWebMapper = session.getMapper(JavaWebMapper.class);
+        List<ClassResult> res = javaWebMapper.selectAllServlets();
+        session.close();
+        return new ArrayList<>(res);
+    }
+
+    public ArrayList<ClassResult> getAllFilters() {
+        SqlSession session = factory.openSession(true);
+        JavaWebMapper javaWebMapper = session.getMapper(JavaWebMapper.class);
+        List<ClassResult> res = javaWebMapper.selectAllFilters();
+        session.close();
+        return new ArrayList<>(res);
+    }
+
+    public ArrayList<ClassResult> getAllListeners() {
+        SqlSession session = factory.openSession(true);
+        JavaWebMapper javaWebMapper = session.getMapper(JavaWebMapper.class);
+        List<ClassResult> res = javaWebMapper.selectAllListeners();
+        session.close();
+        return new ArrayList<>(res);
+    }
+
     public ArrayList<MethodResult> getSpringM(String className) {
         SqlSession session = factory.openSession(true);
         SpringMethodMapper springMethodMapper = session.getMapper(SpringMethodMapper.class);
@@ -246,14 +278,14 @@ public class CoreEngine {
 
     public Set<ClassReference.Handle> getSuperClasses(ClassReference.Handle ch) {
         SqlSession session = factory.openSession(true);
-        ClassMapper classMapper = session.getMapper(ClassMapper.class);
-        List<String> tempRes = classMapper.selectSuperClassesByClassName(ch.getName());
+        MethodImplMapper miMapper = session.getMapper(MethodImplMapper.class);
+        List<String> tempRes = miMapper.selectSuperClasses(ch.getName());
         Set<ClassReference.Handle> set = new HashSet<>();
         for (String temp : tempRes) {
-            List<ClassResult> cl = classMapper.selectClassByClassName(temp);
-            for (ClassResult cr : cl) {
-                set.add(new ClassReference.Handle(cr.getClassName()));
+            if (temp.equals(ch.getName())) {
+                continue;
             }
+            set.add(new ClassReference.Handle(temp));
         }
         session.close();
         return set;
@@ -261,14 +293,14 @@ public class CoreEngine {
 
     public Set<ClassReference.Handle> getSubClasses(ClassReference.Handle ch) {
         SqlSession session = factory.openSession(true);
-        ClassMapper classMapper = session.getMapper(ClassMapper.class);
-        List<String> tempRes = classMapper.selectSubClassesByClassName(ch.getName());
+        MethodImplMapper miMapper = session.getMapper(MethodImplMapper.class);
+        List<String> tempRes = miMapper.selectSubClasses(ch.getName());
         Set<ClassReference.Handle> set = new HashSet<>();
         for (String temp : tempRes) {
-            List<ClassResult> cl = classMapper.selectClassByClassName(temp);
-            for (ClassResult cr : cl) {
-                set.add(new ClassReference.Handle(cr.getClassName()));
+            if (temp.equals(ch.getName())) {
+                continue;
             }
+            set.add(new ClassReference.Handle(temp));
         }
         session.close();
         return set;
@@ -306,11 +338,20 @@ public class CoreEngine {
                 "none");
     }
 
-    public ArrayList<MethodReference> getAllMethodRef() {
+    public int getMethodsCount() {
+        SqlSession session = factory.openSession(true);
+        MethodMapper methodMapper = session.getMapper(MethodMapper.class);
+        int count = methodMapper.selectCount();
+        session.close();
+        return count;
+    }
+
+    public ArrayList<MethodReference> getAllMethodRef(int offset) {
+        int size = 100;
         SqlSession session = factory.openSession(true);
         MethodMapper methodMapper = session.getMapper(MethodMapper.class);
         AnnoMapper annoMapper = session.getMapper(AnnoMapper.class);
-        ArrayList<MethodResult> results = new ArrayList<>(methodMapper.selectAllMethods());
+        ArrayList<MethodResult> results = new ArrayList<>(methodMapper.selectAllMethods(size, offset));
         results.sort(Comparator.comparing(MethodResult::getMethodName));
         ArrayList<MethodReference> list = new ArrayList<>();
         for (MethodResult result : results) {

@@ -41,7 +41,9 @@ public class DatabaseManager {
     private static final MethodImplMapper methodImplMapper;
     private static final MethodCallMapper methodCallMapper;
     private static final SpringControllerMapper springCMapper;
+    private static final SpringInterceptorMapper springIMapper;
     private static final SpringMethodMapper springMMapper;
+    private static final JavaWebMapper javaWebMapper;
 
     static {
         logger.info("init database");
@@ -59,7 +61,9 @@ public class DatabaseManager {
         methodCallMapper = session.getMapper(MethodCallMapper.class);
         methodImplMapper = session.getMapper(MethodImplMapper.class);
         springCMapper = session.getMapper(SpringControllerMapper.class);
+        springIMapper = session.getMapper(SpringInterceptorMapper.class);
         springMMapper = session.getMapper(SpringMethodMapper.class);
+        javaWebMapper = session.getMapper(JavaWebMapper.class);
         InitMapper initMapper = session.getMapper(InitMapper.class);
         initMapper.createJarTable();
         initMapper.createClassTable();
@@ -73,6 +77,8 @@ public class DatabaseManager {
         initMapper.createStringTable();
         initMapper.createSpringControllerTable();
         initMapper.createSpringMappingTable();
+        initMapper.createSpringInterceptorTable();
+        initMapper.createJavaWebTable();
         logger.info("create database finish");
         LogUtil.info("create database finish");
     }
@@ -346,13 +352,17 @@ public class DatabaseManager {
                 me.setMethodName(mapping.getMethodName().getName());
                 me.setMethodDesc(mapping.getMethodName().getDesc());
                 for (String annotation : mapping.getMethodReference().getAnnotations()) {
-                    if (annotation.contains("Lorg/springframework/web/bind/annotation/") && annotation.contains("Mapping;")) {
-                        me.setRestfulType(annotation.replace("Lorg/springframework/web/bind/annotation/", "").replace("Mapping;", ""));
+                    if (annotation.contains("Lorg/springframework/web/bind/annotation/") &&
+                            annotation.contains("Mapping;")) {
+                        me.setRestfulType(annotation
+                                .replace("Lorg/springframework/web/bind/annotation/", "")
+                                .replace("Mapping;", ""));
                     }
-                    if (StrUtil.isBlank(mapping.getPath()) && StrUtil.isNotBlank(mapping.getController().getBasePath())) {
+                    if (StrUtil.isBlank(mapping.getPath()) &&
+                            StrUtil.isNotBlank(mapping.getController().getBasePath())) {
                         me.setPath(mapping.getController().getBasePath());
                     }
-                    if (StrUtil.isNotBlank(mapping.getPath())&&mapping.getPath().endsWith("/")) {
+                    if (StrUtil.isNotBlank(mapping.getPath()) && mapping.getPath().endsWith("/")) {
                         me.setPath(mapping.getPath().substring(0, mapping.getPath().length() - 1));
                     }
                 }
@@ -386,5 +396,51 @@ public class DatabaseManager {
         }
 
         logger.info("save all spring data success");
+    }
+
+    public static void saveSpringI(ArrayList<String> interceptors) {
+        List<SpringInterceptorEntity> list = new ArrayList<>();
+        for (String interceptor : interceptors) {
+            SpringInterceptorEntity ce = new SpringInterceptorEntity();
+            ce.setClassName(interceptor);
+            list.add(ce);
+        }
+        List<List<SpringInterceptorEntity>> partition = PartitionUtils.partition(list, PART_SIZE);
+        for (List<SpringInterceptorEntity> data : partition) {
+            int a = springIMapper.insertInterceptors(data);
+            if (a == 0) {
+                logger.warn("save error");
+            }
+        }
+    }
+
+    public static void saveServlets(ArrayList<String> servlets) {
+        List<List<String>> partition = PartitionUtils.partition(servlets, PART_SIZE);
+        for (List<String> data : partition) {
+            int a = javaWebMapper.insertServlets(data);
+            if (a == 0) {
+                logger.warn("save error");
+            }
+        }
+    }
+
+    public static void saveFilters(ArrayList<String> filters) {
+        List<List<String>> partition = PartitionUtils.partition(filters, PART_SIZE);
+        for (List<String> data : partition) {
+            int a = javaWebMapper.insertFilters(data);
+            if (a == 0) {
+                logger.warn("save error");
+            }
+        }
+    }
+
+    public static void saveListeners(ArrayList<String> listeners) {
+        List<List<String>> partition = PartitionUtils.partition(listeners, PART_SIZE);
+        for (List<String> data : partition) {
+            int a = javaWebMapper.insertListeners(data);
+            if (a == 0) {
+                logger.warn("save error");
+            }
+        }
     }
 }

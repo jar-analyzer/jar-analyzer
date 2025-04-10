@@ -29,10 +29,18 @@ public class SpringAnnoAdapter extends AnnotationVisitor {
     @Override
     public void visit(String name, Object value) {
         if (name.equals("name") || name.equals("value")) {
-            SpringParam param = this.params.get(this.index);
-            param.setReqName(value.toString());
-            param.setParamIndex(this.index);
-            this.params.set(this.index, param);
+            SpringParam param;
+            if (this.params.isEmpty()||index>params.size()) {
+                param = new SpringParam();
+                param.setReqName("arg" + this.index);
+                param.setParamIndex(this.index);
+                this.params.add(param);
+            } else {
+                param = this.params.get(this.index);
+                param.setReqName(value.toString());
+                param.setParamIndex(this.index);
+                this.params.set(this.index, param);
+            }
         }
         super.visit(name, value);
     }

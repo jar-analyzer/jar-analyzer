@@ -24,9 +24,14 @@ public class SpringMapping {
     private String path;
     private List<SpringParam> paramMap = new ArrayList<>();
     private String restfulType;
+    private String pathRestful;
 
-    public String getRestfulType() {
-        return restfulType;
+    public String getPathRestful() {
+        return pathRestful;
+    }
+
+    public void setPathRestful(String pathRestful) {
+        this.pathRestful = pathRestful;
     }
 
     public void setRestfulType(String restfulType) {

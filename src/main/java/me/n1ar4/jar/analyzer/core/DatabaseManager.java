@@ -11,6 +11,7 @@
 package me.n1ar4.jar.analyzer.core;
 
 import cn.hutool.core.util.StrUtil;
+import me.n1ar4.jar.analyzer.analyze.spring.SpringConstant;
 import me.n1ar4.jar.analyzer.analyze.spring.SpringController;
 import me.n1ar4.jar.analyzer.analyze.spring.SpringMapping;
 import me.n1ar4.jar.analyzer.core.mapper.*;
@@ -351,23 +352,23 @@ public class DatabaseManager {
                 me.setPath(mapping.getPath());
                 me.setMethodName(mapping.getMethodName().getName());
                 me.setMethodDesc(mapping.getMethodName().getDesc());
-                for (String annotation : mapping.getMethodReference().getAnnotations()) {
-                    if (annotation.contains("Lorg/springframework/web/bind/annotation/") &&
-                            annotation.contains("Mapping;")) {
-                        me.setRestfulType(annotation
-                                .replace("Lorg/springframework/web/bind/annotation/", "")
-                                .replace("Mapping;", ""));
-                    }
-                    if (StrUtil.isBlank(mapping.getPath()) &&
-                            StrUtil.isNotBlank(mapping.getController().getBasePath())) {
-                        me.setPath(mapping.getController().getBasePath());
-                    }
-                    if (StrUtil.isNotBlank(mapping.getPath()) && mapping.getPath().endsWith("/")) {
-                        me.setPath(mapping.getPath().substring(0, mapping.getPath().length() - 1));
+                if(mapping.getPathRestful() != null && !mapping.getPathRestful().isEmpty()) {
+                    me.setRestfulType(mapping.getPathRestful());
+                    initPath(mapping, me);
+                }
+                else{
+                    for (String annotation : mapping.getMethodReference().getAnnotations()) {
+                        if (annotation.startsWith(SpringConstant.ANNO_PREFIX) &&
+                                annotation.endsWith(SpringConstant.MappingAnno)) {
+                            me.setRestfulType(annotation
+                                    .replace(SpringConstant.ANNO_PREFIX, "")
+                                    .replace(SpringConstant.MappingAnno, ""));
+                            initPath(mapping, me);
+                        }
                     }
                 }
                 mList.add(me);
-            }
+                }
         }
         List<List<SpringControllerEntity>> cPartition = PartitionUtils.partition(cList, PART_SIZE);
         for (List<SpringControllerEntity> data : cPartition) {
@@ -396,6 +397,16 @@ public class DatabaseManager {
         }
 
         logger.info("save all spring data success");
+    }
+
+    private static void initPath(SpringMapping mapping, SpringMethodEntity me) {
+        if (StrUtil.isBlank(mapping.getPath()) &&
+                StrUtil.isNotBlank(mapping.getController().getBasePath())) {
+            me.setPath(mapping.getController().getBasePath());
+        }
+        if (StrUtil.isNotBlank(mapping.getPath()) && mapping.getPath().endsWith("/")) {
+            me.setPath(mapping.getPath().substring(0, mapping.getPath().length() - 1));
+        }
     }
 
     public static void saveSpringI(ArrayList<String> interceptors) {

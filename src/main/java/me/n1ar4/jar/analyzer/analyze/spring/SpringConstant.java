@@ -20,5 +20,5 @@ public interface SpringConstant {
     String PostMappingAnno = ANNO_PREFIX + "PostMapping;";
     String ResponseBodyAnno = ANNO_PREFIX + "ResponseBody;";
     String RequestParamAnno = ANNO_PREFIX + "RequestParam;";
-    String MappingAnno = "Mapping";
+    String MappingAnno = "Mapping;";
 }

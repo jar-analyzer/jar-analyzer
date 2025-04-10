@@ -25,6 +25,7 @@ import me.n1ar4.jar.analyzer.exporter.CsvExporter;
 import me.n1ar4.jar.analyzer.exporter.Exporter;
 import me.n1ar4.jar.analyzer.exporter.JsonExporter;
 import me.n1ar4.jar.analyzer.exporter.TxtExporter;
+import me.n1ar4.jar.analyzer.gadget.GadgetUIBuilder;
 import me.n1ar4.jar.analyzer.graph.HtmlGraph;
 import me.n1ar4.jar.analyzer.gui.action.*;
 import me.n1ar4.jar.analyzer.gui.adapter.*;
@@ -285,6 +286,22 @@ public class MainForm {
     private JButton exportCsvBtn;
     private JPanel exportPanel;
     private JLabel exportAllLabel;
+    private JButton gadgetChoseBtn;
+    private JTextField gadgetInputText;
+    private JTable gadgetResultTable;
+    private JPanel gadgetPanel;
+    private JPanel gadgetInputPanel;
+    private JLabel gadgetDirLabel;
+    private JLabel gadgetDescLabel;
+    private JLabel gadgetDescValueLabel;
+    private JPanel gadgetResultPanel;
+    private JScrollPane gadgetResultScroll;
+    private JPanel gadgetOpPanel;
+    private JButton gadgetStartBtn;
+    private JCheckBox gadgetNativeBox;
+    private JCheckBox gadgetHessianBox;
+    private JCheckBox gadgetJdbcBox;
+    private JCheckBox gadgetFastjsonBox;
     private static DefaultListModel<MethodResult> favData;
 
     public JPanel getJavaVulSearchPanel() {
@@ -759,6 +776,42 @@ public class MainForm {
         return filterList;
     }
 
+    public JTextField getGadgetInputText() {
+        return gadgetInputText;
+    }
+
+    public JButton getGadgetChoseBtn() {
+        return gadgetChoseBtn;
+    }
+
+    public JTable getGadgetResultTable() {
+        return gadgetResultTable;
+    }
+
+    public JLabel getGadgetDescValueLabel() {
+        return gadgetDescValueLabel;
+    }
+
+    public JButton getGadgetStartBtn() {
+        return gadgetStartBtn;
+    }
+
+    public JCheckBox getGadgetNativeBox() {
+        return gadgetNativeBox;
+    }
+
+    public JCheckBox getGadgetHessianBox() {
+        return gadgetHessianBox;
+    }
+
+    public JCheckBox getGadgetJdbcBox() {
+        return gadgetJdbcBox;
+    }
+
+    public JCheckBox getGadgetFastjsonBox() {
+        return gadgetFastjsonBox;
+    }
+
     public MainForm(boolean fake) {
         if (fake) {
             logger.info("init fake instance");
@@ -935,6 +988,8 @@ public class MainForm {
 
         updateIcon();
 
+        GadgetUIBuilder.init(instance);
+
         Color elColor = new Color(198, 239, 189);
         instance.startELSearchButton.setIcon(SvgManager.SpringIcon);
         instance.springELStartButton.setIcon(SvgManager.SpringIcon);
@@ -951,7 +1006,8 @@ public class MainForm {
         instance.getTabbedPanel().setIconAt(5, SvgManager.NoteIcon);
         instance.getTabbedPanel().setIconAt(6, SvgManager.ScaIcon);
         instance.getTabbedPanel().setIconAt(7, SvgManager.LeakIcon);
-        instance.getTabbedPanel().setIconAt(8, SvgManager.AdvanceIcon);
+        instance.getTabbedPanel().setIconAt(8, SvgManager.GadgetIcon);
+        instance.getTabbedPanel().setIconAt(9, SvgManager.AdvanceIcon);
         instance.webTabbed.setIconAt(0, SvgManager.SpringIcon);
         instance.webTabbed.setIconAt(1, SvgManager.SpringIcon);
         instance.webTabbed.setIconAt(2, SvgManager.TomcatIcon);
@@ -982,7 +1038,7 @@ public class MainForm {
                                 null, null));
 
                 int c = instance.tabbedPanel.getTabCount();
-                if (c != 9) {
+                if (c != 10) {
                     throw new RuntimeException("tabbed panel error");
                 }
                 instance.tabbedPanel.setTitleAt(0, "开始");
@@ -993,7 +1049,8 @@ public class MainForm {
                 instance.tabbedPanel.setTitleAt(5, "记录");
                 instance.tabbedPanel.setTitleAt(6, "SCA");
                 instance.tabbedPanel.setTitleAt(7, "泄露");
-                instance.tabbedPanel.setTitleAt(8, "高级");
+                instance.tabbedPanel.setTitleAt(8, "GADGET");
+                instance.tabbedPanel.setTitleAt(9, "高级");
 
                 instance.chosePanel.setBorder(
                         BorderFactory.createTitledBorder(null,
@@ -1104,7 +1161,7 @@ public class MainForm {
                                 null, null));
 
                 int c = instance.tabbedPanel.getTabCount();
-                if (c != 9) {
+                if (c != 10) {
                     throw new RuntimeException("tabbed panel error");
                 }
                 instance.tabbedPanel.setTitleAt(0, "start");
@@ -1115,7 +1172,8 @@ public class MainForm {
                 instance.tabbedPanel.setTitleAt(5, "note");
                 instance.tabbedPanel.setTitleAt(6, "sca");
                 instance.tabbedPanel.setTitleAt(7, "leak");
-                instance.tabbedPanel.setTitleAt(8, "advance");
+                instance.tabbedPanel.setTitleAt(8, "gadget");
+                instance.tabbedPanel.setTitleAt(9, "advance");
 
                 instance.chosePanel.setBorder(
                         BorderFactory.createTitledBorder(null,
@@ -1854,6 +1912,52 @@ public class MainForm {
         leakLogArea.setEditable(false);
         leakLogArea.setForeground(new Color(-16718519));
         leakLogScroll.setViewportView(leakLogArea);
+        gadgetPanel = new JPanel();
+        gadgetPanel.setLayout(new GridLayoutManager(2, 1, new Insets(3, 3, 3, 3), -1, -1));
+        tabbedPanel.addTab("gadget", gadgetPanel);
+        gadgetInputPanel = new JPanel();
+        gadgetInputPanel.setLayout(new GridLayoutManager(3, 3, new Insets(0, 0, 0, 0), -1, -1));
+        gadgetPanel.add(gadgetInputPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        gadgetDirLabel = new JLabel();
+        gadgetDirLabel.setText("选择依赖目录");
+        gadgetInputPanel.add(gadgetDirLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        gadgetChoseBtn = new JButton();
+        gadgetChoseBtn.setText("选择");
+        gadgetInputPanel.add(gadgetChoseBtn, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        gadgetInputText = new JTextField();
+        gadgetInputText.setEditable(false);
+        gadgetInputPanel.add(gadgetInputText, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        gadgetDescLabel = new JLabel();
+        gadgetDescLabel.setText("说明");
+        gadgetInputPanel.add(gadgetDescLabel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        gadgetDescValueLabel = new JLabel();
+        gadgetDescValueLabel.setText("");
+        gadgetInputPanel.add(gadgetDescValueLabel, new GridConstraints(1, 1, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        gadgetOpPanel = new JPanel();
+        gadgetOpPanel.setLayout(new GridLayoutManager(1, 5, new Insets(0, 0, 0, 0), -1, -1));
+        gadgetInputPanel.add(gadgetOpPanel, new GridConstraints(2, 0, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        gadgetStartBtn = new JButton();
+        gadgetStartBtn.setText("开始分析");
+        gadgetOpPanel.add(gadgetStartBtn, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        gadgetNativeBox = new JCheckBox();
+        gadgetNativeBox.setText("原生");
+        gadgetOpPanel.add(gadgetNativeBox, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        gadgetHessianBox = new JCheckBox();
+        gadgetHessianBox.setText("Hessian");
+        gadgetOpPanel.add(gadgetHessianBox, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        gadgetJdbcBox = new JCheckBox();
+        gadgetJdbcBox.setText("JDBC");
+        gadgetOpPanel.add(gadgetJdbcBox, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        gadgetFastjsonBox = new JCheckBox();
+        gadgetFastjsonBox.setText("Fastjson");
+        gadgetOpPanel.add(gadgetFastjsonBox, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        gadgetResultPanel = new JPanel();
+        gadgetResultPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        gadgetPanel.add(gadgetResultPanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        gadgetResultScroll = new JScrollPane();
+        gadgetResultPanel.add(gadgetResultScroll, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        gadgetResultTable = new JTable();
+        gadgetResultScroll.setViewportView(gadgetResultTable);
         advancePanel = new JPanel();
         advancePanel.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPanel.addTab("advance", advancePanel);

@@ -23,4 +23,6 @@ public class SvgManager {
     public static FlatSVGIcon SearchIcon = new FlatSVGIcon("svg/search.svg", 16, 16);
     public static FlatSVGIcon StartIcon = new FlatSVGIcon("svg/start.svg", 16, 16);
     public static FlatSVGIcon SpringIcon = new FlatSVGIcon("svg/spring.svg", 16, 16);
+    public static FlatSVGIcon GadgetIcon = new FlatSVGIcon("svg/gadget.svg", 16, 16);
+    public static FlatSVGIcon DirIcon = new FlatSVGIcon("svg/dir.svg", 16, 16);
 }

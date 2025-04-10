@@ -215,17 +215,24 @@ public class FileTree extends JTree {
 
     public void searchPathTarget(String classname) {
         refresh();
-        String[] split = classname.split("/");
+        String originClassName = classname;
+        String[] split = originClassName.split("/");
 
         // CHECK FILE EXIST
         Path dir = Paths.get(Const.tempDir);
         Path classPath = dir.resolve(classname + ".class");
         if (!Files.exists(classPath)) {
-            classname = "BOOT-INF/classes/" + classname;
+            classname = "BOOT-INF/classes/" + originClassName;
             classPath = dir.resolve(classname + ".class");
+            // 2025/04/09 BUG
+            // 处理 WEB-INF 情况左侧文件树无法自动定位的问题
             if (!Files.exists(classPath)) {
-                LogUtil.warn("class not found");
-                return;
+                classname = "WEB-INF/classes/" + originClassName;
+                classPath = dir.resolve(classname + ".class");
+                if (!Files.exists(classPath)) {
+                    LogUtil.warn("class not found");
+                    return;
+                }
             }
             split = classname.split("/");
         }

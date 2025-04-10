@@ -78,7 +78,7 @@ public class SpringClassVisitor extends ClassVisitor {
                                      String signature, String[] exceptions) {
         MethodVisitor mv = super.visitMethod(access, name, descriptor, signature, exceptions);
         if (this.isSpring) {
-            if (this.name.equals("<init>") || this.name.equals("<clinit>")) {
+            if (name.equals("<init>") || name.equals("<clinit>")) {
                 return mv;
             }
             if (pathAnnoAdapter != null) {

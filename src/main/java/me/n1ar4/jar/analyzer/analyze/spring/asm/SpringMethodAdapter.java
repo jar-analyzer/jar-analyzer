@@ -10,10 +10,7 @@
 
 package me.n1ar4.jar.analyzer.analyze.spring.asm;
 
-import me.n1ar4.jar.analyzer.analyze.spring.SpringConstant;
-import me.n1ar4.jar.analyzer.analyze.spring.SpringController;
-import me.n1ar4.jar.analyzer.analyze.spring.SpringMapping;
-import me.n1ar4.jar.analyzer.analyze.spring.SpringParam;
+import me.n1ar4.jar.analyzer.analyze.spring.*;
 import me.n1ar4.jar.analyzer.core.ClassReference;
 import me.n1ar4.jar.analyzer.core.MethodReference;
 import me.n1ar4.jar.analyzer.starter.Const;
@@ -53,8 +50,8 @@ public class SpringMethodAdapter extends MethodVisitor {
     @Override
     public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
         AnnotationVisitor av = super.visitAnnotation(descriptor, visible);
-        if (descriptor.contains(SpringConstant.ANNO_PREFIX) &&
-                descriptor.contains(SpringConstant.MappingAnno)) {
+        if (descriptor.startsWith(SpringConstant.ANNO_PREFIX) &&
+                descriptor.endsWith(SpringConstant.MappingAnno)) {
             if (currentMapping == null) {
                 currentMapping = new SpringMapping();
             }
@@ -94,6 +91,9 @@ public class SpringMethodAdapter extends MethodVisitor {
                     } else {
                         currentMapping.setPath(pathAnnoAdapter.getResults().get(0));
                     }
+                }
+                if(!pathAnnoAdapter.getResultsRestful().isEmpty()){
+                    currentMapping.setPathRestful(pathAnnoAdapter.getResultsRestful().get(0));
                 }
             }
         }

@@ -18,6 +18,11 @@ import java.util.List;
 
 public class SpringPathAnnoAdapter extends AnnotationVisitor {
     private final List<String> results = new ArrayList<>();
+    private final List<String> resultsRestful = new ArrayList<>();
+
+    public List<String> getResultsRestful() {
+        return resultsRestful;
+    }
 
     public SpringPathAnnoAdapter(int api, AnnotationVisitor annotationVisitor) {
         super(api, annotationVisitor);
@@ -30,6 +35,16 @@ public class SpringPathAnnoAdapter extends AnnotationVisitor {
     @Override
     public AnnotationVisitor visitArray(String name) {
         AnnotationVisitor av = super.visitArray(name);
+        // 处理数组类型的属性（如method多值情况）
+        if ("method".equals(name)) {
+            return new ArrayVisitor(Const.ASMVersion, av, results) {
+                @Override
+                public void visitEnum(String name, String descriptor, String value) {
+                    resultsRestful.add(value);
+                    super.visitEnum(name, descriptor, value);
+                }
+            };
+        }
         return new ArrayVisitor(Const.ASMVersion, av, results);
     }
 

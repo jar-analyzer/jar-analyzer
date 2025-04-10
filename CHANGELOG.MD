@@ -4,11 +4,13 @@
 
 更新日志：
 
-- [BUG] 修复 `WAR` 包情况左侧文件树无法自动定位
+- [BUG] 修复 `Spring` 分析低 `Java` 版本报错 @Gosiu
+- [BUG] 修复 `WAR` 包情况左侧文件树无法自动定位 @4ra1n
 
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
+- Honey Baby (https://github.com/Gosiu)
 
 所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
 

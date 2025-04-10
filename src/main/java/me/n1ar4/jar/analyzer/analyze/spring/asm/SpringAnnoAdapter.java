@@ -30,7 +30,7 @@ public class SpringAnnoAdapter extends AnnotationVisitor {
     public void visit(String name, Object value) {
         if (name.equals("name") || name.equals("value")) {
             SpringParam param;
-            if (this.params.isEmpty()||index>params.size()) {
+            if (this.params.isEmpty() || index > params.size()) {
                 param = new SpringParam();
                 param.setReqName("arg" + this.index);
                 param.setParamIndex(this.index);

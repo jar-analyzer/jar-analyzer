@@ -10,7 +10,10 @@
 
 package me.n1ar4.jar.analyzer.analyze.spring.asm;
 
-import me.n1ar4.jar.analyzer.analyze.spring.*;
+import me.n1ar4.jar.analyzer.analyze.spring.SpringConstant;
+import me.n1ar4.jar.analyzer.analyze.spring.SpringController;
+import me.n1ar4.jar.analyzer.analyze.spring.SpringMapping;
+import me.n1ar4.jar.analyzer.analyze.spring.SpringParam;
 import me.n1ar4.jar.analyzer.core.ClassReference;
 import me.n1ar4.jar.analyzer.core.MethodReference;
 import me.n1ar4.jar.analyzer.starter.Const;
@@ -92,7 +95,7 @@ public class SpringMethodAdapter extends MethodVisitor {
                         currentMapping.setPath(pathAnnoAdapter.getResults().get(0));
                     }
                 }
-                if(!pathAnnoAdapter.getResultsRestful().isEmpty()){
+                if (!pathAnnoAdapter.getResultsRestful().isEmpty()) {
                     currentMapping.setPathRestful(pathAnnoAdapter.getResultsRestful().get(0));
                 }
             }

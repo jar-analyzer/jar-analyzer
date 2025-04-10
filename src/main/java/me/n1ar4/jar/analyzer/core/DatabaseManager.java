@@ -352,11 +352,10 @@ public class DatabaseManager {
                 me.setPath(mapping.getPath());
                 me.setMethodName(mapping.getMethodName().getName());
                 me.setMethodDesc(mapping.getMethodName().getDesc());
-                if(mapping.getPathRestful() != null && !mapping.getPathRestful().isEmpty()) {
+                if (mapping.getPathRestful() != null && !mapping.getPathRestful().isEmpty()) {
                     me.setRestfulType(mapping.getPathRestful());
                     initPath(mapping, me);
-                }
-                else{
+                } else {
                     for (String annotation : mapping.getMethodReference().getAnnotations()) {
                         if (annotation.startsWith(SpringConstant.ANNO_PREFIX) &&
                                 annotation.endsWith(SpringConstant.MappingAnno)) {
@@ -368,7 +367,7 @@ public class DatabaseManager {
                     }
                 }
                 mList.add(me);
-                }
+            }
         }
         List<List<SpringControllerEntity>> cPartition = PartitionUtils.partition(cList, PART_SIZE);
         for (List<SpringControllerEntity> data : cPartition) {

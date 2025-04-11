@@ -72,7 +72,12 @@ public class GadgetUIBuilder {
         });
 
         form.getGadgetStartBtn().addActionListener(e -> {
-            GadgetAnalyzer analyzer = new GadgetAnalyzer(form.getGadgetInputText().getText());
+            GadgetAnalyzer analyzer = new GadgetAnalyzer(
+                    form.getGadgetInputText().getText(),
+                    form.getGadgetNativeBox().isSelected(),
+                    form.getGadgetHessianBox().isSelected(),
+                    form.getGadgetFastjsonBox().isSelected(),
+                    form.getGadgetJdbcBox().isSelected());
             List<GadgetInfo> resultList = analyzer.process();
             if (resultList == null || resultList.isEmpty()) {
                 JOptionPane.showMessageDialog(form.getMasterPanel(), "没有分析出结果");

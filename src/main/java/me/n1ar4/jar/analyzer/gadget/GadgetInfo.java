@@ -13,7 +13,13 @@ package me.n1ar4.jar.analyzer.gadget;
 import java.util.List;
 
 public class GadgetInfo {
+    public static final String NATIVE_TYPE = "NATIVE";
+    public static final String HESSIAN_TYPE = "HESSIAN";
+    public static final String JDBC_TYPE = "JDBC";
+    public static final String FASTJSON_TYPE = "FASTJSON";
+
     private int ID;
+    // NATIVE HESSIAN JDBC FASTJSON
     private String type;
     private List<String> jarsName;
     private String result;

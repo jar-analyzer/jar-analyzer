@@ -23,13 +23,23 @@ import java.util.List;
 public class GadgetAnalyzer {
     private static final Logger logger = LogManager.getLogger();
     private final String dir;
+    private final boolean enableNative;
+    private final boolean enableHessian;
+    private final boolean enableFastjson;
+    private final boolean enableJdbc;
 
-    public GadgetAnalyzer(String dir) {
+    public GadgetAnalyzer(String dir, boolean enableN, boolean enableH, boolean enableF, boolean enableJ) {
         this.dir = dir;
+        this.enableNative = enableN;
+        this.enableHessian = enableH;
+        this.enableFastjson = enableF;
+        this.enableJdbc = enableJ;
     }
 
     public List<GadgetInfo> process() {
         logger.info("start gadget analyzer");
+        logger.info("n -> {} h -> {} f -> {} j -> {}",
+                this.enableNative, this.enableHessian, this.enableFastjson, this.enableJdbc);
         List<String> files = DirUtil.GetFiles(this.dir);
         if (files == null || files.isEmpty()) {
             logger.warn("no files found");
@@ -53,6 +63,27 @@ public class GadgetAnalyzer {
         List<GadgetInfo> result = new ArrayList<>();
         // 匹配分析
         for (GadgetInfo rule : GadgetRule.rules) {
+            String ruleType = rule.getType();
+            if (ruleType.equals(GadgetInfo.NATIVE_TYPE)) {
+                if (!this.enableNative) {
+                    continue;
+                }
+            }
+            if (ruleType.equals(GadgetInfo.HESSIAN_TYPE)) {
+                if (!this.enableHessian) {
+                    continue;
+                }
+            }
+            if (ruleType.equals(GadgetInfo.FASTJSON_TYPE)) {
+                if (!this.enableFastjson) {
+                    continue;
+                }
+            }
+            if (ruleType.equals(GadgetInfo.JDBC_TYPE)) {
+                if (!this.enableJdbc) {
+                    continue;
+                }
+            }
             logger.info("processing rule : " + rule.getJarsName());
             List<String> jarsName = rule.getJarsName();
             boolean[] successArray = new boolean[jarsName.size()];
@@ -75,6 +106,19 @@ public class GadgetAnalyzer {
             if (success) {
                 result.add(rule);
             }
+        }
+        // 补充输出
+        if (this.enableNative) {
+
+        }
+        if (this.enableHessian) {
+
+        }
+        if (this.enableFastjson) {
+
+        }
+        if (this.enableJdbc) {
+
         }
         return result;
     }

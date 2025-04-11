@@ -24,21 +24,19 @@ public class GadgetRule {
             byte[] gadgetBytes = Files.readAllBytes(Paths.get("gadget.dat"));
             String content = new String(gadgetBytes, StandardCharsets.UTF_8);
             String[] lines = content.split("\\r?\\n");
+            int id = 1;
             for (String line : lines) {
                 if (line.startsWith("#") || line.trim().isEmpty()) {
                     continue;
                 }
                 String[] parts = line.split("\\|");
-                if (parts.length != 4) {
+                if (parts.length != 3) {
                     continue;
                 }
                 GadgetInfo info = new GadgetInfo();
-                try {
-                    info.setID(Integer.parseInt(parts[0].trim()));
-                } catch (NumberFormatException ignored) {
-                    continue;
-                }
-                String[] jars = parts[1].trim().split(",");
+                info.setID(id);
+                id++;
+                String[] jars = parts[0].trim().split(",");
                 List<String> jarsList = new ArrayList<>();
                 for (String jar : jars) {
                     if (!jar.trim().isEmpty()) {
@@ -46,8 +44,8 @@ public class GadgetRule {
                     }
                 }
                 info.setJarsName(jarsList);
-                info.setType(parts[2].trim());
-                info.setResult(parts[3].trim());
+                info.setType(parts[1].trim());
+                info.setResult(parts[2].trim());
                 rules.add(info);
             }
         } catch (Exception ignored) {

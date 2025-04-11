@@ -191,6 +191,8 @@
 
 `Jar Analyzer 5.1` 版本后支持了简单的 `Gadget` 分析
 
+规则清晰简单，写在文件 `src/main/resources/gadget.dat` 中，欢迎贡献更多
+
 ![](img/0074.png)
 
 ## 表达式

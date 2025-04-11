@@ -41,7 +41,7 @@ public class GadgetUIBuilder {
 
         JTable table = form.getGadgetResultTable();
 
-        String[] columnNames = {"ID", "JAR 名称", "存在风险"};
+        String[] columnNames = {"ID", "规则定义", "存在风险"};
         tableModel = new GadgetTableModel(null, columnNames);
         table.setModel(tableModel);
         table.setShowHorizontalLines(true);

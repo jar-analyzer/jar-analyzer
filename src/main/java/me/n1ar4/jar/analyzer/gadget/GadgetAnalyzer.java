@@ -89,10 +89,34 @@ public class GadgetAnalyzer {
             boolean[] successArray = new boolean[jarsName.size()];
             for (int i = 0; i < successArray.length; i++) {
                 String jarName = jarsName.get(i);
-                for (String exiFileName : finalFiles) {
-                    if (jarName.equals(exiFileName)) {
-                        successArray[i] = true;
-                        break;
+                if (jarName.contains("!")) {
+                    String temp = jarName.split("!")[0];
+                    String whiteList = jarName.split("!")[1].split("\\.jar")[0];
+                    for (String exiFileName : finalFiles) {
+                        if (exiFileName.startsWith(temp)) {
+                            String ver = exiFileName.split(temp)[1].split("\\.jar")[0];
+                            if (!ver.equals(whiteList)) {
+                                successArray[i] = true;
+                                break;
+                            }
+                        }
+                    }
+                } else {
+                    if (!jarName.contains("*")) {
+                        for (String exiFileName : finalFiles) {
+                            if (jarName.equals(exiFileName)) {
+                                successArray[i] = true;
+                                break;
+                            }
+                        }
+                    } else {
+                        String regex = jarName.replace("*", ".*");
+                        for (String fileName : finalFiles) {
+                            if (fileName.matches(regex)) {
+                                successArray[i] = true;
+                                break;
+                            }
+                        }
                     }
                 }
             }

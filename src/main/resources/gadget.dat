@@ -1,24 +1,14 @@
 # JAR 名称（多个以英文逗号分隔） | 类型 NATIVE HESSIAN JDBC FASTJSON | 描述字符串
-commons-beanutils-1.10.1.jar|NATIVE|CB 存在原生反序列化 GADGET
-commons-beanutils-1.10.0.jar|NATIVE|CB 存在原生反序列化 GADGET
-commons-beanutils-1.9.4.jar|NATIVE|CB 存在原生反序列化 GADGET
-commons-beanutils-1.9.3.jar|NATIVE|CB 存在原生反序列化 GADGET
-commons-beanutils-1.9.2.jar|NATIVE|CB 存在原生反序列化 GADGET
-commons-beanutils-1.9.1.jar|NATIVE|CB 存在原生反序列化 GADGET
-commons-beanutils-1.9.0.jar|NATIVE|CB 存在原生反序列化 GADGET
-commons-beanutils-1.8.3.jar|NATIVE|CB 存在原生反序列化 GADGET
-commons-beanutils-1.8.2.jar|NATIVE|CB 存在原生反序列化 GADGET
-commons-beanutils-1.8.0.jar|NATIVE|CB 存在原生反序列化 GADGET
-commons-beanutils-1.8.0-BETA.jar|NATIVE|CB 存在原生反序列化 GADGET
-commons-beanutils-1.7.0.jar|NATIVE|CB 存在原生反序列化 GADGET
-commons-beanutils-1.6.1.jar|NATIVE|CB 存在原生反序列化 GADGET
-commons-beanutils-1.6.jar|NATIVE|CB 存在原生反序列化 GADGET
-commons-beanutils-1.5.jar|NATIVE|CB 存在原生反序列化 GADGET
-commons-beanutils-1.4.1.jar|NATIVE|CB 存在原生反序列化 GADGET
-commons-beanutils-1.3.jar|NATIVE|CB 存在原生反序列化 GADGET
-commons-beanutils-1.2.jar|NATIVE|CB 存在原生反序列化 GADGET
-commons-beanutils-1.0.jar|NATIVE|CB 存在原生反序列化 GADGET
-commons-beanutils-1.0.jar|NATIVE|CB 存在原生反序列化 GADGET
-commons-beanutils-20030211.134440.jar|NATIVE|CB 存在原生反序列化 GADGET
-commons-beanutils-20021128.082114.jar|NATIVE|CB 存在原生反序列化 GADGET
-commons-beanutils-20020520.jar|NATIVE|CB 存在原生反序列化 GADGET
+# JAR 名称支持 * 通配符和 ![version] 白名单方式
+bsh-1.3.0.jar|NATIVE|存在 BeanShell 反序列化 GADGET
+bsh-2.0b4.jar|NATIVE|存在 BeanShell 反序列化 GADGET
+bsh-2.0b5.jar|NATIVE|存在 BeanShell 反序列化 GADGET
+c3p0-*.jar|NATIVE|C3P0 存在 JNDI 反序列化 GADGET
+commons-beanutils-*.jar|NATIVE|CB 存在原生反序列化 GADGET
+commons-collections-!3.2.2.jar|NATIVE|CC 3.2.1 及以下版本存在 GADGET
+commons-collections4-4.0.jar|NATIVE|CC 4.0 版本存在 GADGET
+commons-dbcp2-*.jar|NATIVE|DHCP 存在 JNDI 反序列化 GADGET
+commons-dbcp-*.jar|NATIVE|DHCP 存在 JNDI 反序列化 GADGET
+druid-*.jar|NATIVE|DRUID 存在 JNDI 反序列化 GADGET
+fastjson-1.*.jar|NATIVE|FASTJSON 1 存在原生反序列化 GADGET
+jackson-databind-2.*.jar|NATIVE|JACKSON 存在原生反序列化 GADGET

@@ -10,18 +10,20 @@
 
 package me.n1ar4.jar.analyzer.gadget;
 
+import me.n1ar4.jar.analyzer.utils.IOUtils;
+
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GadgetRule {
+    private static final String EMBED_DAT_FILE = "gadget.dat";
     public static final ArrayList<GadgetInfo> rules = new ArrayList<>();
 
     public static void build() {
         try {
-            byte[] gadgetBytes = Files.readAllBytes(Paths.get("gadget.dat"));
+            byte[] gadgetBytes = IOUtils.readAllBytes(
+                    GadgetRule.class.getClassLoader().getResourceAsStream(EMBED_DAT_FILE));
             String content = new String(gadgetBytes, StandardCharsets.UTF_8);
             String[] lines = content.split("\\r?\\n");
             int id = 1;

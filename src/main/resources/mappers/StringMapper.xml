@@ -22,10 +22,10 @@
     </resultMap>
     <insert id="insertString" parameterType="StringEntity">
         INSERT INTO string_table
-        (method_name, method_desc, access, class_name, value, jar_name)
+        (method_name, method_desc, access, class_name, value, jar_name, jar_id)
         VALUES
         <foreach collection="list" separator="," item="item">
-            (#{item.methodName}, #{item.methodDesc}, #{item.access}, #{item.className}, #{item.value}, #{item.jarName})
+            (#{item.methodName}, #{item.methodDesc}, #{item.access}, #{item.className}, #{item.value}, #{item.jarName}, #{item.jarId})
         </foreach>
     </insert>
     <select id="selectMethodByString" resultMap="methodMap">

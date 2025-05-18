@@ -16,26 +16,26 @@
     </resultMap>
     <insert id="insertServlets">
         INSERT INTO java_web_table
-        (class_name, type_name)
+        (class_name, type_name,jar_id)
         VALUES
         <foreach collection="list" separator="," item="item">
-            (#{item}, 'servlet')
+            (#{item.className}, 'servlet',${item.jarId})
         </foreach>
     </insert>
     <insert id="insertFilters">
         INSERT INTO java_web_table
-        (class_name, type_name)
+        (class_name, type_name,jar_id)
         VALUES
         <foreach collection="list" separator="," item="item">
-            (#{item}, 'filter')
+            (#{item.className}, 'filter',${item.jarId})
         </foreach>
     </insert>
     <insert id="insertListeners">
         INSERT INTO java_web_table
-        (class_name, type_name)
+        (class_name, type_name,jar_id)
         VALUES
         <foreach collection="list" separator="," item="item">
-            (#{item}, 'listener')
+            (#{item.className}, 'listener',${item.jarId})
         </foreach>
     </insert>
     <select id="selectAllServlets" resultMap="classMap">

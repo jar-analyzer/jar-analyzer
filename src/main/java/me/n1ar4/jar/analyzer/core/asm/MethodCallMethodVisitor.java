@@ -22,21 +22,21 @@ public class MethodCallMethodVisitor extends MethodVisitor {
     private final HashSet<MethodReference.Handle> calledMethods;
 
     public MethodCallMethodVisitor(final int api, final MethodVisitor mv,
-                                   final String owner, String name, String desc,
+                                   final String ownerClass, String name, String desc,
                                    HashMap<MethodReference.Handle,
                                            HashSet<MethodReference.Handle>> methodCalls) {
         super(api, mv);
         this.calledMethods = new HashSet<>();
         methodCalls.put(
-                new MethodReference.Handle(
-                        new ClassReference.Handle(owner), name, desc), calledMethods);
+                new MethodReference.Handle(new ClassReference.Handle(ownerClass), name, desc),
+                calledMethods);
     }
 
     @Override
     public void visitMethodInsn(int opcode, String owner, String name, String desc, boolean itf) {
         calledMethods.add(
                 new MethodReference.Handle(
-                        new ClassReference.Handle(owner), name, desc));
+                        new ClassReference.Handle(owner), opcode, name, desc));
         super.visitMethodInsn(opcode, owner, name, desc, itf);
     }
 

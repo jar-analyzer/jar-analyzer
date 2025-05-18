@@ -10,30 +10,41 @@
 
 package me.n1ar4.jar.analyzer.core;
 
+import me.n1ar4.jar.analyzer.core.reference.AnnoReference;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
 public class ClassReference {
+    private final Integer version;
+    private final Integer access;
     private final String name;
     private final String superClass;
     private final List<String> interfaces;
     private final boolean isInterface;
     private final List<Member> members;
-    private final Set<String> annotations;
-    private final String jar;
+    private final Set<AnnoReference> annotations;
+    private final String jarName;
+    private final Integer jarId;
 
     public static class Member {
         private final String name;
         private final int modifiers;
         private final String value;
+        private final String desc;
+        private final String signature;
         private final Handle type;
 
-        public Member(String name, int modifiers, String value, Handle type) {
+        public Member(String name, int modifiers, String realValue, String desc, String signature, Handle type) {
             this.name = name;
             this.modifiers = modifiers;
-            this.value = value;
+            this.value = realValue;
+            this.desc = desc;
+            this.signature = signature;
             this.type = type;
         }
 
@@ -49,24 +60,48 @@ public class ClassReference {
             return value;
         }
 
+        public String getDesc() {
+            return desc;
+        }
+
+        public String getSignature() {
+            return signature;
+        }
+
         public Handle getType() {
             return type;
         }
     }
 
     public ClassReference(String name, String superClass, List<String> interfaces,
-                          boolean isInterface, List<Member> members, Set<String> annotations, String jar) {
+                          boolean isInterface, List<Member> members, ArrayList<String> annotations, String jarName, Integer jarId) {
+        this(-1,-1,name,superClass,interfaces,isInterface,members,annotations.stream().map(a -> new AnnoReference(a)).collect(Collectors.toSet()),jarName,jarId);
+    }
+
+    public ClassReference(Integer version, Integer access, String name, String superClass, List<String> interfaces,
+                          boolean isInterface, List<Member> members, Set<AnnoReference> annotations, String jarName, Integer jarId) {
+        this.version = version;
+        this.access = access;
         this.name = name;
         this.superClass = superClass;
         this.interfaces = interfaces;
         this.isInterface = isInterface;
         this.members = members;
         this.annotations = annotations;
-        this.jar = jar;
+        this.jarName = jarName;
+        this.jarId = jarId;
     }
 
-    public String getJar() {
-        return jar;
+    public Integer getVersion() {
+        return version;
+    }
+
+    public Integer getAccess() {
+        return access;
+    }
+
+    public String getJarName() {
+        return jarName;
     }
 
     public String getName() {
@@ -93,8 +128,12 @@ public class ClassReference {
         return new Handle(name);
     }
 
-    public Set<String> getAnnotations() {
+    public Set<AnnoReference> getAnnotations() {
         return annotations;
+    }
+
+    public Integer getJarId() {
+        return jarId;
     }
 
     public static class Handle {

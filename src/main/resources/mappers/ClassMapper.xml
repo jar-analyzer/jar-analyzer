@@ -19,10 +19,10 @@
     </resultMap>
     <insert id="insertClass" parameterType="ClassEntity">
         INSERT INTO class_table
-        (jar_name, class_name, super_class_name, is_interface)
+        (jar_id, jar_name,version,access, class_name, super_class_name, is_interface)
         VALUES
         <foreach collection="list" separator="," item="item">
-            (#{item.jarName}, #{item.className}, #{item.superClassName}, #{item.isInterface})
+            (#{item.jarId}, #{item.jarName},#{item.version},#{item.access}, #{item.className}, #{item.superClassName}, #{item.isInterface})
         </foreach>
     </insert>
     <select id="selectClassByClassName" resultMap="classMap">

@@ -13,10 +13,10 @@
 <mapper namespace="me.n1ar4.jar.analyzer.core.mapper.InterfaceMapper">
     <insert id="insertInterface" parameterType="InterfaceEntity">
         INSERT INTO interface_table
-        (interface_name, class_name)
+        (interface_name, class_name, jar_id)
         VALUES
         <foreach collection="list" separator="," item="item">
-            (#{item.interfaceName}, #{item.className})
+            (#{item.interfaceName}, #{item.className}, #{item.jarId})
         </foreach>
     </insert>
     <select id="selectInterfacesByClass">

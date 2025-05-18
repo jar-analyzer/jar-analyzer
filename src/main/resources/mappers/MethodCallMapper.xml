@@ -19,14 +19,14 @@
     <insert id="insertMethodCall" parameterType="MethodCallEntity">
         INSERT INTO method_call_table
         (
-        caller_method_name, caller_method_desc, caller_class_name,
-        callee_method_name, callee_method_desc, callee_class_name
+        caller_method_name, caller_method_desc, caller_class_name, caller_jar_id,
+        callee_method_name, callee_method_desc, callee_class_name, callee_jar_id, op_code
         )
         VALUES
         <foreach collection="list" separator="," item="item">
             (
-            #{item.callerMethodName}, #{item.callerMethodDesc}, #{item.callerClassName},
-            #{item.calleeMethodName}, #{item.calleeMethodDesc}, #{item.calleeClassName}
+            #{item.callerMethodName}, #{item.callerMethodDesc}, #{item.callerClassName}, #{item.callerJarId},
+            #{item.calleeMethodName}, #{item.calleeMethodDesc}, #{item.calleeClassName}, #{item.calleeJarId}, #{item.opCode}
             )
         </foreach>
     </insert>

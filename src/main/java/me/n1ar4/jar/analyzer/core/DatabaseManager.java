@@ -15,6 +15,7 @@ import me.n1ar4.jar.analyzer.analyze.spring.SpringConstant;
 import me.n1ar4.jar.analyzer.analyze.spring.SpringController;
 import me.n1ar4.jar.analyzer.analyze.spring.SpringMapping;
 import me.n1ar4.jar.analyzer.core.mapper.*;
+import me.n1ar4.jar.analyzer.core.reference.AnnoReference;
 import me.n1ar4.jar.analyzer.entity.*;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
@@ -45,6 +46,10 @@ public class DatabaseManager {
     private static final SpringInterceptorMapper springIMapper;
     private static final SpringMethodMapper springMMapper;
     private static final JavaWebMapper javaWebMapper;
+
+    // --inner-jar 仅解析此jar包引用的 jdk 类及其它jar中的类,但不会保存其它jar的jarId等信息
+    private static final ClassReference notFoundClassReference = new ClassReference(-1, -1, null, null, null, false, null, null, "unknown", -1);
+
 
     static {
         logger.info("init database");
@@ -102,6 +107,10 @@ public class DatabaseManager {
         }
     }
 
+    public static JarEntity getJarId(String jarPath) {
+        return jarMapper.selectJarByAbsPath(jarPath);
+    }
+
     public static void saveClassFiles(Set<ClassFileEntity> classFileList) {
         logger.info("total class file: {}", classFileList.size());
         List<ClassFileEntity> list = new ArrayList<>();
@@ -125,7 +134,10 @@ public class DatabaseManager {
         List<ClassEntity> list = new ArrayList<>();
         for (ClassReference reference : discoveredClasses) {
             ClassEntity classEntity = new ClassEntity();
-            classEntity.setJarName(reference.getJar());
+            classEntity.setJarName(reference.getJarName());
+            classEntity.setJarId(reference.getJarId());
+            classEntity.setVersion(reference.getVersion());
+            classEntity.setAccess(reference.getAccess());
             classEntity.setClassName(reference.getName());
             classEntity.setSuperClassName(reference.getSuperClass());
             classEntity.setInterface(reference.isInterface());
@@ -151,19 +163,26 @@ public class DatabaseManager {
                 memberEntity.setValue(member.getValue());
                 memberEntity.setTypeClassName(member.getType().getName());
                 memberEntity.setClassName(reference.getName());
+                memberEntity.setMethodDesc(member.getDesc());
+                memberEntity.setMethodSignature(member.getSignature());
+                memberEntity.setJarId(reference.getJarId());
                 mList.add(memberEntity);
             }
-            for (String anno : reference.getAnnotations()) {
+            for (AnnoReference anno : reference.getAnnotations()) {
                 AnnoEntity annoEntity = new AnnoEntity();
-                annoEntity.setAnnoName(anno);
+                annoEntity.setAnnoName(anno.getAnnoName());
+                annoEntity.setVisible(anno.getVisible() ? 1 : 0);
                 annoEntity.setClassName(reference.getName());
+                annoEntity.setJarId(reference.getJarId());
+                annoEntity.setParameter(anno.getParameter());
                 aList.add(annoEntity);
             }
             for (String inter : reference.getInterfaces()) {
-                InterfaceEntity i = new InterfaceEntity();
-                i.setClassName(reference.getName());
-                i.setInterfaceName(inter);
-                iList.add(i);
+                InterfaceEntity interfaceEntity = new InterfaceEntity();
+                interfaceEntity.setClassName(reference.getName());
+                interfaceEntity.setInterfaceName(inter);
+                interfaceEntity.setJarId(reference.getJarId());
+                iList.add(interfaceEntity);
             }
         }
         List<List<MemberEntity>> mPartition = PartitionUtils.partition(mList, PART_SIZE);
@@ -211,12 +230,16 @@ public class DatabaseManager {
             methodEntity.setStatic(reference.isStatic());
             methodEntity.setAccess(reference.getAccess());
             methodEntity.setLineNumber(reference.getLineNumber());
+            methodEntity.setJarId(reference.getJarId());
             mList.add(methodEntity);
-            for (String anno : reference.getAnnotations()) {
+            for (AnnoReference anno : reference.getAnnotations()) {
                 AnnoEntity annoEntity = new AnnoEntity();
-                annoEntity.setAnnoName(anno);
+                annoEntity.setAnnoName(anno.getAnnoName());
                 annoEntity.setMethodName(reference.getName());
                 annoEntity.setClassName(reference.getClassReference().getName());
+                annoEntity.setJarId(reference.getJarId());
+                annoEntity.setVisible(anno.getVisible() ? 1 : 0);
+                annoEntity.setParameter(anno.getParameter());
                 aList.add(annoEntity);
             }
         }
@@ -246,9 +269,12 @@ public class DatabaseManager {
                 mce.setCallerClassName(caller.getClassReference().getName());
                 mce.setCallerMethodName(caller.getName());
                 mce.setCallerMethodDesc(caller.getDesc());
+                mce.setCallerJarId(AnalyzeEnv.classMap.get(caller.getClassReference()).getJarId());
                 mce.setCalleeClassName(mh.getClassReference().getName());
                 mce.setCalleeMethodName(mh.getName());
                 mce.setCalleeMethodDesc(mh.getDesc());
+                mce.setCalleeJarId(AnalyzeEnv.classMap.getOrDefault(mh.getClassReference(), notFoundClassReference).getJarId());
+                mce.setOpCode(mh.getOpcode());
                 mList.add(mce);
             }
         }
@@ -275,6 +301,8 @@ public class DatabaseManager {
                 impl.setClassName(method.getClassReference().getName());
                 impl.setMethodName(mh.getName());
                 impl.setMethodDesc(mh.getDesc());
+                impl.setClassJarId(AnalyzeEnv.classMap.get(method.getClassReference()).getJarId());
+                impl.setImplClassJarId(AnalyzeEnv.classMap.get(mh.getClassReference()).getJarId());
                 mList.add(impl);
             }
         }
@@ -303,7 +331,8 @@ public class DatabaseManager {
                 stringEntity.setValue(s);
                 stringEntity.setAccess(mr.getAccess());
                 stringEntity.setClassName(cr.getName());
-                stringEntity.setJarName(cr.getJar());
+                stringEntity.setJarName(cr.getJarName());
+                stringEntity.setJarId(cr.getJarId());
                 stringEntity.setMethodDesc(mr.getDesc());
                 stringEntity.setMethodName(mr.getName());
                 mList.add(stringEntity);
@@ -322,7 +351,8 @@ public class DatabaseManager {
                 stringEntity.setValue(s);
                 stringEntity.setAccess(mr.getAccess());
                 stringEntity.setClassName(cr.getName());
-                stringEntity.setJarName(cr.getJar());
+                stringEntity.setJarName(cr.getJarName());
+                stringEntity.setJarId(cr.getJarId());
                 stringEntity.setMethodDesc(mr.getDesc());
                 stringEntity.setMethodName(mr.getName());
                 mList.add(stringEntity);
@@ -339,16 +369,18 @@ public class DatabaseManager {
         logger.info("save all string success");
     }
 
-    public static void saveSpring(ArrayList<SpringController> controllers) {
+    public static void saveSpringController(ArrayList<SpringController> controllers) {
         List<SpringControllerEntity> cList = new ArrayList<>();
         List<SpringMethodEntity> mList = new ArrayList<>();
         for (SpringController controller : controllers) {
             SpringControllerEntity ce = new SpringControllerEntity();
             ce.setClassName(controller.getClassName().getName());
+            ce.setJarId(controller.getClassReference().getJarId());
             cList.add(ce);
             for (SpringMapping mapping : controller.getMappings()) {
                 SpringMethodEntity me = new SpringMethodEntity();
                 me.setClassName(controller.getClassName().getName());
+                me.setJarId(controller.getClassReference().getJarId());
                 me.setPath(mapping.getPath());
                 me.setMethodName(mapping.getMethodName().getName());
                 me.setMethodDesc(mapping.getMethodName().getDesc());
@@ -356,10 +388,10 @@ public class DatabaseManager {
                     me.setRestfulType(mapping.getPathRestful());
                     initPath(mapping, me);
                 } else {
-                    for (String annotation : mapping.getMethodReference().getAnnotations()) {
-                        if (annotation.startsWith(SpringConstant.ANNO_PREFIX) &&
-                                annotation.endsWith(SpringConstant.MappingAnno)) {
-                            me.setRestfulType(annotation
+                    for (AnnoReference annotation : mapping.getMethodReference().getAnnotations()) {
+                        if (annotation.getAnnoName().startsWith(SpringConstant.ANNO_PREFIX) &&
+                                annotation.getAnnoName().endsWith(SpringConstant.MappingAnno)) {
+                            me.setRestfulType(annotation.getAnnoName()
                                     .replace(SpringConstant.ANNO_PREFIX, "")
                                     .replace(SpringConstant.MappingAnno, ""));
                             initPath(mapping, me);
@@ -408,11 +440,12 @@ public class DatabaseManager {
         }
     }
 
-    public static void saveSpringI(ArrayList<String> interceptors) {
+    public static void saveSpringInterceptor(ArrayList<String> interceptors) {
         List<SpringInterceptorEntity> list = new ArrayList<>();
         for (String interceptor : interceptors) {
             SpringInterceptorEntity ce = new SpringInterceptorEntity();
             ce.setClassName(interceptor);
+            ce.setJarId(AnalyzeEnv.classMap.getOrDefault(new ClassReference.Handle(interceptor), notFoundClassReference).getJarId());
             list.add(ce);
         }
         List<List<SpringInterceptorEntity>> partition = PartitionUtils.partition(list, PART_SIZE);
@@ -425,8 +458,15 @@ public class DatabaseManager {
     }
 
     public static void saveServlets(ArrayList<String> servlets) {
-        List<List<String>> partition = PartitionUtils.partition(servlets, PART_SIZE);
-        for (List<String> data : partition) {
+        List<JavaWebEntity> list = new ArrayList<>();
+        for (String servlet : servlets) {
+            JavaWebEntity ce = new JavaWebEntity();
+            ce.setClassName(servlet);
+            ce.setJarId(AnalyzeEnv.classMap.getOrDefault(new ClassReference.Handle(servlet), notFoundClassReference).getJarId());
+            list.add(ce);
+        }
+        List<List<JavaWebEntity>> partition = PartitionUtils.partition(list, PART_SIZE);
+        for (List<JavaWebEntity> data : partition) {
             int a = javaWebMapper.insertServlets(data);
             if (a == 0) {
                 logger.warn("save error");
@@ -435,8 +475,15 @@ public class DatabaseManager {
     }
 
     public static void saveFilters(ArrayList<String> filters) {
-        List<List<String>> partition = PartitionUtils.partition(filters, PART_SIZE);
-        for (List<String> data : partition) {
+        List<JavaWebEntity> list = new ArrayList<>();
+        for (String filter : filters) {
+            JavaWebEntity ce = new JavaWebEntity();
+            ce.setClassName(filter);
+            ce.setJarId(AnalyzeEnv.classMap.getOrDefault(new ClassReference.Handle(filter), notFoundClassReference).getJarId());
+            list.add(ce);
+        }
+        List<List<JavaWebEntity>> partition = PartitionUtils.partition(list, PART_SIZE);
+        for (List<JavaWebEntity> data : partition) {
             int a = javaWebMapper.insertFilters(data);
             if (a == 0) {
                 logger.warn("save error");
@@ -445,8 +492,15 @@ public class DatabaseManager {
     }
 
     public static void saveListeners(ArrayList<String> listeners) {
-        List<List<String>> partition = PartitionUtils.partition(listeners, PART_SIZE);
-        for (List<String> data : partition) {
+        List<JavaWebEntity> list = new ArrayList<>();
+        for (String listener : listeners) {
+            JavaWebEntity ce = new JavaWebEntity();
+            ce.setClassName(listener);
+            ce.setJarId(AnalyzeEnv.classMap.getOrDefault(new ClassReference.Handle(listener), notFoundClassReference).getJarId());
+            list.add(ce);
+        }
+        List<List<JavaWebEntity>> partition = PartitionUtils.partition(list, PART_SIZE);
+        for (List<JavaWebEntity> data : partition) {
             int a = javaWebMapper.insertListeners(data);
             if (a == 0) {
                 logger.warn("save error");

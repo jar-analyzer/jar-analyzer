@@ -18,6 +18,7 @@ public class MethodEntity {
     private String className;
     private int access;
     private int lineNumber;
+    private Integer jarId;
 
     public int getAccess() {
         return access;
@@ -75,6 +76,14 @@ public class MethodEntity {
         this.lineNumber = lineNumber;
     }
 
+    public void setJarId(Integer jarId) {
+        this.jarId = jarId;
+    }
+
+    public Integer getJarId() {
+        return jarId;
+    }
+
     @Override
     public String toString() {
         return "MethodEntity{" +
@@ -84,6 +93,8 @@ public class MethodEntity {
                 ", isStatic=" + isStatic +
                 ", className='" + className + '\'' +
                 ", access=" + access +
+                ", lineNumber=" + lineNumber +
+                ", jarId=" + jarId +
                 '}';
     }
 }

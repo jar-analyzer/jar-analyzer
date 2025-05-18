@@ -16,6 +16,9 @@ public class ClassEntity {
     private String className;
     private String superClassName;
     private boolean isInterface;
+    private Integer jarId;
+    private Integer version;
+    private Integer access;
 
     public int getCid() {
         return cid;
@@ -57,6 +60,30 @@ public class ClassEntity {
         isInterface = anInterface;
     }
 
+    public Integer getJarId() {
+        return jarId;
+    }
+
+    public void setJarId(Integer jarId) {
+        this.jarId = jarId;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    public Integer getAccess() {
+        return access;
+    }
+
+    public void setAccess(Integer access) {
+        this.access = access;
+    }
+
     @Override
     public String toString() {
         return "ClassEntity{" +
@@ -65,6 +92,9 @@ public class ClassEntity {
                 ", className='" + className + '\'' +
                 ", superClassName='" + superClassName + '\'' +
                 ", isInterface=" + isInterface +
+                ", jarId=" + jarId +
+                ", version=" + version +
+                ", access=" + access +
                 '}';
     }
 }

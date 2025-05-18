@@ -19,6 +19,11 @@
             (#{item.jarName}, #{item.jarAbsPath})
         </foreach>
     </insert>
+    <select id="selectJarByAbsPath">
+        SELECT jid, jar_name, jar_abs_path
+        FROM jar_table
+        WHERE jar_abs_path = #{jarAbsPath}
+    </select>
     <select id="selectAllJars">
         SELECT DISTINCT jar_abs_path
         FROM jar_table

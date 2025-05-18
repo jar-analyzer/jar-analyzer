@@ -36,6 +36,9 @@ public class MethodResult {
     @JSONField(serialize = false)
     private int lineNumber;
 
+    @JSONField(serialize = false)
+    private int jarId;
+
     // for string search
     @JSONField(serialize = false)
     private String strValue;
@@ -133,6 +136,14 @@ public class MethodResult {
 
     public void setLineNumber(int lineNumber) {
         this.lineNumber = lineNumber;
+    }
+
+    public int getJarId() {
+        return jarId;
+    }
+
+    public void setJarId(int jarId) {
+        this.jarId = jarId;
     }
 
     @Override

@@ -35,7 +35,7 @@ public class DiscoveryRunner {
         for (ClassFileEntity file : classFileList) {
             try {
                 DiscoveryClassVisitor dcv = new DiscoveryClassVisitor(discoveredClasses,
-                        discoveredMethods, file.getJarName());
+                        discoveredMethods, file.getJarName(),file.getJarId());
                 ClassReader cr = new ClassReader(file.getFile());
                 cr.accept(dcv, Const.AnalyzeASMOptions);
             } catch (Exception e) {

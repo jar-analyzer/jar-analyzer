@@ -120,6 +120,8 @@ public class CoreRunner {
             MainForm.getInstance().getStartBuildDatabaseButton().setEnabled(false);
         }
 
+        Map<String,Integer> jarIdMap = new HashMap<>();
+
         List<ClassFileEntity> cfs;
         MainForm.getInstance().getBuildBar().setValue(10);
         if (Files.isDirectory(jarPath)) {
@@ -135,9 +137,10 @@ public class CoreRunner {
                 if (s.toLowerCase().endsWith(".jar") ||
                         s.toLowerCase().endsWith(".war")) {
                     DatabaseManager.saveJar(s);
+                    jarIdMap.put(s,DatabaseManager.getJarId(s).getJid());
                 }
             }
-            cfs = CoreUtil.getAllClassesFromJars(files);
+            cfs = CoreUtil.getAllClassesFromJars(files,jarIdMap);
         } else {
             logger.info("input is a jar file");
             LogUtil.info("input is a jar");
@@ -155,8 +158,9 @@ public class CoreRunner {
             jarList.add(jarPath.toAbsolutePath().toString());
             for (String s : jarList) {
                 DatabaseManager.saveJar(s);
+                jarIdMap.put(s,DatabaseManager.getJarId(s).getJid());
             }
-            cfs = CoreUtil.getAllClassesFromJars(jarList);
+            cfs = CoreUtil.getAllClassesFromJars(jarList,jarIdMap);
         }
         // BUG CLASS NAME
         for (ClassFileEntity cf : cfs) {
@@ -272,12 +276,12 @@ public class CoreRunner {
             DatabaseManager.saveStrMap(AnalyzeEnv.strMap, AnalyzeEnv.stringAnnoMap);
 
             SpringService.start(AnalyzeEnv.classFileList, AnalyzeEnv.controllers, AnalyzeEnv.classMap, AnalyzeEnv.methodMap);
-            DatabaseManager.saveSpring(AnalyzeEnv.controllers);
+            DatabaseManager.saveSpringController(AnalyzeEnv.controllers);
 
             OtherWebService.start(AnalyzeEnv.classFileList,
                     AnalyzeEnv.interceptors,
                     AnalyzeEnv.servlets, AnalyzeEnv.filters, AnalyzeEnv.listeners);
-            DatabaseManager.saveSpringI(AnalyzeEnv.interceptors);
+            DatabaseManager.saveSpringInterceptor(AnalyzeEnv.interceptors);
             DatabaseManager.saveServlets(AnalyzeEnv.servlets);
             DatabaseManager.saveFilters(AnalyzeEnv.filters);
             DatabaseManager.saveListeners(AnalyzeEnv.listeners);

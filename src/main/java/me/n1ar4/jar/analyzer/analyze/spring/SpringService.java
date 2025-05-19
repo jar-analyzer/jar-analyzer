@@ -11,8 +11,8 @@
 package me.n1ar4.jar.analyzer.analyze.spring;
 
 import me.n1ar4.jar.analyzer.analyze.spring.asm.SpringClassVisitor;
-import me.n1ar4.jar.analyzer.core.ClassReference;
-import me.n1ar4.jar.analyzer.core.MethodReference;
+import me.n1ar4.jar.analyzer.core.reference.ClassReference;
+import me.n1ar4.jar.analyzer.core.reference.MethodReference;
 import me.n1ar4.jar.analyzer.entity.ClassFileEntity;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.log.LogManager;

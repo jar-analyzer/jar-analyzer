@@ -12,6 +12,8 @@ package me.n1ar4.jar.analyzer.core;
 
 import me.n1ar4.jar.analyzer.core.asm.DiscoveryClassVisitor;
 import me.n1ar4.jar.analyzer.core.asm.StringAnnoClassVisitor;
+import me.n1ar4.jar.analyzer.core.reference.ClassReference;
+import me.n1ar4.jar.analyzer.core.reference.MethodReference;
 import me.n1ar4.jar.analyzer.entity.ClassFileEntity;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.log.LogManager;
@@ -35,7 +37,7 @@ public class DiscoveryRunner {
         for (ClassFileEntity file : classFileList) {
             try {
                 DiscoveryClassVisitor dcv = new DiscoveryClassVisitor(discoveredClasses,
-                        discoveredMethods, file.getJarName(),file.getJarId());
+                        discoveredMethods, file.getJarName(), file.getJarId());
                 ClassReader cr = new ClassReader(file.getFile());
                 cr.accept(dcv, Const.AnalyzeASMOptions);
             } catch (Exception e) {

@@ -10,7 +10,7 @@
 
 package me.n1ar4.jar.analyzer.analyze.spring;
 
-import me.n1ar4.jar.analyzer.core.MethodReference;
+import me.n1ar4.jar.analyzer.core.reference.MethodReference;
 
 import java.util.ArrayList;
 import java.util.List;

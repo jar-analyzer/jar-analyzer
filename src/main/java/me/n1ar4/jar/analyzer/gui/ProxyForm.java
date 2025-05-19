@@ -13,7 +13,7 @@ package me.n1ar4.jar.analyzer.gui;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import me.n1ar4.jar.analyzer.core.Proxy;
+import me.n1ar4.jar.analyzer.core.others.Proxy;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;

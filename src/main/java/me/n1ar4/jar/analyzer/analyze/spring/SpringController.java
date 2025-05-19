@@ -11,7 +11,7 @@
 package me.n1ar4.jar.analyzer.analyze.spring;
 
 
-import me.n1ar4.jar.analyzer.core.ClassReference;
+import me.n1ar4.jar.analyzer.core.reference.ClassReference;
 
 import java.util.ArrayList;
 import java.util.List;

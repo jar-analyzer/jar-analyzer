@@ -10,9 +10,9 @@
 
 package me.n1ar4.jar.analyzer.el;
 
-import me.n1ar4.jar.analyzer.core.ClassReference;
-import me.n1ar4.jar.analyzer.core.MethodReference;
 import me.n1ar4.jar.analyzer.core.reference.AnnoReference;
+import me.n1ar4.jar.analyzer.core.reference.ClassReference;
+import me.n1ar4.jar.analyzer.core.reference.MethodReference;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
@@ -103,7 +103,7 @@ public class MethodELProcessor {
             methodNameNotContainsFlag = !mr.getName().contains(mnNoCon);
         }
 
-        ClassReference cr = MainForm.getEngine().getClassRef(ch,mr.getJarId());
+        ClassReference cr = MainForm.getEngine().getClassRef(ch, mr.getJarId());
 
         if (classAnno != null && !classAnno.isEmpty()) {
             if (cr.getAnnotations() == null ||

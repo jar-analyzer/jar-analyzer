@@ -10,8 +10,8 @@
 
 package me.n1ar4.jar.analyzer.core.asm;
 
-import me.n1ar4.jar.analyzer.core.ClassReference;
-import me.n1ar4.jar.analyzer.core.MethodReference;
+import me.n1ar4.jar.analyzer.core.reference.ClassReference;
+import me.n1ar4.jar.analyzer.core.reference.MethodReference;
 import org.objectweb.asm.Handle;
 import org.objectweb.asm.MethodVisitor;
 

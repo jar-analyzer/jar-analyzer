@@ -8,7 +8,7 @@
  * https://github.com/jar-analyzer/jar-analyzer/blob/master/LICENSE
  */
 
-package me.n1ar4.jar.analyzer.core;
+package me.n1ar4.jar.analyzer.core.others;
 
 public class Proxy {
     private static final String SYSTEM_PROXY = "java.net.useSystemProxies";

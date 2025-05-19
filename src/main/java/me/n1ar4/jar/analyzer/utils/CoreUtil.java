@@ -37,7 +37,7 @@ public class CoreUtil {
         } catch (IOException ignored) {
         }
         for (String jarPath : jarPathList) {
-            classFileSet.addAll(JarUtil.resolveNormalJarFile(jarPath,jarIdMap.get(jarPath)));
+            classFileSet.addAll(JarUtil.resolveNormalJarFile(jarPath, jarIdMap.get(jarPath)));
         }
         return new ArrayList<>(classFileSet);
     }

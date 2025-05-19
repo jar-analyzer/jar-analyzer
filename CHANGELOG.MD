@@ -4,7 +4,9 @@
 
 更新日志：
 
+- [功能] 记录方法调用 `OPCODE` 等信息以供后续使用 @TianMing2018
 - [功能] 支持分析依赖目录文件名得到 `Gadget` 信息 @4ra1n
+- [BUG] 导入多个 `JAR` 应该区分每个 `CLASS` 来源 @TianMing2018
 - [BUG] 修复 `Spring` 分析低 `Java` 版本报错 @Gosiu
 - [BUG] 修复 `WAR` 包情况左侧文件树无法自动定位 @4ra1n
 
@@ -12,6 +14,7 @@
 
 - 4ra1n (https://github.com/4ra1n)
 - Honey Baby (https://github.com/Gosiu)
+- TianMing2018 (https://github.com/TianMing2018)
 
 所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
 

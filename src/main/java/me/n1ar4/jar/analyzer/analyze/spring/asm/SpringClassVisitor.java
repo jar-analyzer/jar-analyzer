@@ -12,9 +12,9 @@ package me.n1ar4.jar.analyzer.analyze.spring.asm;
 
 import me.n1ar4.jar.analyzer.analyze.spring.SpringConstant;
 import me.n1ar4.jar.analyzer.analyze.spring.SpringController;
-import me.n1ar4.jar.analyzer.core.ClassReference;
-import me.n1ar4.jar.analyzer.core.MethodReference;
 import me.n1ar4.jar.analyzer.core.reference.AnnoReference;
+import me.n1ar4.jar.analyzer.core.reference.ClassReference;
+import me.n1ar4.jar.analyzer.core.reference.MethodReference;
 import me.n1ar4.jar.analyzer.starter.Const;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassVisitor;

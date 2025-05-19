@@ -15,6 +15,8 @@ import me.n1ar4.jar.analyzer.config.ConfigEngine;
 import me.n1ar4.jar.analyzer.config.ConfigFile;
 import me.n1ar4.jar.analyzer.core.asm.FixClassVisitor;
 import me.n1ar4.jar.analyzer.core.asm.StringClassVisitor;
+import me.n1ar4.jar.analyzer.core.reference.ClassReference;
+import me.n1ar4.jar.analyzer.core.reference.MethodReference;
 import me.n1ar4.jar.analyzer.engine.CoreEngine;
 import me.n1ar4.jar.analyzer.engine.CoreHelper;
 import me.n1ar4.jar.analyzer.entity.ClassFileEntity;
@@ -120,7 +122,7 @@ public class CoreRunner {
             MainForm.getInstance().getStartBuildDatabaseButton().setEnabled(false);
         }
 
-        Map<String,Integer> jarIdMap = new HashMap<>();
+        Map<String, Integer> jarIdMap = new HashMap<>();
 
         List<ClassFileEntity> cfs;
         MainForm.getInstance().getBuildBar().setValue(10);
@@ -137,10 +139,10 @@ public class CoreRunner {
                 if (s.toLowerCase().endsWith(".jar") ||
                         s.toLowerCase().endsWith(".war")) {
                     DatabaseManager.saveJar(s);
-                    jarIdMap.put(s,DatabaseManager.getJarId(s).getJid());
+                    jarIdMap.put(s, DatabaseManager.getJarId(s).getJid());
                 }
             }
-            cfs = CoreUtil.getAllClassesFromJars(files,jarIdMap);
+            cfs = CoreUtil.getAllClassesFromJars(files, jarIdMap);
         } else {
             logger.info("input is a jar file");
             LogUtil.info("input is a jar");
@@ -158,9 +160,9 @@ public class CoreRunner {
             jarList.add(jarPath.toAbsolutePath().toString());
             for (String s : jarList) {
                 DatabaseManager.saveJar(s);
-                jarIdMap.put(s,DatabaseManager.getJarId(s).getJid());
+                jarIdMap.put(s, DatabaseManager.getJarId(s).getJid());
             }
-            cfs = CoreUtil.getAllClassesFromJars(jarList,jarIdMap);
+            cfs = CoreUtil.getAllClassesFromJars(jarList, jarIdMap);
         }
         // BUG CLASS NAME
         for (ClassFileEntity cf : cfs) {

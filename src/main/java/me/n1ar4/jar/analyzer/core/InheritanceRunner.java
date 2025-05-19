@@ -10,6 +10,9 @@
 
 package me.n1ar4.jar.analyzer.core;
 
+import me.n1ar4.jar.analyzer.core.reference.ClassReference;
+import me.n1ar4.jar.analyzer.core.reference.MethodReference;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;

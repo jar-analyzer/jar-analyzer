@@ -13,8 +13,6 @@ package me.n1ar4.jar.analyzer.gadget;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @SuppressWarnings("all")
 public class GadgetTableCellRender extends DefaultTableCellRenderer {

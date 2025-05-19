@@ -10,7 +10,7 @@
 
 package me.n1ar4.jar.analyzer.core.asm;
 
-import me.n1ar4.jar.analyzer.core.MethodReference;
+import me.n1ar4.jar.analyzer.core.reference.MethodReference;
 import me.n1ar4.jar.analyzer.starter.Const;
 import org.objectweb.asm.AnnotationVisitor;
 

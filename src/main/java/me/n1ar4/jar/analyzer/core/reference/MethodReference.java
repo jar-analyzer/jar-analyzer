@@ -8,9 +8,7 @@
  * https://github.com/jar-analyzer/jar-analyzer/blob/master/LICENSE
  */
 
-package me.n1ar4.jar.analyzer.core;
-
-import me.n1ar4.jar.analyzer.core.reference.AnnoReference;
+package me.n1ar4.jar.analyzer.core.reference;
 
 import java.util.Objects;
 import java.util.Set;

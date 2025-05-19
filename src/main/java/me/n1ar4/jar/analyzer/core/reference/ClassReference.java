@@ -8,9 +8,7 @@
  * https://github.com/jar-analyzer/jar-analyzer/blob/master/LICENSE
  */
 
-package me.n1ar4.jar.analyzer.core;
-
-import me.n1ar4.jar.analyzer.core.reference.AnnoReference;
+package me.n1ar4.jar.analyzer.core.reference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,12 +72,15 @@ public class ClassReference {
     }
 
     public ClassReference(String name, String superClass, List<String> interfaces,
-                          boolean isInterface, List<Member> members, ArrayList<String> annotations, String jarName, Integer jarId) {
-        this(-1,-1,name,superClass,interfaces,isInterface,members,annotations.stream().map(a -> new AnnoReference(a)).collect(Collectors.toSet()),jarName,jarId);
+                          boolean isInterface, List<Member> members,
+                          ArrayList<String> annotations, String jarName, Integer jarId) {
+        this(-1, -1, name, superClass, interfaces, isInterface, members,
+                annotations.stream().map(AnnoReference::new).collect(Collectors.toSet()), jarName, jarId);
     }
 
-    public ClassReference(Integer version, Integer access, String name, String superClass, List<String> interfaces,
-                          boolean isInterface, List<Member> members, Set<AnnoReference> annotations, String jarName, Integer jarId) {
+    public ClassReference(Integer version, Integer access, String name, String superClass,
+                          List<String> interfaces, boolean isInterface, List<Member> members,
+                          Set<AnnoReference> annotations, String jarName, Integer jarId) {
         this.version = version;
         this.access = access;
         this.name = name;

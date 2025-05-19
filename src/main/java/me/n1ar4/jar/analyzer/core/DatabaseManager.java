@@ -16,6 +16,8 @@ import me.n1ar4.jar.analyzer.analyze.spring.SpringController;
 import me.n1ar4.jar.analyzer.analyze.spring.SpringMapping;
 import me.n1ar4.jar.analyzer.core.mapper.*;
 import me.n1ar4.jar.analyzer.core.reference.AnnoReference;
+import me.n1ar4.jar.analyzer.core.reference.ClassReference;
+import me.n1ar4.jar.analyzer.core.reference.MethodReference;
 import me.n1ar4.jar.analyzer.entity.*;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
@@ -116,6 +118,9 @@ public class DatabaseManager {
         List<ClassFileEntity> list = new ArrayList<>();
         for (ClassFileEntity classFile : classFileList) {
             classFile.setPathStr(classFile.getPath().toAbsolutePath().toString());
+            if (classFile.getJarId() == null) {
+                classFile.setJarId(-1);
+            }
             list.add(classFile);
         }
         List<List<ClassFileEntity>> partition = PartitionUtils.partition(list, PART_SIZE);

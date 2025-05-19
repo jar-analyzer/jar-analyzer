@@ -19,15 +19,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class CoreUtil {
     private static final Logger logger = LogManager.getLogger();
 
-    public static List<ClassFileEntity> getAllClassesFromJars(List<String> jarPathList) {
+    public static List<ClassFileEntity> getAllClassesFromJars(List<String> jarPathList, Map<String, Integer> jarIdMap) {
         logger.info("collect all class");
         Set<ClassFileEntity> classFileSet = new HashSet<>();
         Path temp = Paths.get(Const.tempDir);
@@ -40,7 +37,7 @@ public class CoreUtil {
         } catch (IOException ignored) {
         }
         for (String jarPath : jarPathList) {
-            classFileSet.addAll(JarUtil.resolveNormalJarFile(jarPath));
+            classFileSet.addAll(JarUtil.resolveNormalJarFile(jarPath,jarIdMap.get(jarPath)));
         }
         return new ArrayList<>(classFileSet);
     }

@@ -12,6 +12,7 @@ package me.n1ar4.jar.analyzer.entity;
 
 public class SpringInterceptorEntity {
     private String className;
+    private Integer jarId;
 
     public String getClassName() {
         return className;
@@ -21,10 +22,19 @@ public class SpringInterceptorEntity {
         this.className = className;
     }
 
+    public Integer getJarId() {
+        return jarId;
+    }
+
+    public void setJarId(Integer jarId) {
+        this.jarId = jarId;
+    }
+
     @Override
     public String toString() {
         return "SpringInterceptorEntity{" +
                 "className='" + className + '\'' +
+                ", jarId=" + jarId +
                 '}';
     }
 }

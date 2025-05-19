@@ -33,11 +33,11 @@ public class JarUtil {
     private static final Logger logger = LogManager.getLogger();
     private static final Set<ClassFileEntity> classFileSet = new HashSet<>();
 
-    public static List<ClassFileEntity> resolveNormalJarFile(String jarPath) {
+    public static List<ClassFileEntity> resolveNormalJarFile(String jarPath, Integer jarId) {
         try {
             Path tmpDir = Paths.get(Const.tempDir);
             classFileSet.clear();
-            resolve(jarPath, tmpDir);
+            resolve(jarId, jarPath, tmpDir);
             return new ArrayList<>(classFileSet);
         } catch (Exception e) {
             logger.error("error: {}", e.toString());
@@ -120,7 +120,7 @@ public class JarUtil {
         return true;
     }
 
-    private static void resolve(String jarPathStr, Path tmpDir) {
+    private static void resolve(Integer jarId, String jarPathStr, Path tmpDir) {
         String text = MainForm.getInstance().getClassBlackArea().getText();
         String whiteText = MainForm.getInstance().getClassWhiteArea().getText();
         Path jarPath = Paths.get(jarPathStr);
@@ -140,7 +140,7 @@ public class JarUtil {
                         return;
                     }
 
-                    ClassFileEntity classFile = new ClassFileEntity(saveClass, jarPath);
+                    ClassFileEntity classFile = new ClassFileEntity(saveClass, jarPath, jarId);
                     classFile.setJarName("class");
                     classFileSet.add(classFile);
 
@@ -201,7 +201,7 @@ public class JarUtil {
                                 }
                                 OutputStream outputStream = Files.newOutputStream(fullPath);
                                 IOUtil.copy(jarInputStream, outputStream);
-                                doInternal(fullPath, tmpDir, text, whiteText);
+                                doInternal(jarId, fullPath, tmpDir, text, whiteText);
                                 outputStream.close();
                             }
                             continue;
@@ -218,7 +218,7 @@ public class JarUtil {
                         OutputStream outputStream = Files.newOutputStream(fullPath);
                         IOUtil.copy(jarInputStream, outputStream);
                         outputStream.close();
-                        ClassFileEntity classFile = new ClassFileEntity(jarEntry.getName(), fullPath);
+                        ClassFileEntity classFile = new ClassFileEntity(jarEntry.getName(), fullPath, jarId);
                         String splitStr;
                         if (OSUtil.isWindows()) {
                             splitStr = "\\\\";
@@ -239,7 +239,7 @@ public class JarUtil {
         }
     }
 
-    private static void doInternal(Path jarPath, Path tmpDir, String text, String whiteText) {
+    private static void doInternal(Integer jarId, Path jarPath, Path tmpDir, String text, String whiteText) {
         try {
             InputStream is = Files.newInputStream(jarPath);
             JarInputStream jarInputStream = new JarInputStream(is);
@@ -281,7 +281,7 @@ public class JarUtil {
                     OutputStream outputStream = Files.newOutputStream(fullPath);
                     IOUtil.copy(jarInputStream, outputStream);
                     outputStream.close();
-                    ClassFileEntity classFile = new ClassFileEntity(jarEntry.getName(), fullPath);
+                    ClassFileEntity classFile = new ClassFileEntity(jarEntry.getName(), fullPath, jarId);
                     String splitStr;
                     if (OSUtil.isWindows()) {
                         splitStr = "\\\\";

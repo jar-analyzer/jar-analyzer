@@ -14,6 +14,7 @@ public class InterfaceEntity {
     private int iid;
     private String interfaceName;
     private String className;
+    private Integer jarId;
 
     public int getIid() {
         return iid;
@@ -39,12 +40,21 @@ public class InterfaceEntity {
         this.className = className;
     }
 
+    public void setJarId(Integer jarId) {
+        this.jarId = jarId;
+    }
+
+    public Integer getJarId() {
+        return jarId;
+    }
+
     @Override
     public String toString() {
         return "InterfaceEntity{" +
                 "iid=" + iid +
                 ", interfaceName='" + interfaceName + '\'' +
                 ", className='" + className + '\'' +
+                ", jarId='" + jarId + '\'' +
                 '}';
     }
 }

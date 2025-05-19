@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class MethodCallClassVisitor extends ClassVisitor {
-    private String name;
+    private String ownerClass;
 
     private final HashMap<MethodReference.Handle, HashSet<MethodReference.Handle>> methodCalls;
 
@@ -30,15 +30,15 @@ public class MethodCallClassVisitor extends ClassVisitor {
     }
 
     @Override
-    public void visit(int version, int access, String name, String signature,
+    public void visit(int version, int access, String ownerClass, String signature,
                       String superName, String[] interfaces) {
-        super.visit(version, access, name, signature, superName, interfaces);
-        this.name = name;
+        super.visit(version, access, ownerClass, signature, superName, interfaces);
+        this.ownerClass = ownerClass;
     }
 
-    public MethodVisitor visitMethod(int access, String name, String desc,
+    public MethodVisitor visitMethod(int access, String methodName, String desc,
                                      String signature, String[] exceptions) {
-        MethodVisitor mv = super.visitMethod(access, name, desc, signature, exceptions);
-        return new MethodCallMethodVisitor(api, mv, this.name, name, desc, methodCalls);
+        MethodVisitor mv = super.visitMethod(access, methodName, desc, signature, exceptions);
+        return new MethodCallMethodVisitor(api, mv, this.ownerClass, methodName, desc, methodCalls);
     }
 }

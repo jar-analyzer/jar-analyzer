@@ -18,6 +18,9 @@ public class MethodCallEntity {
     private String calleeClassName;
     private String calleeMethodName;
     private String calleeMethodDesc;
+    private Integer callerJarId;
+    private Integer calleeJarId;
+    private Integer opCode;
 
     public int getMcId() {
         return mcId;
@@ -75,6 +78,30 @@ public class MethodCallEntity {
         this.calleeMethodDesc = calleeMethodDesc;
     }
 
+    public Integer getCallerJarId() {
+        return callerJarId;
+    }
+
+    public void setCallerJarId(Integer callerJarId) {
+        this.callerJarId = callerJarId;
+    }
+
+    public Integer getCalleeJarId() {
+        return calleeJarId;
+    }
+
+    public void setCalleeJarId(Integer calleeJarId) {
+        this.calleeJarId = calleeJarId;
+    }
+
+    public void setOpCode(Integer opCode) {
+        this.opCode = opCode;
+    }
+
+    public Integer getOpCode() {
+        return opCode;
+    }
+
     @Override
     public String toString() {
         return "MethodCallEntity{" +
@@ -85,6 +112,9 @@ public class MethodCallEntity {
                 ", calleeClassName='" + calleeClassName + '\'' +
                 ", calleeMethodName='" + calleeMethodName + '\'' +
                 ", calleeMethodDesc='" + calleeMethodDesc + '\'' +
+                ", callerJarId=" + callerJarId +
+                ", calleeJarId=" + calleeJarId +
+                ", opCode=" + opCode +
                 '}';
     }
 }

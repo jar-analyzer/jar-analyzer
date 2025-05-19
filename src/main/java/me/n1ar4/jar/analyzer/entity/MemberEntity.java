@@ -17,6 +17,9 @@ public class MemberEntity {
     private String value;
     private String typeClassName;
     private String className;
+    private String methodDesc;
+    private String methodSignature;
+    private Integer jarId;
 
     public int getMid() {
         return mid;
@@ -66,14 +69,42 @@ public class MemberEntity {
         this.className = className;
     }
 
+    public String getMethodDesc() {
+        return methodDesc;
+    }
+
+    public void setMethodDesc(String methodDesc) {
+        this.methodDesc = methodDesc;
+    }
+
+    public String getMethodSignature() {
+        return methodSignature;
+    }
+
+    public void setMethodSignature(String methodSignature) {
+        this.methodSignature = methodSignature;
+    }
+
+    public Integer getJarId() {
+        return jarId;
+    }
+
+    public void setJarId(Integer jarId) {
+        this.jarId = jarId;
+    }
+
     @Override
     public String toString() {
         return "MemberEntity{" +
                 "mid=" + mid +
                 ", memberName='" + memberName + '\'' +
                 ", modifiers=" + modifiers +
+                ", value='" + value + '\'' +
                 ", typeClassName='" + typeClassName + '\'' +
                 ", className='" + className + '\'' +
+                ", methodDesc='" + methodDesc + '\'' +
+                ", methodSignature='" + methodSignature + '\'' +
+                ", jarId=" + jarId +
                 '}';
     }
 }

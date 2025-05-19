@@ -18,6 +18,7 @@ public class StringEntity {
     private String methodDesc;
     private String className;
     private String jarName;
+    private Integer jarId;
 
     public int getSid() {
         return sid;
@@ -75,6 +76,14 @@ public class StringEntity {
         this.jarName = jarName;
     }
 
+    public Integer getJarId() {
+        return jarId;
+    }
+
+    public void setJarId(Integer jarId) {
+        this.jarId = jarId;
+    }
+
     @Override
     public String toString() {
         return "StringEntity{" +
@@ -85,6 +94,7 @@ public class StringEntity {
                 ", methodDesc='" + methodDesc + '\'' +
                 ", className='" + className + '\'' +
                 ", jarName='" + jarName + '\'' +
+                ", jarId=" + jarId +
                 '}';
     }
 }

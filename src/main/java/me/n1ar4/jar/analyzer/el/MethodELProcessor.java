@@ -12,6 +12,7 @@ package me.n1ar4.jar.analyzer.el;
 
 import me.n1ar4.jar.analyzer.core.ClassReference;
 import me.n1ar4.jar.analyzer.core.MethodReference;
+import me.n1ar4.jar.analyzer.core.reference.AnnoReference;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
@@ -102,7 +103,7 @@ public class MethodELProcessor {
             methodNameNotContainsFlag = !mr.getName().contains(mnNoCon);
         }
 
-        ClassReference cr = MainForm.getEngine().getClassRef(ch);
+        ClassReference cr = MainForm.getEngine().getClassRef(ch,mr.getJarId());
 
         if (classAnno != null && !classAnno.isEmpty()) {
             if (cr.getAnnotations() == null ||
@@ -110,8 +111,8 @@ public class MethodELProcessor {
                 classAnnoFlag = false;
             } else {
                 boolean fc = false;
-                for (String a : cr.getAnnotations()) {
-                    if (a.contains(classAnno)) {
+                for (AnnoReference a : cr.getAnnotations()) {
+                    if (a.getAnnoName().contains(classAnno)) {
                         fc = true;
                         break;
                     }
@@ -127,8 +128,8 @@ public class MethodELProcessor {
                 methodAnnoFlag = false;
             } else {
                 boolean fm = false;
-                for (String a : mr.getAnnotations()) {
-                    if (a.contains(methodAnno)) {
+                for (AnnoReference a : mr.getAnnotations()) {
+                    if (a.getAnnoName().contains(methodAnno)) {
                         fm = true;
                         break;
                     }
@@ -246,8 +247,8 @@ public class MethodELProcessor {
             return false;
         }
         boolean isExcludedMethodAnno = false;
-        for (String annotation : mr.getAnnotations()) {
-            if (annotation.contains(excludedMethodAnno)) {
+        for (AnnoReference annotation : mr.getAnnotations()) {
+            if (annotation.getAnnoName().contains(excludedMethodAnno)) {
                 isExcludedMethodAnno = true;
                 break;
             }

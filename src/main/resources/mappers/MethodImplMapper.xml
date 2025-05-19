@@ -19,10 +19,10 @@
     </resultMap>
     <insert id="insertMethodImpl" parameterType="MethodImplEntity">
         INSERT INTO method_impl_table
-        (class_name, method_name, method_desc, impl_class_name)
+        (class_name, method_name, method_desc, impl_class_name, class_jar_id, impl_class_jar_id)
         VALUES
         <foreach collection="list" separator="," item="item">
-            (#{item.className}, #{item.methodName}, #{item.methodDesc}, #{item.implClassName})
+            (#{item.className}, #{item.methodName}, #{item.methodDesc}, #{item.implClassName}, #{item.classJarId}, #{item.implClassJarId})
         </foreach>
     </insert>
     <select id="selectImplClassName" resultMap="methodMap">

@@ -16,6 +16,7 @@ public class SpringMethodEntity {
     private String methodDesc;
     private String path;
     private String restfulType = "Unknown";
+    private Integer jarId;
 
     public String getRestfulType() {
         return restfulType;
@@ -57,6 +58,14 @@ public class SpringMethodEntity {
         this.path = path;
     }
 
+    public void setJarId(Integer jarId) {
+        this.jarId = jarId;
+    }
+
+    public Integer getJarId() {
+        return jarId;
+    }
+
     @Override
     public String toString() {
         return "SpringMethodEntity{" +
@@ -65,6 +74,7 @@ public class SpringMethodEntity {
                 ", methodDesc='" + methodDesc + '\'' +
                 ", path='" + path + '\'' +
                 ", restfulType='" + restfulType + '\'' +
+                ", jarId=" + jarId +
                 '}';
     }
 }

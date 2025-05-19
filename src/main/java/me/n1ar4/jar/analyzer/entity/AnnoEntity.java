@@ -15,6 +15,9 @@ public class AnnoEntity {
     private String annoName;
     private String methodName;
     private String className;
+    private Integer jarId;
+    private Integer visible;
+    private Integer parameter;
 
     public int getAnnoId() {
         return annoId;
@@ -48,6 +51,30 @@ public class AnnoEntity {
         this.className = className;
     }
 
+    public void setJarId(Integer jarId) {
+        this.jarId = jarId;
+    }
+
+    public Integer getJarId() {
+        return jarId;
+    }
+
+    public Integer getVisible() {
+        return visible;
+    }
+
+    public void setVisible(Integer visible) {
+        this.visible = visible;
+    }
+
+    public void setParameter(Integer parameter) {
+        this.parameter = parameter;
+    }
+
+    public Integer getParameter() {
+        return parameter;
+    }
+
     @Override
     public String toString() {
         return "AnnoEntity{" +
@@ -55,6 +82,9 @@ public class AnnoEntity {
                 ", annoName='" + annoName + '\'' +
                 ", methodName='" + methodName + '\'' +
                 ", className='" + className + '\'' +
+                ", jarId=" + jarId +
+                ", visible=" + visible +
+                ", parameter=" + parameter +
                 '}';
     }
 }

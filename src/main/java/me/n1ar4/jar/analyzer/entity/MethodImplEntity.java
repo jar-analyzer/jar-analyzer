@@ -16,6 +16,8 @@ public class MethodImplEntity {
     private String methodName;
     private String methodDesc;
     private String implClassName;
+    private Integer classJarId;
+    private Integer implClassJarId;
 
     public int getImplId() {
         return implId;
@@ -57,6 +59,22 @@ public class MethodImplEntity {
         this.implClassName = implClassName;
     }
 
+    public Integer getClassJarId() {
+        return classJarId;
+    }
+
+    public void setClassJarId(Integer classJarId) {
+        this.classJarId = classJarId;
+    }
+
+    public Integer getImplClassJarId() {
+        return implClassJarId;
+    }
+
+    public void setImplClassJarId(Integer implClassJarId) {
+        this.implClassJarId = implClassJarId;
+    }
+
     @Override
     public String toString() {
         return "MethodImplEntity{" +
@@ -65,6 +83,8 @@ public class MethodImplEntity {
                 ", methodName='" + methodName + '\'' +
                 ", methodDesc='" + methodDesc + '\'' +
                 ", implClassName='" + implClassName + '\'' +
+                ", classJarId=" + classJarId +
+                ", implClassJarId=" + implClassJarId +
                 '}';
     }
 }

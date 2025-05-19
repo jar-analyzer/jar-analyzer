@@ -27,6 +27,8 @@ public class ClassFileEntity {
     private String pathStr;
     // SAVE
     private String jarName;
+    // SAVE
+    private Integer jarId;
 
     public int getCfId() {
         return cfId;
@@ -68,12 +70,21 @@ public class ClassFileEntity {
         this.jarName = jarName;
     }
 
+    public Integer getJarId() {
+        return jarId;
+    }
+
+    public void setJarId(Integer jarId) {
+        this.jarId = jarId;
+    }
+
     public ClassFileEntity() {
     }
 
-    public ClassFileEntity(String className, Path path) {
+    public ClassFileEntity(String className, Path path, Integer jarId) {
         this.className = className;
         this.path = path;
+        this.jarId = jarId;
     }
 
     public byte[] getFile() {
@@ -93,6 +104,7 @@ public class ClassFileEntity {
                 ", path=" + path +
                 ", pathStr='" + pathStr + '\'' +
                 ", jarName='" + jarName + '\'' +
+                ", jarId=" + jarId +
                 '}';
     }
 }

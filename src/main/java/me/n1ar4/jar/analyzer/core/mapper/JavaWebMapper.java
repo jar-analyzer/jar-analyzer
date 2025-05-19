@@ -11,15 +11,16 @@
 package me.n1ar4.jar.analyzer.core.mapper;
 
 import me.n1ar4.jar.analyzer.entity.ClassResult;
+import me.n1ar4.jar.analyzer.entity.JavaWebEntity;
 
 import java.util.List;
 
 public interface JavaWebMapper {
-    int insertServlets(List<String> filters);
+    int insertServlets(List<JavaWebEntity> filters);
 
-    int insertFilters(List<String> filters);
+    int insertFilters(List<JavaWebEntity> filters);
 
-    int insertListeners(List<String> filters);
+    int insertListeners(List<JavaWebEntity> filters);
 
     List<ClassResult> selectAllServlets();
 

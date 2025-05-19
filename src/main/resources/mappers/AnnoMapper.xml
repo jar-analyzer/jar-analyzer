@@ -13,10 +13,10 @@
 <mapper namespace="me.n1ar4.jar.analyzer.core.mapper.AnnoMapper">
     <insert id="insertAnno" parameterType="AnnoEntity">
         INSERT INTO anno_table
-        (anno_name, method_name, class_name)
+        (anno_name, method_name, class_name, visible, jar_id)
         VALUES
         <foreach collection="list" separator="," item="item">
-            (#{item.annoName}, #{item.methodName}, #{item.className})
+            (#{item.annoName}, #{item.methodName}, #{item.className}, #{item.visible}, #{item.jarId})
         </foreach>
     </insert>
     <select id="selectAnnoByClassName">

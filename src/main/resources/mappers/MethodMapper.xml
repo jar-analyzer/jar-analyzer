@@ -19,13 +19,15 @@
         <result column="is_static" property="isStaticInt"/>
         <result column="access" property="accessInt"/>
         <result column="line_number" property="lineNumber"/>
+        <result column="jar_name" property="jarName"/>
+        <result column="jar_id" property="jarId"/>
     </resultMap>
     <insert id="insertMethod" parameterType="MethodEntity">
         INSERT INTO method_table
-        (method_name, method_desc, is_static, class_name, access, line_number)
+        (method_name, method_desc, is_static, class_name, access, line_number, jar_id)
         VALUES
         <foreach collection="list" separator="," item="item">
-            (#{item.methodName}, #{item.methodDesc}, #{item.isStatic}, #{item.className}, #{item.access}, #{item.lineNumber})
+            (#{item.methodName}, #{item.methodDesc}, #{item.isStatic}, #{item.className}, #{item.access}, #{item.lineNumber}, #{item.jarId})
         </foreach>
     </insert>
     <select id="selectMethodsByClassName" resultMap="methodMap">
@@ -44,8 +46,8 @@
         SELECT COUNT(*) from method_table
     </select>
     <select id="selectAllMethods" resultMap="methodMap">
-        SELECT m.method_name, m.class_name, m.method_desc, m.is_static, m.access, m.line_number
-        FROM method_table m
+        SELECT m.method_name, m.class_name, m.method_desc, m.is_static, m.access, m.line_number, jt.jar_name, m.jar_id
+        FROM method_table m left join jar_table jt on m.jar_id = jt.jid
         LIMIT #{size} OFFSET #{offset}
     </select>
     <select id="selectMethods" resultMap="methodMap">

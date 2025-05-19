@@ -16,17 +16,20 @@
         <result column="member_name" property="memberName"/>
         <result column="modifiers" property="modifiers"/>
         <result column="class_name" property="className"/>
+        <result column="method_desc" property="methodDesc"/>
+        <result column="method_signature" property="methodSignature"/>
     </resultMap>
     <insert id="insertMember" parameterType="MemberEntity">
         INSERT INTO member_table
-        (member_name, modifiers, value, type_class_name, class_name)
+        (member_name, modifiers, value, method_desc, method_signature, type_class_name, class_name, jar_id)
         VALUES
         <foreach collection="list" separator="," item="item">
-            (#{item.memberName}, #{item.modifiers}, #{item.value}, #{item.typeClassName}, #{item.className})
+            (#{item.memberName}, #{item.modifiers}, #{item.value}, #{item.methodDesc},#{item.methodSignature},
+            #{item.typeClassName}, #{item.className}, #{item.jarId})
         </foreach>
     </insert>
     <select id="selectMembersByClass" resultMap="memberMap">
-        SELECT DISTINCT member_name, modifiers, value, type_class_name
+        SELECT DISTINCT member_name, modifiers, value, type_class_name, method_desc, method_signature
         FROM member_table
         WHERE class_name = #{className}
     </select>

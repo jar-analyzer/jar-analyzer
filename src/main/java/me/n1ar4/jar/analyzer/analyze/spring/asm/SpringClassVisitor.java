@@ -14,6 +14,7 @@ import me.n1ar4.jar.analyzer.analyze.spring.SpringConstant;
 import me.n1ar4.jar.analyzer.analyze.spring.SpringController;
 import me.n1ar4.jar.analyzer.core.ClassReference;
 import me.n1ar4.jar.analyzer.core.MethodReference;
+import me.n1ar4.jar.analyzer.core.reference.AnnoReference;
 import me.n1ar4.jar.analyzer.starter.Const;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassVisitor;
@@ -55,7 +56,7 @@ public class SpringClassVisitor extends ClassVisitor {
     public void visit(int version, int access, String name, String signature,
                       String superName, String[] interfaces) {
         this.name = name;
-        Set<String> annotations = classMap.get(new ClassReference.Handle(name)).getAnnotations();
+        Set<AnnoReference> annotations = classMap.get(new ClassReference.Handle(name)).getAnnotations();
         if (annotations.contains(SpringConstant.ControllerAnno) ||
                 annotations.contains(SpringConstant.RestControllerAnno) ||
                 annotations.contains(SpringConstant.SBApplication)) {

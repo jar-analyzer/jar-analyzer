@@ -15,6 +15,7 @@ import me.n1ar4.jar.analyzer.core.ClassReference;
 import me.n1ar4.jar.analyzer.core.MethodReference;
 import me.n1ar4.jar.analyzer.core.SqlSessionFactoryUtil;
 import me.n1ar4.jar.analyzer.core.mapper.*;
+import me.n1ar4.jar.analyzer.core.reference.AnnoReference;
 import me.n1ar4.jar.analyzer.entity.ClassResult;
 import me.n1ar4.jar.analyzer.entity.MemberEntity;
 import me.n1ar4.jar.analyzer.entity.MethodResult;
@@ -306,7 +307,7 @@ public class CoreEngine {
         return set;
     }
 
-    public ClassReference getClassRef(ClassReference.Handle ch) {
+    public ClassReference getClassRef(ClassReference.Handle ch, Integer jarId) {
         SqlSession session = factory.openSession(true);
         ClassMapper classMapper = session.getMapper(ClassMapper.class);
         InterfaceMapper interfaceMapper = session.getMapper(InterfaceMapper.class);
@@ -323,7 +324,7 @@ public class CoreEngine {
         for (MemberEntity me : memberEntities) {
             ClassReference.Member member = new ClassReference.Member
                     (me.getMemberName(), me.getModifiers(), me.getValue(),
-                            new ClassReference.Handle(me.getTypeClassName()));
+                            me.getMethodDesc(), me.getMethodSignature(), new ClassReference.Handle(me.getTypeClassName()));
             members.add(member);
         }
 
@@ -334,8 +335,8 @@ public class CoreEngine {
                 interfaces,
                 cr.getIsInterfaceInt() == 1,
                 members,
-                new HashSet<>(anno),
-                "none");
+                anno,
+                "none", jarId);
     }
 
     public int getMethodsCount() {
@@ -364,7 +365,8 @@ public class CoreEngine {
             MethodReference mr = new MethodReference(mh.getClassReference(),
                     mh.getName(), mh.getDesc(),
                     result.getIsStaticInt() == 1,
-                    new HashSet<>(ma), result.getAccessInt(), result.getLineNumber());
+                    ma.stream().map(a -> new AnnoReference(a)).collect(Collectors.toSet()),
+                    result.getAccessInt(), result.getLineNumber(), result.getJarName(), result.getJarId());
             list.add(mr);
         }
         session.close();

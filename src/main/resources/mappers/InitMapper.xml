@@ -25,7 +25,10 @@
         (
             cid INTEGER NOT NULL
             CONSTRAINT class_table_pk PRIMARY KEY AUTOINCREMENT,
+            jar_id INTEGER NOT NULL,
             jar_name TEXT NOT NULL,
+            version INTEGER NOT NULL,
+            access INTEGER NOT NULL,
             class_name TEXT NOT NULL,
             super_class_name TEXT,
             is_interface INTEGER NOT NULL
@@ -38,7 +41,8 @@
             CONSTRAINT class_table_pk PRIMARY KEY AUTOINCREMENT,
             class_name TEXT NOT NULL,
             path_str TEXT NOT NULL,
-            jar_name TEXT NOT NULL
+            jar_name TEXT NOT NULL,
+            jar_id INTEGER NOT NULL
         );
     </update>
     <update id="createMemberTable">
@@ -49,8 +53,11 @@
             member_name TEXT NOT NULL,
             modifiers INTEGER NOT NULL,
             value TEXT NOT NULL,
+            method_desc TEXT NOT NULL,
+            method_signature TEXT,
             type_class_name TEXT NOT NULL,
-            class_name TEXT NOT NULL
+            class_name TEXT NOT NULL,
+            jar_id INTEGER NOT NULL
         );
     </update>
     <update id="createMethodTable">
@@ -63,7 +70,8 @@
             is_static INTEGER NOT NULL,
             class_name TEXT NOT NULL,
             access INTEGER NOT NULL,
-            line_number INTEGER NOT NULL
+            line_number INTEGER NOT NULL,
+            jar_id INTEGER NOT NULL
         );
     </update>
     <update id="createAnnoTable">
@@ -73,7 +81,9 @@
             CONSTRAINT anno_table_pk PRIMARY KEY AUTOINCREMENT,
             anno_name TEXT NOT NULL,
             method_name TEXT,
-            class_name TEXT
+            class_name TEXT,
+            visible INTEGER NOT NULL,
+            jar_id INTEGER NOT NULL
         );
     </update>
     <update id="createInterfaceTable">
@@ -82,7 +92,8 @@
             iid INTEGER NOT NULL
             CONSTRAINT interface_table_pk PRIMARY KEY AUTOINCREMENT,
             interface_name TEXT NOT NULL,
-            class_name TEXT NOT NULL
+            class_name TEXT NOT NULL,
+            jar_id INTEGER NOT NULL
         );
     </update>
     <update id="createMethodCallTable">
@@ -93,9 +104,12 @@
             caller_method_name TEXT NOT NULL,
             caller_class_name TEXT NOT NULL,
             caller_method_desc TEXT NOT NULL,
+            caller_jar_id INTEGER NOT NULL,
             callee_method_name TEXT NOT NULL,
             callee_method_desc TEXT NOT NULL,
-            callee_class_name TEXT NOT NULL
+            callee_class_name TEXT NOT NULL,
+            callee_jar_id INTEGER NOT NULL,
+            op_code INTEGER NOT NULL
         );
     </update>
     <update id="createMethodImplTable">
@@ -106,7 +120,9 @@
             class_name TEXT NOT NULL,
             method_name TEXT NOT NULL,
             method_desc TEXT NOT NULL,
-            impl_class_name TEXT NOT NULL
+            impl_class_name TEXT NOT NULL,
+            class_jar_id INTEGER NOT NULL,
+            impl_class_jar_id INTEGER NOT NULL
         );
     </update>
     <update id="createStringTable">
@@ -119,7 +135,8 @@
             method_desc TEXT NOT NULL,
             method_name TEXT NOT NULL,
             class_name TEXT NOT NULL,
-            jar_name TEXT NOT NULL
+            jar_name TEXT NOT NULL,
+            jar_id INTEGER NOT NULL
         );
     </update>
     <update id="createSpringControllerTable">
@@ -127,7 +144,8 @@
         (
             sc_id INTEGER
             CONSTRAINT spring_controller_table_pk PRIMARY KEY AUTOINCREMENT,
-            class_name TEXT NOT NULL
+            class_name TEXT NOT NULL,
+            jar_id INTEGER NOT NULL
         );
     </update>
     <update id="createSpringMappingTable">
@@ -139,7 +157,8 @@
             method_name TEXT NOT NULL,
             method_desc TEXT NOT NULL,
             restful_type TEXT NOT NULL,
-            path TEXT NOT NULL
+            path TEXT NOT NULL,
+            jar_id INTEGER NOT NULL
         );
     </update>
     <update id="createSpringInterceptorTable">
@@ -147,7 +166,8 @@
         (
             si_id INTEGER
             CONSTRAINT spring_interceptor_table_pk PRIMARY KEY AUTOINCREMENT,
-            class_name TEXT NOT NULL
+            class_name TEXT NOT NULL,
+            jar_id INTEGER NOT NULL
         );
     </update>
     <update id="createJavaWebTable">
@@ -156,7 +176,8 @@
             jw_id INTEGER
             CONSTRAINT java_web_table_pk PRIMARY KEY AUTOINCREMENT,
             type_name TEXT NOT NULL,
-            class_name TEXT NOT NULL
+            class_name TEXT NOT NULL,
+            jar_id INTEGER NOT NULL
         );
     </update>
 </mapper>

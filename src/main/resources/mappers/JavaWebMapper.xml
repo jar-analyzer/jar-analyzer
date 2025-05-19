@@ -19,7 +19,7 @@
         (class_name, type_name,jar_id)
         VALUES
         <foreach collection="list" separator="," item="item">
-            (#{item.className}, 'servlet',${item.jarId})
+            (#{item.className}, 'servlet', ${item.jarId})
         </foreach>
     </insert>
     <insert id="insertFilters">
@@ -27,7 +27,7 @@
         (class_name, type_name,jar_id)
         VALUES
         <foreach collection="list" separator="," item="item">
-            (#{item.className}, 'filter',${item.jarId})
+            (#{item.className}, 'filter', ${item.jarId})
         </foreach>
     </insert>
     <insert id="insertListeners">
@@ -35,7 +35,7 @@
         (class_name, type_name,jar_id)
         VALUES
         <foreach collection="list" separator="," item="item">
-            (#{item.className}, 'listener',${item.jarId})
+            (#{item.className}, 'listener', ${item.jarId})
         </foreach>
     </insert>
     <select id="selectAllServlets" resultMap="classMap">

@@ -818,7 +818,40 @@ public class MainForm {
         }
     }
 
+    public static float FONT_SIZE = 16f;
+
     public MainForm() {
+        float font;
+        String input = (String) JOptionPane.showInputDialog(
+                null,
+                "请输入字体大小 (10-50)：",
+                "设置字体大小",
+                JOptionPane.PLAIN_MESSAGE,
+                IconManager.ausIcon,
+                null,
+                "16"
+        );
+        if (input != null) {
+            try {
+                int size = Integer.parseInt(input.trim());
+                if (size < 10 || size > 50) {
+                    JOptionPane.showMessageDialog(null,
+                            "字体大小必须在 10 到 50 之间！使用默认 16", "警告", JOptionPane.WARNING_MESSAGE);
+                    font = 16;
+                } else {
+                    font = size;
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null,
+                        "请输入有效的数字！使用默认 16", "错误", JOptionPane.ERROR_MESSAGE);
+                font = 16;
+            }
+        } else {
+            font = 16;
+        }
+        FONT_SIZE = font;
+        logger.info("use font size {}", FONT_SIZE);
+
         logger.info("init main form");
         methodCallRadioButton.setSelected(true);
         fernRadio.setSelected(true);
@@ -888,7 +921,7 @@ public class MainForm {
     }
 
     private static void init() {
-        FontHelper.installFont();
+        FontHelper.installFont(FONT_SIZE);
         DropHelper.setDrop();
         CodeMenuHelper.run();
 
@@ -910,7 +943,7 @@ public class MainForm {
         SCAAction.register();
         LeakAction.register();
 
-        Font codeFont = FontHelper.getFont();
+        Font codeFont = FontHelper.getFont(FONT_SIZE);
         instance.blackArea.setFont(codeFont);
         instance.classBlackArea.setFont(codeFont);
         instance.classWhiteArea.setFont(codeFont);
@@ -1324,6 +1357,10 @@ public class MainForm {
         } else {
             MenuUtil.useDefault();
         }
+
+        // 最后一步 处理字体
+        getCodeArea().setFont(getCodeArea().getFont().deriveFont(FONT_SIZE));
+
 
         frame.pack();
         frame.setLocationRelativeTo(null);

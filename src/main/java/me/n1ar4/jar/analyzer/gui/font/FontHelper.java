@@ -10,7 +10,6 @@
 
 package me.n1ar4.jar.analyzer.gui.font;
 
-import me.n1ar4.jar.analyzer.utils.OSUtil;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 
@@ -20,13 +19,13 @@ import java.io.InputStream;
 public class FontHelper {
     private static final Logger logger = LogManager.getLogger();
 
-    public static void installFont() {
+    public static void installFont(float fontSize) {
         try {
             InputStream is = FontHelper.class.getClassLoader().getResourceAsStream("consolas.ttf");
             if (is == null) {
                 throw new RuntimeException("unknown error");
             }
-            Font customFont = Font.createFont(Font.TRUETYPE_FONT, is);
+            Font customFont = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(fontSize);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(customFont);
         } catch (Exception e) {
@@ -34,18 +33,14 @@ public class FontHelper {
         }
     }
 
-    public static Font getFont() {
+    public static Font getFont(float fontSize) {
         try {
             InputStream is = FontHelper.class.getClassLoader().getResourceAsStream("consolas.ttf");
             if (is == null) {
                 throw new RuntimeException("unknown error");
             }
             Font customFont = Font.createFont(Font.TRUETYPE_FONT, is);
-            if (OSUtil.isLinux()) {
-                return customFont.deriveFont(16f);
-            } else {
-                return customFont.deriveFont(12f);
-            }
+            return customFont.deriveFont(fontSize);
         } catch (Exception e) {
             logger.error("install font error: {}", e.toString());
         }

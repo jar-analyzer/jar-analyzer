@@ -36,28 +36,31 @@ public class CsvExporter implements Exporter {
         this.fileName = String.format("jar-analyzer-%d.csv", System.currentTimeMillis());
         try (FileWriter out = new FileWriter(fileName);
              CSVPrinter printer = new CSVPrinter(out,
-                     CSVFormat.DEFAULT.builder().setHeader("Type", "ClassName", "MethodAndInfo").get())) {
+                     CSVFormat.DEFAULT.builder().setHeader("Type", "ClassName",
+                             "MethodName", "RestfulType", "Path").get())) {
             for (ClassResult cr : this.engine.getAllServlets()) {
-                printer.printRecord("Servlet", cr.getClassName(), "");
+                printer.printRecord("Servlet", cr.getClassName(), "", "", "");
             }
             for (ClassResult cr : this.engine.getAllFilters()) {
-                printer.printRecord("Filter", cr.getClassName(), "");
+                printer.printRecord("Filter", cr.getClassName(), "", "", "");
             }
             for (ClassResult cr : this.engine.getAllListeners()) {
-                printer.printRecord("Listener", cr.getClassName(), "");
+                printer.printRecord("Listener", cr.getClassName(), "", "", "");
             }
             for (ClassResult cr : this.engine.getAllSpringI()) {
-                printer.printRecord("Interceptor", cr.getClassName(), "");
+                printer.printRecord("Interceptor", cr.getClassName(), "", "", "");
             }
             for (ClassResult cr : this.engine.getAllSpringC()) {
                 String className = cr.getClassName();
                 ArrayList<MethodResult> methods = this.engine.getSpringM(className);
                 if (methods.isEmpty()) {
-                    printer.printRecord("Controller", className, "");
+                    printer.printRecord("Controller", className, "", "", "");
                 } else {
                     for (MethodResult method : methods) {
                         printer.printRecord("Controller", className,
-                                method.getMethodName() + "-" + method.getRestfulType() + "-" + method.getPath());
+                                method.getMethodName(),
+                                method.getRestfulType(),
+                                method.getActualPath());
                     }
                 }
             }

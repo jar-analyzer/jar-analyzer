@@ -24,3 +24,5 @@ jobs:
           wget https://raw.githubusercontent.com/jar-analyzer/test/refs/heads/main/javasec-1.15.jar -O javasec-1.15.jar
       - name: run maven test
         run: mvn test -Dtest=SpringCoreTest#testReadJarFileSize
+      - name: clean test file
+        run: rm -f javasec-1.15.jar

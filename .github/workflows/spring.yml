@@ -22,5 +22,5 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y wget
           wget https://raw.githubusercontent.com/jar-analyzer/test/refs/heads/main/javasec-1.15.jar -O javasec-1.15.jar
-      - name: check core maven
+      - name: run maven test
         run: mvn test -Dtest=SpringCoreTest#testReadJarFileSize

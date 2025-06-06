@@ -10,6 +10,7 @@
 
 package me.n1ar4.jar.analyzer.analyze.spring.asm;
 
+import cn.hutool.core.util.StrUtil;
 import me.n1ar4.jar.analyzer.analyze.spring.SpringConstant;
 import me.n1ar4.jar.analyzer.analyze.spring.SpringController;
 import me.n1ar4.jar.analyzer.core.reference.AnnoReference;
@@ -20,6 +21,7 @@ import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -57,14 +59,15 @@ public class SpringClassVisitor extends ClassVisitor {
                       String superName, String[] interfaces) {
         this.name = name;
         Set<AnnoReference> annotations = classMap.get(new ClassReference.Handle(name)).getAnnotations();
-        if (annotations.contains(SpringConstant.ControllerAnno) ||
-                annotations.contains(SpringConstant.RestControllerAnno) ||
-                annotations.contains(SpringConstant.SBApplication)) {
+        if (annotations.stream().parallel().anyMatch(annoReference -> StrUtil.containsAny(annoReference.getAnnoName(),
+                SpringConstant.ControllerAnno,
+                SpringConstant.RestControllerAnno, SpringConstant.RequestMappingAnno)
+        )) {
             this.isSpring = true;
             currentController = new SpringController();
             currentController.setClassReference(classMap.get(new ClassReference.Handle(name)));
             currentController.setClassName(new ClassReference.Handle(name));
-            currentController.setRest(!annotations.contains(SpringConstant.ControllerAnno));
+            currentController.setRest(annotations.stream().parallel().noneMatch(annoReference -> annoReference.getAnnoName().contains(SpringConstant.ControllerAnno)));
             if (pathAnnoAdapter != null) {
                 if (!pathAnnoAdapter.getResults().isEmpty()) {
                     currentController.setBasePath(pathAnnoAdapter.getResults().get(0));

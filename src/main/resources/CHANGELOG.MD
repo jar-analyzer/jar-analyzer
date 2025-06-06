@@ -2,7 +2,37 @@
 
 ## 5.1
 
-[TODO]
+注意：该版本数据库结构有变动，无法兼容之前的数据库结构，请重新构建数据库
+
+更新日志：
+
+- [功能] 支持启动时配置全局的字体大小 @4ra1n
+- [功能] 记录方法调用 `OPCODE` 等信息以供后续使用 @TianMing2018
+- [功能] 支持分析依赖目录文件名得到 `Gadget` 信息 @4ra1n
+- [BUG] `WEB` 模块导出 `JSON` 丢失了 `PATH` 信息 @4ra1n
+- [BUG] 导入多个 `JAR` 应该区分每个 `CLASS` 来源 @TianMing2018
+- [BUG] 修复 `Spring` 分析低 `Java` 版本报错 @Gosiu
+- [BUG] 修复 `WAR` 包情况左侧文件树无法自动定位 @4ra1n
+- [优化] `WEB` 导出模块优化 `CSV` 表格设计 @4ra1n
+- [其他] 添加测试用例保证每次代码提交不影响正常功能 @4ra1n
+- [其他] 更新各种依赖到最新版 @4ra1n
+
+感谢以下用户的贡献:
+
+- 4ra1n (https://github.com/4ra1n)
+- Honey Baby (https://github.com/Gosiu)
+- TianMing2018 (https://github.com/TianMing2018)
+
+所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
+
+- `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (**完整版本**)
+- `windows-21` 版内置开启 `ZGC` 的 `JRE 21` 环境（激进用户尝试使用）
+- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
+- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
+
+一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
+
+如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
 
 ## 5.0
 

@@ -33,6 +33,9 @@ public class MethodResult {
     @JSONField(serialize = false)
     private String path;
 
+    @JSONField
+    private String actualPath;
+
     @JSONField(serialize = false)
     private int lineNumber;
 
@@ -56,6 +59,20 @@ public class MethodResult {
 
     public String getRestfulType() {
         return restfulType;
+    }
+
+    public String getActualPath() {
+        if (this.path == null) {
+            return "/";
+        }
+        String tmp = this.path.trim();
+        if (tmp.isEmpty()) {
+            return "/";
+        }
+        if (!tmp.startsWith("/")) {
+            tmp = "/" + tmp;
+        }
+        return tmp;
     }
 
     public void setRestfulType(String restfulType) {

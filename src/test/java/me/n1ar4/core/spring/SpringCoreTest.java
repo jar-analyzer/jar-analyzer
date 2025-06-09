@@ -30,7 +30,7 @@ public class SpringCoreTest {
 
     @Test
     @SuppressWarnings("all")
-    public void testReadJarFileSize() {
+    public void testRun() {
         try {
             Files.delete(Paths.get(dbPath));
         } catch (Exception ignored) {

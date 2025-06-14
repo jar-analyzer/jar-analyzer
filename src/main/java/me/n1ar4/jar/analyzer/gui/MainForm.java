@@ -822,8 +822,13 @@ public class MainForm {
 
     public MainForm() {
         float font;
+        // 2025/06/14 修复有时候找不到 DIALOG 的问题
+        JDialog topDialog = new JDialog();
+        topDialog.setAlwaysOnTop(true);
+        topDialog.setModal(true);
+        topDialog.setLocationRelativeTo(null);
         String input = (String) JOptionPane.showInputDialog(
-                null,
+                topDialog,
                 "请输入字体大小 (10-50)：",
                 "设置字体大小",
                 JOptionPane.PLAIN_MESSAGE,
@@ -831,6 +836,7 @@ public class MainForm {
                 null,
                 "16"
         );
+        topDialog.dispose();
         if (input != null) {
             try {
                 int size = Integer.parseInt(input.trim());

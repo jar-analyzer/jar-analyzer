@@ -133,8 +133,39 @@ public class JarUtil {
                 String fileText = MainForm.getInstance().getFileText().getText().trim();
                 if (jarPathStr.contains(fileText)) {
                     String backPath = jarPathStr;
-                    jarPathStr = jarPathStr.substring(fileText.length() + 1);
+
+                    // #################################################
+                    // 2025/06/26 处理重大 BUG
+                    // 加载单个 CLASS 时 CLASSNAME 按照 META-INF 决定
+                    Path parentPath = jarPath;
+                    Path resultPath = null;
+                    // 循环找 META-INF 目录
+                    int max = 20;
+                    int index = 0;
+                    while ((parentPath = parentPath.getParent()) != null) {
+                        Path metaPath = parentPath.resolve("META-INF");
+                        if (Files.exists(metaPath)) {
+                            resultPath = metaPath;
+                            break;
+                        }
+                        index++;
+                        // 防止一直循环
+                        if (index > max) {
+                            break;
+                        }
+                    }
+                    if (resultPath == null) {
+                        return;
+                    }
+                    String finalPath = resultPath.toAbsolutePath().toString();
+                    if (!finalPath.contains(fileText)) {
+                        // 跨越目录除外
+                        return;
+                    }
+                    jarPathStr = jarPathStr.substring(finalPath.length() - 8);
                     String saveClass = jarPathStr.replace("\\", "/");
+                    logger.info("加载 CLASS 文件 {}", saveClass);
+                    // #################################################
 
                     if (!shouldRun(whiteText, text, saveClass)) {
                         return;

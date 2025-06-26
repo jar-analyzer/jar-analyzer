@@ -26,6 +26,22 @@ public class ShowStringAction {
                         "please start engine first");
                 return;
             }
+
+            // 2025/06/26 优化 ALL STRING 字符串展示和引导
+            StringBuilder show = new StringBuilder();
+            int allStringSize = MainForm.getEngine().getStringCount();
+            if (allStringSize > 1000) {
+                show.append("字符串数量过大不易展示，请前往 SEARCH 搜索面板进行精确的字符串搜索");
+                JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                        show.toString());
+                MainForm.getInstance().getTabbedPanel().setSelectedIndex(1);
+                return;
+            } else {
+                show.append("该功能仅简单展示字符串，请前往 SEARCH 搜索面板进行精确的字符串搜索");
+                JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                        show.toString());
+            }
+
             JDialog dialog = ProcessDialog.createProgressDialog(MainForm.getInstance().getMasterPanel());
             new Thread(() -> dialog.setVisible(true)).start();
             new Thread(() -> {

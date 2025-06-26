@@ -12,13 +12,9 @@ package me.n1ar4.jar.analyzer.analyze.spring;
 
 public interface SpringConstant {
     String ANNO_PREFIX = "Lorg/springframework/web/bind/annotation/";
-    String SBApplication = "Lorg/springframework/boot/autoconfigure/SpringBootApplication;";
     String ControllerAnno = "Lorg/springframework/stereotype/Controller;";
     String RestControllerAnno = ANNO_PREFIX + "RestController;";
     String RequestMappingAnno = ANNO_PREFIX + "RequestMapping;";
-    String GetMappingAnno = ANNO_PREFIX + "GetMapping;";
-    String PostMappingAnno = ANNO_PREFIX + "PostMapping;";
-    String ResponseBodyAnno = ANNO_PREFIX + "ResponseBody;";
     String RequestParamAnno = ANNO_PREFIX + "RequestParam;";
-    String MappingAnno = "Mapping;";
+    String MappingAnno = "Mapping";
 }

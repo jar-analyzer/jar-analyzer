@@ -394,11 +394,11 @@ public class DatabaseManager {
                     initPath(mapping, me);
                 } else {
                     for (AnnoReference annotation : mapping.getMethodReference().getAnnotations()) {
-                        if (annotation.getAnnoName().startsWith(SpringConstant.ANNO_PREFIX) &&
-                                annotation.getAnnoName().endsWith(SpringConstant.MappingAnno)) {
+                        if (annotation.getAnnoName().startsWith(SpringConstant.ANNO_PREFIX)) {
                             me.setRestfulType(annotation.getAnnoName()
                                     .replace(SpringConstant.ANNO_PREFIX, "")
-                                    .replace(SpringConstant.MappingAnno, ""));
+                                    .replace(SpringConstant.MappingAnno, "")
+                                    .replace(";", " "));
                             initPath(mapping, me);
                         }
                     }

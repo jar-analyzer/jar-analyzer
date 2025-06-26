@@ -33,6 +33,9 @@ public class JarUtil {
     private static final Logger logger = LogManager.getLogger();
     private static final Set<ClassFileEntity> classFileSet = new HashSet<>();
 
+    private static final String META_INF = "META-INF";
+    private static final int MAX_PARENT_SEARCH = 20;
+
     public static List<ClassFileEntity> resolveNormalJarFile(String jarPath, Integer jarId) {
         try {
             Path tmpDir = Paths.get(Const.tempDir);
@@ -140,7 +143,6 @@ public class JarUtil {
                     Path parentPath = jarPath;
                     Path resultPath = null;
                     // 循环找 META-INF 目录
-                    int max = 20;
                     int index = 0;
                     while ((parentPath = parentPath.getParent()) != null) {
                         Path metaPath = parentPath.resolve("META-INF");
@@ -150,7 +152,7 @@ public class JarUtil {
                         }
                         index++;
                         // 防止一直循环
-                        if (index > max) {
+                        if (index > MAX_PARENT_SEARCH) {
                             break;
                         }
                     }
@@ -162,7 +164,17 @@ public class JarUtil {
                         // 跨越目录除外
                         return;
                     }
-                    jarPathStr = jarPathStr.substring(finalPath.length() - 8);
+                    // 防止预期外错误
+                    if (finalPath.length() < META_INF.length()) {
+                        logger.warn("路径长度不足: {}", finalPath);
+                        return;
+                    }
+                    try {
+                        jarPathStr = jarPathStr.substring(finalPath.length() - META_INF.length());
+                    } catch (StringIndexOutOfBoundsException e) {
+                        logger.error("字符串截取错误: jarPathStr={}, finalPath={}", jarPathStr, finalPath, e);
+                        return;
+                    }
                     String saveClass = jarPathStr.replace("\\", "/");
                     logger.info("加载 CLASS 文件 {}", saveClass);
                     // #################################################

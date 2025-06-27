@@ -361,6 +361,7 @@ public class CoreRunner {
         CoreHelper.refreshLiteners();
 
         if (dialog != null) {
+            dialog.setVisible(false);
             dialog.dispose();
         }
     }

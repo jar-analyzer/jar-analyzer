@@ -13,6 +13,7 @@ package me.n1ar4.jar.analyzer.gui.action;
 import me.n1ar4.jar.analyzer.engine.CoreEngine;
 import me.n1ar4.jar.analyzer.engine.CoreHelper;
 import me.n1ar4.jar.analyzer.gui.MainForm;
+import me.n1ar4.jar.analyzer.gui.util.ProcessDialog;
 import me.n1ar4.jar.analyzer.utils.StringUtil;
 
 import javax.swing.*;
@@ -65,40 +66,44 @@ public class SearchAction {
                 }
             }
 
+            JDialog dialog = ProcessDialog.createProgressDialog(MainForm.getInstance().getMasterPanel());
+            new Thread(() -> dialog.setVisible(true)).start();
+
             if (methodCallRadio.isSelected()) {
                 if (equalsRadio.isSelected()) {
                     new Thread(() -> CoreHelper.refreshCallSearch(
-                            finalClass, smText.getText(), null)).start();
+                            finalClass, smText.getText(), null, dialog)).start();
                 }
                 if (likeRadio.isSelected()) {
                     new Thread(() -> CoreHelper.refreshCallSearchLike(
-                            finalClass, smText.getText(), null)).start();
+                            finalClass, smText.getText(), null, dialog)).start();
                 }
             }
 
             if (methodDefRadio.isSelected()) {
                 if (equalsRadio.isSelected()) {
                     new Thread(() -> CoreHelper.refreshDefSearch(
-                            finalClass, smText.getText(), null)).start();
+                            finalClass, smText.getText(), null, dialog)).start();
                 }
                 if (likeRadio.isSelected()) {
                     new Thread(() -> CoreHelper.refreshDefSearchLike(
-                            finalClass, smText.getText(), null)).start();
+                            finalClass, smText.getText(), null, dialog)).start();
                 }
             }
 
             if (stringRadio.isSelected()) {
                 if (equalsRadio.isSelected()) {
                     new Thread(() ->
-                            CoreHelper.refreshStrSearchEqual(finalClass, ssText.getText())).start();
+                            CoreHelper.refreshStrSearchEqual(finalClass, ssText.getText(), dialog)).start();
                 }
                 if (likeRadio.isSelected()) {
                     new Thread(() ->
-                            CoreHelper.refreshStrSearch(finalClass, ssText.getText())).start();
+                            CoreHelper.refreshStrSearch(finalClass, ssText.getText(), dialog)).start();
                 }
             }
 
             if (binaryRadio.isSelected()) {
+                dialog.dispose();
                 String search = ssText.getText();
                 ArrayList<String> jars = engine.getJarsPath();
 

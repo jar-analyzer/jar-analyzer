@@ -272,7 +272,7 @@ public class CoreHelper {
         MainForm.getInstance().getSpringMList().setModel(springCModel);
     }
 
-    public static void refreshCallSearch(String className, String methodName, String methodDesc) {
+    public static void refreshCallSearch(String className, String methodName, String methodDesc, JDialog dialog) {
         if (MainForm.getInstance().getEngine() == null) {
             JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                     "PLEASE BUILD DATABASE FIRST");
@@ -343,6 +343,11 @@ public class CoreHelper {
 
         JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                 String.format("result number: %d", methodsList.size()));
+
+        if (dialog != null) {
+            dialog.dispose();
+            dialog.setVisible(false);
+        }
     }
 
     public static void refreshCallSearchList(List<SearchCondition> conditions) {
@@ -435,7 +440,7 @@ public class CoreHelper {
                 String.format("result number: %d", methodsList.size()));
     }
 
-    public static void refreshDefSearch(String className, String methodName, String methodDesc) {
+    public static void refreshDefSearch(String className, String methodName, String methodDesc, JDialog dialog) {
         if (MainForm.getInstance().getEngine() == null) {
             JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                     "PLEASE BUILD DATABASE FIRST");
@@ -508,9 +513,14 @@ public class CoreHelper {
 
         JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                 String.format("result number: %d", methodsList.size()));
+
+        if (dialog != null) {
+            dialog.dispose();
+            dialog.setVisible(false);
+        }
     }
 
-    public static void refreshStrSearch(String className, String val) {
+    public static void refreshStrSearch(String className, String val, JDialog dialog) {
         if (MainForm.getInstance().getEngine() == null) {
             JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                     "PLEASE BUILD DATABASE FIRST");
@@ -591,9 +601,14 @@ public class CoreHelper {
 
         JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                 String.format("result number: %d", methodsList.size()));
+
+        if (dialog != null) {
+            dialog.dispose();
+            dialog.setVisible(false);
+        }
     }
 
-    public static void refreshStrSearchEqual(String className, String val) {
+    public static void refreshStrSearchEqual(String className, String val, JDialog dialog) {
         if (MainForm.getInstance().getEngine() == null) {
             JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                     "PLEASE BUILD DATABASE FIRST");
@@ -674,6 +689,11 @@ public class CoreHelper {
 
         JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                 String.format("result number: %d", methodsList.size()));
+
+        if (dialog != null) {
+            dialog.dispose();
+            dialog.setVisible(false);
+        }
     }
 
     public static void refreshHistory(String className, String methodName, String methodDesc) {
@@ -692,7 +712,7 @@ public class CoreHelper {
         MainForm.getInstance().getHistoryList().revalidate();
     }
 
-    public static void refreshCallSearchLike(String className, String methodName, String methodDesc) {
+    public static void refreshCallSearchLike(String className, String methodName, String methodDesc, JDialog dialog) {
         if (MainForm.getInstance().getEngine() == null) {
             JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                     "PLEASE BUILD DATABASE FIRST");
@@ -765,9 +785,14 @@ public class CoreHelper {
 
         JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                 String.format("result number: %d", methodsList.size()));
+
+        if (dialog != null) {
+            dialog.dispose();
+            dialog.setVisible(false);
+        }
     }
 
-    public static void refreshDefSearchLike(String className, String methodName, String methodDesc) {
+    public static void refreshDefSearchLike(String className, String methodName, String methodDesc, JDialog dialog) {
         if (MainForm.getInstance().getEngine() == null) {
             JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                     "PLEASE BUILD DATABASE FIRST");
@@ -840,6 +865,11 @@ public class CoreHelper {
 
         JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                 String.format("result number: %d", methodsList.size()));
+
+        if (dialog != null) {
+            dialog.dispose();
+            dialog.setVisible(false);
+        }
     }
 
     public static void refreshMethods(List<ResObj> methods) {

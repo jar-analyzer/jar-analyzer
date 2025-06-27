@@ -22,7 +22,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y wget
           wget https://raw.githubusercontent.com/jar-analyzer/test/refs/heads/main/javasec-1.15.jar -O javasec-1.15.jar
-      - name: run maven test
+          wget https://github.com/4ra1n/test-springboot/releases/download/0.0.1/test-0.0.1-SNAPSHOT.jar -O test-0.0.1-SNAPSHOT.jar
+      - name: run maven core test
         run: mvn test -Dtest=SpringCoreTest#testRun
+      - name: run maven custom test
+        run: mvn test -Dtest=SpringCustomTest#testRun
       - name: clean test file
-        run: rm -f javasec-1.15.jar
+        run: rm -f javasec-1.15.jar && rm -rf test-0.0.1-SNAPSHOT.jar

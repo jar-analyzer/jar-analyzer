@@ -16,6 +16,8 @@ import me.n1ar4.jar.analyzer.gui.util.LogUtil;
 import javax.swing.*;
 
 public class CommonSearchAction {
+    private static final String TIPS = "# 类名非必须 可简单类名 可全类名 可以不输入";
+
     public static void run() {
         JRadioButton methodCallR = MainForm.getInstance().getMethodCallRadioButton();
         JRadioButton methodDefR = MainForm.getInstance().getMethodDefinitionRadioButton();
@@ -27,6 +29,10 @@ public class CommonSearchAction {
                 MainForm.getInstance().getEqualsSearchRadioButton().setEnabled(true);
                 MainForm.getInstance().getLikeSearchRadioButton().setEnabled(true);
                 MainForm.getInstance().getSearchClassText().setEnabled(true);
+                // 2025/06/27 给出提示防止误导
+                if (MainForm.getInstance().getSearchClassText().getText().isEmpty()) {
+                    MainForm.getInstance().getSearchClassText().setText(TIPS);
+                }
                 MainForm.getInstance().getSearchMethodText().setEnabled(true);
                 MainForm.getInstance().getSearchStrText().setText(null);
                 MainForm.getInstance().getSearchStrText().setEnabled(false);
@@ -38,6 +44,10 @@ public class CommonSearchAction {
                 MainForm.getInstance().getEqualsSearchRadioButton().setEnabled(true);
                 MainForm.getInstance().getLikeSearchRadioButton().setEnabled(true);
                 MainForm.getInstance().getSearchClassText().setEnabled(true);
+                // 2025/06/27 给出提示防止误导
+                if (MainForm.getInstance().getSearchClassText().getText().isEmpty()) {
+                    MainForm.getInstance().getSearchClassText().setText(TIPS);
+                }
                 MainForm.getInstance().getSearchMethodText().setEnabled(true);
                 MainForm.getInstance().getSearchStrText().setText(null);
                 MainForm.getInstance().getSearchStrText().setEnabled(false);
@@ -46,10 +56,15 @@ public class CommonSearchAction {
         strContainsR.addActionListener(e -> {
             if (strContainsR.isSelected()) {
                 LogUtil.info("select string contains search");
-                MainForm.getInstance().getEqualsSearchRadioButton().setEnabled(false);
-                MainForm.getInstance().getLikeSearchRadioButton().setEnabled(false);
-                MainForm.getInstance().getSearchClassText().setText(null);
+                // 2025/06/27 STRING 搜索应该支持 LIKE 和 精确匹配两种
+                MainForm.getInstance().getEqualsSearchRadioButton().setEnabled(true);
+                MainForm.getInstance().getLikeSearchRadioButton().setEnabled(true);
+
+                if (MainForm.getInstance().getSearchClassText().getText().isEmpty()) {
+                    MainForm.getInstance().getSearchClassText().setText(TIPS);
+                }
                 MainForm.getInstance().getSearchMethodText().setText(null);
+
                 // 2025/04/08 FIX
                 // 允许字符串搜索指定 CLASS
                 // MainForm.getInstance().getSearchClassText().setEnabled(false);

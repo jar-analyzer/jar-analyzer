@@ -593,6 +593,89 @@ public class CoreHelper {
                 String.format("result number: %d", methodsList.size()));
     }
 
+    public static void refreshStrSearchEqual(String className, String val) {
+        if (MainForm.getInstance().getEngine() == null) {
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                    "PLEASE BUILD DATABASE FIRST");
+            return;
+        }
+        ArrayList<MethodResult> results = MainForm.getEngine().getMethodsByStrEqual(val);
+        // 2025/04/08 允许字符串搜索根据类名过滤
+        if (className != null && !className.isEmpty()) {
+            className = className.replace(".", "/");
+            ArrayList<MethodResult> newReulst = new ArrayList<>();
+            for (MethodResult m : results) {
+                if (m.getClassName().equals(className)) {
+                    newReulst.add(m);
+                }
+            }
+            results.clear();
+            results.addAll(newReulst);
+        }
+
+        // BALCK LIST
+        ArrayList<String> bl = ListParser.parse(MainForm.getInstance().getBlackArea().getText());
+        ArrayList<MethodResult> newReulst = new ArrayList<>();
+        for (MethodResult m : results) {
+            boolean filtered = false;
+            for (String b : bl) {
+                if (m.getClassName().equals(b)) {
+                    filtered = true;
+                    break;
+                }
+                // CHECK PACAKGE
+                b = b.replace(".", "/");
+                if (m.getClassName().startsWith(b)) {
+                    filtered = true;
+                    break;
+                }
+            }
+            if (!filtered) {
+                newReulst.add(m);
+            }
+        }
+
+        if (MenuUtil.sortedByMethod()) {
+            newReulst.sort(Comparator.comparing(MethodResult::getMethodName));
+        } else if (MenuUtil.sortedByClass()) {
+            newReulst.sort(Comparator.comparing(MethodResult::getClassName));
+        } else {
+            throw new RuntimeException("invalid sort");
+        }
+
+        if (MainForm.getInstance().getNullParamBox().isSelected()) {
+            ArrayList<MethodResult> newResults = new ArrayList<>();
+            for (MethodResult result : newReulst) {
+                if (result.getMethodDesc().contains("()")) {
+                    continue;
+                }
+                newResults.add(result);
+            }
+            newReulst.clear();
+            newReulst.addAll(newResults);
+        }
+
+        DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
+        for (MethodResult result : newReulst) {
+            methodsList.addElement(result);
+        }
+
+        if (methodsList.isEmpty() || methodsList.size() == 0) {
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                    "result is null");
+            return;
+        }
+
+        MainForm.getInstance().getSearchList().setModel(methodsList);
+        MainForm.getInstance().getSearchList().repaint();
+        MainForm.getInstance().getSearchList().revalidate();
+
+        MainForm.getInstance().getTabbedPanel().setSelectedIndex(1);
+
+        JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                String.format("result number: %d", methodsList.size()));
+    }
+
     public static void refreshHistory(String className, String methodName, String methodDesc) {
         if (MainForm.getInstance().getEngine() == null) {
             JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),

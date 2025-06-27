@@ -158,6 +158,15 @@ public class CoreEngine {
         return results;
     }
 
+    public ArrayList<MethodResult> getMethodsByStrEqual(String val) {
+        SqlSession session = factory.openSession(true);
+        StringMapper stringMapper = session.getMapper(StringMapper.class);
+        ArrayList<MethodResult> results = new ArrayList<>(
+                stringMapper.selectMethodByStringEqual(val));
+        session.close();
+        return results;
+    }
+
     public ArrayList<String> getJarsPath() {
         SqlSession session = factory.openSession(true);
         JarMapper jarMapper = session.getMapper(JarMapper.class);

@@ -21,6 +21,8 @@ public interface StringMapper {
 
     List<MethodResult> selectMethodByString(@Param("value") String value);
 
+    List<MethodResult> selectMethodByStringEqual(@Param("value") String value);
+
     List<String> selectStrings(int offset);
 
     List<MethodResult> selectStringInfos();

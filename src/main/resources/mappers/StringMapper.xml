@@ -41,6 +41,19 @@
             s.method_desc = m.method_desc
         WHERE s.value LIKE CONCAT('%', #{value}, '%')
     </select>
+    <select id="selectMethodByStringEqual" resultMap="methodMap">
+        SELECT DISTINCT cf.jar_name, m.method_name, m.class_name, m.method_desc, m.is_static, m.access
+        FROM method_table m
+                 INNER JOIN class_file_table cf ON
+            substr(cf.class_name, 1, length(cf.class_name) - 6) = m.class_name
+                 INNER JOIN string_table s ON
+            s.class_name = m.class_name
+                AND
+            s.method_name = m.method_name
+                AND
+            s.method_desc = m.method_desc
+        WHERE s.value = #{value}
+    </select>
     <select id="selectStrings">
         SELECT DISTINCT s.value
         FROM string_table s

@@ -40,6 +40,16 @@ public class SearchAction {
 
         CoreEngine engine = MainForm.getEngine();
         searchBtn.addActionListener(e -> {
+            // 2025/06/27 搜索的类名给出提示
+            String searchClass = scText.getText();
+            if (searchClass == null) {
+                searchClass = "";
+            }
+            if (searchClass.trim().startsWith("#")) {
+                searchClass = "";
+            }
+            String finalClass = searchClass;
+
             if (methodCallRadio.isSelected() || methodDefRadio.isSelected()) {
                 if (StringUtil.isNull(smText.getText())) {
                     JOptionPane.showMessageDialog(
@@ -58,27 +68,34 @@ public class SearchAction {
             if (methodCallRadio.isSelected()) {
                 if (equalsRadio.isSelected()) {
                     new Thread(() -> CoreHelper.refreshCallSearch(
-                            scText.getText(), smText.getText(), null)).start();
+                            finalClass, smText.getText(), null)).start();
                 }
                 if (likeRadio.isSelected()) {
                     new Thread(() -> CoreHelper.refreshCallSearchLike(
-                            scText.getText(), smText.getText(), null)).start();
+                            finalClass, smText.getText(), null)).start();
                 }
             }
 
             if (methodDefRadio.isSelected()) {
                 if (equalsRadio.isSelected()) {
                     new Thread(() -> CoreHelper.refreshDefSearch(
-                            scText.getText(), smText.getText(), null)).start();
+                            finalClass, smText.getText(), null)).start();
                 }
                 if (likeRadio.isSelected()) {
                     new Thread(() -> CoreHelper.refreshDefSearchLike(
-                            scText.getText(), smText.getText(), null)).start();
+                            finalClass, smText.getText(), null)).start();
                 }
             }
 
             if (stringRadio.isSelected()) {
-                new Thread(() -> CoreHelper.refreshStrSearch(scText.getText(), ssText.getText())).start();
+                if (equalsRadio.isSelected()) {
+                    new Thread(() ->
+                            CoreHelper.refreshStrSearchEqual(finalClass, ssText.getText())).start();
+                }
+                if (likeRadio.isSelected()) {
+                    new Thread(() ->
+                            CoreHelper.refreshStrSearch(finalClass, ssText.getText())).start();
+                }
             }
 
             if (binaryRadio.isSelected()) {

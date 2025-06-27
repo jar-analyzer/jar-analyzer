@@ -382,28 +382,29 @@ public class DatabaseManager {
             logger.warn("SPRING CONTROLLER 分析错误数据为空");
             return;
         }
-        try {for (SpringController controller : controllers) {
-            SpringControllerEntity ce = new SpringControllerEntity();
-            ce.setClassName(controller.getClassName().getName());
-            ce.setJarId(controller.getClassReference().getJarId());
-            cList.add(ce);
-            for (SpringMapping mapping : controller.getMappings()) {
-                SpringMethodEntity me = new SpringMethodEntity();
-                me.setClassName(controller.getClassName().getName());
-                me.setJarId(controller.getClassReference().getJarId());
-                me.setPath(mapping.getPath());
-                me.setMethodName(mapping.getMethodName().getName());
-                me.setMethodDesc(mapping.getMethodName().getDesc());
-                if (mapping.getPathRestful() != null && !mapping.getPathRestful().isEmpty()) {
-                    me.setRestfulType(mapping.getPathRestful());
-                    initPath(mapping, me);
-                } else {
-                    for (AnnoReference annotation : mapping.getMethodReference().getAnnotations()) {
-                        if (annotation.getAnnoName().startsWith(SpringConstant.ANNO_PREFIX)) {
-                            me.setRestfulType(annotation.getAnnoName()
-                                    .replace(SpringConstant.ANNO_PREFIX, "")
-                                    .replace(SpringConstant.MappingAnno, "")
-                                    .replace(";", " "));
+        try {
+            for (SpringController controller : controllers) {
+                SpringControllerEntity ce = new SpringControllerEntity();
+                ce.setClassName(controller.getClassName().getName());
+                ce.setJarId(controller.getClassReference().getJarId());
+                cList.add(ce);
+                for (SpringMapping mapping : controller.getMappings()) {
+                    SpringMethodEntity me = new SpringMethodEntity();
+                    me.setClassName(controller.getClassName().getName());
+                    me.setJarId(controller.getClassReference().getJarId());
+                    me.setPath(mapping.getPath());
+                    me.setMethodName(mapping.getMethodName().getName());
+                    me.setMethodDesc(mapping.getMethodName().getDesc());
+                    if (mapping.getPathRestful() != null && !mapping.getPathRestful().isEmpty()) {
+                        me.setRestfulType(mapping.getPathRestful());
+                        initPath(mapping, me);
+                    } else {
+                        for (AnnoReference annotation : mapping.getMethodReference().getAnnotations()) {
+                            if (annotation.getAnnoName().startsWith(SpringConstant.ANNO_PREFIX)) {
+                                me.setRestfulType(annotation.getAnnoName()
+                                        .replace(SpringConstant.ANNO_PREFIX, "")
+                                        .replace(SpringConstant.MappingAnno, "")
+                                        .replace(";", " "));
                                 initPath(mapping, me);
                             }
                         }

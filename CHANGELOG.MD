@@ -6,6 +6,7 @@
 
 更新日志：
 
+- [重要] 分析 `SPRING` 某些情况遇到错误无法继续 @Gosiu
 - [BUG] 加载 `class` 类型项目时无法正确处理类名问题 @4ra1n
 - [BUG] 解决首页 `ALL STRING` 卡死问题 @4ra1n
 - [BUG] 统计文件大小没有考虑 `class` 文件 @4ra1n
@@ -16,6 +17,7 @@
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
+- Honey Baby (https://github.com/Gosiu)
 
 所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
 

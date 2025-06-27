@@ -53,8 +53,7 @@ public class SpringMethodAdapter extends MethodVisitor {
     @Override
     public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
         AnnotationVisitor av = super.visitAnnotation(descriptor, visible);
-        if (descriptor.startsWith(SpringConstant.ANNO_PREFIX) &&
-                descriptor.endsWith(SpringConstant.MappingAnno)) {
+        if (descriptor.startsWith(SpringConstant.ANNO_PREFIX)) {
             if (currentMapping == null) {
                 currentMapping = new SpringMapping();
             }
@@ -65,12 +64,6 @@ public class SpringMethodAdapter extends MethodVisitor {
             currentMapping.setParamMap(this.requestParam);
             pathAnnoAdapter = new SpringPathAnnoAdapter(Const.ASMVersion, av);
             av = pathAnnoAdapter;
-        }
-        if (descriptor.equals(SpringConstant.ResponseBodyAnno)) {
-            if (currentMapping == null) {
-                currentMapping = new SpringMapping();
-            }
-            currentMapping.setRest(true);
         }
         return av;
     }

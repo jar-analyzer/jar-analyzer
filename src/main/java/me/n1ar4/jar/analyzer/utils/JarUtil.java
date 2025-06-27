@@ -33,6 +33,9 @@ public class JarUtil {
     private static final Logger logger = LogManager.getLogger();
     private static final Set<ClassFileEntity> classFileSet = new HashSet<>();
 
+    private static final String META_INF = "META-INF";
+    private static final int MAX_PARENT_SEARCH = 20;
+
     public static List<ClassFileEntity> resolveNormalJarFile(String jarPath, Integer jarId) {
         try {
             Path tmpDir = Paths.get(Const.tempDir);
@@ -133,8 +136,48 @@ public class JarUtil {
                 String fileText = MainForm.getInstance().getFileText().getText().trim();
                 if (jarPathStr.contains(fileText)) {
                     String backPath = jarPathStr;
-                    jarPathStr = jarPathStr.substring(fileText.length() + 1);
+
+                    // #################################################
+                    // 2025/06/26 处理重大 BUG
+                    // 加载单个 CLASS 时 CLASSNAME 按照 META-INF 决定
+                    Path parentPath = jarPath;
+                    Path resultPath = null;
+                    // 循环找 META-INF 目录
+                    int index = 0;
+                    while ((parentPath = parentPath.getParent()) != null) {
+                        Path metaPath = parentPath.resolve("META-INF");
+                        if (Files.exists(metaPath)) {
+                            resultPath = metaPath;
+                            break;
+                        }
+                        index++;
+                        // 防止一直循环
+                        if (index > MAX_PARENT_SEARCH) {
+                            break;
+                        }
+                    }
+                    if (resultPath == null) {
+                        return;
+                    }
+                    String finalPath = resultPath.toAbsolutePath().toString();
+                    if (!finalPath.contains(fileText)) {
+                        // 跨越目录除外
+                        return;
+                    }
+                    // 防止预期外错误
+                    if (finalPath.length() < META_INF.length()) {
+                        logger.warn("路径长度不足: {}", finalPath);
+                        return;
+                    }
+                    try {
+                        jarPathStr = jarPathStr.substring(finalPath.length() - META_INF.length());
+                    } catch (StringIndexOutOfBoundsException e) {
+                        logger.error("字符串截取错误: jarPathStr={}, finalPath={}", jarPathStr, finalPath, e);
+                        return;
+                    }
                     String saveClass = jarPathStr.replace("\\", "/");
+                    logger.info("加载 CLASS 文件 {}", saveClass);
+                    // #################################################
 
                     if (!shouldRun(whiteText, text, saveClass)) {
                         return;

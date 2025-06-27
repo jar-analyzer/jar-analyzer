@@ -377,7 +377,12 @@ public class DatabaseManager {
     public static void saveSpringController(ArrayList<SpringController> controllers) {
         List<SpringControllerEntity> cList = new ArrayList<>();
         List<SpringMethodEntity> mList = new ArrayList<>();
-        for (SpringController controller : controllers) {
+        // 2025/06/26 处理 SPRING 分析错误时报错
+        if (controllers == null || controllers.isEmpty()) {
+            logger.warn("SPRING CONTROLLER 分析错误数据为空");
+            return;
+        }
+        try {for (SpringController controller : controllers) {
             SpringControllerEntity ce = new SpringControllerEntity();
             ce.setClassName(controller.getClassName().getName());
             ce.setJarId(controller.getClassReference().getJarId());
@@ -399,39 +404,41 @@ public class DatabaseManager {
                                     .replace(SpringConstant.ANNO_PREFIX, "")
                                     .replace(SpringConstant.MappingAnno, "")
                                     .replace(";", " "));
-                            initPath(mapping, me);
+                                initPath(mapping, me);
+                            }
                         }
                     }
+                    mList.add(me);
                 }
-                mList.add(me);
             }
-        }
-        List<List<SpringControllerEntity>> cPartition = PartitionUtils.partition(cList, PART_SIZE);
-        for (List<SpringControllerEntity> data : cPartition) {
-            int a = springCMapper.insertControllers(data);
-            if (a == 0) {
-                logger.warn("save error");
-            }
-        }
-        List<List<SpringMethodEntity>> mPartition = PartitionUtils.partition(mList, PART_SIZE);
-
-        for (List<SpringMethodEntity> data : mPartition) {
-
-            // FIX PATH NOT NULL BUG
-            List<SpringMethodEntity> newList = new ArrayList<>();
-            for (SpringMethodEntity entity : data) {
-                if (entity.getPath() == null || entity.getPath().isEmpty()) {
-                    entity.setPath("none");
+            List<List<SpringControllerEntity>> cPartition = PartitionUtils.partition(cList, PART_SIZE);
+            for (List<SpringControllerEntity> data : cPartition) {
+                int a = springCMapper.insertControllers(data);
+                if (a == 0) {
+                    logger.warn("save error");
                 }
-                newList.add(entity);
             }
+            List<List<SpringMethodEntity>> mPartition = PartitionUtils.partition(mList, PART_SIZE);
 
-            int a = springMMapper.insertMappings(newList);
-            if (a == 0) {
-                logger.warn("save error");
+            for (List<SpringMethodEntity> data : mPartition) {
+
+                // FIX PATH NOT NULL BUG
+                List<SpringMethodEntity> newList = new ArrayList<>();
+                for (SpringMethodEntity entity : data) {
+                    if (entity.getPath() == null || entity.getPath().isEmpty()) {
+                        entity.setPath("none");
+                    }
+                    newList.add(entity);
+                }
+
+                int a = springMMapper.insertMappings(newList);
+                if (a == 0) {
+                    logger.warn("save error");
+                }
             }
+        } catch (Throwable t) {
+            logger.warn("SPRING CONTROLLER 分析错误 请提 ISSUE 解决");
         }
-
         logger.info("save all spring data success");
     }
 

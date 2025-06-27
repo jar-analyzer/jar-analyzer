@@ -66,7 +66,10 @@ public class CoreRunner {
                 beforeJarList.add(rtJarPath.toAbsolutePath().toString());
             }
             for (String s : beforeJarList) {
-                if (s.toLowerCase().endsWith(".jar") || s.toLowerCase().endsWith(".war")) {
+                if (s.toLowerCase().endsWith(".jar") ||
+                        s.toLowerCase().endsWith(".war") ||
+                        // 2025/06/26 统计大小时丢失 JAR 文件
+                        s.toLowerCase().endsWith(".class")) {
                     totalSize += Paths.get(s).toFile().length();
                 }
             }

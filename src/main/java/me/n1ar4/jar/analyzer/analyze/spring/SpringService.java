@@ -19,6 +19,8 @@ import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 import org.objectweb.asm.ClassReader;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -36,7 +38,13 @@ public class SpringService {
                 ClassReader cr = new ClassReader(file.getFile());
                 cr.accept(mcv, Const.AnalyzeASMOptions);
             } catch (Exception e) {
-                logger.error("error: {}", e.getMessage());
+                ByteArrayOutputStream bao = new ByteArrayOutputStream();
+                PrintWriter ps = new PrintWriter(bao);
+                e.printStackTrace(ps);
+                ps.flush();
+                ps.close();
+                System.out.println("#################### SPRING ANALYZE ERROR ####################");
+                System.out.print(bao);
             }
         }
     }

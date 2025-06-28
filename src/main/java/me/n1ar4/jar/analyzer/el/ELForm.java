@@ -12,9 +12,6 @@ package me.n1ar4.jar.analyzer.el;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import me.n1ar4.jar.analyzer.core.reference.ClassReference;
-import me.n1ar4.jar.analyzer.core.reference.MethodReference;
-import me.n1ar4.jar.analyzer.engine.CoreHelper;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
@@ -28,14 +25,7 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class ELForm {
     private static final Logger logger = LogManager.getLogger();
@@ -152,63 +142,9 @@ public class ELForm {
             logger.info("parse el success");
 
             if (value instanceof MethodEL) {
-                ExecutorService executor = Executors.newFixedThreadPool(
-                        Runtime.getRuntime().availableProcessors() * 3);
-
-                MethodEL condition = (MethodEL) value;
-                ConcurrentLinkedQueue<ResObj> searchList = new ConcurrentLinkedQueue<>();
-
-                int totalMethod = MainForm.getEngine().getMethodsCount();
-                logger.info("total method: {}", totalMethod);
-                int start = 3;
-                AtomicInteger taskId = new AtomicInteger(0);
-                for (int offset = 0; offset < totalMethod; ) {
-                    List<MethodReference> mrs = MainForm.getEngine().getAllMethodRef(offset);
-                    offset += mrs.size();
-                    double progress = (double) offset / totalMethod;
-                    String msg = String.format("running %d total %d - %.2f%%", offset, totalMethod, progress * 100);
-                    msgLabel.setText(msg);
-                    setVal((int) (start + progress * 100));
-
-                    executor.submit(() -> {
-                        // 复制一份防止并发问题
-                        int id = taskId.incrementAndGet();
-                        List<MethodReference> mrList = new ArrayList<>(mrs);
-                        for (MethodReference mr : mrList) {
-                            ClassReference.Handle ch = mr.getClassReference();
-                            MethodELProcessor processor = new MethodELProcessor(ch, mr, searchList, condition);
-                            processor.process();
-                        }
-                        logger.info("task - {} finish", id);
-                    });
-                }
-                executor.shutdown();
-                msgLabel.setText("所有任务已加入线程池请等待执行结束");
-                try {
-                    boolean allFinish = executor.awaitTermination(3, TimeUnit.MINUTES);
-                    if (!allFinish) {
-                        logger.warn("executor await termination not success");
-                    } else {
-                        logger.info("executor await termination success");
-                    }
-                } catch (Exception ignored) {
-                }
-                if (searchList.isEmpty()) {
-                    setVal(100);
-                    searchButton.setEnabled(true);
-                    JOptionPane.showMessageDialog(this.jTextArea, "没有找到结果");
-                    return;
-                } else {
-                    searchButton.setEnabled(true);
-                    JOptionPane.showMessageDialog(this.jTextArea, "搜索成功：找到符合表达式的方法");
-                }
-                ArrayList<ResObj> resObjList = new ArrayList<>();
-                Object[] array = searchList.toArray();
-                for (Object o : array) {
-                    resObjList.add((ResObj) o);
-                }
-                new Thread(() -> CoreHelper.refreshMethods(resObjList)).start();
-                setVal(100);
+                // 启动表达式搜索
+                ELSearchEngine engine = new ELSearchEngine(value, msgLabel, searchButton, jTextArea);
+                engine.run();
                 return;
             } else {
                 JOptionPane.showMessageDialog(this.jTextArea, "错误的表达式");

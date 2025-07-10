@@ -152,8 +152,12 @@ public class FavMouseAdapter extends MouseAdapter {
             JPopupMenu popupMenu = new JPopupMenu();
             JMenuItem cleanAllFavorite = new JMenuItem("clean all favorite");
             JMenuItem cleanCurItems = new JMenuItem("clean this favorite");
+            JMenuItem sendToSink = new JMenuItem("send to chains sink");
+            JMenuItem sendToSource = new JMenuItem("send to chains source");
             popupMenu.add(cleanAllFavorite);
             popupMenu.add(cleanCurItems);
+            popupMenu.add(sendToSink);
+            popupMenu.add(sendToSource);
             cleanAllFavorite.addActionListener(e -> {
                 MainForm.getFavData().clear();
                 JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
@@ -165,6 +169,20 @@ public class FavMouseAdapter extends MouseAdapter {
                     JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                             "CLEAN FAVORIATE " + selectedItem.getMethodName() + " FINISH");
                 }
+            });
+            sendToSink.addActionListener(e -> {
+                MethodResult selectedItem = (MethodResult) list.getSelectedValue();
+                MainForm.getInstance().setSink(
+                        selectedItem.getClassName(), selectedItem.getMethodName(), selectedItem.getMethodDesc());
+                JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                        "SEND SINK " + selectedItem.getMethodName() + " FINISH");
+            });
+            sendToSource.addActionListener(e -> {
+                MethodResult selectedItem = (MethodResult) list.getSelectedValue();
+                MainForm.getInstance().setSource(
+                        selectedItem.getClassName(), selectedItem.getMethodName(), selectedItem.getMethodDesc());
+                JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                        "SEND SOURCE " + selectedItem.getMethodName() + " FINISH");
             });
             int index = list.locationToIndex(evt.getPoint());
             list.setSelectedIndex(index);

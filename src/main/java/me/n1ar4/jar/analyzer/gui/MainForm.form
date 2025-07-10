@@ -2006,13 +2006,13 @@
                                   </component>
                                 </children>
                               </scrollpane>
-                              <grid id="4cdc4" binding="chainsOpPanel" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                              <grid id="4cdc4" binding="chainsOpPanel" layout-manager="GridLayoutManager" row-count="1" column-count="6" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                                 <margin top="5" left="5" bottom="5" right="5"/>
                                 <constraints>
                                   <grid row="2" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                                 </constraints>
                                 <properties/>
-                                <border type="none"/>
+                                <border type="none" title="启动配置"/>
                                 <children>
                                   <component id="c73ec" class="javax.swing.JButton" binding="startChainsBtn">
                                     <constraints>
@@ -2024,9 +2024,39 @@
                                   </component>
                                   <hspacer id="a8c43">
                                     <constraints>
-                                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                                      <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                                     </constraints>
                                   </hspacer>
+                                  <component id="6c166" class="javax.swing.JRadioButton" binding="sourceRadio">
+                                    <constraints>
+                                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                    </constraints>
+                                    <properties>
+                                      <text value="从 Source 正向分析"/>
+                                    </properties>
+                                  </component>
+                                  <component id="6b464" class="javax.swing.JRadioButton" binding="sinkRadio">
+                                    <constraints>
+                                      <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                    </constraints>
+                                    <properties>
+                                      <text value="从 Sink 反向分析"/>
+                                    </properties>
+                                  </component>
+                                  <component id="21147" class="javax.swing.JSpinner" binding="maxDepthSpin">
+                                    <constraints>
+                                      <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                                    </constraints>
+                                    <properties/>
+                                  </component>
+                                  <component id="895dd" class="javax.swing.JLabel" binding="maxDepthLabel">
+                                    <constraints>
+                                      <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                    </constraints>
+                                    <properties>
+                                      <text value="最大深度"/>
+                                    </properties>
+                                  </component>
                                 </children>
                               </grid>
                             </children>
@@ -2208,6 +2238,10 @@
       <member id="ff811"/>
       <member id="4a5fb"/>
       <member id="60a70"/>
+    </group>
+    <group name="chainsGroup">
+      <member id="6c166"/>
+      <member id="6b464"/>
     </group>
   </buttonGroups>
 </form>

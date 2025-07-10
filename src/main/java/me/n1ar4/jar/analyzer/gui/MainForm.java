@@ -302,6 +302,27 @@ public class MainForm {
     private JCheckBox gadgetHessianBox;
     private JCheckBox gadgetJdbcBox;
     private JCheckBox gadgetFastjsonBox;
+    private JPanel chainsPanel;
+    private JTextField sinkClassText;
+    private JTextField sinkMethodText;
+    private JTextField sinkDescText;
+    private JTextField sourceClassText;
+    private JTextField sourceMethodText;
+    private JTextField sourceDescText;
+    private JPanel chainsSinkPanel;
+    private JPanel chainsSourcePanel;
+    private JPanel chainsDescPanel;
+    private JLabel chainsLabel;
+    private JLabel sinkClassLabel;
+    private JLabel sinkMethodLabel;
+    private JLabel sinkDescLabel;
+    private JLabel sourceClassLabel;
+    private JLabel sourceMethodLabel;
+    private JLabel sourceDescLabel;
+    private JScrollPane chainsScroll;
+    private JTextArea chainsArea;
+    private JPanel chainsOpPanel;
+    private JButton startChainsBtn;
     private static DefaultListModel<MethodResult> favData;
 
     public JPanel getJavaVulSearchPanel() {
@@ -1047,6 +1068,8 @@ public class MainForm {
         instance.getTabbedPanel().setIconAt(7, SvgManager.LeakIcon);
         instance.getTabbedPanel().setIconAt(8, SvgManager.GadgetIcon);
         instance.getTabbedPanel().setIconAt(9, SvgManager.AdvanceIcon);
+        instance.getTabbedPanel().setIconAt(10, SvgManager.DogIcon);
+
         instance.webTabbed.setIconAt(0, SvgManager.SpringIcon);
         instance.webTabbed.setIconAt(1, SvgManager.SpringIcon);
         instance.webTabbed.setIconAt(2, SvgManager.TomcatIcon);
@@ -1077,7 +1100,7 @@ public class MainForm {
                                 null, null));
 
                 int c = instance.tabbedPanel.getTabCount();
-                if (c != 10) {
+                if (c != 11) {
                     throw new RuntimeException("tabbed panel error");
                 }
                 instance.tabbedPanel.setTitleAt(0, "开始");
@@ -1090,6 +1113,7 @@ public class MainForm {
                 instance.tabbedPanel.setTitleAt(7, "泄露");
                 instance.tabbedPanel.setTitleAt(8, "GADGET");
                 instance.tabbedPanel.setTitleAt(9, "高级");
+                instance.tabbedPanel.setTitleAt(10, "漏洞链");
 
                 instance.chosePanel.setBorder(
                         BorderFactory.createTitledBorder(null,
@@ -1200,7 +1224,7 @@ public class MainForm {
                                 null, null));
 
                 int c = instance.tabbedPanel.getTabCount();
-                if (c != 10) {
+                if (c != 11) {
                     throw new RuntimeException("tabbed panel error");
                 }
                 instance.tabbedPanel.setTitleAt(0, "start");
@@ -1213,6 +1237,7 @@ public class MainForm {
                 instance.tabbedPanel.setTitleAt(7, "leak");
                 instance.tabbedPanel.setTitleAt(8, "gadget");
                 instance.tabbedPanel.setTitleAt(9, "advance");
+                instance.tabbedPanel.setTitleAt(10, "chains");
 
                 instance.chosePanel.setBorder(
                         BorderFactory.createTitledBorder(null,
@@ -1329,6 +1354,8 @@ public class MainForm {
 
         init();
 
+        initChains();
+
         frame.setJMenuBar(MenuUtil.createMenuBar());
         frame.setContentPane(instance.masterPanel);
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -1373,6 +1400,15 @@ public class MainForm {
         frame.setResizable(true);
         frame.setVisible(false);
         return frame;
+    }
+
+    private static void initChains() {
+        instance.chainsLabel.setText("<html>" +
+                "&nbsp;<font color='red'><b>漏洞利用链模块</b></font>（<font color='blue'><b>chains</b></font>）" +
+                "使用&nbsp;<font color='red'><b>深度优先搜索算法</b></font>（<font color='blue'><b>DFS</b></font>）" +
+                "尝试分析出所有可能的&nbsp;<font color='red'><b>链</b></font>" +
+                "</html>");
+        instance.chainsLabel.setIcon(SvgManager.DogIcon);
     }
 
     private void resolveConfig() {
@@ -1425,7 +1461,7 @@ public class MainForm {
         masterPanel = new JPanel();
         masterPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         rootSplit = new JSplitPane();
-        rootSplit.setDividerLocation(250);
+        rootSplit.setDividerLocation(254);
         masterPanel.add(rootSplit, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
         leftPanel = new JPanel();
         leftPanel.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
@@ -1454,7 +1490,7 @@ public class MainForm {
         treeContentSplit.setOrientation(0);
         rootSplit.setRightComponent(treeContentSplit);
         coreSplit = new JSplitPane();
-        coreSplit.setDividerLocation(534);
+        coreSplit.setDividerLocation(531);
         coreSplit.setResizeWeight(0.8);
         treeContentSplit.setLeftComponent(coreSplit);
         codePanel = new JPanel();
@@ -2069,6 +2105,68 @@ public class MainForm {
         htmlGraphBtn = new JButton();
         htmlGraphBtn.setText("HTML Graph");
         analysis.add(htmlGraphBtn, new GridConstraints(0, 2, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, new Dimension(150, -1), 0, false));
+        chainsPanel = new JPanel();
+        chainsPanel.setLayout(new GridLayoutManager(4, 2, new Insets(0, 0, 0, 0), -1, -1));
+        tabbedPanel.addTab("chains", chainsPanel);
+        chainsSinkPanel = new JPanel();
+        chainsSinkPanel.setLayout(new GridLayoutManager(3, 2, new Insets(5, 5, 5, 5), -1, -1));
+        chainsPanel.add(chainsSinkPanel, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        chainsSinkPanel.setBorder(BorderFactory.createTitledBorder(null, "Sink Config", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+        sinkClassLabel = new JLabel();
+        sinkClassLabel.setText("Sink Class");
+        chainsSinkPanel.add(sinkClassLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        sinkClassText = new JTextField();
+        chainsSinkPanel.add(sinkClassText, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        sinkMethodLabel = new JLabel();
+        sinkMethodLabel.setText("Sink Method");
+        chainsSinkPanel.add(sinkMethodLabel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        sinkDescLabel = new JLabel();
+        sinkDescLabel.setText("Sink Desc");
+        chainsSinkPanel.add(sinkDescLabel, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        sinkMethodText = new JTextField();
+        chainsSinkPanel.add(sinkMethodText, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        sinkDescText = new JTextField();
+        chainsSinkPanel.add(sinkDescText, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        chainsSourcePanel = new JPanel();
+        chainsSourcePanel.setLayout(new GridLayoutManager(3, 2, new Insets(5, 5, 5, 5), -1, -1));
+        chainsPanel.add(chainsSourcePanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        chainsSourcePanel.setBorder(BorderFactory.createTitledBorder(null, "Source Config", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+        sourceClassLabel = new JLabel();
+        sourceClassLabel.setText("Source Class");
+        chainsSourcePanel.add(sourceClassLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        sourceClassText = new JTextField();
+        chainsSourcePanel.add(sourceClassText, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        sourceMethodLabel = new JLabel();
+        sourceMethodLabel.setText("Source Method");
+        chainsSourcePanel.add(sourceMethodLabel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        sourceDescLabel = new JLabel();
+        sourceDescLabel.setText("Source Desc");
+        chainsSourcePanel.add(sourceDescLabel, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        sourceMethodText = new JTextField();
+        chainsSourcePanel.add(sourceMethodText, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        sourceDescText = new JTextField();
+        chainsSourcePanel.add(sourceDescText, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        chainsDescPanel = new JPanel();
+        chainsDescPanel.setLayout(new GridLayoutManager(1, 2, new Insets(5, 5, 5, 5), -1, -1));
+        chainsPanel.add(chainsDescPanel, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        chainsLabel = new JLabel();
+        chainsLabel.setText("");
+        chainsDescPanel.add(chainsLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final Spacer spacer4 = new Spacer();
+        chainsDescPanel.add(spacer4, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        chainsScroll = new JScrollPane();
+        chainsPanel.add(chainsScroll, new GridConstraints(3, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        chainsArea = new JTextArea();
+        chainsArea.setLineWrap(true);
+        chainsScroll.setViewportView(chainsArea);
+        chainsOpPanel = new JPanel();
+        chainsOpPanel.setLayout(new GridLayoutManager(1, 2, new Insets(5, 5, 5, 5), -1, -1));
+        chainsPanel.add(chainsOpPanel, new GridConstraints(2, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        startChainsBtn = new JButton();
+        startChainsBtn.setText("开始分析");
+        chainsOpPanel.add(startChainsBtn, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final Spacer spacer5 = new Spacer();
+        chainsOpPanel.add(spacer5, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         curPanel = new JPanel();
         curPanel.setLayout(new GridLayoutManager(3, 3, new Insets(0, 0, 0, 0), -1, -1));
         coreRightSplit.add(curPanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
@@ -2094,8 +2192,8 @@ public class MainForm {
         addToFavoritesButton = new JButton();
         addToFavoritesButton.setText("add to favorites");
         curPanel.add(addToFavoritesButton, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final Spacer spacer4 = new Spacer();
-        coreRightSplit.add(spacer4, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        final Spacer spacer6 = new Spacer();
+        coreRightSplit.add(spacer6, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         logPanel = new JPanel();
         logPanel.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
         treeContentSplit.setRightComponent(logPanel);

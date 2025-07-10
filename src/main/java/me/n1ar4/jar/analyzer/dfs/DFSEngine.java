@@ -66,14 +66,27 @@ public class DFSEngine {
     public void doAnalyze() {
         logger.info("start chains dfs analyze");
         update("分析最大深度：" + depth);
-        update("SOURCE: " + sourceClass + "." + sourceMethod + "." + sourceDesc);
-        update("SINK: " + sinkClass + "." + sinkMethod + "." + sinkDesc);
+
+        // 检查是否为查找所有 SOURCE 的模式
+        boolean findAllSources = this.fromSink && (sourceClass == null || sourceClass.isEmpty());
+
+        if (findAllSources) {
+            update("SINK: " + sinkClass + "." + sinkMethod + "." + sinkDesc);
+            update("SOURCE: [查找所有可能的SOURCE点]");
+        } else {
+            update("SOURCE: " + sourceClass + "." + sourceMethod + "." + sourceDesc);
+            update("SINK: " + sinkClass + "." + sinkMethod + "." + sinkDesc);
+        }
         update("===========================================");
 
         chainCount = 0;
 
         if (this.fromSink) {
-            update("从 SINK 开始反向分析");
+            if (findAllSources) {
+                update("从 SINK 开始反向分析 查找所有可能的 SOURCE 点");
+            } else {
+                update("从 SINK 开始反向分析");
+            }
             MethodResult startMethod = new MethodResult();
             startMethod.setClassName(sinkClass);
             startMethod.setMethodName(sinkMethod);
@@ -83,7 +96,11 @@ public class DFSEngine {
             path.add(startMethod);
             Set<String> visited = new HashSet<>();
 
-            dfsFromSink(startMethod, path, visited, 0);
+            if (findAllSources) {
+                dfsFromSinkFindAllSources(startMethod, path, visited, 0);
+            } else {
+                dfsFromSink(startMethod, path, visited, 0);
+            }
         } else {
             update("从 SOURCE 开始正向分析");
             MethodResult startMethod = new MethodResult();
@@ -99,7 +116,11 @@ public class DFSEngine {
         }
 
         update("===========================================");
-        update("总共找到 " + chainCount + " 条可能的调用链");
+        if (findAllSources) {
+            update("总共找到 " + chainCount + " 个可能的 SOURCE 点");
+        } else {
+            update("总共找到 " + chainCount + " 条可能的调用链");
+        }
     }
 
     private void dfsFromSink(MethodResult currentMethod, List<MethodResult> path, Set<String> visited, int currentDepth) {
@@ -130,6 +151,39 @@ public class DFSEngine {
             path.add(caller);
             dfsFromSink(caller, path, visited, currentDepth + 1);
             path.remove(path.size() - 1); // 回溯
+        }
+
+        visited.remove(methodKey);
+    }
+
+    private void dfsFromSinkFindAllSources(MethodResult currentMethod, List<MethodResult> path, Set<String> visited, int currentDepth) {
+        if (currentDepth >= depth) {
+            return;
+        }
+
+        String methodKey = getMethodKey(currentMethod);
+
+        if (visited.contains(methodKey)) {
+            return;
+        }
+
+        visited.add(methodKey);
+
+        ArrayList<MethodResult> callerMethods = engine.getCallers(
+                currentMethod.getClassName(),
+                currentMethod.getMethodName(),
+                currentMethod.getMethodDesc());
+
+        if (callerMethods.isEmpty()) {
+            chainCount++;
+            outputSourceChain(path, currentMethod);
+        } else {
+            // 继续向上搜索
+            for (MethodResult caller : callerMethods) {
+                path.add(caller);
+                dfsFromSinkFindAllSources(caller, path, visited, currentDepth + 1);
+                path.remove(path.size() - 1); // 回溯
+            }
         }
 
         visited.remove(methodKey);
@@ -173,6 +227,9 @@ public class DFSEngine {
     }
 
     private boolean isTargetMethod(MethodResult method, String targetClass, String targetMethod, String targetDesc) {
+        if (targetClass == null || targetMethod == null || targetDesc == null) {
+            return false;
+        }
         return method.getClassName().equals(targetClass) &&
                 method.getMethodName().equals(targetMethod) &&
                 method.getMethodDesc().equals(targetDesc);
@@ -197,6 +254,21 @@ public class DFSEngine {
                 String arrow = (i == 0) ? "" : " -> ";
                 update(arrow + formatMethod(method));
             }
+        }
+        update("");
+    }
+
+    private void outputSourceChain(List<MethodResult> path, MethodResult sourceMethod) {
+        update("\n发现 SOURCE 点 #" + chainCount + ":");
+        update("SOURCE: " + formatMethod(sourceMethod));
+        update("到达 SINK 的调用链长度: " + path.size());
+        update("调用路径:");
+
+        // 反向搜索时，路径需要反转输出（从SOURCE到SINK）
+        for (int i = path.size() - 1; i >= 0; i--) {
+            MethodResult method = path.get(i);
+            String arrow = (i == path.size() - 1) ? "" : " -> ";
+            update(arrow + formatMethod(method));
         }
         update("");
     }

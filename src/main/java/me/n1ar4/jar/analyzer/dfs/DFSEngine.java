@@ -67,17 +67,17 @@ public class DFSEngine {
 
     public void doAnalyze() {
         if (this.fromSink) {
-            if(this.sinkClass == null || this.sinkClass.trim().isEmpty()){
+            if (this.sinkClass == null || this.sinkClass.trim().isEmpty()) {
                 update("错误：SINK 分析模式不允许 SINK 为空");
                 return;
             }
-            if(!this.searchNullSource){
+            if (!this.searchNullSource) {
                 if (this.sourceClass == null || this.sourceClass.trim().isEmpty()) {
                     update("错误：SINK 分析模式 - 精确搜索 - 不允许 SOURCE 为空");
                     return;
                 }
             }
-        }else{
+        } else {
             if (this.searchNullSource) {
                 update("错误：SOURCE 分析模式不允许选择 空 SOURCE 分析");
                 return;

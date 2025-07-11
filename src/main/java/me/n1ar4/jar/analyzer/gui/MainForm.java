@@ -330,6 +330,11 @@ public class MainForm {
     private JRadioButton sinkRadio;
     private JSpinner maxDepthSpin;
     private JLabel maxDepthLabel;
+    private JRadioButton sourceNullRadio;
+    private JRadioButton sourceEnableRadio;
+    private JPanel sourcePanel;
+    private JLabel sourceLabel;
+    private JButton clearBtn;
     private static DefaultListModel<MethodResult> favData;
 
     public JPanel getJavaVulSearchPanel() {
@@ -1425,26 +1430,26 @@ public class MainForm {
         instance.chainsLabel.setText("<html>" +
                 "&nbsp;<font color='red'><b>漏洞利用链模块</b></font>（<font color='blue'><b>chains</b></font>）" +
                 "使用&nbsp;<font color='red'><b>深度优先搜索算法</b></font>（<font color='blue'><b>DFS</b></font>）" +
-                "尝试分析出所有可能的&nbsp;<font color='red'><b>链</b></font>" +
+                "尝试分析出所有可能的&nbsp;<font color='red'><b>漏洞链</b></font>" +
                 "</html>");
         instance.chainsLabel.setIcon(SvgManager.DogIcon);
         instance.sinkRadio.setSelected(true);
         instance.maxDepthSpin.setValue(10);
 
-
-        // debug
-        instance.sourceClassText.setText("me/n1ar4/test/demos/web/DataController");
-        instance.sourceMethodText.setText("getStatus");
-        instance.sourceDescText.setText("(Ljava/lang/String;)Ljava/util/Map;");
+        instance.sourceNullRadio.setSelected(false);
+        instance.sourceEnableRadio.setSelected(true);
 
         instance.sinkClassText.setText("java/lang/Runtime");
-        instance.sinkMethodText.setText("getRuntime");
-        instance.sinkDescText.setText("()Ljava/lang/Runtime;");
+        instance.sinkMethodText.setText("exec");
+        instance.sinkDescText.setText("(Ljava/lang/String;)Ljava/lang/Process;");
+
+        instance.clearBtn.addActionListener(e -> instance.chainsArea.setText(null));
 
         instance.startChainsBtn.addActionListener(e -> {
             DFSEngine dfsEngine = new DFSEngine(
                     instance.chainsArea,
                     instance.sinkRadio.isSelected(),
+                    instance.sourceNullRadio.isSelected(),
                     (Integer) instance.maxDepthSpin.getValue());
             dfsEngine.setSink(
                     instance.sinkClassText.getText(),
@@ -2180,7 +2185,7 @@ public class MainForm {
         sinkTipLabel.setText("从 note -> favorites 右键 send to sink");
         chainsSinkPanel.add(sinkTipLabel, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         chainsSourcePanel = new JPanel();
-        chainsSourcePanel.setLayout(new GridLayoutManager(4, 2, new Insets(5, 5, 5, 5), -1, -1));
+        chainsSourcePanel.setLayout(new GridLayoutManager(5, 2, new Insets(5, 5, 5, 5), -1, -1));
         chainsPanel.add(chainsSourcePanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         chainsSourcePanel.setBorder(BorderFactory.createTitledBorder(null, "Source Config", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         sourceClassLabel = new JLabel();
@@ -2201,6 +2206,18 @@ public class MainForm {
         sourceTipLabel = new JLabel();
         sourceTipLabel.setText("从 note -> favorites 右键 send to source");
         chainsSourcePanel.add(sourceTipLabel, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        sourcePanel = new JPanel();
+        sourcePanel.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
+        chainsSourcePanel.add(sourcePanel, new GridConstraints(4, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        sourceNullRadio = new JRadioButton();
+        sourceNullRadio.setText("空 Source 列举");
+        sourcePanel.add(sourceNullRadio, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        sourceEnableRadio = new JRadioButton();
+        sourceEnableRadio.setText("指定 Source 搜索");
+        sourcePanel.add(sourceEnableRadio, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        sourceLabel = new JLabel();
+        sourceLabel.setText("模式");
+        sourcePanel.add(sourceLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         chainsDescPanel = new JPanel();
         chainsDescPanel.setLayout(new GridLayoutManager(1, 2, new Insets(5, 5, 5, 5), -1, -1));
         chainsPanel.add(chainsDescPanel, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
@@ -2212,28 +2229,33 @@ public class MainForm {
         chainsScroll = new JScrollPane();
         chainsPanel.add(chainsScroll, new GridConstraints(3, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         chainsArea = new JTextArea();
+        chainsArea.setEditable(false);
+        chainsArea.setEnabled(true);
         chainsArea.setLineWrap(true);
         chainsScroll.setViewportView(chainsArea);
         chainsOpPanel = new JPanel();
-        chainsOpPanel.setLayout(new GridLayoutManager(1, 6, new Insets(5, 5, 5, 5), -1, -1));
+        chainsOpPanel.setLayout(new GridLayoutManager(1, 7, new Insets(5, 5, 5, 5), -1, -1));
         chainsPanel.add(chainsOpPanel, new GridConstraints(2, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         chainsOpPanel.setBorder(BorderFactory.createTitledBorder(null, "启动配置", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         startChainsBtn = new JButton();
-        startChainsBtn.setText("开始分析");
+        startChainsBtn.setText("分析");
         chainsOpPanel.add(startChainsBtn, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final Spacer spacer5 = new Spacer();
-        chainsOpPanel.add(spacer5, new GridConstraints(0, 5, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         sourceRadio = new JRadioButton();
-        sourceRadio.setText("从 Source 正向分析");
-        chainsOpPanel.add(sourceRadio, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        sourceRadio.setText("从 Source 分析");
+        chainsOpPanel.add(sourceRadio, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         sinkRadio = new JRadioButton();
-        sinkRadio.setText("从 Sink 反向分析");
-        chainsOpPanel.add(sinkRadio, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        sinkRadio.setText("从 Sink 分析");
+        chainsOpPanel.add(sinkRadio, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         maxDepthSpin = new JSpinner();
-        chainsOpPanel.add(maxDepthSpin, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        chainsOpPanel.add(maxDepthSpin, new GridConstraints(0, 5, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, new Dimension(80, -1), 0, false));
         maxDepthLabel = new JLabel();
         maxDepthLabel.setText("最大深度");
-        chainsOpPanel.add(maxDepthLabel, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        chainsOpPanel.add(maxDepthLabel, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final Spacer spacer5 = new Spacer();
+        chainsOpPanel.add(spacer5, new GridConstraints(0, 6, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        clearBtn = new JButton();
+        clearBtn.setText("清空");
+        chainsOpPanel.add(clearBtn, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         curPanel = new JPanel();
         curPanel.setLayout(new GridLayoutManager(3, 3, new Insets(0, 0, 0, 0), -1, -1));
         coreRightSplit.add(curPanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
@@ -2297,6 +2319,9 @@ public class MainForm {
         buttonGroup = new ButtonGroup();
         buttonGroup.add(sourceRadio);
         buttonGroup.add(sinkRadio);
+        buttonGroup = new ButtonGroup();
+        buttonGroup.add(sourceNullRadio);
+        buttonGroup.add(sourceEnableRadio);
     }
 
     /**

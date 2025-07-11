@@ -36,6 +36,7 @@ public class DFSEngine {
     private final JTextArea resultArea;
 
     private final boolean fromSink;
+    private final boolean searchNullSource;
     private final int depth;
 
     private int chainCount = 0;
@@ -44,10 +45,11 @@ public class DFSEngine {
         this.resultArea.append(msg + "\n");
     }
 
-    public DFSEngine(JTextArea resultArea, boolean fromSink, int depth) {
+    public DFSEngine(JTextArea resultArea, boolean fromSink, boolean searchNullSource, int depth) {
         this.engine = MainForm.getEngine();
         this.resultArea = resultArea;
         this.fromSink = fromSink;
+        this.searchNullSource = searchNullSource;
         this.depth = depth;
     }
 
@@ -64,18 +66,41 @@ public class DFSEngine {
     }
 
     public void doAnalyze() {
+        if (this.fromSink) {
+            if(this.sinkClass == null || this.sinkClass.trim().isEmpty()){
+                update("错误：SINK 分析模式不允许 SINK 为空");
+                return;
+            }
+            if(!this.searchNullSource){
+                if (this.sourceClass == null || this.sourceClass.trim().isEmpty()) {
+                    update("错误：SINK 分析模式 - 精确搜索 - 不允许 SOURCE 为空");
+                    return;
+                }
+            }
+        }else{
+            if (this.searchNullSource) {
+                update("错误：SOURCE 分析模式不允许选择 空 SOURCE 分析");
+                return;
+            }
+            if (this.sourceClass == null || this.sourceClass.trim().isEmpty()) {
+                update("错误：SOURCE 分析模式不允许 SOURCE 为空");
+                return;
+            }
+        }
         logger.info("start chains dfs analyze");
         update("分析最大深度：" + depth);
 
         // 检查是否为查找所有 SOURCE 的模式
-        boolean findAllSources = this.fromSink && (sourceClass == null || sourceClass.isEmpty());
+        boolean findAllSources = this.fromSink && this.searchNullSource;
+
+        logger.info("find all sources from sink : " + findAllSources);
 
         if (findAllSources) {
-            update("SINK: " + sinkClass + "." + sinkMethod + "." + sinkDesc);
+            update("SINK: " + sinkClass + "." + sinkMethod);
             update("SOURCE: [查找所有可能的SOURCE点]");
         } else {
-            update("SOURCE: " + sourceClass + "." + sourceMethod + "." + sourceDesc);
-            update("SINK: " + sinkClass + "." + sinkMethod + "." + sinkDesc);
+            update("SOURCE: " + sourceClass + "." + sourceMethod);
+            update("SINK: " + sinkClass + "." + sinkMethod);
         }
         update("===========================================");
 

@@ -335,10 +335,16 @@ public class MainForm {
     private JPanel sourcePanel;
     private JLabel sourceLabel;
     private JButton clearBtn;
+    private JScrollPane javaVulScroll;
+    private JPanel vulOpPanel;
+    private JRadioButton showLowRadio;
+    private JRadioButton showMediumRadio;
+    private JRadioButton showHighRadio;
+    private JRadioButton showAllRadio;
     private static DefaultListModel<MethodResult> favData;
 
-    public JPanel getJavaVulSearchPanel() {
-        return javaVulSearchPanel;
+    public JScrollPane getJavaVulSearchPanel() {
+        return javaVulScroll;
     }
 
     public JCheckBox getLeakUrlBox() {
@@ -955,6 +961,28 @@ public class MainForm {
         likeSearchRadioButton.setSelected(true);
 
         VulnerabilityBuilder.build(this);
+
+        showAllRadio.setSelected(true);
+        showAllRadio.addActionListener(e -> {
+            VulnerabilityBuilder.refreshAll();
+            advancePanel.revalidate();
+            advancePanel.repaint();
+        });
+        showHighRadio.addActionListener(e -> {
+            VulnerabilityBuilder.refreshHigh();
+            advancePanel.revalidate();
+            advancePanel.repaint();
+        });
+        showMediumRadio.addActionListener(e -> {
+            VulnerabilityBuilder.refreshMedium();
+            advancePanel.revalidate();
+            advancePanel.repaint();
+        });
+        showLowRadio.addActionListener(e -> {
+            VulnerabilityBuilder.refreshLow();
+            advancePanel.revalidate();
+            advancePanel.repaint();
+        });
 
         logger.info("init main form success");
     }
@@ -2095,14 +2123,33 @@ public class MainForm {
         advancePanel.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPanel.addTab("advance", advancePanel);
         javaVulSearchPanel = new JPanel();
-        javaVulSearchPanel.setLayout(new GridLayoutManager(10, 3, new Insets(0, 0, 0, 0), -1, -1));
+        javaVulSearchPanel.setLayout(new GridLayoutManager(12, 3, new Insets(0, 0, 0, 0), -1, -1));
         advancePanel.add(javaVulSearchPanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         javaVulSearchPanel.setBorder(BorderFactory.createTitledBorder(null, "Java Vulnerability", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         javaVulLabel = new JLabel();
         javaVulLabel.setText("Quickly Search Commons Java Vulnerabilities Call");
         javaVulSearchPanel.add(javaVulLabel, new GridConstraints(0, 0, 1, 3, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        javaVulScroll = new JScrollPane();
+        javaVulSearchPanel.add(javaVulScroll, new GridConstraints(2, 0, 10, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        vulOpPanel = new JPanel();
+        vulOpPanel.setLayout(new GridLayoutManager(1, 5, new Insets(0, 0, 0, 0), -1, -1));
+        javaVulSearchPanel.add(vulOpPanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        showLowRadio = new JRadioButton();
+        showLowRadio.setText("展示低危（low）");
+        vulOpPanel.add(showLowRadio, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer3 = new Spacer();
-        advancePanel.add(spacer3, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        vulOpPanel.add(spacer3, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        showMediumRadio = new JRadioButton();
+        showMediumRadio.setText("展示中危（medium）");
+        vulOpPanel.add(showMediumRadio, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        showHighRadio = new JRadioButton();
+        showHighRadio.setText("展示高危（high）");
+        vulOpPanel.add(showHighRadio, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        showAllRadio = new JRadioButton();
+        showAllRadio.setText("全部");
+        vulOpPanel.add(showAllRadio, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final Spacer spacer4 = new Spacer();
+        advancePanel.add(spacer4, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         piPanel = new JPanel();
         piPanel.setLayout(new GridLayoutManager(6, 2, new Insets(0, 0, 0, 0), -1, -1));
         advancePanel.add(piPanel, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
@@ -2224,8 +2271,8 @@ public class MainForm {
         chainsLabel = new JLabel();
         chainsLabel.setText("");
         chainsDescPanel.add(chainsLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final Spacer spacer4 = new Spacer();
-        chainsDescPanel.add(spacer4, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        final Spacer spacer5 = new Spacer();
+        chainsDescPanel.add(spacer5, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         chainsScroll = new JScrollPane();
         chainsPanel.add(chainsScroll, new GridConstraints(3, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         chainsArea = new JTextArea();
@@ -2251,8 +2298,8 @@ public class MainForm {
         maxDepthLabel = new JLabel();
         maxDepthLabel.setText("最大深度");
         chainsOpPanel.add(maxDepthLabel, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final Spacer spacer5 = new Spacer();
-        chainsOpPanel.add(spacer5, new GridConstraints(0, 6, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        final Spacer spacer6 = new Spacer();
+        chainsOpPanel.add(spacer6, new GridConstraints(0, 6, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         clearBtn = new JButton();
         clearBtn.setText("清空");
         chainsOpPanel.add(clearBtn, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -2281,8 +2328,8 @@ public class MainForm {
         addToFavoritesButton = new JButton();
         addToFavoritesButton.setText("add to favorites");
         curPanel.add(addToFavoritesButton, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final Spacer spacer6 = new Spacer();
-        coreRightSplit.add(spacer6, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        final Spacer spacer7 = new Spacer();
+        coreRightSplit.add(spacer7, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         logPanel = new JPanel();
         logPanel.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
         treeContentSplit.setRightComponent(logPanel);
@@ -2322,6 +2369,11 @@ public class MainForm {
         buttonGroup = new ButtonGroup();
         buttonGroup.add(sourceNullRadio);
         buttonGroup.add(sourceEnableRadio);
+        buttonGroup = new ButtonGroup();
+        buttonGroup.add(showLowRadio);
+        buttonGroup.add(showMediumRadio);
+        buttonGroup.add(showHighRadio);
+        buttonGroup.add(showAllRadio);
     }
 
     /**

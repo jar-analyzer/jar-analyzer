@@ -15,6 +15,16 @@ public class SearchCondition {
     private String methodName;
     private String methodDesc;
 
+    private String level;
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
     public String getClassName() {
         return className;
     }

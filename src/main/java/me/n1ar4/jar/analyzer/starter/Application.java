@@ -159,6 +159,7 @@ public class Application {
                 StartUpMessage.run();
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
             logger.error("start jar analyzer error: {}", ex.toString());
         }
     }

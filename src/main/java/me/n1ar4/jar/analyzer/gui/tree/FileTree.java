@@ -27,10 +27,8 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Enumeration;
+import java.util.*;
 import java.util.List;
-import java.util.Objects;
 
 public class FileTree extends JTree {
     private static ImageIcon classIcon;
@@ -131,8 +129,25 @@ public class FileTree extends JTree {
                 return;
             }
 
-            List<File> fileList = Arrays.asList(files);
-            fileList.sort((o1, o2) -> {
+            // 将文件分为目录和普通文件两组
+            List<File> directories = new ArrayList<>();
+            List<File> regularFiles = new ArrayList<>();
+
+            for (File file : files) {
+                TreeFileFilter filter = new TreeFileFilter(file, true, true);
+                if (filter.shouldFilter()) {
+                    continue;
+                }
+                if (file.isDirectory()) {
+                    directories.add(file);
+                } else {
+                    regularFiles.add(file);
+                }
+            }
+
+            // 分别对目录和文件进行排序
+            directories.sort((o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName()));
+            regularFiles.sort((o1, o2) -> {
                 String name1 = o1.getName();
                 String name2 = o2.getName();
                 boolean isClassFile1 = name1.endsWith(".class");
@@ -143,27 +158,27 @@ public class FileTree extends JTree {
                 if (!isClassFile1 && isClassFile2) {
                     return -1;
                 }
-                return name1.compareTo(name2);
+                return name1.compareToIgnoreCase(name2);
             });
 
-            for (File file : fileList) {
+            // 先添加目录
+            for (File dir : directories) {
+                FileTreeNode subFile = new FileTreeNode(dir);
+                DefaultMutableTreeNode subNode = new DefaultMutableTreeNode(subFile);
+                subNode.add(new DefaultMutableTreeNode("fake"));
+                node.add(subNode);
+            }
 
-                TreeFileFilter filter = new TreeFileFilter(file, true, true);
-                if (filter.shouldFilter()) {
-                    continue;
-                }
-
+            // 再添加文件
+            for (File file : regularFiles) {
                 FileTreeNode subFile = new FileTreeNode(file);
                 DefaultMutableTreeNode subNode = new DefaultMutableTreeNode(subFile);
-                if (file.isDirectory()) {
-                    subNode.add(new DefaultMutableTreeNode("fake"));
-                }
                 node.add(subNode);
+            }
 
-                try {
-                    addSelectionPath(new TreePath(node.getPath()));
-                } catch (Exception ignored) {
-                }
+            try {
+                addSelectionPath(new TreePath(node.getPath()));
+            } catch (Exception ignored) {
             }
         }
     }

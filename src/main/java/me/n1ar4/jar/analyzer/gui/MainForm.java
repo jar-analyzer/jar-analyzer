@@ -1489,7 +1489,17 @@ public class MainForm {
                     instance.sourceMethodText.getText(),
                     instance.sourceDescText.getText()
             );
-            dfsEngine.doAnalyze();
+            JDialog dialog = ProcessDialog.createProgressDialog(instance.getMasterPanel());
+            new Thread(() -> dialog.setVisible(true)).start();
+            new Thread(() -> {
+                dfsEngine.doAnalyze();
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                }
+                dialog.dispose();
+            }).start();
         });
     }
 

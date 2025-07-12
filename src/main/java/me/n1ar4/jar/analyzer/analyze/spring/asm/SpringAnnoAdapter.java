@@ -36,10 +36,12 @@ public class SpringAnnoAdapter extends AnnotationVisitor {
                 param.setParamIndex(this.index);
                 this.params.add(param);
             } else {
-                param = this.params.get(this.index);
-                param.setReqName(value.toString());
-                param.setParamIndex(this.index);
-                this.params.set(this.index, param);
+                if (this.index < this.params.size()) {
+                    param = this.params.get(this.index);
+                    param.setReqName(value.toString());
+                    param.setParamIndex(this.index);
+                    this.params.set(this.index, param);
+                }
             }
         }
         super.visit(name, value);

@@ -15,6 +15,7 @@ import me.n1ar4.jar.analyzer.engine.DecompileEngine;
 import me.n1ar4.jar.analyzer.engine.index.IndexPluginsSupport;
 import me.n1ar4.jar.analyzer.gui.LuceneSearchForm;
 import me.n1ar4.jar.analyzer.gui.MainForm;
+import me.n1ar4.jar.analyzer.utils.JarUtil;
 
 import javax.swing.*;
 import javax.swing.tree.TreePath;
@@ -38,11 +39,21 @@ public class DecompileHelper {
         String[] path = pathList.toArray(new String[0]);
         String filePath = String.join(File.separator, path);
 
+        Path thePath = Paths.get(filePath);
+
+        if (JarUtil.isConfigFile(filePath)) {
+            try {
+                MainForm.getCodeArea().setText(new String(Files.readAllBytes(thePath)));
+                MainForm.getCodeArea().setCaretPosition(0);
+            } catch (Exception ignored) {
+            }
+            return;
+        }
+
         if (!filePath.endsWith(".class")) {
             return;
         }
 
-        Path thePath = Paths.get(filePath);
         if (!Files.exists(thePath)) {
             JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                     "file not exist");

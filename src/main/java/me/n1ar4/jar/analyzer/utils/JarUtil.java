@@ -36,6 +36,24 @@ public class JarUtil {
     private static final String META_INF = "META-INF";
     private static final int MAX_PARENT_SEARCH = 20;
 
+    // 配置文件扩展名列表
+    private static final Set<String> CONFIG_EXTENSIONS = new HashSet<>(Arrays.asList(
+            ".yml", ".yaml", ".properties", ".xml", ".json", ".conf", ".config",
+            ".ini", ".toml", "web.xml", "application.properties", "application.yml",
+            "application-dev.properties", "application-prod.properties",
+            "application-dev.yml", "application-prod.yml"
+    ));
+
+    public static boolean isConfigFile(String fileName) {
+        fileName = fileName.toLowerCase();
+        for (String ext : CONFIG_EXTENSIONS) {
+            if (fileName.endsWith(ext.toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static List<ClassFileEntity> resolveNormalJarFile(String jarPath, Integer jarId) {
         try {
             Path tmpDir = Paths.get(Const.tempDir);
@@ -231,6 +249,23 @@ public class JarUtil {
                     // ============================================================
                     Path fullPath = tmpDir.resolve(jarEntryName);
                     if (!jarEntry.isDirectory()) {
+                        // 处理配置文件
+                        if (isConfigFile(jarEntryName)) {
+                            Path dirName = fullPath.getParent();
+                            if (!Files.exists(dirName)) {
+                                Files.createDirectories(dirName);
+                            }
+                            try {
+                                Files.createFile(fullPath);
+                            } catch (Exception ignored) {
+                            }
+                            OutputStream outputStream = Files.newOutputStream(fullPath);
+                            IOUtil.copy(jarInputStream, outputStream);
+                            outputStream.close();
+                            logger.info("保存配置文件: {}", jarEntryName);
+                            continue;
+                        }
+
                         if (!jarEntry.getName().endsWith(".class")) {
                             if (AnalyzeEnv.jarsInJar && jarEntry.getName().endsWith(".jar")) {
                                 LogUtil.info("analyze jars in jar");
@@ -309,6 +344,23 @@ public class JarUtil {
                 // ============================================================
                 Path fullPath = tmpDir.resolve(jarEntryName);
                 if (!jarEntry.isDirectory()) {
+                    // 处理配置文件
+                    if (isConfigFile(jarEntryName)) {
+                        Path dirName = fullPath.getParent();
+                        if (!Files.exists(dirName)) {
+                            Files.createDirectories(dirName);
+                        }
+                        try {
+                            Files.createFile(fullPath);
+                        } catch (Exception ignored) {
+                        }
+                        OutputStream outputStream = Files.newOutputStream(fullPath);
+                        IOUtil.copy(jarInputStream, outputStream);
+                        outputStream.close();
+                        logger.info("保存配置文件: {}", jarEntryName);
+                        continue;
+                    }
+
                     if (!jarEntry.getName().endsWith(".class")) {
                         continue;
                     }

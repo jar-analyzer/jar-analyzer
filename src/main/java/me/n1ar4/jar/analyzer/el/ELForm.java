@@ -41,6 +41,7 @@ public class ELForm {
     private JPanel templatesPanel;
     private JLabel builtinLabel;
     private JLabel msgLabel;
+    private JButton stopBtn;
     private static ELForm elInstance;
 
     public static void setVal(int val) {
@@ -143,7 +144,7 @@ public class ELForm {
 
             if (value instanceof MethodEL) {
                 // 启动表达式搜索
-                ELSearchEngine engine = new ELSearchEngine(value, msgLabel, searchButton, jTextArea);
+                ELSearchEngine engine = new ELSearchEngine(value, msgLabel, searchButton, stopBtn, jTextArea);
                 engine.run();
                 return;
             } else {
@@ -185,7 +186,7 @@ public class ELForm {
         elPanel = new JPanel();
         elPanel.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
         opPanel = new JPanel();
-        opPanel.setLayout(new GridLayoutManager(2, 2, new Insets(3, 3, 3, 3), -1, -1));
+        opPanel.setLayout(new GridLayoutManager(2, 3, new Insets(3, 3, 3, 3), -1, -1));
         elPanel.add(opPanel, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         checkButton = new JButton();
         checkButton.setText("验证表达式");
@@ -195,7 +196,7 @@ public class ELForm {
         opPanel.add(searchButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         templatesPanel = new JPanel();
         templatesPanel.setLayout(new GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
-        opPanel.add(templatesPanel, new GridConstraints(1, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        opPanel.add(templatesPanel, new GridConstraints(1, 0, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         tempCombo = new JComboBox();
         templatesPanel.add(tempCombo, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         builtinLabel = new JLabel();
@@ -204,6 +205,9 @@ public class ELForm {
         msgLabel = new JLabel();
         msgLabel.setText("no message");
         templatesPanel.add(msgLabel, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        stopBtn = new JButton();
+        stopBtn.setText("强行停止");
+        opPanel.add(stopBtn, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         editScroll = new JScrollPane();
         elPanel.add(editScroll, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(500, 350), null, null, 0, false));
         elCodePanel = new JPanel();

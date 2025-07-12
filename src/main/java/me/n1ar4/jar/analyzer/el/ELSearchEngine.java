@@ -30,6 +30,7 @@ public class ELSearchEngine {
     private final Object value;
     private final JLabel msgLabel;
     private final JButton searchButton;
+    private final JButton stopBtn;
     private final JTextArea jTextArea;
 
     private final AtomicLong processedMethods = new AtomicLong(0);
@@ -37,23 +38,41 @@ public class ELSearchEngine {
     private long startTime;
     private volatile long totalMethods;
 
+    // 添加停止标志
+    private volatile boolean shouldStop = false;
 
-    public ELSearchEngine(Object value, JLabel msgLabel, JButton searchButton, JTextArea jTextArea) {
+    public ELSearchEngine(
+            Object value,
+            JLabel msgLabel,
+            JButton searchButton,
+            JButton stopBtn,
+            JTextArea jTextArea) {
         this.value = value;
         this.msgLabel = msgLabel;
         this.searchButton = searchButton;
+        this.stopBtn = stopBtn;
         this.jTextArea = jTextArea;
+
+        // 添加停止按钮的事件处理
+        this.stopBtn.addActionListener(e -> {
+            shouldStop = true;
+            stopBtn.setEnabled(false);
+            msgLabel.setText("正在停止搜索，请等待...");
+            logger.info("用户请求停止搜索");
+        });
     }
 
     public void run() {
+        // 重置停止标志
+        shouldStop = false;
+        stopBtn.setEnabled(true);
+        searchButton.setEnabled(false);
+
         int threadNum = Runtime.getRuntime().availableProcessors() * 3;
         ExecutorService executor = Executors.newFixedThreadPool(threadNum);
         ConcurrentLinkedQueue<ResObj> searchList = new ConcurrentLinkedQueue<>();
 
-        // 记录开始时间
         startTime = System.currentTimeMillis();
-
-        // 使用 FUTURE 模式优化任务收集
         List<Future<?>> futures = new ArrayList<>();
 
         try {
@@ -64,16 +83,14 @@ public class ELSearchEngine {
 
             AtomicInteger taskId = new AtomicInteger(0);
 
-            // 创建进度更新任务
             ScheduledExecutorService progressExecutor = Executors.newSingleThreadScheduledExecutor();
             ScheduledFuture<?> progressTask = progressExecutor.scheduleAtFixedRate(
                     this::updateProgress, 1, 1, TimeUnit.SECONDS);
 
-            for (int offset = 0; offset < totalMethods; ) {
+            for (int offset = 0; offset < totalMethods && !shouldStop; ) {
                 List<MethodReference> mrs = MainForm.getEngine().getAllMethodRef(offset);
                 offset += mrs.size();
 
-                // 创建不可变任务副本
                 final List<MethodReference> taskMrs = new ArrayList<>(mrs);
                 Future<?> future = executor.submit(() -> {
                     try {
@@ -81,14 +98,16 @@ public class ELSearchEngine {
                         logger.debug("task - {} start, processing {} methods", id, taskMrs.size());
 
                         for (MethodReference mr : taskMrs) {
+                            if (shouldStop) {
+                                logger.info("任务被用户手动停止");
+                                break;
+                            }
+
                             try {
                                 ClassReference.Handle ch = mr.getClassReference();
                                 MethodELProcessor processor = new MethodELProcessor(ch, mr, searchList, condition);
                                 processor.process();
-
-                                // 精确统计已处理的方法数
                                 processedMethods.incrementAndGet();
-
                             } catch (Exception ex) {
                                 logger.error("处理方法引用时出错: {}", mr, ex);
                             }
@@ -96,7 +115,6 @@ public class ELSearchEngine {
 
                         int completed = completedTasks.incrementAndGet();
                         logger.info("task - {} finish, completed tasks: {}", id, completed);
-
                     } catch (Exception ex) {
                         logger.error("任务执行异常", ex);
                     }
@@ -109,32 +127,32 @@ public class ELSearchEngine {
             msgLabel.setText("所有任务已加入线程池，请等待执行结束");
 
             try {
-                // 目前允许执行 1 小时，考虑到大型项目
-                boolean allFinish = executor.awaitTermination(1, TimeUnit.HOURS);
+                while (!executor.awaitTermination(1, TimeUnit.SECONDS)) {
+                    if (shouldStop) {
+                        executor.shutdownNow();
+                        break;
+                    }
+                }
 
-                // 停止进度更新任务
                 progressTask.cancel(false);
                 progressExecutor.shutdown();
 
-                if (!allFinish) {
-                    logger.warn("执行超时，强制关闭线程池");
-                    executor.shutdownNow();
-
-                    if (!executor.awaitTermination(30, TimeUnit.SECONDS)) {
-                        logger.error("线程池无法正常关闭");
-                    }
-                } else {
-                    logger.info("所有任务执行完成");
+                if (shouldStop) {
+                    msgLabel.setText("搜索已被用户停止");
+                    logger.info("搜索被用户手动停止");
                 }
 
-                // 检查任务执行结果
                 int failedTasks = 0;
                 for (Future<?> future : futures) {
                     try {
-                        future.get();
+                        if (!future.isCancelled()) {
+                            future.get(1, TimeUnit.SECONDS);
+                        }
                     } catch (ExecutionException ex) {
                         failedTasks++;
                         logger.error("任务执行失败", ex.getCause());
+                    } catch (TimeoutException ex) {
+                        logger.debug("跳过未完成的任务");
                     }
                 }
 
@@ -152,18 +170,17 @@ public class ELSearchEngine {
             if (!executor.isTerminated()) {
                 executor.shutdownNow();
             }
+            searchButton.setEnabled(true);
+            stopBtn.setEnabled(false);
         }
 
-        // 最终进度更新
         updateFinalProgress();
 
         if (searchList.isEmpty()) {
             ELForm.setVal(100);
-            searchButton.setEnabled(true);
-            JOptionPane.showMessageDialog(jTextArea, "没有找到结果");
+            JOptionPane.showMessageDialog(jTextArea, shouldStop ? "搜索已停止" : "没有找到结果");
             return;
-        } else {
-            searchButton.setEnabled(true);
+        } else if (!shouldStop) {
             JOptionPane.showMessageDialog(jTextArea, "搜索成功：找到符合表达式的方法");
         }
 
@@ -176,7 +193,6 @@ public class ELSearchEngine {
         new Thread(() -> CoreHelper.refreshMethods(resObjList)).start();
         ELForm.setVal(100);
     }
-
 
     private void updateProgress() {
         long processed = processedMethods.get();
@@ -211,8 +227,11 @@ public class ELSearchEngine {
     private void updateFinalProgress() {
         long totalTime = System.currentTimeMillis() - startTime;
         String msg = String.format(
-                "处理完成 %d/%d 方法 - 100%% | 总用时: %s",
-                processedMethods.get(), totalMethods, formatTime(totalTime)
+                "%s %d/%d 方法 - %.2f%% | 总用时: %s",
+                shouldStop ? "已停止处理" : "处理完成",
+                processedMethods.get(), totalMethods,
+                ((double) processedMethods.get() / totalMethods) * 100,
+                formatTime(totalTime)
         );
 
         msgLabel.setText(msg);

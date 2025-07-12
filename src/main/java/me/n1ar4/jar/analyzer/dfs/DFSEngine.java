@@ -45,7 +45,11 @@ public class DFSEngine {
         this.resultArea.append(msg + "\n");
     }
 
-    public DFSEngine(JTextArea resultArea, boolean fromSink, boolean searchNullSource, int depth) {
+    public DFSEngine(
+            JTextArea resultArea,
+            boolean fromSink,
+            boolean searchNullSource,
+            int depth) {
         this.engine = MainForm.getEngine();
         this.resultArea = resultArea;
         this.fromSink = fromSink;
@@ -53,13 +57,19 @@ public class DFSEngine {
         this.depth = depth;
     }
 
-    public void setSink(String sinkClass, String sinkMethod, String sinkDesc) {
+    public void setSink(
+            String sinkClass,
+            String sinkMethod,
+            String sinkDesc) {
         this.sinkClass = sinkClass;
         this.sinkMethod = sinkMethod;
         this.sinkDesc = sinkDesc;
     }
 
-    public void setSource(String sourceClass, String sourceMethod, String sourceDesc) {
+    public void setSource(
+            String sourceClass,
+            String sourceMethod,
+            String sourceDesc) {
         this.sourceClass = sourceClass;
         this.sourceMethod = sourceMethod;
         this.sourceDesc = sourceDesc;
@@ -112,11 +122,7 @@ public class DFSEngine {
             } else {
                 update("从 SINK 开始反向分析");
             }
-            MethodResult startMethod = new MethodResult();
-            startMethod.setClassName(sinkClass);
-            startMethod.setMethodName(sinkMethod);
-            startMethod.setMethodDesc(sinkDesc);
-
+            MethodResult startMethod = new MethodResult(sinkClass, sinkMethod, sinkDesc);
             List<MethodResult> path = new ArrayList<>();
             path.add(startMethod);
             Set<String> visited = new HashSet<>();
@@ -128,11 +134,7 @@ public class DFSEngine {
             }
         } else {
             update("从 SOURCE 开始正向分析");
-            MethodResult startMethod = new MethodResult();
-            startMethod.setClassName(sourceClass);
-            startMethod.setMethodName(sourceMethod);
-            startMethod.setMethodDesc(sourceDesc);
-
+            MethodResult startMethod = new MethodResult(sourceClass, sourceMethod, sourceDesc);
             List<MethodResult> path = new ArrayList<>();
             path.add(startMethod);
             Set<String> visited = new HashSet<>();
@@ -148,7 +150,11 @@ public class DFSEngine {
         }
     }
 
-    private void dfsFromSink(MethodResult currentMethod, List<MethodResult> path, Set<String> visited, int currentDepth) {
+    private void dfsFromSink(
+            MethodResult currentMethod,
+            List<MethodResult> path,
+            Set<String> visited,
+            int currentDepth) {
         if (currentDepth >= depth) {
             return;
         }
@@ -175,13 +181,17 @@ public class DFSEngine {
         for (MethodResult caller : callerMethods) {
             path.add(caller);
             dfsFromSink(caller, path, visited, currentDepth + 1);
-            path.remove(path.size() - 1); // 回溯
+            path.remove(path.size() - 1);
         }
 
         visited.remove(methodKey);
     }
 
-    private void dfsFromSinkFindAllSources(MethodResult currentMethod, List<MethodResult> path, Set<String> visited, int currentDepth) {
+    private void dfsFromSinkFindAllSources(
+            MethodResult currentMethod,
+            List<MethodResult> path,
+            Set<String> visited,
+            int currentDepth) {
         if (currentDepth >= depth) {
             return;
         }
@@ -203,18 +213,21 @@ public class DFSEngine {
             chainCount++;
             outputSourceChain(path, currentMethod);
         } else {
-            // 继续向上搜索
             for (MethodResult caller : callerMethods) {
                 path.add(caller);
                 dfsFromSinkFindAllSources(caller, path, visited, currentDepth + 1);
-                path.remove(path.size() - 1); // 回溯
+                path.remove(path.size() - 1);
             }
         }
 
         visited.remove(methodKey);
     }
 
-    private void dfsFromSource(MethodResult currentMethod, List<MethodResult> path, Set<String> visited, int currentDepth) {
+    private void dfsFromSource(
+            MethodResult currentMethod,
+            List<MethodResult> path,
+            Set<String> visited,
+            int currentDepth) {
         if (currentDepth >= depth) {
             return;
         }
@@ -241,7 +254,7 @@ public class DFSEngine {
         for (MethodResult callee : calleeMethods) {
             path.add(callee);
             dfsFromSource(callee, path, visited, currentDepth + 1);
-            path.remove(path.size() - 1); // 回溯
+            path.remove(path.size() - 1);
         }
 
         visited.remove(methodKey);

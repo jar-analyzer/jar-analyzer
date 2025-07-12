@@ -46,6 +46,15 @@ public class MethodResult {
     @JSONField(serialize = false)
     private String strValue;
 
+    public MethodResult() {
+    }
+
+    public MethodResult(String className, String methodName, String methodDesc) {
+        this.className = className;
+        this.methodName = methodName;
+        this.methodDesc = methodDesc;
+    }
+
     public String getPath() {
         this.path = this.path.trim();
         if (this.path.isEmpty()) {

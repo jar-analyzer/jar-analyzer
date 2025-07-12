@@ -43,6 +43,7 @@ public class DFSEngine {
 
     private void update(String msg) {
         this.resultArea.append(msg + "\n");
+        this.resultArea.setCaretPosition(this.resultArea.getDocument().getLength());
     }
 
     public DFSEngine(

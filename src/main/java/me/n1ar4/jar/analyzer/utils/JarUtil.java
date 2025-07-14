@@ -226,10 +226,6 @@ public class JarUtil {
                 }
             } else if (jarPathStr.toLowerCase(Locale.ROOT).endsWith(".jar") ||
                     jarPathStr.toLowerCase(Locale.ROOT).endsWith(".war")) {
-//                InputStream is = Files.newInputStream(jarPath);
-//                JarInputStream jarInputStream = new JarInputStream(is);
-//                JarEntry jarEntry;
-//                while ((jarEntry = jarInputStream.getNextJarEntry()) != null) {
                 ZipFile jarFile = new ZipFile(jarPath);
                 Enumeration<? extends ZipArchiveEntry> entries = jarFile.getEntries();
                 while (entries.hasMoreElements()) {

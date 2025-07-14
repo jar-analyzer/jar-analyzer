@@ -18,6 +18,8 @@ import me.n1ar4.jar.analyzer.gui.util.LogUtil;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
+import org.apache.commons.compress.archivers.zip.ZipFile;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -224,10 +226,14 @@ public class JarUtil {
                 }
             } else if (jarPathStr.toLowerCase(Locale.ROOT).endsWith(".jar") ||
                     jarPathStr.toLowerCase(Locale.ROOT).endsWith(".war")) {
-                InputStream is = Files.newInputStream(jarPath);
-                JarInputStream jarInputStream = new JarInputStream(is);
-                JarEntry jarEntry;
-                while ((jarEntry = jarInputStream.getNextJarEntry()) != null) {
+//                InputStream is = Files.newInputStream(jarPath);
+//                JarInputStream jarInputStream = new JarInputStream(is);
+//                JarEntry jarEntry;
+//                while ((jarEntry = jarInputStream.getNextJarEntry()) != null) {
+                ZipFile jarFile = new ZipFile(jarPath);
+                Enumeration<? extends ZipArchiveEntry> entries = jarFile.getEntries();
+                while (entries.hasMoreElements()) {
+                    ZipArchiveEntry jarEntry = entries.nextElement();
                     // =============== 2024/04/26 修复 ZIP SLIP 漏洞 ===============
                     String jarEntryName = jarEntry.getName();
                     // 第一次检查是否包含 ../ ..\\ 绕过
@@ -260,7 +266,9 @@ public class JarUtil {
                             } catch (Exception ignored) {
                             }
                             OutputStream outputStream = Files.newOutputStream(fullPath);
-                            IOUtil.copy(jarInputStream, outputStream);
+                            InputStream temp = jarFile.getInputStream(jarEntry);
+                            IOUtil.copy(temp, outputStream);
+                            temp.close();
                             outputStream.close();
                             logger.info("保存配置文件: {}", jarEntryName);
                             continue;
@@ -278,7 +286,9 @@ public class JarUtil {
                                 } catch (Exception ignored) {
                                 }
                                 OutputStream outputStream = Files.newOutputStream(fullPath);
-                                IOUtil.copy(jarInputStream, outputStream);
+                                InputStream temp = jarFile.getInputStream(jarEntry);
+                                IOUtil.copy(temp, outputStream);
+                                temp.close();
                                 doInternal(jarId, fullPath, tmpDir, text, whiteText);
                                 outputStream.close();
                             }
@@ -294,7 +304,9 @@ public class JarUtil {
                             Files.createDirectories(dirName);
                         }
                         OutputStream outputStream = Files.newOutputStream(fullPath);
-                        IOUtil.copy(jarInputStream, outputStream);
+                        InputStream temp = jarFile.getInputStream(jarEntry);
+                        IOUtil.copy(temp, outputStream);
+                        temp.close();
                         outputStream.close();
                         ClassFileEntity classFile = new ClassFileEntity(jarEntry.getName(), fullPath, jarId);
                         String splitStr;
@@ -309,20 +321,20 @@ public class JarUtil {
                         classFileSet.add(classFile);
                     }
                 }
-                is.close();
-                jarInputStream.close();
+                jarFile.close();
             }
         } catch (Exception e) {
+            e.printStackTrace();
             logger.error("error: {}", e.toString());
         }
     }
 
     private static void doInternal(Integer jarId, Path jarPath, Path tmpDir, String text, String whiteText) {
         try {
-            InputStream is = Files.newInputStream(jarPath);
-            JarInputStream jarInputStream = new JarInputStream(is);
-            JarEntry jarEntry;
-            while ((jarEntry = jarInputStream.getNextJarEntry()) != null) {
+            ZipFile jarFile = new ZipFile(jarPath);
+            Enumeration<? extends ZipArchiveEntry> entries = jarFile.getEntries();
+            while (entries.hasMoreElements()) {
+                ZipArchiveEntry jarEntry = entries.nextElement();
                 // =============== 2024/04/26 修复 ZIP SLIP 漏洞 ===============
                 String jarEntryName = jarEntry.getName();
                 // 第一次检查是否包含 ../ ..\\ 绕过
@@ -355,7 +367,9 @@ public class JarUtil {
                         } catch (Exception ignored) {
                         }
                         OutputStream outputStream = Files.newOutputStream(fullPath);
-                        IOUtil.copy(jarInputStream, outputStream);
+                        InputStream temp = jarFile.getInputStream(jarEntry);
+                        IOUtil.copy(temp, outputStream);
+                        temp.close();
                         outputStream.close();
                         logger.info("保存配置文件: {}", jarEntryName);
                         continue;
@@ -374,7 +388,9 @@ public class JarUtil {
                         Files.createDirectories(dirName);
                     }
                     OutputStream outputStream = Files.newOutputStream(fullPath);
-                    IOUtil.copy(jarInputStream, outputStream);
+                    InputStream temp = jarFile.getInputStream(jarEntry);
+                    IOUtil.copy(temp, outputStream);
+                    temp.close();
                     outputStream.close();
                     ClassFileEntity classFile = new ClassFileEntity(jarEntry.getName(), fullPath, jarId);
                     String splitStr;
@@ -389,9 +405,9 @@ public class JarUtil {
                     classFileSet.add(classFile);
                 }
             }
-            is.close();
-            jarInputStream.close();
+            jarFile.close();
         } catch (Exception e) {
+            e.printStackTrace();
             logger.error("error: {}", e.toString());
         }
     }

@@ -78,6 +78,7 @@
         <snakeyaml.version>2.4</snakeyaml.version>
         <csv.version>1.14.0</csv.version>
         <junit.version>5.13.3</junit.version>
+        <compress.version>1.27.1</compress.version>
         <!-- Maven Build Version -->
         <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-resources-plugin -->
         <maven.resources.version>3.3.1</maven.resources.version>
@@ -216,6 +217,11 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-csv</artifactId>
             <version>${csv.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-compress</artifactId>
+            <version>${compress.version}</version>
         </dependency>
         <dependency>
             <groupId>com.intellij</groupId>

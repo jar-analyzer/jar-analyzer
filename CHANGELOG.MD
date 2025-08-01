@@ -4,7 +4,7 @@
 
 更新日志：
 
-- [重要] 使用 `commons` 库修复某些 `Jar` 无法解压的问题 @4ra1n @sensensen404
+- [重要] 使用 `commons` 库修复某些 `jar` 无法解压的问题 @4ra1n @sensensen404
 
 感谢以下用户的贡献:
 

@@ -13,6 +13,7 @@ package me.n1ar4.jar.analyzer.gui;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
+import me.n1ar4.jar.analyzer.chains.ChainsBuilder;
 import me.n1ar4.jar.analyzer.config.ConfigEngine;
 import me.n1ar4.jar.analyzer.config.ConfigFile;
 import me.n1ar4.jar.analyzer.core.StateLinkedList;
@@ -342,6 +343,7 @@ public class MainForm {
     private JRadioButton showMediumRadio;
     private JRadioButton showHighRadio;
     private JRadioButton showAllRadio;
+    private JComboBox<String> sinkBox;
     private static DefaultListModel<MethodResult> favData;
 
     public JScrollPane getJavaVulSearchPanel() {
@@ -1481,6 +1483,12 @@ public class MainForm {
 
         instance.clearBtn.addActionListener(e -> instance.chainsArea.setText(null));
 
+        ChainsBuilder.buildBox(
+                instance.sinkBox,
+                instance.sinkClassText,
+                instance.sinkMethodText,
+                instance.sinkDescText);
+
         instance.startChainsBtn.addActionListener(e -> {
             DFSEngine dfsEngine = new DFSEngine(
                     instance.chainsArea,
@@ -2228,27 +2236,29 @@ public class MainForm {
         chainsPanel.setLayout(new GridLayoutManager(4, 2, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPanel.addTab("chains", chainsPanel);
         chainsSinkPanel = new JPanel();
-        chainsSinkPanel.setLayout(new GridLayoutManager(4, 2, new Insets(5, 5, 5, 5), -1, -1));
+        chainsSinkPanel.setLayout(new GridLayoutManager(5, 2, new Insets(5, 5, 5, 5), -1, -1));
         chainsPanel.add(chainsSinkPanel, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         chainsSinkPanel.setBorder(BorderFactory.createTitledBorder(null, "Sink Config", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         sinkClassLabel = new JLabel();
         sinkClassLabel.setText("Sink Class");
-        chainsSinkPanel.add(sinkClassLabel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        chainsSinkPanel.add(sinkClassLabel, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         sinkClassText = new JTextField();
-        chainsSinkPanel.add(sinkClassText, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        chainsSinkPanel.add(sinkClassText, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         sinkMethodLabel = new JLabel();
         sinkMethodLabel.setText("Sink Method");
-        chainsSinkPanel.add(sinkMethodLabel, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        chainsSinkPanel.add(sinkMethodLabel, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         sinkDescLabel = new JLabel();
         sinkDescLabel.setText("Sink Desc");
-        chainsSinkPanel.add(sinkDescLabel, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        chainsSinkPanel.add(sinkDescLabel, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         sinkMethodText = new JTextField();
-        chainsSinkPanel.add(sinkMethodText, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        chainsSinkPanel.add(sinkMethodText, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         sinkDescText = new JTextField();
-        chainsSinkPanel.add(sinkDescText, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        chainsSinkPanel.add(sinkDescText, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         sinkTipLabel = new JLabel();
         sinkTipLabel.setText("从 note -> favorites 右键 send to sink");
         chainsSinkPanel.add(sinkTipLabel, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        sinkBox = new JComboBox();
+        chainsSinkPanel.add(sinkBox, new GridConstraints(1, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         chainsSourcePanel = new JPanel();
         chainsSourcePanel.setLayout(new GridLayoutManager(5, 2, new Insets(5, 5, 5, 5), -1, -1));
         chainsPanel.add(chainsSourcePanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));

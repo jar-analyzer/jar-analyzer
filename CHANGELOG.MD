@@ -4,11 +4,12 @@
 
 更新日志：
 
-- todo
+- [重要] 使用 `commons` 库修复某些 `Jar` 无法解压的问题 @4ra1n @sensensen404
 
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
+- phil (https://github.com/sensensen404)
 
 所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
 

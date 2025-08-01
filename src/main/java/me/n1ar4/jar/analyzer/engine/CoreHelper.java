@@ -330,6 +330,10 @@ public class CoreHelper {
         }
 
         if (methodsList.isEmpty() || methodsList.size() == 0) {
+            if (dialog != null) {
+                dialog.dispose();
+                dialog.setVisible(false);
+            }
             JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                     "result is null");
             return;
@@ -500,6 +504,10 @@ public class CoreHelper {
         }
 
         if (methodsList.isEmpty() || methodsList.size() == 0) {
+            if (dialog != null) {
+                dialog.dispose();
+                dialog.setVisible(false);
+            }
             JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                     "result is null");
             return;
@@ -588,6 +596,10 @@ public class CoreHelper {
         }
 
         if (methodsList.isEmpty() || methodsList.size() == 0) {
+            if (dialog != null) {
+                dialog.dispose();
+                dialog.setVisible(false);
+            }
             JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                     "result is null");
             return;
@@ -676,6 +688,10 @@ public class CoreHelper {
         }
 
         if (methodsList.isEmpty() || methodsList.size() == 0) {
+            if (dialog != null) {
+                dialog.dispose();
+                dialog.setVisible(false);
+            }
             JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                     "result is null");
             return;
@@ -772,6 +788,10 @@ public class CoreHelper {
         }
 
         if (methodsList.isEmpty() || methodsList.size() == 0) {
+            if (dialog != null) {
+                dialog.dispose();
+                dialog.setVisible(false);
+            }
             JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                     "result is null");
             return;
@@ -852,6 +872,10 @@ public class CoreHelper {
         }
 
         if (methodsList.isEmpty() || methodsList.size() == 0) {
+            if (dialog != null) {
+                dialog.dispose();
+                dialog.setVisible(false);
+            }
             JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                     "result is null");
             return;

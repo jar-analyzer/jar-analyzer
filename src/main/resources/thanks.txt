@@ -1,7 +1,7 @@
- -> [34m4ra1n[0m[33m (https://github.com/4ra1n) [0m[31mCOMMITS: 973[0m
+ -> [34m4ra1n[0m[33m (https://github.com/4ra1n) [0m[31mCOMMITS: 996[0m
  -> [34mHoney Baby[0m[33m (https://github.com/Gosiu) [0m[31mCOMMITS: 57[0m
  -> [34mfantasy[0m[33m (https://github.com/ly-test-fuzz) [0m[31mCOMMITS: 15[0m
- -> [34mphil[0m[33m (https://github.com/sensensen404) [0m[31mCOMMITS: 6[0m
+ -> [34mphil[0m[33m (https://github.com/sensensen404) [0m[31mCOMMITS: 8[0m
  -> [34mwhw1sfb[0m[33m (https://github.com/whwlsfb) [0m[31mCOMMITS: 2[0m
  -> [34mMyDynasty[0m[33m (https://github.com/MyDynasty) [0m[31mCOMMITS: 1[0m
  -> [34mTianMing2018[0m[33m (https://github.com/TianMing2018) [0m[31mCOMMITS: 1[0m

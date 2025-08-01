@@ -1,5 +1,36 @@
 # CHANGELOG
 
+## 5.5
+
+更新日志：
+
+- [重要] 使用 `commons` 库修复某些 `jar` 无法解压的问题 @4ra1n @sensensen404
+- [功能] 漏洞链搜索内置常见的 `sink` 下拉列表选择 @4ra1n
+- [功能] 一键搜索 `Unzip` 支持 `commons` 和 `zip4j` 库 @4ra1n
+- [功能] 一件搜索新增 `XXE` 支持多种常见的漏洞方法 @4ra1n
+- [优化] 参数支持 `"-fz"` 设置启动字体大小不再弹框 @4ra1n
+- [BUG] 搜索结果是 `null` 时进度框不会退出 @4ra1n
+- [优化] 字符串搜索结果为空时应该提示搜索逻辑指导用户 @4ra1n
+- [优化] 避免解压和构建数据库的过程中创建空目录 @4ra1n
+- [其他] 升级内置 `JRE` 到 `8u462` 和 `21.0.8` @4ra1n
+- [其他] 升级所有依赖到最新 @4ra1n
+
+感谢以下用户的贡献:
+
+- 4ra1n (https://github.com/4ra1n)
+- phil (https://github.com/sensensen404)
+
+所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
+
+- `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (**完整版本**)
+- `windows-21` 版内置开启 `ZGC` 的 `JRE 21` 环境（激进用户尝试使用）
+- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
+- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
+
+一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
+
+如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
+
 ## 5.4
 
 更新日志：

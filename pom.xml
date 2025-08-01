@@ -56,7 +56,7 @@
     <properties>
         <!-- Dependencies Version -->
         <asm.version>9.8</asm.version>
-        <flatlaf.version>3.6</flatlaf.version>
+        <flatlaf.version>3.6.1</flatlaf.version>
         <idea.forms.version>7.0.3</idea.forms.version>
         <syntax.version>3.6.0</syntax.version>
         <slf4j.api.version>2.0.17</slf4j.api.version>
@@ -68,7 +68,7 @@
         <spring.version>5.3.39</spring.version>
         <okhttp3.version>4.12.0</okhttp3.version>
         <nano.version>2.3.1</nano.version>
-        <fastjson.version>2.0.57</fastjson.version>
+        <fastjson.version>2.0.58</fastjson.version>
         <hutool.version>5.8.39</hutool.version>
         <jfreechart.version>1.5.6</jfreechart.version>
         <oshi.version>6.8.2</oshi.version>
@@ -76,9 +76,9 @@
         <bcel.version>6.10.0</bcel.version>
         <java.parser.version>3.27.0</java.parser.version>
         <snakeyaml.version>2.4</snakeyaml.version>
-        <csv.version>1.14.0</csv.version>
-        <junit.version>5.13.3</junit.version>
-        <compress.version>1.27.1</compress.version>
+        <csv.version>1.14.1</csv.version>
+        <junit.version>5.13.4</junit.version>
+        <compress.version>1.28.0</compress.version>
         <!-- Maven Build Version -->
         <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-resources-plugin -->
         <maven.resources.version>3.3.1</maven.resources.version>

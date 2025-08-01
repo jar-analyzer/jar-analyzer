@@ -56,6 +56,10 @@ Jar Analyzer
 
 ![](img/0076.png)
 
+自从 `5.5` 版本后默认了常见的漏洞 `sink` 点用于分析漏洞链
+
+![](img/0078.png)
+
 通过 `agent` 分析 `tomcat`
 
 ![](img/0065.png)

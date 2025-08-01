@@ -28,6 +28,19 @@ import java.util.stream.Collectors;
 
 @SuppressWarnings("all")
 public class CoreHelper {
+    private static final String STRING_SEARCH_TIPS = "<html>" +
+            "<p style='color: #FF4444; font-weight: bold;'>result is null</p>" +
+            "<p>注意：字符串搜索：搜索字符串类型的常量</p>" +
+            "<p style='color: #666666;'>字符串搜索不是类似 IDEA 中的字符串代码搜索</p>" +
+            "<p style='margin-top: 10px;'>" +
+            "例如：" +
+            "<span style='font-family: monospace; background-color: #F0F0F0; padding: 2px 4px;'>" +
+            "String prefix = \"rmi://\";</span></p>" +
+            "<p>你可以搜索 <span style='color: #2196F3; font-weight: bold;'>" +
+            "rmi" +
+            "</span> 字符串定位到这个方法</p>" +
+            "</html>";
+
     public static void refreshAllMethods(String className) {
         if (MainForm.getInstance().getEngine() == null) {
             JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
@@ -600,8 +613,8 @@ public class CoreHelper {
                 dialog.dispose();
                 dialog.setVisible(false);
             }
-            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
-                    "result is null");
+            // 2025/08/01 字符串搜不到的时候应该添加说明
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(), STRING_SEARCH_TIPS);
             return;
         }
 
@@ -692,8 +705,8 @@ public class CoreHelper {
                 dialog.dispose();
                 dialog.setVisible(false);
             }
-            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
-                    "result is null");
+            // 2025/08/01 字符串搜不到的时候应该添加说明
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(), STRING_SEARCH_TIPS);
             return;
         }
 

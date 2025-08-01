@@ -30,9 +30,9 @@ import javax.swing.*;
 public class Application {
     private static final Logger logger = LogManager.getLogger();
     @SuppressWarnings("all")
-    private static final BuildCmd buildCmd = new BuildCmd();
+    public static final BuildCmd buildCmd = new BuildCmd();
     @SuppressWarnings("all")
-    private static final StartCmd startCmd = new StartCmd();
+    public static final StartCmd startCmd = new StartCmd();
 
     /**
      * Main Method
@@ -159,7 +159,6 @@ public class Application {
                 StartUpMessage.run();
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
             logger.error("start jar analyzer error: {}", ex.toString());
         }
     }

@@ -20,6 +20,9 @@ public class StartCmd {
     @Parameter(names = {"-p", "--port"}, description = "server port")
     public int port;
 
+    @Parameter(names = {"-fz", "--font-size"}, description = "font size")
+    public int fontSize;
+
     @Parameter(names = {"-t", "--theme"},
             description = "use theme name (default|metal|win|win-classic|motif|mac|gtk|cross|aqua|nimbus)")
     public String theme;
@@ -43,6 +46,10 @@ public class StartCmd {
 
     public void setPort(int port) {
         this.port = port;
+    }
+
+    public int getFontSize() {
+        return fontSize;
     }
 
     public String getTheme() {

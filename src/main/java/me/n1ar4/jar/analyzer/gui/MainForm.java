@@ -43,6 +43,7 @@ import me.n1ar4.jar.analyzer.gui.vul.VulnerabilityBuilder;
 import me.n1ar4.jar.analyzer.leak.LeakAction;
 import me.n1ar4.jar.analyzer.plugins.jd.JDGUIStarter;
 import me.n1ar4.jar.analyzer.sca.SCAAction;
+import me.n1ar4.jar.analyzer.starter.Application;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.utils.DirUtil;
 import me.n1ar4.log.LogManager;
@@ -860,22 +861,29 @@ public class MainForm {
     public static float FONT_SIZE = 16f;
 
     public MainForm() {
+        // 2025/08/01 FONT SIZE 允许通过 CMD 设置
+        int inputFontSize = Application.startCmd.getFontSize();
+        String input;
         float font;
-        // 2025/06/14 修复有时候找不到 DIALOG 的问题
-        JDialog topDialog = new JDialog();
-        topDialog.setAlwaysOnTop(true);
-        topDialog.setModal(true);
-        topDialog.setLocationRelativeTo(null);
-        String input = (String) JOptionPane.showInputDialog(
-                topDialog,
-                "请输入字体大小 (10-50)：",
-                "设置字体大小",
-                JOptionPane.PLAIN_MESSAGE,
-                IconManager.ausIcon,
-                null,
-                "16"
-        );
-        topDialog.dispose();
+        if (inputFontSize < 1) {
+            // 2025/06/14 修复有时候找不到 DIALOG 的问题
+            JDialog topDialog = new JDialog();
+            topDialog.setAlwaysOnTop(true);
+            topDialog.setModal(true);
+            topDialog.setLocationRelativeTo(null);
+            input = (String) JOptionPane.showInputDialog(
+                    topDialog,
+                    "请输入字体大小 (10-50)：",
+                    "设置字体大小",
+                    JOptionPane.PLAIN_MESSAGE,
+                    IconManager.ausIcon,
+                    null,
+                    "16"
+            );
+            topDialog.dispose();
+        } else {
+            input = String.valueOf(inputFontSize);
+        }
         if (input != null) {
             try {
                 int size = Integer.parseInt(input.trim());

@@ -12,6 +12,7 @@ package me.n1ar4.jar.analyzer.dfs;
 
 import me.n1ar4.jar.analyzer.engine.CoreEngine;
 import me.n1ar4.jar.analyzer.entity.MethodResult;
+import me.n1ar4.jar.analyzer.gui.ChainsResultPanel;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
@@ -33,21 +34,50 @@ public class DFSEngine {
     private String sourceDesc;
 
     private final CoreEngine engine;
-    private final JTextArea resultArea;
+    private final Object resultArea; // 可以是JTextArea或ChainsResultPanel
 
     private final boolean fromSink;
     private final boolean searchNullSource;
     private final int depth;
 
     private int chainCount = 0;
+    private int sourceCount = 0;
 
+    /**
+     * 更新结果显示区域
+     */
     private void update(String msg) {
-        this.resultArea.append(msg + "\n");
-        this.resultArea.setCaretPosition(this.resultArea.getDocument().getLength());
+        if (resultArea instanceof JTextArea) {
+            JTextArea textArea = (JTextArea) resultArea;
+            textArea.append(msg + "\n");
+            textArea.setCaretPosition(textArea.getDocument().getLength());
+        } else if (resultArea instanceof ChainsResultPanel) {
+            ChainsResultPanel panel = (ChainsResultPanel) resultArea;
+            panel.append(msg);
+        }
+    }
+
+    /**
+     * 添加调用链到结果面板
+     */
+    private void addChain(String chainId, String title, List<String> methods) {
+        if (resultArea instanceof ChainsResultPanel) {
+            ChainsResultPanel panel = (ChainsResultPanel) resultArea;
+            panel.addChain(chainId, title, methods);
+        } else {
+            // 对于JTextArea，保持原有的输出方式
+            update(title);
+            for (int i = 0; i < methods.size(); i++) {
+                String method = methods.get(i);
+                String arrow = (i == 0) ? "" : " -> ";
+                update(arrow + method);
+            }
+            update("");
+        }
     }
 
     public DFSEngine(
-            JTextArea resultArea,
+            Object resultArea,
             boolean fromSink,
             boolean searchNullSource,
             int depth) {
@@ -116,6 +146,7 @@ public class DFSEngine {
         update("===========================================");
 
         chainCount = 0;
+        sourceCount = 0;
 
         if (this.fromSink) {
             if (findAllSources) {
@@ -145,7 +176,7 @@ public class DFSEngine {
 
         update("===========================================");
         if (findAllSources) {
-            update("总共找到 " + chainCount + " 个可能的 SOURCE 点");
+            update("总共找到 " + sourceCount + " 个可能的 SOURCE 点");
         } else {
             update("总共找到 " + chainCount + " 条可能的调用链");
         }
@@ -275,41 +306,42 @@ public class DFSEngine {
     }
 
     private void outputChain(List<MethodResult> path, boolean isReverse) {
-        update("\n发现调用链 #" + chainCount + ":");
-        update("链长度: " + path.size());
-        update("调用路径:");
-
+        chainCount++;
+        String chainId = "chain_" + chainCount;
+        String title = "调用链 #" + chainCount + " (长度: " + path.size() + ")";
+        
+        List<String> methods = new ArrayList<>();
+        
         if (isReverse) {
             // 反向搜索时，路径需要反转输出
             for (int i = path.size() - 1; i >= 0; i--) {
                 MethodResult method = path.get(i);
-                String arrow = (i == 0) ? "" : " -> ";
-                update(arrow + formatMethod(method));
+                methods.add(formatMethod(method));
             }
         } else {
             // 正向搜索时，直接输出
-            for (int i = 0; i < path.size(); i++) {
-                MethodResult method = path.get(i);
-                String arrow = (i == 0) ? "" : " -> ";
-                update(arrow + formatMethod(method));
+            for (MethodResult method : path) {
+                methods.add(formatMethod(method));
             }
         }
-        update("");
+        
+        addChain(chainId, title, methods);
     }
 
     private void outputSourceChain(List<MethodResult> path, MethodResult sourceMethod) {
-        update("\n发现 SOURCE 点 #" + chainCount + ":");
-        update("SOURCE: " + formatMethod(sourceMethod));
-        update("到达 SINK 的调用链长度: " + path.size());
-        update("调用路径:");
-
+        sourceCount++;
+        String chainId = "source_" + sourceCount;
+        String title = " (调用链长度: " + path.size() + ") #" + sourceCount + ": " + formatMethod(sourceMethod);
+        
+        List<String> methods = new ArrayList<>();
+        
         // 反向搜索时，路径需要反转输出（从SOURCE到SINK）
         for (int i = path.size() - 1; i >= 0; i--) {
             MethodResult method = path.get(i);
-            String arrow = (i == path.size() - 1) ? "" : " -> ";
-            update(arrow + formatMethod(method));
+            methods.add(formatMethod(method));
         }
-        update("");
+        
+        addChain(chainId, title, methods);
     }
 
     private String formatMethod(MethodResult method) {

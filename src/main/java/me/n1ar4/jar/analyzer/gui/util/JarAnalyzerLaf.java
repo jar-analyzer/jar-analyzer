@@ -43,6 +43,20 @@ public class JarAnalyzerLaf extends FlatIntelliJLaf {
         FlatLaf.updateUI();
     }
 
+    public static void setupOrange() {
+        try {
+            ClassLoader classLoader = JarAnalyzerLaf.class.getClassLoader();
+            FlatLaf.setup(IntelliJTheme.createLaf(
+                    Objects.requireNonNull(classLoader.getResourceAsStream("theme/orange.json"))));
+            Theme theme = Theme.load(
+                    classLoader.getResourceAsStream("syntax/default.xml"));
+            theme.apply((RSyntaxTextArea) MainForm.getCodeArea());
+        } catch (Exception ex) {
+            logger.error("change theme failed: {}", ex);
+        }
+        FlatLaf.updateUI();
+    }
+
     public static void setupLight(boolean init) {
         try {
             ClassLoader classLoader = JarAnalyzerLaf.class.getClassLoader();

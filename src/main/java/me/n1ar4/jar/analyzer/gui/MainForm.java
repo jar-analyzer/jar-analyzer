@@ -1436,8 +1436,13 @@ public class MainForm {
         UpdateChecker.check();
 
         // 最后一步 处理 UI
-        if (config != null && config.getTheme() != null && config.getTheme().equals("dark")) {
-            MenuUtil.useDark();
+        if (config != null && config.getTheme() != null) {
+            if (config.getTheme().equals("dark")) {
+                MenuUtil.useDark();
+            }
+            if (config.getTheme().equals("orange")) {
+                MenuUtil.useOrange();
+            }
         } else {
             MenuUtil.useDefault();
         }

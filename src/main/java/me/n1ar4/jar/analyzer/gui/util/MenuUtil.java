@@ -49,7 +49,8 @@ public class MenuUtil {
     private static final JCheckBoxMenuItem disableFixMethodImplConfig = new JCheckBoxMenuItem(
             "disable fix methods impl/override");
 
-    private static final JCheckBoxMenuItem themeItem = new JCheckBoxMenuItem("use dark ui");
+    private static final JCheckBoxMenuItem themeDarkItem = new JCheckBoxMenuItem("use dark ui");
+    private static final JCheckBoxMenuItem themeOrangeItem = new JCheckBoxMenuItem("use orange ui");
 
     public static void setLangFlag() {
         if (GlobalOptions.getLang() == GlobalOptions.CHINESE) {
@@ -60,12 +61,20 @@ public class MenuUtil {
     }
 
     public static void useDark() {
-        themeItem.setState(true);
+        themeDarkItem.setState(true);
+        themeOrangeItem.setState(false);
         JarAnalyzerLaf.setupDark();
     }
 
+    public static void useOrange(){
+        themeDarkItem.setState(false);
+        themeOrangeItem.setState(true);
+        JarAnalyzerLaf.setupOrange();
+    }
+
     public static void useDefault() {
-        themeItem.setState(false);
+        themeDarkItem.setState(false);
+        themeOrangeItem.setState(false);
         JarAnalyzerLaf.setupLight(false);
     }
 
@@ -192,9 +201,10 @@ public class MenuUtil {
 
     private static JMenu createTheme() {
         JMenu theme = new JMenu("theme");
-        themeItem.addActionListener(e -> {
+        themeDarkItem.addActionListener(e -> {
             ConfigFile cf;
-            if (themeItem.getState()) {
+            if (themeDarkItem.getState()) {
+                themeOrangeItem.setState(false);
                 JarAnalyzerLaf.setupDark();
                 cf = MainForm.getConfig();
                 if (cf == null) {
@@ -212,7 +222,29 @@ public class MenuUtil {
             MainForm.setConfig(cf);
             ConfigEngine.saveConfig(cf);
         });
-        theme.add(themeItem);
+        themeOrangeItem.addActionListener(e -> {
+            ConfigFile cf;
+            if (themeOrangeItem.getState()) {
+                themeDarkItem.setState(false);
+                JarAnalyzerLaf.setupOrange();
+                cf = MainForm.getConfig();
+                if (cf == null) {
+                    return;
+                }
+                cf.setTheme("orange");
+            } else {
+                JarAnalyzerLaf.setupLight(false);
+                cf = MainForm.getConfig();
+                if (cf == null) {
+                    return;
+                }
+                cf.setTheme("default");
+            }
+            MainForm.setConfig(cf);
+            ConfigEngine.saveConfig(cf);
+        });
+        theme.add(themeDarkItem);
+        theme.add(themeOrangeItem);
         return theme;
     }
 

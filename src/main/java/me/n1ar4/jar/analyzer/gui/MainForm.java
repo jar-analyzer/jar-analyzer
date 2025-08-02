@@ -322,8 +322,8 @@ public class MainForm {
     private JLabel sourceClassLabel;
     private JLabel sourceMethodLabel;
     private JLabel sourceDescLabel;
-    private JScrollPane chainsScroll;
-    private JTextArea chainsArea;
+
+    private ChainsResultPanel chainsArea;
     private JPanel chainsOpPanel;
     private JButton startChainsBtn;
     private JLabel sinkTipLabel;
@@ -1481,7 +1481,7 @@ public class MainForm {
         instance.sinkMethodText.setText("exec");
         instance.sinkDescText.setText("(Ljava/lang/String;)Ljava/lang/Process;");
 
-        instance.clearBtn.addActionListener(e -> instance.chainsArea.setText(null));
+        instance.clearBtn.addActionListener(e -> instance.chainsArea.clear());
 
         ChainsBuilder.buildBox(
                 instance.sinkBox,
@@ -2301,15 +2301,10 @@ public class MainForm {
         chainsDescPanel.add(chainsLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer5 = new Spacer();
         chainsDescPanel.add(spacer5, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
-        chainsScroll = new JScrollPane();
-        chainsPanel.add(chainsScroll, new GridConstraints(3, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        chainsArea = new JTextArea();
-        chainsArea.setEditable(false);
-        chainsArea.setEnabled(true);
-        chainsArea.setLineWrap(true);
-        chainsScroll.setViewportView(chainsArea);
+        chainsArea = new ChainsResultPanel();
+        chainsPanel.add(chainsArea, new GridConstraints(3, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         chainsOpPanel = new JPanel();
-        chainsOpPanel.setLayout(new GridLayoutManager(1, 7, new Insets(5, 5, 5, 5), -1, -1));
+        chainsOpPanel.setLayout(new GridLayoutManager(1, 8, new Insets(5, 5, 5, 5), 5, -1));
         chainsPanel.add(chainsOpPanel, new GridConstraints(2, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         chainsOpPanel.setBorder(BorderFactory.createTitledBorder(null, "启动配置", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         startChainsBtn = new JButton();
@@ -2321,11 +2316,16 @@ public class MainForm {
         sinkRadio = new JRadioButton();
         sinkRadio.setText("从 Sink 分析");
         chainsOpPanel.add(sinkRadio, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        maxDepthSpin = new JSpinner();
-        chainsOpPanel.add(maxDepthSpin, new GridConstraints(0, 5, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, new Dimension(80, -1), 0, false));
+        
+        // 添加一个小的分隔符
+        final Spacer spacer5_5 = new Spacer();
+        chainsOpPanel.add(spacer5_5, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_FIXED, 1, new Dimension(20, -1), null, null, 0, false));
+        
         maxDepthLabel = new JLabel();
-        maxDepthLabel.setText("最大深度");
-        chainsOpPanel.add(maxDepthLabel, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        maxDepthLabel.setText("最大深度:");
+        chainsOpPanel.add(maxDepthLabel, new GridConstraints(0, 5, 1, 1, GridConstraints.ANCHOR_EAST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        maxDepthSpin = new JSpinner();
+        chainsOpPanel.add(maxDepthSpin, new GridConstraints(0, 6, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(80, -1), new Dimension(80, -1), 0, false));
         final Spacer spacer6 = new Spacer();
         chainsOpPanel.add(spacer6, new GridConstraints(0, 6, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         clearBtn = new JButton();

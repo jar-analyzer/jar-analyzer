@@ -24,10 +24,7 @@ import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -43,7 +40,7 @@ import java.util.Map;
  */
 public class ChainsResultPanel extends JPanel {
     private static final Logger logger = LogManager.getLogger();
-    
+
     private final JPanel contentPanel;
     private final JScrollPane scrollPane;
     private final Map<String, ChainPanel> chainPanels = new HashMap<>();
@@ -51,18 +48,18 @@ public class ChainsResultPanel extends JPanel {
 
     public ChainsResultPanel() {
         setLayout(new BorderLayout());
-        
+
         contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
-        
+
         // 创建一个包装面板确保内容左对齐
         JPanel wrapperPanel = new JPanel(new BorderLayout());
         wrapperPanel.add(contentPanel, BorderLayout.NORTH);
-        
+
         scrollPane = new JScrollPane(wrapperPanel);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        
+
         add(scrollPane, BorderLayout.CENTER);
     }
 
@@ -72,13 +69,13 @@ public class ChainsResultPanel extends JPanel {
     public void addChain(String chainId, String title, List<String> methods) {
         ChainPanel chainPanel = new ChainPanel(chainId, title, methods);
         chainPanels.put(chainId, chainPanel);
-        
+
         contentPanel.add(chainPanel);
         contentPanel.add(Box.createVerticalStrut(5)); // 添加间距
-        
+
         revalidate();
         repaint();
-        
+
         // 滚动到底部
         SwingUtilities.invokeLater(() -> {
             JScrollBar vertical = scrollPane.getVerticalScrollBar();
@@ -91,22 +88,22 @@ public class ChainsResultPanel extends JPanel {
      */
     public void append(String text) {
         if (text == null) return;
-        
+
         // 创建一个面板来确保左对齐
         JPanel textPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         textPanel.setBackground(contentPanel.getBackground());
-        
+
         JLabel textLabel = new JLabel(text);
         textLabel.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
-        
+
         textPanel.add(textLabel);
-        
+
         contentPanel.add(textPanel);
         contentPanel.add(Box.createVerticalStrut(2));
-        
+
         revalidate();
         repaint();
-        
+
         // 滚动到底部
         SwingUtilities.invokeLater(() -> {
             JScrollBar vertical = scrollPane.getVerticalScrollBar();
@@ -166,10 +163,10 @@ public class ChainsResultPanel extends JPanel {
 
         public ChainPanel(String chainId, String title, List<String> methods) {
             this.chainId = chainId;
-            
+
             setLayout(new BorderLayout());
             setBorder(BorderFactory.createEtchedBorder());
-            
+
             // 创建标题面板
             JPanel titlePanel = new JPanel(new BorderLayout());
             toggleButton = new JButton("▶ " + title);
@@ -178,40 +175,40 @@ public class ChainsResultPanel extends JPanel {
             toggleButton.setContentAreaFilled(false);
             toggleButton.setFocusPainted(false);
             toggleButton.addActionListener(e -> toggleExpansion());
-            
+
             titlePanel.add(toggleButton, BorderLayout.CENTER);
             add(titlePanel, BorderLayout.NORTH);
-            
+
             // 创建方法列表面板
             methodsPanel = new JPanel();
             methodsPanel.setLayout(new BoxLayout(methodsPanel, BoxLayout.Y_AXIS));
             methodsPanel.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 5));
-            
+
             // 添加方法
             for (int i = 0; i < methods.size(); i++) {
                 String method = methods.get(i);
                 String arrow = (i == 0) ? "" : " -> ";
-                
+
                 JPanel methodLinePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-                
+
                 if (!arrow.isEmpty()) {
                     JLabel arrowLabel = new JLabel(arrow);
                     arrowLabel.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
                     methodLinePanel.add(arrowLabel);
                 }
-                
+
                 JLabel methodLabel = new JLabel(method);
                 methodLabel.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
                 methodLabel.setForeground(Color.BLUE);
                 methodLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 methodLabel.addMouseListener(new MethodClickListener(method));
-                
+
                 methodLinePanel.add(methodLabel);
                 methodsPanel.add(methodLinePanel);
             }
-            
+
             add(methodsPanel, BorderLayout.CENTER);
-            
+
             // 默认折叠状态
             methodsPanel.setVisible(expanded);
         }
@@ -219,8 +216,8 @@ public class ChainsResultPanel extends JPanel {
         private void toggleExpansion() {
             expanded = !expanded;
             methodsPanel.setVisible(expanded);
-            toggleButton.setText((expanded ? "▼ " : "▶ ") + 
-                               toggleButton.getText().substring(2));
+            toggleButton.setText((expanded ? "▼ " : "▶ ") +
+                    toggleButton.getText().substring(2));
             revalidate();
             repaint();
         }
@@ -252,14 +249,14 @@ public class ChainsResultPanel extends JPanel {
             // 解析方法签名: className.methodName(desc)
             String[] parts = methodSignature.split("\\.");
             if (parts.length < 2) return;
-            
+
             String methodNameAndDesc = parts[parts.length - 1];
-            String className = methodSignature.substring(0, 
-                             methodSignature.length() - methodNameAndDesc.length() - 1);
-            
+            String className = methodSignature.substring(0,
+                    methodSignature.length() - methodNameAndDesc.length() - 1);
+
             String methodName;
             String methodDesc;
-            
+
             int descStart = methodNameAndDesc.indexOf('(');
             if (descStart > 0) {
                 methodName = methodNameAndDesc.substring(0, descStart);
@@ -268,22 +265,22 @@ public class ChainsResultPanel extends JPanel {
                 methodName = methodNameAndDesc;
                 methodDesc = "";
             }
-            
+
             // 创建MethodResult对象
             MethodResult methodResult = new MethodResult();
             methodResult.setClassName(className);
             methodResult.setMethodName(methodName);
             methodResult.setMethodDesc(methodDesc);
-            
+
             // 使用CommonMouseAdapter类似的逻辑进行跳转
             navigateToMethodImpl(methodResult);
-            
+
         } catch (Exception ex) {
             logger.error("导航到方法失败: " + methodSignature, ex);
-            JOptionPane.showMessageDialog(this, 
-                "导航到方法失败: " + ex.getMessage(), 
-                "错误", 
-                JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    "导航到方法失败: " + ex.getMessage(),
+                    "错误",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -330,7 +327,7 @@ public class ChainsResultPanel extends JPanel {
 
         String finalClassPath = classPath;
         MethodResult finalRes = res;
-        
+
         new Thread(() -> {
             String code = DecompileEngine.decompile(Paths.get(finalClassPath));
             String methodName = finalRes.getMethodName();
@@ -346,7 +343,7 @@ public class ChainsResultPanel extends JPanel {
 
         JDialog dialog = ProcessDialog.createProgressDialog(MainForm.getInstance().getMasterPanel());
         new Thread(() -> dialog.setVisible(true)).start();
-        
+
         MethodResult refreshRes = res;
         new Thread() {
             @Override

@@ -4,11 +4,12 @@
 
 更新日志：
 
-- todo
+- [功能] 漏洞链搜索优化展示界面，允许点击跳转链中每一项 @4ra1n
 
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
+- R0ser1 (https://github.com/R0ser1)
 
 所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
 

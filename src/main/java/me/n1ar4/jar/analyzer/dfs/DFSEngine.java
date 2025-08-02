@@ -309,9 +309,9 @@ public class DFSEngine {
         chainCount++;
         String chainId = "chain_" + chainCount;
         String title = "调用链 #" + chainCount + " (长度: " + path.size() + ")";
-        
+
         List<String> methods = new ArrayList<>();
-        
+
         if (isReverse) {
             // 反向搜索时，路径需要反转输出
             for (int i = path.size() - 1; i >= 0; i--) {
@@ -324,7 +324,7 @@ public class DFSEngine {
                 methods.add(formatMethod(method));
             }
         }
-        
+
         addChain(chainId, title, methods);
     }
 
@@ -332,15 +332,15 @@ public class DFSEngine {
         sourceCount++;
         String chainId = "source_" + sourceCount;
         String title = " (调用链长度: " + path.size() + ") #" + sourceCount + ": " + formatMethod(sourceMethod);
-        
+
         List<String> methods = new ArrayList<>();
-        
+
         // 反向搜索时，路径需要反转输出（从SOURCE到SINK）
         for (int i = path.size() - 1; i >= 0; i--) {
             MethodResult method = path.get(i);
             methods.add(formatMethod(method));
         }
-        
+
         addChain(chainId, title, methods);
     }
 

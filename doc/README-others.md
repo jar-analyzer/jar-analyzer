@@ -6,7 +6,7 @@
 
 用户使用文章
 
-- [利用 jar-analyzer 分析 CVE-2022-42889](https://zone.huoxian.cn/d/2884-jar-analyzer-cve-2022-42889)
+- [利用 jar-analyzer 分析 CVE-2022-42889](https://www.bilibili.com/video/BV1a94y1E7Nn)
 - [某人力系统的代码审计](https://forum.butian.net/share/3109)
 
 用户使用视频

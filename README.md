@@ -32,7 +32,7 @@ Jar Analyzer
 
 首页
 
-![](img/0046.png)
+![](img/0079.png)
 
 静态分析 `spring / java web` 项目
 

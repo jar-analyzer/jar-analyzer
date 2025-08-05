@@ -379,7 +379,8 @@ public class DatabaseManager {
         List<SpringMethodEntity> mList = new ArrayList<>();
         // 2025/06/26 处理 SPRING 分析错误时报错
         if (controllers == null || controllers.isEmpty()) {
-            logger.warn("SPRING CONTROLLER 分析错误数据为空");
+            // 2025/08/05 SPRING 数据为空时不应该使用 WARN 日志
+            logger.info("SPRING CONTROLLER 分析错误数据为空");
             return;
         }
         try {

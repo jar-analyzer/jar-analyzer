@@ -52,13 +52,9 @@ Jar Analyzer
       methodDesc: null
 ```
 
-自从 `5.3` 版本后支持深度优先搜索算法自动分析漏洞链（**重要功能：多位师傅挖到 0 day**）
+自从 `5.3` 版本后支持深度优先搜索算法自动分析漏洞链
 
 ![](img/0076.png)
-
-自从 `5.5` 版本后默认了常见的漏洞 `sink` 点用于分析漏洞链
-
-![](img/0078.png)
 
 通过 `agent` 分析 `tomcat`
 
@@ -80,7 +76,7 @@ Jar Analyzer
 
 ![](img/0071.png)
 
-`Jar Analyzer` 的用途
+## 常见用途
 
 - 场景01：从大量 `JAR` 中分析某个方法在哪个 `JAR` 里定义（精确到具体类具体方法）
 - 场景02：从大量 `JAR` 中分析哪里调用了 `Runtime.exec` 方法（精确到具体类具体方法）
@@ -99,18 +95,8 @@ Jar Analyzer
 - 场景15：从大量 `JAR` 中分析 `IP` 地址/手机号/邮箱等各种信息泄露
 - 测试功能：字节码指令级别的调试
 
-`Jar Analyzer` 是一个分析 `Jar` 文件的 `GUI` 工具：
+## 更新记录
 
-- 支持大 `Jar` 以及批量 `Jars` 分析
-- 方便地搜索方法之间的调用关系
-- 分析 `LDC` 指令定位 `Jar` 中的字符串
-- 一键分析 `Spring Controller/Mapping`
-- 对于方法字节码和指令的高级分析
-- 一键反编译，优化对内部类的处理
-- 一键生成方法的 `CFG` 分析结果
-- 一键生成方法的 `Stack Frame` 分析结果
-- 远程分析 `Tomcat` 中的 `Servlet` 等组件
-- 自定义 `SQL` 语句进行高级分析
 - 自从 `2.14` 版本之后支持了全屏显示的功能
 - 自从 `2.15` 版本后支持代码区域字符串搜索功能
 - 自从 `2.15` 版本后支持通过 `HTTP` 分析远程文件
@@ -148,13 +134,11 @@ Jar Analyzer
 - 自从 `5.1` 版本之后支持了简单的 `Gadget` 分析
 - 自从 `5.3` 版本后支持深度优先搜索算法自动分析漏洞链
 
-更多的功能正在开发中
+[详细更新日志 - CHANGE LOG](CHANGELOG.MD)
 
-有问题和建议欢迎提 `issue`
+有问题和建议欢迎提 `issue` 更多的功能正在开发中 [前往下载](https://github.com/jar-analyzer/jar-analyzer/releases/latest)
 
-[前往下载](https://github.com/jar-analyzer/jar-analyzer/releases/latest)
-
-## 评价
+## 用户评价
 
 (01) 我发现 `jar-analyzer` 性能方面很出色（某知名安全研究员）
 
@@ -184,46 +168,6 @@ Jar Analyzer
 
 (14) 这几天已经用这个挖到了几个洞了，对于新手很友好（某安全工程师）
 
-## 截图
-
-方法调用关系
-
-![](img/0004.png)
-
-方法调用搜索 (支持 `equals/like` 选项，支持黑名单过滤)
-
-![](img/0012.png)
-
-`Jar Analyzer 2.15` 版本以后支持代码区域的搜索
-
-![](img/0033.png)
-
-`Jar Analyzer 2.15` 版本以后支持远程 `Jar` 文件加载
-
-![](img/0034.png)
-
-`Jar Analyzer 2.17` 版本以后支持从序列化数据中一键提取恶意代码
-
-![](img/0036.png)
-
-`Jar Analyzer 2.18` 版本以后支持 `HTTP API`
-
-[示例图 1](img/0038.png) [示例图 2](img/0037.png)
-
-`Jar Analyzer 2.19` 版本以后支持实时的 `CPU` 和内存占用分析
-
-![](img/0040.png)
-
-`Jar Analyzer 2.20` 版本后支持选中字符串全局高亮显示
-
-![](img/0041.png)
-
-`Jar Analyzer 5.1` 版本后支持了简单的 `Gadget` 分析
-
-规则清晰简单，写在文件 `src/main/resources/gadget.dat` 中，欢迎贡献更多
-
-![](img/0074.png)
-
 ## 表达式
 
 表达式搜索是 `jar-analzyer` 重要的高级功能：可以自定义多种条件组合搜索方法
@@ -238,7 +182,7 @@ set "java_args=-XX:+UseG1GC -Xms2g -XX:MaxGCPauseMillis=200 %other_args%"
 
 [详细文档](doc/README-el.md)
 
-### 感谢列表
+## 感谢列表
 
 - 4ra1n (https://github.com/4ra1n) (最多贡献)
 - Honey Baby (https://github.com/Gosiu) (多次重要贡献)
@@ -250,7 +194,7 @@ set "java_args=-XX:+UseG1GC -Xms2g -XX:MaxGCPauseMillis=200 %other_args%"
 - hacats (https://github.com/hacats) 
 - R0ser1 (https://github.com/R0ser1)
 
-### 时间
+## 时间
 
 - `Jar Analyzer V1` 最初版诞生于 `2022.11.27`
 - `Jar Analyzer V2` 在 `2023.10.23` 第一次提交
@@ -260,11 +204,15 @@ set "java_args=-XX:+UseG1GC -Xms2g -XX:MaxGCPauseMillis=200 %other_args%"
 - `Jar Analyzer V2` 在 `2024.11.07` 发布 `4.0` 版本
 - `Jar Analyzer V2` 在 `2025.01.07` 日下载量破万
 
-### 性能测试
+## 性能测试
 
 参考 [性能测试文档](doc/README-test.md) 对比分析 `G1GC` 和 `ZGC` 情况
 
-### 漏洞公告
+## 其他截图
+
+[截图文档](doc/README-screenshot.md)
+
+## 漏洞公告
 
 - [\[GHSA-43rf-3hm4-hv5f\] 反编译恶意的 CLASS 文件可能导致程序不可用](https://github.com/jar-analyzer/jar-analyzer/security/advisories/GHSA-43rf-3hm4-hv5f)
 - [\[GHSA-x5h2-78p8-w943\] Jar Analyzer 2.13 版本之前存在 SQL 注入漏洞](https://github.com/jar-analyzer/jar-analyzer/security/advisories/GHSA-x5h2-78p8-w943)
@@ -274,7 +222,7 @@ set "java_args=-XX:+UseG1GC -Xms2g -XX:MaxGCPauseMillis=200 %other_args%"
 
 有 `UI` 兼容性问题请查看 `ISSUE` 部分的置顶
 
-### BUILD
+## BUILD
 
 注意：首先对你的 `IDEA` 进行设置（本项目不支持 `Eclipse/VS Code` 等 `IDE` 环境）
 

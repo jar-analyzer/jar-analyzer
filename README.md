@@ -240,9 +240,15 @@ set "java_args=-XX:+UseG1GC -Xms2g -XX:MaxGCPauseMillis=200 %other_args%"
 
 ### 感谢列表
 
-<a href="https://github.com/jar-analyzer/jar-analyzer/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=jar-analyzer/jar-analyzer"  alt="contributors"/>
-</a>
+- 4ra1n (https://github.com/4ra1n) (最多贡献)
+- Honey Baby (https://github.com/Gosiu) (多次重要贡献)
+- fantasy (https://github.com/ly-test-fuzz) 
+- phil (https://github.com/sensensen404) 
+- whw1sfb (https://github.com/whwlsfb) (第一次贡献)
+- MyDynasty (https://github.com/MyDynasty) 
+- TianMing2018 (https://github.com/TianMing2018) 
+- hacats (https://github.com/hacats) 
+- R0ser1 (https://github.com/R0ser1)
 
 ### 时间
 

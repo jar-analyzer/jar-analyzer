@@ -21,6 +21,7 @@ import me.n1ar4.jar.analyzer.http.Y4Client;
 import me.n1ar4.jar.analyzer.os.SystemChart;
 import me.n1ar4.jar.analyzer.plugins.jd.JDGUIStarter;
 import me.n1ar4.jar.analyzer.starter.Const;
+import me.n1ar4.jar.analyzer.utils.OpenUtil;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 import me.n1ar4.shell.analyzer.form.ShellForm;
@@ -348,37 +349,18 @@ public class MenuUtil {
             JMenu aboutMenu = new JMenu("help");
 
             // QUICK START
-            JMenuItem quickStartItem = new JMenuItem("quick start");
-            quickStartItem.setIcon(IconManager.ausIcon);
-            quickStartItem.addActionListener(e -> {
-                String quickStartText = "<html>" +
-                        "<h1>快速开始</h1>" +
-                        "<div><strong>第一步:</strong> 点击右侧 <span style='color:red;'>[Starter]</span> 的 " +
-                        "<span style='color:blue;'>[Choose File / Dir]</span> 按钮选择你的 JAR 或者 JAR 目录</div>" +
-                        "<div><strong>第二步:</strong> 点击右侧 <span style='color:red;'>[Starter]</span> 的 " +
-                        "<span style='color:blue;'>[Start Engine]</span> (一般不需要勾选 rt.jar 相关选项)</div>" +
-                        "<div><strong>第三步:</strong> 等待分析完成后，你可以进入右侧的 " +
-                        "<span style='color:red;'>[search]</span> 或 " +
-                        "<span style='color:red;'>[advance]</span> 部分开始搜索</div>" +
-                        "<div><strong>提示:</strong> 左下角文件数点击 " +
-                        "<span style='color:green;'>Ctrl+F</span> 可以弹出文件树搜索</div>" +
-                        "<div><strong>提示:</strong> 代码区域 " +
-                        "<span style='color:green;'>Ctrl+F</span> 搜索代码内容</div>" +
-                        "<div><strong>提示:</strong> 代码区域两次 " +
-                        "<span style='color:green;'>Shift</span> 可以召唤出全局搜索面板</div>" +
-                        "<div><strong>提示:</strong> 右侧 " +
-                        "<span style='color:red;'>[Start EL Search]</span> 是进阶表达式搜索</div>" +
-                        "<div>更多功能欢迎摸索哦</div>" +
-                        "</html>";
-                JOptionPane.showMessageDialog(
-                        MainForm.getInstance().getMasterPanel(),
-                        quickStartText,
-                        "Quick Start",
-                        JOptionPane.INFORMATION_MESSAGE,
-                        IconManager.auIcon
-                );
+            JMenuItem docsItem = new JMenuItem("官方文档 / docs");
+            docsItem.setIcon(IconManager.ausIcon);
+            docsItem.addActionListener(e->{
+                try {
+                    Desktop desktop = Desktop.getDesktop();
+                    URI oURL = new URI(Const.docsUrl);
+                    desktop.browse(oURL);
+                } catch (Exception ex) {
+                    logger.error("error: {}", ex.toString());
+                }
             });
-            aboutMenu.add(quickStartItem);
+            aboutMenu.add(docsItem);
 
             JMenuItem bugItem = new JMenuItem("report bug");
             InputStream is = MainForm.class.getClassLoader().getResourceAsStream("img/issue.png");

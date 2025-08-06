@@ -2,6 +2,8 @@
 
 [CHANGE LOG](CHANGELOG.MD)
 
+官方文档：https://docs.qq.com/doc/DV3pKbG9GS0pJS0tk
+
 <img alt="gitleaks badge" src="https://img.shields.io/badge/protected%20by-gitleaks-blue">
 
 ![](https://img.shields.io/github/downloads/jar-analyzer/jar-analyzer/total)

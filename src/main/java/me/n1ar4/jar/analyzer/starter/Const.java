@@ -26,6 +26,7 @@ public interface Const {
     String authorUrl = "https://github.com/4ra1n";
     String projectUrl = "https://github.com/jar-analyzer/jar-analyzer";
     String newIssueUrl = "https://github.com/jar-analyzer/jar-analyzer/issues/new/choose";
+    String docsUrl = "https://docs.qq.com/doc/DV3pKbG9GS0pJS0tk";
     String dbFile = "jar-analyzer.db";
     String tempDir = "jar-analyzer-temp";
     String indexDir = "jar-analyzer-document";

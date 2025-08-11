@@ -5,4 +5,5 @@
  -> [34mwhw1sfb[0m[33m (https://github.com/whwlsfb) [0m[31mCOMMITS: 2[0m
  -> [34mMyDynasty[0m[33m (https://github.com/MyDynasty) [0m[31mCOMMITS: 1[0m
  -> [34mTianMing2018[0m[33m (https://github.com/TianMing2018) [0m[31mCOMMITS: 1[0m
+ -> [34mR0ser1[0m[33m (https://github.com/R0ser1) [0m[31mCOMMITS: 1[0m
  -> [34mhacats[0m[33m (https://github.com/hacats) [0m[31mCOMMITS: 1[0m

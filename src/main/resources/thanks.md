@@ -9,6 +9,7 @@ JAR ANALYZER 感谢以下贡献者
 5. whw1sfb (https://github.com/whwlsfb) COMMITS: 2
 6. MyDynasty (https://github.com/MyDynasty) COMMITS: 1
 7. TianMing2018 (https://github.com/TianMing2018) COMMITS: 1
-8. hacats (https://github.com/hacats) COMMITS: 1
+8. R0ser1 (https://github.com/R0ser1) COMMITS: 1
+9. hacats (https://github.com/hacats) COMMITS: 1
 
 感谢以上师傅们，也希望其他师傅们也可以贡献代码！

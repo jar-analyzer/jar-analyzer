@@ -1,6 +1,6 @@
 JAR ANALYZER 感谢以下贡献者
 
-感谢列表:
+感谢列表（排名不分先后）:
 
 1. 4ra1n (https://github.com/4ra1n)
 2. Honey Baby (https://github.com/Gosiu)

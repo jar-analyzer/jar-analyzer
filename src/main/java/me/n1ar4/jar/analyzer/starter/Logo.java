@@ -34,7 +34,7 @@ public class Logo {
                 String a = new String(data);
                 String[] splits = a.split("\n");
                 if (splits.length > 1) {
-                    System.out.println(ColorUtil.green("感谢以下贡献者（按照贡献量排序）"));
+                    System.out.println(ColorUtil.green("感谢以下贡献者（排名不分先后）"));
                 }
                 System.out.println(a);
             } catch (Exception ignored) {

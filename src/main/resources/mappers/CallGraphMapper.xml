@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ GPLv3 License
+  ~
+  ~ Copyright (c) 2023-2025 4ra1n (Jar Analyzer Team)
+  ~
+  ~ This project is distributed under the GPLv3 license.
+  ~
+  ~ https://github.com/jar-analyzer/jar-analyzer/blob/master/LICENSE
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.n1ar4.jar.analyzer.core.mapper.CallGraphMapper">
+    <resultMap id="classMap" type="me.n1ar4.jar.analyzer.entity.CallGraphEntity">
+        <result column="caller_class_name" property="callerClassName"/>
+        <result column="caller_method_name" property="callerMethodName"/>
+        <result column="caller_method_desc" property="callerMethodDesc"/>
+        <result column="callee_class_name" property="calleeClassName"/>
+        <result column="callee_method_name" property="calleeMethodName"/>
+        <result column="callee_method_desc" property="calleeMethodDesc"/>
+        <result column="caller_arg_index" property="callerArgIndex"/>
+        <result column="callee_arg_index" property="calleeArgIndex"/>
+    </resultMap>
+    <insert id="insertCallGraphs" parameterType="CallGraphEntity">
+        INSERT INTO taint_call_graph
+        (
+         caller_class_name, caller_method_name, caller_method_desc,
+         callee_class_name, callee_method_name, callee_method_desc,
+         caller_arg_index, callee_arg_index
+        )
+        VALUES
+        <foreach collection="list" separator="," item="item">
+            (
+             #{item.callerClassName}, #{item.callerMethodName}, #{item.callerMethodDesc},
+             #{item.calleeClassName}, #{item.calleeMethodName}, #{item.calleeMethodDesc},
+             #{item.callerArgIndex}, #{item.calleeArgIndex}
+            )
+        </foreach>
+    </insert>
+</mapper>

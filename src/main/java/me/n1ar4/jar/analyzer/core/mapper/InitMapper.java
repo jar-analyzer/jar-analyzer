@@ -40,4 +40,6 @@ public interface InitMapper {
     void createJavaWebTable();
 
     void createSortedMethodTable();
+
+    void createCallGraphTable();
 }

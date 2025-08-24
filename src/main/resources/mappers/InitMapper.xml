@@ -192,4 +192,19 @@
             jar_id INTEGER NOT NULL
         );
     </update>
+    <update id="createCallGraphTable">
+        CREATE TABLE IF NOT EXISTS taint_call_graph
+        (
+            tcg_id INTEGER
+            CONSTRAINT taint_call_graph_pk PRIMARY KEY AUTOINCREMENT,
+            caller_class_name TEXT NOT NULL,
+            caller_method_name TEXT NOT NULL,
+            caller_method_desc TEXT NOT NULL,
+            callee_class_name TEXT NOT NULL,
+            callee_method_name TEXT NOT NULL,
+            callee_method_desc TEXT NOT NULL,
+            caller_arg_index INTEGER NOT NULL,
+            callee_arg_index INTEGER NOT NULL
+        );
+    </update>
 </mapper>

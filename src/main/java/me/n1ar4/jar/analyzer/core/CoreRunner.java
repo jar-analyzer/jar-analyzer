@@ -310,7 +310,9 @@ public class CoreRunner {
                 // 分析后的结果保存在 discoveredCalls 和 graphCallMap 中
                 CallGraphService.start(AnalyzeEnv.discoveredCalls, sortedMethods, AnalyzeEnv.classFileByName,
                         AnalyzeEnv.classMap, AnalyzeEnv.graphCallMap, AnalyzeEnv.methodMap, implMap);
-                System.out.println(1);
+                DatabaseManager.saveAllCallGraphs(AnalyzeEnv.discoveredCalls);
+                logger.info("call graph analyze finish");
+                LogUtil.info("call graph analyze finish");
             }
 
             MainForm.getInstance().getBuildBar().setValue(90);

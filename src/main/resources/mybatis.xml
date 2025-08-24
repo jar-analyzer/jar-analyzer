@@ -46,5 +46,6 @@
         <mapper resource="mappers/SpringMethodMapper.xml"/>
         <mapper resource="mappers/JavaWebMapper.xml"/>
         <mapper resource="mappers/SortedMethodMapper.xml"/>
+        <mapper resource="mappers/CallGraphMapper.xml" />
     </mappers>
 </configuration>

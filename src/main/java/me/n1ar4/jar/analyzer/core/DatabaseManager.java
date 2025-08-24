@@ -21,12 +21,14 @@ import me.n1ar4.jar.analyzer.core.reference.MethodReference;
 import me.n1ar4.jar.analyzer.entity.*;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
+import me.n1ar4.jar.analyzer.taint.CallGraph;
 import me.n1ar4.jar.analyzer.utils.OSUtil;
 import me.n1ar4.jar.analyzer.utils.PartitionUtils;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.checkerframework.checker.units.qual.C;
 
 import java.util.*;
 
@@ -49,6 +51,7 @@ public class DatabaseManager {
     private static final SpringMethodMapper springMMapper;
     private static final JavaWebMapper javaWebMapper;
     private static final SortedMethodMapper sortedMethodMapper;
+    private static final CallGraphMapper callGraphMapper;
 
     // --inner-jar 仅解析此jar包引用的 jdk 类及其它jar中的类,但不会保存其它jar的jarId等信息
     private static final ClassReference notFoundClassReference = new ClassReference(-1, -1, null, null, null, false, null, null, "unknown", -1);
@@ -74,6 +77,7 @@ public class DatabaseManager {
         springMMapper = session.getMapper(SpringMethodMapper.class);
         javaWebMapper = session.getMapper(JavaWebMapper.class);
         sortedMethodMapper = session.getMapper(SortedMethodMapper.class);
+        callGraphMapper = session.getMapper(CallGraphMapper.class);
         InitMapper initMapper = session.getMapper(InitMapper.class);
         initMapper.createJarTable();
         initMapper.createClassTable();
@@ -90,8 +94,33 @@ public class DatabaseManager {
         initMapper.createSpringInterceptorTable();
         initMapper.createJavaWebTable();
         initMapper.createSortedMethodTable();
+        initMapper.createCallGraphTable();
         logger.info("create database finish");
         LogUtil.info("create database finish");
+    }
+
+    public static void saveAllCallGraphs(Set<CallGraph> callGraphs) {
+        List<CallGraph> callGraphList = new ArrayList<>(callGraphs);
+        List<CallGraphEntity> callGraphEntities = new ArrayList<>();
+        for (CallGraph callGraph : callGraphList) {
+            CallGraphEntity entity = new CallGraphEntity();
+            entity.setCallerClassName(callGraph.getCallerMethod().getClassReference().getName());
+            entity.setCallerMethodName(callGraph.getCallerMethod().getName());
+            entity.setCallerMethodDesc(callGraph.getCallerMethod().getDesc());
+            entity.setCalleeClassName(callGraph.getTargetMethod().getClassReference().getName());
+            entity.setCalleeMethodName(callGraph.getTargetMethod().getName());
+            entity.setCalleeMethodDesc(callGraph.getTargetMethod().getDesc());
+            entity.setCallerArgIndex(callGraph.getCallerArgIndex());
+            entity.setCalleeArgIndex(callGraph.getTargetArgIndex());
+            callGraphEntities.add(entity);
+        }
+        List<List<CallGraphEntity>> partition = PartitionUtils.partition(callGraphEntities, PART_SIZE);
+        for (List<CallGraphEntity> data : partition) {
+            int a = callGraphMapper.insertCallGraphs(data);
+            if (a == 0) {
+                logger.warn("save error");
+            }
+        }
     }
 
     public static void saveSortedMethod(List<MethodReference.Handle> methods) {

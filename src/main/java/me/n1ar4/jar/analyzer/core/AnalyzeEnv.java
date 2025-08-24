@@ -14,6 +14,7 @@ import me.n1ar4.jar.analyzer.analyze.spring.SpringController;
 import me.n1ar4.jar.analyzer.core.reference.ClassReference;
 import me.n1ar4.jar.analyzer.core.reference.MethodReference;
 import me.n1ar4.jar.analyzer.entity.ClassFileEntity;
+import me.n1ar4.jar.analyzer.taint.CallGraph;
 
 import java.util.*;
 
@@ -36,4 +37,18 @@ public class AnalyzeEnv {
     public static ArrayList<String> filters = new ArrayList<>();
     public static ArrayList<String> listeners = new ArrayList<>();
     public static Map<MethodReference.Handle, List<String>> stringAnnoMap = new HashMap<>();
+
+    // 以下用于污点分析使用
+    /**
+     * CLASS NAME -> CLASS FILE
+     */
+    public static final Map<String, ClassFileEntity> classFileByName = new HashMap<>();
+    /**
+     * CALL GRAPHS
+     */
+    public static final Set<CallGraph> discoveredCalls = new HashSet<>();
+    /**
+     * METHOD NAME -> CALL GRAPHS
+     */
+    public static final Map<MethodReference.Handle, Set<CallGraph>> graphCallMap = new HashMap<>();
 }

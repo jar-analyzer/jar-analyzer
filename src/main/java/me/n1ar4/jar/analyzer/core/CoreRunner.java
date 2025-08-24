@@ -25,6 +25,7 @@ import me.n1ar4.jar.analyzer.gui.ModeSelector;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
 import me.n1ar4.jar.analyzer.gui.util.MenuUtil;
 import me.n1ar4.jar.analyzer.starter.Const;
+import me.n1ar4.jar.analyzer.taint.CallGraphService;
 import me.n1ar4.jar.analyzer.taint.SortService;
 import me.n1ar4.jar.analyzer.utils.CoreUtil;
 import me.n1ar4.jar.analyzer.utils.DirUtil;
@@ -42,7 +43,6 @@ import java.io.FileOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.DriverManager;
 import java.util.List;
 import java.util.*;
 
@@ -220,7 +220,7 @@ public class CoreRunner {
         MainForm.getInstance().getBuildBar().setValue(20);
         DiscoveryRunner.start(AnalyzeEnv.classFileList, AnalyzeEnv.discoveredClasses,
                 AnalyzeEnv.discoveredMethods, AnalyzeEnv.classMap,
-                AnalyzeEnv.methodMap, AnalyzeEnv.stringAnnoMap);
+                AnalyzeEnv.methodMap, AnalyzeEnv.stringAnnoMap, AnalyzeEnv.classFileByName);
         DatabaseManager.saveClassInfo(AnalyzeEnv.discoveredClasses);
         MainForm.getInstance().getBuildBar().setValue(25);
         DatabaseManager.saveMethods(AnalyzeEnv.discoveredMethods);
@@ -307,6 +307,10 @@ public class CoreRunner {
                 DatabaseManager.saveSortedMethod(sortedMethods);
                 logger.info("method topological sorting finish");
                 LogUtil.info("method topological sorting finish");
+                // 分析后的结果保存在 discoveredCalls 和 graphCallMap 中
+                CallGraphService.start(AnalyzeEnv.discoveredCalls, sortedMethods, AnalyzeEnv.classFileByName,
+                        AnalyzeEnv.classMap, AnalyzeEnv.graphCallMap, AnalyzeEnv.methodMap, implMap);
+                System.out.println(1);
             }
 
             MainForm.getInstance().getBuildBar().setValue(90);

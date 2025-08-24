@@ -25,6 +25,7 @@ import me.n1ar4.jar.analyzer.gui.ModeSelector;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
 import me.n1ar4.jar.analyzer.gui.util.MenuUtil;
 import me.n1ar4.jar.analyzer.starter.Const;
+import me.n1ar4.jar.analyzer.taint.SortService;
 import me.n1ar4.jar.analyzer.utils.CoreUtil;
 import me.n1ar4.jar.analyzer.utils.DirUtil;
 import me.n1ar4.jar.analyzer.utils.IOUtil;
@@ -41,6 +42,7 @@ import java.io.FileOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.DriverManager;
 import java.util.List;
 import java.util.*;
 
@@ -48,6 +50,7 @@ public class CoreRunner {
     private static final Logger logger = LogManager.getLogger();
 
     private static boolean quickMode = false;
+    private static boolean taintMode = false;
 
     public static void run(Path jarPath, Path rtJarPath, boolean fixClass, JDialog dialog) {
         // 2024-12-30
@@ -112,8 +115,13 @@ public class CoreRunner {
                     quickMode = true;
                     logger.info("use quick mode");
                     break;
+                case 3:
+                    taintMode = true;
+                    quickMode = false;
+                    logger.info("use taint mode");
+                    break;
                 default:
-                    logger.error("unknown mode");
+                    logger.error("unknown mode: " + res);
                     MainForm.getInstance().getStartBuildDatabaseButton().setEnabled(true);
                     return;
             }
@@ -290,6 +298,16 @@ public class CoreRunner {
             DatabaseManager.saveServlets(AnalyzeEnv.servlets);
             DatabaseManager.saveFilters(AnalyzeEnv.filters);
             DatabaseManager.saveListeners(AnalyzeEnv.listeners);
+
+            // 2025/08/24 加入污点分析
+            if (taintMode) {
+                logger.info("start taint analyze");
+                LogUtil.info("start taint analyze");
+                List<MethodReference.Handle> sortedMethods = SortService.start(AnalyzeEnv.methodCalls);
+                DatabaseManager.saveSortedMethod(sortedMethods);
+                logger.info("method topological sorting finish");
+                LogUtil.info("method topological sorting finish");
+            }
 
             MainForm.getInstance().getBuildBar().setValue(90);
         } else {

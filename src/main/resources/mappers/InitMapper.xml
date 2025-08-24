@@ -180,4 +180,16 @@
             jar_id INTEGER NOT NULL
         );
     </update>
+    <update id="createSortedMethodTable">
+        CREATE TABLE IF NOT EXISTS taint_sorted_method
+        (
+            tsm_id INTEGER
+            CONSTRAINT taint_sorted_method_pk PRIMARY KEY AUTOINCREMENT,
+            sorted_index INTEGER NOT NULL,
+            class_name TEXT NOT NULL,
+            method_name TEXT NOT NULL,
+            method_desc TEXT NOT NULL,
+            jar_id INTEGER NOT NULL
+        );
+    </update>
 </mapper>

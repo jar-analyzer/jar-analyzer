@@ -48,6 +48,7 @@ public class DatabaseManager {
     private static final SpringInterceptorMapper springIMapper;
     private static final SpringMethodMapper springMMapper;
     private static final JavaWebMapper javaWebMapper;
+    private static final SortedMethodMapper sortedMethodMapper;
 
     // --inner-jar 仅解析此jar包引用的 jdk 类及其它jar中的类,但不会保存其它jar的jarId等信息
     private static final ClassReference notFoundClassReference = new ClassReference(-1, -1, null, null, null, false, null, null, "unknown", -1);
@@ -72,6 +73,7 @@ public class DatabaseManager {
         springIMapper = session.getMapper(SpringInterceptorMapper.class);
         springMMapper = session.getMapper(SpringMethodMapper.class);
         javaWebMapper = session.getMapper(JavaWebMapper.class);
+        sortedMethodMapper = session.getMapper(SortedMethodMapper.class);
         InitMapper initMapper = session.getMapper(InitMapper.class);
         initMapper.createJarTable();
         initMapper.createClassTable();
@@ -87,8 +89,32 @@ public class DatabaseManager {
         initMapper.createSpringMappingTable();
         initMapper.createSpringInterceptorTable();
         initMapper.createJavaWebTable();
+        initMapper.createSortedMethodTable();
         logger.info("create database finish");
         LogUtil.info("create database finish");
+    }
+
+    public static void saveSortedMethod(List<MethodReference.Handle> methods) {
+        List<SortedMethodEntity> smList = new ArrayList<>();
+        int index = 0;
+        for (MethodReference.Handle method : methods) {
+            SortedMethodEntity sm = new SortedMethodEntity();
+            sm.setSortedIndex(index);
+            index++;
+            sm.setClassName(method.getClassReference().getName());
+            sm.setMethodName(method.getName());
+            sm.setMethodDesc(method.getDesc());
+            // 污点分析暂不考虑 JAR ID 问题
+            sm.setJarId(-1);
+            smList.add(sm);
+        }
+        List<List<SortedMethodEntity>> partition = PartitionUtils.partition(smList, PART_SIZE);
+        for (List<SortedMethodEntity> data : partition) {
+            int a = sortedMethodMapper.insertMethods(data);
+            if (a == 0) {
+                logger.warn("save error");
+            }
+        }
     }
 
     public static void saveJar(String jarPath) {

@@ -38,4 +38,6 @@ public interface InitMapper {
     void createSpringInterceptorTable();
 
     void createJavaWebTable();
+
+    void createSortedMethodTable();
 }

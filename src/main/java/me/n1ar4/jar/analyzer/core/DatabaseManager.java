@@ -94,9 +94,6 @@ public class DatabaseManager {
         // DFS
         initMapper.createDFSResultTable();
         initMapper.createDFSResultListTable();
-        // TAINT
-        initMapper.createSortedMethodTable();
-        initMapper.createCallGraphTable();
         logger.info("create database finish");
         LogUtil.info("create database finish");
     }

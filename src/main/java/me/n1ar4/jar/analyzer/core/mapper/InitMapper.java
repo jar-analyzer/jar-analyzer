@@ -42,8 +42,4 @@ public interface InitMapper {
     void createDFSResultTable();
 
     void createDFSResultListTable();
-
-    void createSortedMethodTable();
-
-    void createCallGraphTable();
 }

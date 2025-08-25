@@ -25,8 +25,6 @@ import me.n1ar4.jar.analyzer.gui.ModeSelector;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
 import me.n1ar4.jar.analyzer.gui.util.MenuUtil;
 import me.n1ar4.jar.analyzer.starter.Const;
-import me.n1ar4.jar.analyzer.taint.CallGraphService;
-import me.n1ar4.jar.analyzer.taint.SortService;
 import me.n1ar4.jar.analyzer.utils.CoreUtil;
 import me.n1ar4.jar.analyzer.utils.DirUtil;
 import me.n1ar4.jar.analyzer.utils.IOUtil;
@@ -220,7 +218,7 @@ public class CoreRunner {
         MainForm.getInstance().getBuildBar().setValue(20);
         DiscoveryRunner.start(AnalyzeEnv.classFileList, AnalyzeEnv.discoveredClasses,
                 AnalyzeEnv.discoveredMethods, AnalyzeEnv.classMap,
-                AnalyzeEnv.methodMap, AnalyzeEnv.stringAnnoMap, AnalyzeEnv.classFileByName);
+                AnalyzeEnv.methodMap, AnalyzeEnv.stringAnnoMap);
         DatabaseManager.saveClassInfo(AnalyzeEnv.discoveredClasses);
         MainForm.getInstance().getBuildBar().setValue(25);
         DatabaseManager.saveMethods(AnalyzeEnv.discoveredMethods);
@@ -303,16 +301,6 @@ public class CoreRunner {
             if (taintMode) {
                 logger.info("start taint analyze");
                 LogUtil.info("start taint analyze");
-                List<MethodReference.Handle> sortedMethods = SortService.start(AnalyzeEnv.methodCalls);
-                DatabaseManager.saveSortedMethod(sortedMethods);
-                logger.info("method topological sorting finish");
-                LogUtil.info("method topological sorting finish");
-                // 分析后的结果保存在 discoveredCalls 和 graphCallMap 中
-                CallGraphService.start(AnalyzeEnv.discoveredCalls, sortedMethods, AnalyzeEnv.classFileByName,
-                        AnalyzeEnv.classMap, AnalyzeEnv.graphCallMap, AnalyzeEnv.methodMap, implMap);
-                DatabaseManager.saveAllCallGraphs(AnalyzeEnv.discoveredCalls);
-                logger.info("call graph analyze finish");
-                LogUtil.info("call graph analyze finish");
             }
 
             MainForm.getInstance().getBuildBar().setValue(90);

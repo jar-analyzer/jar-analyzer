@@ -21,7 +21,6 @@ import me.n1ar4.jar.analyzer.core.reference.MethodReference;
 import me.n1ar4.jar.analyzer.entity.*;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
-import me.n1ar4.jar.analyzer.taint.CallGraph;
 import me.n1ar4.jar.analyzer.utils.OSUtil;
 import me.n1ar4.jar.analyzer.utils.PartitionUtils;
 import me.n1ar4.log.LogManager;
@@ -49,8 +48,6 @@ public class DatabaseManager {
     private static final SpringInterceptorMapper springIMapper;
     private static final SpringMethodMapper springMMapper;
     private static final JavaWebMapper javaWebMapper;
-    private static final SortedMethodMapper sortedMethodMapper;
-    private static final CallGraphMapper callGraphMapper;
     private static final DFSMapper dfsMapper;
     private static final DFSListMapper dfsListMapper;
 
@@ -77,8 +74,6 @@ public class DatabaseManager {
         springIMapper = session.getMapper(SpringInterceptorMapper.class);
         springMMapper = session.getMapper(SpringMethodMapper.class);
         javaWebMapper = session.getMapper(JavaWebMapper.class);
-        sortedMethodMapper = session.getMapper(SortedMethodMapper.class);
-        callGraphMapper = session.getMapper(CallGraphMapper.class);
         dfsMapper = session.getMapper(DFSMapper.class);
         dfsListMapper = session.getMapper(DFSListMapper.class);
         InitMapper initMapper = session.getMapper(InitMapper.class);
@@ -117,53 +112,6 @@ public class DatabaseManager {
         int a = dfsListMapper.insertDFSResultList(dfsResultListEntity);
         if (a < 1) {
             logger.warn("save dfs list error");
-        }
-    }
-
-    public static void saveAllCallGraphs(Set<CallGraph> callGraphs) {
-        List<CallGraph> callGraphList = new ArrayList<>(callGraphs);
-        List<CallGraphEntity> callGraphEntities = new ArrayList<>();
-        for (CallGraph callGraph : callGraphList) {
-            CallGraphEntity entity = new CallGraphEntity();
-            entity.setCallerClassName(callGraph.getCallerMethod().getClassReference().getName());
-            entity.setCallerMethodName(callGraph.getCallerMethod().getName());
-            entity.setCallerMethodDesc(callGraph.getCallerMethod().getDesc());
-            entity.setCalleeClassName(callGraph.getTargetMethod().getClassReference().getName());
-            entity.setCalleeMethodName(callGraph.getTargetMethod().getName());
-            entity.setCalleeMethodDesc(callGraph.getTargetMethod().getDesc());
-            entity.setCallerArgIndex(callGraph.getCallerArgIndex());
-            entity.setCalleeArgIndex(callGraph.getTargetArgIndex());
-            callGraphEntities.add(entity);
-        }
-        List<List<CallGraphEntity>> partition = PartitionUtils.partition(callGraphEntities, PART_SIZE);
-        for (List<CallGraphEntity> data : partition) {
-            int a = callGraphMapper.insertCallGraphs(data);
-            if (a == 0) {
-                logger.warn("save error");
-            }
-        }
-    }
-
-    public static void saveSortedMethod(List<MethodReference.Handle> methods) {
-        List<SortedMethodEntity> smList = new ArrayList<>();
-        int index = 0;
-        for (MethodReference.Handle method : methods) {
-            SortedMethodEntity sm = new SortedMethodEntity();
-            sm.setSortedIndex(index);
-            index++;
-            sm.setClassName(method.getClassReference().getName());
-            sm.setMethodName(method.getName());
-            sm.setMethodDesc(method.getDesc());
-            // 污点分析暂不考虑 JAR ID 问题
-            sm.setJarId(-1);
-            smList.add(sm);
-        }
-        List<List<SortedMethodEntity>> partition = PartitionUtils.partition(smList, PART_SIZE);
-        for (List<SortedMethodEntity> data : partition) {
-            int a = sortedMethodMapper.insertMethods(data);
-            if (a == 0) {
-                logger.warn("save error");
-            }
         }
     }
 

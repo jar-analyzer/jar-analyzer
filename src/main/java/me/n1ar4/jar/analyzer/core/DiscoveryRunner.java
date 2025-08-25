@@ -32,8 +32,7 @@ public class DiscoveryRunner {
                              Set<MethodReference> discoveredMethods,
                              Map<ClassReference.Handle, ClassReference> classMap,
                              Map<MethodReference.Handle, MethodReference> methodMap,
-                             Map<MethodReference.Handle, List<String>> stringAnnoMap,
-                             Map<String, ClassFileEntity> classFileByName) {
+                             Map<MethodReference.Handle, List<String>> stringAnnoMap) {
         logger.info("start class analyze");
         for (ClassFileEntity file : classFileList) {
             try {
@@ -41,7 +40,6 @@ public class DiscoveryRunner {
                         discoveredMethods, file.getJarName(), file.getJarId());
                 ClassReader cr = new ClassReader(file.getFile());
                 cr.accept(dcv, Const.AnalyzeASMOptions);
-                classFileByName.put(dcv.getName(), file);
             } catch (Exception e) {
                 logger.error("discovery error: {}", e.toString());
             }

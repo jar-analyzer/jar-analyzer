@@ -2086,7 +2086,7 @@
                                   </hspacer>
                                 </children>
                               </grid>
-                              <grid id="4cdc4" binding="chainsOpPanel" layout-manager="GridLayoutManager" row-count="1" column-count="7" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                              <grid id="4cdc4" binding="chainsOpPanel" layout-manager="GridLayoutManager" row-count="2" column-count="7" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                                 <margin top="5" left="5" bottom="5" right="5"/>
                                 <constraints>
                                   <grid row="3" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -2145,6 +2145,22 @@
                                     </constraints>
                                     <properties>
                                       <text value="清空"/>
+                                    </properties>
+                                  </component>
+                                  <component id="d3da5" class="javax.swing.JCheckBox" binding="taintBox">
+                                    <constraints>
+                                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                    </constraints>
+                                    <properties>
+                                      <text value="污点分析验证"/>
+                                    </properties>
+                                  </component>
+                                  <component id="3e15f" class="javax.swing.JLabel" binding="taintLabel">
+                                    <constraints>
+                                      <grid row="1" column="1" row-span="1" col-span="5" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                    </constraints>
+                                    <properties>
+                                      <text value="支持简单的污点分析验证 DFS 链有效性（使用内置污点传播规则）"/>
                                     </properties>
                                   </component>
                                 </children>

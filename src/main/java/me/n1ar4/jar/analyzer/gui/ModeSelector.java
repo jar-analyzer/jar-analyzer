@@ -26,19 +26,16 @@ public class ModeSelector {
         JLabel tipLabel = new JLabel("<html><body style='width: 320px'>" +
                 "请选择分析模式：<br><br>" +
                 "- 标准模式：记录方法调用关系、继承信息、WEB入口分析、字符串信息等<br>" +
-                "- 快速模式：仅分析方法调用关系，不保存其他内容<br>" +
-                "- 污点分析模式：在标准模式的基础上，进行污点分析（beta）<br><br>" +
+                "- 快速模式：仅分析方法调用关系，不保存其他内容<br><br>" +
                 "<p>一般情况下建议标准模式，可以生成完善的数据库</p>" +
                 "</body></html>");
 
         JRadioButton standardMode = new JRadioButton("标准模式", true);
         JRadioButton quickMode = new JRadioButton("快速模式");
-        JRadioButton taintMode = new JRadioButton("污点分析模式");
 
         ButtonGroup group = new ButtonGroup();
         group.add(standardMode);
         group.add(quickMode);
-        group.add(taintMode);
 
         JPanel panel = new JPanel(new BorderLayout(0, 10));
 
@@ -47,7 +44,6 @@ public class ModeSelector {
         JPanel radioPanel = new JPanel(new GridLayout(1, 2, 0, 5));
         radioPanel.add(standardMode);
         radioPanel.add(quickMode);
-        radioPanel.add(taintMode);
 
         panel.add(radioPanel, BorderLayout.CENTER);
 
@@ -68,9 +64,6 @@ public class ModeSelector {
             }
             if (quickMode.isSelected()) {
                 return 2;
-            }
-            if (taintMode.isSelected()) {
-                return 3;
             }
         }
         return 0;

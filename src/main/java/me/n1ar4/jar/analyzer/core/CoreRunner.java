@@ -48,7 +48,6 @@ public class CoreRunner {
     private static final Logger logger = LogManager.getLogger();
 
     private static boolean quickMode = false;
-    private static boolean taintMode = false;
 
     public static void run(Path jarPath, Path rtJarPath, boolean fixClass, JDialog dialog) {
         // 2024-12-30
@@ -112,11 +111,6 @@ public class CoreRunner {
                 case 2:
                     quickMode = true;
                     logger.info("use quick mode");
-                    break;
-                case 3:
-                    taintMode = true;
-                    quickMode = false;
-                    logger.info("use taint mode");
                     break;
                 default:
                     logger.error("unknown mode: " + res);
@@ -296,12 +290,6 @@ public class CoreRunner {
             DatabaseManager.saveServlets(AnalyzeEnv.servlets);
             DatabaseManager.saveFilters(AnalyzeEnv.filters);
             DatabaseManager.saveListeners(AnalyzeEnv.listeners);
-
-            // 2025/08/24 加入污点分析
-            if (taintMode) {
-                logger.info("start taint analyze");
-                LogUtil.info("start taint analyze");
-            }
 
             MainForm.getInstance().getBuildBar().setValue(90);
         } else {

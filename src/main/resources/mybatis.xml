@@ -47,5 +47,7 @@
         <mapper resource="mappers/JavaWebMapper.xml"/>
         <mapper resource="mappers/SortedMethodMapper.xml"/>
         <mapper resource="mappers/CallGraphMapper.xml" />
+        <mapper resource="mappers/DFSResultListMapper.xml" />
+        <mapper resource="mappers/DFSResultMapper.xml" />
     </mappers>
 </configuration>

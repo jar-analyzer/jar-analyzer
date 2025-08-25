@@ -28,7 +28,6 @@ import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.checkerframework.checker.units.qual.C;
 
 import java.util.*;
 
@@ -52,6 +51,8 @@ public class DatabaseManager {
     private static final JavaWebMapper javaWebMapper;
     private static final SortedMethodMapper sortedMethodMapper;
     private static final CallGraphMapper callGraphMapper;
+    private static final DFSMapper dfsMapper;
+    private static final DFSListMapper dfsListMapper;
 
     // --inner-jar 仅解析此jar包引用的 jdk 类及其它jar中的类,但不会保存其它jar的jarId等信息
     private static final ClassReference notFoundClassReference = new ClassReference(-1, -1, null, null, null, false, null, null, "unknown", -1);
@@ -78,6 +79,8 @@ public class DatabaseManager {
         javaWebMapper = session.getMapper(JavaWebMapper.class);
         sortedMethodMapper = session.getMapper(SortedMethodMapper.class);
         callGraphMapper = session.getMapper(CallGraphMapper.class);
+        dfsMapper = session.getMapper(DFSMapper.class);
+        dfsListMapper = session.getMapper(DFSListMapper.class);
         InitMapper initMapper = session.getMapper(InitMapper.class);
         initMapper.createJarTable();
         initMapper.createClassTable();
@@ -93,10 +96,28 @@ public class DatabaseManager {
         initMapper.createSpringMappingTable();
         initMapper.createSpringInterceptorTable();
         initMapper.createJavaWebTable();
+        // DFS
+        initMapper.createDFSResultTable();
+        initMapper.createDFSResultListTable();
+        // TAINT
         initMapper.createSortedMethodTable();
         initMapper.createCallGraphTable();
         logger.info("create database finish");
         LogUtil.info("create database finish");
+    }
+
+    public static void saveDFS(DFSResultEntity dfsResultEntity) {
+        int a = dfsMapper.insertDFSResult(dfsResultEntity);
+        if (a < 1) {
+            logger.warn("save dfs error");
+        }
+    }
+
+    public static void saveDFSList(DFSResultListEntity dfsResultListEntity) {
+        int a = dfsListMapper.insertDFSResultList(dfsResultListEntity);
+        if (a < 1) {
+            logger.warn("save dfs list error");
+        }
     }
 
     public static void saveAllCallGraphs(Set<CallGraph> callGraphs) {

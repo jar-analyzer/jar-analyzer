@@ -180,6 +180,34 @@
             jar_id INTEGER NOT NULL
         );
     </update>
+    <update id="createDFSResultTable">
+        CREATE TABLE IF NOT EXISTS dfs_result_table
+        (
+            dr_id INTEGER
+            CONSTRAINT dfs_result_table_pk PRIMARY KEY AUTOINCREMENT,
+            source_class_name TEXT NOT NULL,
+            source_method_name TEXT NOT NULL,
+            source_method_desc TEXT NOT NULL,
+            sink_class_name TEXT NOT NULL,
+            sink_method_name TEXT NOT NULL,
+            sink_method_desc TEXT NOT NULL,
+            dfs_depth INTEGER NOT NULL,
+            dfs_mode INTEGER NOT NULL,
+            dfs_list_uid TEXT NOT NULL
+        );
+    </update>
+    <update id="createDFSResultListTable">
+        CREATE TABLE IF NOT EXISTS dfs_result_list_table
+        (
+            drl_id INTEGER
+            CONSTRAINT dfs_result_list_table_pk PRIMARY KEY AUTOINCREMENT,
+            dfs_list_uid TEXT NOT NULL,
+            dfs_list_index INTEGER NOT NULL,
+            dfs_class_name TEXT NOT NULL,
+            dfs_method_name TEXT NOT NULL,
+            dfs_method_desc TEXT NOT NULL
+        );
+    </update>
     <update id="createSortedMethodTable">
         CREATE TABLE IF NOT EXISTS taint_sorted_method
         (

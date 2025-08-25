@@ -39,6 +39,10 @@ public interface InitMapper {
 
     void createJavaWebTable();
 
+    void createDFSResultTable();
+
+    void createDFSResultListTable();
+
     void createSortedMethodTable();
 
     void createCallGraphTable();

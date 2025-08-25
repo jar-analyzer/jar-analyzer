@@ -18,6 +18,7 @@ import me.n1ar4.jar.analyzer.config.ConfigEngine;
 import me.n1ar4.jar.analyzer.config.ConfigFile;
 import me.n1ar4.jar.analyzer.core.StateLinkedList;
 import me.n1ar4.jar.analyzer.dfs.DFSEngine;
+import me.n1ar4.jar.analyzer.dfs.DFSResult;
 import me.n1ar4.jar.analyzer.engine.CoreEngine;
 import me.n1ar4.jar.analyzer.engine.DecompileEngine;
 import me.n1ar4.jar.analyzer.entity.ClassResult;
@@ -61,6 +62,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 
 public class MainForm {
@@ -1521,6 +1523,9 @@ public class MainForm {
                     throw new RuntimeException(ex);
                 }
                 dialog.dispose();
+
+                List<DFSResult> resultList = dfsEngine.getResults();
+                System.out.println(resultList);
             }).start();
         });
     }

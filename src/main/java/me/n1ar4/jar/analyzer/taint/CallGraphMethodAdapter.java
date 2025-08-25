@@ -13,6 +13,7 @@ package me.n1ar4.jar.analyzer.taint;
 
 import me.n1ar4.jar.analyzer.core.reference.ClassReference;
 import me.n1ar4.jar.analyzer.core.reference.MethodReference;
+import me.n1ar4.jar.analyzer.taint.jvm.JVMRuntimeAdapter;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
@@ -21,7 +22,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-public class CallGraphMethodAdapter extends CoreMethodAdapter<String> {
+public class CallGraphMethodAdapter extends JVMRuntimeAdapter<String> {
     private final Set<CallGraph> discoveredCalls;
     private final String owner;
     private final int access;

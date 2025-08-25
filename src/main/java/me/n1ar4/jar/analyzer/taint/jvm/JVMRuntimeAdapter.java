@@ -1,4 +1,14 @@
-package me.n1ar4.jar.analyzer.taint;
+/*
+ * GPLv3 License
+ *
+ * Copyright (c) 2023-2025 4ra1n (Jar Analyzer Team)
+ *
+ * This project is distributed under the GPLv3 license.
+ *
+ * https://github.com/jar-analyzer/jar-analyzer/blob/master/LICENSE
+ */
+
+package me.n1ar4.jar.analyzer.taint.jvm;
 
 import org.objectweb.asm.*;
 import org.objectweb.asm.commons.AnalyzerAdapter;
@@ -12,7 +22,7 @@ import java.util.*;
  * @param <T> 污点泛型
  */
 @SuppressWarnings("all")
-public class CoreMethodAdapter<T> extends MethodVisitor {
+public class JVMRuntimeAdapter<T> extends MethodVisitor {
     private final AnalyzerAdapter analyzerAdapter;
     private final int access;
     private final String desc;
@@ -23,7 +33,7 @@ public class CoreMethodAdapter<T> extends MethodVisitor {
     protected OperandStack<T> operandStack;
     protected LocalVariables<T> localVariables;
 
-    public CoreMethodAdapter(final int api, final MethodVisitor mv, final String owner,
+    public JVMRuntimeAdapter(final int api, final MethodVisitor mv, final String owner,
                              int access, String name, String desc) {
         super(api, new AnalyzerAdapter(owner, access, name, desc, mv));
         this.analyzerAdapter = (AnalyzerAdapter) this.mv;

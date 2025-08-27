@@ -97,12 +97,6 @@
       "paramIndex": 0
     },
     {
-      "className": "org/apache/commons/codec/digest/DigestUtils",
-      "methodName": "sha256Hex",
-      "methodDesc": "(Ljava/lang/String;)Ljava/lang/String;",
-      "paramIndex": 0
-    },
-    {
       "className": "org/apache/commons/validator/routines/EmailValidator",
       "methodName": "isValid",
       "methodDesc": "(Ljava/lang/String;)Z",

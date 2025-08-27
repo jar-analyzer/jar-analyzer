@@ -23,6 +23,7 @@ import org.objectweb.asm.Type;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -30,14 +31,18 @@ public class TaintAnalyzer {
     private static final Logger logger = LogManager.getLogger();
 
     public static final Integer TAINT_FAIL = -1;
+    public static final String TAINT = "TAINT";
 
-    public static void analyze(List<DFSResult> resultList) {
+    public static List<DFSResult> analyze(List<DFSResult> resultList) {
+        List<DFSResult> taintResult = new ArrayList<>();
+
         InputStream sin = TaintAnalyzer.class.getClassLoader().getResourceAsStream("sanitizer.json");
         SanitizerRule rule = SanitizerRule.loadJSON(sin);
         logger.info("污点分析加载 sanitizer 规则数量：{}", rule.getRules().size());
 
         CoreEngine engine = MainForm.getEngine();
         for (DFSResult result : resultList) {
+            boolean thisChainSuccess = false;
             System.out.println("####################### 污点分析进行中 #######################");
             List<MethodReference.Handle> methodList = result.getMethodList();
 
@@ -56,6 +61,7 @@ public class TaintAnalyzer {
                 if (i == methodList.size() - 1) {
                     logger.info("污点分析执行结束");
                     if (pass.get() != TAINT_FAIL) {
+                        thisChainSuccess = true;
                         logger.info("该链污点分析结果：通过");
                     }
                     break;
@@ -77,7 +83,7 @@ public class TaintAnalyzer {
                     clsBytes = Files.readAllBytes(Paths.get(absPath));
                 } catch (Exception ex) {
                     logger.error("污点分析读文件错误: {}", ex.toString());
-                    return;
+                    return new ArrayList<>();
                 }
 
                 String desc = m.getDesc();
@@ -124,6 +130,12 @@ public class TaintAnalyzer {
                     }
                 }
             }
+
+            if (thisChainSuccess) {
+                taintResult.add(result);
+            }
         }
+
+        return taintResult;
     }
 }

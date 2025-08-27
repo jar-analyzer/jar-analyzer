@@ -1534,7 +1534,8 @@ public class MainForm {
                 DFSUtil.save(resultList);
                 if (instance.getTaintBox().isSelected()) {
                     logger.info("start taint analyze");
-                    TaintAnalyzer.analyze(resultList);
+                    List<DFSResult> taintResult = TaintAnalyzer.analyze(resultList);
+                    System.out.println(taintResult);
                 }
                 dialog.dispose();
             }).start();

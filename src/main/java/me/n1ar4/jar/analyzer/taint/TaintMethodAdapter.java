@@ -48,7 +48,6 @@ public class TaintMethodAdapter extends JVMRuntimeAdapter<String> {
         this.next = next;
         this.pass = pass;
         this.rule = rule;
-        logger.info("污点分析进行中 {} - {} - {}", this.owner, this.name, this.desc);
     }
 
     @Override
@@ -57,10 +56,11 @@ public class TaintMethodAdapter extends JVMRuntimeAdapter<String> {
         super.visitCode();
         if ((this.access & Opcodes.ACC_STATIC) == 0) {
             // 非 STATIC 第 0 是 THIS
-            localVariables.set(paramsNum + 1, "TAINT");
+            localVariables.set(paramsNum + 1, TaintAnalyzer.TAINT);
         } else {
-            localVariables.set(paramsNum, "TAINT");
+            localVariables.set(paramsNum, TaintAnalyzer.TAINT);
         }
+        logger.info("污点分析进行中 {} - {} - {}", this.owner, this.name, this.desc);
     }
 
     @Override
@@ -89,7 +89,7 @@ public class TaintMethodAdapter extends JVMRuntimeAdapter<String> {
                 for (int i = 0; i < argCount; i++) {
                     int stackIndex = stack.size() - 1 - i; // 从栈顶往下
                     Set<String> item = stack.get(stackIndex);
-                    if (item.contains("TAINT")) {
+                    if (item.contains(TaintAnalyzer.TAINT)) {
                         // 计算实际的参数位置
                         int paramIndex;
                         if (opcode == Opcodes.INVOKESTATIC) {
@@ -112,22 +112,75 @@ public class TaintMethodAdapter extends JVMRuntimeAdapter<String> {
                 }
             }
         } else {
+            // 检查 sanitizer 规则
+            if (this.rule == null || this.rule.getRules() == null) {
+                logger.warn("Sanitizer rules not loaded, skipping sanitizer check");
+                super.visitMethodInsn(opcode, owner, name, desc, itf);
+                return;
+            }
+
             List<Sanitizer> rules = this.rule.getRules();
             boolean match = false;
+
+            // 获取当前被污染的参数索引
+            List<Set<String>> stack = this.operandStack.getList();
+            Type[] argumentTypes = Type.getArgumentTypes(desc);
+            int argCount = argumentTypes.length;
+
+            if (opcode != Opcodes.INVOKESTATIC) {
+                argCount++; // 包含 this 引用
+            }
+
+            // 检查每个 sanitizer 规则
             for (Sanitizer rule : rules) {
                 if (owner.equals(rule.getClassName()) &&
                         name.equals(rule.getMethodName()) &&
                         desc.equals(rule.getMethodDesc())) {
-                    match = true;
-                    break;
+
+                    // 检查参数索引匹配
+                    if (rule.getParamIndex() == Sanitizer.ALL_PARAMS) {
+                        // 如果规则适用于所有参数，直接匹配
+                        match = true;
+                        break;
+                    } else {
+                        // 检查特定参数索引是否被污染
+                        if (stack.size() >= argCount) {
+                            int targetStackIndex;
+                            if (opcode == Opcodes.INVOKESTATIC) {
+                                // 静态方法：参数从栈顶开始
+                                targetStackIndex = stack.size() - argCount + rule.getParamIndex();
+                            } else {
+                                // 非静态方法：this 在栈底，参数在上面
+                                if (rule.getParamIndex() == 0) {
+                                    // this 引用
+                                    targetStackIndex = stack.size() - argCount;
+                                } else {
+                                    // 实际参数（索引从1开始）
+                                    targetStackIndex = stack.size() - argCount + rule.getParamIndex();
+                                }
+                            }
+
+                            if (targetStackIndex >= 0 && targetStackIndex < stack.size()) {
+                                Set<String> targetParam = stack.get(targetStackIndex);
+                                if (targetParam.contains("TAINT")) {
+                                    match = true;
+                                    logger.info("污点命中 净化器 规则 - {} - {} - {} - 参数索引: {}",
+                                            owner, name, desc, rule.getParamIndex());
+                                    break;
+                                }
+                            }
+                        }
+                    }
                 }
             }
+
             if (match) {
-                // 命中 sanitizer 不传递
+                // 命中 sanitizer，停止污点传播
                 super.visitMethodInsn(opcode, owner, name, desc, itf);
                 pass.set(TaintAnalyzer.TAINT_FAIL);
-                logger.info("污点命中 净化器 规则 - {} - {} - {}", owner, name, desc);
                 return;
+            } else {
+                logger.debug("污点没有命中 净化器 规则");
             }
         }
         super.visitMethodInsn(opcode, owner, name, desc, itf);

@@ -20,6 +20,7 @@ import me.n1ar4.log.Logger;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.Type;
 
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -31,9 +32,13 @@ public class TaintAnalyzer {
     public static final Integer TAINT_FAIL = -1;
 
     public static void analyze(List<DFSResult> resultList) {
+        InputStream sin = TaintAnalyzer.class.getClassLoader().getResourceAsStream("sanitizer.json");
+        SanitizerRule rule = SanitizerRule.loadJSON(sin);
+        logger.info("污点分析加载 sanitizer 规则数量：{}", rule.getRules().size());
+
         CoreEngine engine = MainForm.getEngine();
         for (DFSResult result : resultList) {
-            System.out.println("#####################################################");
+            System.out.println("####################### 污点分析进行中 #######################");
             List<MethodReference.Handle> methodList = result.getMethodList();
 
             // 上一个方法调用 污点传递到第几个参数
@@ -49,9 +54,9 @@ public class TaintAnalyzer {
                 // 如果只要上一个可以到达最后一个
                 // 即可认为污点分析成功
                 if (i == methodList.size() - 1) {
-                    logger.info("taint analyze finish");
+                    logger.info("污点分析执行结束");
                     if (pass.get() != TAINT_FAIL) {
-                        logger.info("taint analyze pass");
+                        logger.info("该链污点分析结果：通过");
                     }
                     break;
                 }
@@ -64,14 +69,14 @@ public class TaintAnalyzer {
                 String absPath = engine.getAbsPath(classOrigin);
 
                 if (absPath == null || absPath.trim().isEmpty()) {
-                    logger.warn("class not found: {}", m.getClassReference().getName());
+                    logger.warn("污点分析找不到类: {}", m.getClassReference().getName());
                     break;
                 }
                 byte[] clsBytes;
                 try {
                     clsBytes = Files.readAllBytes(Paths.get(absPath));
                 } catch (Exception ex) {
-                    logger.error("read file error: {}", ex.toString());
+                    logger.error("污点分析读文件错误: {}", ex.toString());
                     return;
                 }
 
@@ -79,42 +84,42 @@ public class TaintAnalyzer {
                 Type[] argumentTypes = Type.getArgumentTypes(desc);
                 int paramCount = argumentTypes.length;
 
-                logger.info("method: {} params count: {}", m.getName(), paramCount);
+                logger.info("方法: {} 参数数量: {}", m.getName(), paramCount);
 
-                if (pass.get() ==TAINT_FAIL) {
+                if (pass.get() == TAINT_FAIL) {
                     // 第一次开始
-                    logger.info("start taint analyze no pass info");
+                    logger.info("开始污点分析 - 链开始 - 无数据流");
                     // 遍历所有 source 的参数
                     // 认为所有参数都可能是 source
                     for (int k = 0; k < paramCount; k++) {
                         try {
-                            logger.info("try method {} params: {}", m.getName(), k);
-                            TaintClassVisitor tcv = new TaintClassVisitor(k, m, next, pass);
+                            logger.info("开始分析方法 {} 第 {} 个参数", m.getName(), k);
+                            TaintClassVisitor tcv = new TaintClassVisitor(k, m, next, pass, rule);
                             ClassReader cr = new ClassReader(clsBytes);
                             cr.accept(tcv, Const.AnalyzeASMOptions);
                             pass = tcv.getPass();
-                            logger.info("pass return: {}", pass.get());
+                            logger.info("数据流结果 - 传播到第 {} 个参数", pass.get());
                             // 无法抵达第二个 chain 认为有问题
                             if (pass.get() != TAINT_FAIL) {
                                 break;
                             }
                         } catch (Exception e) {
-                            logger.error("discovery error: {}", e.toString());
+                            logger.error("污点分析 - 链开始 - 错误: {}", e.toString());
                         }
                     }
                 } else {
                     // 第二个 chain 开始
                     // 只要顺利 即可继续分析
                     try {
-                        TaintClassVisitor tcv = new TaintClassVisitor(pass.get(), m, next, pass);
+                        TaintClassVisitor tcv = new TaintClassVisitor(pass.get(), m, next, pass, rule);
                         ClassReader cr = new ClassReader(clsBytes);
                         cr.accept(tcv, Const.AnalyzeASMOptions);
                         pass = tcv.getPass();
-                        logger.info("pass return: {}", pass.get());
+                        logger.info("数据流结果 - 传播到第 {} 个参数", pass.get());
                     } catch (Exception e) {
-                        logger.error("discovery error: {}", e.toString());
+                        logger.error("污点分析 - 链中 - 错误: {}", e.toString());
                     }
-                    if (pass.get() ==TAINT_FAIL) {
+                    if (pass.get() == TAINT_FAIL) {
                         break;
                     }
                 }

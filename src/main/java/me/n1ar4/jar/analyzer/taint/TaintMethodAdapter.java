@@ -32,12 +32,13 @@ public class TaintMethodAdapter extends JVMRuntimeAdapter<String> {
     private final String desc;
     private final int paramsNum;
 
-    private MethodReference.Handle next;
-    private AtomicInteger pass;
+    private final MethodReference.Handle next;
+    private final AtomicInteger pass;
+    private final SanitizerRule rule;
 
     public TaintMethodAdapter(final int api, final MethodVisitor mv, final String owner,
                               int access, String name, String desc, int paramsNum,
-                              MethodReference.Handle next, AtomicInteger pass) {
+                              MethodReference.Handle next, AtomicInteger pass, SanitizerRule rule) {
         super(api, mv, owner, access, name, desc);
         this.owner = owner;
         this.access = access;
@@ -46,7 +47,8 @@ public class TaintMethodAdapter extends JVMRuntimeAdapter<String> {
         this.paramsNum = paramsNum;
         this.next = next;
         this.pass = pass;
-        logger.info("taint analyze {} - {} - {}", this.owner, this.name, this.desc);
+        this.rule = rule;
+        logger.info("污点分析进行中 {} - {} - {}", this.owner, this.name, this.desc);
     }
 
     @Override
@@ -62,11 +64,11 @@ public class TaintMethodAdapter extends JVMRuntimeAdapter<String> {
     }
 
     @Override
+    @SuppressWarnings("all")
     public void visitMethodInsn(int opcode, String owner, String name, String desc, boolean itf) {
         // 简单的污点分析
         // 我认为所有的方法都应该传播污点
         // 除非遇到 Sanitizer 白名单 否则认为没问题
-        // TODO 完成 Sanitizer JSON 规则
         String nextClass = next.getClassReference().getName().replace(".", "/");
         // 找到下个方法
         if (owner.equals(nextClass) && name.equals(next.getName()) && desc.equals(next.getDesc())) {
@@ -105,9 +107,27 @@ public class TaintMethodAdapter extends JVMRuntimeAdapter<String> {
                         }
                         // 记录数据流
                         pass.set(paramIndex);
-                        logger.info("found next method taint at parameter position: {}", paramIndex);
+                        logger.info("发现方法调用类型污点 - 方法调用传播 - 接口第 {} 个参数", paramIndex);
                     }
                 }
+            }
+        } else {
+            List<Sanitizer> rules = this.rule.getRules();
+            boolean match = false;
+            for (Sanitizer rule : rules) {
+                if (owner.equals(rule.getClassName()) &&
+                        name.equals(rule.getMethodName()) &&
+                        desc.equals(rule.getMethodDesc())) {
+                    match = true;
+                    break;
+                }
+            }
+            if (match) {
+                // 命中 sanitizer 不传递
+                super.visitMethodInsn(opcode, owner, name, desc, itf);
+                pass.set(TaintAnalyzer.TAINT_FAIL);
+                logger.info("污点命中 净化器 规则 - {} - {} - {}", owner, name, desc);
+                return;
             }
         }
         super.visitMethodInsn(opcode, owner, name, desc, itf);

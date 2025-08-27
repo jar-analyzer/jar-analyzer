@@ -1,0 +1,118 @@
+{
+  "rules": [
+    {
+      "className": "org/apache/commons/lang3/StringEscapeUtils",
+      "methodName": "escapeHtml4",
+      "methodDesc": "(Ljava/lang/String;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/apache/commons/lang3/StringEscapeUtils",
+      "methodName": "escapeXml",
+      "methodDesc": "(Ljava/lang/String;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/apache/commons/lang3/StringEscapeUtils",
+      "methodName": "escapeJava",
+      "methodDesc": "(Ljava/lang/String;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/springframework/web/util/HtmlUtils",
+      "methodName": "htmlEscape",
+      "methodDesc": "(Ljava/lang/String;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/springframework/web/util/HtmlUtils",
+      "methodName": "htmlEscapeDecimal",
+      "methodDesc": "(Ljava/lang/String;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/springframework/web/util/HtmlUtils",
+      "methodName": "htmlEscapeHex",
+      "methodDesc": "(Ljava/lang/String;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "java/sql/PreparedStatement",
+      "methodName": "setString",
+      "methodDesc": "(ILjava/lang/String;)V",
+      "paramIndex": 1
+    },
+    {
+      "className": "java/sql/PreparedStatement",
+      "methodName": "setObject",
+      "methodDesc": "(ILjava/lang/Object;)V",
+      "paramIndex": 1
+    },
+    {
+      "className": "java/util/regex/Pattern",
+      "methodName": "quote",
+      "methodDesc": "(Ljava/lang/String;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/owasp/esapi/ESAPI",
+      "methodName": "encoder",
+      "methodDesc": "()Lorg/owasp/esapi/Encoder;",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/owasp/esapi/Encoder",
+      "methodName": "encodeForHTML",
+      "methodDesc": "(Ljava/lang/String;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/owasp/esapi/Encoder",
+      "methodName": "encodeForSQL",
+      "methodDesc": "(Lorg/owasp/esapi/codecs/Codec;Ljava/lang/String;)Ljava/lang/String;",
+      "paramIndex": 1
+    },
+    {
+      "className": "org/owasp/esapi/Encoder",
+      "methodName": "encodeForJavaScript",
+      "methodDesc": "(Ljava/lang/String;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/owasp/esapi/Encoder",
+      "methodName": "encodeForURL",
+      "methodDesc": "(Ljava/lang/String;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/apache/commons/codec/digest/DigestUtils",
+      "methodName": "md5Hex",
+      "methodDesc": "(Ljava/lang/String;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/apache/commons/codec/digest/DigestUtils",
+      "methodName": "sha1Hex",
+      "methodDesc": "(Ljava/lang/String;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/apache/commons/codec/digest/DigestUtils",
+      "methodName": "sha256Hex",
+      "methodDesc": "(Ljava/lang/String;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/apache/commons/validator/routines/EmailValidator",
+      "methodName": "isValid",
+      "methodDesc": "(Ljava/lang/String;)Z",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/apache/commons/validator/routines/UrlValidator",
+      "methodName": "isValid",
+      "methodDesc": "(Ljava/lang/String;)Z",
+      "paramIndex": 0
+    }
+  ]
+}

@@ -33,8 +33,9 @@ public class TaintAnalyzer {
     public static final Integer TAINT_FAIL = -1;
     public static final String TAINT = "TAINT";
 
-    public static List<DFSResult> analyze(List<DFSResult> resultList) {
-        List<DFSResult> taintResult = new ArrayList<>();
+    @SuppressWarnings("all")
+    public static List<TaintResult> analyze(List<DFSResult> resultList) {
+        List<TaintResult> taintResult = new ArrayList<>();
 
         InputStream sin = TaintAnalyzer.class.getClassLoader().getResourceAsStream("sanitizer.json");
         SanitizerRule rule = SanitizerRule.loadJSON(sin);
@@ -43,7 +44,10 @@ public class TaintAnalyzer {
         CoreEngine engine = MainForm.getEngine();
         for (DFSResult result : resultList) {
             boolean thisChainSuccess = false;
+            StringBuilder text = new StringBuilder();
             System.out.println("####################### 污点分析进行中 #######################");
+            text.append("####################### 污点分析进行中 #######################");
+            text.append("\n");
             List<MethodReference.Handle> methodList = result.getMethodList();
 
             // 上一个方法调用 污点传递到第几个参数
@@ -60,9 +64,13 @@ public class TaintAnalyzer {
                 // 即可认为污点分析成功
                 if (i == methodList.size() - 1) {
                     logger.info("污点分析执行结束");
+                    text.append("污点分析执行结束");
+                    text.append("\n");
                     if (pass.get() != TAINT_FAIL) {
                         thisChainSuccess = true;
                         logger.info("该链污点分析结果：通过");
+                        text.append("该链污点分析结果：通过");
+                        text.append("\n");
                     }
                     break;
                 }
@@ -91,20 +99,28 @@ public class TaintAnalyzer {
                 int paramCount = argumentTypes.length;
 
                 logger.info("方法: {} 参数数量: {}", m.getName(), paramCount);
+                text.append(String.format("方法: %s 参数数量: %d", m.getName(), paramCount));
+                text.append("\n");
 
                 if (pass.get() == TAINT_FAIL) {
                     // 第一次开始
                     logger.info("开始污点分析 - 链开始 - 无数据流");
+                    text.append("开始污点分析 - 链开始 - 无数据流");
+                    text.append("\n");
                     // 遍历所有 source 的参数
                     // 认为所有参数都可能是 source
                     for (int k = 0; k < paramCount; k++) {
                         try {
                             logger.info("开始分析方法 {} 第 {} 个参数", m.getName(), k);
-                            TaintClassVisitor tcv = new TaintClassVisitor(k, m, next, pass, rule);
+                            text.append(String.format("开始分析方法 %s 第 %d 个参数", m.getName(), k));
+                            text.append("\n");
+                            TaintClassVisitor tcv = new TaintClassVisitor(k, m, next, pass, rule,text);
                             ClassReader cr = new ClassReader(clsBytes);
                             cr.accept(tcv, Const.AnalyzeASMOptions);
                             pass = tcv.getPass();
                             logger.info("数据流结果 - 传播到第 {} 个参数", pass.get());
+                            text.append(String.format("数据流结果 - 传播到第 %d 个参数", pass.get()));
+                            text.append("\n");
                             // 无法抵达第二个 chain 认为有问题
                             if (pass.get() != TAINT_FAIL) {
                                 break;
@@ -117,11 +133,13 @@ public class TaintAnalyzer {
                     // 第二个 chain 开始
                     // 只要顺利 即可继续分析
                     try {
-                        TaintClassVisitor tcv = new TaintClassVisitor(pass.get(), m, next, pass, rule);
+                        TaintClassVisitor tcv = new TaintClassVisitor(pass.get(), m, next, pass, rule, text);
                         ClassReader cr = new ClassReader(clsBytes);
                         cr.accept(tcv, Const.AnalyzeASMOptions);
                         pass = tcv.getPass();
                         logger.info("数据流结果 - 传播到第 {} 个参数", pass.get());
+                        text.append(String.format("数据流结果 - 传播到第 %d 个参数", pass.get()));
+                        text.append("\n");
                     } catch (Exception e) {
                         logger.error("污点分析 - 链中 - 错误: {}", e.toString());
                     }
@@ -132,7 +150,10 @@ public class TaintAnalyzer {
             }
 
             if (thisChainSuccess) {
-                taintResult.add(result);
+                TaintResult r = new TaintResult();
+                r.setDfsResult(result);
+                r.setTaintText(text.toString());
+                taintResult.add(r);
             }
         }
 

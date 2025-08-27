@@ -49,6 +49,7 @@ import me.n1ar4.jar.analyzer.sca.SCAAction;
 import me.n1ar4.jar.analyzer.starter.Application;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.taint.TaintAnalyzer;
+import me.n1ar4.jar.analyzer.taint.TaintResult;
 import me.n1ar4.jar.analyzer.utils.DirUtil;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
@@ -1534,7 +1535,7 @@ public class MainForm {
                 DFSUtil.save(resultList);
                 if (instance.getTaintBox().isSelected()) {
                     logger.info("start taint analyze");
-                    List<DFSResult> taintResult = TaintAnalyzer.analyze(resultList);
+                    List<TaintResult> taintResult = TaintAnalyzer.analyze(resultList);
                     System.out.println(taintResult);
                 }
                 dialog.dispose();

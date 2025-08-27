@@ -35,10 +35,12 @@ public class TaintMethodAdapter extends JVMRuntimeAdapter<String> {
     private final MethodReference.Handle next;
     private final AtomicInteger pass;
     private final SanitizerRule rule;
+    private final StringBuilder text;
 
     public TaintMethodAdapter(final int api, final MethodVisitor mv, final String owner,
                               int access, String name, String desc, int paramsNum,
-                              MethodReference.Handle next, AtomicInteger pass, SanitizerRule rule) {
+                              MethodReference.Handle next, AtomicInteger pass,
+                              SanitizerRule rule, StringBuilder text) {
         super(api, mv, owner, access, name, desc);
         this.owner = owner;
         this.access = access;
@@ -48,6 +50,7 @@ public class TaintMethodAdapter extends JVMRuntimeAdapter<String> {
         this.next = next;
         this.pass = pass;
         this.rule = rule;
+        this.text = text;
     }
 
     @Override
@@ -61,6 +64,8 @@ public class TaintMethodAdapter extends JVMRuntimeAdapter<String> {
             localVariables.set(paramsNum, TaintAnalyzer.TAINT);
         }
         logger.info("污点分析进行中 {} - {} - {}", this.owner, this.name, this.desc);
+        text.append(String.format("污点分析进行中 %s - %s - %s", this.owner, this.name, this.desc));
+        text.append("\n");
     }
 
     @Override
@@ -108,13 +113,15 @@ public class TaintMethodAdapter extends JVMRuntimeAdapter<String> {
                         // 记录数据流
                         pass.set(paramIndex);
                         logger.info("发现方法调用类型污点 - 方法调用传播 - 接口第 {} 个参数", paramIndex);
+                        text.append(String.format("发现方法调用类型污点 - 方法调用传播 - 接口第 %d 个参数", paramIndex));
+                        text.append("\n");
                     }
                 }
             }
         } else {
             // 检查 sanitizer 规则
             if (this.rule == null || this.rule.getRules() == null) {
-                logger.warn("Sanitizer rules not loaded, skipping sanitizer check");
+                logger.warn("sanitizer rules not loaded, skipping sanitizer check");
                 super.visitMethodInsn(opcode, owner, name, desc, itf);
                 return;
             }
@@ -166,6 +173,9 @@ public class TaintMethodAdapter extends JVMRuntimeAdapter<String> {
                                     match = true;
                                     logger.info("污点命中 净化器 规则 - {} - {} - {} - 参数索引: {}",
                                             owner, name, desc, rule.getParamIndex());
+                                    text.append(String.format("污点命中 净化器 规则 - %s - %s - %s - 参数索引: %d",
+                                            owner, name, desc, rule.getParamIndex()));
+                                    text.append("\n");
                                     break;
                                 }
                             }

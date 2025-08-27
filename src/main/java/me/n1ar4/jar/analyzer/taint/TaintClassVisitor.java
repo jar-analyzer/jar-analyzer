@@ -31,16 +31,18 @@ public class TaintClassVisitor extends ClassVisitor {
     private final AtomicInteger pass;
     private boolean iface;
     private final SanitizerRule rule;
+    private final StringBuilder text;
 
     public TaintClassVisitor(int i,
                              MethodReference.Handle cur, MethodReference.Handle next,
-                             AtomicInteger pass, SanitizerRule rule) {
+                             AtomicInteger pass, SanitizerRule rule, StringBuilder text) {
         super(Const.ASMVersion);
         this.paramsNum = i;
         this.cur = cur;
         this.next = next;
         this.pass = pass;
         this.rule = rule;
+        this.text = text;
     }
 
     @Override
@@ -55,7 +57,11 @@ public class TaintClassVisitor extends ClassVisitor {
         if (this.iface) {
             pass.set(paramsNum);
             logger.info("污点分析进行中 {} - {} - {}", cur.getClassReference().getName(), cur.getName(), cur.getDesc());
+            text.append(String.format("污点分析进行中 %s - %s - %s", cur.getClassReference().getName(), cur.getName(), cur.getDesc()));
+            text.append("\n");
             logger.info("发现接口类型污点 - 直接传递 - 接口第 {} 个参数", paramsNum);
+            text.append(String.format("发现接口类型污点 - 直接传递 - 接口第 %d 个参数", paramsNum));
+            text.append("\n");
         }
     }
 
@@ -68,7 +74,7 @@ public class TaintClassVisitor extends ClassVisitor {
         }
         if (name.equals(this.cur.getName()) && desc.equals(this.cur.getDesc())) {
             TaintMethodAdapter tma = new TaintMethodAdapter(
-                    api, mv, this.className, access, name, desc, this.paramsNum, next, pass, rule);
+                    api, mv, this.className, access, name, desc, this.paramsNum, next, pass, rule, text);
             return new JSRInlinerAdapter(tma, access, name, desc, signature, exceptions);
         } else {
             return mv;

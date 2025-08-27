@@ -59,8 +59,8 @@ public class TaintClassVisitor extends ClassVisitor {
             logger.info("污点分析进行中 {} - {} - {}", cur.getClassReference().getName(), cur.getName(), cur.getDesc());
             text.append(String.format("污点分析进行中 %s - %s - %s", cur.getClassReference().getName(), cur.getName(), cur.getDesc()));
             text.append("\n");
-            logger.info("发现接口类型污点 - 直接传递 - 接口第 {} 个参数", paramsNum);
-            text.append(String.format("发现接口类型污点 - 直接传递 - 接口第 %d 个参数", paramsNum));
+            logger.info("发现接口类型污点 - 直接传递 - 第 {} 个参数", paramsNum);
+            text.append(String.format("发现接口类型污点 - 直接传递 - 第 %d 个参数", paramsNum));
             text.append("\n");
         }
     }

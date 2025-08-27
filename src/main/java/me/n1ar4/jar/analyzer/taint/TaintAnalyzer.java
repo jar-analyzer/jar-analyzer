@@ -46,8 +46,6 @@ public class TaintAnalyzer {
             boolean thisChainSuccess = false;
             StringBuilder text = new StringBuilder();
             System.out.println("####################### 污点分析进行中 #######################");
-            text.append("####################### 污点分析进行中 #######################");
-            text.append("\n");
             List<MethodReference.Handle> methodList = result.getMethodList();
 
             // 上一个方法调用 污点传递到第几个参数

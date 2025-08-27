@@ -112,8 +112,8 @@ public class TaintMethodAdapter extends JVMRuntimeAdapter<String> {
                         }
                         // 记录数据流
                         pass.set(paramIndex);
-                        logger.info("发现方法调用类型污点 - 方法调用传播 - 接口第 {} 个参数", paramIndex);
-                        text.append(String.format("发现方法调用类型污点 - 方法调用传播 - 接口第 %d 个参数", paramIndex));
+                        logger.info("发现方法调用类型污点 - 方法调用传播 - 第 {} 个参数", paramIndex);
+                        text.append(String.format("发现方法调用类型污点 - 方法调用传播 - 第 %d 个参数", paramIndex));
                         text.append("\n");
                     }
                 }

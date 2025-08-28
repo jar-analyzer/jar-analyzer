@@ -39,12 +39,12 @@ public class LeakCsvExporter implements Exporter {
         try (FileWriter out = new FileWriter(fileName);
              CSVPrinter printer = new CSVPrinter(out,
                      CSVFormat.DEFAULT.builder().setHeader("Type", "ClassName", "Value").get())) {
-            
+
             for (LeakResult result : leakResults) {
                 printer.printRecord(
-                    result.getTypeName(),
-                    result.getClassName(),
-                    result.getValue()
+                        result.getTypeName(),
+                        result.getClassName(),
+                        result.getValue()
                 );
             }
             return true;

@@ -26,11 +26,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 
 public class LeakAction {
@@ -217,7 +213,7 @@ public class LeakAction {
         JList<LeakResult> leakList = instance.getLeakResultList();
 
         logger.info("registering leak action");
-        
+
         // 添加导出功能
         export.addActionListener(e -> {
             DefaultListModel<LeakResult> model = (DefaultListModel<LeakResult>) leakList.getModel();
@@ -225,12 +221,12 @@ public class LeakAction {
                 JOptionPane.showMessageDialog(instance.getMasterPanel(), "没有泄露检测结果可以导出");
                 return;
             }
-            
+
             List<LeakResult> results = new ArrayList<>();
             for (int i = 0; i < model.getSize(); i++) {
                 results.add(model.getElementAt(i));
             }
-            
+
             LeakCsvExporter exporter = new LeakCsvExporter(results);
             boolean success = exporter.doExport();
             if (success) {
@@ -240,7 +236,7 @@ public class LeakAction {
                 JOptionPane.showMessageDialog(instance.getMasterPanel(), "导出失败");
             }
         });
-        
+
         instance.getLeakStartBtn().addActionListener(e -> new Thread(() -> {
             CoreEngine engine = MainForm.getEngine();
             List<MemberEntity> members = engine.getAllMembersInfo();

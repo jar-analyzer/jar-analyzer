@@ -78,7 +78,7 @@ Jar Analyzer
 
 从 `4.0` 版本后支持信息泄露检查（部分正则来源于 [HaE](https://github.com/gh0stkey/HaE) 项目）
 
-![](img/0066.png)
+![](img/0083.png)
 
 从 `4.0` 版本开始可以和 `IDEA` 一样快捷键两次 `shift` 调出 `Lucene` 全局搜索
 

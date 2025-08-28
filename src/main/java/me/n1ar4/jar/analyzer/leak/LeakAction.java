@@ -14,10 +14,17 @@ import me.n1ar4.jar.analyzer.engine.CoreEngine;
 import me.n1ar4.jar.analyzer.entity.LeakResult;
 import me.n1ar4.jar.analyzer.entity.MemberEntity;
 import me.n1ar4.jar.analyzer.gui.MainForm;
+import me.n1ar4.jar.analyzer.starter.Const;
+import me.n1ar4.jar.analyzer.utils.DirUtil;
+import me.n1ar4.jar.analyzer.utils.JarUtil;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 
 import javax.swing.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -34,18 +41,29 @@ public class LeakAction {
         private final String typeName;
         private final String logName;
 
-        public RuleConfig(JCheckBox checkBox, Function<String, List<String>> ruleFunction, 
-                         String typeName, String logName) {
+        public RuleConfig(JCheckBox checkBox, Function<String, List<String>> ruleFunction,
+                          String typeName, String logName) {
             this.checkBox = checkBox;
             this.ruleFunction = ruleFunction;
             this.typeName = typeName;
             this.logName = logName;
         }
 
-        public JCheckBox getCheckBox() { return checkBox; }
-        public Function<String, List<String>> getRuleFunction() { return ruleFunction; }
-        public String getTypeName() { return typeName; }
-        public String getLogName() { return logName; }
+        public JCheckBox getCheckBox() {
+            return checkBox;
+        }
+
+        public Function<String, List<String>> getRuleFunction() {
+            return ruleFunction;
+        }
+
+        public String getTypeName() {
+            return typeName;
+        }
+
+        public String getLogName() {
+            return logName;
+        }
     }
 
     private static void log(String msg) {
@@ -58,19 +76,20 @@ public class LeakAction {
 
     /**
      * 通用规则处理器
-     * @param config 规则配置
-     * @param members 成员实体列表
+     *
+     * @param config    规则配置
+     * @param members   成员实体列表
      * @param stringMap 字符串映射
-     * @param results 结果集合
+     * @param results   结果集合
      */
-    private static void processRule(RuleConfig config, List<MemberEntity> members, 
-                                   Map<String, String> stringMap, Set<LeakResult> results) {
+    private static void processRule(RuleConfig config, List<MemberEntity> members,
+                                    Map<String, String> stringMap, Set<LeakResult> results) {
         if (!config.getCheckBox().isSelected()) {
             return;
         }
 
         log(config.getLogName() + " leak start");
-        
+
         // 处理成员实体
         for (MemberEntity member : members) {
             List<String> data = config.getRuleFunction().apply(member.getValue());
@@ -85,7 +104,52 @@ public class LeakAction {
                 results.add(leakResult);
             }
         }
-        
+
+        Path tempDir = Paths.get(Const.tempDir).toAbsolutePath();
+        try {
+            List<String> allFiles = DirUtil.GetFiles(tempDir.toString());
+            for (String filePath : allFiles) {
+                Path file = Paths.get(filePath);
+                String fileName = file.getFileName().toString().toLowerCase();
+
+                // 检查文件是否符合配置文件扩展名规则
+                boolean isConfigFile = false;
+                for (String ext : JarUtil.CONFIG_EXTENSIONS) {
+                    if (fileName.endsWith(ext.toLowerCase())) {
+                        isConfigFile = true;
+                        break;
+                    }
+                }
+
+                if (isConfigFile) {
+                    try {
+                        // 读取文件内容
+                        byte[] fileBytes = Files.readAllBytes(file);
+                        String fileContent = new String(fileBytes, StandardCharsets.UTF_8);
+
+                        // 应用规则函数进行匹配
+                        List<String> data = config.getRuleFunction().apply(fileContent);
+                        if (!data.isEmpty()) {
+                            for (String s : data) {
+                                LeakResult leakResult = new LeakResult();
+                                // 使用相对于 tempDir 的路径作为类名
+                                String relativePath = tempDir.relativize(file).toString()
+                                        .replace("\\", "/");
+                                leakResult.setClassName(relativePath);
+                                leakResult.setValue(s.trim());
+                                leakResult.setTypeName(config.getTypeName());
+                                results.add(leakResult);
+                            }
+                        }
+                    } catch (Exception e) {
+                        logger.warn("读取配置文件失败: {} - {}", filePath, e.getMessage());
+                    }
+                }
+            }
+        } catch (Exception e) {
+            logger.error("遍历静态文件时出错: {}", e.toString());
+        }
+
         // 处理字符串映射
         for (Map.Entry<String, String> entry : stringMap.entrySet()) {
             String className = entry.getKey();
@@ -102,7 +166,7 @@ public class LeakAction {
                 results.add(leakResult);
             }
         }
-        
+
         log(config.getLogName() + " leak finish");
     }
 
@@ -158,21 +222,21 @@ public class LeakAction {
 
             // 配置所有规则
             RuleConfig[] ruleConfigs = {
-                new RuleConfig(jwtBox, JWTRule::match, "JWT-TOKEN", "jwt-token"),
-                new RuleConfig(idCardBox, IDCardRule::match, "ID-CARD", "id-card"),
-                new RuleConfig(ipAddrBox, IPAddressRule::match, "IP-ADDR", "ip-addr"),
-                new RuleConfig(emailBox, EmailRule::match, "EMAIL", "email"),
-                new RuleConfig(urlBox, UrlRule::match, "URL", "url"),
-                new RuleConfig(jdbcBox, JDBCRule::match, "JDBC", "jdbc"),
-                new RuleConfig(filePathBox, FilePathRule::match, "FILE-PATH", "file-path"),
-                new RuleConfig(macAddrBox, MacAddressRule::match, "MAC-ADDR", "mac-addr"),
-                new RuleConfig(phoneBox, PhoneRule::match, "PHONE", "phone"),
-                new RuleConfig(apiKeyBox, ApiKeyRule::match, "API-KEY", "api-key"),
-                new RuleConfig(bankBox, BankCardRule::match, "BANK-CARD", "bank-card"),
-                new RuleConfig(cloudAkSkBox, CloudAKSKRule::match, "CLOUD-AKSK", "cloud-aksk"),
-                new RuleConfig(cryptoBox, CryptoKeyRule::match, "CRYPTO-KEY", "crypto-key"),
-                new RuleConfig(aiKeyBox, OpenAITokenRule::match, "AI-KEY", "ai-key"),
-                new RuleConfig(passBox, PasswordRule::match, "PASSWORD", "password")
+                    new RuleConfig(jwtBox, JWTRule::match, "JWT-TOKEN", "jwt-token"),
+                    new RuleConfig(idCardBox, IDCardRule::match, "ID-CARD", "id-card"),
+                    new RuleConfig(ipAddrBox, IPAddressRule::match, "IP-ADDR", "ip-addr"),
+                    new RuleConfig(emailBox, EmailRule::match, "EMAIL", "email"),
+                    new RuleConfig(urlBox, UrlRule::match, "URL", "url"),
+                    new RuleConfig(jdbcBox, JDBCRule::match, "JDBC", "jdbc"),
+                    new RuleConfig(filePathBox, FilePathRule::match, "FILE-PATH", "file-path"),
+                    new RuleConfig(macAddrBox, MacAddressRule::match, "MAC-ADDR", "mac-addr"),
+                    new RuleConfig(phoneBox, PhoneRule::match, "PHONE", "phone"),
+                    new RuleConfig(apiKeyBox, ApiKeyRule::match, "API-KEY", "api-key"),
+                    new RuleConfig(bankBox, BankCardRule::match, "BANK-CARD", "bank-card"),
+                    new RuleConfig(cloudAkSkBox, CloudAKSKRule::match, "CLOUD-AKSK", "cloud-aksk"),
+                    new RuleConfig(cryptoBox, CryptoKeyRule::match, "CRYPTO-KEY", "crypto-key"),
+                    new RuleConfig(aiKeyBox, OpenAITokenRule::match, "AI-KEY", "ai-key"),
+                    new RuleConfig(passBox, PasswordRule::match, "PASSWORD", "password")
             };
 
             // 处理所有规则
@@ -187,7 +251,7 @@ public class LeakAction {
             }
             leakList.setModel(model);
         }).start());
-        
+
         instance.getLeakCleanBtn().addActionListener(e -> {
             leakList.setModel(new DefaultListModel<>());
             JOptionPane.showMessageDialog(instance.getMasterPanel(), "clean data finish");

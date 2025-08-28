@@ -37,7 +37,7 @@ public class JarUtil {
     private static final int MAX_PARENT_SEARCH = 20;
 
     // 配置文件扩展名列表
-    private static final Set<String> CONFIG_EXTENSIONS = new HashSet<>(Arrays.asList(
+    public static final Set<String> CONFIG_EXTENSIONS = new HashSet<>(Arrays.asList(
             ".yml", ".yaml", ".properties", ".xml", ".json", ".conf", ".config",
             ".ini", ".toml", "web.xml", "application.properties", "application.yml",
             "application-dev.properties", "application-prod.properties",

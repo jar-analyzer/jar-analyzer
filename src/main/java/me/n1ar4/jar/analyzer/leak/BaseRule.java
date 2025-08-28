@@ -60,7 +60,7 @@ public class BaseRule {
         }
         return results;
     }
-    
+
     // 添加支持获取第二个捕获组的方法
     public static List<String> matchGroup2(String regex, String input) {
         String val;
@@ -83,7 +83,7 @@ public class BaseRule {
         }
         return results;
     }
-    
+
     // 添加多正则匹配方法 - Java 8 兼容版本
     public static List<String> matchMultipleRegex(List<String> regexList, String input) {
         List<String> results = new ArrayList<>();
@@ -93,13 +93,13 @@ public class BaseRule {
         // Java 8 兼容写法
         return results.stream().distinct().collect(Collectors.toList());
     }
-    
+
     // 添加验证方法
     public static boolean isValidMatch(String pattern, String input) {
         Pattern p = Pattern.compile(pattern);
         return p.matcher(input).matches();
     }
-    
+
     // 添加敏感度配置
     public static List<String> matchWithSensitivity(String regex, String input, boolean caseSensitive) {
         String val = preprocessInput(input);
@@ -112,7 +112,7 @@ public class BaseRule {
         }
         return results;
     }
-    
+
     private static String preprocessInput(String input) {
         if (MainForm.getInstance().getLeakDetBase64Box().isSelected()) {
             try {

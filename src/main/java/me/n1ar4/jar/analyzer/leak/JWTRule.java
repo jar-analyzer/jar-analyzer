@@ -16,11 +16,11 @@ import java.util.List;
 public class JWTRule {
     // 更精确的JWT正则表达式
     private final static String regex = "(eyJ[A-Za-z0-9_-]*\\.[A-Za-z0-9._-]*\\.[A-Za-z0-9._-]*)";
-    
+
     public static List<String> match(String input) {
         List<String> candidates = BaseRule.matchGroup1(regex, input);
         List<String> validJwts = new ArrayList<>();
-        
+
         for (String jwt : candidates) {
             if (isValidJwtStructure(jwt)) {
                 validJwts.add(jwt);
@@ -28,7 +28,7 @@ public class JWTRule {
         }
         return validJwts;
     }
-    
+
     private static boolean isValidJwtStructure(String jwt) {
         String[] parts = jwt.split("\\.");
         return parts.length == 3;

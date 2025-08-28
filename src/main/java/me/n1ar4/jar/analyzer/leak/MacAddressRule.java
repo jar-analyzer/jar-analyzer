@@ -18,7 +18,7 @@ public class MacAddressRule {
     // 支持冒号和连字符分隔的MAC地址
     private final static String colonRegex = "([a-fA-F0-9]{2}:[a-fA-F0-9]{2}:[a-fA-F0-9]{2}:[a-fA-F0-9]{2}:[a-fA-F0-9]{2}:[a-fA-F0-9]{2})";
     private final static String dashRegex = "([a-fA-F0-9]{2}-[a-fA-F0-9]{2}-[a-fA-F0-9]{2}-[a-fA-F0-9]{2}-[a-fA-F0-9]{2}-[a-fA-F0-9]{2})";
-    
+
     public static List<String> match(String input) {
         List<String> results = new ArrayList<>();
         results.addAll(BaseRule.matchGroup1(colonRegex, input));

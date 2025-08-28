@@ -17,10 +17,10 @@ import java.util.stream.Collectors;
 public class EmailRule {
     // 改进的邮箱正则表达式，支持更多格式
     private final static String regex = "([a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*)";
-    
+
     // 支持国际化域名的正则
     private final static String intlRegex = "([\\w._%+-]+@[\\w.-]+\\.[A-Za-z]{2,})";
-    
+
     public static List<String> match(String input) {
         List<String> results = new ArrayList<>();
         results.addAll(BaseRule.matchGroup1(regex, input));

@@ -15,7 +15,7 @@ import java.util.List;
 public class UrlRule {
     // 支持更多协议的URL正则
     private final static String regex = "((https?|ftp|sftp|ftps|file|ldap|ldaps)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]*[-A-Za-z0-9+&@#/%=~_|])";
-    
+
     public static List<String> match(String input) {
         return BaseRule.matchGroup1(regex, input);
     }

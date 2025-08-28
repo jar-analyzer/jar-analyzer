@@ -74,6 +74,10 @@ public class JavaWebClassVisitor extends ClassVisitor {
                     superClassName.equals("jakarta.servlet.http.HttpServlet")) {
                 servlets.add(currentClassName.replace(".", "/"));
             }
+
+            if (superClassName.equals("org.springframework.web.servlet.handler.HandlerInterceptorAdapter")) {
+                interceptors.add(currentClassName.replace(".", "/"));
+            }
         }
 
         super.visit(version, access, name, signature, superName, interfaces);

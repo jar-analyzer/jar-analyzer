@@ -209,8 +209,9 @@ public class ShellForm {
             String output = "1. 远程启动你的 JAVA 程序\n" +
                     "请在你的启动参数中添加 " + command + "\n" +
                     "对于 Tomcat 来说通常是修改 startup.bat/startup.sh 部分代码\n" +
+                    "对于 SpringBoot 来说 java " + command + " -jar springboot.jar\n\n" +
                     "2. 配置 IP 和 PASSWORD 信息后点击 CONNECT\n" +
-                    "3. 如果没有自动显示信息可以尝试点击右侧的 刷新 按钮\n" +
+                    "3. 如果没有自动显示信息可以尝试再次点击 CONNECT 按钮\n\n" +
                     "注意：在 Tomcat 中修改的是 catalina.bat/sh 参考弹出图片";
 
             cmdArea.setText(output);

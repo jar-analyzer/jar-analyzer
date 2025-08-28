@@ -13,6 +13,7 @@ package me.n1ar4.jar.analyzer.leak;
 import me.n1ar4.jar.analyzer.engine.CoreEngine;
 import me.n1ar4.jar.analyzer.entity.LeakResult;
 import me.n1ar4.jar.analyzer.entity.MemberEntity;
+import me.n1ar4.jar.analyzer.exporter.LeakCsvExporter;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.utils.DirUtil;
@@ -25,6 +26,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -176,6 +178,8 @@ public class LeakAction {
             return;
         }
 
+        JButton export = instance.getExportLeakBtn();
+
         // 获取所有复选框
         JCheckBox jwtBox = instance.getLeakJWTBox();
         JCheckBox idCardBox = instance.getLeakIdBox();
@@ -213,6 +217,30 @@ public class LeakAction {
         JList<LeakResult> leakList = instance.getLeakResultList();
 
         logger.info("registering leak action");
+        
+        // 添加导出功能
+        export.addActionListener(e -> {
+            DefaultListModel<LeakResult> model = (DefaultListModel<LeakResult>) leakList.getModel();
+            if (model == null || model.isEmpty()) {
+                JOptionPane.showMessageDialog(instance.getMasterPanel(), "没有泄露检测结果可以导出");
+                return;
+            }
+            
+            List<LeakResult> results = new ArrayList<>();
+            for (int i = 0; i < model.getSize(); i++) {
+                results.add(model.getElementAt(i));
+            }
+            
+            LeakCsvExporter exporter = new LeakCsvExporter(results);
+            boolean success = exporter.doExport();
+            if (success) {
+                String fileName = exporter.getFileName();
+                JOptionPane.showMessageDialog(instance.getMasterPanel(), "导出成功: " + fileName);
+            } else {
+                JOptionPane.showMessageDialog(instance.getMasterPanel(), "导出失败");
+            }
+        });
+        
         instance.getLeakStartBtn().addActionListener(e -> new Thread(() -> {
             CoreEngine engine = MainForm.getEngine();
             List<MemberEntity> members = engine.getAllMembersInfo();

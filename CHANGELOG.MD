@@ -7,6 +7,7 @@
 - [重要] `DFS` 分析结果支持简单的污点分析验证 @4ra1n
 - [功能] 信息泄露检查新增 `AKSK API` 等多个检测 @4ra1n
 - [功能] 信息泄露检查支持 `jar` 文件内配置文件检测 @4ra1n
+- [功能] 信息泄露分析结果支持导出到 `csv` 文件 @4ra1n
 - [功能] `DFS` 分析结果会保存到数据库中 @4ra1n
 - [BUG] 优化 `Spring Interceptor` 漏报 @su18
 - [优化] 优化 `Tomcat Analyzer` 生成命令提示 @4ra1n

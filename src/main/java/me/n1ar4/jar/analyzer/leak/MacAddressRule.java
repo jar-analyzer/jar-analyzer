@@ -10,12 +10,20 @@
 
 package me.n1ar4.jar.analyzer.leak;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MacAddressRule {
-    private final static String regex = "(^([a-fA-F0-9]{2}(:[a-fA-F0-9]{2}){5})|[^a-zA-Z0-9]([a-fA-F0-9]{2}(:[a-fA-F0-9]{2}){5}))";
-
+    // 支持冒号和连字符分隔的MAC地址
+    private final static String colonRegex = "([a-fA-F0-9]{2}:[a-fA-F0-9]{2}:[a-fA-F0-9]{2}:[a-fA-F0-9]{2}:[a-fA-F0-9]{2}:[a-fA-F0-9]{2})";
+    private final static String dashRegex = "([a-fA-F0-9]{2}-[a-fA-F0-9]{2}-[a-fA-F0-9]{2}-[a-fA-F0-9]{2}-[a-fA-F0-9]{2}-[a-fA-F0-9]{2})";
+    
     public static List<String> match(String input) {
-        return BaseRule.matchGroup1(regex, input);
+        List<String> results = new ArrayList<>();
+        results.addAll(BaseRule.matchGroup1(colonRegex, input));
+        results.addAll(BaseRule.matchGroup1(dashRegex, input));
+        // Java 8 兼容写法
+        return results.stream().distinct().collect(Collectors.toList());
     }
 }

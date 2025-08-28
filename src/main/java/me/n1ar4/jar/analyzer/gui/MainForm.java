@@ -350,6 +350,12 @@ public class MainForm {
     private JPanel chainsResult;
     private JCheckBox taintBox;
     private JLabel taintLabel;
+    private JCheckBox AKSKCheckBox;
+    private JCheckBox bankCardCheckBox;
+    private JCheckBox APIKeyCheckBox;
+    private JCheckBox cryptoKeyCheckBox;
+    private JCheckBox AIKeyCheckBox;
+    private JCheckBox passwordCheckBox;
     private static DefaultListModel<MethodResult> favData;
 
     public JCheckBox getTaintBox() {
@@ -862,6 +868,30 @@ public class MainForm {
 
     public JCheckBox getGadgetFastjsonBox() {
         return gadgetFastjsonBox;
+    }
+
+    public JCheckBox getPasswordCheckBox() {
+        return passwordCheckBox;
+    }
+
+    public JCheckBox getAIKeyCheckBox() {
+        return AIKeyCheckBox;
+    }
+
+    public JCheckBox getCryptoKeyCheckBox() {
+        return cryptoKeyCheckBox;
+    }
+
+    public JCheckBox getAPIKeyCheckBox() {
+        return APIKeyCheckBox;
+    }
+
+    public JCheckBox getBankCardCheckBox() {
+        return bankCardCheckBox;
+    }
+
+    public JCheckBox getAKSKCheckBox() {
+        return AKSKCheckBox;
     }
 
     public MainForm(boolean fake) {
@@ -2076,7 +2106,7 @@ public class MainForm {
         leakPanel.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPanel.addTab("leak", leakPanel);
         leakRulesPanel = new JPanel();
-        leakRulesPanel.setLayout(new GridLayoutManager(3, 3, new Insets(0, 0, 0, 0), -1, -1));
+        leakRulesPanel.setLayout(new GridLayoutManager(5, 3, new Insets(0, 0, 0, 0), -1, -1));
         leakPanel.add(leakRulesPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         leakRulesPanel.setBorder(BorderFactory.createTitledBorder(null, "Rules", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         leakUrlBox = new JCheckBox();
@@ -2106,6 +2136,24 @@ public class MainForm {
         leakEmailBox = new JCheckBox();
         leakEmailBox.setText("Email");
         leakRulesPanel.add(leakEmailBox, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        AKSKCheckBox = new JCheckBox();
+        AKSKCheckBox.setText("AK SK");
+        leakRulesPanel.add(AKSKCheckBox, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        bankCardCheckBox = new JCheckBox();
+        bankCardCheckBox.setText("Bank Card");
+        leakRulesPanel.add(bankCardCheckBox, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        APIKeyCheckBox = new JCheckBox();
+        APIKeyCheckBox.setText("API Key");
+        leakRulesPanel.add(APIKeyCheckBox, new GridConstraints(3, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        cryptoKeyCheckBox = new JCheckBox();
+        cryptoKeyCheckBox.setText("Crypto Key");
+        leakRulesPanel.add(cryptoKeyCheckBox, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        AIKeyCheckBox = new JCheckBox();
+        AIKeyCheckBox.setText("AI Key");
+        leakRulesPanel.add(AIKeyCheckBox, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        passwordCheckBox = new JCheckBox();
+        passwordCheckBox.setText("Password");
+        leakRulesPanel.add(passwordCheckBox, new GridConstraints(4, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         leakConfigPanel = new JPanel();
         leakConfigPanel.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
         leakPanel.add(leakConfigPanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));

@@ -10,12 +10,22 @@
 
 package me.n1ar4.jar.analyzer.leak;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class EmailRule {
-    private final static String regex = "(([a-z0-9]+[_|.])*[a-z0-9]+@([a-z0-9]+[-|_.])*[a-z0-9]+\\.((?!js|css|jpg|jpeg|png|ico)[a-z]{2,5}))";
-
+    // 改进的邮箱正则表达式，支持更多格式
+    private final static String regex = "([a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*)";
+    
+    // 支持国际化域名的正则
+    private final static String intlRegex = "([\\w._%+-]+@[\\w.-]+\\.[A-Za-z]{2,})";
+    
     public static List<String> match(String input) {
-        return BaseRule.matchGroup0(regex, input);
+        List<String> results = new ArrayList<>();
+        results.addAll(BaseRule.matchGroup1(regex, input));
+        results.addAll(BaseRule.matchGroup1(intlRegex, input));
+        // Java 8 兼容写法
+        return results.stream().distinct().collect(Collectors.toList());
     }
 }

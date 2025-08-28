@@ -13,8 +13,9 @@ package me.n1ar4.jar.analyzer.leak;
 import java.util.List;
 
 public class UrlRule {
-    private final static String regex = "([-A-Za-z0-9]{1,20}://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|])";
-
+    // 支持更多协议的URL正则
+    private final static String regex = "((https?|ftp|sftp|ftps|file|ldap|ldaps)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]*[-A-Za-z0-9+&@#/%=~_|])";
+    
     public static List<String> match(String input) {
         return BaseRule.matchGroup1(regex, input);
     }

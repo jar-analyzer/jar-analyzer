@@ -49,6 +49,12 @@ public class LeakAction {
         JCheckBox filePathBox = instance.getLeakFileBox();
         JCheckBox macAddrBox = instance.getLeakMacBox();
         JCheckBox phoneBox = instance.getLeakPhoneBox();
+        JCheckBox apiKeyBox = instance.getAPIKeyCheckBox();
+        JCheckBox bankBox = instance.getBankCardCheckBox();
+        JCheckBox cloudAkSkBox = instance.getAKSKCheckBox();
+        JCheckBox cryptoBox = instance.getCryptoKeyCheckBox();
+        JCheckBox aiKeyBox = instance.getAIKeyCheckBox();
+        JCheckBox passBox = instance.getPasswordCheckBox();
 
         jwtBox.setSelected(true);
         idCardBox.setSelected(true);
@@ -60,6 +66,12 @@ public class LeakAction {
         filePathBox.setSelected(true);
         macAddrBox.setSelected(true);
         phoneBox.setSelected(true);
+        apiKeyBox.setSelected(true);
+        bankBox.setSelected(true);
+        cloudAkSkBox.setSelected(true);
+        cryptoBox.setSelected(true);
+        aiKeyBox.setSelected(true);
+        passBox.setSelected(true);
 
         JList<LeakResult> leakList = instance.getLeakResultList();
 

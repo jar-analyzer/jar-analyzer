@@ -58,7 +58,7 @@ public class DiscoveryClassVisitor extends ClassVisitor {
         super.visit(version, access, name, signature, superName, interfaces);
     }
 
-    public String getName(){
+    public String getName() {
         return this.name;
     }
 

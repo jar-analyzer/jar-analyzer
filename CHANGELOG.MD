@@ -6,11 +6,13 @@
 
 - [重要] `DFS` 分析结果支持简单的污点分析验证 @4ra1n
 - [功能] `DFS` 分析结果会保存到数据库中 @4ra1n
+- [BUG] 优化 `Spring Interceptor` 漏报 @su18
 - [其他] 致谢列表会丢失非 `Github` 邮箱提交记录 @4ra1n
 
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
+- su18 (https://github.com/su18)
 
 所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
 

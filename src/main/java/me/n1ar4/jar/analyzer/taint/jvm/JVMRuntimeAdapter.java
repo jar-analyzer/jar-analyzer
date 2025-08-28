@@ -67,13 +67,13 @@ public class JVMRuntimeAdapter<T> extends MethodVisitor {
             }
             // add current state
             for (int i = 0; i < localVariables.size(); i++) {
-                while (newLocalVariables.size()<=i){
+                while (newLocalVariables.size() <= i) {
                     newLocalVariables.add(new HashSet<>());
                 }
                 newLocalVariables.get(i).addAll(localVariables.get(i));
             }
             for (int i = 0; i < operandStack.size(); i++) {
-                while (newOperandStack.size()<=i){
+                while (newOperandStack.size() <= i) {
                     newOperandStack.add(new HashSet<>());
                 }
                 newOperandStack.get(i).addAll(operandStack.get(i));

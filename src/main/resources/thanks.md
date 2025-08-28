@@ -11,5 +11,6 @@ JAR ANALYZER 感谢以下贡献者
 7. TianMing2018 (https://github.com/TianMing2018)
 8. R0ser1 (https://github.com/R0ser1)
 9. hacats (https://github.com/hacats)
+10. su18 (https://github.com/su18)
 
 感谢以上师傅们，也希望其他师傅们也可以贡献代码！

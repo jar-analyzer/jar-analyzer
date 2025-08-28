@@ -112,7 +112,7 @@ public class TaintAnalyzer {
                             logger.info("开始分析方法 {} 第 {} 个参数", m.getName(), k);
                             text.append(String.format("开始分析方法 %s 第 %d 个参数", m.getName(), k));
                             text.append("\n");
-                            TaintClassVisitor tcv = new TaintClassVisitor(k, m, next, pass, rule,text);
+                            TaintClassVisitor tcv = new TaintClassVisitor(k, m, next, pass, rule, text);
                             ClassReader cr = new ClassReader(clsBytes);
                             cr.accept(tcv, Const.AnalyzeASMOptions);
                             pass = tcv.getPass();

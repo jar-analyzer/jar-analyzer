@@ -1536,25 +1536,25 @@ public class MainForm {
                 if (instance.getTaintBox().isSelected()) {
                     // 弹框提醒用户即将开始污点分析验证
                     int result = JOptionPane.showConfirmDialog(
-                        instance.getMasterPanel().getTopLevelAncestor(),
-                        "即将对 DFS 结果开始污点分析验证，此过程可能需要一些时间。\n是否继续？",
-                        "污点分析确认",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE
+                            instance.getMasterPanel().getTopLevelAncestor(),
+                            "即将对 DFS 结果开始污点分析验证，此过程可能需要一些时间。\n是否继续？",
+                            "污点分析确认",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE
                     );
-                    
+
                     // 如果用户选择取消，直接返回
                     if (result != JOptionPane.YES_OPTION) {
                         logger.info("user cancelled taint analysis");
                         dialog.dispose();
                         return;
                     }
-                    
+
                     logger.info("start taint analyze");
                     List<TaintResult> taintResult = TaintAnalyzer.analyze(resultList);
                     // 显示污点分析结果的详细GUI窗体
-                    TaintResultDialog.showTaintResults(instance.getMasterPanel().getTopLevelAncestor() instanceof Frame ? 
-                        (Frame) instance.getMasterPanel().getTopLevelAncestor() : null, taintResult);
+                    TaintResultDialog.showTaintResults(instance.getMasterPanel().getTopLevelAncestor() instanceof Frame ?
+                            (Frame) instance.getMasterPanel().getTopLevelAncestor() : null, taintResult);
                 }
                 dialog.dispose();
             }).start();

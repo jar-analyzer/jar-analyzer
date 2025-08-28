@@ -21,7 +21,7 @@ import java.util.List;
 
 public class SanitizerRule {
     private static final Logger logger = LogManager.getLogger();
-    
+
     @JSONField
     private List<Sanitizer> rules;
 
@@ -44,11 +44,11 @@ public class SanitizerRule {
             return new SanitizerRule();
         }
     }
-    
+
     public List<Sanitizer> getRules() {
         return rules;
     }
-    
+
     public void setRules(List<Sanitizer> rules) {
         this.rules = rules;
     }

@@ -10,12 +10,12 @@
 
 package me.n1ar4.jar.analyzer.dfs;
 
+import me.n1ar4.jar.analyzer.core.reference.ClassReference;
+import me.n1ar4.jar.analyzer.core.reference.MethodReference;
 import me.n1ar4.jar.analyzer.engine.CoreEngine;
 import me.n1ar4.jar.analyzer.entity.MethodResult;
 import me.n1ar4.jar.analyzer.gui.ChainsResultPanel;
 import me.n1ar4.jar.analyzer.gui.MainForm;
-import me.n1ar4.jar.analyzer.core.reference.ClassReference;
-import me.n1ar4.jar.analyzer.core.reference.MethodReference;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 
@@ -44,7 +44,7 @@ public class DFSEngine {
 
     private int chainCount = 0;
     private int sourceCount = 0;
-    
+
     // 新增：结果收集列表
     private final List<DFSResult> results = new ArrayList<>();
 
@@ -323,7 +323,7 @@ public class DFSEngine {
      */
     private List<MethodReference.Handle> convertPathToHandles(List<MethodResult> path, boolean isReverse) {
         List<MethodReference.Handle> handles = new ArrayList<>();
-        
+
         if (isReverse) {
             // 反向搜索时，路径需要反转
             for (int i = path.size() - 1; i >= 0; i--) {
@@ -335,7 +335,7 @@ public class DFSEngine {
                 handles.add(convertToHandle(method));
             }
         }
-        
+
         return handles;
     }
 
@@ -360,12 +360,12 @@ public class DFSEngine {
         }
 
         addChain(chainId, title, methods);
-        
+
         // 新增：保存结果到 DFSResult
         DFSResult result = new DFSResult();
         result.setMethodList(convertPathToHandles(path, isReverse));
         result.setDepth(path.size());
-        
+
         // 设置模式
         if (fromSink) {
             if (searchNullSource) {
@@ -376,7 +376,7 @@ public class DFSEngine {
         } else {
             result.setMode(DFSResult.FROM_SOURCE_TO_SINK);
         }
-        
+
         // 设置 source 和 sink
         if (!path.isEmpty()) {
             if (isReverse) {
@@ -389,7 +389,7 @@ public class DFSEngine {
                 result.setSink(convertToHandle(path.get(path.size() - 1)));
             }
         }
-        
+
         results.add(result);
     }
 
@@ -407,19 +407,19 @@ public class DFSEngine {
         }
 
         addChain(chainId, title, methods);
-        
+
         // 新增：保存结果到 DFSResult
         DFSResult result = new DFSResult();
         result.setMethodList(convertPathToHandles(path, true)); // 反向输出
         result.setDepth(path.size());
         result.setMode(DFSResult.FROM_SOURCE_TO_ALL);
-        
+
         // 设置 source 和 sink
         if (!path.isEmpty()) {
             result.setSource(convertToHandle(sourceMethod));
             result.setSink(convertToHandle(path.get(0))); // sink 是路径的起点
         }
-        
+
         results.add(result);
     }
 
@@ -429,12 +429,13 @@ public class DFSEngine {
 
     /**
      * 获取所有分析结果
+     *
      * @return DFSResult 列表
      */
     public List<DFSResult> getResults() {
         return new ArrayList<>(results);
     }
-    
+
     /**
      * 清空结果列表
      */
@@ -443,9 +444,10 @@ public class DFSEngine {
         chainCount = 0;
         sourceCount = 0;
     }
-    
+
     /**
      * 获取结果数量
+     *
      * @return 找到的调用链数量
      */
     public int getResultCount() {

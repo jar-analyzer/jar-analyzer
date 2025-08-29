@@ -1,6 +1,29 @@
 # CHANGELOG
 
-## 5.7
+## 5.8 - 开发中 - 未发布
+
+更新日志：
+
+- todo
+
+感谢以下用户的贡献:
+
+- 4ra1n (https://github.com/4ra1n)
+
+所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
+
+- `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (**完整版本**)
+- `windows-21` 版内置开启 `ZGC` 的 `JRE 21` 环境（激进用户尝试使用）
+- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
+- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
+
+一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
+
+如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
+
+官方文档：https://docs.qq.com/doc/DV3pKbG9GS0pJS0tk
+
+## 5.7 - 已发布最新版
 
 七夕快乐
 
@@ -37,7 +60,7 @@
 
 官方文档：https://docs.qq.com/doc/DV3pKbG9GS0pJS0tk
 
-## 5.6 - 已发布最新版
+## 5.6
 
 官方文档：https://docs.qq.com/doc/DV3pKbG9GS0pJS0tk
 

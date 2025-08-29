@@ -1,5 +1,42 @@
 # CHANGELOG
 
+## 5.7
+
+七夕快乐
+
+更新日志：
+
+- [重要] `DFS` 分析结果支持简单的污点分析验证 @4ra1n
+- [功能] 信息泄露检查新增 `AKSK API` 等多个检测 @4ra1n
+- [功能] 信息泄露检查支持 `jar` 文件内配置文件检测 @4ra1n
+- [功能] 信息泄露分析结果支持导出到 `csv` 文件 @4ra1n
+- [功能] `DFS` 分析结果会保存到数据库中 @4ra1n
+- [安全] 修复潜在的 `SQL` 注入漏洞 @4ra1n
+- [BUG] 优化 `Spring Interceptor` 漏报 @su18
+- [优化] 优化 `Tomcat Analyzer` 生成命令提示 @4ra1n
+- [优化] 启动 `bat` 脚本添加更多参数提示 @4ra1n
+- [优化] 优化信息泄露检测部分正则和代码逻辑 @4ra1n
+- [其他] 致谢列表会丢失非 `Github` 邮箱提交记录 @4ra1n
+- [其他] 升级一些依赖到最新版 @4ra1n
+
+感谢以下用户的贡献:
+
+- 4ra1n (https://github.com/4ra1n)
+- su18 (https://github.com/su18)
+
+所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
+
+- `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (**完整版本**)
+- `windows-21` 版内置开启 `ZGC` 的 `JRE 21` 环境（激进用户尝试使用）
+- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
+- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
+
+一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
+
+如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
+
+官方文档：https://docs.qq.com/doc/DV3pKbG9GS0pJS0tk
+
 ## 5.6
 
 官方文档：https://docs.qq.com/doc/DV3pKbG9GS0pJS0tk

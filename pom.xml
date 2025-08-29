@@ -16,7 +16,7 @@
 
     <groupId>me.n1ar4</groupId>
     <artifactId>jar-analyzer</artifactId>
-    <version>5.6</version>
+    <version>5.7</version>
 
     <packaging>jar</packaging>
     <description>Jar Analyzer Project</description>
@@ -81,9 +81,9 @@
         <okhttp3.version>4.12.0</okhttp3.version>
         <nano.version>2.3.1</nano.version>
         <fastjson.version>2.0.58</fastjson.version>
-        <hutool.version>5.8.39</hutool.version>
+        <hutool.version>5.8.40</hutool.version>
         <jfreechart.version>1.5.6</jfreechart.version>
-        <oshi.version>6.8.2</oshi.version>
+        <oshi.version>6.8.3</oshi.version>
         <lucene.version>7.7.3</lucene.version>
         <bcel.version>6.10.0</bcel.version>
         <java.parser.version>3.27.0</java.parser.version>

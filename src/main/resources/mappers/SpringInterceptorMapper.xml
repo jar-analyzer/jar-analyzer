@@ -16,10 +16,10 @@
     </resultMap>
     <insert id="insertInterceptors">
         INSERT INTO spring_interceptor_table
-        (class_name,jar_id)
+        (class_name, jar_id)
         VALUES
         <foreach collection="list" separator="," item="item">
-            (#{item.className},#{item.jarId})
+            (#{item.className}, #{item.jarId})
         </foreach>
     </insert>
     <select id="selectAllSpringI" resultMap="classMap">

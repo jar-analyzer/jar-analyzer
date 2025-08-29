@@ -24,8 +24,16 @@
         (member_name, modifiers, value, method_desc, method_signature, type_class_name, class_name, jar_id)
         VALUES
         <foreach collection="list" separator="," item="item">
-            (#{item.memberName}, #{item.modifiers}, #{item.value}, #{item.methodDesc},#{item.methodSignature},
-            #{item.typeClassName}, #{item.className}, #{item.jarId})
+            (
+             #{item.memberName},
+             #{item.modifiers},
+             #{item.value},
+             #{item.methodDesc},
+             #{item.methodSignature},
+             #{item.typeClassName},
+             #{item.className},
+             #{item.jarId}
+            )
         </foreach>
     </insert>
     <select id="selectMembersByClass" resultMap="memberMap">

@@ -9,6 +9,7 @@
 - [功能] 信息泄露检查支持 `jar` 文件内配置文件检测 @4ra1n
 - [功能] 信息泄露分析结果支持导出到 `csv` 文件 @4ra1n
 - [功能] `DFS` 分析结果会保存到数据库中 @4ra1n
+- [安全] 修复潜在的 `SQL` 注入漏洞 @4ra1n
 - [BUG] 优化 `Spring Interceptor` 漏报 @su18
 - [优化] 优化 `Tomcat Analyzer` 生成命令提示 @4ra1n
 - [优化] 启动 `bat` 脚本添加更多参数提示 @4ra1n

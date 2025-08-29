@@ -20,7 +20,7 @@
     </resultMap>
     <insert id="insertMappings">
         INSERT INTO spring_method_table
-        (class_name, method_name, method_desc, path, restful_type,jar_id)
+        (class_name, method_name, method_desc, path, restful_type, jar_id)
         VALUES
         <foreach collection="list" separator="," item="item">
             (#{item.className}, #{item.methodName}, #{item.methodDesc}, #{item.path}, #{item.restfulType}, #{item.jarId})

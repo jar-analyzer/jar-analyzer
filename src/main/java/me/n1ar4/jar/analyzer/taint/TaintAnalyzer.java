@@ -101,6 +101,13 @@ public class TaintAnalyzer {
                 text.append("\n");
 
                 if (pass.get() == TAINT_FAIL) {
+                    // 2025/08/31 预期不符 BUG
+                    if (i != 0) {
+                        logger.info("第 {} 个链分析结束", i);
+                        text.append(String.format("第 %d 个链分析结束", i));
+                        text.append("\n");
+                        break;
+                    }
                     // 第一次开始
                     logger.info("开始污点分析 - 链开始 - 无数据流");
                     text.append("开始污点分析 - 链开始 - 无数据流");

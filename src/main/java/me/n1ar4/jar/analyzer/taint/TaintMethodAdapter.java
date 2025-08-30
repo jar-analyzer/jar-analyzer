@@ -18,6 +18,7 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -75,19 +76,19 @@ public class TaintMethodAdapter extends JVMRuntimeAdapter<String> {
         // 我认为所有的方法都应该传播污点
         // 除非遇到 Sanitizer 白名单 否则认为没问题
         String nextClass = next.getClassReference().getName().replace(".", "/");
+
+        // 计算方法参数数量
+        List<Set<String>> stack = this.operandStack.getList();
+        Type[] argumentTypes = Type.getArgumentTypes(desc);
+        int argCount = argumentTypes.length;
+
+        // 如果是非静态方法 还需要考虑 this 引用
+        if (opcode != Opcodes.INVOKESTATIC) {
+            argCount++; // 包含 this 引用
+        }
+
         // 找到下个方法
         if (owner.equals(nextClass) && name.equals(next.getName()) && desc.equals(next.getDesc())) {
-            List<Set<String>> stack = this.operandStack.getList();
-
-            // 计算方法参数数量
-            Type[] argumentTypes = Type.getArgumentTypes(desc);
-            int argCount = argumentTypes.length;
-
-            // 如果是非静态方法 还需要考虑 this 引用
-            if (opcode != Opcodes.INVOKESTATIC) {
-                argCount++; // 包含 this 引用
-            }
-
             // 检查 stack 是否有足够的元素
             if (stack.size() >= argCount) {
                 // 从栈顶开始检查参数（栈顶是最后一个参数）
@@ -128,15 +129,6 @@ public class TaintMethodAdapter extends JVMRuntimeAdapter<String> {
 
             List<Sanitizer> rules = this.rule.getRules();
             boolean match = false;
-
-            // 获取当前被污染的参数索引
-            List<Set<String>> stack = this.operandStack.getList();
-            Type[] argumentTypes = Type.getArgumentTypes(desc);
-            int argCount = argumentTypes.length;
-
-            if (opcode != Opcodes.INVOKESTATIC) {
-                argCount++; // 包含 this 引用
-            }
 
             // 检查每个 sanitizer 规则
             for (Sanitizer rule : rules) {
@@ -190,7 +182,32 @@ public class TaintMethodAdapter extends JVMRuntimeAdapter<String> {
                 pass.set(TaintAnalyzer.TAINT_FAIL);
                 return;
             } else {
-                logger.debug("污点没有命中 净化器 规则");
+                // 2025/08/31 没有命中污点传播规则
+                for (int i = 0; i < argCount; i++) {
+                    int stackIndex = stack.size() - 1 - i; // 从栈顶往下
+                    Set<String> item = stack.get(stackIndex);
+                    if (item.contains(TaintAnalyzer.TAINT)) {
+                        // 只要方法输入包含了污点 且方法有返回值
+                        // 就认为方法的返回值可以被污点传播到
+                        // 执行 JVM 模拟
+                        final Type returnType = Type.getReturnType(desc);
+                        final int retSize = returnType.getSize();
+                        super.visitMethodInsn(opcode, owner, name, desc, itf);
+                        // 如果返回值不是void 根据返回值大小设置栈顶污点
+                        if (returnType.getSort() != Type.VOID) {
+                            // 为返回值在栈顶设置污点（修改现有位置，不是add）
+                            for (int j = 0; j < retSize; j++) {
+                                int topIndex = stack.size() - retSize + j;
+                                Set<String> taintSet = new HashSet<>();
+                                taintSet.add(TaintAnalyzer.TAINT);
+                                stack.set(topIndex, taintSet);
+                            }
+                        }
+                        // 注意是 RETURN
+                        // 否则再次 visitMethodInsn 污点就乱了
+                        return;
+                    }
+                }
             }
         }
         super.visitMethodInsn(opcode, owner, name, desc, itf);

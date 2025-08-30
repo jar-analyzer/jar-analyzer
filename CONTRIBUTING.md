@@ -14,6 +14,14 @@
 
 （目前项目的核心开发者只有我 @4ra1n 自己，所有合并请求都由我进行 `review` 和合并）
 
+### 注意
+
+由于 `jar-analyzer` 历史提交过大，请使用 `--depth 1` 加速克隆
+
+```shell
+git clone --depth 1 https://github.com/jar-analyzer/jar-analyzer
+```
+
 ### 分支
 
 开发主分支 `master`

@@ -234,6 +234,12 @@ set "java_args=-XX:+UseG1GC -Xms2g -XX:MaxGCPauseMillis=200 %other_args%"
 
 编译和构建过程如下：（以 `Windows` 为例其他环境类似）
 
+由于 `jar-analyzer` 历史提交过大，请使用 `--depth 1` 加速克隆
+
+```shell
+git clone --depth 1 https://github.com/jar-analyzer/jar-analyzer
+```
+
 1. 重要：确保你安装了 `JDK 8 64位` （建议 `OpenJDK`）
 2. 重要：如果你修改了代码请确保在 `IDEA` 环境中至少启动一次（生成 `GUI` 代码）
 3. 重要：确保你安装了 `Maven 3.X` 并正确配置了 `PATH` 变量（需要使用 `mvn` 命令）

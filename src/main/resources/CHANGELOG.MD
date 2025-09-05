@@ -1,5 +1,34 @@
 # CHANGELOG
 
+## 5.8
+
+更新日志：
+
+- [重要] 污点分析预期外错误：可能从链中间某处开始从头分析 @4ra1n
+- [重要] 污点分析实现问题：没有正确处理方法调用导致断链漏报 @4ra1n
+- [功能] `favorite` 和 `history` 自动保存数据库和加载 @4ra1n
+- [功能] `DFS` 分析 `sink` 支持从文件 `dfs-sink.json` 加载 @4ra1n
+- [功能] 污点分析允许手动开启但必须有 `DFS` 分析的结果 @4ra1n
+- [功能] `DFS` 分析允许仅考虑 `Spring/Servlet` 入口作为 `source` @4ra1n
+- [BUG] 污点分析弹框总是位于顶部无法使用其他功能 @4ra1n
+
+感谢以下用户的贡献:
+
+- 4ra1n (https://github.com/4ra1n)
+
+所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
+
+- `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (**完整版本**)
+- `windows-21` 版内置开启 `ZGC` 的 `JRE 21` 环境（激进用户尝试使用）
+- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
+- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
+
+一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
+
+如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
+
+官方文档：https://docs.qq.com/doc/DV3pKbG9GS0pJS0tk
+
 ## 5.7
 
 七夕快乐

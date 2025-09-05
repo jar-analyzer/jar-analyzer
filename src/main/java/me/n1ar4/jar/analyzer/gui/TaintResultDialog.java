@@ -48,14 +48,14 @@ public class TaintResultDialog extends JFrame {
         setupLayout();
         loadData(taintResults);
         setupEventHandlers();
-    
+
         setSize(1200, 800);
         setLocationRelativeTo(parent);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-    
+
         setResizable(true);
         setMinimumSize(new Dimension(800, 600));
-        
+
         // 首先设置为最上层
         setAlwaysOnTop(true);
         setVisible(true);

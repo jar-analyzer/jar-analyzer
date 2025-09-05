@@ -39,7 +39,7 @@ public class ChainsBuilder {
      */
     private static void loadSinkRules() {
         boolean loaded = false;
-        
+
         // 尝试从当前目录加载 dfs-sink.json
         File currentDirFile = new File("dfs-sink.json");
         if (currentDirFile.exists() && currentDirFile.isFile()) {
@@ -52,7 +52,7 @@ public class ChainsBuilder {
                 logger.warn("从当前目录加载 dfs-sink.json 失败: {}", e.getMessage());
             }
         }
-        
+
         // 如果当前目录没有，尝试从 resources 加载
         if (!loaded) {
             InputStream resourceStream = ChainsBuilder.class.getClassLoader().getResourceAsStream("dfs-sink.json");
@@ -72,7 +72,7 @@ public class ChainsBuilder {
             }
         }
     }
-    
+
     /**
      * 从输入流加载 JSON 格式的 sink 规则
      */
@@ -83,7 +83,8 @@ public class ChainsBuilder {
                 logger.warn("JSON 数据为空");
                 return false;
             }
-            List<SinkModel> sinkList = JSON.parseObject(jsonData, new TypeReference<List<SinkModel>>() {});
+            List<SinkModel> sinkList = JSON.parseObject(jsonData, new TypeReference<List<SinkModel>>() {
+            });
             if (sinkList == null || sinkList.isEmpty()) {
                 logger.warn("解析的 sink 规则列表为空");
                 return false;

@@ -42,4 +42,8 @@ public interface InitMapper {
     void createDFSResultTable();
 
     void createDFSResultListTable();
+
+    void createFavoriteTable();
+
+    void createHistoryTable();
 }

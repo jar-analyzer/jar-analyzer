@@ -287,6 +287,9 @@ public class CommonMouseAdapter extends MouseAdapter {
             popupMenu.add(clearHis);
             clearHis.addActionListener(e -> {
                 MainForm.getEngine().cleanHistory();
+                MainForm.getInstance().getHistoryListData().clear();
+                MainForm.getInstance().getHistoryList().revalidate();
+                MainForm.getInstance().getHistoryList().repaint();
                 JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(), "CLEAR OK");
             });
 

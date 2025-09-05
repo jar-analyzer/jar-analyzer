@@ -11,6 +11,7 @@
 package me.n1ar4.jar.analyzer.engine;
 
 import me.n1ar4.jar.analyzer.config.ConfigFile;
+import me.n1ar4.jar.analyzer.core.DatabaseManager;
 import me.n1ar4.jar.analyzer.core.SqlSessionFactoryUtil;
 import me.n1ar4.jar.analyzer.core.mapper.*;
 import me.n1ar4.jar.analyzer.core.reference.AnnoReference;
@@ -409,25 +410,30 @@ public class CoreEngine {
     }
 
     public void cleanFav() {
+        DatabaseManager.cleanFav();
     }
 
-    public void cleanFavItem(MethodResult selectedItem) {
+    public void cleanFavItem(MethodResult m) {
+        DatabaseManager.cleanFavItem(m);
     }
 
-    public void addFav(MethodResult selectedItem) {
+    public void addFav(MethodResult m) {
+        DatabaseManager.addFav(m);
     }
 
-    public void insertHistory(MethodResult methodResult) {
+    public void insertHistory(MethodResult m) {
+        DatabaseManager.insertHistory(m);
     }
 
     public void cleanHistory() {
+        DatabaseManager.cleanHistory();
     }
 
     public ArrayList<MethodResult> getAllFavMethods() {
-        return null;
+        return DatabaseManager.getAllFavMethods();
     }
 
     public ArrayList<MethodResult> getAllHisMethods() {
-        return null;
+        return DatabaseManager.getAllHisMethods();
     }
 }

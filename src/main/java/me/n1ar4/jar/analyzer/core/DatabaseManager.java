@@ -50,6 +50,8 @@ public class DatabaseManager {
     private static final JavaWebMapper javaWebMapper;
     private static final DFSMapper dfsMapper;
     private static final DFSListMapper dfsListMapper;
+    private static final FavMapper favMapper;
+    private static final HisMapper hisMapper;
 
     // --inner-jar 仅解析此jar包引用的 jdk 类及其它jar中的类,但不会保存其它jar的jarId等信息
     private static final ClassReference notFoundClassReference = new ClassReference(-1, -1, null, null, null, false, null, null, "unknown", -1);
@@ -76,6 +78,8 @@ public class DatabaseManager {
         javaWebMapper = session.getMapper(JavaWebMapper.class);
         dfsMapper = session.getMapper(DFSMapper.class);
         dfsListMapper = session.getMapper(DFSListMapper.class);
+        favMapper = session.getMapper(FavMapper.class);
+        hisMapper = session.getMapper(HisMapper.class);
         InitMapper initMapper = session.getMapper(InitMapper.class);
         initMapper.createJarTable();
         initMapper.createClassTable();
@@ -94,6 +98,9 @@ public class DatabaseManager {
         // DFS
         initMapper.createDFSResultTable();
         initMapper.createDFSResultListTable();
+        // NOTE
+        initMapper.createFavoriteTable();
+        initMapper.createHistoryTable();
         logger.info("create database finish");
         LogUtil.info("create database finish");
     }
@@ -541,5 +548,33 @@ public class DatabaseManager {
                 logger.warn("save error");
             }
         }
+    }
+
+    public static void cleanFav() {
+        favMapper.cleanFav();
+    }
+
+    public static void cleanFavItem(MethodResult m) {
+        favMapper.cleanFavItem(m);
+    }
+
+    public static void addFav(MethodResult m) {
+        favMapper.addFav(m);
+    }
+
+    public static void insertHistory(MethodResult m) {
+        hisMapper.insertHistory(m);
+    }
+
+    public static void cleanHistory() {
+        hisMapper.cleanHistory();
+    }
+
+    public static ArrayList<MethodResult> getAllFavMethods() {
+        return favMapper.getAllFavMethods();
+    }
+
+    public static ArrayList<MethodResult> getAllHisMethods() {
+        return hisMapper.getAllHisMethods();
     }
 }

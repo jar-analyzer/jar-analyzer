@@ -208,4 +208,24 @@
             dfs_method_desc TEXT NOT NULL
         );
     </update>
+    <update id="createFavoriteTable">
+        CREATE TABLE IF NOT EXISTS note_favorite_table
+        (
+            nf_id INTEGER
+            CONSTRAINT note_favorite_table_pk PRIMARY KEY AUTOINCREMENT,
+            class_name TEXT NOT NULL,
+            method_name TEXT NOT NULL,
+            method_desc TEXT NOT NULL
+        );
+    </update>
+    <update id="createHistoryTable">
+        CREATE TABLE IF NOT EXISTS note_history_table
+        (
+            nh_id INTEGER
+            CONSTRAINT note_history_table_pk PRIMARY KEY AUTOINCREMENT,
+            class_name TEXT NOT NULL,
+            method_name TEXT NOT NULL,
+            method_desc TEXT NOT NULL
+        );
+    </update>
 </mapper>

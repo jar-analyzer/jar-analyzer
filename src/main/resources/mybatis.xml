@@ -47,5 +47,7 @@
         <mapper resource="mappers/JavaWebMapper.xml"/>
         <mapper resource="mappers/DFSResultListMapper.xml" />
         <mapper resource="mappers/DFSResultMapper.xml" />
+        <mapper resource="mappers/FavMapper.xml" />
+        <mapper resource="mappers/HisMapper.xml" />
     </mappers>
 </configuration>

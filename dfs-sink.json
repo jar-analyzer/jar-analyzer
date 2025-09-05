@@ -1,0 +1,188 @@
+[
+  {
+    "boxName": "Runtime.exec(String)",
+    "className": "java/lang/Runtime",
+    "methodName": "exec",
+    "methodDesc": "(Ljava/lang/String;)Ljava/lang/Process;"
+  },
+  {
+    "boxName": "ProcessBuilder.start",
+    "className": "java/lang/ProcessBuilder",
+    "methodName": "start",
+    "methodDesc": "()Ljava/lang/Process;"
+  },
+  {
+    "boxName": "ScriptEngine.eval",
+    "className": "javax/script/ScriptEngine",
+    "methodName": "eval",
+    "methodDesc": "(Ljava/lang/String;)Ljava/lang/Object;"
+  },
+  {
+    "boxName": "BCEL Classloader.loadClass",
+    "className": "com/sun/org/apache/bcel/internal/util/ClassLoader",
+    "methodName": "loadClass",
+    "methodDesc": "(Ljava/lang/String;)Ljava/lang/Class;"
+  },
+  {
+    "boxName": "InitialContext.lookup",
+    "className": "javax/naming/InitialContext",
+    "methodName": "lookup",
+    "methodDesc": "(Ljava/lang/String;)Ljava/lang/Object;"
+  },
+  {
+    "boxName": "Context.lookup",
+    "className": "javax/naming/Context",
+    "methodName": "lookup",
+    "methodDesc": "(Ljava/lang/String;)Ljava/lang/Object;"
+  },
+  {
+    "boxName": "DirContext.search",
+    "className": "javax/naming/directory/DirContext",
+    "methodName": "search",
+    "methodDesc": "(Ljava/lang/String;Ljava/lang/String;Ljavax/naming/directory/SearchControls;)Ljavax/naming/NamingEnumeration;"
+  },
+  {
+    "boxName": "LdapContext.search",
+    "className": "javax/naming/ldap/LdapContext",
+    "methodName": "search",
+    "methodDesc": "(Ljava/lang/String;Ljava/lang/String;Ljavax/naming/directory/SearchControls;)Ljavax/naming/NamingEnumeration;"
+  },
+  {
+    "boxName": "Statement.execute",
+    "className": "java/sql/Statement",
+    "methodName": "execute",
+    "methodDesc": "(Ljava/lang/String;)Z"
+  },
+  {
+    "boxName": "Statement.executeQuery",
+    "className": "java/sql/Statement",
+    "methodName": "executeQuery",
+    "methodDesc": "(Ljava/lang/String;)Ljava/sql/ResultSet;"
+  },
+  {
+    "boxName": "Statement.executeUpdate",
+    "className": "java/sql/Statement",
+    "methodName": "executeUpdate",
+    "methodDesc": "(Ljava/lang/String;)I"
+  },
+  {
+    "boxName": "Connection.prepareStatement",
+    "className": "java/sql/Connection",
+    "methodName": "prepareStatement",
+    "methodDesc": "(Ljava/lang/String;)Ljava/sql/PreparedStatement;"
+  },
+  {
+    "boxName": "Connection.prepareCall",
+    "className": "java/sql/Connection",
+    "methodName": "prepareCall",
+    "methodDesc": "(Ljava/lang/String;)Ljava/sql/CallableStatement;"
+  },
+  {
+    "boxName": "ObjectInputStream.readObject",
+    "className": "java/io/ObjectInputStream",
+    "methodName": "readObject",
+    "methodDesc": "()Ljava/lang/Object;"
+  },
+  {
+    "boxName": "ObjectInputStream.readUnshared",
+    "className": "java/io/ObjectInputStream",
+    "methodName": "readUnshared",
+    "methodDesc": "()Ljava/lang/Object;"
+  },
+  {
+    "boxName": "XMLDecoder.readObject",
+    "className": "java/beans/XMLDecoder",
+    "methodName": "readObject",
+    "methodDesc": "()Ljava/lang/Object;"
+  },
+  {
+    "boxName": "Yaml.load",
+    "className": "org/yaml/snakeyaml/Yaml",
+    "methodName": "load",
+    "methodDesc": "(Ljava/lang/String;)Ljava/lang/Object;"
+  },
+  {
+    "boxName": "Yaml.loadAs",
+    "className": "org/yaml/snakeyaml/Yaml",
+    "methodName": "loadAs",
+    "methodDesc": "(Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/Object;"
+  },
+  {
+    "boxName": "JSON.parseObject",
+    "className": "com/alibaba/fastjson/JSON",
+    "methodName": "parseObject",
+    "methodDesc": "(Ljava/lang/String;)Lcom/alibaba/fastjson/JSONObject;"
+  },
+  {
+    "boxName": "JSON.parse",
+    "className": "com/alibaba/fastjson/JSON",
+    "methodName": "parse",
+    "methodDesc": "(Ljava/lang/String;)Ljava/lang/Object;"
+  },
+  {
+    "boxName": "ObjectMapper.readValue",
+    "className": "com/fasterxml/jackson/databind/ObjectMapper",
+    "methodName": "readValue",
+    "methodDesc": "(Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/Object;"
+  },
+  {
+    "boxName": "HessianInput.readObject",
+    "className": "com/caucho/hessian/io/HessianInput",
+    "methodName": "readObject",
+    "methodDesc": "()Ljava/lang/Object;"
+  },
+  {
+    "boxName": "AbstractHessianInput.readObject",
+    "className": "com/caucho/hessian/io/AbstractHessianInput",
+    "methodName": "readObject",
+    "methodDesc": "()Ljava/lang/Object;"
+  },
+  {
+    "boxName": "XStream.fromXML",
+    "className": "com/thoughtworks/xstream/XStream",
+    "methodName": "fromXML",
+    "methodDesc": "(Ljava/lang/String;)Ljava/lang/Object;"
+  },
+  {
+    "boxName": "Input.readObject",
+    "className": "com/esotericsoftware/kryo/io/Input",
+    "methodName": "readObject",
+    "methodDesc": "(Ljava/lang/Class;)Ljava/lang/Object;"
+  },
+  {
+    "boxName": "FileInputStream.new",
+    "className": "java/io/FileInputStream",
+    "methodName": "<init>",
+    "methodDesc": "(Ljava/lang/String;)V"
+  },
+  {
+    "boxName": "FileOutputStream.new",
+    "className": "java/io/FileOutputStream",
+    "methodName": "<init>",
+    "methodDesc": "(Ljava/lang/String;)V"
+  },
+  {
+    "boxName": "RandomAccessFile.new",
+    "className": "java/io/RandomAccessFile",
+    "methodName": "<init>",
+    "methodDesc": "(Ljava/lang/String;Ljava/lang/String;)V"
+  },
+  {
+    "boxName": "File.delete",
+    "className": "java/io/File",
+    "methodName": "delete",
+    "methodDesc": "()Z"
+  },
+  {
+    "boxName": "URL.openConnection",
+    "className": "java/net/URL",
+    "methodName": "openConnection",
+    "methodDesc": "()Ljava/net/URLConnection;"
+  },
+  {
+    "boxName": "HttpURLConnection.connect",
+    "className": "java/net/HttpURLConnection",
+    "methodName": "connect",
+    "methodDesc": "()V"
+  }
+]

@@ -116,6 +116,12 @@ if __name__ == '__main__':
     copy_file("vulnerability.yaml", "release\\" + release_win_21_dir + "\\vulnerability.yaml")
     copy_file("vulnerability.yaml", "release\\" + release_zip_dir + "\\vulnerability.yaml")
 
+    print("[*] copy dfs-sink.json file")
+    copy_file("dfs-sink.json", "release\\" + release_win_system_dir + "\\dfs-sink.json")
+    copy_file("dfs-sink.json", "release\\" + release_win_full_dir + "\\dfs-sink.json")
+    copy_file("dfs-sink.json", "release\\" + release_win_21_dir + "\\dfs-sink.json")
+    copy_file("dfs-sink.json", "release\\" + release_zip_dir + "\\dfs-sink.json")
+
     print("[*] copy windows tools.jar")
     copy_file("lib\\tools.jar", "release\\" + release_win_system_dir + "\\lib\\tools.jar")
     copy_file("lib\\tools.jar", "release\\" + release_win_full_dir + "\\lib\\tools.jar")

@@ -1947,7 +1947,7 @@
                             <properties/>
                             <border type="none"/>
                             <children>
-                              <grid id="544ea" binding="chainsSinkPanel" layout-manager="GridLayoutManager" row-count="5" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                              <grid id="544ea" binding="chainsSinkPanel" layout-manager="GridLayoutManager" row-count="6" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                                 <margin top="5" left="5" bottom="5" right="5"/>
                                 <constraints>
                                   <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -2017,6 +2017,14 @@
                                     </constraints>
                                     <properties/>
                                   </component>
+                                  <component id="390a3" class="javax.swing.JLabel" binding="sinkJarLabel">
+                                    <constraints>
+                                      <grid row="5" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                    </constraints>
+                                    <properties>
+                                      <text value="注意：不要求加载 Jar 中包含 Sink 类"/>
+                                    </properties>
+                                  </component>
                                 </children>
                               </grid>
                               <grid id="8349a" binding="chainsSourcePanel" layout-manager="GridLayoutManager" row-count="5" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -2083,7 +2091,7 @@
                                       <text value="从 note -&gt; favorites 右键 send to source"/>
                                     </properties>
                                   </component>
-                                  <grid id="95e16" binding="sourcePanel" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                                  <grid id="95e16" binding="sourcePanel" layout-manager="GridLayoutManager" row-count="2" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                                     <margin top="0" left="0" bottom="0" right="0"/>
                                     <constraints>
                                       <grid row="4" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -2115,6 +2123,14 @@
                                           <text value="模式"/>
                                         </properties>
                                       </component>
+                                      <component id="86936" class="javax.swing.JCheckBox" binding="sourceOnlyWebBox">
+                                        <constraints>
+                                          <grid row="1" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                        </constraints>
+                                        <properties>
+                                          <text value="Source 只考虑 Spring / Servlet 入口"/>
+                                        </properties>
+                                      </component>
                                     </children>
                                   </grid>
                                 </children>
@@ -2142,7 +2158,7 @@
                                   </hspacer>
                                 </children>
                               </grid>
-                              <grid id="4cdc4" binding="chainsOpPanel" layout-manager="GridLayoutManager" row-count="2" column-count="7" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                              <grid id="4cdc4" binding="chainsOpPanel" layout-manager="GridLayoutManager" row-count="2" column-count="8" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                                 <margin top="5" left="5" bottom="5" right="5"/>
                                 <constraints>
                                   <grid row="3" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -2176,7 +2192,7 @@
                                   </component>
                                   <component id="21147" class="javax.swing.JSpinner" binding="maxDepthSpin">
                                     <constraints>
-                                      <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                      <grid row="0" column="5" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                                         <maximum-size width="80" height="-1"/>
                                       </grid>
                                     </constraints>
@@ -2192,7 +2208,7 @@
                                   </component>
                                   <hspacer id="458ed">
                                     <constraints>
-                                      <grid row="0" column="6" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                                      <grid row="0" column="7" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                                     </constraints>
                                   </hspacer>
                                   <component id="f7dc7" class="javax.swing.JButton" binding="clearBtn">
@@ -2213,10 +2229,18 @@
                                   </component>
                                   <component id="3e15f" class="javax.swing.JLabel" binding="taintLabel">
                                     <constraints>
-                                      <grid row="1" column="1" row-span="1" col-span="5" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                      <grid row="1" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                                     </constraints>
                                     <properties>
-                                      <text value="支持简单的污点分析验证 DFS 链有效性（使用内置污点传播规则）"/>
+                                      <text value="支持简单的污点分析验证 DFS 链有效性"/>
+                                    </properties>
+                                  </component>
+                                  <component id="5ea6f" class="javax.swing.JButton" binding="startTaintBtn">
+                                    <constraints>
+                                      <grid row="1" column="4" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                                    </constraints>
+                                    <properties>
+                                      <text value="手动启动污点分析"/>
                                     </properties>
                                   </component>
                                 </children>

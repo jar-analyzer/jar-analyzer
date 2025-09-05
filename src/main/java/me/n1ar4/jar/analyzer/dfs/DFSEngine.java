@@ -13,6 +13,7 @@ package me.n1ar4.jar.analyzer.dfs;
 import me.n1ar4.jar.analyzer.core.reference.ClassReference;
 import me.n1ar4.jar.analyzer.core.reference.MethodReference;
 import me.n1ar4.jar.analyzer.engine.CoreEngine;
+import me.n1ar4.jar.analyzer.entity.ClassResult;
 import me.n1ar4.jar.analyzer.entity.MethodResult;
 import me.n1ar4.jar.analyzer.gui.ChainsResultPanel;
 import me.n1ar4.jar.analyzer.gui.MainForm;
@@ -138,6 +139,7 @@ public class DFSEngine {
 
         // 检查是否为查找所有 SOURCE 的模式
         boolean findAllSources = this.fromSink && this.searchNullSource;
+        boolean onlyFromWeb = MainForm.getInstance().getSourceOnlyWebBox().isSelected();
 
         logger.info("find all sources from sink : " + findAllSources);
 
@@ -165,7 +167,21 @@ public class DFSEngine {
             Set<String> visited = new HashSet<>();
 
             if (findAllSources) {
-                dfsFromSinkFindAllSources(startMethod, path, visited, 0);
+                if (!onlyFromWeb) {
+                    dfsFromSinkFindAllSources(startMethod, path, visited, 0);
+                } else {
+                    ArrayList<ClassResult> springC = MainForm.getEngine().getAllSpringC();
+                    ArrayList<MethodResult> webSources = new ArrayList<>();
+                    for (ClassResult cr : springC) {
+                        webSources.addAll(MainForm.getEngine().getSpringM(cr.getClassName()));
+                    }
+                    ArrayList<ClassResult> servlets = MainForm.getEngine().getAllServlets();
+                    for (ClassResult cr : servlets) {
+                        webSources.addAll(MainForm.getEngine().getMethodsByClass(cr.getClassName()));
+                    }
+                    // 完成
+                    dfsFromSinkFindWebSources(startMethod, path, visited, webSources);
+                }
             } else {
                 dfsFromSink(startMethod, path, visited, 0);
             }
@@ -185,6 +201,71 @@ public class DFSEngine {
         } else {
             update("总共找到 " + chainCount + " 条可能的调用链");
         }
+    }
+
+    private void dfsFromSinkFindWebSources(
+            MethodResult startMethod,
+            List<MethodResult> path,
+            Set<String> visited,
+            ArrayList<MethodResult> webSources) {
+
+        // 对每个 web source 进行 DFS 搜索
+        for (MethodResult webSource : webSources) {
+            // 重置访问状态和路径
+            Set<String> currentVisited = new HashSet<>(visited);
+            List<MethodResult> currentPath = new ArrayList<>(path);
+
+            // 从 sink 开始向上搜索，看是否能到达这个 web source
+            if (dfsFromSinkToWebSource(startMethod, webSource, currentPath, currentVisited, 0)) {
+                sourceCount++;
+                outputSourceChain(currentPath, webSource);
+            }
+        }
+    }
+
+    private boolean dfsFromSinkToWebSource(
+            MethodResult currentMethod,
+            MethodResult targetWebSource,
+            List<MethodResult> path,
+            Set<String> visited,
+            int currentDepth) {
+
+        if (currentDepth >= depth) {
+            return false;
+        }
+
+        String methodKey = getMethodKey(currentMethod);
+
+        // 检查是否到达目标 web source
+        if (isTargetMethod(currentMethod,
+                targetWebSource.getClassName(),
+                targetWebSource.getMethodName(),
+                targetWebSource.getMethodDesc())) {
+            return true;
+        }
+
+        if (visited.contains(methodKey)) {
+            return false;
+        }
+
+        visited.add(methodKey);
+
+        ArrayList<MethodResult> callerMethods = engine.getCallers(
+                currentMethod.getClassName(),
+                currentMethod.getMethodName(),
+                currentMethod.getMethodDesc());
+
+        for (MethodResult caller : callerMethods) {
+            path.add(caller);
+            if (dfsFromSinkToWebSource(caller, targetWebSource, path, visited, currentDepth + 1)) {
+                visited.remove(methodKey);
+                return true;
+            }
+            path.remove(path.size() - 1);
+        }
+
+        visited.remove(methodKey);
+        return false;
     }
 
     private void dfsFromSink(

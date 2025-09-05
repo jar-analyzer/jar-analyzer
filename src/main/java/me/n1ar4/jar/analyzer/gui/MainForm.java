@@ -49,6 +49,7 @@ import me.n1ar4.jar.analyzer.sca.SCAAction;
 import me.n1ar4.jar.analyzer.starter.Application;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.taint.TaintAnalyzer;
+import me.n1ar4.jar.analyzer.taint.TaintCache;
 import me.n1ar4.jar.analyzer.taint.TaintResult;
 import me.n1ar4.jar.analyzer.utils.DirUtil;
 import me.n1ar4.log.LogManager;
@@ -358,11 +359,9 @@ public class MainForm {
     private JCheckBox AIKeyCheckBox;
     private JCheckBox passwordCheckBox;
     private JButton exportLeakBtn;
-    private JButton refreshFavBtn;
-    private JButton refreshHisBtn;
-    private JButton clearFavBtn;
-    private JButton clearHisBtn;
-    private JPanel noteOpPanel;
+    private JButton startTaintBtn;
+    private JCheckBox sourceOnlyWebBox;
+    private JLabel sinkJarLabel;
     private static DefaultListModel<MethodResult> favData;
 
     public JCheckBox getTaintBox() {
@@ -903,6 +902,10 @@ public class MainForm {
 
     public JButton getExportLeakBtn() {
         return exportLeakBtn;
+    }
+
+    public JCheckBox getSourceOnlyWebBox() {
+        return sourceOnlyWebBox;
     }
 
     public MainForm(boolean fake) {
@@ -1600,6 +1603,8 @@ public class MainForm {
                 }
                 List<DFSResult> resultList = dfsEngine.getResults();
                 DFSUtil.save(resultList);
+                TaintCache.dfsCache.clear();
+                TaintCache.dfsCache.addAll(resultList);
                 if (instance.getTaintBox().isSelected()) {
                     // 弹框提醒用户即将开始污点分析验证
                     int result = JOptionPane.showConfirmDialog(
@@ -1619,12 +1624,26 @@ public class MainForm {
 
                     logger.info("start taint analyze");
                     List<TaintResult> taintResult = TaintAnalyzer.analyze(resultList);
+                    TaintCache.cache.clear();
+                    TaintCache.cache.addAll(taintResult);
                     // 显示污点分析结果的详细GUI窗体
                     TaintResultDialog.showTaintResults(instance.getMasterPanel().getTopLevelAncestor() instanceof Frame ?
-                            (Frame) instance.getMasterPanel().getTopLevelAncestor() : null, taintResult);
+                            (Frame) instance.getMasterPanel().getTopLevelAncestor() : null, new ArrayList<>(TaintCache.cache));
                 }
                 dialog.dispose();
             }).start();
+        });
+
+        instance.startTaintBtn.addActionListener(e -> {
+            if (TaintCache.dfsCache.isEmpty()) {
+                JOptionPane.showMessageDialog(instance.getMasterPanel(), "请确保 DFS 漏洞链分析有结果");
+                return;
+            }
+            List<TaintResult> taintResult = TaintAnalyzer.analyze(new ArrayList<>(TaintCache.dfsCache));
+            TaintCache.cache.clear();
+            TaintCache.cache.addAll(taintResult);
+            TaintResultDialog.showTaintResults(instance.getMasterPanel().getTopLevelAncestor() instanceof Frame ?
+                    (Frame) instance.getMasterPanel().getTopLevelAncestor() : null, new ArrayList<>(TaintCache.cache));
         });
     }
 
@@ -2360,7 +2379,7 @@ public class MainForm {
         chainsPanel.setLayout(new GridLayoutManager(4, 2, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPanel.addTab("chains", chainsPanel);
         chainsSinkPanel = new JPanel();
-        chainsSinkPanel.setLayout(new GridLayoutManager(5, 2, new Insets(5, 5, 5, 5), -1, -1));
+        chainsSinkPanel.setLayout(new GridLayoutManager(6, 2, new Insets(5, 5, 5, 5), -1, -1));
         chainsPanel.add(chainsSinkPanel, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         chainsSinkPanel.setBorder(BorderFactory.createTitledBorder(null, "Sink Config", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         sinkClassLabel = new JLabel();
@@ -2383,6 +2402,9 @@ public class MainForm {
         chainsSinkPanel.add(sinkTipLabel, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         sinkBox = new JComboBox();
         chainsSinkPanel.add(sinkBox, new GridConstraints(1, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        sinkJarLabel = new JLabel();
+        sinkJarLabel.setText("注意：不要求加载 Jar 中包含 Sink 类");
+        chainsSinkPanel.add(sinkJarLabel, new GridConstraints(5, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         chainsSourcePanel = new JPanel();
         chainsSourcePanel.setLayout(new GridLayoutManager(5, 2, new Insets(5, 5, 5, 5), -1, -1));
         chainsPanel.add(chainsSourcePanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
@@ -2406,7 +2428,7 @@ public class MainForm {
         sourceTipLabel.setText("从 note -> favorites 右键 send to source");
         chainsSourcePanel.add(sourceTipLabel, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         sourcePanel = new JPanel();
-        sourcePanel.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
+        sourcePanel.setLayout(new GridLayoutManager(2, 3, new Insets(0, 0, 0, 0), -1, -1));
         chainsSourcePanel.add(sourcePanel, new GridConstraints(4, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         sourceNullRadio = new JRadioButton();
         sourceNullRadio.setText("空 Source 列举");
@@ -2417,6 +2439,9 @@ public class MainForm {
         sourceLabel = new JLabel();
         sourceLabel.setText("模式");
         sourcePanel.add(sourceLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        sourceOnlyWebBox = new JCheckBox();
+        sourceOnlyWebBox.setText("Source 只考虑 Spring / Servlet 入口");
+        sourcePanel.add(sourceOnlyWebBox, new GridConstraints(1, 1, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         chainsDescPanel = new JPanel();
         chainsDescPanel.setLayout(new GridLayoutManager(1, 2, new Insets(5, 5, 5, 5), -1, -1));
         chainsPanel.add(chainsDescPanel, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
@@ -2426,7 +2451,7 @@ public class MainForm {
         final Spacer spacer5 = new Spacer();
         chainsDescPanel.add(spacer5, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         chainsOpPanel = new JPanel();
-        chainsOpPanel.setLayout(new GridLayoutManager(2, 7, new Insets(5, 5, 5, 5), -1, -1));
+        chainsOpPanel.setLayout(new GridLayoutManager(2, 8, new Insets(5, 5, 5, 5), -1, -1));
         chainsPanel.add(chainsOpPanel, new GridConstraints(3, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         chainsOpPanel.setBorder(BorderFactory.createTitledBorder(null, "启动配置", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         startChainsBtn = new JButton();
@@ -2439,12 +2464,12 @@ public class MainForm {
         sinkRadio.setText("从 Sink 分析");
         chainsOpPanel.add(sinkRadio, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         maxDepthSpin = new JSpinner();
-        chainsOpPanel.add(maxDepthSpin, new GridConstraints(0, 5, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, new Dimension(80, -1), 0, false));
+        chainsOpPanel.add(maxDepthSpin, new GridConstraints(0, 5, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, new Dimension(80, -1), 0, false));
         maxDepthLabel = new JLabel();
         maxDepthLabel.setText("最大深度");
         chainsOpPanel.add(maxDepthLabel, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer6 = new Spacer();
-        chainsOpPanel.add(spacer6, new GridConstraints(0, 6, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        chainsOpPanel.add(spacer6, new GridConstraints(0, 7, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         clearBtn = new JButton();
         clearBtn.setText("清空");
         chainsOpPanel.add(clearBtn, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -2452,8 +2477,11 @@ public class MainForm {
         taintBox.setText("污点分析验证");
         chainsOpPanel.add(taintBox, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         taintLabel = new JLabel();
-        taintLabel.setText("支持简单的污点分析验证 DFS 链有效性（使用内置污点传播规则）");
-        chainsOpPanel.add(taintLabel, new GridConstraints(1, 1, 1, 5, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        taintLabel.setText("支持简单的污点分析验证 DFS 链有效性");
+        chainsOpPanel.add(taintLabel, new GridConstraints(1, 1, 1, 3, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        startTaintBtn = new JButton();
+        startTaintBtn.setText("手动启动污点分析");
+        chainsOpPanel.add(startTaintBtn, new GridConstraints(1, 4, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         chainsPanel.add(chainsResult, new GridConstraints(2, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         curPanel = new JPanel();
         curPanel.setLayout(new GridLayoutManager(3, 3, new Insets(0, 0, 0, 0), -1, -1));

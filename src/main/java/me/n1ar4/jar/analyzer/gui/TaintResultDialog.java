@@ -27,7 +27,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @SuppressWarnings("all")
-public class TaintResultDialog extends JDialog {
+public class TaintResultDialog extends JFrame {
     private static final Logger logger = LogManager.getLogger();
 
     private JTable resultTable;
@@ -42,16 +42,23 @@ public class TaintResultDialog extends JDialog {
     private final List<TaintResult> originalTaintResults;
 
     public TaintResultDialog(Frame parent, List<TaintResult> taintResults) {
-        super(parent, "污点分析结果详情", true);
+        super("污点分析结果详情");
         this.originalTaintResults = taintResults;
         initializeComponents();
         setupLayout();
         loadData(taintResults);
         setupEventHandlers();
-
+    
         setSize(1200, 800);
         setLocationRelativeTo(parent);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+    
+        setResizable(true);
+        setMinimumSize(new Dimension(800, 600));
+        
+        // 首先设置为最上层
+        setAlwaysOnTop(true);
+        setVisible(true);
     }
 
     private void initializeComponents() {
@@ -396,8 +403,7 @@ public class TaintResultDialog extends JDialog {
     // 静态方法用于显示对话框
     public static void showTaintResults(Frame parent, List<TaintResult> taintResults) {
         SwingUtilities.invokeLater(() -> {
-            TaintResultDialog dialog = new TaintResultDialog(parent, taintResults);
-            dialog.setVisible(true);
+            new TaintResultDialog(parent, taintResults);
         });
     }
 }

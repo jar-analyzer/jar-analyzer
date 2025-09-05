@@ -162,12 +162,14 @@ public class FavMouseAdapter extends MouseAdapter {
                 MainForm.getFavData().clear();
                 JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                         "CLEAN ALL FAVORIATES FINISH");
+                MainForm.getEngine().cleanFav();
             });
             cleanCurItems.addActionListener(e -> {
                 MethodResult selectedItem = (MethodResult) list.getSelectedValue();
                 if (MainForm.getFavData().removeElement(selectedItem)) {
                     JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                             "CLEAN FAVORIATE " + selectedItem.getMethodName() + " FINISH");
+                    MainForm.getEngine().cleanFavItem(selectedItem);
                 }
             });
             sendToSink.addActionListener(e -> {

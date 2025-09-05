@@ -737,6 +737,8 @@ public class CoreHelper {
         methodResult.setMethodName(methodName);
         methodResult.setMethodDesc(methodDesc);
         methodsList.addElement(methodResult);
+
+        MainForm.getEngine().insertHistory(methodResult);
         MainForm.getInstance().getHistoryList().repaint();
         MainForm.getInstance().getHistoryList().revalidate();
     }

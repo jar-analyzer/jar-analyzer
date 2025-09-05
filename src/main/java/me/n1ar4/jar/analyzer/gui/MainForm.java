@@ -64,6 +64,7 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -357,6 +358,11 @@ public class MainForm {
     private JCheckBox AIKeyCheckBox;
     private JCheckBox passwordCheckBox;
     private JButton exportLeakBtn;
+    private JButton refreshFavBtn;
+    private JButton refreshHisBtn;
+    private JButton clearFavBtn;
+    private JButton clearHisBtn;
+    private JPanel noteOpPanel;
     private static DefaultListModel<MethodResult> favData;
 
     public JCheckBox getTaintBox() {
@@ -1101,6 +1107,7 @@ public class MainForm {
         instance.getAddToFavoritesButton().addActionListener(e -> {
             if (curMethod != null) {
                 getFavData().addElement(curMethod);
+                MainForm.getEngine().addFav(curMethod);
                 JOptionPane.showMessageDialog(instance.masterPanel, "add current method to favorite ok");
             } else {
                 JOptionPane.showMessageDialog(instance.masterPanel, "current method is null");
@@ -1479,6 +1486,8 @@ public class MainForm {
 
         LogCleanHelper.build();
 
+        initNote();
+
         UpdateChecker.check();
 
         // 最后一步 处理 UI
@@ -1502,6 +1511,29 @@ public class MainForm {
         frame.setResizable(true);
         frame.setVisible(false);
         return frame;
+    }
+
+    private static void initNote() {
+        if (engine == null) {
+            return;
+        }
+        // ADD
+        ArrayList<MethodResult> favList = engine.getAllFavMethods();
+        for (MethodResult m : favList) {
+            favData.addElement(m);
+        }
+        ArrayList<MethodResult> hisList = engine.getAllHisMethods();
+        for (MethodResult m : hisList) {
+            historyListData.addElement(m);
+        }
+        // SET MODEL
+        instance.favList.setModel(favData);
+        instance.historyList.setModel(historyListData);
+        // REFRESH
+        instance.favList.repaint();
+        instance.favList.revalidate();
+        instance.historyList.repaint();
+        instance.historyList.revalidate();
     }
 
     public static void setSink(String className, String methodName, String methodDesc) {

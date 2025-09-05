@@ -196,6 +196,7 @@ public class CommonMouseAdapter extends MouseAdapter {
                     return;
                 }
                 MainForm.getFavData().addElement(selectedItem);
+                MainForm.getEngine().addFav(selectedItem);
             });
 
             JMenuItem copyThis = new JMenuItem("copy this");
@@ -280,6 +281,13 @@ public class CommonMouseAdapter extends MouseAdapter {
                 }
 
                 frameIns = PreviewForm.start(code, pos);
+            });
+
+            JMenuItem clearHis = new JMenuItem("清除历史 / clear history");
+            popupMenu.add(clearHis);
+            clearHis.addActionListener(e -> {
+                MainForm.getEngine().cleanHistory();
+                JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(), "CLEAR OK");
             });
 
             int index = list.locationToIndex(evt.getPoint());

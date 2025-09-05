@@ -407,4 +407,27 @@ public class CoreEngine {
         }
         return strMap;
     }
+
+    public void cleanFav() {
+    }
+
+    public void cleanFavItem(MethodResult selectedItem) {
+    }
+
+    public void addFav(MethodResult selectedItem) {
+    }
+
+    public void insertHistory(MethodResult methodResult) {
+    }
+
+    public void cleanHistory() {
+    }
+
+    public ArrayList<MethodResult> getAllFavMethods() {
+        return null;
+    }
+
+    public ArrayList<MethodResult> getAllHisMethods() {
+        return null;
+    }
 }

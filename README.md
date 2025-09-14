@@ -2,6 +2,8 @@
 
 [CHANGE LOG](CHANGELOG.MD)
 
+`jar-analyzer` 项目连续 `4` 年更新，共发布 `42` 个版本，完全开源，完全免费
+
 官方文档：https://docs.qq.com/doc/DV3pKbG9GS0pJS0tk
 
 <img alt="gitleaks badge" src="https://img.shields.io/badge/protected%20by-gitleaks-blue">

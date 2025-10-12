@@ -4,7 +4,8 @@
 
 更新日志：
 
-- [优化] 补充 `JSON.parseArray` 搜索规则
+- [BUG] 解决重新分析新文件时数据库占用报错 @4ra1n
+- [优化] 补充 `JSON.parseArray` 搜索规则 @4ra1n
 
 感谢以下用户的贡献:
 

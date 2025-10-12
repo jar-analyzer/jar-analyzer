@@ -49,6 +49,16 @@ public class DFSEngine {
     // 新增：结果收集列表
     private final List<DFSResult> results = new ArrayList<>();
 
+    private void clean() {
+        if (resultArea instanceof JTextArea) {
+            JTextArea textArea = (JTextArea) resultArea;
+            textArea.setText("");
+        } else if (resultArea instanceof ChainsResultPanel) {
+            ChainsResultPanel panel = (ChainsResultPanel) resultArea;
+            panel.clear();
+        }
+    }
+
     /**
      * 更新结果显示区域
      */
@@ -151,6 +161,9 @@ public class DFSEngine {
             update("SINK: " + sinkClass + "." + sinkMethod);
         }
         update("===========================================");
+
+        // 2025/10/13 每次重新 DFS 分析应该清除之前的记录
+        clean();
 
         chainCount = 0;
         sourceCount = 0;

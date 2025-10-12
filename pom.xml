@@ -67,8 +67,8 @@
 
     <properties>
         <!-- Dependencies Version -->
-        <asm.version>9.8</asm.version>
-        <flatlaf.version>3.6.1</flatlaf.version>
+        <asm.version>9.9</asm.version>
+        <flatlaf.version>3.6.2</flatlaf.version>
         <idea.forms.version>7.0.3</idea.forms.version>
         <syntax.version>3.6.0</syntax.version>
         <slf4j.api.version>2.0.17</slf4j.api.version>
@@ -80,16 +80,16 @@
         <spring.version>5.3.39</spring.version>
         <okhttp3.version>4.12.0</okhttp3.version>
         <nano.version>2.3.1</nano.version>
-        <fastjson.version>2.0.58</fastjson.version>
+        <fastjson.version>2.0.59</fastjson.version>
         <hutool.version>5.8.40</hutool.version>
         <jfreechart.version>1.5.6</jfreechart.version>
-        <oshi.version>6.8.3</oshi.version>
+        <oshi.version>6.9.0</oshi.version>
         <lucene.version>7.7.3</lucene.version>
         <bcel.version>6.10.0</bcel.version>
-        <java.parser.version>3.27.0</java.parser.version>
-        <snakeyaml.version>2.4</snakeyaml.version>
+        <java.parser.version>3.27.1</java.parser.version>
+        <snakeyaml.version>2.5</snakeyaml.version>
         <csv.version>1.14.1</csv.version>
-        <junit.version>5.13.4</junit.version>
+        <junit.version>5.14.0</junit.version>
         <compress.version>1.28.0</compress.version>
         <!-- Maven Build Version -->
         <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-resources-plugin -->
@@ -334,6 +334,14 @@
                                 <ignoreVersion>
                                     <type>regex</type>
                                     <version>2\.[2-9]\..*</version>
+                                </ignoreVersion>
+                            </rule>
+                            <!-- JUNIT 必须小于 6.0.0 -->
+                            <rule>
+                                <groupId>org.junit.jupiter</groupId>
+                                <ignoreVersion>
+                                    <type>regex</type>
+                                    <version>6\..*</version>
                                 </ignoreVersion>
                             </rule>
                         </rules>

@@ -2,9 +2,9 @@
 
 [CHANGE LOG](CHANGELOG.MD)
 
-`jar-analyzer` 项目连续 `4` 年更新，共发布 `42` 个版本，完全开源，完全免费
+`jar-analyzer` 项目连续 `4` 年更新，共发布 `43` 个版本，完全开源，完全免费
 
-The `jar-analyzer` project has been continuously updated for `4` years, with `42` versions released, completely open source and completely free.
+The `jar-analyzer` project has been continuously updated for `4` years, with `43` versions released, completely open source and completely free.
 
 官方文档：https://docs.qq.com/doc/DV3pKbG9GS0pJS0tk
 

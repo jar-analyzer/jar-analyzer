@@ -157,6 +157,15 @@ public class TaintAnalyzer {
             if (thisChainSuccess) {
                 TaintResult r = new TaintResult();
                 r.setDfsResult(result);
+                r.setSuccess(true);
+                r.setTaintText(text.toString());
+                taintResult.add(r);
+            }else{
+                // 2025/10/13
+                // 污点分析失败的也应该加入
+                TaintResult r = new TaintResult();
+                r.setDfsResult(result);
+                r.setSuccess(false);
                 r.setTaintText(text.toString());
                 taintResult.add(r);
             }

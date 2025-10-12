@@ -15,6 +15,15 @@ import me.n1ar4.jar.analyzer.dfs.DFSResult;
 public class TaintResult {
     private DFSResult dfsResult;
     private String taintText;
+    private boolean success;
+
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
 
     public DFSResult getDfsResult() {
         return dfsResult;
@@ -37,6 +46,7 @@ public class TaintResult {
         return "TaintResult{" +
                 "dfsResult=" + dfsResult +
                 ", taintText='" + taintText + '\'' +
+                ", success=" + success +
                 '}';
     }
 }

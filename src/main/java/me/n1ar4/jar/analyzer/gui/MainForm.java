@@ -1527,6 +1527,9 @@ public class MainForm {
         if (engine == null) {
             return;
         }
+        // 2025/10/14 修复多次点击按钮导致数据重复问题
+        favData.clear();
+        historyListData.clear();
         // ADD
         ArrayList<MethodResult> favList = engine.getAllFavMethods();
         for (MethodResult m : favList) {

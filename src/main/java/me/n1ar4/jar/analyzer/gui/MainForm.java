@@ -1494,7 +1494,7 @@ public class MainForm {
         // 2025/10/12 不应该在启动时 init note/history
         // 会导致数据库被连接无法断开重新开启新任务
         // initNote();
-        instance.loadFavBtn.addActionListener(e->{
+        instance.loadFavBtn.addActionListener(e -> {
             initNote();
         });
 

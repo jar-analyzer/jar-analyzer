@@ -16,9 +16,15 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: '1.21.6'
-      - name: go test
+      - name: go test github
         run: |
           set -x
           cd github
+          go mod download
+          go build -o test
+      - name: go test mcp
+        run: |
+          set -x
+          cd mcp
           go mod download
           go build -o test

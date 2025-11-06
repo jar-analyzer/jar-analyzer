@@ -66,7 +66,8 @@ public class PathMatcher {
 
         handlers.put("/api/get_class_by_class", new GetClassByClassHandler());
 
-        handlers.put("/api/code",new GetCodeHandler());
+        handlers.put("/api/fernflower_code",new GetCodeFernflowerHandler());
+        handlers.put("/api/cfr_code",new GetCodeCFRHandler());
     }
 
     public static NanoHTTPD.Response handleReq(NanoHTTPD.IHTTPSession session) {

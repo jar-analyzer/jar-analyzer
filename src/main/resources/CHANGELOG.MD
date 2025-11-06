@@ -28,6 +28,8 @@
 
 官方文档：https://docs.qq.com/doc/DV3pKbG9GS0pJS0tk
 
+`MCP` 文档：https://github.com/jar-analyzer/jar-analyzer/tree/master/mcp-doc
+
 ## 5.9
 
 更新日志：

@@ -24,6 +24,8 @@
 
 官方文档：https://docs.qq.com/doc/DV3pKbG9GS0pJS0tk
 
+`MCP` 文档：https://github.com/jar-analyzer/jar-analyzer/tree/master/mcp-doc
+
 ## 5.10 - 已发布最新版
 
 更新日志：
@@ -51,6 +53,8 @@
 如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
 
 官方文档：https://docs.qq.com/doc/DV3pKbG9GS0pJS0tk
+
+`MCP` 文档：https://github.com/jar-analyzer/jar-analyzer/tree/master/mcp-doc
 
 ## 5.9
 

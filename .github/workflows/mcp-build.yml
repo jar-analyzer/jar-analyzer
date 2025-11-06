@@ -1,0 +1,53 @@
+name: mcp-build
+
+on:
+
+  push:
+    branches: [ "master" ]
+
+  workflow_dispatch:
+
+jobs:
+
+  mcp-build:
+
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+
+    steps:
+
+      - name: set version
+        run: echo "VERSION=v1.0.0" >> $GITHUB_ENV
+
+      - uses: actions/checkout@v4
+
+      - name: set up go
+        uses: actions/setup-go@v6
+        with:
+          go-version: '1.24.10'
+
+      - name: build gox
+        run: |
+          set -x
+          cd gox
+          go build -o ../mcp/cmd/my-gox
+
+      - name: build jar-analyzer-mcp
+        run: |
+          set -x 
+          cd mcp/cmd
+          mkdir jar-analyzer-mcp
+          ./my-gox -parallel 5 -osarch="darwin/arm64 darwin/amd64 linux/386 linux/amd64 linux/arm linux/arm64 windows/arm windows/arm64 windows/386 windows/amd64" -ldflags="-extldflags=-static -s -w" -output="jar-analyzer-mcp/mcp_${{ env.VERSION }}_{{.OS}}_{{.Arch}}"
+
+      - name: create build file
+        run: |
+          set -x
+          cd mcp/cmd
+          sudo apt-get install -y zip unzip
+          zip -r ../../mcp-build.zip jar-analyzer-mcp/*
+
+      - name: upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifact
+          path: mcp-build.zip

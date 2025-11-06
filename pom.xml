@@ -16,7 +16,7 @@
 
     <groupId>me.n1ar4</groupId>
     <artifactId>jar-analyzer</artifactId>
-    <version>5.9</version>
+    <version>5.10</version>
 
     <packaging>jar</packaging>
     <description>Jar Analyzer Project</description>
@@ -62,6 +62,10 @@
         <contributor>
             <name>su18</name>
             <url>https://github.com/su18</url>
+        </contributor>
+        <contributor>
+            <name>7-e1even</name>
+            <url>https://github.com/7-e1even</url>
         </contributor>
     </contributors>
 

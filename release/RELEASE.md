@@ -23,6 +23,7 @@ Steps:
 - Check `pom.xml` version tag
 - Check `build.py` VERSION
 - Check `build.yml` VERSION
+- Check MCP BUILD VERSION
 - Run git commit and push
 - Github Action Build
 - Change `version.txt` on `OSS Browser`

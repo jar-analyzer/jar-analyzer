@@ -8,6 +8,8 @@ The `jar-analyzer` project has been continuously updated for `4` years, with `43
 
 官方文档：https://docs.qq.com/doc/DV3pKbG9GS0pJS0tk
 
+### `jar-analyzer 5.10` 版本后已支持 `MCP` 请参考文档 [MCP](mcp-doc/README.md)
+
 <img alt="gitleaks badge" src="https://img.shields.io/badge/protected%20by-gitleaks-blue">
 
 ![](https://img.shields.io/github/downloads/jar-analyzer/jar-analyzer/total)
@@ -17,8 +19,6 @@ The `jar-analyzer` project has been continuously updated for `4` years, with `43
 ![](https://github.com/jar-analyzer/jar-analyzer/workflows/leak%20check/badge.svg)
 ![](https://github.com/jar-analyzer/jar-analyzer/workflows/truffle%20check/badge.svg)
 ![](https://github.com/jar-analyzer/jar-analyzer/workflows/golang%20check/badge.svg)
-
-`jar-analyzer 5.10` 版本后已支持 `MCP` 请参考文档 [MCP](mcp-doc/README.md)
 
 Jar Analyzer
 

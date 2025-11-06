@@ -5,12 +5,14 @@
 更新日志：
 
 - [重要] 支持 `MCP` @4ra1n
+- [功能] `API` 完善补充 @4ra1n @7eleven
 - [BUG] `API` 路径处理存在混淆问题 @4ra1n
 - [BUG] 修复多次点击按钮导致数据重复问题 @4ra1n
 
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
+- 7eleven (https://github.com/7-e1even)
 
 所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
 
@@ -18,6 +20,7 @@
 - `windows-21` 版内置开启 `ZGC` 的 `JRE 21` 环境（激进用户尝试使用）
 - `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
 - `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
+- `mcp-build.zip` 包含所有系统的 `mcp` 一般使用 `mcp_windows_amd64.exe`
 
 一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
 

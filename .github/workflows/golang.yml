@@ -25,6 +25,6 @@ jobs:
       - name: go test mcp
         run: |
           set -x
-          cd mcp
+          cd mcp/cmd
           go mod download
           go build -o test

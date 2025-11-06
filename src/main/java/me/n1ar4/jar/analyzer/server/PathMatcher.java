@@ -62,7 +62,7 @@ public class PathMatcher {
         logger.info("receive {} from {}", session.getRemoteIpAddress(), uri);
 
         for (Map.Entry<String, HttpHandler> entry : handlers.entrySet()) {
-            if (uri.startsWith(entry.getKey())) {
+            if (uri.equals(entry.getKey())) {
                 return entry.getValue().handle(session);
             }
         }

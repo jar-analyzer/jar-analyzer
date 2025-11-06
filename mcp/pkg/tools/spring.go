@@ -1,0 +1,41 @@
+package tools
+
+import (
+	"context"
+	"net/url"
+
+	"jar-analyzer-mcp/pkg/util"
+
+	"github.com/mark3labs/mcp-go/mcp"
+	"github.com/mark3labs/mcp-go/server"
+)
+
+func RegisterSpringTools(s *server.MCPServer) {
+	getAllSpringControllersTool := mcp.NewTool("get_all_spring_controllers",
+		mcp.WithDescription("列出所有 Spring 控制器类"),
+	)
+	s.AddTool(getAllSpringControllersTool, func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+		out, err := util.HTTPGet("/api/get_all_spring_controllers", nil)
+		if err != nil {
+			return mcp.NewToolResultError(err.Error()), nil
+		}
+		return mcp.NewToolResultText(out), nil
+	})
+
+	getSpringMappingsTool := mcp.NewTool("get_spring_mappings",
+		mcp.WithDescription("查询某 Spring 控制器的映射方法"),
+		mcp.WithString("class", mcp.Required(), mcp.Description("控制器类名")),
+	)
+	s.AddTool(getSpringMappingsTool, func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+		className, err := req.RequireString("class")
+		if err != nil {
+			return mcp.NewToolResultError(err.Error()), nil
+		}
+		params := url.Values{"class": []string{className}}
+		out, err := util.HTTPGet("/api/get_spring_mappings", params)
+		if err != nil {
+			return mcp.NewToolResultError(err.Error()), nil
+		}
+		return mcp.NewToolResultText(out), nil
+	})
+}

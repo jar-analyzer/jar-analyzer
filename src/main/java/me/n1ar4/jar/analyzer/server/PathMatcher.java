@@ -36,6 +36,13 @@ public class PathMatcher {
         handlers.put("/api/get_jars_list", new GetJarListHandler());
         handlers.put("/api/get_jar_by_class", new GetJarByClassHandler());
 
+        handlers.put("/api/get_abs_path", new GetAbsPathHandler());
+
+        //
+        // 以上 API 不应该被 MCP 调用 内部使用
+        // 以下 API 允许被 MCP 调用 对外
+        //
+
         handlers.put("/api/get_callers", new GetCallersHandler());
         handlers.put("/api/get_callers_like", new GetCallersLikeHandler());
         handlers.put("/api/get_callee", new GetCalleeHandler());
@@ -51,9 +58,15 @@ public class PathMatcher {
         handlers.put("/api/get_all_spring_controllers", new GetAllSpringControllersHandler());
         handlers.put("/api/get_spring_mappings", new GetSpringMappingsHandler());
 
-        handlers.put("/api/get_abs_path", new GetAbsPathHandler());
+        handlers.put("/api/get_all_servlets",new GetAllServletsHandler());
+
+        handlers.put("/api/get_all_listeners",new GetAllListenersHandler());
+
+        handlers.put("/api/get_all_filters",new GetAllFiltersHandler());
 
         handlers.put("/api/get_class_by_class", new GetClassByClassHandler());
+
+        handlers.put("/api/code",new GetCodeHandler());
     }
 
     public static NanoHTTPD.Response handleReq(NanoHTTPD.IHTTPSession session) {

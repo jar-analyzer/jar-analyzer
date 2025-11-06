@@ -1,0 +1,38 @@
+package util
+
+import (
+	"fmt"
+	"io"
+	"jar-analyzer-mcp/pkg/conf"
+	"net/http"
+	"net/url"
+	"time"
+)
+
+var (
+	client = &http.Client{Timeout: 15 * time.Second}
+)
+
+func HTTPGet(path string, params url.Values) (string, error) {
+	u, err := url.Parse(conf.GlobalJarAnalyzerUrl)
+	if err != nil {
+		return "", fmt.Errorf("invalid base url: %w", err)
+	}
+	u.Path = path
+	if params != nil {
+		u.RawQuery = params.Encode()
+	}
+	resp, err := client.Get(u.String())
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+	b, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	}
+	if resp.StatusCode != http.StatusOK {
+		return "", fmt.Errorf("http %d: %s", resp.StatusCode, string(b))
+	}
+	return string(b), nil
+}

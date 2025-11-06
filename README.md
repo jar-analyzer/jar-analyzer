@@ -18,7 +18,7 @@ The `jar-analyzer` project has been continuously updated for `4` years, with `43
 ![](https://github.com/jar-analyzer/jar-analyzer/workflows/truffle%20check/badge.svg)
 ![](https://github.com/jar-analyzer/jar-analyzer/workflows/golang%20check/badge.svg)
 
-`jar-analyzer 5.10` 版本后已支持 `MCP` 请参考文档 [MCP](mcp/README.md)
+`jar-analyzer 5.10` 版本后已支持 `MCP` 请参考文档 [MCP](mcp-doc/README.md)
 
 Jar Analyzer
 
@@ -96,7 +96,7 @@ Jar Analyzer
 
 ![](img/0071.png)
 
-自从 `5.10` 版本后支持 `MCP` 请参考文档 [MCP](mcp/README.md)
+自从 `5.10` 版本后支持 `MCP` 请参考文档 [MCP](mcp-doc/README.md)
 
 ![](mcp-img/004.png)
 
@@ -158,7 +158,7 @@ Jar Analyzer
 - 自从 `5.1` 版本之后支持了简单的 `Gadget` 分析
 - 自从 `5.3` 版本后支持深度优先搜索算法自动分析漏洞链
 - 自从 `5.7` 版本后支持污点分析（beta）并在 `5.8` 版本修复和完善
-- 自从 `5.10` 版本后支持了 `MCP` 请参考文档 [MCP](mcp/README.md)
+- 自从 `5.10` 版本后支持了 `MCP` 请参考文档 [MCP](mcp-doc/README.md)
 
 [详细更新日志 - CHANGE LOG](CHANGELOG.MD)
 

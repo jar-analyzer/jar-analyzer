@@ -11,10 +11,9 @@
 package me.n1ar4.jar.analyzer.server.handler;
 
 import com.alibaba.fastjson2.JSON;
-import com.sun.xml.internal.rngom.parse.host.Base;
 import fi.iki.elonen.NanoHTTPD;
-import me.n1ar4.jar.analyzer.engine.CoreEngine;
 import me.n1ar4.jar.analyzer.engine.CFRDecompileEngine;
+import me.n1ar4.jar.analyzer.engine.CoreEngine;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.server.handler.base.BaseHandler;
 import me.n1ar4.jar.analyzer.server.handler.base.HttpHandler;
@@ -25,12 +24,10 @@ import me.n1ar4.log.Logger;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class GetCodeCFRHandler extends BaseHandler implements HttpHandler {
     private static final Logger logger = LogManager.getLogger();
-    
+
     @Override
     public NanoHTTPD.Response handle(NanoHTTPD.IHTTPSession session) {
         CoreEngine engine = MainForm.getEngine();

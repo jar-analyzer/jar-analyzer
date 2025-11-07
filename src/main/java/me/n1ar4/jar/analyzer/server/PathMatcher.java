@@ -58,16 +58,16 @@ public class PathMatcher {
         handlers.put("/api/get_all_spring_controllers", new GetAllSpringControllersHandler());
         handlers.put("/api/get_spring_mappings", new GetSpringMappingsHandler());
 
-        handlers.put("/api/get_all_servlets",new GetAllServletsHandler());
+        handlers.put("/api/get_all_servlets", new GetAllServletsHandler());
 
-        handlers.put("/api/get_all_listeners",new GetAllListenersHandler());
+        handlers.put("/api/get_all_listeners", new GetAllListenersHandler());
 
-        handlers.put("/api/get_all_filters",new GetAllFiltersHandler());
+        handlers.put("/api/get_all_filters", new GetAllFiltersHandler());
 
         handlers.put("/api/get_class_by_class", new GetClassByClassHandler());
 
-        handlers.put("/api/fernflower_code",new GetCodeFernflowerHandler());
-        handlers.put("/api/cfr_code",new GetCodeCFRHandler());
+        handlers.put("/api/fernflower_code", new GetCodeFernflowerHandler());
+        handlers.put("/api/cfr_code", new GetCodeCFRHandler());
     }
 
     public static NanoHTTPD.Response handleReq(NanoHTTPD.IHTTPSession session) {

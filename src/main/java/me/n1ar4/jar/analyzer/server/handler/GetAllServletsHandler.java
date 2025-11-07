@@ -20,7 +20,7 @@ import me.n1ar4.jar.analyzer.server.handler.base.HttpHandler;
 
 import java.util.ArrayList;
 
-public class GetAllServletsHandler  extends BaseHandler implements HttpHandler {
+public class GetAllServletsHandler extends BaseHandler implements HttpHandler {
     @Override
     public NanoHTTPD.Response handle(NanoHTTPD.IHTTPSession session) {
         CoreEngine engine = MainForm.getEngine();

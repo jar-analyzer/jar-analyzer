@@ -262,15 +262,25 @@ set "java_args=-XX:+UseG1GC -Xms2g -XX:MaxGCPauseMillis=200 %other_args%"
 git clone --depth 1 https://github.com/jar-analyzer/jar-analyzer
 ```
 
+核心项目构建
+
 1. 重要：确保你安装了 `JDK 8 64位` （建议 `OpenJDK`）
 2. 重要：如果你修改了代码请确保在 `IDEA` 环境中至少启动一次（生成 `GUI` 代码）
-3. 重要：确保你安装了 `Maven 3.X` 并正确配置了 `PATH` 变量（需要使用 `mvn` 命令）
-4. 可选：完善贡献者信息：检查修改 `thanks.md/thanks.txt` 和 `pom.xml` 
-5. 可选：构建 `agent` 子项目 `cd agent && package.bat`
-6. 重要：构建核心项目 `package.bat`
-7. 可选：使用 `cmake` 构建 `native` 目录生成 `dll` 文件放入 `resources`
-8. 可选：使用 `winres` 和 `gcc` 构建启动 `exe` 文件和图标信息
-9. 可选：完整发版参考 `build.py` 和 `build.yml` 文件
+3. 重要：确保你安装了 `Maven 3.X` （一般 `IDEA` 已自带）
+4. 可选：完善贡献者信息：检查修改 `thanks.md/thanks.txt` 和 `pom.xml`
+5. 可选：使用 `cmake` 构建 `native` 目录生成 `dll` 文件放入 `resources`
+
+MCP 构建
+
+1. 确保安装了 `golang 1.24` 及以上版本
+2. 打开 `mcp` 目录即可（标准 `go mod` 项目）
+3. 可以基于 `gox` 目录编译多平台可执行文件（开源 `gox` 修改版）
+
+其他组件构建
+
+1. 可选：构建 `agent` 子项目 `cd agent && package.bat`
+2. 可选：使用 `winres` 和 `gcc` 构建启动 `exe` 文件和图标信息
+3. 可选：完整发版参考 `build.py` 和 `build.yml` 文件
 
 ## 进阶功能
 

@@ -1,0 +1,483 @@
+{
+  "name": "jar-analyzer-workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "={{ $json.constants['jar-analyzer-api'] }}api/get_all_servlets",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "07e7c182-39cf-4ff9-b0f6-322a778fcad8",
+      "name": "Get All Servlet",
+      "notes": "Get All Servlet"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Global Constants').item.json.constants['jar-analyzer-api'] }}api/get_methods_by_class?class={{ $json.className }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        688,
+        192
+      ],
+      "id": "baf61a30-fae3-4c69-89df-60e328d2a6e4",
+      "name": "Get All Method"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-globals.globalConstants",
+      "typeVersion": 1,
+      "position": [
+        -224,
+        176
+      ],
+      "id": "4fa9ab44-8f8a-4088-865e-722031b98a71",
+      "name": "Global Constants",
+      "credentials": {
+        "globalConstantsApi": {
+          "id": "IH7D2VRyHX4WOTgN",
+          "name": "Global Constants account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "9de56d54-5e9d-4aa9-bd29-3c90b7489a5a",
+              "leftValue": "={{$json}}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        848,
+        192
+      ],
+      "id": "361be669-7f22-428d-9d48-3263d0a2ada0",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "options": {
+          "systemMessage": "You are a senior security engineer, specializing in Java source code security analysis. Your task is to trace the code logic with high precision and find possible vulnerability points.\n\n## Core Task\n\nIn the given Java entry code, use the provided tools to identify the location of the vulnerability that directly receives external untrusted data, and track the subsequent code of the parameter. If the value of the parameter is found to cause the vulnerability of arbitrary code execution, arbitrary file upload, and arbitrary file download, it will be reported.\n\n\n## Vulnerable Type\n\n- deserialize\n- file_path_traversal\n- redirect\n- ssrf\n- sql_injection\n- template_injection\n- arbitrary_file_download\n- arbitrary_file_upload\n- code_injection\n- arbitrary_spring_bean_call\n\n## Report Example\n\n```json\n[\n    {\n        \"type\": \"deserialize\", \"reason\":\"Found accessible ObjectInputStream.readObject call\", \"trace\": [\n            {\"class\": \"com.example.Servlet1\", \"method\": \"doGet\"},\n            {\"class\": \"com.example.Utils\", \"method\":\"readRequest\"},\n            {\"class\": \"java.io.ObjectInputStream\", \"method\": \"readObject\"}\n        ]\n    },\n    {\n        \"type\": \"path_traversal\", \"reason\":\"Arbitrary file download vulnerability\", \"trace\": [\n            {\"class\": \"com.example.FileDownload\", \"method\": \"doGet\"},\n            {\"class\": \"java.io.FileInputStream\", \"method\": \"<init>\"}\n        ]\n    }\n]\n```\n\nNow analyze the provided Java code. if you found vulnerable, please call report tool.",
+          "maxIterations": "=10"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1488,
+        176
+      ],
+      "id": "15684bb6-630c-42c7-b9b5-0a85885374cc",
+      "name": "AI Agent",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "glm-4.6",
+          "mode": "list",
+          "cachedResultName": "GLM-4.6"
+        },
+        "options": {
+          "thinking": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        1392,
+        448
+      ],
+      "id": "75f39046-e99d-4263-a698-fd482af7b21b",
+      "name": "LLM",
+      "credentials": {
+        "anthropicApi": {
+          "id": "TaNxIU4TnOE9TUHI",
+          "name": "Anthropic account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "endpointUrl": "={{ $('Global Constants').first().json.constants['jar-analyzer-mcp'] }}sse",
+        "serverTransport": "sse",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1.2,
+      "position": [
+        1536,
+        448
+      ],
+      "id": "986eb597-926a-477d-963b-9260dbaedca5",
+      "name": "Jar Analyzer MCP"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Global Constants').item.json.constants['jar-analyzer-api'] }}api/get_class_by_class?class={{ $json.className }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1040,
+        176
+      ],
+      "id": "6ba8427e-eec9-4091-bc7f-dde91d8f935f",
+      "name": "Get Class Info"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Global Constants').item.json.constants['jar-analyzer-api'] }}api/get_all_filters",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        0,
+        144
+      ],
+      "id": "dcfcc8fb-e5f5-4883-bd4b-0967ec977aa8",
+      "name": "Get All Filter",
+      "notes": "Get All Servlet"
+    },
+    {
+      "parameters": {
+        "jsCode": "const className = $input.first().json.className;\nconst allMethod = $('Get All Method').all();\n\nlet userPrompt = `\n\nClassName: ${className}\nIsInterface: ${$input.first().json.isInterfaceInt}\nSuperClassName: ${$input.first().json.superClassName}\nMethodList: \n`;\n\nfor (let i = 0; i < allMethod.length; i++) {\n  const item = allMethod[i];\n  userPrompt += `\n   MethodName: ${item.json.methodName},\n   MethodDesc: ${item.json.methodDesc},\n   IsStatic: ${item.json.isStaticInt}\n   ----\n   `\n}\n\nlet callLimit = allMethod.length * 3;\n\ncallLimit = callLimit > 50 ? 50 : callLimit;\n\nreturn {\n  json: {\n    chatInput: userPrompt,\n    callLimit: callLimit\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1248,
+        176
+      ],
+      "id": "5b167f4c-b8f9-4819-a302-e8156a9dc394",
+      "name": "Prep Prompt"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Global Constants').item.json.constants['jar-analyzer-api'] }}api/get_all_listeners",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        0,
+        288
+      ],
+      "id": "8c7f3842-0808-42b8-a1b3-0af3e81e19b1",
+      "name": "Get All Listener",
+      "notes": "Get All Servlet"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Global Constants').item.json.constants['jar-analyzer-api'] }}api/get_all_spring_controllers",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        0,
+        432
+      ],
+      "id": "ae79915e-49f6-4c92-929e-cbf2376a9677",
+      "name": "Get All Spring Controller",
+      "notes": "Get All Servlet"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        480,
+        192
+      ],
+      "id": "fdc9bceb-8005-40ec-8c4a-54bf4b142cc8",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "numberInputs": 4
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        272,
+        160
+      ],
+      "id": "b7993e7f-91ef-4ae5-afb5-e4dd72d55cd2",
+      "name": "Merge",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -432,
+        176
+      ],
+      "id": "22e94423-4ffa-4c59-a7c9-fdc013479fa9",
+      "name": "Start Workflow"
+    },
+    {
+      "parameters": {
+        "endpointUrl": "={{ $('Global Constants').first().json.constants['report-service-mcp'] }}sse",
+        "serverTransport": "sse",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1.2,
+      "position": [
+        1680,
+        448
+      ],
+      "id": "13e2d01c-5fde-4bd8-87ea-1337b8d473cb",
+      "name": "Vulnerable Report MCP"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Get All Servlet": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Global Constants": {
+      "main": [
+        [
+          {
+            "node": "Get All Listener",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get All Servlet",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get All Filter",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get All Spring Controller",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get All Method": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Get Class Info",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LLM": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Jar Analyzer MCP": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Class Info": {
+      "main": [
+        [
+          {
+            "node": "Prep Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get All Filter": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Prep Prompt": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get All Listener": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Get All Spring Controller": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Get All Method",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start Workflow": {
+      "main": [
+        [
+          {
+            "node": "Global Constants",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vulnerable Report MCP": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "a3b814df-3fed-49f0-8830-35425d820395",
+  "meta": {
+    "instanceId": "d575e6f3641572d8534bea65c31b53b54eacbaf41f2eabb2b0d8cb1e2b4b8710"
+  },
+  "id": "DM2LZaWVd8gbiCjQ",
+  "tags": []
+}

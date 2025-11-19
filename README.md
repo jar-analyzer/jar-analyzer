@@ -12,6 +12,20 @@ The `jar-analyzer` project has been continuously updated for `4` years, with `44
 
 ### `jar-analyzer 5.10` 版本后已支持 `MCP` 请参考文档 [MCP](mcp-doc/README.md)
 
+### `jar-analyzer` 联动 `n8n` 实现 `workflow` 自动分析
+
+特别致谢：
+
+- whw1sfb（https://github.com/whwlsfb）
+- L-codes（https://github.com/L-codes）
+- osword（https://github.com/zhzhdoai）
+
+感谢以上大佬分享 `jar-analyzer mcp` 基于 `n8n` 平台更高级的用法，文档：[n8n-doc](n8n-doc)
+
+![](mcp-img/010.png)
+
+
+
 <img alt="gitleaks badge" src="https://img.shields.io/badge/protected%20by-gitleaks-blue">
 
 ![](https://img.shields.io/github/downloads/jar-analyzer/jar-analyzer/total)

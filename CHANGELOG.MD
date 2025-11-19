@@ -2,13 +2,21 @@
 
 ## 5.11  - 开发中 - 未发布
 
+实现 `n8n workflow` 自动审计出报告，具体内容参考主页 `README`
+
+特别致谢：whwlsfb L-codes osword 三位大佬
+
 更新日志：
 
-- todo
+- [重要] 分享 `n8n workflow` 配置和文档 @whwlsfb
+- [MCP] 优化部分代码提高 `AI` 分析效率 @whwlsfb
+- [MCP] 提供结合 `n8n workflow` 的 `report-mcp` @whwlsfb
+- [MCP] 支持 `-debug` 选项打印被调用日志 @4ra1n
 
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
+- whwlsfb (https://github.com/whwlsfb)
 
 所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
 
@@ -17,6 +25,7 @@
 - `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
 - `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
 - `mcp-build.zip` 包含所有系统的 `mcp` 一般使用 `mcp_windows_amd64.exe`
+- `report-mcp-build.zip` 配合 `n8n` 使用的自动报告生成 `mcp`
 
 一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
 

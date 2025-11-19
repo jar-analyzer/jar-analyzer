@@ -20,7 +20,7 @@ import (
 
 func RegisterJavaWebTools(s *server.MCPServer) {
 	getAllFiltersTool := mcp.NewTool("get_all_filters",
-		mcp.WithDescription("列出所有 Java Web Filters 类"),
+		mcp.WithDescription("列出所有 Java Web Filters 的实现类"),
 	)
 	s.AddTool(getAllFiltersTool, func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 		out, err := util.HTTPGet("/api/get_all_filters", nil)
@@ -31,7 +31,7 @@ func RegisterJavaWebTools(s *server.MCPServer) {
 	})
 
 	getAllServletsTool := mcp.NewTool("get_all_servlets",
-		mcp.WithDescription("列出所有 Java Web Servlets 类"),
+		mcp.WithDescription("列出所有 Java Web Servlets 的实现类"),
 	)
 	s.AddTool(getAllServletsTool, func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 		out, err := util.HTTPGet("/api/get_all_servlets", nil)
@@ -42,7 +42,7 @@ func RegisterJavaWebTools(s *server.MCPServer) {
 	})
 
 	getAllListenersTool := mcp.NewTool("get_all_listeners",
-		mcp.WithDescription("列出所有 Java Web Listeners 类"),
+		mcp.WithDescription("列出所有 Java Web Listeners 的实现类"),
 	)
 	s.AddTool(getAllListenersTool, func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 		out, err := util.HTTPGet("/api/get_all_listeners", nil)

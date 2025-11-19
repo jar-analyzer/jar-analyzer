@@ -22,7 +22,7 @@ import (
 
 func RegisterMethodClassTools(s *server.MCPServer) {
 	getMethodsByClassTool := mcp.NewTool("get_methods_by_class",
-		mcp.WithDescription("查询某类下的方法信息"),
+		mcp.WithDescription("查询指定类中的所有方法信息"),
 		mcp.WithString("class", mcp.Required(), mcp.Description("类名（点或斜杠分隔均可）")),
 	)
 	s.AddTool(getMethodsByClassTool, func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
@@ -39,7 +39,7 @@ func RegisterMethodClassTools(s *server.MCPServer) {
 	})
 
 	getMethodsByStrTool := mcp.NewTool("get_methods_by_str",
-		mcp.WithDescription("按字符串搜索方法（模糊）"),
+		mcp.WithDescription("搜索包含指定字符串(String类型的变量、注解)的方法（模糊）"),
 		mcp.WithString("str", mcp.Required(), mcp.Description("搜索关键字")),
 	)
 	s.AddTool(getMethodsByStrTool, func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {

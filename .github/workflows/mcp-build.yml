@@ -26,24 +26,42 @@ jobs:
         run: |
           set -x
           cd gox
-          go build -o ../mcp/cmd/my-gox
+          go build -o ../my-gox
+          cd ..
+          cp my-gox mcp/cmd/core
+          cp my-gox mcp/cmd/report
 
       - name: build jar-analyzer-mcp
         run: |
           set -x 
-          cd mcp/cmd
+          cd mcp/cmd/core
           mkdir jar-analyzer-mcp
           ./my-gox -parallel 5 -osarch="darwin/arm64 darwin/amd64 linux/386 linux/amd64 linux/arm linux/arm64 windows/arm windows/arm64 windows/386 windows/amd64" -ldflags="-extldflags=-static -s -w" -output="jar-analyzer-mcp/mcp_${{ env.VERSION }}_{{.OS}}_{{.Arch}}"
+
+      - name: build jar-analyzer-report-mcp
+        run: |
+          set -x 
+          cd mcp/cmd/report
+          mkdir jar-analyzer-report-mcp
+          ./my-gox -parallel 5 -osarch="darwin/arm64 darwin/amd64 linux/386 linux/amd64 linux/arm linux/arm64 windows/arm windows/arm64 windows/386 windows/amd64" -ldflags="-extldflags=-static -s -w" -output="jar-analyzer-report-mcp/report_mcp_${{ env.VERSION }}_{{.OS}}_{{.Arch}}"
 
       - name: create build file
         run: |
           set -x
-          cd mcp/cmd
+          cd mcp/cmd/core
           sudo apt-get install -y zip unzip
-          zip -r ../../mcp-build.zip jar-analyzer-mcp/*
+          zip -r ../../../mcp-build.zip jar-analyzer-mcp/*
+          cd ../report
+          zip -r ../../../report-mcp-build.zip jar-analyzer-report-mcp/*
 
-      - name: upload
+      - name: upload core
         uses: actions/upload-artifact@v4
         with:
           name: build-artifact
           path: mcp-build.zip
+
+      - name: upload report
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifact
+          path: report-mcp-build.zip

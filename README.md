@@ -8,6 +8,8 @@ The `jar-analyzer` project has been continuously updated for `4` years, with `44
 
 官方文档：https://docs.qq.com/doc/DV3pKbG9GS0pJS0tk
 
+如果贡献代码：fork 本项目到自己仓库，参考 [#build](BUILD) 部分搭建项目，提交 Pull Requests 即可
+
 ### `jar-analyzer 5.10` 版本后已支持 `MCP` 请参考文档 [MCP](mcp-doc/README.md)
 
 <img alt="gitleaks badge" src="https://img.shields.io/badge/protected%20by-gitleaks-blue">

@@ -2,7 +2,10 @@ module jar-analyzer-mcp
 
 go 1.24
 
-require github.com/mark3labs/mcp-go v0.43.0
+require (
+	github.com/gorilla/websocket v1.5.3
+	github.com/mark3labs/mcp-go v0.43.0
+)
 
 require (
 	github.com/bahlo/generic-list-go v0.2.0 // indirect

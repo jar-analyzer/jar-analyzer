@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jar-Analyzer MCP Report Service</title>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .status {
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .status.connected {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.disconnected {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .report-item {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid #007bff;
+        }
+        .report-type {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #495057;
+            margin-bottom: 8px;
+            text-transform: capitalize;
+        }
+        .report-reason {
+            color: #6c757d;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+        .trace-item {
+            background-color: #f8f9fa;
+            padding: 8px 12px;
+            margin: 5px 0;
+            border-radius: 4px;
+            border-left: 3px solid #28a745;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        .trace-class {
+            color: #007bff;
+            font-weight: bold;
+        }
+        .trace-method {
+            color: #28a745;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6c757d;
+        }
+        .empty-state h3 {
+            margin-bottom: 10px;
+            color: #495057;
+        }
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .stat-item {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            min-width: 150px;
+        }
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #007bff;
+        }
+        .stat-label {
+            color: #6c757d;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function App() {
+            const [reports, setReports] = useState([]);
+            const [connectionStatus, setConnectionStatus] = useState('disconnected');
+            const [ws, setWs] = useState(null);
+
+            useEffect(() => {
+                connectWebSocket();
+                return () => {
+                    if (ws) {
+                        ws.close();
+                    }
+                };
+            }, []);
+
+            const connectWebSocket = () => {
+                const websocket = new WebSocket('ws://__JAR_ANALYZER_REPORT_MCP__/ws');
+                
+                websocket.onopen = () => {
+                    console.log('WebSocket connected');
+                    setConnectionStatus('connected');
+                };
+
+                websocket.onmessage = (event) => {
+                    try {
+                        const newData = JSON.parse(event.data);
+                        console.log('Received data:', newData);
+                        setReports(prevReports => {
+                            const existingIds = new Set(prevReports.map(r => JSON.stringify(r)));
+                            const uniqueNewData = newData.filter(item => !existingIds.has(JSON.stringify(item)));
+                            return [...prevReports, ...uniqueNewData];
+                        });
+                    } catch (error) {
+                        console.error('Error parsing WebSocket message:', error);
+                    }
+                };
+
+                websocket.onclose = () => {
+                    console.log('WebSocket disconnected');
+                    setConnectionStatus('disconnected');
+                    setTimeout(() => {
+                        console.log('Attempting to reconnect...');
+                        connectWebSocket();
+                    }, 3000);
+                };
+
+                websocket.onerror = (error) => {
+                    console.error('WebSocket error:', error);
+                    setConnectionStatus('disconnected');
+                };
+
+                setWs(websocket);
+            };
+
+            const getReportStats = () => {
+                const stats = {};
+                reports.forEach(report => {
+                    stats[report.type] = (stats[report.type] || 0) + 1;
+                });
+                return stats;
+            };
+
+            const formatType = (type) => {
+                return type.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+            };
+
+            const stats = getReportStats();
+
+            return (
+                <div className="container">
+                    <div className="header">
+                        <h1>🔍 Jar-Analyzer MCP Report Service</h1>
+                        <p>Real-time Security Report Monitoring</p>
+                    </div>
+
+                    <div className={`status ${connectionStatus}`}>
+                        Connection Status: {connectionStatus.toUpperCase()}
+                        {connectionStatus === 'connected' ? ' ✅' : ' ❌'}
+                    </div>
+
+                    {reports.length > 0 && (
+                        <div className="stats">
+                            <div className="stat-item">
+                                <div className="stat-number">{reports.length}</div>
+                                <div className="stat-label">Total Reports</div>
+                            </div>
+                            {Object.entries(stats).map(([type, count]) => (
+                                <div key={type} className="stat-item">
+                                    <div className="stat-number">{count}</div>
+                                    <div className="stat-label">{formatType(type)}</div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
+                    {reports.length === 0 ? (
+                        <div className="empty-state">
+                            <h3>📊 No Reports Yet</h3>
+                            <p>Waiting for report data from MCP service...</p>
+                            <p>Send JSON data to the 'report' tool to see results here.</p>
+                        </div>
+                    ) : (
+                        <div>
+                            <h3 className="mb-4">📋 Security Reports ({reports.length})</h3>
+                            {reports.map((report, index) => (
+                                <div key={index} className="report-item">
+                                    <div className="report-type">{formatType(report.type)}</div>
+                                    <div className="report-reason">{report.reason}</div>
+                                    <div className="trace-section">
+                                        <h6 className="mb-2">🔍 Call Trace:</h6>
+                                        {report.trace.map((traceItem, traceIndex) => (
+                                            <div key={traceIndex} className="trace-item">
+                                                <span className="trace-class">{traceItem.class}</span>
+                                                <span className="text-muted">.</span>
+                                                <span className="trace-method">{traceItem.method}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>

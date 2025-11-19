@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jar-Analyzer MCP Report Service</title>
+    <title>MCP Report Service</title>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -62,6 +62,11 @@
             color: #6c757d;
             margin-bottom: 15px;
             font-style: italic;
+        }
+        .report-score {
+            display: block;
+            float: right;
+            font-size: 35px;
         }
         .trace-item {
             background-color: #f8f9fa;
@@ -134,7 +139,7 @@
 
             const connectWebSocket = () => {
                 const websocket = new WebSocket('ws://__JAR_ANALYZER_REPORT_MCP__/ws');
-                
+
                 websocket.onopen = () => {
                     console.log('WebSocket connected');
                     setConnectionStatus('connected');
@@ -145,9 +150,7 @@
                         const newData = JSON.parse(event.data);
                         console.log('Received data:', newData);
                         setReports(prevReports => {
-                            const existingIds = new Set(prevReports.map(r => JSON.stringify(r)));
-                            const uniqueNewData = newData.filter(item => !existingIds.has(JSON.stringify(item)));
-                            return [...prevReports, ...uniqueNewData];
+                            return [...prevReports, newData].sort((a, b) => b.score - a.score);
                         });
                     } catch (error) {
                         console.error('Error parsing WebSocket message:', error);
@@ -157,6 +160,7 @@
                 websocket.onclose = () => {
                     console.log('WebSocket disconnected');
                     setConnectionStatus('disconnected');
+                    // 尝试重新连接
                     setTimeout(() => {
                         console.log('Attempting to reconnect...');
                         connectWebSocket();
@@ -188,7 +192,7 @@
             return (
                 <div className="container">
                     <div className="header">
-                        <h1>🔍 Jar-Analyzer MCP Report Service</h1>
+                        <h1>🔍 MCP Report Service</h1>
                         <p>Real-time Security Report Monitoring</p>
                     </div>
 
@@ -223,6 +227,7 @@
                             <h3 className="mb-4">📋 Security Reports ({reports.length})</h3>
                             {reports.map((report, index) => (
                                 <div key={index} className="report-item">
+                                    <div className="report-score"><b style={{color: report.score >= 7 ? 'red' : 'blue', fontSize: '40px'}}>{report.score}</b>/10</div>
                                     <div className="report-type">{formatType(report.type)}</div>
                                     <div className="report-reason">{report.reason}</div>
                                     <div className="trace-section">

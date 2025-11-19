@@ -46,7 +46,6 @@ func main() {
 
 	conf.GlobalPort = port
 	conf.GlobalJarAnalyzerUrl = jarAnalyzerUrl
-	conf.Debug = debug
 
 	if debug {
 		log.SetLevel(log.DebugLevel)

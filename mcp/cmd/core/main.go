@@ -13,7 +13,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"log"
+	"jar-analyzer-mcp/pkg/log"
 
 	"github.com/mark3labs/mcp-go/server"
 	"jar-analyzer-mcp/pkg/conf"
@@ -35,15 +35,24 @@ func main() {
 	fmt.Println("jar-analyzer-mcp (https://github.com/jar-analyzer/jar-analyzer)")
 	fmt.Printf("version: %s usage: %s\n", version, "[mcp.exe -port 20032 -url http://127.0.0.1:10032]")
 
+	var debug bool
 	var port int
 	var jarAnalyzerUrl string
 
 	flag.IntVar(&port, "port", 20032, "port to listen on")
 	flag.StringVar(&jarAnalyzerUrl, "url", "http://127.0.0.1:10032", "Jar Analyzer URL")
+	flag.BoolVar(&debug, "debug", false, "debug mode")
 	flag.Parse()
 
 	conf.GlobalPort = port
 	conf.GlobalJarAnalyzerUrl = jarAnalyzerUrl
+	conf.Debug = debug
+
+	if debug {
+		log.SetLevel(log.DebugLevel)
+	} else {
+		log.SetLevel(log.InfoLevel)
+	}
 
 	s := server.NewMCPServer(
 		name,
@@ -54,6 +63,6 @@ func main() {
 	tools.RegisterAllTools(s)
 	sseServer := server.NewSSEServer(s)
 	if err := sseServer.Start(fmt.Sprintf(":%d", conf.GlobalPort)); err != nil {
-		log.Fatal(err)
+		log.Error(err)
 	}
 }

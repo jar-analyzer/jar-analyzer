@@ -13,4 +13,5 @@ package conf
 var (
 	GlobalJarAnalyzerUrl string
 	GlobalPort           int
+	Debug                bool
 )

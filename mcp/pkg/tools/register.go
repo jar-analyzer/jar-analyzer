@@ -12,6 +12,7 @@ package tools
 
 import (
 	"github.com/mark3labs/mcp-go/server"
+	"jar-analyzer-mcp/pkg/log"
 )
 
 func RegisterAllTools(s *server.MCPServer) {
@@ -20,4 +21,5 @@ func RegisterAllTools(s *server.MCPServer) {
 	RegisterSpringTools(s)
 	RegisterJavaWebTools(s)
 	RegisterCodeTools(s)
+	log.Debug("register all tools")
 }

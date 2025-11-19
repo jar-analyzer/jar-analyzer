@@ -35,7 +35,7 @@ func RegisterCallGraphTools(s *server.MCPServer) {
 	}
 
 	getCallersTool := mcp.NewTool("get_callers",
-		mcp.WithDescription("查询方法的调用者"),
+		mcp.WithDescription("查询方法的所有调用者"),
 		mcp.WithString("class", mcp.Required(), mcp.Description("类名")),
 		mcp.WithString("method", mcp.Required(), mcp.Description("方法名")),
 		mcp.WithString("desc", mcp.Description("方法描述（可选）")),

@@ -21,7 +21,6 @@ import me.n1ar4.jar.analyzer.utils.StringUtil;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -67,8 +66,8 @@ public class GetCodeCFRHandler extends BaseHandler implements HttpHandler {
             result.put("className", className);
             result.put("methodName", methodName);
             result.put("methodDesc", methodDesc);
-            result.put("fullClassCode", Base64.getEncoder().encodeToString(decompiledCode.getBytes()));
-            result.put("methodCode", Base64.getEncoder().encodeToString(methodCode.getBytes()));
+            result.put("fullClassCode", decompiledCode);
+            result.put("methodCode", methodCode);
             return buildJSON(JSON.toJSONString(result));
         } catch (Exception e) {
             logger.error("error getting method code: " + e.getMessage(), e);

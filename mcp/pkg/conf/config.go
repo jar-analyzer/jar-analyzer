@@ -13,4 +13,6 @@ package conf
 var (
 	GlobalJarAnalyzerUrl string
 	GlobalPort           int
+	ReportMcpHost        string
+	ReportMcpWebPort     int
 )

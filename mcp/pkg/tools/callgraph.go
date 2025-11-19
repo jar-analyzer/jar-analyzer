@@ -12,6 +12,7 @@ package tools
 
 import (
 	"context"
+	"jar-analyzer-mcp/pkg/log"
 	"net/url"
 
 	"jar-analyzer-mcp/pkg/util"
@@ -45,6 +46,8 @@ func RegisterCallGraphTools(s *server.MCPServer) {
 		if errRes != nil {
 			return errRes, nil
 		}
+		log.Debugf("call %s, class: %s, method: %s, desc: %s",
+			"get_callers", clazz, method, desc)
 		params := url.Values{"class": []string{clazz}, "method": []string{method}}
 		if desc != "" {
 			params.Set("desc", desc)
@@ -67,6 +70,8 @@ func RegisterCallGraphTools(s *server.MCPServer) {
 		if errRes != nil {
 			return errRes, nil
 		}
+		log.Debugf("call %s, class: %s, method: %s, desc: %s",
+			"get_callers_like", clazz, method, desc)
 		params := url.Values{"class": []string{clazz}, "method": []string{method}}
 		if desc != "" {
 			params.Set("desc", desc)
@@ -89,6 +94,8 @@ func RegisterCallGraphTools(s *server.MCPServer) {
 		if errRes != nil {
 			return errRes, nil
 		}
+		log.Debugf("call %s, class: %s, method: %s, desc: %s",
+			"get_callee", clazz, method, desc)
 		params := url.Values{"class": []string{clazz}, "method": []string{method}}
 		if desc != "" {
 			params.Set("desc", desc)
@@ -111,6 +118,8 @@ func RegisterCallGraphTools(s *server.MCPServer) {
 		if errRes != nil {
 			return errRes, nil
 		}
+		log.Debugf("call %s, class: %s, method: %s, desc: %s",
+			"get_method", clazz, method, desc)
 		params := url.Values{"class": []string{clazz}, "method": []string{method}}
 		if desc != "" {
 			params.Set("desc", desc)
@@ -133,6 +142,8 @@ func RegisterCallGraphTools(s *server.MCPServer) {
 		if errRes != nil {
 			return errRes, nil
 		}
+		log.Debugf("call %s, class: %s, method: %s, desc: %s",
+			"get_method_like", clazz, method, desc)
 		params := url.Values{"class": []string{clazz}, "method": []string{method}}
 		if desc != "" {
 			params.Set("desc", desc)
@@ -155,6 +166,8 @@ func RegisterCallGraphTools(s *server.MCPServer) {
 		if errRes != nil {
 			return errRes, nil
 		}
+		log.Debugf("call %s, class: %s, method: %s, desc: %s",
+			"get_impls", clazz, method, desc)
 		params := url.Values{"class": []string{clazz}, "method": []string{method}}
 		if desc != "" {
 			params.Set("desc", desc)
@@ -177,6 +190,8 @@ func RegisterCallGraphTools(s *server.MCPServer) {
 		if errRes != nil {
 			return errRes, nil
 		}
+		log.Debugf("call %s, class: %s, method: %s, desc: %s",
+			"get_super_impls", clazz, method, desc)
 		params := url.Values{"class": []string{clazz}, "method": []string{method}}
 		if desc != "" {
 			params.Set("desc", desc)

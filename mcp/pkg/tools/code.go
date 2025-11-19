@@ -12,6 +12,7 @@ package tools
 
 import (
 	"context"
+	"jar-analyzer-mcp/pkg/log"
 	"net/url"
 
 	"jar-analyzer-mcp/pkg/util"
@@ -37,6 +38,8 @@ func RegisterCodeTools(s *server.MCPServer) {
 			return mcp.NewToolResultError(err.Error()), nil
 		}
 		desc := req.GetString("desc", "")
+		log.Debugf("call %s, class: %s, method: %s, desc: %s",
+			"get_code_fernflower", className, methodName, desc)
 		params := url.Values{"class": []string{className}, "method": []string{methodName}}
 		if desc != "" {
 			params.Set("desc", desc)
@@ -47,7 +50,6 @@ func RegisterCodeTools(s *server.MCPServer) {
 		}
 		return mcp.NewToolResultText(out), nil
 	})
-
 	// CFR 反编译器
 	getCodeCFRTool := mcp.NewTool("get_code_cfr",
 		mcp.WithDescription("反编译并提取指定方法代码（CFR）"),
@@ -65,6 +67,8 @@ func RegisterCodeTools(s *server.MCPServer) {
 			return mcp.NewToolResultError(err.Error()), nil
 		}
 		desc := req.GetString("desc", "")
+		log.Debugf("call %s, class: %s, method: %s, desc: %s",
+			"get_code_cfr", className, methodName, desc)
 		params := url.Values{"class": []string{className}, "method": []string{methodName}}
 		if desc != "" {
 			params.Set("desc", desc)

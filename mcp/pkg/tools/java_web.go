@@ -12,6 +12,7 @@ package tools
 
 import (
 	"context"
+	"jar-analyzer-mcp/pkg/log"
 	"jar-analyzer-mcp/pkg/util"
 
 	"github.com/mark3labs/mcp-go/mcp"
@@ -23,6 +24,7 @@ func RegisterJavaWebTools(s *server.MCPServer) {
 		mcp.WithDescription("列出所有 Java Web Filters 的实现类"),
 	)
 	s.AddTool(getAllFiltersTool, func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+		log.Debugf("call %s", "get_all_filters")
 		out, err := util.HTTPGet("/api/get_all_filters", nil)
 		if err != nil {
 			return mcp.NewToolResultError(err.Error()), nil
@@ -34,6 +36,7 @@ func RegisterJavaWebTools(s *server.MCPServer) {
 		mcp.WithDescription("列出所有 Java Web Servlets 的实现类"),
 	)
 	s.AddTool(getAllServletsTool, func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+		log.Debugf("call %s", "get_all_servlets")
 		out, err := util.HTTPGet("/api/get_all_servlets", nil)
 		if err != nil {
 			return mcp.NewToolResultError(err.Error()), nil
@@ -45,6 +48,7 @@ func RegisterJavaWebTools(s *server.MCPServer) {
 		mcp.WithDescription("列出所有 Java Web Listeners 的实现类"),
 	)
 	s.AddTool(getAllListenersTool, func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+		log.Debugf("call %s", "get_all_listeners")
 		out, err := util.HTTPGet("/api/get_all_listeners", nil)
 		if err != nil {
 			return mcp.NewToolResultError(err.Error()), nil

@@ -12,6 +12,7 @@ package tools
 
 import (
 	"context"
+	"jar-analyzer-mcp/pkg/log"
 	"net/url"
 
 	"jar-analyzer-mcp/pkg/util"
@@ -25,6 +26,7 @@ func RegisterSpringTools(s *server.MCPServer) {
 		mcp.WithDescription("列出所有 Spring 控制器类"),
 	)
 	s.AddTool(getAllSpringControllersTool, func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+		log.Debugf("call %s", "get_all_spring_controllers")
 		out, err := util.HTTPGet("/api/get_all_spring_controllers", nil)
 		if err != nil {
 			return mcp.NewToolResultError(err.Error()), nil
@@ -41,6 +43,7 @@ func RegisterSpringTools(s *server.MCPServer) {
 		if err != nil {
 			return mcp.NewToolResultError(err.Error()), nil
 		}
+		log.Debugf("call %s, class: %s", "get_spring_mappings", className)
 		params := url.Values{"class": []string{className}}
 		out, err := util.HTTPGet("/api/get_spring_mappings", params)
 		if err != nil {

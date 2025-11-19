@@ -12,6 +12,7 @@ package tools
 
 import (
 	"context"
+	"jar-analyzer-mcp/pkg/log"
 	"net/url"
 
 	"jar-analyzer-mcp/pkg/util"
@@ -30,6 +31,7 @@ func RegisterMethodClassTools(s *server.MCPServer) {
 		if err != nil {
 			return mcp.NewToolResultError(err.Error()), nil
 		}
+		log.Debugf("call %s, class: %s", "get_methods_by_class", className)
 		params := url.Values{"class": []string{className}}
 		out, err := util.HTTPGet("/api/get_methods_by_class", params)
 		if err != nil {
@@ -47,6 +49,7 @@ func RegisterMethodClassTools(s *server.MCPServer) {
 		if err != nil {
 			return mcp.NewToolResultError(err.Error()), nil
 		}
+		log.Debugf("call %s, str: %s", "get_methods_by_str", q)
 		params := url.Values{"str": []string{q}}
 		out, err := util.HTTPGet("/api/get_methods_by_str", params)
 		if err != nil {
@@ -64,6 +67,7 @@ func RegisterMethodClassTools(s *server.MCPServer) {
 		if err != nil {
 			return mcp.NewToolResultError(err.Error()), nil
 		}
+		log.Debugf("call %s, class: %s", "get_class_by_class", className)
 		params := url.Values{"class": []string{className}}
 		out, err := util.HTTPGet("/api/get_class_by_class", params)
 		if err != nil {

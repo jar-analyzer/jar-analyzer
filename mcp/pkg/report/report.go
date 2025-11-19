@@ -2,7 +2,7 @@ package report
 
 import (
 	"context"
-	"encoding/base64"
+	_ "embed"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -18,6 +18,7 @@ import (
 type ReportData struct {
 	Type   string  `json:"type"`
 	Reason string  `json:"reason"`
+	Score  int8    `json:"score"`
 	Trace  []Trace `json:"trace"`
 }
 
@@ -28,7 +29,7 @@ type Trace struct {
 
 type WebSocketManager struct {
 	clients    map[*websocket.Conn]bool
-	broadcast  chan []ReportData
+	broadcast  chan ReportData
 	register   chan *websocket.Conn
 	unregister chan *websocket.Conn
 	mutex      sync.RWMutex
@@ -36,10 +37,13 @@ type WebSocketManager struct {
 
 var wsManager *WebSocketManager
 
+//go:embed index.html
+var indexHtml string
+
 func NewWebSocketManager() *WebSocketManager {
 	return &WebSocketManager{
 		clients:    make(map[*websocket.Conn]bool),
-		broadcast:  make(chan []ReportData),
+		broadcast:  make(chan ReportData),
 		register:   make(chan *websocket.Conn),
 		unregister: make(chan *websocket.Conn),
 	}
@@ -73,7 +77,7 @@ func (manager *WebSocketManager) Run() {
 	}
 }
 
-func (manager *WebSocketManager) BroadcastData(data []ReportData) {
+func (manager *WebSocketManager) BroadcastData(data ReportData) {
 	select {
 	case manager.broadcast <- data:
 	default:
@@ -107,22 +111,39 @@ func handleWebSocket(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 }
-
+func parseArgs(argMap any, target interface{}) error {
+	// 简易实现：通过JSON序列化反序列化。确保target是一个结构体指针。
+	data, err := json.Marshal(argMap)
+	if err != nil {
+		return err
+	}
+	return json.Unmarshal(data, target)
+}
 func RegisterReportTools(s *server.MCPServer) {
 	wsManager = NewWebSocketManager()
 	go wsManager.Run()
 
 	reportTool := mcp.NewTool("report",
-		mcp.WithDescription("接收JSON格式的报告数据并实时显示在Web UI上"),
-		mcp.WithString("data", mcp.Required(), mcp.Description("JSON格式的报告数据")),
+		mcp.WithDescription("report vulnerable tool"),
+		mcp.WithString("type", mcp.Required(), mcp.Description("vulnerable type")),
+		mcp.WithString("reason", mcp.Required(), mcp.Description("vulnerable reason")),
+		mcp.WithNumber("score", mcp.Required(), mcp.Description("vulnerable score(max:10,min:1)")),
+		mcp.WithArray("trace", mcp.Required(), mcp.Description("vulnerable trace"),
+			mcp.Items(map[string]any{
+				"type": "object",
+				"properties": map[string]any{
+					"class":  map[string]any{"type": "string"},
+					"method": map[string]any{"type": "string"},
+				},
+			})),
 	)
 
 	s.AddTool(reportTool, func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-		dataStr, err := req.RequireString("data")
-		if err != nil {
-			return mcp.NewToolResultError("Invalid data parameter"), fmt.Errorf("data parameter must be a string: %v", err)
+		var args ReportData
+		if err := parseArgs(req.Params.Arguments, &args); err != nil {
+			return nil, fmt.Errorf("参数解析失败: %v", err)
 		}
-		return handleReport(ctx, dataStr)
+		return handleReport(args)
 	})
 
 	go func() {
@@ -136,20 +157,16 @@ func RegisterReportTools(s *server.MCPServer) {
 
 func handleIndex(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Add("Content-Type", "text/html")
-	htmlBytes, err := base64.StdEncoding.DecodeString(htmlBase64)
-	if err == nil {
-		htmlStr := string(htmlBytes)
-		htmlNewStr := strings.ReplaceAll(htmlStr, "__JAR_ANALYZER_REPORT_MCP__", "127.0.0.1:20080")
-		_, _ = writer.Write([]byte(htmlNewStr))
-	}
+	htmlNewStr := strings.ReplaceAll(indexHtml, "__JAR_ANALYZER_REPORT_MCP__", "127.0.0.1:20080")
+	_, _ = writer.Write([]byte(htmlNewStr))
 }
 
-func handleReport(_ context.Context, dataStr string) (*mcp.CallToolResult, error) {
-	var reportData []ReportData
-	if err := json.Unmarshal([]byte(dataStr), &reportData); err != nil {
-		return mcp.NewToolResultError("Invalid JSON format"), fmt.Errorf("failed to parse JSON: %v", err)
-	}
+func handleReport(reportData ReportData) (*mcp.CallToolResult, error) {
+
+	// 广播数据到所有WebSocket客户端
 	wsManager.BroadcastData(reportData)
-	log.Printf("Received report data with %d items", len(reportData))
+
+	log.Printf("Received report data. type: %s, reason: %s, trace: %v", reportData.Type, reportData.Reason, reportData.Trace)
+
 	return mcp.NewToolResultText("Report data received and broadcasted successfully"), nil
 }

@@ -9,3 +9,5 @@
 -> hacats (https://github.com/hacats)
 -> su18 (https://github.com/su18)
 -> 7eleven (https://github.com/7-e1even)
+-> L-codes (https://github.com/L-codes)
+-> osword (https://github.com/zhzhdoai)

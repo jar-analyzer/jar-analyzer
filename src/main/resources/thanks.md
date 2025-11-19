@@ -13,5 +13,7 @@ JAR ANALYZER 感谢以下贡献者
 9. hacats (https://github.com/hacats)
 10. su18 (https://github.com/su18)
 11. 7eleven (https://github.com/7-e1even)
+12. L-codes (https://github.com/L-codes)
+13. osword (https://github.com/zhzhdoai)
 
 感谢以上师傅们，也希望其他师傅们也可以贡献代码！

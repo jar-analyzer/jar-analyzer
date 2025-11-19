@@ -4,7 +4,7 @@
 
 实现 `n8n workflow` 自动审计出报告，具体内容参考主页 `README`
 
-特别致谢：whwlsfb L-codes osword 三位大佬
+特别致谢： whwlsfb L-codes osword 三位大佬
 
 更新日志：
 
@@ -16,7 +16,9 @@
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
-- whwlsfb (https://github.com/whwlsfb)
+- whwlsfb (https://github.com/whwlsfb) (重要 AI 贡献)
+- L-codes (https://github.com/L-codes) (AI 贡献)
+- osword (https://github.com/zhzhdoai) (AI 贡献)
 
 所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
 

@@ -230,16 +230,18 @@ set "java_args=-XX:+UseG1GC -Xms2g -XX:MaxGCPauseMillis=200 %other_args%"
 ## 感谢列表
 
 - 4ra1n (https://github.com/4ra1n) (项目作者) 
+- whw1sfb (https://github.com/whwlsfb) (第一次贡献，重要 AI 贡献)
 - Honey Baby (https://github.com/Gosiu) (多次重要贡献) 
 - fantasy (https://github.com/ly-test-fuzz) 
-- phil (https://github.com/sensensen404) 
-- whw1sfb (https://github.com/whwlsfb) (第一次贡献) 
+- phil (https://github.com/sensensen404)
 - MyDynasty (https://github.com/MyDynasty) 
 - TianMing2018 (https://github.com/TianMing2018) 
 - hacats (https://github.com/hacats) 
 - R0ser1 (https://github.com/R0ser1) 
 - su18 (https://github.com/su18) 
 - 7eleven (https://github.com/7-e1even)
+- L-codes (https://github.com/L-codes) (AI 贡献)
+- osword (https://github.com/zhzhdoai) (AI 贡献)
 
 ## 时间
 

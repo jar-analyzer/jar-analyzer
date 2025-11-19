@@ -60,3 +60,7 @@ docker run -it --name n8n -p 5678:5678 \
 其中 `API` 可以使用 `bigmodel.cn` 的 `anthropic` 格式
 
 接下来就可以启动了
+
+成果展示（访问 `report-mcp` 的 `web` 端口 `20080`）
+
+![](../mcp-img/011.png)

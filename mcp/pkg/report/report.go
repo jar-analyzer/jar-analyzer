@@ -5,7 +5,7 @@ import (
 	_ "embed"
 	"encoding/json"
 	"fmt"
-	"log"
+	"jar-analyzer-mcp/pkg/log"
 	"net/http"
 	"strings"
 	"sync"
@@ -14,6 +14,8 @@ import (
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
 )
+
+var WebAddr string
 
 type ReportData struct {
 	Type   string  `json:"type"`
@@ -81,29 +83,26 @@ func (manager *WebSocketManager) BroadcastData(data ReportData) {
 	select {
 	case manager.broadcast <- data:
 	default:
-		log.Println("broadcast channel full, dropping message")
+		log.Warn("broadcast channel full, dropping message")
 	}
 }
 
 var upgrader = websocket.Upgrader{
 	CheckOrigin: func(r *http.Request) bool {
-		return true // 允许所有来源
+		return true
 	},
 }
 
 func handleWebSocket(w http.ResponseWriter, r *http.Request) {
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
-		log.Printf("webSocket upgrade failed: %v", err)
+		log.Warn("web socket upgrade failed: %v", err)
 		return
 	}
-
 	wsManager.register <- conn
-
 	defer func() {
 		wsManager.unregister <- conn
 	}()
-
 	for {
 		_, _, err := conn.ReadMessage()
 		if err != nil {
@@ -112,16 +111,19 @@ func handleWebSocket(w http.ResponseWriter, r *http.Request) {
 	}
 }
 func parseArgs(argMap any, target interface{}) error {
-	// 简易实现：通过JSON序列化反序列化。确保target是一个结构体指针。
 	data, err := json.Marshal(argMap)
 	if err != nil {
 		return err
 	}
 	return json.Unmarshal(data, target)
 }
-func RegisterReportTools(s *server.MCPServer) {
+func RegisterReportTools(s *server.MCPServer, webPort int, addr string) {
+	WebAddr = addr
+
 	wsManager = NewWebSocketManager()
 	go wsManager.Run()
+
+	log.Debug("start websocket manager")
 
 	reportTool := mcp.NewTool("report",
 		mcp.WithDescription("report vulnerable tool"),
@@ -138,6 +140,8 @@ func RegisterReportTools(s *server.MCPServer) {
 			})),
 	)
 
+	log.Debug("init mcp tool")
+
 	s.AddTool(reportTool, func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 		var args ReportData
 		if err := parseArgs(req.Params.Arguments, &args); err != nil {
@@ -146,27 +150,28 @@ func RegisterReportTools(s *server.MCPServer) {
 		return handleReport(args)
 	})
 
+	log.Debug("add mcp tool finish")
+
 	go func() {
 		http.HandleFunc("/ws", handleWebSocket)
 		http.HandleFunc("/", handleIndex)
-		if err := http.ListenAndServe(fmt.Sprintf(":20080"), nil); err != nil {
-			log.Printf("http server error: %v", err)
+		if err := http.ListenAndServe(fmt.Sprintf(":%d", webPort), nil); err != nil {
+			log.Warnf("http server error: %v", err)
 		}
 	}()
+
+	log.Debug("start web server finish")
 }
 
-func handleIndex(writer http.ResponseWriter, request *http.Request) {
+func handleIndex(writer http.ResponseWriter, req *http.Request) {
 	writer.Header().Add("Content-Type", "text/html")
-	htmlNewStr := strings.ReplaceAll(indexHtml, "__JAR_ANALYZER_REPORT_MCP__", "127.0.0.1:20080")
+	htmlNewStr := strings.ReplaceAll(indexHtml, "__JAR_ANALYZER_REPORT_MCP__", WebAddr)
+	log.Debugf("receive request: %s", req.RemoteAddr)
 	_, _ = writer.Write([]byte(htmlNewStr))
 }
 
 func handleReport(reportData ReportData) (*mcp.CallToolResult, error) {
-
-	// 广播数据到所有WebSocket客户端
 	wsManager.BroadcastData(reportData)
-
-	log.Printf("Received report data. type: %s, reason: %s, trace: %v", reportData.Type, reportData.Reason, reportData.Trace)
-
-	return mcp.NewToolResultText("Report data received and broadcasted successfully"), nil
+	log.Infof("received report data. type: %s, reason: %s, trace: %v", reportData.Type, reportData.Reason, reportData.Trace)
+	return mcp.NewToolResultText("report data received and broadcasted successfully"), nil
 }

@@ -2,9 +2,9 @@
 
 特别致谢：
 
-- whw1sfb（https://github.com/whwlsfb）
-- L-codes（https://github.com/L-codes）
-- osword（https://github.com/zhzhdoai）
+- whw1sfb (https://github.com/whwlsfb)
+- L-codes (https://github.com/L-codes)
+- osword (https://github.com/zhzhdoai)
 
 感谢以上大佬分享 `jar-analyzer mcp` 基于 `n8n` 平台更高级的用法
 

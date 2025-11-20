@@ -69,3 +69,30 @@ mcp.exe -port 20032 -url http://127.0.0.1:10032
 接下来就可以正常使用了
 
 ![](../mcp-img/004.png)
+
+## 安全
+
+`1.1.0` 版本的 `MCP` 支持设置各种 `Token` 使用
+
+在 `jar-analyzer` 端添加启动参数：
+
+```shell
+java -jar jar-analyzer.jar gui -sa -st YOUR_API_TOKEN
+```
+
+在 `MCP` 端设置 `jar-analyzer-api` 的 `Token`
+
+```shell
+mcp.exe -ja -jt YOUR_API_TOKEN
+```
+
+同时 `MCP` 也可以设置 `Token`
+
+```shell
+mcp.exe -auth -token YOUR_MCP_TOKEN -ja -jt YOUR_API_TOKEN
+```
+
+在 `MCP Client` 端设置即可
+
+![](../mcp-img/018.png)
+

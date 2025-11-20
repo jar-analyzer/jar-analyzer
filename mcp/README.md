@@ -12,10 +12,18 @@
 
 ```shell
 jar-analyzer> mcp_v1.0.0_windows_amd64.exe -h
+  -auth
+        enable mcp auth
   -debug
         debug mode
+  -ja
+        enable jar-analyzer-api token
+  -jt string
+        jar-analyzer-api token (default "JAR-ANALYZER-API-TOKEN")
   -port int
         port to listen on (default 20032)
+  -token string
+        mcp token (default "JAR-ANALYZER-MCP-TOKEN")
   -url string
         Jar Analyzer URL (default "http://127.0.0.1:10032")
 ```

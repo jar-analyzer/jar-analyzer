@@ -146,13 +146,14 @@ public class Application {
             logger.info("set server port {}", port);
 
             // START HTTP SERVER
-            GlobalOptions.setServerPort(startCmd.getPort());
             ServerConfig config = new ServerConfig();
             config.setBind(startCmd.getServerBind());
             config.setPort(startCmd.getPort());
             config.setAuth(startCmd.isServerAuth());
             config.setToken(startCmd.getServerToken());
             new Thread(() -> HttpServer.start(config)).start();
+
+            GlobalOptions.setServerConfig(config);
 
             // SET AWT EVENT EXCEPTION
             Thread.setDefaultUncaughtExceptionHandler(new ExpHandler());

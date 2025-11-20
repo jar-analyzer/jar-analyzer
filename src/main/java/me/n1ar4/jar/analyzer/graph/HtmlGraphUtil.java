@@ -41,7 +41,7 @@ public class HtmlGraphUtil {
             return null;
         }
 
-        int port = GlobalOptions.getServerPort();
+        int port = GlobalOptions.getServerConfig().getPort();
         String d3dsPath = String.format("http://127.0.0.1:%d/static/d3v6.js", port);
         String htmlOutput = temp.replace(D3DS_STR, d3dsPath);
         // 示例：

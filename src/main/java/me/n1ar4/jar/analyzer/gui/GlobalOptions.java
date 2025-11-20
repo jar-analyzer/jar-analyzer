@@ -10,12 +10,14 @@
 
 package me.n1ar4.jar.analyzer.gui;
 
+import me.n1ar4.jar.analyzer.server.ServerConfig;
+
 public class GlobalOptions {
     public static final int CHINESE = 1;
     public static final int ENGLISH = 2;
     private static int LANGUAGE;
 
-    private static int SERVER_PORT = 10032;
+    private static ServerConfig serverConfig;
 
     static {
         LANGUAGE = ENGLISH;
@@ -32,11 +34,19 @@ public class GlobalOptions {
         return LANGUAGE;
     }
 
-    public static int getServerPort() {
-        return SERVER_PORT;
+    public static int getLANGUAGE() {
+        return LANGUAGE;
     }
 
-    public static void setServerPort(int serverPort) {
-        SERVER_PORT = serverPort;
+    public static void setLANGUAGE(int LANGUAGE) {
+        GlobalOptions.LANGUAGE = LANGUAGE;
+    }
+
+    public static ServerConfig getServerConfig() {
+        return serverConfig;
+    }
+
+    public static void setServerConfig(ServerConfig serverConfig) {
+        GlobalOptions.serverConfig = serverConfig;
     }
 }

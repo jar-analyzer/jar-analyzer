@@ -45,7 +45,7 @@ public class ChainsBuilder {
         if (currentDirFile.exists() && currentDirFile.isFile()) {
             try (FileInputStream fis = new FileInputStream(currentDirFile)) {
                 if (loadFromInputStream(fis)) {
-                    logger.info("成功从当前目录加载 sink 规则: {}", currentDirFile.getAbsolutePath());
+                    logger.info("load sink rule: {}", currentDirFile.getPath());
                     loaded = true;
                 }
             } catch (Exception e) {
@@ -95,7 +95,7 @@ public class ChainsBuilder {
                     sinkData.put(sink.getBoxName(), sink);
                 }
             }
-            logger.info("成功加载 {} 条 sink 规则", sinkData.size());
+            logger.info("load {} sink rule", sinkData.size());
             return true;
         } catch (Exception e) {
             logger.error("解析 JSON 格式的 sink 规则失败: {}", e.getMessage());

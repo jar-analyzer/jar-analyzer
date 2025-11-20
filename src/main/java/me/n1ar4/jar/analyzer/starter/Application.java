@@ -18,6 +18,7 @@ import me.n1ar4.jar.analyzer.gui.GlobalOptions;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.http.Y4Client;
 import me.n1ar4.jar.analyzer.server.HttpServer;
+import me.n1ar4.jar.analyzer.server.ServerConfig;
 import me.n1ar4.jar.analyzer.utils.*;
 import me.n1ar4.log.LogLevel;
 import me.n1ar4.log.LogManager;
@@ -142,10 +143,16 @@ public class Application {
             if (port < 1 || port > 65535) {
                 port = 10032;
             }
-            GlobalOptions.setServerPort(port);
             logger.info("set server port {}", port);
+
             // START HTTP SERVER
-            new Thread(HttpServer::start).start();
+            GlobalOptions.setServerPort(startCmd.getPort());
+            ServerConfig config = new ServerConfig();
+            config.setBind(startCmd.getServerBind());
+            config.setPort(startCmd.getPort());
+            config.setAuth(startCmd.isServerAuth());
+            config.setToken(startCmd.getServerToken());
+            new Thread(() -> HttpServer.start(config)).start();
 
             // SET AWT EVENT EXCEPTION
             Thread.setDefaultUncaughtExceptionHandler(new ExpHandler());

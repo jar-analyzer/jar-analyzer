@@ -18,7 +18,16 @@ public class StartCmd {
     public static final String CMD = "gui";
 
     @Parameter(names = {"-p", "--port"}, description = "server port")
-    public int port;
+    public int port = 10032;
+
+    @Parameter(names = {"-sb", "--server-bind"}, description = "server bind")
+    public String serverBind = "0.0.0.0";
+
+    @Parameter(names = {"-sa", "--server-auth"}, description = "enable server auth")
+    public boolean serverAuth = false;
+
+    @Parameter(names = {"-st", "--server-token"}, description = "use server token")
+    public String serverToken = "JAR-ANALYZER-API-TOKEN";
 
     @Parameter(names = {"-fz", "--font-size"}, description = "font size")
     public int fontSize;
@@ -70,5 +79,45 @@ public class StartCmd {
 
     public boolean isSkipLoad() {
         return skipLoad;
+    }
+
+    public String getServerBind() {
+        return serverBind;
+    }
+
+    public void setServerBind(String serverBind) {
+        this.serverBind = serverBind;
+    }
+
+    public boolean isServerAuth() {
+        return serverAuth;
+    }
+
+    public void setServerAuth(boolean serverAuth) {
+        this.serverAuth = serverAuth;
+    }
+
+    public String getServerToken() {
+        return serverToken;
+    }
+
+    public void setServerToken(String serverToken) {
+        this.serverToken = serverToken;
+    }
+
+    public void setFontSize(int fontSize) {
+        this.fontSize = fontSize;
+    }
+
+    public void setLogLevel(String logLevel) {
+        this.logLevel = logLevel;
+    }
+
+    public void setNoHttp(boolean noHttp) {
+        this.noHttp = noHttp;
+    }
+
+    public void setSkipLoad(boolean skipLoad) {
+        this.skipLoad = skipLoad;
     }
 }

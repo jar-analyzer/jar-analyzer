@@ -12,6 +12,10 @@
 - [MCP] 优化部分代码提高 `AI` 分析效率 @whwlsfb
 - [MCP] 提供结合 `n8n workflow` 的 `report-mcp` @whwlsfb
 - [MCP] 支持 `-debug` 选项打印被调用日志 @4ra1n
+- [MCP] 允许通过 `-ja -jt` 设置 `API Token` @4ra1n
+- [MCP] 允许通过 `-auth -token` 设置 `MCP Token` @4ra1n
+- [优化] 允许 `API` 通过 `-sa -st` 设置 `Token` @4ra1n
+- [优化] 允许 `API` 指定 `bind` 地址默认 `0.0.0.0` @4ra1n
 
 感谢以下用户的贡献:
 

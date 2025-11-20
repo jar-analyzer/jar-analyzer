@@ -11,6 +11,11 @@
 package conf
 
 var (
+	GlobalPort int
+	McpAuth    bool
+	McpToken   string
+
 	GlobalJarAnalyzerUrl string
-	GlobalPort           int
+	JarAnalyzerAuth      bool
+	JarAnalyzerToken     string
 )

@@ -37,15 +37,32 @@ func main() {
 
 	var debug bool
 	var port int
+	var mcpAuth bool
+	var mcpToken string
+
 	var jarAnalyzerUrl string
+	var jarAnAuth bool
+	var jarAnToken string
 
 	flag.IntVar(&port, "port", 20032, "port to listen on")
-	flag.StringVar(&jarAnalyzerUrl, "url", "http://127.0.0.1:10032", "Jar Analyzer URL")
+	flag.BoolVar(&mcpAuth, "auth", false, "enable mcp auth")
+	flag.StringVar(&mcpToken, "token", "JAR-ANALYZER-MCP-TOKEN", "mcp token")
 	flag.BoolVar(&debug, "debug", false, "debug mode")
+
+	// JAR-ANALYZER CONFIG
+	flag.StringVar(&jarAnalyzerUrl, "url", "http://127.0.0.1:10032", "Jar Analyzer URL")
+	flag.BoolVar(&jarAnAuth, "ja", false, "enable jar-analyzer-api token")
+	flag.StringVar(&jarAnToken, "jt", "JAR-ANALYZER-API-TOKEN", "jar-analyzer-api token")
+
 	flag.Parse()
 
 	conf.GlobalPort = port
+	conf.McpAuth = mcpAuth
+	conf.McpToken = mcpToken
+
 	conf.GlobalJarAnalyzerUrl = jarAnalyzerUrl
+	conf.JarAnalyzerAuth = jarAnAuth
+	conf.JarAnalyzerToken = jarAnToken
 
 	if debug {
 		log.SetLevel(log.DebugLevel)

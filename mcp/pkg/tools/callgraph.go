@@ -12,6 +12,7 @@ package tools
 
 import (
 	"context"
+	"jar-analyzer-mcp/pkg/conf"
 	"jar-analyzer-mcp/pkg/log"
 	"net/url"
 
@@ -42,6 +43,14 @@ func RegisterCallGraphTools(s *server.MCPServer) {
 		mcp.WithString("desc", mcp.Description("方法描述（可选）")),
 	)
 	s.AddTool(getCallersTool, func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+		if conf.McpAuth {
+			if req.Header.Get("Token") == "" {
+				return mcp.NewToolResultError("need token error"), nil
+			}
+			if req.Header.Get("Token") != conf.McpToken {
+				return mcp.NewToolResultError("need token error"), nil
+			}
+		}
 		clazz, method, desc, errRes := callArgs(req)
 		if errRes != nil {
 			return errRes, nil
@@ -66,6 +75,14 @@ func RegisterCallGraphTools(s *server.MCPServer) {
 		mcp.WithString("desc", mcp.Description("方法描述（可选）")),
 	)
 	s.AddTool(getCallersLikeTool, func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+		if conf.McpAuth {
+			if req.Header.Get("Token") == "" {
+				return mcp.NewToolResultError("need token error"), nil
+			}
+			if req.Header.Get("Token") != conf.McpToken {
+				return mcp.NewToolResultError("need token error"), nil
+			}
+		}
 		clazz, method, desc, errRes := callArgs(req)
 		if errRes != nil {
 			return errRes, nil
@@ -90,6 +107,14 @@ func RegisterCallGraphTools(s *server.MCPServer) {
 		mcp.WithString("desc", mcp.Description("方法描述（可选）")),
 	)
 	s.AddTool(getCalleeTool, func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+		if conf.McpAuth {
+			if req.Header.Get("Token") == "" {
+				return mcp.NewToolResultError("need token error"), nil
+			}
+			if req.Header.Get("Token") != conf.McpToken {
+				return mcp.NewToolResultError("need token error"), nil
+			}
+		}
 		clazz, method, desc, errRes := callArgs(req)
 		if errRes != nil {
 			return errRes, nil
@@ -114,6 +139,14 @@ func RegisterCallGraphTools(s *server.MCPServer) {
 		mcp.WithString("desc", mcp.Description("方法描述（可选）")),
 	)
 	s.AddTool(getMethodTool, func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+		if conf.McpAuth {
+			if req.Header.Get("Token") == "" {
+				return mcp.NewToolResultError("need token error"), nil
+			}
+			if req.Header.Get("Token") != conf.McpToken {
+				return mcp.NewToolResultError("need token error"), nil
+			}
+		}
 		clazz, method, desc, errRes := callArgs(req)
 		if errRes != nil {
 			return errRes, nil
@@ -138,6 +171,14 @@ func RegisterCallGraphTools(s *server.MCPServer) {
 		mcp.WithString("desc", mcp.Description("方法描述（可选）")),
 	)
 	s.AddTool(getMethodLikeTool, func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+		if conf.McpAuth {
+			if req.Header.Get("Token") == "" {
+				return mcp.NewToolResultError("need token error"), nil
+			}
+			if req.Header.Get("Token") != conf.McpToken {
+				return mcp.NewToolResultError("need token error"), nil
+			}
+		}
 		clazz, method, desc, errRes := callArgs(req)
 		if errRes != nil {
 			return errRes, nil
@@ -162,6 +203,14 @@ func RegisterCallGraphTools(s *server.MCPServer) {
 		mcp.WithString("desc", mcp.Description("方法描述（可选）")),
 	)
 	s.AddTool(getImplsTool, func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+		if conf.McpAuth {
+			if req.Header.Get("Token") == "" {
+				return mcp.NewToolResultError("need token error"), nil
+			}
+			if req.Header.Get("Token") != conf.McpToken {
+				return mcp.NewToolResultError("need token error"), nil
+			}
+		}
 		clazz, method, desc, errRes := callArgs(req)
 		if errRes != nil {
 			return errRes, nil
@@ -186,6 +235,14 @@ func RegisterCallGraphTools(s *server.MCPServer) {
 		mcp.WithString("desc", mcp.Description("方法描述（可选）")),
 	)
 	s.AddTool(getSuperImplsTool, func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+		if conf.McpAuth {
+			if req.Header.Get("Token") == "" {
+				return mcp.NewToolResultError("need token error"), nil
+			}
+			if req.Header.Get("Token") != conf.McpToken {
+				return mcp.NewToolResultError("need token error"), nil
+			}
+		}
 		clazz, method, desc, errRes := callArgs(req)
 		if errRes != nil {
 			return errRes, nil

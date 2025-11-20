@@ -12,6 +12,7 @@ package tools
 
 import (
 	"context"
+	"jar-analyzer-mcp/pkg/conf"
 	"jar-analyzer-mcp/pkg/log"
 	"net/url"
 
@@ -27,6 +28,14 @@ func RegisterMethodClassTools(s *server.MCPServer) {
 		mcp.WithString("class", mcp.Required(), mcp.Description("类名（点或斜杠分隔均可）")),
 	)
 	s.AddTool(getMethodsByClassTool, func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+		if conf.McpAuth {
+			if req.Header.Get("Token") == "" {
+				return mcp.NewToolResultError("need token error"), nil
+			}
+			if req.Header.Get("Token") != conf.McpToken {
+				return mcp.NewToolResultError("need token error"), nil
+			}
+		}
 		className, err := req.RequireString("class")
 		if err != nil {
 			return mcp.NewToolResultError(err.Error()), nil
@@ -45,6 +54,14 @@ func RegisterMethodClassTools(s *server.MCPServer) {
 		mcp.WithString("str", mcp.Required(), mcp.Description("搜索关键字")),
 	)
 	s.AddTool(getMethodsByStrTool, func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+		if conf.McpAuth {
+			if req.Header.Get("Token") == "" {
+				return mcp.NewToolResultError("need token error"), nil
+			}
+			if req.Header.Get("Token") != conf.McpToken {
+				return mcp.NewToolResultError("need token error"), nil
+			}
+		}
 		q, err := req.RequireString("str")
 		if err != nil {
 			return mcp.NewToolResultError(err.Error()), nil
@@ -63,6 +80,14 @@ func RegisterMethodClassTools(s *server.MCPServer) {
 		mcp.WithString("class", mcp.Required(), mcp.Description("类名（点或斜杠分隔均可）")),
 	)
 	s.AddTool(getClassByClassTool, func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+		if conf.McpAuth {
+			if req.Header.Get("Token") == "" {
+				return mcp.NewToolResultError("need token error"), nil
+			}
+			if req.Header.Get("Token") != conf.McpToken {
+				return mcp.NewToolResultError("need token error"), nil
+			}
+		}
 		className, err := req.RequireString("class")
 		if err != nil {
 			return mcp.NewToolResultError(err.Error()), nil

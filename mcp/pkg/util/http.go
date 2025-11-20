@@ -32,7 +32,14 @@ func HTTPGet(path string, params url.Values) (string, error) {
 	if params != nil {
 		u.RawQuery = params.Encode()
 	}
-	resp, err := client.Get(u.String())
+	req, err := http.NewRequest("GET", u.String(), nil)
+	if err != nil {
+		return "", err
+	}
+	if conf.JarAnalyzerAuth {
+		req.Header.Add("Token", conf.JarAnalyzerToken)
+	}
+	resp, err := client.Do(req)
 	if err != nil {
 		return "", err
 	}

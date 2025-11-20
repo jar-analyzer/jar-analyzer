@@ -12,6 +12,7 @@ package tools
 
 import (
 	"context"
+	"jar-analyzer-mcp/pkg/conf"
 	"jar-analyzer-mcp/pkg/log"
 	"net/url"
 
@@ -26,6 +27,14 @@ func RegisterSpringTools(s *server.MCPServer) {
 		mcp.WithDescription("列出所有 Spring 控制器类"),
 	)
 	s.AddTool(getAllSpringControllersTool, func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+		if conf.McpAuth {
+			if req.Header.Get("Token") == "" {
+				return mcp.NewToolResultError("need token error"), nil
+			}
+			if req.Header.Get("Token") != conf.McpToken {
+				return mcp.NewToolResultError("need token error"), nil
+			}
+		}
 		log.Debugf("call %s", "get_all_spring_controllers")
 		out, err := util.HTTPGet("/api/get_all_spring_controllers", nil)
 		if err != nil {
@@ -39,6 +48,14 @@ func RegisterSpringTools(s *server.MCPServer) {
 		mcp.WithString("class", mcp.Required(), mcp.Description("控制器类名")),
 	)
 	s.AddTool(getSpringMappingsTool, func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+		if conf.McpAuth {
+			if req.Header.Get("Token") == "" {
+				return mcp.NewToolResultError("need token error"), nil
+			}
+			if req.Header.Get("Token") != conf.McpToken {
+				return mcp.NewToolResultError("need token error"), nil
+			}
+		}
 		className, err := req.RequireString("class")
 		if err != nil {
 			return mcp.NewToolResultError(err.Error()), nil

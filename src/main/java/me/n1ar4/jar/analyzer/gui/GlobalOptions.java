@@ -18,6 +18,7 @@ public class GlobalOptions {
     private static int LANGUAGE;
 
     private static ServerConfig serverConfig;
+    private static boolean securityMode;
 
     static {
         LANGUAGE = ENGLISH;
@@ -48,5 +49,13 @@ public class GlobalOptions {
 
     public static void setServerConfig(ServerConfig serverConfig) {
         GlobalOptions.serverConfig = serverConfig;
+    }
+
+    public static void setSecurity(boolean securityMode) {
+        GlobalOptions.securityMode = securityMode;
+    }
+
+    public static boolean isSecurityMode() {
+        return securityMode;
     }
 }

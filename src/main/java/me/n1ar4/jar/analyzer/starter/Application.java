@@ -83,6 +83,8 @@ public class Application {
             return;
         }
 
+        GlobalOptions.setSecurity(startCmd.isSecurityMode());
+
         // DISABLE HTTP
         if (startCmd.isNoHttp()) {
             Y4Client.enabled = false;

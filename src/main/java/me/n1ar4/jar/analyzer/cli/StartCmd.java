@@ -45,6 +45,9 @@ public class StartCmd {
     @Parameter(names = {"-sl", "--skip-load"}, description = "disable loading")
     public boolean skipLoad;
 
+    @Parameter(names = {"-sec", "--security"}, description = "enable security mode")
+    public boolean securityMode;
+
     public StartCmd() {
 
     }
@@ -119,5 +122,13 @@ public class StartCmd {
 
     public void setSkipLoad(boolean skipLoad) {
         this.skipLoad = skipLoad;
+    }
+
+    public boolean isSecurityMode() {
+        return securityMode;
+    }
+
+    public void setSecurityMode(boolean securityMode) {
+        this.securityMode = securityMode;
     }
 }

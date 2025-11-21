@@ -23,6 +23,7 @@ rem log level (debug info warn error)
 set "log_level=info"
 rem arg --no-check to disable update check
 rem arg --skip-load to disable loading animation
+rem arg --security to enable security mode
 rem arg --font-size to select font size (example: --font-size 16)
 set "program_args=--theme %theme_name% --port %api_server_port% --log-level %log_level%"
 

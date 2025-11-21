@@ -15,6 +15,7 @@
 - [MCP] 允许通过 `-ja -jt` 设置 `API Token` @4ra1n
 - [MCP] 允许通过 `-auth -token` 设置 `MCP Token` @4ra1n
 - [功能] 新增一个面板展示 `API` 配置信息和文档 @4ra1n
+- [功能] 安全模式 `--security` 敏感操作提醒用户确认 @4ra1n
 - [优化] 允许 `API` 通过 `-sa -st` 设置 `Token` @4ra1n
 - [优化] 允许 `API` 指定 `bind` 地址默认 `0.0.0.0` @4ra1n
 

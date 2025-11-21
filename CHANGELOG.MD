@@ -33,7 +33,7 @@
 - `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
 - `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
 - `mcp-build.zip` 包含所有系统的 `mcp` 一般使用 `mcp_windows_amd64.exe`
-- `report-mcp-build.zip` 配合 `n8n` 使用的自动报告生成 `mcp`
+- `report-mcp-build.zip` 配合 `workflow` 使用的自动报告生成 `mcp`
 
 一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
 

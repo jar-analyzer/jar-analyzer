@@ -84,16 +84,16 @@
         <spring.version>5.3.39</spring.version>
         <okhttp3.version>4.12.0</okhttp3.version>
         <nano.version>2.3.1</nano.version>
-        <fastjson.version>2.0.59</fastjson.version>
-        <hutool.version>5.8.40</hutool.version>
+        <fastjson.version>2.0.60</fastjson.version>
+        <hutool.version>5.8.41</hutool.version>
         <jfreechart.version>1.5.6</jfreechart.version>
-        <oshi.version>6.9.0</oshi.version>
+        <oshi.version>6.9.1</oshi.version>
         <lucene.version>7.7.3</lucene.version>
-        <bcel.version>6.10.0</bcel.version>
+        <bcel.version>6.11.0</bcel.version>
         <java.parser.version>3.27.1</java.parser.version>
         <snakeyaml.version>2.5</snakeyaml.version>
         <csv.version>1.14.1</csv.version>
-        <junit.version>5.14.0</junit.version>
+        <junit.version>5.14.1</junit.version>
         <compress.version>1.28.0</compress.version>
         <cfr.version>0.152</cfr.version>
         <!-- Maven Build Version -->

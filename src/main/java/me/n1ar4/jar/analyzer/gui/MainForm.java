@@ -1222,7 +1222,7 @@ public class MainForm {
         instance.getTabbedPanel().setIconAt(8, SvgManager.GadgetIcon);
         instance.getTabbedPanel().setIconAt(9, SvgManager.AdvanceIcon);
         instance.getTabbedPanel().setIconAt(10, SvgManager.DogIcon);
-        instance.getTabbedPanel().setIconAt(11,SvgManager.ConnectIcon);
+        instance.getTabbedPanel().setIconAt(11, SvgManager.ConnectIcon);
 
         instance.webTabbed.setIconAt(0, SvgManager.SpringIcon);
         instance.webTabbed.setIconAt(1, SvgManager.SpringIcon);

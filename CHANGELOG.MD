@@ -1,8 +1,35 @@
 # CHANGELOG
 
-## 5.11  - 开发中 - 未发布
+## 5.12  - 开发中 - 未发布
 
-实现 `n8n workflow` 自动审计出报告，具体内容参考主页 `README`
+更新日志：
+
+- todo
+
+感谢以下用户的贡献:
+
+- 4ra1n (https://github.com/4ra1n)
+
+所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
+
+- `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (**完整版本**)
+- `windows-21` 版内置开启 `ZGC` 的 `JRE 21` 环境（激进用户尝试使用）
+- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
+- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
+- `mcp-build.zip` 包含所有系统的 `mcp` 一般使用 `mcp_windows_amd64.exe`
+- `report-mcp-build.zip` 配合 `workflow` 使用的自动报告生成 `mcp`
+
+一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
+
+如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
+
+官方文档：https://docs.qq.com/doc/DV3pKbG9GS0pJS0tk
+
+`MCP` 文档：https://github.com/jar-analyzer/jar-analyzer/tree/master/mcp-doc
+
+## 5.11 - 已发布最新版
+
+一些安全改进吗，并提供大模型 `workflow` 审计文档，参考主页 `README`
 
 特别致谢： whwlsfb L-codes osword 三位大佬
 
@@ -43,7 +70,7 @@
 
 `MCP` 文档：https://github.com/jar-analyzer/jar-analyzer/tree/master/mcp-doc
 
-## 5.10 - 已发布最新版
+## 5.10
 
 更新日志：
 

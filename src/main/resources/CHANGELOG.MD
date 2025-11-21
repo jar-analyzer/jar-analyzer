@@ -1,5 +1,48 @@
 # CHANGELOG
 
+## 5.11
+
+一些安全改进吗，并提供大模型 `workflow` 审计文档，参考主页 `README`
+
+特别致谢： whwlsfb L-codes osword 三位大佬
+
+更新日志：
+
+- [重要] 分享 `n8n workflow` 配置和文档 @whwlsfb
+- [MCP] 优化部分代码提高 `AI` 分析效率 @whwlsfb
+- [MCP] 提供结合 `n8n workflow` 的 `report-mcp` @whwlsfb
+- [MCP] 支持 `-debug` 选项打印被调用日志 @4ra1n
+- [MCP] 允许通过 `-ja -jt` 设置 `API Token` @4ra1n
+- [MCP] 允许通过 `-auth -token` 设置 `MCP Token` @4ra1n
+- [功能] 新增一个面板展示 `API` 配置信息和文档 @4ra1n
+- [功能] 安全模式 `--security` 敏感操作提醒用户确认 @4ra1n
+- [优化] 允许 `API` 通过 `-sa -st` 设置 `Token` @4ra1n
+- [优化] 允许 `API` 指定 `bind` 地址默认 `0.0.0.0` @4ra1n
+
+感谢以下用户的贡献:
+
+- 4ra1n (https://github.com/4ra1n)
+- whwlsfb (https://github.com/whwlsfb) (重要 AI 贡献)
+- L-codes (https://github.com/L-codes) (AI 贡献)
+- osword (https://github.com/zhzhdoai) (AI 贡献)
+
+所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
+
+- `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (**完整版本**)
+- `windows-21` 版内置开启 `ZGC` 的 `JRE 21` 环境（激进用户尝试使用）
+- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
+- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
+- `mcp-build.zip` 包含所有系统的 `mcp` 一般使用 `mcp_windows_amd64.exe`
+- `report-mcp-build.zip` 配合 `workflow` 使用的自动报告生成 `mcp`
+
+一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
+
+如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
+
+官方文档：https://docs.qq.com/doc/DV3pKbG9GS0pJS0tk
+
+`MCP` 文档：https://github.com/jar-analyzer/jar-analyzer/tree/master/mcp-doc
+
 ## 5.10
 
 更新日志：

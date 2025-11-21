@@ -17,7 +17,7 @@ import java.util.List;
 public interface JarMapper {
     int insertJar(List<JarEntity> jar);
 
-    JarEntity selectJarByAbsPath(String jarAbsPath);
+    List<JarEntity> selectJarByAbsPath(String jarAbsPath);
 
     List<String> selectAllJars();
 }

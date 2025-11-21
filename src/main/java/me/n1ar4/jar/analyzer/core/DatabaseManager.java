@@ -138,7 +138,15 @@ public class DatabaseManager {
     }
 
     public static JarEntity getJarId(String jarPath) {
-        return jarMapper.selectJarByAbsPath(jarPath);
+        List<JarEntity> jarEntities = jarMapper.selectJarByAbsPath(jarPath);
+        if (jarEntities == null || jarEntities.isEmpty()) {
+            return null;
+        }
+        Map<String, JarEntity> distinct = new LinkedHashMap<>();
+        for (JarEntity jarEntity : jarEntities) {
+            distinct.putIfAbsent(jarEntity.getJarName(), jarEntity);
+        }
+        return distinct.values().stream().findFirst().orElse(null);
     }
 
     public static void saveClassFiles(Set<ClassFileEntity> classFileList) {

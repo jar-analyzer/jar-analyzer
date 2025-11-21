@@ -51,7 +51,8 @@ public class ExpHandler implements Thread.UncaughtExceptionHandler {
             String output = new String(data);
             output = output.replace("\n", "<br>");
             JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
-                    "<html>" + output + "</html>", "Jar Analyzer V2 Error", ERROR_MESSAGE);
+                    "<html><p>如果遇到未知报错通常删除 jar-analyzer.db 重新分析即可解决</p>"
+                            + output + "</html>", "Jar Analyzer V2 Error", ERROR_MESSAGE);
 
             logger.error("UNCAUGHT EXCEPTION LOGGED IN JAR-ANALYZER-ERROR.txt");
         } catch (Exception ex) {

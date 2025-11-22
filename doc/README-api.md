@@ -28,3 +28,8 @@
 | /api/get_spring_mappings        | class=${class-name}                               | 根据类名查询所有的 SPRING MAPPING |
 | /api/get_abs_path               | class=${class-name}                               | 得到 CLASS 文件的本地绝对路径       |
 | /api/get_class_by_class         | class=${class-name}                               | 得到 CLASS 的详细信息           |
+| /api/get_all_servlets           | /                                                 | 得到所有的 SERVLET 信息         |
+| /api/get_all_listeners          | /                                                 | 得到所有的 LISTENER 信息        |
+| /api/get_all_filters            | /                                                 | 得到所有的 FILTER 信息          |
+| /api/fernflower_code            | class=${class-name}&method=${method}&desc=${desc} | 使用 FERNFLOWER 反编译某个方法    |
+| /api/cfr_code                   | class=${class-name}&method=${method}&desc=${desc} | 使用 CFR 反编译某个方法           |

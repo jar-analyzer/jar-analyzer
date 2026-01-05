@@ -24,7 +24,7 @@ The `jar-analyzer` project has been continuously updated for `4` years, with `44
 
 ![](mcp-img/010.png)
 
-![](mcp-img/021.png)
+![](mcp-img/022.png)
 
 
 <img alt="gitleaks badge" src="https://img.shields.io/badge/protected%20by-gitleaks-blue">

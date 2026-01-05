@@ -26,6 +26,10 @@
     <script src="https://unpkg.com/echarts/dist/echarts.min.js"></script>
     <!-- Axios -->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- Highlight.js -->
+    <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/styles/atom-one-dark.min.css">
+    <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/highlight.min.js"></script>
+    <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/languages/java.min.js"></script>
     
     <style>
         :root {
@@ -122,7 +126,15 @@
             margin-left: 5px;
             color: #a0cfff;
         }
-        .trace-class { color: #409eff; }
+        .trace-class { 
+            color: #409eff; 
+            cursor: pointer;
+            text-decoration: underline;
+            text-underline-offset: 4px;
+        }
+        .trace-class:hover {
+            color: #79bbff;
+        }
         .trace-method { color: #e5eaf3; font-weight: bold; }
         
         /* Custom scrollbar */
@@ -147,6 +159,15 @@
         .fade-enter-from, .fade-leave-to {
             opacity: 0;
         }
+
+        .code-viewer pre {
+            margin: 0;
+            padding: 10px;
+            border-radius: 4px;
+            background-color: #282c34;
+            overflow: auto;
+            max-height: 70vh;
+        }
     </style>
 </head>
 <body>
@@ -158,6 +179,9 @@
                     Jar Analyzer MCP
                 </div>
                 <div style="display: flex; gap: 15px; align-items: center;">
+                    <el-button circle @click="openSettings">
+                        <el-icon><Setting /></el-icon>
+                    </el-button>
                     <el-tag :type="connectionStatus === 'connected' ? 'success' : 'danger'" effect="dark">
                         {{ connectionStatus === 'connected' ? 'Connected' : 'Disconnected' }}
                     </el-tag>
@@ -241,7 +265,7 @@
                                     :hollow="tIndex !== 0"
                                 >
                                     <div class="trace-item">
-                                        <span class="trace-class">{{ trace.class }}</span>
+                                        <span class="trace-class" @click="viewCode(trace)">{{ trace.class }}</span>
                                         <span style="color: #666;">.</span>
                                         <span class="trace-method">{{ trace.method }}</span>
                                     </div>
@@ -253,12 +277,40 @@
                 
                 <el-empty v-if="reports.length === 0" description="No reports found" />
             </el-main>
+
+            <!-- Settings Modal -->
+            <el-dialog v-model="settingsVisible" title="Settings" width="500px">
+                <el-form :model="settings" label-width="120px">
+                    <el-form-item label="API Address">
+                        <el-input v-model="settings.apiUrl" placeholder="http://127.0.0.1:8088"></el-input>
+                    </el-form-item>
+                    <el-form-item label="Decompiler">
+                        <el-select v-model="settings.decompiler" placeholder="Select decompiler">
+                            <el-option label="Fernflower" value="fernflower"></el-option>
+                            <el-option label="CFR" value="cfr"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-form>
+                <template #footer>
+                    <span class="dialog-footer">
+                        <el-button @click="settingsVisible = false">Cancel</el-button>
+                        <el-button type="primary" @click="saveSettings">Save</el-button>
+                    </span>
+                </template>
+            </el-dialog>
+
+            <!-- Code Viewer Modal -->
+            <el-dialog v-model="codeViewerVisible" :title="currentClass + ' - ' + currentMethod" width="80%" top="5vh">
+                <div v-loading="loadingCode" class="code-viewer">
+                    <pre><code class="language-java" ref="codeBlock">{{ currentCode }}</code></pre>
+                </div>
+            </el-dialog>
         </el-container>
     </div>
 
     <script>
         const { createApp, ref, computed, onMounted, watch, nextTick } = Vue;
-        const { Monitor, Moon, Sunny, ArrowDown } = ElementPlusIconsVue;
+        const { Monitor, Moon, Sunny, ArrowDown, Setting } = ElementPlusIconsVue;
 
         const app = createApp({
             setup() {
@@ -268,6 +320,19 @@
                 const expandedIndices = ref([]);
                 const pieChart = ref(null);
                 const barChart = ref(null);
+                const settingsVisible = ref(false);
+                const codeViewerVisible = ref(false);
+                const loadingCode = ref(false);
+                const currentCode = ref('');
+                const currentClass = ref('');
+                const currentMethod = ref('');
+                const codeBlock = ref(null);
+                
+                const settings = ref({
+                    apiUrl: localStorage.getItem('ja_api_url') || 'http://127.0.0.1:8088',
+                    decompiler: localStorage.getItem('ja_decompiler') || 'fernflower'
+                });
+
                 let ws = null;
                 let myPieChart = null;
                 let myBarChart = null;
@@ -297,8 +362,53 @@
                 const toggleTheme = () => {
                     isDark.value = !isDark.value;
                     document.documentElement.className = isDark.value ? 'dark' : '';
-                    // Update charts theme
                     initCharts();
+                };
+
+                const openSettings = () => {
+                    settingsVisible.value = true;
+                };
+
+                const saveSettings = () => {
+                    localStorage.setItem('ja_api_url', settings.value.apiUrl);
+                    localStorage.setItem('ja_decompiler', settings.value.decompiler);
+                    settingsVisible.value = false;
+                    ElementPlus.ElMessage.success('Settings saved');
+                };
+
+                const viewCode = async (trace) => {
+                    currentClass.value = trace.class;
+                    currentMethod.value = trace.method;
+                    currentCode.value = '';
+                    codeViewerVisible.value = true;
+                    loadingCode.value = true;
+
+                    try {
+                        const baseUrl = settings.value.apiUrl.replace(/\/$/, '');
+                        const decompiler = settings.value.decompiler;
+                        const targetUrl = `${baseUrl}/api/${decompiler}_code?class=${encodeURIComponent(trace.class)}&method=${encodeURIComponent(trace.method)}&desc=${encodeURIComponent(trace.desc || '')}`;
+                        
+                        // Use proxy endpoint
+                        const response = await axios.get('/api/proxy', {
+                            params: { url: targetUrl }
+                        });
+
+                        if (response.data.success === false) {
+                            currentCode.value = `// Error: ${response.data.message}`;
+                        } else {
+                            currentCode.value = response.data.methodCode || response.data.fullClassCode || '// No code found';
+                        }
+                    } catch (error) {
+                        console.error('Failed to fetch code:', error);
+                        currentCode.value = `// Failed to fetch code: ${error.message}\n// Please check API URL settings and ensure Jar Analyzer is running.`;
+                    } finally {
+                        loadingCode.value = false;
+                        nextTick(() => {
+                            if (codeBlock.value) {
+                                hljs.highlightElement(codeBlock.value);
+                            }
+                        });
+                    }
                 };
 
                 const fetchHistory = async () => {
@@ -360,7 +470,6 @@
                 const updateCharts = () => {
                     if (!myPieChart || !myBarChart) return;
 
-                    // Pie Chart Data (Types)
                     const typeCount = {};
                     reports.value.forEach(r => {
                         typeCount[r.type] = (typeCount[r.type] || 0) + 1;
@@ -381,8 +490,7 @@
                         }]
                     });
 
-                    // Bar Chart Data (Scores)
-                    const scoreDist = Array(11).fill(0); // 0-10
+                    const scoreDist = Array(11).fill(0);
                     reports.value.forEach(r => {
                         if (r.score >= 0 && r.score <= 10) scoreDist[r.score]++;
                     });
@@ -428,10 +536,21 @@
                     highRiskCount,
                     medRiskCount,
                     lowRiskCount,
+                    settingsVisible,
+                    settings,
+                    codeViewerVisible,
+                    loadingCode,
+                    currentCode,
+                    currentClass,
+                    currentMethod,
+                    codeBlock,
                     getScoreClass,
                     formatType,
                     toggleExpand,
-                    toggleTheme
+                    toggleTheme,
+                    openSettings,
+                    saveSettings,
+                    viewCode
                 };
             }
         });

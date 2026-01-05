@@ -88,4 +88,4 @@ docker run -it --name n8n -p 5678:5678 \
 
 成果展示（访问 `report-mcp` 的 `web` 端口 `20080`）
 
-![](../mcp-img/021.png)
+![](../mcp-img/022.png)

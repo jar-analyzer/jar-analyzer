@@ -15,7 +15,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>me.n1ar4</groupId>
-    <artifactId>jar-analyzer</artifactId>
+    <artifactId>jar-analyzer-lite</artifactId>
     <version>5.11</version>
 
     <packaging>jar</packaging>

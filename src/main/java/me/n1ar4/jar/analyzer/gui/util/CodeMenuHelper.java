@@ -11,7 +11,6 @@
 package me.n1ar4.jar.analyzer.gui.util;
 
 import me.n1ar4.jar.analyzer.entity.MethodResult;
-import me.n1ar4.jar.analyzer.gui.LuceneSearchForm;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.utils.OpenUtil;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
@@ -120,11 +119,6 @@ public class CodeMenuHelper {
         openItem.setIcon(IconManager.fileIcon);
         openItem.addActionListener(e -> OpenUtil.openCurrent());
         popupMenu.add(openItem);
-
-        JMenuItem luceneItem = new JMenuItem("OPEN GLOBAL SEARCH");
-        luceneItem.setIcon(IconManager.luceneIcon);
-        luceneItem.addActionListener(e -> LuceneSearchForm.start(1));
-        popupMenu.add(luceneItem);
 
         rArea.setPopupMenu(popupMenu);
     }

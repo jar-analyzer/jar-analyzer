@@ -12,9 +12,7 @@ package me.n1ar4.jar.analyzer.gui.adapter;
 
 import me.n1ar4.jar.analyzer.engine.CoreHelper;
 import me.n1ar4.jar.analyzer.engine.DecompileEngine;
-import me.n1ar4.jar.analyzer.engine.index.IndexPluginsSupport;
 import me.n1ar4.jar.analyzer.entity.ClassResult;
-import me.n1ar4.jar.analyzer.gui.LuceneSearchForm;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.ProcessDialog;
 import me.n1ar4.jar.analyzer.starter.Const;
@@ -73,10 +71,6 @@ public class ControllerMouseAdapter extends MouseAdapter {
             String finalClassPath = classPath;
 
             new Thread(() -> {
-                // LUCENE 索引处理
-                if (LuceneSearchForm.getInstance() != null && LuceneSearchForm.usePaLucene()) {
-                    IndexPluginsSupport.addIndex(Paths.get(finalClassPath).toFile());
-                }
                 String code = DecompileEngine.decompile(Paths.get(finalClassPath));
 
                 // SET FILE TREE HIGHLIGHT

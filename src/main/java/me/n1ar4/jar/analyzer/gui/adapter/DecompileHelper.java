@@ -12,8 +12,6 @@ package me.n1ar4.jar.analyzer.gui.adapter;
 
 import me.n1ar4.jar.analyzer.engine.CoreHelper;
 import me.n1ar4.jar.analyzer.engine.DecompileEngine;
-import me.n1ar4.jar.analyzer.engine.index.IndexPluginsSupport;
-import me.n1ar4.jar.analyzer.gui.LuceneSearchForm;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.utils.JarUtil;
 
@@ -60,10 +58,6 @@ public class DecompileHelper {
             return;
         }
 
-        // LUCENE 索引处理
-        if (LuceneSearchForm.getInstance() != null && LuceneSearchForm.usePaLucene()) {
-            IndexPluginsSupport.addIndex(thePath.toFile());
-        }
         String code = DecompileEngine.decompile(thePath);
 
         // SET FILE TREE HIGHLIGHT

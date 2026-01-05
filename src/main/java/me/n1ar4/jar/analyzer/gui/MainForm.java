@@ -23,13 +23,11 @@ import me.n1ar4.jar.analyzer.dfs.DFSUtil;
 import me.n1ar4.jar.analyzer.engine.CoreEngine;
 import me.n1ar4.jar.analyzer.engine.DecompileEngine;
 import me.n1ar4.jar.analyzer.entity.ClassResult;
-import me.n1ar4.jar.analyzer.entity.LeakResult;
 import me.n1ar4.jar.analyzer.entity.MethodResult;
 import me.n1ar4.jar.analyzer.exporter.CsvExporter;
 import me.n1ar4.jar.analyzer.exporter.Exporter;
 import me.n1ar4.jar.analyzer.exporter.JsonExporter;
 import me.n1ar4.jar.analyzer.exporter.TxtExporter;
-import me.n1ar4.jar.analyzer.gadget.GadgetUIBuilder;
 import me.n1ar4.jar.analyzer.graph.HtmlGraph;
 import me.n1ar4.jar.analyzer.gui.action.*;
 import me.n1ar4.jar.analyzer.gui.adapter.*;
@@ -43,9 +41,6 @@ import me.n1ar4.jar.analyzer.gui.tree.FileTree;
 import me.n1ar4.jar.analyzer.gui.update.UpdateChecker;
 import me.n1ar4.jar.analyzer.gui.util.*;
 import me.n1ar4.jar.analyzer.gui.vul.VulnerabilityBuilder;
-import me.n1ar4.jar.analyzer.leak.LeakAction;
-import me.n1ar4.jar.analyzer.plugins.jd.JDGUIStarter;
-import me.n1ar4.jar.analyzer.sca.SCAAction;
 import me.n1ar4.jar.analyzer.server.APIAction;
 import me.n1ar4.jar.analyzer.starter.Application;
 import me.n1ar4.jar.analyzer.starter.Const;
@@ -151,12 +146,8 @@ public class MainForm {
     private JPanel analysis;
     private JButton cfgBtn;
     private JButton frameBtn;
-    private JButton encoderBtn;
-    private JButton listenerBtn;
     private JList<ClassResult> springCList;
     private JList<MethodResult> springMList;
-    private JLabel encoderLabel;
-    private JLabel listenerLabel;
     private JButton prevBtn;
     private JButton nextBtn;
     private JRadioButton likeSearchRadioButton;
@@ -168,16 +159,9 @@ public class MainForm {
     private JButton simpleFrameButton;
     private JButton refreshButton;
     private JLabel springLabel;
-    private JButton sqliteButton;
-    private JLabel sqliteLabel;
     private JButton cleanButton;
     private JButton showStringListButton;
-    private JButton springELStartButton;
-    @SuppressWarnings("all")
-    private JLabel spelLabel;
     private JButton startELSearchButton;
-    private JButton serUtilBtn;
-    private JLabel serUtilLabel;
     private JTextArea classWhiteArea;
     private JLabel classWhiteListLabel;
     private JButton pathSearchButton;
@@ -186,41 +170,10 @@ public class MainForm {
     private JTextField fileTreeSearchTextField;
     private JPanel fileTreeSearchPanel;
     private JLabel fileTreeSearchLabel;
-    private JCheckBox scaLog4jBox;
-    private JCheckBox scaShiroBox;
-    private JCheckBox scaFastjsonBox;
-    private JTextField scaFileText;
-    private JButton scaOpenBtn;
-    private JTextArea scaConsoleArea;
-    private JRadioButton scaOutConsoleRadio;
-    private JRadioButton scaOutHtmlRadio;
-    private JButton scaStartBtn;
-    private JLabel scaOutLabel;
-    private JLabel scaFileLabel;
-    private JLabel scaTipLabel;
-    private JLabel outputFileLabel;
-    private JTextField outputFileText;
-    private JButton scaResultOpenBtn;
     private JButton htmlGraphBtn;
     private JList<MethodResult> favList;
     private JButton addToFavoritesButton;
-    private JButton bcelBtn;
-    private JLabel bcelLabel;
     private JCheckBox nullParamBox;
-    private JCheckBox leakUrlBox;
-    private JCheckBox leakJdbcBox;
-    private JCheckBox leakFileBox;
-    private JCheckBox leakJWTBox;
-    private JCheckBox leakMacBox;
-    private JCheckBox leakIpBox;
-    private JCheckBox leakPhoneBox;
-    private JCheckBox leakIdBox;
-    private JCheckBox leakEmailBox;
-    private JCheckBox leakDetBase64Box;
-    private JList<LeakResult> leakResultList;
-    private JButton leakCleanBtn;
-    private JButton leakStartBtn;
-    private JTextArea leakLogArea;
     private JButton openJDBtn;
     private JTabbedPane webTabbed;
     private JPanel leftPanel;
@@ -262,20 +215,7 @@ public class MainForm {
     private JPanel notePanel;
     private JScrollPane hisScroll;
     private JScrollPane favScroll;
-    private JPanel scaPanel;
-    private JPanel modulePanel;
-    private JPanel scaTipPanel;
-    private JPanel scaActionPanel;
-    private JScrollPane scanConsoleScroll;
-    private JPanel scaOutPanel;
-    private JPanel leakPanel;
-    private JPanel leakRulesPanel;
-    private JPanel leakConfigPanel;
-    private JPanel leakResultPanel;
-    private JScrollPane leakResultScroll;
-    private JScrollPane leakLogScroll;
     private JPanel advancePanel;
-    private JPanel piPanel;
     private JPanel logPanel;
     private JScrollPane logScroll;
     private JPanel curMethodPanel;
@@ -297,22 +237,6 @@ public class MainForm {
     private JButton exportCsvBtn;
     private JPanel exportPanel;
     private JLabel exportAllLabel;
-    private JButton gadgetChoseBtn;
-    private JTextField gadgetInputText;
-    private JTable gadgetResultTable;
-    private JPanel gadgetPanel;
-    private JPanel gadgetInputPanel;
-    private JLabel gadgetDirLabel;
-    private JLabel gadgetDescLabel;
-    private JLabel gadgetDescValueLabel;
-    private JPanel gadgetResultPanel;
-    private JScrollPane gadgetResultScroll;
-    private JPanel gadgetOpPanel;
-    private JButton gadgetStartBtn;
-    private JCheckBox gadgetNativeBox;
-    private JCheckBox gadgetHessianBox;
-    private JCheckBox gadgetJdbcBox;
-    private JCheckBox gadgetFastjsonBox;
     private JPanel chainsPanel;
     private JTextField sinkClassText;
     private JTextField sinkMethodText;
@@ -353,13 +277,6 @@ public class MainForm {
     private JPanel chainsResult;
     private JCheckBox taintBox;
     private JLabel taintLabel;
-    private JCheckBox AKSKCheckBox;
-    private JCheckBox bankCardCheckBox;
-    private JCheckBox APIKeyCheckBox;
-    private JCheckBox cryptoKeyCheckBox;
-    private JCheckBox AIKeyCheckBox;
-    private JCheckBox passwordCheckBox;
-    private JButton exportLeakBtn;
     private JButton startTaintBtn;
     private JCheckBox sourceOnlyWebBox;
     private JLabel sinkJarLabel;
@@ -389,58 +306,6 @@ public class MainForm {
         return javaVulScroll;
     }
 
-    public JCheckBox getLeakUrlBox() {
-        return leakUrlBox;
-    }
-
-    public JCheckBox getLeakJdbcBox() {
-        return leakJdbcBox;
-    }
-
-    public JCheckBox getLeakFileBox() {
-        return leakFileBox;
-    }
-
-    public JCheckBox getLeakJWTBox() {
-        return leakJWTBox;
-    }
-
-    public JCheckBox getLeakMacBox() {
-        return leakMacBox;
-    }
-
-    public JCheckBox getLeakIpBox() {
-        return leakIpBox;
-    }
-
-    public JCheckBox getLeakPhoneBox() {
-        return leakPhoneBox;
-    }
-
-    public JCheckBox getLeakIdBox() {
-        return leakIdBox;
-    }
-
-    public JCheckBox getLeakEmailBox() {
-        return leakEmailBox;
-    }
-
-    public JCheckBox getLeakDetBase64Box() {
-        return leakDetBase64Box;
-    }
-
-    public JList<LeakResult> getLeakResultList() {
-        return leakResultList;
-    }
-
-    public JButton getLeakCleanBtn() {
-        return leakCleanBtn;
-    }
-
-    public JButton getLeakStartBtn() {
-        return leakStartBtn;
-    }
-
     public static String getCurClass() {
         return curClass;
     }
@@ -459,42 +324,6 @@ public class MainForm {
 
     public JButton getHtmlGraphBtn() {
         return htmlGraphBtn;
-    }
-
-    public JCheckBox getScaLog4jBox() {
-        return scaLog4jBox;
-    }
-
-    public JCheckBox getScaShiroBox() {
-        return scaShiroBox;
-    }
-
-    public JCheckBox getScaFastjsonBox() {
-        return scaFastjsonBox;
-    }
-
-    public JTextField getScaFileText() {
-        return scaFileText;
-    }
-
-    public JButton getScaOpenBtn() {
-        return scaOpenBtn;
-    }
-
-    public JTextArea getScaConsoleArea() {
-        return scaConsoleArea;
-    }
-
-    public JRadioButton getScaOutConsoleRadio() {
-        return scaOutConsoleRadio;
-    }
-
-    public JRadioButton getScaOutHtmlRadio() {
-        return scaOutHtmlRadio;
-    }
-
-    public JButton getScaStartBtn() {
-        return scaStartBtn;
     }
 
     public JLabel getFileTreeSearchLabel() {
@@ -523,14 +352,6 @@ public class MainForm {
 
     public JList<MethodResult> getSpringMList() {
         return springMList;
-    }
-
-    public JButton getEncoderBtn() {
-        return encoderBtn;
-    }
-
-    public JButton getListenerBtn() {
-        return listenerBtn;
     }
 
     public FileTree getFileTree() {
@@ -737,14 +558,6 @@ public class MainForm {
         return refreshButton;
     }
 
-    public JButton getSqliteButton() {
-        return sqliteButton;
-    }
-
-    public JButton getSpringELButton() {
-        return springELStartButton;
-    }
-
     public JButton getCleanButton() {
         return cleanButton;
     }
@@ -755,14 +568,6 @@ public class MainForm {
 
     public JButton getStartELSearchButton() {
         return startELSearchButton;
-    }
-
-    public JButton getSerUtilBtn() {
-        return serUtilBtn;
-    }
-
-    public JButton getBcelBtn() {
-        return bcelBtn;
     }
 
     public static LinkedList<State> getStateList() {
@@ -777,24 +582,12 @@ public class MainForm {
         MainForm.curStateIndex = curStateIndex;
     }
 
-    public JTextField getOutputFileText() {
-        return outputFileText;
-    }
-
-    public JButton getScaResultOpenBtn() {
-        return scaResultOpenBtn;
-    }
-
     public static MainForm getInstance() {
         if (instance == null) {
             return fakeInstance;
         } else {
             return instance;
         }
-    }
-
-    public JTextArea getLeakLogArea() {
-        return leakLogArea;
     }
 
     public JTextPane getLogArea() {
@@ -855,70 +648,6 @@ public class MainForm {
 
     public JList<ClassResult> getFilterList() {
         return filterList;
-    }
-
-    public JTextField getGadgetInputText() {
-        return gadgetInputText;
-    }
-
-    public JButton getGadgetChoseBtn() {
-        return gadgetChoseBtn;
-    }
-
-    public JTable getGadgetResultTable() {
-        return gadgetResultTable;
-    }
-
-    public JLabel getGadgetDescValueLabel() {
-        return gadgetDescValueLabel;
-    }
-
-    public JButton getGadgetStartBtn() {
-        return gadgetStartBtn;
-    }
-
-    public JCheckBox getGadgetNativeBox() {
-        return gadgetNativeBox;
-    }
-
-    public JCheckBox getGadgetHessianBox() {
-        return gadgetHessianBox;
-    }
-
-    public JCheckBox getGadgetJdbcBox() {
-        return gadgetJdbcBox;
-    }
-
-    public JCheckBox getGadgetFastjsonBox() {
-        return gadgetFastjsonBox;
-    }
-
-    public JCheckBox getPasswordCheckBox() {
-        return passwordCheckBox;
-    }
-
-    public JCheckBox getAIKeyCheckBox() {
-        return AIKeyCheckBox;
-    }
-
-    public JCheckBox getCryptoKeyCheckBox() {
-        return cryptoKeyCheckBox;
-    }
-
-    public JCheckBox getAPIKeyCheckBox() {
-        return APIKeyCheckBox;
-    }
-
-    public JCheckBox getBankCardCheckBox() {
-        return bankCardCheckBox;
-    }
-
-    public JCheckBox getAKSKCheckBox() {
-        return AKSKCheckBox;
-    }
-
-    public JButton getExportLeakBtn() {
-        return exportLeakBtn;
     }
 
     public JCheckBox getSourceOnlyWebBox() {
@@ -1117,9 +846,6 @@ public class MainForm {
         ShowStringAction.run();
         TipsAction.run();
         HtmlGraph.run();
-
-        SCAAction.register();
-        LeakAction.register();
         APIAction.register();
 
         Font codeFont = FontHelper.getFont(FONT_SIZE);
@@ -1127,8 +853,6 @@ public class MainForm {
         instance.classBlackArea.setFont(codeFont);
         instance.classWhiteArea.setFont(codeFont);
 
-        codeArea.addKeyListener(new GlobalKeyListener());
-        instance.allMethodList.addKeyListener(new GlobalKeyListener());
         instance.fileTree.addKeyListener(new FileTreeKeyAdapter());
         instance.fileTree.addMouseListener(new TreeMouseAdapter());
         instance.fileTree.addMouseListener(new TreeRightMenuAdapter());
@@ -1147,7 +871,6 @@ public class MainForm {
         instance.filterList.addMouseListener(new ClassResultAdapter());
         instance.listenerList.addMouseListener(new ClassResultAdapter());
 
-        instance.getLeakResultList().addMouseListener(new LeakResultMouseAdapter());
         instance.favList.addMouseListener(new FavMouseAdapter());
         instance.fileTreeSearchTextField.getDocument().addDocumentListener(new SearchInputListener());
         instance.fileTreeSearchTextField.addKeyListener(new SearchTextFieldKeyAdapter());
@@ -1194,20 +917,14 @@ public class MainForm {
             }
         });
 
-        instance.openJDBtn.addActionListener(e -> JDGUIStarter.start());
-
         refreshLang(false);
         MenuUtil.setLangFlag();
 
         updateIcon();
 
-        GadgetUIBuilder.init(instance);
-
         Color elColor = new Color(198, 239, 189);
         instance.startELSearchButton.setIcon(SvgManager.SpringIcon);
-        instance.springELStartButton.setIcon(SvgManager.SpringIcon);
         instance.startELSearchButton.setBackground(elColor);
-        instance.springELStartButton.setBackground(elColor);
     }
 
     private static void updateIcon() {
@@ -1217,12 +934,9 @@ public class MainForm {
         instance.getTabbedPanel().setIconAt(3, SvgManager.InheritIcon);
         instance.getTabbedPanel().setIconAt(4, SvgManager.SpringIcon);
         instance.getTabbedPanel().setIconAt(5, SvgManager.NoteIcon);
-        instance.getTabbedPanel().setIconAt(6, SvgManager.ScaIcon);
-        instance.getTabbedPanel().setIconAt(7, SvgManager.LeakIcon);
-        instance.getTabbedPanel().setIconAt(8, SvgManager.GadgetIcon);
-        instance.getTabbedPanel().setIconAt(9, SvgManager.AdvanceIcon);
-        instance.getTabbedPanel().setIconAt(10, SvgManager.DogIcon);
-        instance.getTabbedPanel().setIconAt(11, SvgManager.ConnectIcon);
+        instance.getTabbedPanel().setIconAt(6, SvgManager.AdvanceIcon);
+        instance.getTabbedPanel().setIconAt(7, SvgManager.DogIcon);
+        instance.getTabbedPanel().setIconAt(8, SvgManager.ConnectIcon);
 
         instance.webTabbed.setIconAt(0, SvgManager.SpringIcon);
         instance.webTabbed.setIconAt(1, SvgManager.SpringIcon);
@@ -1254,7 +968,7 @@ public class MainForm {
                                 null, null));
 
                 int c = instance.tabbedPanel.getTabCount();
-                if (c != 12) {
+                if (c != 9) {
                     throw new RuntimeException("tabbed panel error");
                 }
                 instance.tabbedPanel.setTitleAt(0, "开始");
@@ -1263,12 +977,9 @@ public class MainForm {
                 instance.tabbedPanel.setTitleAt(3, "实现");
                 instance.tabbedPanel.setTitleAt(4, "web");
                 instance.tabbedPanel.setTitleAt(5, "记录");
-                instance.tabbedPanel.setTitleAt(6, "SCA");
-                instance.tabbedPanel.setTitleAt(7, "泄露");
-                instance.tabbedPanel.setTitleAt(8, "GADGET");
-                instance.tabbedPanel.setTitleAt(9, "高级");
-                instance.tabbedPanel.setTitleAt(10, "漏洞链");
-                instance.tabbedPanel.setTitleAt(11, "API");
+                instance.tabbedPanel.setTitleAt(6, "高级");
+                instance.tabbedPanel.setTitleAt(7, "漏洞链");
+                instance.tabbedPanel.setTitleAt(8, "API");
 
                 instance.chosePanel.setBorder(
                         BorderFactory.createTitledBorder(null,
@@ -1350,25 +1061,9 @@ public class MainForm {
                 instance.refreshButton.setText("刷新全部");
                 instance.javaVulLabel.setText("快速搜索通用 JAVA 漏洞相关");
 
-                instance.sqliteLabel.setText("一个 SQLITE 查询工具");
-                instance.encoderLabel.setText("一个编码解码加密解密工具");
-                instance.listenerLabel.setText("一个 SOCKET 监听工具");
-                instance.spelLabel.setText("一个 SPEL 表达式搜索工具");
                 instance.startELSearchButton.setText("表达式搜索");
-                instance.serUtilLabel.setText("一个分析 Java 序列化数据中字节码的工具");
-                instance.bcelLabel.setText("一个分析 BCEL 字节码转为 Java 代码的工具");
-
-                instance.scaTipLabel.setText(" 不建议一次分析开启多个模块");
 
                 instance.addToFavoritesButton.setText("添加到收藏");
-                instance.scaFileLabel.setText("JAR 文件/JAR 目录");
-                instance.scaOutLabel.setText("输出类型");
-                instance.outputFileLabel.setText("输出文件");
-                instance.scaOpenBtn.setText("选择");
-                instance.scaStartBtn.setText("开始");
-                instance.scaResultOpenBtn.setText("打开");
-                instance.scaOutConsoleRadio.setText("命令行输出");
-                instance.scaOutHtmlRadio.setText("HTML文件");
                 instance.htmlGraphBtn.setText("方法HTML图");
             } else if (GlobalOptions.getLang() == GlobalOptions.ENGLISH) {
                 instance.codePanel.setBorder(
@@ -1379,7 +1074,7 @@ public class MainForm {
                                 null, null));
 
                 int c = instance.tabbedPanel.getTabCount();
-                if (c != 12) {
+                if (c != 9) {
                     throw new RuntimeException("tabbed panel error");
                 }
                 instance.tabbedPanel.setTitleAt(0, "start");
@@ -1388,12 +1083,9 @@ public class MainForm {
                 instance.tabbedPanel.setTitleAt(3, "impl");
                 instance.tabbedPanel.setTitleAt(4, "web");
                 instance.tabbedPanel.setTitleAt(5, "note");
-                instance.tabbedPanel.setTitleAt(6, "sca");
-                instance.tabbedPanel.setTitleAt(7, "leak");
-                instance.tabbedPanel.setTitleAt(8, "gadget");
-                instance.tabbedPanel.setTitleAt(9, "advance");
-                instance.tabbedPanel.setTitleAt(10, "chains");
-                instance.tabbedPanel.setTitleAt(11, "API");
+                instance.tabbedPanel.setTitleAt(6, "advance");
+                instance.tabbedPanel.setTitleAt(7, "chains");
+                instance.tabbedPanel.setTitleAt(8, "API");
 
                 instance.chosePanel.setBorder(
                         BorderFactory.createTitledBorder(null,
@@ -1474,26 +1166,10 @@ public class MainForm {
                 instance.pathSearchLabel.setText(" Search path in all Mappings");
                 instance.refreshButton.setText("Refresh All");
                 instance.javaVulLabel.setText("Quickly Search Commons Java Vulnerabilities Call");
-
-                instance.sqliteLabel.setText("A tool for run custom query in SQLite database");
-                instance.encoderLabel.setText("A tool for encode/decode encrypt/decrypt operations");
-                instance.listenerLabel.setText("A tool for listening port and send by socket");
-                instance.spelLabel.setText("A tool for Spring EL search");
+                
                 instance.startELSearchButton.setText("EL Search");
-                instance.serUtilLabel.setText("A tool for bytecodes in Java Serialization Data");
-                instance.bcelLabel.setText("A tool for parse BCEL bytecode to Java code");
-
-                instance.scaTipLabel.setText(" not recommended to enable multiple modules in one analysis");
 
                 instance.addToFavoritesButton.setText("add to favorites");
-                instance.scaFileLabel.setText("JAR FILE / JAR DIR");
-                instance.scaOutLabel.setText("OUTPUT");
-                instance.outputFileLabel.setText("OUTPUT FILE");
-                instance.scaOpenBtn.setText("OPEN");
-                instance.scaStartBtn.setText("START");
-                instance.scaResultOpenBtn.setText("OPEN");
-                instance.scaOutConsoleRadio.setText("CONSOLE");
-                instance.scaOutHtmlRadio.setText("HTML");
                 instance.htmlGraphBtn.setText("HTML Graph");
             } else {
                 throw new RuntimeException("invalid language");
@@ -2154,207 +1830,8 @@ public class MainForm {
         favHisPanel.add(loadFavBtn, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer2 = new Spacer();
         favHisPanel.add(spacer2, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
-        scaPanel = new JPanel();
-        scaPanel.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
-        tabbedPanel.addTab("sca", scaPanel);
-        modulePanel = new JPanel();
-        modulePanel.setLayout(new GridLayoutManager(2, 3, new Insets(0, 0, 0, 0), -1, -1));
-        scaPanel.add(modulePanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        modulePanel.setBorder(BorderFactory.createTitledBorder(null, "Module", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
-        scaLog4jBox = new JCheckBox();
-        scaLog4jBox.setText("Apache Log4j2");
-        modulePanel.add(scaLog4jBox, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        scaShiroBox = new JCheckBox();
-        scaShiroBox.setText("Apache Shiro");
-        modulePanel.add(scaShiroBox, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        scaTipPanel = new JPanel();
-        scaTipPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-        modulePanel.add(scaTipPanel, new GridConstraints(0, 0, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        scaTipLabel = new JLabel();
-        scaTipLabel.setText(" not recommended to enable multiple modules in one analysis");
-        scaTipPanel.add(scaTipLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        scaFastjsonBox = new JCheckBox();
-        scaFastjsonBox.setText("FASTJSON");
-        modulePanel.add(scaFastjsonBox, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final Spacer spacer3 = new Spacer();
-        scaPanel.add(spacer3, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        scaActionPanel = new JPanel();
-        scaActionPanel.setLayout(new GridLayoutManager(4, 3, new Insets(0, 0, 0, 0), -1, -1));
-        scaPanel.add(scaActionPanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        scaActionPanel.setBorder(BorderFactory.createTitledBorder(null, "Action", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
-        scaFileLabel = new JLabel();
-        scaFileLabel.setText("JAR FILE / JAR DIR");
-        scaActionPanel.add(scaFileLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
-        scaFileText = new JTextField();
-        scaActionPanel.add(scaFileText, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        scaOpenBtn = new JButton();
-        scaOpenBtn.setText("OPEN");
-        scaActionPanel.add(scaOpenBtn, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        scanConsoleScroll = new JScrollPane();
-        scaActionPanel.add(scanConsoleScroll, new GridConstraints(3, 0, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        scanConsoleScroll.setBorder(BorderFactory.createTitledBorder(null, "", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
-        scaConsoleArea = new JTextArea();
-        scaConsoleArea.setBackground(new Color(-12895429));
-        scaConsoleArea.setEditable(false);
-        scaConsoleArea.setForeground(new Color(-16711931));
-        scaConsoleArea.setLineWrap(true);
-        scaConsoleArea.setRows(20);
-        scanConsoleScroll.setViewportView(scaConsoleArea);
-        scaOutLabel = new JLabel();
-        scaOutLabel.setText("OUTPUT");
-        scaActionPanel.add(scaOutLabel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
-        scaOutPanel = new JPanel();
-        scaOutPanel.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
-        scaActionPanel.add(scaOutPanel, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        scaOutConsoleRadio = new JRadioButton();
-        scaOutConsoleRadio.setText("CONSOLE");
-        scaOutPanel.add(scaOutConsoleRadio, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        scaOutHtmlRadio = new JRadioButton();
-        scaOutHtmlRadio.setText("HTML");
-        scaOutPanel.add(scaOutHtmlRadio, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        scaStartBtn = new JButton();
-        scaStartBtn.setText("START");
-        scaActionPanel.add(scaStartBtn, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        outputFileLabel = new JLabel();
-        outputFileLabel.setText("OUTPUT FILE");
-        scaActionPanel.add(outputFileLabel, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
-        outputFileText = new JTextField();
-        scaActionPanel.add(outputFileText, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        scaResultOpenBtn = new JButton();
-        scaResultOpenBtn.setText("OPEN");
-        scaActionPanel.add(scaResultOpenBtn, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        leakPanel = new JPanel();
-        leakPanel.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 0, 0), -1, -1));
-        tabbedPanel.addTab("leak", leakPanel);
-        leakRulesPanel = new JPanel();
-        leakRulesPanel.setLayout(new GridLayoutManager(5, 3, new Insets(0, 0, 0, 0), -1, -1));
-        leakPanel.add(leakRulesPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        leakRulesPanel.setBorder(BorderFactory.createTitledBorder(null, "Rules", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
-        leakUrlBox = new JCheckBox();
-        leakUrlBox.setText("Url Info");
-        leakRulesPanel.add(leakUrlBox, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        leakJdbcBox = new JCheckBox();
-        leakJdbcBox.setText("JDBC Connection");
-        leakRulesPanel.add(leakJdbcBox, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        leakFileBox = new JCheckBox();
-        leakFileBox.setText("File Path");
-        leakRulesPanel.add(leakFileBox, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        leakJWTBox = new JCheckBox();
-        leakJWTBox.setText("JWT");
-        leakRulesPanel.add(leakJWTBox, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        leakMacBox = new JCheckBox();
-        leakMacBox.setText("MAC Address");
-        leakRulesPanel.add(leakMacBox, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        leakIpBox = new JCheckBox();
-        leakIpBox.setText("IP Address");
-        leakRulesPanel.add(leakIpBox, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        leakPhoneBox = new JCheckBox();
-        leakPhoneBox.setText("Phone Number");
-        leakRulesPanel.add(leakPhoneBox, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        leakIdBox = new JCheckBox();
-        leakIdBox.setText("ID Card");
-        leakRulesPanel.add(leakIdBox, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        leakEmailBox = new JCheckBox();
-        leakEmailBox.setText("Email");
-        leakRulesPanel.add(leakEmailBox, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        AKSKCheckBox = new JCheckBox();
-        AKSKCheckBox.setText("AK SK");
-        leakRulesPanel.add(AKSKCheckBox, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        bankCardCheckBox = new JCheckBox();
-        bankCardCheckBox.setText("Bank Card");
-        leakRulesPanel.add(bankCardCheckBox, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        APIKeyCheckBox = new JCheckBox();
-        APIKeyCheckBox.setText("API Key");
-        leakRulesPanel.add(APIKeyCheckBox, new GridConstraints(3, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        cryptoKeyCheckBox = new JCheckBox();
-        cryptoKeyCheckBox.setText("Crypto Key");
-        leakRulesPanel.add(cryptoKeyCheckBox, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        AIKeyCheckBox = new JCheckBox();
-        AIKeyCheckBox.setText("AI Key");
-        leakRulesPanel.add(AIKeyCheckBox, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        passwordCheckBox = new JCheckBox();
-        passwordCheckBox.setText("Password");
-        leakRulesPanel.add(passwordCheckBox, new GridConstraints(4, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        leakConfigPanel = new JPanel();
-        leakConfigPanel.setLayout(new GridLayoutManager(1, 4, new Insets(0, 0, 0, 0), -1, -1));
-        leakPanel.add(leakConfigPanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        leakConfigPanel.setBorder(BorderFactory.createTitledBorder(null, "Config", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
-        leakDetBase64Box = new JCheckBox();
-        leakDetBase64Box.setText("Detect Base64");
-        leakConfigPanel.add(leakDetBase64Box, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        leakCleanBtn = new JButton();
-        leakCleanBtn.setText("CLEAN");
-        leakConfigPanel.add(leakCleanBtn, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        leakStartBtn = new JButton();
-        leakStartBtn.setText("START");
-        leakConfigPanel.add(leakStartBtn, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        exportLeakBtn = new JButton();
-        exportLeakBtn.setText("EXPORT");
-        leakConfigPanel.add(exportLeakBtn, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        leakResultPanel = new JPanel();
-        leakResultPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-        leakPanel.add(leakResultPanel, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        leakResultPanel.setBorder(BorderFactory.createTitledBorder(null, "Result", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
-        leakResultScroll = new JScrollPane();
-        leakResultPanel.add(leakResultScroll, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(-1, 300), null, null, 0, false));
-        leakResultList = new JList();
-        leakResultScroll.setViewportView(leakResultList);
-        leakLogScroll = new JScrollPane();
-        leakPanel.add(leakLogScroll, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        leakLogArea = new JTextArea();
-        leakLogArea.setBackground(new Color(-12895429));
-        leakLogArea.setColumns(30);
-        leakLogArea.setEditable(false);
-        leakLogArea.setForeground(new Color(-16718519));
-        leakLogScroll.setViewportView(leakLogArea);
-        gadgetPanel = new JPanel();
-        gadgetPanel.setLayout(new GridLayoutManager(2, 1, new Insets(3, 3, 3, 3), -1, -1));
-        tabbedPanel.addTab("gadget", gadgetPanel);
-        gadgetInputPanel = new JPanel();
-        gadgetInputPanel.setLayout(new GridLayoutManager(3, 3, new Insets(0, 0, 0, 0), -1, -1));
-        gadgetPanel.add(gadgetInputPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        gadgetDirLabel = new JLabel();
-        gadgetDirLabel.setText("选择依赖目录");
-        gadgetInputPanel.add(gadgetDirLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        gadgetChoseBtn = new JButton();
-        gadgetChoseBtn.setText("选择");
-        gadgetInputPanel.add(gadgetChoseBtn, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        gadgetInputText = new JTextField();
-        gadgetInputText.setEditable(false);
-        gadgetInputPanel.add(gadgetInputText, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        gadgetDescLabel = new JLabel();
-        gadgetDescLabel.setText("说明");
-        gadgetInputPanel.add(gadgetDescLabel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        gadgetDescValueLabel = new JLabel();
-        gadgetDescValueLabel.setText("");
-        gadgetInputPanel.add(gadgetDescValueLabel, new GridConstraints(1, 1, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        gadgetOpPanel = new JPanel();
-        gadgetOpPanel.setLayout(new GridLayoutManager(1, 5, new Insets(0, 0, 0, 0), -1, -1));
-        gadgetInputPanel.add(gadgetOpPanel, new GridConstraints(2, 0, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        gadgetStartBtn = new JButton();
-        gadgetStartBtn.setText("开始分析");
-        gadgetOpPanel.add(gadgetStartBtn, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        gadgetNativeBox = new JCheckBox();
-        gadgetNativeBox.setText("原生");
-        gadgetOpPanel.add(gadgetNativeBox, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        gadgetHessianBox = new JCheckBox();
-        gadgetHessianBox.setText("Hessian");
-        gadgetOpPanel.add(gadgetHessianBox, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        gadgetJdbcBox = new JCheckBox();
-        gadgetJdbcBox.setText("JDBC");
-        gadgetOpPanel.add(gadgetJdbcBox, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        gadgetFastjsonBox = new JCheckBox();
-        gadgetFastjsonBox.setText("Fastjson");
-        gadgetOpPanel.add(gadgetFastjsonBox, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        gadgetResultPanel = new JPanel();
-        gadgetResultPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-        gadgetPanel.add(gadgetResultPanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        gadgetResultScroll = new JScrollPane();
-        gadgetResultPanel.add(gadgetResultScroll, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        gadgetResultTable = new JTable();
-        gadgetResultScroll.setViewportView(gadgetResultTable);
         advancePanel = new JPanel();
-        advancePanel.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 0, 0), -1, -1));
+        advancePanel.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPanel.addTab("advance", advancePanel);
         javaVulSearchPanel = new JPanel();
         javaVulSearchPanel.setLayout(new GridLayoutManager(12, 3, new Insets(0, 0, 0, 0), -1, -1));
@@ -2371,8 +1848,8 @@ public class MainForm {
         showLowRadio = new JRadioButton();
         showLowRadio.setText("展示低危（low）");
         vulOpPanel.add(showLowRadio, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final Spacer spacer4 = new Spacer();
-        vulOpPanel.add(spacer4, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        final Spacer spacer3 = new Spacer();
+        vulOpPanel.add(spacer3, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         showMediumRadio = new JRadioButton();
         showMediumRadio.setText("展示中危（medium）");
         vulOpPanel.add(showMediumRadio, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -2382,48 +1859,8 @@ public class MainForm {
         showAllRadio = new JRadioButton();
         showAllRadio.setText("全部");
         vulOpPanel.add(showAllRadio, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final Spacer spacer5 = new Spacer();
-        advancePanel.add(spacer5, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        piPanel = new JPanel();
-        piPanel.setLayout(new GridLayoutManager(6, 2, new Insets(0, 0, 0, 0), -1, -1));
-        advancePanel.add(piPanel, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        piPanel.setBorder(BorderFactory.createTitledBorder(null, "Plugins", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
-        encoderLabel = new JLabel();
-        encoderLabel.setText("A tool for encode/decode encrypt/decrypt operations");
-        piPanel.add(encoderLabel, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        encoderBtn = new JButton();
-        encoderBtn.setText("Start");
-        piPanel.add(encoderBtn, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        listenerLabel = new JLabel();
-        listenerLabel.setText("A tool for listening port and send by socket");
-        piPanel.add(listenerLabel, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        listenerBtn = new JButton();
-        listenerBtn.setText("Start");
-        piPanel.add(listenerBtn, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        sqliteButton = new JButton();
-        sqliteButton.setText("Start");
-        piPanel.add(sqliteButton, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        sqliteLabel = new JLabel();
-        sqliteLabel.setText("A tool for run custom query in SQLite database");
-        piPanel.add(sqliteLabel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        spelLabel = new JLabel();
-        spelLabel.setText("A tool for Spring EL search");
-        piPanel.add(spelLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        springELStartButton = new JButton();
-        springELStartButton.setText("Start");
-        piPanel.add(springELStartButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        serUtilLabel = new JLabel();
-        serUtilLabel.setText("A tool for bytecodes in Java Serialization Data");
-        piPanel.add(serUtilLabel, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        serUtilBtn = new JButton();
-        serUtilBtn.setText("Start");
-        piPanel.add(serUtilBtn, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        bcelLabel = new JLabel();
-        bcelLabel.setText("A tool for parse BCEL bytecode to Java code");
-        piPanel.add(bcelLabel, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        bcelBtn = new JButton();
-        bcelBtn.setText("Start");
-        piPanel.add(bcelBtn, new GridConstraints(5, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final Spacer spacer4 = new Spacer();
+        advancePanel.add(spacer4, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         analysis = new JPanel();
         analysis.setLayout(new GridLayoutManager(1, 10, new Insets(0, 0, 0, 0), -1, -1));
         advancePanel.add(analysis, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
@@ -2513,8 +1950,8 @@ public class MainForm {
         chainsLabel = new JLabel();
         chainsLabel.setText("");
         chainsDescPanel.add(chainsLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final Spacer spacer6 = new Spacer();
-        chainsDescPanel.add(spacer6, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        final Spacer spacer5 = new Spacer();
+        chainsDescPanel.add(spacer5, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         chainsOpPanel = new JPanel();
         chainsOpPanel.setLayout(new GridLayoutManager(2, 8, new Insets(5, 5, 5, 5), -1, -1));
         chainsPanel.add(chainsOpPanel, new GridConstraints(3, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
@@ -2533,8 +1970,8 @@ public class MainForm {
         maxDepthLabel = new JLabel();
         maxDepthLabel.setText("最大深度");
         chainsOpPanel.add(maxDepthLabel, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final Spacer spacer7 = new Spacer();
-        chainsOpPanel.add(spacer7, new GridConstraints(0, 7, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        final Spacer spacer6 = new Spacer();
+        chainsOpPanel.add(spacer6, new GridConstraints(0, 7, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         clearBtn = new JButton();
         clearBtn.setText("清空");
         chainsOpPanel.add(clearBtn, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -2593,10 +2030,10 @@ public class MainForm {
         final JLabel label1 = new JLabel();
         label1.setText("jar-analyzer-api 联动 jar-analyzer-mcp 使用");
         apiShowPanel.add(label1, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final Spacer spacer7 = new Spacer();
+        apiPanel.add(spacer7, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         final Spacer spacer8 = new Spacer();
-        apiPanel.add(spacer8, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
-        final Spacer spacer9 = new Spacer();
-        apiPanel.add(spacer9, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        apiPanel.add(spacer8, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         curPanel = new JPanel();
         curPanel.setLayout(new GridLayoutManager(3, 3, new Insets(0, 0, 0, 0), -1, -1));
         coreRightSplit.add(curPanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
@@ -2622,8 +2059,8 @@ public class MainForm {
         addToFavoritesButton = new JButton();
         addToFavoritesButton.setText("add to favorites");
         curPanel.add(addToFavoritesButton, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final Spacer spacer10 = new Spacer();
-        coreRightSplit.add(spacer10, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        final Spacer spacer9 = new Spacer();
+        coreRightSplit.add(spacer9, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         logPanel = new JPanel();
         logPanel.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
         treeContentSplit.setRightComponent(logPanel);
@@ -2654,9 +2091,6 @@ public class MainForm {
         buttonGroup = new ButtonGroup();
         buttonGroup.add(likeSearchRadioButton);
         buttonGroup.add(equalsSearchRadioButton);
-        buttonGroup = new ButtonGroup();
-        buttonGroup.add(scaOutConsoleRadio);
-        buttonGroup.add(scaOutHtmlRadio);
         buttonGroup = new ButtonGroup();
         buttonGroup.add(sourceRadio);
         buttonGroup.add(sinkRadio);

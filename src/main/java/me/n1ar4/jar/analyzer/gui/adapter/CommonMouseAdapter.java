@@ -13,10 +13,8 @@ package me.n1ar4.jar.analyzer.gui.adapter;
 import me.n1ar4.jar.analyzer.core.FinderRunner;
 import me.n1ar4.jar.analyzer.engine.CoreHelper;
 import me.n1ar4.jar.analyzer.engine.DecompileEngine;
-import me.n1ar4.jar.analyzer.engine.index.IndexPluginsSupport;
 import me.n1ar4.jar.analyzer.entity.ClassResult;
 import me.n1ar4.jar.analyzer.entity.MethodResult;
-import me.n1ar4.jar.analyzer.gui.LuceneSearchForm;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.PreviewForm;
 import me.n1ar4.jar.analyzer.gui.state.State;
@@ -108,11 +106,6 @@ public class CommonMouseAdapter extends MouseAdapter {
 
             MethodResult finalRes = res;
             new Thread(() -> {
-                // LUCENE 索引处理
-                if (LuceneSearchForm.getInstance() != null && LuceneSearchForm.usePaLucene()) {
-                    IndexPluginsSupport.addIndex(Paths.get(finalClassPath).toFile());
-                }
-
                 String code = DecompileEngine.decompile(Paths.get(finalClassPath));
                 String methodName = finalRes.getMethodName();
 

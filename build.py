@@ -45,10 +45,10 @@ if __name__ == '__main__':
     target_directory = "release"
 
     print("[*] make new release dir: {}".format(VERSION))
-    release_win_system_dir = "jar-analyzer-{}-windows-system".format(VERSION)
-    release_win_full_dir = "jar-analyzer-{}-windows-full".format(VERSION)
-    release_win_21_dir = "jar-analyzer-{}-windows-21".format(VERSION)
-    release_zip_dir = "jar-analyzer-{}".format(VERSION)
+    release_win_system_dir = "jar-analyzer-lite-{}-windows-system".format(VERSION)
+    release_win_full_dir = "jar-analyzer-lite-{}-windows-full".format(VERSION)
+    release_win_21_dir = "jar-analyzer-lite-{}-windows-21".format(VERSION)
+    release_zip_dir = "jar-analyzer-lite-{}".format(VERSION)
 
     print("[*] make dirs")
     subprocess.run("mkdir {}".format(release_win_system_dir), shell=True, cwd=target_directory)
@@ -101,15 +101,6 @@ if __name__ == '__main__':
     subprocess.run("echo {} > {}".format(PROJECT, "ABOUT.txt"), shell=True,
                    cwd="{}/{}".format(target_directory, release_zip_dir))
 
-    print("[*] copy build agent.jar")
-    copy_file("agent-jar-with-dependencies.jar", "lib\\agent.jar")
-
-    print("[*] copy agent.jar")
-    copy_file("lib\\agent.jar", "release\\" + release_win_system_dir + "\\lib\\agent.jar")
-    copy_file("lib\\agent.jar", "release\\" + release_win_full_dir + "\\lib\\agent.jar")
-    copy_file("lib\\agent.jar", "release\\" + release_win_21_dir + "\\lib\\agent.jar")
-    copy_file("lib\\agent.jar", "release\\" + release_zip_dir + "\\lib\\agent.jar")
-
     print("[*] copy vulnerability.yaml file")
     copy_file("vulnerability.yaml", "release\\" + release_win_system_dir + "\\vulnerability.yaml")
     copy_file("vulnerability.yaml", "release\\" + release_win_full_dir + "\\vulnerability.yaml")
@@ -121,25 +112,3 @@ if __name__ == '__main__':
     copy_file("dfs-sink.json", "release\\" + release_win_full_dir + "\\dfs-sink.json")
     copy_file("dfs-sink.json", "release\\" + release_win_21_dir + "\\dfs-sink.json")
     copy_file("dfs-sink.json", "release\\" + release_zip_dir + "\\dfs-sink.json")
-
-    print("[*] copy windows tools.jar")
-    copy_file("lib\\tools.jar", "release\\" + release_win_system_dir + "\\lib\\tools.jar")
-    copy_file("lib\\tools.jar", "release\\" + release_win_full_dir + "\\lib\\tools.jar")
-
-    print("[*] copy jd-gui")
-    copy_file("lib\\jd-gui-1.6.6.jar", "release\\" + release_win_system_dir + "\\lib\\jd-gui-1.6.6.jar")
-    copy_file("lib\\jd-gui-1.6.6.jar", "release\\" + release_win_full_dir + "\\lib\\jd-gui-1.6.6.jar")
-    copy_file("lib\\jd-gui-1.6.6.jar", "release\\" + release_win_21_dir + "\\lib\\jd-gui-1.6.6.jar")
-    copy_file("lib\\jd-gui-1.6.6.jar", "release\\" + release_zip_dir + "\\lib\\jd-gui-1.6.6.jar")
-
-    print("[*] copy jd-gui readme")
-    copy_file("lib\\README.md", "release\\" + release_win_system_dir + "\\lib\\README.md")
-    copy_file("lib\\README.md", "release\\" + release_win_full_dir + "\\lib\\README.md")
-    copy_file("lib\\README.md", "release\\" + release_win_21_dir + "\\lib\\README.md")
-    copy_file("lib\\README.md", "release\\" + release_zip_dir + "\\lib\\README.md")
-
-    print("[*] copy jd-gui license")
-    copy_file("lib\\LICENSE", "release\\" + release_win_system_dir + "\\lib\\LICENSE")
-    copy_file("lib\\LICENSE", "release\\" + release_win_full_dir + "\\lib\\LICENSE")
-    copy_file("lib\\LICENSE", "release\\" + release_win_21_dir + "\\lib\\LICENSE")
-    copy_file("lib\\LICENSE", "release\\" + release_zip_dir + "\\lib\\LICENSE")

@@ -10,29 +10,20 @@
 
 package me.n1ar4.jar.analyzer.gui.util;
 
-import com.github.rjeschke.txtmark.Processor;
-import me.n1ar4.games.flappy.FBMainFrame;
-import me.n1ar4.games.pocker.Main;
 import me.n1ar4.jar.analyzer.config.ConfigEngine;
 import me.n1ar4.jar.analyzer.config.ConfigFile;
 import me.n1ar4.jar.analyzer.gui.*;
 import me.n1ar4.jar.analyzer.http.HttpResponse;
 import me.n1ar4.jar.analyzer.http.Y4Client;
-import me.n1ar4.jar.analyzer.os.SystemChart;
-import me.n1ar4.jar.analyzer.plugins.jd.JDGUIStarter;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
-import me.n1ar4.shell.analyzer.form.ShellForm;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
 
 public class MenuUtil {
     private static final Logger logger = LogManager.getLogger();
@@ -177,24 +168,8 @@ public class MenuUtil {
         menuBar.add(createAboutMenu());
         menuBar.add(createConfigMenu());
         menuBar.add(language());
-        menuBar.add(loadRemote());
         menuBar.add(exportJava());
-        menuBar.add(createGames());
         menuBar.add(createTheme());
-        JMenu plugins = new JMenu("plugins");
-        JMenuItem systemItem = new JMenuItem("system info");
-        systemItem.setIcon(IconManager.systemIcon);
-        systemItem.addActionListener(e -> SystemChart.start0());
-        plugins.add(systemItem);
-        JMenuItem luceneItem = new JMenuItem("global search");
-        luceneItem.setIcon(IconManager.luceneIcon);
-        luceneItem.addActionListener(e -> LuceneSearchForm.start(1));
-        plugins.add(luceneItem);
-        JMenuItem jdItem = new JMenuItem("start jd-gui");
-        jdItem.setIcon(IconManager.jdIcon);
-        jdItem.addActionListener(e -> JDGUIStarter.start());
-        plugins.add(jdItem);
-        menuBar.add(plugins);
         return menuBar;
     }
 
@@ -254,58 +229,6 @@ public class MenuUtil {
         proxyItem.addActionListener(e -> ExportForm.start());
         export.add(proxyItem);
         return export;
-    }
-
-    private static JMenu loadRemote() {
-        JMenu loadRemote = new JMenu("remote");
-        JMenuItem loadByHttp = new JMenuItem("load jars (http)");
-        loadByHttp.setIcon(IconManager.remoteIcon);
-        loadByHttp.addActionListener(e -> RemoteHttp.start());
-        loadRemote.add(loadByHttp);
-        JMenuItem start = new JMenuItem("start tomcat analyzer");
-        start.setIcon(IconManager.tomcatIcon);
-        start.addActionListener(e -> ShellForm.start0());
-        loadRemote.add(start);
-        JMenuItem dbgItem = new JMenuItem("open bytecode debugger");
-        dbgItem.setIcon(IconManager.debugIcon);
-        dbgItem.addActionListener(e -> me.n1ar4.dbg.gui.MainForm.start());
-        loadRemote.add(dbgItem);
-        JMenuItem proxyItem = new JMenuItem("open proxy config");
-        proxyItem.setIcon(IconManager.proxyIcon);
-        proxyItem.addActionListener(e -> ProxyForm.start());
-        loadRemote.add(proxyItem);
-        return loadRemote;
-    }
-
-    private static JMenu createGames() {
-        try {
-            JMenu gameMenu = new JMenu("games");
-            JMenuItem flappyItem = new JMenuItem("Flappy Bird");
-            InputStream is = MainForm.class.getClassLoader().getResourceAsStream(
-                    "game/flappy/flappy_bird/bird1_0.png");
-            if (is == null) {
-                return null;
-            }
-            ImageIcon flappyIcon = new ImageIcon(ImageIO.read(is));
-            flappyItem.setIcon(flappyIcon);
-            flappyItem.addActionListener(e -> new FBMainFrame().startGame());
-            JMenuItem pokerItem = new JMenuItem("斗地主");
-            is = MainForm.class.getClassLoader().getResourceAsStream(
-                    "game/pocker/images/logo.png");
-            if (is == null) {
-                return null;
-            }
-            ImageIcon pokerIcon = new ImageIcon(ImageIO.read(is));
-            pokerItem.setIcon(pokerIcon);
-            pokerItem.addActionListener(e -> new Thread(Main::new).start());
-
-            gameMenu.add(flappyItem);
-            gameMenu.add(pokerItem);
-            return gameMenu;
-        } catch (Exception ex) {
-            logger.error("error: {}", ex.toString());
-        }
-        return null;
     }
 
     private static JMenu language() {
@@ -403,58 +326,7 @@ public class MenuUtil {
             imageIcon = new ImageIcon(ImageIO.read(is));
             jarItem.setIcon(imageIcon);
             aboutMenu.add(jarItem);
-            JMenuItem changelogItem = new JMenuItem("changelogs");
-            is = MainForm.class.getClassLoader().getResourceAsStream("img/update.png");
-            if (is == null) {
-                return null;
-            }
-            imageIcon = new ImageIcon(ImageIO.read(is));
-            changelogItem.setIcon(imageIcon);
-            changelogItem.addActionListener(e -> {
-                try {
-                    InputStream i = MenuUtil.class.getClassLoader().getResourceAsStream("CHANGELOG.MD");
-                    if (i == null) {
-                        return;
-                    }
-                    int bufferSize = 1024;
-                    char[] buffer = new char[bufferSize];
-                    StringBuilder out = new StringBuilder();
-                    Reader in = new InputStreamReader(i, StandardCharsets.UTF_8);
-                    for (int numRead; (numRead = in.read(buffer, 0, buffer.length)) > 0; ) {
-                        out.append(buffer, 0, numRead);
-                    }
-                    ChangeLogForm.start(Const.ChangeLogForm, Processor.process(out.toString()));
-                } catch (Exception ex) {
-                    logger.error("error: {}", ex.toString());
-                }
-            });
-            aboutMenu.add(changelogItem);
-            JMenuItem thanksItem = new JMenuItem("thanks");
-            is = MainForm.class.getClassLoader().getResourceAsStream("img/github.png");
-            if (is == null) {
-                return null;
-            }
-            imageIcon = new ImageIcon(ImageIO.read(is));
-            thanksItem.setIcon(imageIcon);
-            thanksItem.addActionListener(e -> {
-                try {
-                    InputStream i = MenuUtil.class.getClassLoader().getResourceAsStream("thanks.md");
-                    if (i == null) {
-                        return;
-                    }
-                    int bufferSize = 1024;
-                    char[] buffer = new char[bufferSize];
-                    StringBuilder out = new StringBuilder();
-                    Reader in = new InputStreamReader(i, StandardCharsets.UTF_8);
-                    for (int numRead; (numRead = in.read(buffer, 0, buffer.length)) > 0; ) {
-                        out.append(buffer, 0, numRead);
-                    }
-                    ChangeLogForm.start("THANKS", Processor.process(out.toString()));
-                } catch (Exception ex) {
-                    logger.error("error: {}", ex.toString());
-                }
-            });
-            aboutMenu.add(thanksItem);
+
             JMenuItem checkUpdateItem = new JMenuItem("check update");
             is = MainForm.class.getClassLoader().getResourceAsStream("img/normal.png");
             if (is == null) {

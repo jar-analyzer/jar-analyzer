@@ -14,8 +14,8 @@ jobs:
 
       - name: set version
         run: |
-          echo "CORE_VERSION=v1.1.0" >> $GITHUB_ENV
-          echo "REPORT_VERSION=v1.0.0" >> $GITHUB_ENV
+          echo "CORE_VERSION=v1.2.0" >> $GITHUB_ENV
+          echo "REPORT_VERSION=v1.2.0" >> $GITHUB_ENV
 
       - uses: actions/checkout@v4
 
@@ -38,14 +38,14 @@ jobs:
           set -x 
           cd mcp/cmd/core
           mkdir jar-analyzer-mcp
-          ./my-gox -parallel 5 -osarch="darwin/arm64 darwin/amd64 linux/386 linux/amd64 linux/arm linux/arm64 windows/arm windows/arm64 windows/386 windows/amd64" -ldflags="-extldflags=-static -s -w" -output="jar-analyzer-mcp/mcp_${{ env.CORE_VERSION }}_{{.OS}}_{{.Arch}}"
+          ./my-gox -parallel 5 -osarch="darwin/arm64 darwin/amd64 linux/386 linux/amd64 linux/arm linux/arm64 windows/386 windows/amd64" -ldflags="-extldflags=-static -s -w" -output="jar-analyzer-mcp/mcp_${{ env.CORE_VERSION }}_{{.OS}}_{{.Arch}}"
 
       - name: build jar-analyzer-report-mcp
         run: |
           set -x 
           cd mcp/cmd/report
           mkdir jar-analyzer-report-mcp
-          ./my-gox -parallel 5 -osarch="darwin/arm64 darwin/amd64 linux/386 linux/amd64 linux/arm linux/arm64 windows/arm windows/arm64 windows/386 windows/amd64" -ldflags="-extldflags=-static -s -w" -output="jar-analyzer-report-mcp/report_mcp_${{ env.REPORT_VERSION }}_{{.OS}}_{{.Arch}}"
+          ./my-gox -parallel 5 -osarch="darwin/arm64 darwin/amd64 linux/386 linux/amd64 linux/arm linux/arm64 windows/386 windows/amd64" -ldflags="-extldflags=-static -s -w" -output="jar-analyzer-report-mcp/report_mcp_${{ env.REPORT_VERSION }}_{{.OS}}_{{.Arch}}"
 
       - name: create build file
         run: |

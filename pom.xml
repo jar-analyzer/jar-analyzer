@@ -16,7 +16,7 @@
 
     <groupId>me.n1ar4</groupId>
     <artifactId>jar-analyzer-lite</artifactId>
-    <version>5.11</version>
+    <version>5.12</version>
 
     <packaging>jar</packaging>
     <description>Jar Analyzer Project</description>
@@ -71,21 +71,20 @@
 
     <properties>
         <!-- Dependencies Version -->
-        <asm.version>9.9</asm.version>
-        <flatlaf.version>3.6.2</flatlaf.version>
+        <asm.version>9.9.1</asm.version>
+        <flatlaf.version>3.7</flatlaf.version>
         <idea.forms.version>7.0.3</idea.forms.version>
-        <syntax.version>3.6.0</syntax.version>
+        <syntax.version>3.6.1</syntax.version>
         <slf4j.api.version>2.0.17</slf4j.api.version>
         <slf4j.simple.version>2.0.17</slf4j.simple.version>
         <mybatis.version>3.5.19</mybatis.version>
-        <commons.dhcp.version>2.13.0</commons.dhcp.version>
+        <commons.dhcp.version>2.14.0</commons.dhcp.version>
         <jcommander.version>1.82</jcommander.version>
-        <dom4j.version>2.1.5</dom4j.version>
         <spring.version>5.3.39</spring.version>
         <okhttp3.version>4.12.0</okhttp3.version>
         <nano.version>2.3.1</nano.version>
         <fastjson.version>2.0.60</fastjson.version>
-        <hutool.version>5.8.41</hutool.version>
+        <hutool.version>5.8.43</hutool.version>
         <java.parser.version>3.27.1</java.parser.version>
         <snakeyaml.version>2.5</snakeyaml.version>
         <csv.version>1.14.1</csv.version>
@@ -120,11 +119,6 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-expression</artifactId>
             <version>${spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.dom4j</groupId>
-            <artifactId>dom4j</artifactId>
-            <version>${dom4j.version}</version>
         </dependency>
         <dependency>
             <groupId>com.beust</groupId>

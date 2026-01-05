@@ -2,30 +2,13 @@
 
 [CHANGE LOG](CHANGELOG.MD)
 
-`jar-analyzer` 项目连续 `4` 年更新，共发布 `44` 个版本，完全开源，完全免费
+`jar-analyzer` 项目连续 `5` 年更新，共发布 `54` 个版本，完全开源，完全免费
 
-The `jar-analyzer` project has been continuously updated for `4` years, with `44` versions released, completely open source and completely free.
+The `jar-analyzer` project has been continuously updated for `5` years, with `54` versions released, completely open source and completely free.
 
 官方文档：https://docs.qq.com/doc/DV3pKbG9GS0pJS0tk
 
 如果贡献代码：fork 本项目到自己仓库，参考 [build](#build) 部分搭建项目，提交 Pull Requests 即可
-
-### `jar-analyzer 5.10` 版本后已支持 `MCP` 请参考文档 [MCP](mcp-doc/README.md)
-
-### `jar-analyzer` 联动 `n8n` 实现 `workflow` 自动分析
-
-特别致谢：
-
-- whw1sfb (https://github.com/whwlsfb)
-- L-codes (https://github.com/L-codes)
-- osword (https://github.com/zhzhdoai)
-
-感谢以上大佬分享 `jar-analyzer mcp` 基于 `n8n` 平台更高级的用法，文档：[n8n-doc](n8n-doc)
-
-![](mcp-img/010.png)
-
-![](mcp-img/022.png)
-
 
 <img alt="gitleaks badge" src="https://img.shields.io/badge/protected%20by-gitleaks-blue">
 
@@ -62,6 +45,7 @@ Jar Analyzer
 - 完善且美观的 `GUI` 设计， 只需鼠标点点点，即可进行大多数的代码审计
 - 内置常见的 `source` 入口分析，支持动态的 `sink` 配置文件规则，方便快捷
 - 代码完全开源，构建基于 `github actions` 你可以随意查看功能代码，定制功能
+- 本项目跟随主流技术路线，尝试基于 `AI` 做探索（支持 `mcp` 和 `n8n` 流程等）
 
 ![](img/0080.png)
 
@@ -116,6 +100,16 @@ Jar Analyzer
 自从 `5.10` 版本后支持 `MCP` 请参考文档 [MCP](mcp-doc/README.md)
 
 ![](mcp-img/004.png)
+
+结合 `jar-analyzer mcp` 可以在 `n8n` 平台使用，文档：[n8n-doc](n8n-doc)
+
+![](mcp-img/010.png)
+
+![](mcp-img/022.png)
+
+由于 `jar-analyzer` 本体功能较多，从 `5.12` 版本支持了 `lite` 轻量版下载
+
+`jar-analyzer-lite` 源码位于 `jar-analyzer-lite` 分支，也可以做贡献
 
 ## 常见用途
 

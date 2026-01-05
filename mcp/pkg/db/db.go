@@ -13,6 +13,7 @@ package db
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"jar-analyzer-mcp/pkg/log"
 	"jar-analyzer-mcp/pkg/model"
 	"os"
@@ -32,10 +33,17 @@ func InitDB() error {
 
 	log.Infof("init database: %s", dbPath)
 
-	db, err = sql.Open("sqlite", dbPath)
+	// Add busy_timeout and journal_mode=WAL to fix SQLITE_BUSY error
+	// _pragma=busy_timeout(5000): Wait up to 5000ms for the lock
+	// _pragma=journal_mode(WAL): Enable Write-Ahead Logging for better concurrency
+	dsn := fmt.Sprintf("%s?_pragma=busy_timeout(5000)&_pragma=journal_mode(WAL)", dbPath)
+	db, err = sql.Open("sqlite", dsn)
 	if err != nil {
 		return err
 	}
+
+	// Limit to 1 open connection to further prevent locking issues if WAL is not enough
+	db.SetMaxOpenConns(1)
 
 	createTableSQL := `CREATE TABLE IF NOT EXISTS vul_report (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,

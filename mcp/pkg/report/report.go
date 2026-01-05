@@ -45,7 +45,7 @@ var indexHtml string
 func NewWebSocketManager() *WebSocketManager {
 	return &WebSocketManager{
 		clients:    make(map[*websocket.Conn]bool),
-		broadcast:  make(chan model.ReportData),
+		broadcast:  make(chan model.ReportData, 100), // Increase buffer size to 100
 		register:   make(chan *websocket.Conn),
 		unregister: make(chan *websocket.Conn),
 	}

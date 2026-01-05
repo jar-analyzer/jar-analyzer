@@ -1,4 +1,4 @@
-name: jar analyzer build
+name: jar analyzer lite build
 
 on:
   workflow_dispatch:

@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  VERSION: "5.11"
+  VERSION: "5.12"
 
 jobs:
 
@@ -44,43 +44,16 @@ jobs:
           Copy-Item "target\jar-analyzer-lite-${{ env.VERSION }}-jar-with-dependencies.jar" -Destination "release\jar-analyzer-lite-${{ env.VERSION }}.jar"
         working-directory: jar-analyzer-lite
 
-      - name: download jre-8
-        run: |
-          curl -L "https://github.com/jar-analyzer/workflow_jre/releases/download/temurin-8u472/jre.zip" -o "jre-8.zip"
-        working-directory: jar-analyzer-lite
-
-      - name: download jre-21
-        run: |
-          curl -L "https://github.com/jar-analyzer/workflow_jre/releases/download/temurin-21.0.9/jre.zip" -o "jre-21.zip"
-        working-directory: jar-analyzer-lite
-
-      - name: unpack jre-8
-        run: >
-          unzip jre-8.zip -d release\jar-analyzer-lite-${{ env.VERSION }}-windows-full\
-        working-directory: jar-analyzer-lite
-
-      - name: unpack jre-21
-        run: >
-          unzip jre-21.zip -d release\jar-analyzer-lite-${{ env.VERSION }}-windows-21\
-        working-directory: jar-analyzer-lite
-
       - name: zip release
         run: |
           dir
-          Compress-Archive -Path "jar-analyzer-lite-${{ env.VERSION }}-windows-system\" -DestinationPath "jar-analyzer-lite-${{ env.VERSION }}-windows-system.zip" -CompressionLevel Optimal
-          Compress-Archive -Path "jar-analyzer-lite-${{ env.VERSION }}-windows-full\" -DestinationPath "jar-analyzer-lite-${{ env.VERSION }}-windows-full.zip" -CompressionLevel Optimal
-          Compress-Archive -Path "jar-analyzer-lite-${{ env.VERSION }}-windows-21\" -DestinationPath "jar-analyzer-lite-${{ env.VERSION }}-windows-21.zip" -CompressionLevel Optimal
           Compress-Archive -Path "jar-analyzer-lite-${{ env.VERSION }}\" -DestinationPath "jar-analyzer-lite-${{ env.VERSION }}.zip" -CompressionLevel Optimal
         working-directory: jar-analyzer-lite/release
         shell: pwsh
-
 
       - name: upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: jar-analyzer-lite
           path: |
-            jar-analyzer-lite/release/jar-analyzer-lite-${{ env.VERSION }}-windows-full.zip
-            jar-analyzer-lite/release/jar-analyzer-lite-${{ env.VERSION }}-windows-21.zip
-            jar-analyzer-lite/release/jar-analyzer-lite-${{ env.VERSION }}-windows-system.zip
             jar-analyzer-lite/release/jar-analyzer-lite-${{ env.VERSION }}.zip

@@ -1,5 +1,37 @@
 # CHANGELOG
 
+## 5.12
+
+更新日志：
+
+- [重要] `jar-analyzer` 支持 `lite` 版本下载 @4ra1n
+- [功能] `report-mcp` 支持保存数据到 `sqlite` @4ra1n
+- [优化] 优化 `report-mcp` 界面和功能 @4ra1n
+- [优化] 限制字符串查询返回数量防止 `MCP` 卡死 @4ra1n
+- [其他] 所有依赖升级到支持 `Java 8` 的最新版 @4ra1n
+
+感谢以下用户的贡献:
+
+- 4ra1n (https://github.com/4ra1n)
+
+所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
+
+- `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (**完整版本**)
+- `windows-21` 版内置开启 `ZGC` 的 `JRE 21` 环境（激进用户尝试使用）
+- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
+- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
+- `lite` 版仅包含分析 `jar-analyzer` 的核心基础功能（未经完善测试）
+- `mcp-build.zip` 包含所有系统的 `mcp` 一般使用 `mcp_windows_amd64.exe`
+- `report-mcp-build.zip` 配合 `workflow` 使用的自动报告生成 `mcp`
+
+一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
+
+如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
+
+官方文档：https://docs.qq.com/doc/DV3pKbG9GS0pJS0tk
+
+`MCP` 文档：https://github.com/jar-analyzer/jar-analyzer/tree/master/mcp-doc
+
 ## 5.11
 
 一些安全改进吗，并提供大模型 `workflow` 审计文档，参考主页 `README`

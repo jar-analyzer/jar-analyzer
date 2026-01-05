@@ -14,12 +14,13 @@ import (
 	"flag"
 	"fmt"
 	"github.com/mark3labs/mcp-go/server"
+	"jar-analyzer-mcp/pkg/db"
 	"jar-analyzer-mcp/pkg/log"
 	"jar-analyzer-mcp/pkg/report"
 )
 
 const (
-	version = "1.0.0"
+	version = "1.2.0"
 	name    = "jar-analyzer-report-mcp"
 )
 
@@ -49,6 +50,12 @@ func main() {
 	} else {
 		log.SetLevel(log.InfoLevel)
 	}
+
+	if err := db.InitDB(); err != nil {
+		log.Errorf("init db error: %v", err)
+		return
+	}
+	defer db.CloseDB()
 
 	mcpServer := server.NewMCPServer(
 		name,

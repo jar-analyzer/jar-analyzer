@@ -4,6 +4,9 @@
 
 更新日志：
 
+- [重要] `jar-analyzer` 支持 `lite` 版本下载 @4ra1n
+- [功能] `report-mcp` 支持保存数据到 `sqlite` @4ra1n
+- [优化] 优化 `report-mcp` 界面和功能 @4ra1n
 - [优化] 限制字符串查询返回数量防止 `MCP` 卡死 @4ra1n
 
 感谢以下用户的贡献:

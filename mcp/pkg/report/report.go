@@ -15,7 +15,9 @@ import (
 	_ "embed"
 	"encoding/json"
 	"fmt"
+	"jar-analyzer-mcp/pkg/db"
 	"jar-analyzer-mcp/pkg/log"
+	"jar-analyzer-mcp/pkg/model"
 	"net/http"
 	"strings"
 	"sync"
@@ -27,21 +29,9 @@ import (
 
 var WebAddr string
 
-type ReportData struct {
-	Type   string  `json:"type"`
-	Reason string  `json:"reason"`
-	Score  int8    `json:"score"`
-	Trace  []Trace `json:"trace"`
-}
-
-type Trace struct {
-	Class  string `json:"class"`
-	Method string `json:"method"`
-}
-
 type WebSocketManager struct {
 	clients    map[*websocket.Conn]bool
-	broadcast  chan ReportData
+	broadcast  chan model.ReportData
 	register   chan *websocket.Conn
 	unregister chan *websocket.Conn
 	mutex      sync.RWMutex
@@ -55,7 +45,7 @@ var indexHtml string
 func NewWebSocketManager() *WebSocketManager {
 	return &WebSocketManager{
 		clients:    make(map[*websocket.Conn]bool),
-		broadcast:  make(chan ReportData),
+		broadcast:  make(chan model.ReportData),
 		register:   make(chan *websocket.Conn),
 		unregister: make(chan *websocket.Conn),
 	}
@@ -89,7 +79,7 @@ func (manager *WebSocketManager) Run() {
 	}
 }
 
-func (manager *WebSocketManager) BroadcastData(data ReportData) {
+func (manager *WebSocketManager) BroadcastData(data model.ReportData) {
 	select {
 	case manager.broadcast <- data:
 	default:
@@ -153,7 +143,7 @@ func RegisterReportTools(s *server.MCPServer, webPort int, addr string) {
 	log.Debug("init mcp tool")
 
 	s.AddTool(reportTool, func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-		var args ReportData
+		var args model.ReportData
 		if err := parseArgs(req.Params.Arguments, &args); err != nil {
 			return nil, fmt.Errorf("参数解析失败: %v", err)
 		}
@@ -164,6 +154,7 @@ func RegisterReportTools(s *server.MCPServer, webPort int, addr string) {
 
 	go func() {
 		http.HandleFunc("/ws", handleWebSocket)
+		http.HandleFunc("/api/history", handleHistory)
 		http.HandleFunc("/", handleIndex)
 		if err := http.ListenAndServe(fmt.Sprintf(":%d", webPort), nil); err != nil {
 			log.Warnf("http server error: %v", err)
@@ -180,8 +171,29 @@ func handleIndex(writer http.ResponseWriter, req *http.Request) {
 	_, _ = writer.Write([]byte(htmlNewStr))
 }
 
-func handleReport(reportData ReportData) (*mcp.CallToolResult, error) {
+func handleHistory(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+	reports, err := db.GetReports()
+	if err != nil {
+		log.Errorf("get reports error: %v", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	if err := json.NewEncoder(w).Encode(reports); err != nil {
+		log.Errorf("encode reports error: %v", err)
+	}
+}
+
+func handleReport(reportData model.ReportData) (*mcp.CallToolResult, error) {
 	wsManager.BroadcastData(reportData)
+	err := db.SaveReport(reportData)
+	if err != nil {
+		log.Errorf("save report error: %v", err)
+		return nil, err
+	}
 	log.Infof("received report data. type: %s, reason: %s, trace: %v", reportData.Type, reportData.Reason, reportData.Trace)
 	return mcp.NewToolResultText("report data received and broadcasted successfully"), nil
 }

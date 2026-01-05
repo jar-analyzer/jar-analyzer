@@ -9,256 +9,438 @@
   -->
 
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MCP Report Service</title>
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Jar Analyzer MCP Report</title>
+    <!-- Vue 3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!-- Element Plus -->
+    <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css" />
+    <link rel="stylesheet" href="https://unpkg.com/element-plus/theme-chalk/dark/css-vars.css">
+    <script src="https://unpkg.com/element-plus/dist/index.full.js"></script>
+    <!-- Element Plus Icons -->
+    <script src="https://unpkg.com/@element-plus/icons-vue"></script>
+    <!-- ECharts -->
+    <script src="https://unpkg.com/echarts/dist/echarts.min.js"></script>
+    <!-- Axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    
     <style>
+        :root {
+            --bg-color: #1a1a1a;
+            --card-bg: #242424;
+            --text-color: #e5eaf3;
+        }
         body {
-            background-color: #f8f9fa;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        .status {
-            margin-bottom: 20px;
-            padding: 10px;
-            border-radius: 5px;
-            font-weight: bold;
-        }
-        .status.connected {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        .status.disconnected {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-        .report-item {
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            border-left: 4px solid #007bff;
-        }
-        .report-type {
-            font-size: 1.2em;
-            font-weight: bold;
-            color: #495057;
-            margin-bottom: 8px;
-            text-transform: capitalize;
-        }
-        .report-reason {
-            color: #6c757d;
-            margin-bottom: 15px;
-            font-style: italic;
-        }
-        .report-score {
-            display: block;
-            float: right;
-            font-size: 35px;
-        }
-        .trace-item {
-            background-color: #f8f9fa;
-            padding: 8px 12px;
-            margin: 5px 0;
-            border-radius: 4px;
-            border-left: 3px solid #28a745;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9em;
-        }
-        .trace-class {
-            color: #007bff;
-            font-weight: bold;
-        }
-        .trace-method {
-            color: #28a745;
-        }
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #6c757d;
-        }
-        .empty-state h3 {
-            margin-bottom: 10px;
-            color: #495057;
-        }
-        .stats {
+        #app {
+            height: 100vh;
             display: flex;
-            justify-content: space-around;
-            margin-bottom: 30px;
-            text-align: center;
+            flex-direction: column;
         }
-        .stat-item {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            min-width: 150px;
+        .el-header {
+            background-color: #000;
+            border-bottom: 1px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
         }
-        .stat-number {
-            font-size: 2em;
+        .logo {
+            font-size: 1.5rem;
             font-weight: bold;
-            color: #007bff;
+            background: linear-gradient(45deg, #409eff, #a0cfff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        .stat-label {
-            color: #6c757d;
-            margin-top: 5px;
+        .el-main {
+            padding: 20px;
+            background-color: var(--bg-color);
+        }
+        .stat-card {
+            background-color: var(--card-bg);
+            border: 1px solid #333;
+            color: white;
+            transition: transform 0.3s;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        .chart-container {
+            height: 300px;
+            width: 100%;
+        }
+        .report-card {
+            background-color: var(--card-bg);
+            border: 1px solid #333;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        .report-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            border-color: #409eff;
+        }
+        .report-header {
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(255,255,255,0.02);
+            border-bottom: 1px solid #333;
+            cursor: pointer;
+        }
+        .report-body {
+            padding: 20px;
+        }
+        .score-badge {
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        .score-high { color: #f56c6c; background: rgba(245, 108, 108, 0.1); }
+        .score-med { color: #e6a23c; background: rgba(230, 162, 60, 0.1); }
+        .score-low { color: #67c23a; background: rgba(103, 194, 58, 0.1); }
+        
+        .trace-item {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            padding: 5px 0;
+            border-left: 2px solid #409eff;
+            padding-left: 10px;
+            margin-left: 5px;
+            color: #a0cfff;
+        }
+        .trace-class { color: #409eff; }
+        .trace-method { color: #e5eaf3; font-weight: bold; }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #444;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        
+        .fade-enter-active, .fade-leave-active {
+            transition: opacity 0.5s ease;
+        }
+        .fade-enter-from, .fade-leave-to {
+            opacity: 0;
         }
     </style>
 </head>
 <body>
-    <div id="root"></div>
-
-    <script type="text/babel">
-        const { useState, useEffect } = React;
-
-        function App() {
-            const [reports, setReports] = useState([]);
-            const [connectionStatus, setConnectionStatus] = useState('disconnected');
-            const [ws, setWs] = useState(null);
-
-            useEffect(() => {
-                connectWebSocket();
-                return () => {
-                    if (ws) {
-                        ws.close();
-                    }
-                };
-            }, []);
-
-            const connectWebSocket = () => {
-                const websocket = new WebSocket('ws://__JAR_ANALYZER_REPORT_MCP__/ws');
-
-                websocket.onopen = () => {
-                    console.log('WebSocket connected');
-                    setConnectionStatus('connected');
-                };
-
-                websocket.onmessage = (event) => {
-                    try {
-                        const newData = JSON.parse(event.data);
-                        console.log('Received data:', newData);
-                        setReports(prevReports => {
-                            return [...prevReports, newData].sort((a, b) => b.score - a.score);
-                        });
-                    } catch (error) {
-                        console.error('Error parsing WebSocket message:', error);
-                    }
-                };
-
-                websocket.onclose = () => {
-                    console.log('WebSocket disconnected');
-                    setConnectionStatus('disconnected');
-                    // 尝试重新连接
-                    setTimeout(() => {
-                        console.log('Attempting to reconnect...');
-                        connectWebSocket();
-                    }, 3000);
-                };
-
-                websocket.onerror = (error) => {
-                    console.error('WebSocket error:', error);
-                    setConnectionStatus('disconnected');
-                };
-
-                setWs(websocket);
-            };
-
-            const getReportStats = () => {
-                const stats = {};
-                reports.forEach(report => {
-                    stats[report.type] = (stats[report.type] || 0) + 1;
-                });
-                return stats;
-            };
-
-            const formatType = (type) => {
-                return type.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-            };
-
-            const stats = getReportStats();
-
-            return (
-                <div className="container">
-                    <div className="header">
-                        <h1>🔍 MCP Report Service</h1>
-                        <p>Real-time Security Report Monitoring</p>
-                    </div>
-
-                    <div className={`status ${connectionStatus}`}>
-                        Connection Status: {connectionStatus.toUpperCase()}
-                        {connectionStatus === 'connected' ? ' ✅' : ' ❌'}
-                    </div>
-
-                    {reports.length > 0 && (
-                        <div className="stats">
-                            <div className="stat-item">
-                                <div className="stat-number">{reports.length}</div>
-                                <div className="stat-label">Total Reports</div>
-                            </div>
-                            {Object.entries(stats).map(([type, count]) => (
-                                <div key={type} className="stat-item">
-                                    <div className="stat-number">{count}</div>
-                                    <div className="stat-label">{formatType(type)}</div>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-
-                    {reports.length === 0 ? (
-                        <div className="empty-state">
-                            <h3>📊 No Reports Yet</h3>
-                            <p>Waiting for report data from MCP service...</p>
-                            <p>Send JSON data to the 'report' tool to see results here.</p>
-                        </div>
-                    ) : (
-                        <div>
-                            <h3 className="mb-4">📋 Security Reports ({reports.length})</h3>
-                            {reports.map((report, index) => (
-                                <div key={index} className="report-item">
-                                    <div className="report-score"><b style={{color: report.score >= 7 ? 'red' : 'blue', fontSize: '40px'}}>{report.score}</b>/10</div>
-                                    <div className="report-type">{formatType(report.type)}</div>
-                                    <div className="report-reason">{report.reason}</div>
-                                    <div className="trace-section">
-                                        <h6 className="mb-2">🔍 Call Trace:</h6>
-                                        {report.trace.map((traceItem, traceIndex) => (
-                                            <div key={traceIndex} className="trace-item">
-                                                <span className="trace-class">{traceItem.class}</span>
-                                                <span className="text-muted">.</span>
-                                                <span className="trace-method">{traceItem.method}</span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    )}
+    <div id="app">
+        <el-container>
+            <el-header>
+                <div class="logo">
+                    <el-icon><Monitor /></el-icon>
+                    Jar Analyzer MCP
                 </div>
-            );
-        }
+                <div style="display: flex; gap: 15px; align-items: center;">
+                    <el-tag :type="connectionStatus === 'connected' ? 'success' : 'danger'" effect="dark">
+                        {{ connectionStatus === 'connected' ? 'Connected' : 'Disconnected' }}
+                    </el-tag>
+                    <el-button circle @click="toggleTheme">
+                        <el-icon><Moon v-if="isDark" /><Sunny v-else /></el-icon>
+                    </el-button>
+                </div>
+            </el-header>
+            
+            <el-main>
+                <el-row :gutter="20">
+                    <!-- Stats Cards -->
+                    <el-col :span="6">
+                        <el-card class="stat-card" shadow="hover">
+                            <template #header>
+                                <div class="card-header">
+                                    <span>Total Reports</span>
+                                </div>
+                            </template>
+                            <h2 style="margin: 0; font-size: 2.5rem; color: #409eff;">{{ reports.length }}</h2>
+                        </el-card>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-card class="stat-card" shadow="hover">
+                            <template #header><span>High Risk</span></template>
+                            <h2 style="margin: 0; font-size: 2.5rem; color: #f56c6c;">{{ highRiskCount }}</h2>
+                        </el-card>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-card class="stat-card" shadow="hover">
+                            <template #header><span>Medium Risk</span></template>
+                            <h2 style="margin: 0; font-size: 2.5rem; color: #e6a23c;">{{ medRiskCount }}</h2>
+                        </el-card>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-card class="stat-card" shadow="hover">
+                            <template #header><span>Low Risk</span></template>
+                            <h2 style="margin: 0; font-size: 2.5rem; color: #67c23a;">{{ lowRiskCount }}</h2>
+                        </el-card>
+                    </el-col>
+                </el-row>
 
-        ReactDOM.render(<App />, document.getElementById('root'));
+                <el-row :gutter="20" style="margin-top: 20px;">
+                    <!-- Charts -->
+                    <el-col :span="12">
+                        <el-card class="stat-card">
+                            <div ref="pieChart" class="chart-container"></div>
+                        </el-card>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-card class="stat-card">
+                            <div ref="barChart" class="chart-container"></div>
+                        </el-card>
+                    </el-col>
+                </el-row>
+
+                <el-divider content-position="left">Detailed Reports</el-divider>
+
+                <!-- Reports List -->
+                <transition-group name="fade">
+                    <div v-for="(report, index) in reports" :key="index" class="report-card">
+                        <div class="report-header" @click="toggleExpand(index)">
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <span :class="['score-badge', getScoreClass(report.score)]">{{ report.score }}</span>
+                                <div>
+                                    <div style="font-weight: bold; font-size: 1.1rem;">{{ formatType(report.type) }}</div>
+                                    <div style="color: #888; font-size: 0.9rem;">{{ report.reason }}</div>
+                                </div>
+                            </div>
+                            <el-icon :style="{ transform: expandedIndices.includes(index) ? 'rotate(180deg)' : '' }">
+                                <Arrow-Down />
+                            </el-icon>
+                        </div>
+                        <div v-show="expandedIndices.includes(index)" class="report-body">
+                            <h4>Stack Trace</h4>
+                            <el-timeline>
+                                <el-timeline-item
+                                    v-for="(trace, tIndex) in report.trace"
+                                    :key="tIndex"
+                                    :type="tIndex === 0 ? 'primary' : ''"
+                                    :hollow="tIndex !== 0"
+                                >
+                                    <div class="trace-item">
+                                        <span class="trace-class">{{ trace.class }}</span>
+                                        <span style="color: #666;">.</span>
+                                        <span class="trace-method">{{ trace.method }}</span>
+                                    </div>
+                                </el-timeline-item>
+                            </el-timeline>
+                        </div>
+                    </div>
+                </transition-group>
+                
+                <el-empty v-if="reports.length === 0" description="No reports found" />
+            </el-main>
+        </el-container>
+    </div>
+
+    <script>
+        const { createApp, ref, computed, onMounted, watch, nextTick } = Vue;
+        const { Monitor, Moon, Sunny, ArrowDown } = ElementPlusIconsVue;
+
+        const app = createApp({
+            setup() {
+                const reports = ref([]);
+                const connectionStatus = ref('disconnected');
+                const isDark = ref(true);
+                const expandedIndices = ref([]);
+                const pieChart = ref(null);
+                const barChart = ref(null);
+                let ws = null;
+                let myPieChart = null;
+                let myBarChart = null;
+
+                const highRiskCount = computed(() => reports.value.filter(r => r.score >= 7).length);
+                const medRiskCount = computed(() => reports.value.filter(r => r.score >= 4 && r.score < 7).length);
+                const lowRiskCount = computed(() => reports.value.filter(r => r.score < 4).length);
+
+                const getScoreClass = (score) => {
+                    if (score >= 7) return 'score-high';
+                    if (score >= 4) return 'score-med';
+                    return 'score-low';
+                };
+
+                const formatType = (type) => {
+                    return type.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                };
+
+                const toggleExpand = (index) => {
+                    if (expandedIndices.value.includes(index)) {
+                        expandedIndices.value = expandedIndices.value.filter(i => i !== index);
+                    } else {
+                        expandedIndices.value.push(index);
+                    }
+                };
+
+                const toggleTheme = () => {
+                    isDark.value = !isDark.value;
+                    document.documentElement.className = isDark.value ? 'dark' : '';
+                    // Update charts theme
+                    initCharts();
+                };
+
+                const fetchHistory = async () => {
+                    try {
+                        const response = await axios.get('/api/history');
+                        if (response.data) {
+                            reports.value = response.data;
+                            updateCharts();
+                        }
+                    } catch (error) {
+                        console.error('Failed to fetch history:', error);
+                        ElementPlus.ElMessage.error('Failed to load history data');
+                    }
+                };
+
+                const connectWebSocket = () => {
+                    const wsUrl = 'ws://__JAR_ANALYZER_REPORT_MCP__/ws';
+                    ws = new WebSocket(wsUrl);
+
+                    ws.onopen = () => {
+                        connectionStatus.value = 'connected';
+                        ElementPlus.ElMessage.success('Connected to MCP Server');
+                    };
+
+                    ws.onmessage = (event) => {
+                        try {
+                            const newData = JSON.parse(event.data);
+                            reports.value.unshift(newData);
+                            updateCharts();
+                            ElementPlus.ElNotification({
+                                title: 'New Vulnerability Detected',
+                                message: `${formatType(newData.type)} (Score: ${newData.score})`,
+                                type: newData.score >= 7 ? 'error' : 'warning',
+                            });
+                        } catch (error) {
+                            console.error('WebSocket message error:', error);
+                        }
+                    };
+
+                    ws.onclose = () => {
+                        connectionStatus.value = 'disconnected';
+                        setTimeout(connectWebSocket, 3000);
+                    };
+                };
+
+                const initCharts = () => {
+                    if (myPieChart) myPieChart.dispose();
+                    if (myBarChart) myBarChart.dispose();
+
+                    const theme = isDark.value ? 'dark' : 'light';
+                    const bg = isDark.value ? '#242424' : '#fff';
+
+                    myPieChart = echarts.init(pieChart.value, theme);
+                    myBarChart = echarts.init(barChart.value, theme);
+                    
+                    updateCharts();
+                };
+
+                const updateCharts = () => {
+                    if (!myPieChart || !myBarChart) return;
+
+                    // Pie Chart Data (Types)
+                    const typeCount = {};
+                    reports.value.forEach(r => {
+                        typeCount[r.type] = (typeCount[r.type] || 0) + 1;
+                    });
+                    const pieData = Object.keys(typeCount).map(k => ({ value: typeCount[k], name: formatType(k) }));
+
+                    myPieChart.setOption({
+                        title: { text: 'Vulnerability Types', left: 'center' },
+                        tooltip: { trigger: 'item' },
+                        legend: { bottom: '0%' },
+                        backgroundColor: 'transparent',
+                        series: [{
+                            name: 'Types',
+                            type: 'pie',
+                            radius: ['40%', '70%'],
+                            data: pieData,
+                            itemStyle: { borderRadius: 10, borderColor: '#242424', borderWidth: 2 }
+                        }]
+                    });
+
+                    // Bar Chart Data (Scores)
+                    const scoreDist = Array(11).fill(0); // 0-10
+                    reports.value.forEach(r => {
+                        if (r.score >= 0 && r.score <= 10) scoreDist[r.score]++;
+                    });
+
+                    myBarChart.setOption({
+                        title: { text: 'Score Distribution', left: 'center' },
+                        tooltip: { trigger: 'axis' },
+                        xAxis: { type: 'category', data: Array.from({length: 11}, (_, i) => i) },
+                        yAxis: { type: 'value' },
+                        backgroundColor: 'transparent',
+                        series: [{
+                            data: scoreDist,
+                            type: 'bar',
+                            itemStyle: {
+                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                    { offset: 0, color: '#409eff' },
+                                    { offset: 1, color: '#104b88' }
+                                ])
+                            }
+                        }]
+                    });
+                };
+
+                onMounted(() => {
+                    fetchHistory();
+                    connectWebSocket();
+                    nextTick(() => {
+                        initCharts();
+                        window.addEventListener('resize', () => {
+                            myPieChart && myPieChart.resize();
+                            myBarChart && myBarChart.resize();
+                        });
+                    });
+                });
+
+                return {
+                    reports,
+                    connectionStatus,
+                    isDark,
+                    expandedIndices,
+                    pieChart,
+                    barChart,
+                    highRiskCount,
+                    medRiskCount,
+                    lowRiskCount,
+                    getScoreClass,
+                    formatType,
+                    toggleExpand,
+                    toggleTheme
+                };
+            }
+        });
+
+        app.use(ElementPlus);
+        for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+            app.component(key, component);
+        }
+        app.mount('#app');
     </script>
 </body>
 </html>

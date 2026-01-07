@@ -107,10 +107,6 @@ Jar Analyzer
 
 ![](mcp-img/022.png)
 
-由于 `jar-analyzer` 本体功能较多，从 `5.12` 版本支持了 `lite` 轻量版下载
-
-`jar-analyzer-lite` 源码位于 `jar-analyzer-lite` 分支，也可以做贡献
-
 ## 常见用途
 
 - 场景01：从大量 `JAR` 中分析某个方法在哪个 `JAR` 里定义（精确到具体类具体方法）

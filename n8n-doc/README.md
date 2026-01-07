@@ -8,7 +8,9 @@
 
 感谢以上大佬分享 `jar-analyzer mcp` 基于 `n8n` 平台更高级的用法
 
-![](../mcp-img/012.png)
+![](../mcp-img/010.png)
+
+![](../mcp-img/022.png)
 
 ## 0x01 部署 n8n
 

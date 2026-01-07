@@ -16,7 +16,6 @@
 - `windows-21` 版内置开启 `ZGC` 的 `JRE 21` 环境（激进用户尝试使用）
 - `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
 - `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-- `lite` 版仅包含分析 `jar-analyzer` 的核心基础功能（未经完善测试）
 - `mcp-build.zip` 包含所有系统的 `mcp` 一般使用 `mcp_windows_amd64.exe`
 - `report-mcp-build.zip` 配合 `workflow` 使用的自动报告生成 `mcp`
 
@@ -32,7 +31,6 @@
 
 更新日志：
 
-- [重要] `jar-analyzer` 支持 `lite` 版本下载 @4ra1n
 - [功能] `report-mcp` 支持保存数据到 `sqlite` @4ra1n
 - [优化] 优化 `report-mcp` 界面和功能 @4ra1n
 - [优化] 限制字符串查询返回数量防止 `MCP` 卡死 @4ra1n
@@ -48,7 +46,6 @@
 - `windows-21` 版内置开启 `ZGC` 的 `JRE 21` 环境（激进用户尝试使用）
 - `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
 - `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-- `lite` 版仅包含分析 `jar-analyzer` 的核心基础功能（未经完善测试）
 - `mcp-build.zip` 包含所有系统的 `mcp` 一般使用 `mcp_windows_amd64.exe`
 - `report-mcp-build.zip` 配合 `workflow` 使用的自动报告生成 `mcp`
 

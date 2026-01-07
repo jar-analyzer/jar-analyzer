@@ -67,9 +67,11 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 public class MainForm {
     private static final Logger logger = LogManager.getLogger();
@@ -352,7 +354,6 @@ public class MainForm {
     private JComboBox<String> sinkBox;
     private JPanel chainsResult;
     private JCheckBox taintBox;
-    private JLabel taintLabel;
     private JCheckBox AKSKCheckBox;
     private JCheckBox bankCardCheckBox;
     private JCheckBox APIKeyCheckBox;
@@ -379,7 +380,14 @@ public class MainForm {
     private JLabel portLabel;
     private JLabel authLabel;
     private JLabel tokenLabel;
+    private JButton dfsAdvanceBtn;
     private static DefaultListModel<MethodResult> favData;
+    private static int dfsMaxLimit = 30;
+    private static String dfsBlacklist = "";
+
+    public JButton getDfsAdvanceBtn() {
+        return dfsAdvanceBtn;
+    }
 
     public JCheckBox getTaintBox() {
         return taintBox;
@@ -1633,12 +1641,35 @@ public class MainForm {
                 instance.sinkMethodText,
                 instance.sinkDescText);
 
+        instance.dfsAdvanceBtn.addActionListener(e -> {
+            DFSConfigDialog dialog = new DFSConfigDialog(
+                    (JFrame) instance.getMasterPanel().getTopLevelAncestor(),
+                    dfsMaxLimit,
+                    dfsBlacklist
+            );
+            dialog.setVisible(true);
+            if (dialog.isSaved()) {
+                dfsMaxLimit = dialog.getMaxLimit();
+                dfsBlacklist = dialog.getBlacklist();
+            }
+        });
+
         instance.startChainsBtn.addActionListener(e -> {
             DFSEngine dfsEngine = new DFSEngine(
                     instance.chainsResult,
                     instance.sinkRadio.isSelected(),
                     instance.sourceNullRadio.isSelected(),
                     (Integer) instance.maxDepthSpin.getValue());
+            dfsEngine.setMaxLimit(dfsMaxLimit);
+            Set<String> blacklistSet = new HashSet<>();
+            if (dfsBlacklist != null && !dfsBlacklist.trim().isEmpty()) {
+                String[] lines = dfsBlacklist.split("\n");
+                for (String line : lines) {
+                    if (line.trim().isEmpty()) continue;
+                    blacklistSet.add(line.trim());
+                }
+            }
+            dfsEngine.setBlacklist(blacklistSet);
             dfsEngine.setSink(
                     instance.sinkClassText.getText(),
                     instance.sinkMethodText.getText(),
@@ -2541,12 +2572,12 @@ public class MainForm {
         taintBox = new JCheckBox();
         taintBox.setText("污点分析验证");
         chainsOpPanel.add(taintBox, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        taintLabel = new JLabel();
-        taintLabel.setText("支持简单的污点分析验证 DFS 链有效性");
-        chainsOpPanel.add(taintLabel, new GridConstraints(1, 1, 1, 3, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         startTaintBtn = new JButton();
         startTaintBtn.setText("手动启动污点分析");
         chainsOpPanel.add(startTaintBtn, new GridConstraints(1, 4, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        dfsAdvanceBtn = new JButton();
+        dfsAdvanceBtn.setText("高级设置（数量限制/导出等）");
+        chainsOpPanel.add(dfsAdvanceBtn, new GridConstraints(1, 1, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         chainsPanel.add(chainsResult, new GridConstraints(2, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         apiPanel = new JPanel();
         apiPanel.setLayout(new GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));

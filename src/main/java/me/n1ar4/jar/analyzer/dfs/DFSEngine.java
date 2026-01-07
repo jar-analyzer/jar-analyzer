@@ -46,6 +46,20 @@ public class DFSEngine {
     private int chainCount = 0;
     private int sourceCount = 0;
 
+    private int maxLimit = 30;
+    private final Set<String> blacklist = new HashSet<>();
+
+    public void setMaxLimit(int maxLimit) {
+        this.maxLimit = maxLimit;
+    }
+
+    public void setBlacklist(Set<String> blacklist) {
+        for(String s:blacklist){
+            s = s.replace(".","/");
+            this.blacklist.add(s);
+        }
+    }
+
     // 新增：结果收集列表
     private final List<DFSResult> results = new ArrayList<>();
 
@@ -224,6 +238,9 @@ public class DFSEngine {
 
         // 对每个 web source 进行 DFS 搜索
         for (MethodResult webSource : webSources) {
+            if (results.size() >= maxLimit) {
+                return;
+            }
             // 重置访问状态和路径
             Set<String> currentVisited = new HashSet<>(visited);
             List<MethodResult> currentPath = new ArrayList<>(path);
@@ -244,6 +261,10 @@ public class DFSEngine {
             int currentDepth) {
 
         if (currentDepth >= depth) {
+            return false;
+        }
+
+        if (blacklist.contains(currentMethod.getClassName())) {
             return false;
         }
 
@@ -286,7 +307,14 @@ public class DFSEngine {
             List<MethodResult> path,
             Set<String> visited,
             int currentDepth) {
+        if (results.size() >= maxLimit) {
+            return;
+        }
         if (currentDepth >= depth) {
+            return;
+        }
+
+        if (blacklist.contains(currentMethod.getClassName())) {
             return;
         }
 
@@ -323,7 +351,14 @@ public class DFSEngine {
             List<MethodResult> path,
             Set<String> visited,
             int currentDepth) {
+        if (results.size() >= maxLimit) {
+            return;
+        }
         if (currentDepth >= depth) {
+            return;
+        }
+
+        if (blacklist.contains(currentMethod.getClassName())) {
             return;
         }
 
@@ -359,7 +394,14 @@ public class DFSEngine {
             List<MethodResult> path,
             Set<String> visited,
             int currentDepth) {
+        if (results.size() >= maxLimit) {
+            return;
+        }
         if (currentDepth >= depth) {
+            return;
+        }
+
+        if (blacklist.contains(currentMethod.getClassName())) {
             return;
         }
 

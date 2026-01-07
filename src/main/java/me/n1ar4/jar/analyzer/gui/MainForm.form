@@ -2250,20 +2250,20 @@
                                       <text value="污点分析验证"/>
                                     </properties>
                                   </component>
-                                  <component id="3e15f" class="javax.swing.JLabel" binding="taintLabel">
-                                    <constraints>
-                                      <grid row="1" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                    </constraints>
-                                    <properties>
-                                      <text value="支持简单的污点分析验证 DFS 链有效性"/>
-                                    </properties>
-                                  </component>
                                   <component id="5ea6f" class="javax.swing.JButton" binding="startTaintBtn">
                                     <constraints>
                                       <grid row="1" column="4" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                                     </constraints>
                                     <properties>
                                       <text value="手动启动污点分析"/>
+                                    </properties>
+                                  </component>
+                                  <component id="340fd" class="javax.swing.JButton" binding="dfsAdvanceBtn">
+                                    <constraints>
+                                      <grid row="1" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                                    </constraints>
+                                    <properties>
+                                      <text value="高级设置（数量限制/导出等）"/>
                                     </properties>
                                   </component>
                                 </children>

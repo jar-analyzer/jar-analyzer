@@ -54,8 +54,8 @@ public class DFSEngine {
     }
 
     public void setBlacklist(Set<String> blacklist) {
-        for(String s:blacklist){
-            s = s.replace(".","/");
+        for (String s : blacklist) {
+            s = s.replace(".", "/");
             this.blacklist.add(s);
         }
     }

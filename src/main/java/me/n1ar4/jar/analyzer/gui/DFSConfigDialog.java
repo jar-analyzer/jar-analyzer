@@ -112,7 +112,7 @@ public class DFSConfigDialog extends JDialog {
 
         // Buttons
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        
+
         JButton exportBtn = new JButton("Export JSON (导出结果)");
         exportBtn.addActionListener(e -> {
             if (TaintCache.dfsCache.isEmpty()) {
@@ -130,7 +130,7 @@ public class DFSConfigDialog extends JDialog {
                     for (DFSResult result : TaintCache.dfsCache) {
                         lines.add(JSON.toJSONString(result));
                     }
-                    Files.write(Paths.get(fileToSave.getAbsolutePath()), lines, StandardCharsets.UTF_8, 
+                    Files.write(Paths.get(fileToSave.getAbsolutePath()), lines, StandardCharsets.UTF_8,
                             StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
                     JOptionPane.showMessageDialog(this, "Export Success: " + fileToSave.getAbsolutePath());
                 } catch (Exception ex) {

@@ -10,6 +10,7 @@
 
 package me.n1ar4.jar.analyzer.gui;
 
+import com.formdev.flatlaf.FlatLaf;
 import me.n1ar4.jar.analyzer.core.reference.MethodReference;
 import me.n1ar4.jar.analyzer.dfs.DFSResult;
 import me.n1ar4.jar.analyzer.taint.Sanitizer;
@@ -17,8 +18,6 @@ import me.n1ar4.jar.analyzer.taint.SanitizerRule;
 import me.n1ar4.jar.analyzer.taint.TaintResult;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
-
-import com.formdev.flatlaf.FlatLaf;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;

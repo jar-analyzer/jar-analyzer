@@ -18,6 +18,8 @@ import me.n1ar4.jar.analyzer.taint.TaintResult;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 
+import com.formdev.flatlaf.FlatLaf;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
@@ -87,17 +89,24 @@ public class TaintResultDialog extends JFrame {
         detailTextArea = new JTextArea();
         detailTextArea.setEditable(false);
         detailTextArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
-        detailTextArea.setBackground(new Color(248, 248, 248));
         detailTextArea.setText("请选择一行查看详细的污点分析过程...");
 
         // 创建统计标签
         summaryLabel = new JLabel();
         summaryLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
-        summaryLabel.setForeground(new Color(0, 100, 0));
+        if (FlatLaf.isLafDark()) {
+            summaryLabel.setForeground(new Color(100, 200, 100));
+        } else {
+            summaryLabel.setForeground(new Color(0, 100, 0));
+        }
 
         sanitizerCountLabel = new JLabel();
         sanitizerCountLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
-        sanitizerCountLabel.setForeground(new Color(0, 0, 150));
+        if (FlatLaf.isLafDark()) {
+            sanitizerCountLabel.setForeground(new Color(100, 150, 255));
+        } else {
+            sanitizerCountLabel.setForeground(new Color(0, 0, 150));
+        }
 
         // 创建Sanitizer规则表格
         String[] sanitizerColumns = {"类名", "方法名", "方法描述", "参数索引"};

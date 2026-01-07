@@ -21,7 +21,7 @@ import (
 )
 
 const (
-	version = "1.2.0"
+	version = "1.2.1"
 	name    = "jar-analyzer-mcp"
 )
 
@@ -69,6 +69,34 @@ func main() {
 	} else {
 		log.SetLevel(log.InfoLevel)
 	}
+
+	fmt.Println("------------------------------------------------------------------")
+	fmt.Println("[INFO] Starting Jar Analyzer MCP Server...")
+	fmt.Println("[信息] 正在启动 Jar Analyzer MCP 服务器...")
+	fmt.Println("------------------------------------------------------------------")
+	fmt.Printf("[CONF] Listen Port (监听端口): %d\n", port)
+	fmt.Printf("[CONF] Backend URL (后端地址): %s\n", jarAnalyzerUrl)
+	if mcpAuth {
+		fmt.Printf("[CONF] MCP Auth (MCP鉴权): Enabled (开启) [Token: %s]\n", mcpToken)
+	} else {
+		fmt.Printf("[CONF] MCP Auth (MCP鉴权): Disabled (关闭)\n")
+	}
+
+	if jarAnAuth {
+		fmt.Printf("[CONF] Backend Auth (后端鉴权): Enabled (开启) [Token: %s]\n", jarAnToken)
+	} else {
+		fmt.Printf("[CONF] Backend Auth (后端鉴权): Disabled (关闭)\n")
+	}
+
+	fmt.Printf("[CONF] Debug Mode (调试模式): %v\n", debug)
+	fmt.Println("------------------------------------------------------------------")
+	fmt.Println("[HINT] Please ensure Jar Analyzer is running at the backend URL")
+	fmt.Println("[提示] 请确保 Jar Analyzer 正在后端地址运行")
+	fmt.Println("[HINT] Use an MCP client (like Claude Desktop) to connect to this server")
+	fmt.Println("[提示] 使用 MCP 客户端 (如 Claude Desktop) 连接到此服务器")
+	fmt.Printf("[HINT] Connection URL: http://localhost:%d/sse\n", port)
+	fmt.Printf("[提示] 连接地址: http://localhost:%d/sse\n", port)
+	fmt.Println("------------------------------------------------------------------")
 
 	s := server.NewMCPServer(
 		name,

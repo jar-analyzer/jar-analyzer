@@ -14,8 +14,8 @@ jobs:
 
       - name: set version
         run: |
-          echo "CORE_VERSION=v1.2.0" >> $GITHUB_ENV
-          echo "REPORT_VERSION=v1.2.0" >> $GITHUB_ENV
+          echo "CORE_VERSION=v1.2.1" >> $GITHUB_ENV
+          echo "REPORT_VERSION=v1.2.1" >> $GITHUB_ENV
 
       - uses: actions/checkout@v4
 

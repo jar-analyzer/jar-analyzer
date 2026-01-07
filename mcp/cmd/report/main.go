@@ -20,7 +20,7 @@ import (
 )
 
 const (
-	version = "1.2.0"
+	version = "1.2.1"
 	name    = "jar-analyzer-report-mcp"
 )
 
@@ -50,6 +50,19 @@ func main() {
 	} else {
 		log.SetLevel(log.InfoLevel)
 	}
+
+	fmt.Println("------------------------------------------------------------------")
+	fmt.Println("[INFO] Starting Jar Analyzer Report MCP Server...")
+	fmt.Println("[信息] 正在启动 Jar Analyzer Report MCP 服务器...")
+	fmt.Println("------------------------------------------------------------------")
+	fmt.Printf("[CONF] MCP Listen Port (MCP 监听端口): %d\n", port)
+	fmt.Printf("[CONF] Web Server Host (Web 主机地址): %s\n", webHost)
+	fmt.Printf("[CONF] Web Server Port (Web 监听端口): %d\n", webPort)
+	fmt.Printf("[CONF] Debug Mode (调试模式): %v\n", debug)
+	fmt.Println("------------------------------------------------------------------")
+	fmt.Println("[HINT] Please ensure the Jar Analyzer database is initialized")
+	fmt.Println("[提示] 请确保 Jar Analyzer 数据库已初始化")
+	fmt.Println("------------------------------------------------------------------")
 
 	if err := db.InitDB(); err != nil {
 		log.Errorf("init db error: %v", err)

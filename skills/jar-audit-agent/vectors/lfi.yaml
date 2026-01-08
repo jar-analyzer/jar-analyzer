@@ -1,0 +1,31 @@
+id: lfi
+name: LFI (File Read)
+discovery:
+  rule_sources:
+    dfs_sink_box:
+      - "FileInputStream.new"
+  #补齐：dfs-sink.json 只覆盖了 FileInputStream.<init>(String)，实际工程里常见 FileInputStream.<init>(File) 会漏
+  sinks:
+    - {class: "java/io/FileInputStream", method: "<init>", desc: null, level: medium}
+    - {class: "java/nio/file/Files", method: "newInputStream", desc: null, level: medium}
+    - {class: "java/nio/file/Files", method: "readAllBytes", desc: null, level: medium}
+    - {class: "java/nio/file/Files", method: "readString", desc: null, level: medium}
+    - {class: "java/nio/file/Files", method: "readAllLines", desc: null, level: medium}
+reduce:
+  max_candidates: 200
+  exclude_class_prefixes:
+    - "java/"
+    - "javax/"
+    - "org/springframework/"
+    - "org/apache/"
+  prefer_app_prefix: true
+reachability:
+  max_depth: 12
+evidence:
+  engine: fernflower
+  max_chars: 6000
+  window_lines: 25
+batch:
+  size: 5
+
+

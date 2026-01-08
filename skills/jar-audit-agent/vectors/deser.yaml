@@ -1,0 +1,51 @@
+id: deser
+name: Deserialization
+discovery:
+  rule_sources:
+    dfs_sink_box:
+      - "ObjectInputStream.readObject"
+      - "ObjectInputStream.readUnshared"
+      - "XMLDecoder.readObject"
+      - "Yaml.load"
+      - "Yaml.loadAs"
+      - "JSON.parseObject"
+      - "JSON.parse"
+      - "ObjectMapper.readValue"
+      - "HessianInput.readObject"
+      - "AbstractHessianInput.readObject"
+      - "XStream.fromXML"
+      - "Input.readObject"
+    vulnerability_keys:
+      - "readObject"
+      - "Hessian.readObject"
+      - "XStream"
+      - "Fastjson"
+  #补齐：常见重载（desc=null 交给 desc resolution 展开）
+  sinks:
+    - {class: "java/io/ObjectInputStream", method: "readObject", desc: null, level: high}
+    - {class: "java/io/ObjectInputStream", method: "readUnshared", desc: null, level: high}
+    - {class: "java/beans/XMLDecoder", method: "readObject", desc: null, level: high}
+    - {class: "org/yaml/snakeyaml/Yaml", method: "load", desc: null, level: high}
+    - {class: "org/yaml/snakeyaml/Yaml", method: "loadAs", desc: null, level: high}
+    - {class: "com/alibaba/fastjson/JSON", method: "parseObject", desc: null, level: high}
+    - {class: "com/alibaba/fastjson/JSON", method: "parse", desc: null, level: high}
+    - {class: "com/fasterxml/jackson/databind/ObjectMapper", method: "readValue", desc: null, level: high}
+    - {class: "com/thoughtworks/xstream/XStream", method: "fromXML", desc: null, level: high}
+reduce:
+  max_candidates: 200
+  exclude_class_prefixes:
+    - "java/"
+    - "javax/"
+    - "org/springframework/"
+    - "org/apache/"
+  prefer_app_prefix: true
+reachability:
+  max_depth: 12
+evidence:
+  engine: fernflower
+  max_chars: 6000
+  window_lines: 25
+batch:
+  size: 5
+
+

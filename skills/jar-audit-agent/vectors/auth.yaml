@@ -1,0 +1,25 @@
+id: auth
+name: Authorization Bypass
+discovery:
+  # uses jar-analyzer extension hook (UserCustom4)
+  rule_sources:
+    vulnerability_keys:
+      - "UserCustom4"
+reduce:
+  max_candidates: 200
+  exclude_class_prefixes:
+    - "java/"
+    - "javax/"
+    - "org/springframework/"
+    - "org/apache/"
+  prefer_app_prefix: true
+reachability:
+  max_depth: 12
+evidence:
+  engine: fernflower
+  max_chars: 6000
+  window_lines: 25
+batch:
+  size: 5
+
+

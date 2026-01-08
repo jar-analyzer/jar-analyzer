@@ -1,0 +1,29 @@
+# Optional severity rubric for report/UI normalization.
+# The engine does not hard-depend on this file (yet).
+
+version: 1
+
+status_to_severity:
+  VULN: high
+  NEEDS_DEEPER: medium
+  SAFE: info
+
+quality_penalty:
+  # Evidence slice quality can downgrade confidence (not status).
+  GOOD: 0
+  WARN: 1
+  BAD: 2
+
+severity_levels:
+  critical:
+    description: "可远程利用 / 高影响 / 高确定性"
+  high:
+    description: "高影响或高可利用性，但可能需要额外条件"
+  medium:
+    description: "中等影响或证据不足（需要继续验证）"
+  low:
+    description: "低影响/仅信息泄露线索"
+  info:
+    description: "不构成漏洞，但记录为审计证据"
+
+

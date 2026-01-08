@@ -1,0 +1,38 @@
+id: rce
+name: Code Execution / RCE
+discovery:
+  # rules-only: source of truth is jar-analyzer's vulnerability.yaml + dfs-sink.json
+  rule_sources:
+    dfs_sink_box:
+      - "Runtime.exec(String)"
+      - "ProcessBuilder.start"
+      - "ScriptEngine.eval"
+    vulnerability_keys:
+      - "Runtime.exec"
+      - "JNDI"
+      - "ScriptEngine.eval"
+  #补齐：重载/不同参数形态（dfs-sink.json 往往只给了一个 desc）
+  sinks:
+    - {class: "java/lang/Runtime", method: "exec", desc: null, level: high}
+    - {class: "java/lang/ProcessBuilder", method: "start", desc: null, level: high}
+    - {class: "javax/script/ScriptEngine", method: "eval", desc: null, level: medium}
+    - {class: "javax/naming/InitialContext", method: "lookup", desc: null, level: medium}
+    - {class: "javax/naming/Context", method: "lookup", desc: null, level: medium}
+    - {class: "javax/naming/directory/DirContext", method: "search", desc: null, level: medium}
+    - {class: "javax/naming/ldap/LdapContext", method: "search", desc: null, level: medium}
+reduce:
+  max_candidates: 200
+  exclude_class_prefixes:
+    - "java/"
+    - "javax/"
+    - "org/springframework/"
+    - "org/apache/"
+  prefer_app_prefix: true
+reachability:
+  max_depth: 12
+evidence:
+  engine: fernflower
+  max_chars: 6000
+  window_lines: 25
+batch:
+  size: 5

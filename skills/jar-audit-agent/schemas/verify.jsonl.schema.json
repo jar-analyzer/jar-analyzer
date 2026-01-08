@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "verify.jsonl.schema.json",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["candidate_id", "vector", "batch_id", "status", "evidence"],
+  "properties": {
+    "ts": { "type": ["integer", "string", "null"] },
+    "candidate_id": { "type": "string" },
+    "vector": { "type": "string" },
+    "batch_id": { "type": "string" },
+    "status": { "type": "string", "enum": ["VULN", "SAFE", "NEEDS_DEEPER"] },
+    "reasoning": { "type": "string" },
+    "caller": { "type": "object" },
+    "sink": { "type": "object" },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "snippet_ref": { "type": "object" },
+        "chain_trace": { "type": "object" },
+        "sql_proof": { "type": "object" }
+      }
+    },
+    "poc_http": {
+      "type": ["object", "null"],
+      "additionalProperties": true,
+      "properties": {
+        "raw": { "type": "string" }
+      }
+    }
+  }
+}
+
+

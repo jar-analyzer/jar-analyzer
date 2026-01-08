@@ -1,0 +1,25 @@
+id: view
+name: View Name Injection (ModelAndView.setViewName)
+discovery:
+  # DB-only via method_call_table: callers of ModelAndView.setViewName(...)
+  # Note: this is NOT Thymeleaf SSTI/RCE confirmation; it only proves view name is controllable.
+  sinks:
+    - {class: "org/springframework/web/servlet/ModelAndView", method: "setViewName", desc: null, level: medium}
+reduce:
+  max_candidates: 200
+  exclude_class_prefixes:
+    - "java/"
+    - "javax/"
+    - "org/springframework/"
+    - "org/apache/"
+  prefer_app_prefix: true
+reachability:
+  max_depth: 8
+evidence:
+  engine: cfr
+  max_chars: 8000
+  window_lines: 25
+batch:
+  size: 5
+
+

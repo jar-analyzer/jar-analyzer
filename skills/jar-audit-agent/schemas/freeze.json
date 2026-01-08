@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "freeze.json",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["vector", "enumeration"],
+  "properties": {
+    "vector": { "type": "string" },
+    "name": { "type": "string" },
+    "db": { "type": "string" },
+    "enumeration": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "candidates_emitted": { "type": "integer" },
+        "candidates_total": { "type": "integer" },
+        "sink_resolution": { "type": "object" },
+        "reduction": { "type": "object" }
+      }
+    },
+    "reachability": { "type": "object" }
+  }
+}
+
+

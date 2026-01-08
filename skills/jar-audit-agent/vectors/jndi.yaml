@@ -1,0 +1,35 @@
+id: jndi
+name: JNDI Injection
+discovery:
+  rule_sources:
+    dfs_sink_box:
+      - "InitialContext.lookup"
+      - "Context.lookup"
+      - "DirContext.search"
+      - "LdapContext.search"
+    vulnerability_keys:
+      - "JNDI"
+  #补齐：避免规则源只给了单一 desc 导致重载漏检（desc=null 交给 desc resolution 展开）
+  sinks:
+    - {class: "javax/naming/InitialContext", method: "lookup", desc: null, level: medium}
+    - {class: "javax/naming/Context", method: "lookup", desc: null, level: medium}
+    - {class: "javax/naming/directory/DirContext", method: "search", desc: null, level: medium}
+    - {class: "javax/naming/ldap/LdapContext", method: "search", desc: null, level: medium}
+reduce:
+  max_candidates: 200
+  exclude_class_prefixes:
+    - "java/"
+    - "javax/"
+    - "org/springframework/"
+    - "org/apache/"
+  prefer_app_prefix: true
+reachability:
+  max_depth: 12
+evidence:
+  engine: fernflower
+  max_chars: 6000
+  window_lines: 25
+batch:
+  size: 5
+
+

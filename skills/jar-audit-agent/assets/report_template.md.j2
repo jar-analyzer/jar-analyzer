@@ -1,0 +1,139 @@
+# jar-audit-agent 审计报告
+
+会话：`{{ run_id }}`
+
+{% if incomplete_vectors %}
+> ❗ **未完成覆盖**：以下向量尚未完成（Verified < Emitted）：{{ incomplete_vectors | join(', ') }}
+{% endif %}
+
+## 会话输入
+
+- DB: `{{ db_path }}`
+
+## 入口面统计
+
+- Spring 控制器：{{ profile.entry_surface.spring_controllers }}
+- Spring 端点：{{ profile.entry_surface.spring_endpoints }}
+- JavaWeb 入口：{{ profile.entry_surface.javaweb_entries }}
+
+## 技术栈信号（仅线索）
+
+| Signal | Count |
+|---|---:|
+{% for k,v in profile.signals.items() %}| {{ k }} | {{ v }} |
+{% endfor %}
+
+## 覆盖率汇总
+
+| Vector | Emitted | Reachable | Verified | VULN | SAFE | NEEDS_DEEPER | Coverage |
+|---|---:|---:|---:|---:|---:|---:|---:|
+{% for row in coverage_rows %}| {{ row.vector }} | {{ row.emitted }} | {{ row.reachable }} | {{ row.verified }} | {{ row.vuln }} | {{ row.safe }} | {{ row.needs_deeper }} | {{ row.coverage_pct }} |
+{% endfor %}
+
+## 覆盖表（必填类别）
+
+| 类别 | 方法（如何覆盖） | 证据（命令/计数/候选范围） | 结果 |
+|------|------------------|---------------------------|------|
+| RCE (Direct) | rules-only（dfs-sink.json + vulnerability.yaml）+ reachability + batch | `freeze_rce.json` / `candidates_rce.jsonl` / `verify_rce.jsonl` | {{ coverage_map.get('rce', {}).get('coverage_pct','N/A') }} (V={{ coverage_map.get('rce', {}).get('vuln','0') }}, S={{ coverage_map.get('rce', {}).get('safe','0') }}, ND={{ coverage_map.get('rce', {}).get('needs_deeper','0') }}) |
+| SSTI/视图注入 | rules-only（vulnerability: FreeMarker/JEXL/MVEL/…） | `freeze_ssti.json` / `candidates_ssti.jsonl` / `verify_ssti.jsonl` | {{ coverage_map.get('ssti', {}).get('coverage_pct','N/A') }} (V={{ coverage_map.get('ssti', {}).get('vuln','0') }}, S={{ coverage_map.get('ssti', {}).get('safe','0') }}, ND={{ coverage_map.get('ssti', {}).get('needs_deeper','0') }}) |
+| 表达式注入 (SpEL/OGNL/EL) | rules-only（vulnerability: SpEL.getValue/OGNL.getValue） | `freeze_expr.json` / `candidates_expr.jsonl` / `verify_expr.jsonl` | {{ coverage_map.get('expr', {}).get('coverage_pct','N/A') }} (V={{ coverage_map.get('expr', {}).get('vuln','0') }}, S={{ coverage_map.get('expr', {}).get('safe','0') }}, ND={{ coverage_map.get('expr', {}).get('needs_deeper','0') }}) |
+| JNDI 注入 | rules-only（dfs: Context/InitialContext lookup/search + vulnerability: JNDI） | `freeze_jndi.json` / `candidates_jndi.jsonl` / `verify_jndi.jsonl` | {{ coverage_map.get('jndi', {}).get('coverage_pct','N/A') }} (V={{ coverage_map.get('jndi', {}).get('vuln','0') }}, S={{ coverage_map.get('jndi', {}).get('safe','0') }}, ND={{ coverage_map.get('jndi', {}).get('needs_deeper','0') }}) |
+| SQL 注入 | rules-only（dfs: Statement/Connection + vulnerability: SQL.exec*） | `freeze_sqli.json` / `candidates_sqli.jsonl` / `verify_sqli.jsonl` | {{ coverage_map.get('sqli', {}).get('coverage_pct','N/A') }} (V={{ coverage_map.get('sqli', {}).get('vuln','0') }}, S={{ coverage_map.get('sqli', {}).get('safe','0') }}, ND={{ coverage_map.get('sqli', {}).get('needs_deeper','0') }}) |
+| XXE | rules-only（vulnerability: XXE(all)） | `freeze_xxe.json` / `candidates_xxe.jsonl` / `verify_xxe.jsonl` | {{ coverage_map.get('xxe', {}).get('coverage_pct','N/A') }} (V={{ coverage_map.get('xxe', {}).get('vuln','0') }}, S={{ coverage_map.get('xxe', {}).get('safe','0') }}, ND={{ coverage_map.get('xxe', {}).get('needs_deeper','0') }}) |
+| LFI (文件读取) | rules-only（dfs: FileInputStream.new） | `freeze_lfi.json` / `candidates_lfi.jsonl` / `verify_lfi.jsonl` | {{ coverage_map.get('lfi', {}).get('coverage_pct','N/A') }} (V={{ coverage_map.get('lfi', {}).get('vuln','0') }}, S={{ coverage_map.get('lfi', {}).get('safe','0') }}, ND={{ coverage_map.get('lfi', {}).get('needs_deeper','0') }}) |
+| SSRF | rules-only（dfs: URL.openConnection/HttpURLConnection.connect） | `freeze_ssrf.json` / `candidates_ssrf.jsonl` / `verify_ssrf.jsonl` | {{ coverage_map.get('ssrf', {}).get('coverage_pct','N/A') }} (V={{ coverage_map.get('ssrf', {}).get('vuln','0') }}, S={{ coverage_map.get('ssrf', {}).get('safe','0') }}, ND={{ coverage_map.get('ssrf', {}).get('needs_deeper','0') }}) |
+| 文件上传/穿越 | rules-only（dfs: file write/delete + vulnerability: Unzip） | `freeze_file.json` / `candidates_file.jsonl` / `verify_file.jsonl` | {{ coverage_map.get('file', {}).get('coverage_pct','N/A') }} (V={{ coverage_map.get('file', {}).get('vuln','0') }}, S={{ coverage_map.get('file', {}).get('safe','0') }}, ND={{ coverage_map.get('file', {}).get('needs_deeper','0') }}) |
+| XSS | jar-analyzer 扩展点（vulnerability: UserCustom1） | `freeze_xss.json` / `candidates_xss.jsonl` / `verify_xss.jsonl` | {{ coverage_map.get('xss', {}).get('coverage_pct','N/A') }} (V={{ coverage_map.get('xss', {}).get('vuln','0') }}, S={{ coverage_map.get('xss', {}).get('safe','0') }}, ND={{ coverage_map.get('xss', {}).get('needs_deeper','0') }}) |
+| Deserialization | rules-only（dfs: readObject/parse/fromXML/... + vulnerability: Hessian/XStream/Fastjson/readObject） | `freeze_deser.json` / `candidates_deser.jsonl` / `verify_deser.jsonl` | {{ coverage_map.get('deser', {}).get('coverage_pct','N/A') }} (V={{ coverage_map.get('deser', {}).get('vuln','0') }}, S={{ coverage_map.get('deser', {}).get('safe','0') }}, ND={{ coverage_map.get('deser', {}).get('needs_deeper','0') }}) |
+| 反射注入 | rules-only（dfs: BCEL Classloader.loadClass + vulnerability: defineClass/BCEL.loadClass） | `freeze_reflect.json` / `candidates_reflect.jsonl` / `verify_reflect.jsonl` | {{ coverage_map.get('reflect', {}).get('coverage_pct','N/A') }} (V={{ coverage_map.get('reflect', {}).get('vuln','0') }}, S={{ coverage_map.get('reflect', {}).get('safe','0') }}, ND={{ coverage_map.get('reflect', {}).get('needs_deeper','0') }}) |
+| URL 重定向 | jar-analyzer 扩展点（vulnerability: UserCustom2） | `freeze_redirect.json` / `candidates_redirect.jsonl` / `verify_redirect.jsonl` | {{ coverage_map.get('redirect', {}).get('coverage_pct','N/A') }} (V={{ coverage_map.get('redirect', {}).get('vuln','0') }}, S={{ coverage_map.get('redirect', {}).get('safe','0') }}, ND={{ coverage_map.get('redirect', {}).get('needs_deeper','0') }}) |
+| 日志注入 | jar-analyzer 扩展点（vulnerability: UserCustom3） | `freeze_log.json` / `candidates_log.jsonl` / `verify_log.jsonl` | {{ coverage_map.get('log', {}).get('coverage_pct','N/A') }} (V={{ coverage_map.get('log', {}).get('vuln','0') }}, S={{ coverage_map.get('log', {}).get('safe','0') }}, ND={{ coverage_map.get('log', {}).get('needs_deeper','0') }}) |
+| 权限绕过 | jar-analyzer 扩展点（vulnerability: UserCustom4） | `freeze_auth.json` / `candidates_auth.jsonl` / `verify_auth.jsonl` | {{ coverage_map.get('auth', {}).get('coverage_pct','N/A') }} (V={{ coverage_map.get('auth', {}).get('vuln','0') }}, S={{ coverage_map.get('auth', {}).get('safe','0') }}, ND={{ coverage_map.get('auth', {}).get('needs_deeper','0') }}) |
+
+## 漏洞台账
+
+{% for v in vectors %}
+### {{ v.vector }}
+
+{% if v.remaining_plan %}
+#### 下一批计划（Remaining TopK）
+{% for p in v.remaining_plan %}
+- **{{ p.candidate_id }}**{% if p.resume %} (resume: NEEDS_DEEPER){% endif %}
+  - 入口：{{ p.entry_mapping or 'N/A' }}
+  {% if p.entry_auth_hints and p.entry_auth_hints|length > 0 %}
+  - 鉴权注解线索（anno_table）：{{ p.entry_auth_hints | join(', ') }}
+  {% endif %}
+  - 可达深度：{{ p.reach_depth if p.reach_depth is not none else 'N/A' }}
+  - Sink：`{{ p.sink.class }}::{{ p.sink.method }}`
+  - 取证命令：`python3 scripts/cli.py evidence --run {{ run_id }} --vector {{ v.vector }} --candidate-id {{ p.candidate_id }} --anchor {{ p.evidence_recommend.anchor }} --kind {{ p.evidence_recommend.kind }}{% if p.evidence_recommend.auto_fallback %} --auto-fallback{% endif %}{% set eb = p.evidence_recommend.get('expand_before') %}{% if eb %} --expand-before {{ eb }}{% endif %}{% set ea = p.evidence_recommend.get('expand_after') %}{% if ea %} --expand-after {{ ea }}{% endif %}`
+  {% if p.last_snippet %}
+  - 上次证据：{% if p.last_snippet.sha256 %}`sha256:{{ p.last_snippet.sha256 }}`{% endif %}{% if p.last_snippet.quality %} ({{ p.last_snippet.quality }}){% endif %}
+  {% if p.last_snippet.warning %}
+  - 上次告警：{{ p.last_snippet.warning }}
+  {% endif %}
+  {% endif %}
+{% endfor %}
+{% endif %}
+
+{% if v.vuln_records %}
+#### 已确认（高置信）
+{% for r in v.vuln_records %}
+- **{{ r.candidate_id }}**
+  - 入口：{{ r.entry_mapping or 'N/A' }}
+  - Sink：`{{ r.sink.class }}::{{ r.sink.method }}`
+  - 调用点：`{{ r.caller.class }}::{{ r.caller.method }}`
+  - 证据：{% if r.snippet_sha %}`sha256:{{ r.snippet_sha }}`{% else %}N/A{% endif %}{% if r.snippet_quality %} ({{ r.snippet_quality }}){% endif %}
+  {% if r.snippet_quality == 'GOOD' %}
+  - 鉴权限制判断：{{ r.auth_assessment }}{% if r.entry_auth_hints and r.entry_auth_hints|length > 0 %}（{{ r.entry_auth_hints | join(', ') }}）{% endif %}
+  - 用户可控线索：{{ r.controllability_assessment }}{% if r.input_params and r.input_params|length > 0 %}（{{ r.input_params | join(', ') }}）{% endif %}
+  {% endif %}
+  {% if r.snippet_quality and r.snippet_quality != 'GOOD' %}
+  - ⚠️ 证据质量：**{{ r.snippet_quality }}**{% if r.snippet_warning %}（{{ r.snippet_warning }}）{% endif %}{% if r.snippet_suggested_next %}；建议 `{{ r.snippet_suggested_next }}`{% endif %}
+  {% endif %}
+  {% if r.poc_http and r.poc_http.raw %}
+  - PoC（HTTP raw）：
+```http
+{{ r.poc_http.raw }}
+```
+  {% elif r.poc_http_suggested %}
+  - PoC（HTTP raw，模拟）：
+```http
+{{ r.poc_http_suggested }}
+```
+  {% endif %}
+  - 备注：{{ r.reasoning | replace('\n',' ') }}
+{% endfor %}
+{% endif %}
+
+{% if v.needs_deeper_records %}
+#### 需要更深入分析
+{% for r in v.needs_deeper_records %}
+- **{{ r.candidate_id }}**
+  - 入口：{{ r.entry_mapping or 'N/A' }}
+  - Sink：`{{ r.sink.class }}::{{ r.sink.method }}`
+  - 调用点：`{{ r.caller.class }}::{{ r.caller.method }}`
+  - 证据：{% if r.snippet_sha %}`sha256:{{ r.snippet_sha }}`{% else %}N/A{% endif %}{% if r.snippet_quality %} ({{ r.snippet_quality }}){% endif %}
+  {% if r.snippet_quality and r.snippet_quality != 'GOOD' %}
+  - ⚠️ 证据质量：**{{ r.snippet_quality }}**{% if r.snippet_warning %}（{{ r.snippet_warning }}）{% endif %}{% if r.snippet_suggested_next %}；建议 `{{ r.snippet_suggested_next }}`{% endif %}
+  {% endif %}
+  {% if r.poc_http and r.poc_http.raw %}
+  - PoC（HTTP raw）：
+```http
+{{ r.poc_http.raw }}
+```
+  {% elif r.poc_http_suggested %}
+  - PoC（HTTP raw，模拟）：
+```http
+{{ r.poc_http_suggested }}
+```
+  {% endif %}
+  - 缺失：{{ r.missing_hint }}
+  - 备注：{{ r.reasoning | replace('\n',' ') }}
+{% endfor %}
+{% endif %}
+
+{% if not v.vuln_records and not v.needs_deeper_records %}
+无记录。
+{% endif %}
+
+{% endfor %}

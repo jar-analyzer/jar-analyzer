@@ -1,0 +1,18 @@
+# Default audit queue (order matters)
+vectors:
+  - rce
+  - ssti
+  - view
+  - expr
+  - jndi
+  - sqli
+  - xxe
+  - lfi
+  - ssrf
+  - file
+  - deser
+  - reflect
+  - xss
+  - redirect
+  - log
+  - auth

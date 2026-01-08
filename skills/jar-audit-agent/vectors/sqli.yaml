@@ -1,0 +1,45 @@
+id: sqli
+name: SQL Injection / SQL exec sinks
+discovery:
+  # rules-only
+  rule_sources:
+    dfs_sink_box:
+      - "Statement.execute"
+      - "Statement.executeQuery"
+      - "Statement.executeUpdate"
+      - "Connection.prepareStatement"
+      - "Connection.prepareCall"
+    vulnerability_keys:
+      - "SQL.exec"
+      - "SQL.exec(no-prepare)"
+  #补齐：重载/PreparedStatement/CallableStatement 形态（dfs-sink.json 只覆盖 String 形态）
+  sinks:
+    - {class: "java/sql/Statement", method: "execute", desc: null, level: medium}
+    - {class: "java/sql/Statement", method: "executeQuery", desc: null, level: medium}
+    - {class: "java/sql/Statement", method: "executeUpdate", desc: null, level: medium}
+    - {class: "java/sql/Connection", method: "prepareStatement", desc: null, level: low}
+    - {class: "java/sql/Connection", method: "prepareCall", desc: null, level: low}
+    - {class: "java/sql/PreparedStatement", method: "execute", desc: null, level: medium}
+    - {class: "java/sql/PreparedStatement", method: "executeQuery", desc: null, level: medium}
+    - {class: "java/sql/PreparedStatement", method: "executeUpdate", desc: null, level: medium}
+    - {class: "java/sql/CallableStatement", method: "execute", desc: null, level: medium}
+    - {class: "java/sql/CallableStatement", method: "executeQuery", desc: null, level: medium}
+    - {class: "java/sql/CallableStatement", method: "executeUpdate", desc: null, level: medium}
+reduce:
+  max_candidates: 200
+  exclude_class_prefixes:
+    - "java/"
+    - "javax/"
+    - "org/springframework/"
+    - "org/apache/"
+  prefer_app_prefix: true
+reachability:
+  max_depth: 12
+evidence:
+  engine: fernflower
+  max_chars: 6000
+  window_lines: 25
+batch:
+  size: 5
+
+

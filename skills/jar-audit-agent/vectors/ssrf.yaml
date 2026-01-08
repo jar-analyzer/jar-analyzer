@@ -1,0 +1,31 @@
+id: ssrf
+name: SSRF / Outbound URL connections
+discovery:
+  # rules-only
+  rule_sources:
+    dfs_sink_box:
+      - "URL.openConnection"
+      - "HttpURLConnection.connect"
+  #补齐：openConnection 重载（含 Proxy）与 openStream
+  sinks:
+    - {class: "java/net/URL", method: "openConnection", desc: null, level: medium}
+    - {class: "java/net/URL", method: "openStream", desc: null, level: medium}
+    - {class: "java/net/HttpURLConnection", method: "connect", desc: null, level: medium}
+reduce:
+  max_candidates: 200
+  exclude_class_prefixes:
+    - "java/"
+    - "javax/"
+    - "org/springframework/"
+    - "org/apache/"
+  prefer_app_prefix: true
+reachability:
+  max_depth: 12
+evidence:
+  engine: fernflower
+  max_chars: 6000
+  window_lines: 25
+batch:
+  size: 5
+
+

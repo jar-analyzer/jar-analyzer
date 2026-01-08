@@ -1,0 +1,44 @@
+id: file
+name: File Upload / Zip Slip / File Write/Delete
+discovery:
+  rule_sources:
+    dfs_sink_box:
+      - "FileOutputStream.new"
+      - "RandomAccessFile.new"
+      - "File.delete"
+    vulnerability_keys:
+      - "Unzip"
+  #补齐：dfs-sink.json 的 FileOutputStream/RandomAccessFile 只覆盖 String 形态，工程里常见 File/Path 形态会漏
+  sinks:
+    - {class: "java/io/FileOutputStream", method: "<init>", desc: null, level: medium}
+    - {class: "java/io/RandomAccessFile", method: "<init>", desc: null, level: medium}
+    - {class: "org/apache/commons/fileupload/FileItem", method: "write", desc: null, level: medium}
+    - {class: "org/springframework/web/multipart/MultipartFile", method: "transferTo", desc: null, level: medium}
+    - {class: "javax/servlet/http/Part", method: "write", desc: null, level: medium}
+    - {class: "java/nio/file/Files", method: "copy", desc: null, level: medium}
+    - {class: "org/apache/commons/io/FileUtils", method: "copyInputStreamToFile", desc: null, level: medium}
+    - {class: "org/apache/commons/io/FileUtils", method: "writeByteArrayToFile", desc: null, level: medium}
+    - {class: "org/apache/commons/io/FileUtils", method: "writeStringToFile", desc: null, level: medium}
+    - {class: "java/nio/file/Files", method: "newOutputStream", desc: null, level: medium}
+    - {class: "java/nio/file/Files", method: "write", desc: null, level: medium}
+    - {class: "java/nio/file/Files", method: "writeString", desc: null, level: medium}
+    - {class: "java/nio/file/Files", method: "delete", desc: null, level: medium}
+    - {class: "java/nio/file/Files", method: "deleteIfExists", desc: null, level: medium}
+reduce:
+  max_candidates: 200
+  exclude_class_prefixes:
+    - "java/"
+    - "javax/"
+    - "org/springframework/"
+    - "org/apache/"
+  prefer_app_prefix: true
+reachability:
+  max_depth: 12
+evidence:
+  engine: fernflower
+  max_chars: 6000
+  window_lines: 25
+batch:
+  size: 5
+
+

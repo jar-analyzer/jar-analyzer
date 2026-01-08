@@ -1,0 +1,33 @@
+id: reflect
+name: Reflection / Class loading
+discovery:
+  rule_sources:
+    dfs_sink_box:
+      - "BCEL Classloader.loadClass"
+    vulnerability_keys:
+      - "BCEL.loadClass"
+      - "defineClass"
+  #补齐：常见反射/类加载执行点（desc=null 交给 desc resolution 展开）
+  sinks:
+    - {class: "java/lang/Class", method: "forName", desc: null, level: medium}
+    - {class: "java/lang/ClassLoader", method: "loadClass", desc: null, level: medium}
+    - {class: "java/lang/reflect/Method", method: "invoke", desc: null, level: medium}
+    - {class: "java/lang/reflect/Constructor", method: "newInstance", desc: null, level: medium}
+reduce:
+  max_candidates: 200
+  exclude_class_prefixes:
+    - "java/"
+    - "javax/"
+    - "org/springframework/"
+    - "org/apache/"
+  prefer_app_prefix: true
+reachability:
+  max_depth: 12
+evidence:
+  engine: fernflower
+  max_chars: 6000
+  window_lines: 25
+batch:
+  size: 5
+
+

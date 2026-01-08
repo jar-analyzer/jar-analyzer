@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "inventory.json",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "rules": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": { "type": ["integer", "number", "string", "null"] }
+    },
+    "entries": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "app_prefix_guess": { "type": ["string", "null"] }
+  }
+}
+
+

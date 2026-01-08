@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "batch.json",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["batch_id", "vector", "created_at", "candidates"],
+  "properties": {
+    "batch_id": { "type": "string" },
+    "vector": { "type": "string" },
+    "created_at": { "type": ["integer", "string"] },
+    "limit": { "type": ["integer", "null"] },
+    "allow_unreachable": { "type": ["boolean", "null"] },
+    "candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["candidate_id"],
+        "properties": {
+          "candidate_id": { "type": "string" },
+          "state": { "type": ["string", "null"] },
+          "resume": { "type": ["boolean", "null"] },
+          "last_status": { "type": ["string", "null"] }
+        }
+      }
+    }
+  }
+}
+
+

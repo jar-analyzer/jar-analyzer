@@ -4,6 +4,7 @@
 
 更新日志：
 
+- [重要] 使用 `Skill` 进行代码审计 @0cat-r
 - [功能] `DFS` 分析允许导出 @4ra1n
 - [功能] `DFS` 分析允许设置最大次数防止分析不停 @4ra1n
 - [功能] `DFS` 分析允许设置黑名单类跳过分析 @4ra1n
@@ -13,6 +14,7 @@
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
+- 0cat (https://github.com/0cat-r)
 
 所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
 

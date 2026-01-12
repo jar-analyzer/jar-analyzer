@@ -1,4 +1,7 @@
 # Claude Skills jar-audit-agent 的 README
+
+作者：（0cat）https://github.com/0cat-r
+
 > 使用 `jar-audit-agent` skill 配合 Jar-analyzer 进行 Java 代码审计
 
 ---
@@ -103,8 +106,8 @@ jar-audit-agent/
 #### Step 1: 分析目标 JAR/WAR
 
 将需要审计的 jar/war 放到 Jar-analyzer 中，点击 **Start** 完成分析。
-<img width="2238" height="1806" alt="image" src="https://github.com/user-attachments/assets/204968c0-4031-4783-9288-f65c82c758b9" />
 
+![](img/001.png)
 
 #### Step 2: 安装 Skill
 
@@ -116,8 +119,8 @@ mkdir -p /Users/xxx/jar-analyzer/jar-analyzer-5.11/.claude/skills/
 
 # 将 jar-audit-agent 文件夹放入该目录
 ```
-<img width="1304" height="368" alt="image" src="https://github.com/user-attachments/assets/fc26f332-df9b-4d29-8e5d-cdbb12d8596f" />
 
+![](img/002.png)
 
 #### Step 3: 安装 Python 依赖
 
@@ -138,8 +141,7 @@ pip3 install -r requirements.txt
 claude mcp add --transport sse jar-analyzer-mcp http://127.0.0.1:20032/sse
 ```
 
-<img width="1916" height="922" alt="image" src="https://github.com/user-attachments/assets/1f476f7f-397d-4c1c-a412-a840c5b09ad5" />
-
+![](img/003.png)
 
 > ⚠️ 首次配置完成后，建议重启 Claude Code（最新版已支持热加载 skill）
 
@@ -171,18 +173,16 @@ claude
 🙎‍♂️：使用 /jar-audit-agent 做java代码审计吧
 ```
 推荐针对特定漏洞类型进行审计，效果好一些, 不建议直接审计全量。
-<img width="1910" height="936" alt="image" src="https://github.com/user-attachments/assets/d23fd7a6-63cf-437e-96f3-7a86e8dabfff" />
 
-
-
+![](img/004.png)
 
 ### 4.2 审计任意文件上传
 
 ```
 🙎‍♂️：使用 /jar-audit-agent 技能审计任意文件上传脚本文件rce
 ```
-<img width="2056" height="1688" alt="image" src="https://github.com/user-attachments/assets/d26ef2d5-eb82-4368-976a-a4603b90eb15" />
 
+![](img/005.png)
 
 **推荐**：推荐针对特定漏洞类型进行审计。
 
@@ -191,7 +191,8 @@ claude
 ```
 🙎‍♂️：使用 /jar-audit-agent 技能审计下任意文件读取吧
 ```
-<img width="1812" height="1568" alt="image" src="https://github.com/user-attachments/assets/0b903458-338a-495f-b264-826e537aff2a" />
+
+![](img/006.png)
 
 ---
 

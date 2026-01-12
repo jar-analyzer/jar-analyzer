@@ -97,6 +97,8 @@ Jar Analyzer
 
 ![](img/0071.png)
 
+## AI 相关
+
 自从 `5.10` 版本后支持 `MCP` 请参考文档 [MCP](mcp-doc/README.md)
 
 ![](mcp-img/004.png)
@@ -106,6 +108,10 @@ Jar Analyzer
 ![](mcp-img/010.png)
 
 ![](mcp-img/022.png)
+
+使用 `jar-audit-agent` skill 配合 `jar-analyzer` 进行 `Java` 代码审计
+
+![](skills/img/005.png)
 
 ## 常见用途
 
@@ -223,6 +229,7 @@ set "java_args=-XX:+UseG1GC -Xms2g -XX:MaxGCPauseMillis=200 %other_args%"
 
 - 4ra1n (https://github.com/4ra1n) (项目作者) 
 - whw1sfb (https://github.com/whwlsfb) (第一次贡献，重要 AI 贡献)
+- 0cat (https://github.com/0cat-r) (重要 AI 贡献)
 - Honey Baby (https://github.com/Gosiu) (多次重要贡献) 
 - fantasy (https://github.com/ly-test-fuzz) 
 - phil (https://github.com/sensensen404)

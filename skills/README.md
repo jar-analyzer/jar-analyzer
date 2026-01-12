@@ -1,8 +1,14 @@
-# Claude Skills jar-audit-agent 的 README
+# Claude Skills jar-audit-agent
 
 作者：（0cat）https://github.com/0cat-r
 
+该功能不稳定，正在开发和完善中...
+
 > 使用 `jar-audit-agent` skill 配合 Jar-analyzer 进行 Java 代码审计
+
+![](img/007.png)
+
+![](img/008.png)
 
 ---
 
@@ -49,11 +55,11 @@ jar-audit-agent/
 
 ### 设计自由度
 
-| 维度 | 自由度 | 核心逻辑 |
-|:---|:---|:---|
-| **操作环境** | 🔴 低 | 严格限制：防幻觉、保证运行稳定 |
-| **输出格式** | 🔴 低 | 强契约 |
-| **流程决策** | 🟡 中 | 框架引导：适应不同项目架构 |
+| 维度       | 自由度  | 核心逻辑                            |
+|:---------|:-----|:--------------------------------|
+| **操作环境** | 🔴 低 | 严格限制：防幻觉、保证运行稳定                 |
+| **输出格式** | 🔴 低 | 强契约                             |
+| **流程决策** | 🟡 中 | 框架引导：适应不同项目架构                   |
 | **代码思考** | 🟢 高 | 语义开放：充分利用 LLM 对 Java 语义和安全漏洞的理解 |
 
 ---
@@ -62,38 +68,42 @@ jar-audit-agent/
 
 ### Phase 1: 环境初始化与基线构建
 
-| 步骤 | 命令 | 说明 |
-|:---|:---|:---|
-| **INIT** | `python3 scripts/cli.py init` | 建立 `runs/<id>/` 目录结构，初始化 SQLite 链接 |
+| 步骤          | 命令                                   | 说明                                           |
+|:------------|:-------------------------------------|:---------------------------------------------|
+| **INIT**    | `python3 scripts/cli.py init`        | 建立 `runs/<id>/` 目录结构，初始化 SQLite 链接           |
 | **PROFILE** | `python3 scripts/cli.py profile ...` | 读取规则文件，统计 Controller/Servlet/Filter 数量，生成技术栈 |
-| **GRAPH** | `python3 scripts/cli.py graph ...` | 从 DB 读取 `method_call_table`，在内存中构建有向图 |
+| **GRAPH**   | `python3 scripts/cli.py graph ...`   | 从 DB 读取 `method_call_table`，在内存中构建有向图        |
 
 ### Phase 2: 静态筛选与降噪
 
-| 步骤 | 命令 | 说明 |
-|:---|:---|:---|
-| **FREEZE** | `python3 scripts/cli.py freeze --vector <v>` | 加载规则，执行 SQL 查询检索 Sink 调用点 |
-| **REACH** | `python3 scripts/cli.py reach --vector <v>` | BFS 算法计算 Entry → Sink 最短路径，标记不可达节点 |
+| 步骤         | 命令                                           | 说明                                 |
+|:-----------|:---------------------------------------------|:-----------------------------------|
+| **FREEZE** | `python3 scripts/cli.py freeze --vector <v>` | 加载规则，执行 SQL 查询检索 Sink 调用点          |
+| **REACH**  | `python3 scripts/cli.py reach --vector <v>`  | BFS 算法计算 Entry → Sink 最短路径，标记不可达节点 |
 
 ### Phase 3: AI 研判循环
 
 按 Batch 循环执行，直到队列处理完毕：
 
-| 步骤 | 命令 | 说明 |
-|:---|:---|:---|
-| **NEXT** | `python3 scripts/cli.py next ...` | 从队列提取高优先级候选者，生成 `batch.json` |
+| 步骤           | 命令                                 | 说明                                        |
+|:-------------|:-----------------------------------|:------------------------------------------|
+| **NEXT**     | `python3 scripts/cli.py next ...`  | 从队列提取高优先级候选者，生成 `batch.json`              |
 | **EVIDENCE** | `... evidence --candidate-id <id>` | 通过 MCP 调用 `get_code_fernflower` 接口，进行代码切片 |
-| **SUBMIT** | `... submit --status VULN/SAFE` | AI 分析代码，执行 Fail-Closed 校验后提交结论 |
+| **SUBMIT**   | `... submit --status VULN/SAFE`    | AI 分析代码，执行 Fail-Closed 校验后提交结论            |
 
 ### Phase 4: 归档与交付
 
-| 步骤 | 命令 | 说明 |
-|:---|:---|:---|
+| 步骤         | 命令                                  | 说明                        |
+|:-----------|:------------------------------------|:--------------------------|
 | **REPORT** | `python3 scripts/cli.py report ...` | 汇总结果，计算覆盖率，渲染 Markdown 报告 |
 
 ---
 
 ## 三、快速使用
+
+建议下载 `cc-switch` 配置其他模型，以配合 `claude code` 使用
+
+https://github.com/farion1231/cc-switch/releases
 
 > 💡 本文使用 MiniMAX 2.1 作为 LLM 后端（性价比较高）
 >
@@ -167,6 +177,14 @@ claude
 
 ## 四、使用示例
 
+### 注意事项（重要）
+
+（1）如果遇到报错，不要在意，是 `AI` 在自行学习 `python` 脚本的使用方法
+
+（2）过程中不会输出报告，需要分析完成；如果希望提前停止，可以在某个步骤对 `claude` 说：生成审计报告，停止继续审计，退出
+
+（3）注意过程中可能会有不小的 `token` 消耗，请结合个人实际情况使用
+
 ### 4.1 通用审计
 
 ```
@@ -200,17 +218,17 @@ claude
 
 ### 已知限制
 
-| 类型 | 说明 |
-|:---|:---|
+| 类型          | 说明                                                                              |
+|:------------|:--------------------------------------------------------------------------------|
 | **配置依赖型漏洞** | Thymeleaf SSTI/RCE 等依赖 `application*.yml`、`templates/*.html` 的漏洞会漏检（DB 不存储这些内容） |
-| **规则不完备** | sink/entry 签名解析可能存在缺口 |
-| **静态分析盲区** | 动态分发、反射调用等场景难以覆盖 |
+| **规则不完备**   | sink/entry 签名解析可能存在缺口                                                           |
+| **静态分析盲区**  | 动态分发、反射调用等场景难以覆盖                                                                |
 
 ### 其他tips
 
-- 师傅们可以引入 Subagent 处理复杂场景
+- 师傅们可以引入 `Subagent` 处理复杂场景
 - 师傅们可以尝试 `ralph-wiggum` 和 `planning-with-files` 库做 workflow 编排
 
 ### 写在最后
 
-- 希望大家多多给jar-analyzer添加更多AI的能力！
+- 希望大家多多给 `jar-analyzer` 添加更多AI的能力！

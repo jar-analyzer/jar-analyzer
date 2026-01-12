@@ -111,7 +111,9 @@ Jar Analyzer
 
 使用 `jar-audit-agent` skill 配合 `jar-analyzer` 进行 `Java` 代码审计
 
-![](skills/img/005.png)
+该功能正在开发中，不够稳定和完善，欢迎尝试使用，一起优化：[文档](skills)
+
+![](skills/img/007.png)
 
 ## 常见用途
 

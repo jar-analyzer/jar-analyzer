@@ -14,8 +14,10 @@ import fi.iki.elonen.NanoHTTPD;
 import me.n1ar4.jar.analyzer.utils.StringUtil;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
+import org.objectweb.asm.Type;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -119,14 +121,7 @@ public class BaseHandler {
 
             // 构建方法匹配的正则表达式
             // 匹配方法声明，考虑各种修饰符和参数
-            String methodPattern;
-            if (!StringUtil.isNull(methodDesc)) {
-                // 如果有方法描述符，尝试更精确的匹配
-                methodPattern = ".*\\b" + Pattern.quote(methodName) + "\\s*\\(.*\\).*\\{?";
-            } else {
-                // 只根据方法名匹配
-                methodPattern = ".*\\b" + Pattern.quote(methodName) + "\\s*\\(.*\\).*\\{?";
-            }
+            String methodPattern = ".*\\b" + Pattern.quote(methodName) + "\\s*\\(.*\\).*\\{?";
 
             Pattern pattern = Pattern.compile(methodPattern);
 
@@ -134,6 +129,13 @@ public class BaseHandler {
                 if (!inMethod) {
                     Matcher matcher = pattern.matcher(line.trim());
                     if (matcher.matches()) {
+                        // 检查参数是否匹配
+                        if (!StringUtil.isNull(methodDesc)) {
+                            if (!checkParams(line, methodName, methodDesc)) {
+                                continue;
+                            }
+                        }
+
                         // 找到方法开始
                         inMethod = true;
                         foundMethod = true;
@@ -169,6 +171,115 @@ public class BaseHandler {
             logger.warn("Error extracting method code: " + e.getMessage());
             return null;
         }
+    }
+
+    private boolean checkParams(String line, String methodName, String methodDesc) {
+        try {
+            // 提取括号内的内容
+            int nameIndex = line.indexOf(methodName);
+            int leftParen = line.indexOf('(', nameIndex);
+            if (leftParen == -1) return false;
+
+            // 找到对应的右括号
+            int rightParen = -1;
+            int balance = 0;
+            for (int i = leftParen; i < line.length(); i++) {
+                char c = line.charAt(i);
+                if (c == '(') balance++;
+                else if (c == ')') balance--;
+
+                if (balance == 0) {
+                    rightParen = i;
+                    break;
+                }
+            }
+            if (rightParen == -1) return false;
+
+            String paramsStr = line.substring(leftParen + 1, rightParen);
+
+            // 解析描述符
+            Type[] argTypes = Type.getArgumentTypes(methodDesc);
+
+            // 分割参数字符串
+            List<String> params = splitParams(paramsStr);
+
+            // 检查参数数量
+            if (params.size() != argTypes.length) {
+                return false;
+            }
+
+            // 检查每个参数类型
+            for (int i = 0; i < argTypes.length; i++) {
+                String paramCode = params.get(i);
+                Type type = argTypes[i];
+                String className = type.getClassName();
+                // 获取简单类名
+                String simpleName = getSimpleName(className);
+
+                // 检查 paramCode 是否包含 simpleName
+                // 使用单词边界检查
+                if (!containsWord(paramCode, simpleName)) {
+                    // 特殊处理 varargs: String[] -> String...
+                    if (simpleName.endsWith("[]")) {
+                        String varargName = simpleName.substring(0, simpleName.length() - 2) + "...";
+                        if (!containsWord(paramCode, varargName)) {
+                            return false;
+                        }
+                    } else {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        } catch (Exception e) {
+            logger.warn("check params error: " + e.getMessage());
+            return false;
+        }
+    }
+
+    private List<String> splitParams(String paramsStr) {
+        List<String> params = new ArrayList<>();
+        int balance = 0;
+        int lastStart = 0;
+        for (int i = 0; i < paramsStr.length(); i++) {
+            char c = paramsStr.charAt(i);
+            if (c == '<') balance++;
+            else if (c == '>') balance--;
+
+            if (c == ',' && balance == 0) {
+                params.add(paramsStr.substring(lastStart, i).trim());
+                lastStart = i + 1;
+            }
+        }
+        String last = paramsStr.substring(lastStart).trim();
+        if (!last.isEmpty()) {
+            params.add(last);
+        }
+        return params;
+    }
+
+    private String getSimpleName(String className) {
+        int lastDot = className.lastIndexOf('.');
+        if (lastDot != -1) {
+            return className.substring(lastDot + 1);
+        }
+        return className;
+    }
+
+    private boolean containsWord(String text, String word) {
+        // 使用正则匹配单词边界
+        // 转义 word 中的特殊字符（如 []）
+        String pattern = ".*\\b" + Pattern.quote(word) + "\\b.*";
+        // 注意：对于 [] 结尾的，\b 可能不起作用，因为 ] 是非单词字符
+        // 如果 word 包含非单词字符，我们需要小心
+        if (!word.matches(".*\\w$")) {
+            // 如果以非单词字符结尾（如 []），则不能用右侧 \b
+            pattern = ".*\\b" + Pattern.quote(word) + ".*";
+            // 这里简化了，只要包含且左侧是边界即可
+            // 更好的做法是手动检查
+            return text.contains(word);
+        }
+        return text.matches(pattern);
     }
 
     /**

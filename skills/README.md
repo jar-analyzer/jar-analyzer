@@ -105,6 +105,8 @@ jar-audit-agent/
 
 https://github.com/farion1231/cc-switch/releases
 
+![](img/009.png)
+
 > 💡 本文使用 MiniMAX 2.1 作为 LLM 后端（性价比较高）
 >
 > claude接入文档：

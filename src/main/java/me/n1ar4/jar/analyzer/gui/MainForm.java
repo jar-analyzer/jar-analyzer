@@ -377,6 +377,8 @@ public class MainForm {
     private JLabel authLabel;
     private JLabel tokenLabel;
     private JButton dfsAdvanceBtn;
+    private JButton skillDocBtn;
+    private JLabel jarAnMcpLabel;
     private static DefaultListModel<MethodResult> favData;
     private static int dfsMaxLimit = 30;
     private static String dfsBlacklist = "";
@@ -931,6 +933,10 @@ public class MainForm {
 
     public JButton getN8nDocBtn() {
         return n8nDocBtn;
+    }
+
+    public JButton getSkillDocBtn() {
+        return skillDocBtn;
     }
 
     public JButton getMcpDocBtn() {

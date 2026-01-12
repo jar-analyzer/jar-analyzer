@@ -99,6 +99,14 @@ public class BaseHandler {
                         "<h2>CORE ENGINE IS NULL</h2>");
     }
 
+    public NanoHTTPD.Response errorMsg(String s) {
+        return NanoHTTPD.newFixedLengthResponse(
+                NanoHTTPD.Response.Status.INTERNAL_ERROR,
+                "text/html",
+                "<h1>JAR ANALYZER SERVER</h1>" +
+                        "<h2>" + s + "</h2>");
+    }
+
     /**
      * 从反编译的类代码中提取指定方法的代码
      *

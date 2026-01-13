@@ -97,6 +97,8 @@ Jar Analyzer
 
 ![](img/0071.png)
 
+## AI 相关
+
 自从 `5.10` 版本后支持 `MCP` 请参考文档 [MCP](mcp-doc/README.md)
 
 ![](mcp-img/004.png)
@@ -106,6 +108,14 @@ Jar Analyzer
 ![](mcp-img/010.png)
 
 ![](mcp-img/022.png)
+
+使用 `jar-audit-agent` skill 配合 `jar-analyzer` 进行 `Java` 代码审计
+
+该功能正在开发中，不够稳定和完善，欢迎尝试使用，一起优化：[文档](skills)
+
+感谢 0cat https://github.com/0cat-r
+
+![](skills/img/007.png)
 
 ## 常见用途
 
@@ -124,6 +134,7 @@ Jar Analyzer
 - 场景13：你有一个 `BCEL` 格式的字节码需要一键反编译代码分析
 - 场景14：你有一大堆 `Jar` 文件或目录需要全部批量反编译导出代码
 - 场景15：从大量 `JAR` 中分析 `IP` 地址/手机号/邮箱等各种信息泄露
+- 场景16：需要将 `JAR` 分析加入到已有的工作流（`CICD` / `AI workflow` 等） 
 - 测试功能：字节码指令级别的调试
 
 ## 更新记录
@@ -223,6 +234,7 @@ set "java_args=-XX:+UseG1GC -Xms2g -XX:MaxGCPauseMillis=200 %other_args%"
 
 - 4ra1n (https://github.com/4ra1n) (项目作者) 
 - whw1sfb (https://github.com/whwlsfb) (第一次贡献，重要 AI 贡献)
+- 0cat (https://github.com/0cat-r) (重要 AI 贡献)
 - Honey Baby (https://github.com/Gosiu) (多次重要贡献) 
 - fantasy (https://github.com/ly-test-fuzz) 
 - phil (https://github.com/sensensen404)

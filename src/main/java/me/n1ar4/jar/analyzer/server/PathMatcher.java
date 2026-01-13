@@ -69,6 +69,8 @@ public class PathMatcher {
 
         handlers.put("/api/fernflower_code", new GetCodeFernflowerHandler());
         handlers.put("/api/cfr_code", new GetCodeCFRHandler());
+
+        handlers.put("/api/dfs_analyze",new DFSHandler());
     }
 
     public PathMatcher(ServerConfig config) {

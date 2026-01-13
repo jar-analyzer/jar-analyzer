@@ -66,5 +66,13 @@ public class APIAction {
             } catch (Exception ignored) {
             }
         });
+
+        instance.getSkillDocBtn().addActionListener(e -> {
+            try {
+                Desktop.getDesktop().browse(new URI(
+                        "https://github.com/jar-analyzer/jar-analyzer/blob/master/skills/README.md"));
+            } catch (Exception ignored) {
+            }
+        });
     }
 }

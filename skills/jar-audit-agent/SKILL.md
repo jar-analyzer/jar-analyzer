@@ -8,13 +8,31 @@ description: 基于 jar-analyzer（SQLite + 内置 MCP）的证据驱动 Java �
 - **DB(SQLite)**：Freeze/coverage/entry/graph 输入（必须）
 - **MCP(:20032 SSE)**：推荐用于取证（agent 可直接调用 `get_code_cfr/get_code_fernflower`）
 
-## 禁止事项（防止“自作聪明”导致调用错误）
-- **禁止agent写 Python/正则/临时脚本**去解析 curl 输出、拼 SQL、拼 HTTP URL 例如python3 - <<；只能调用已经存在的 `python3 scripts/cli.py <subcommand>`。
+## 禁止事项（防止"自作聪明"导致调用错误）
+- **禁止ai重新写 Python/正则/临时脚本**去解析 curl 输出、拼 SQL、拼 HTTP URL 例如python3 - <<；只能调用已经存在的 `<python> scripts/cli.py <subcommand>`（`<python>` 为 `init` 输出中检测到的命令）。
 - **禁止手写 curl/HTTP 调用**：本技能不使用 HTTP 通道；取证只允许走 MCP。
 - **禁止用 grep/自写脚本从 MCP tool-results 抽代码**：必须用 `evidence --mcp-tool-result-file <path>`（优先）或 `--code-json-file/--code-text-file`。
-- **禁止在错误目录执行 cli**：任何 `python3 scripts/cli.py ...` 之前，必须先进入技能根目录。
-- **禁止“猜路径/临时注入”取证**：禁止扫描 `/tmp`/`/var/folders`、禁止 `find` 猜 tool-results、禁止 `/dev/stdin`/here-doc/echo 注入 JSON；一旦出现 “Do you want to proceed?” / “allow reading from tmp/ …” 立即取消。取证只允许两条路径：`--mcp-tool-result-file <Claude 提示的绝对路径>` 或把 JSON 写入 `runs/<run_id>/inputs/` 再 `--code-json-file`。
-- **遇到工具不支持/候选未覆盖时必须停下**：只能输出“需要扩展 skill（新增向量 sink/规则）”，不得写脚本绕过、不得手改 `verify_*.jsonl`。
+- **禁止在错误目录执行 cli**：任何 `<python> scripts/cli.py ...` 之前，必须先进入技能根目录。
+- **禁止"猜路径/临时注入"取证**：禁止扫描 `/tmp`/`/var/folders`、禁止 `find` 猜 tool-results、禁止 `/dev/stdin`/here-doc/echo 注入 JSON；一旦出现 "Do you want to proceed?" / "allow reading from tmp/ …" 立即取消。取证只允许两条路径：`--mcp-tool-result-file <Claude 提示的绝对路径>` 或把 JSON 写入 `runs/<run_id>/inputs/` 再 `--code-json-file`。
+- **遇到工具不支持/候选未覆盖时必须停下**：只能输出"需要扩展 skill（新增向量 sink/规则）"，不得写脚本绕过、不得手改 `verify_*.jsonl`。
+
+## 环境约束（Environment Constraints）
+- **Python 命令自动检测**：
+  - `init` 命令会自动检测当前系统可用的 Python 命令（优先 `python`，其次 `python3`）。
+  - `init` 输出中会显示检测到的 Python 命令，**后续所有命令都应使用相同的命令**。
+  - 例如：如果 `init` 输出 `python scripts/cli.py ...`，则后续都用 `python`；如果输出 `python3 scripts/cli.py ...`，则后续都用 `python3`。
+- **Windows 上下文**：
+  - 如果看到路径类似 `C:\...`，说明你在 Windows 环境。
+  - **引号**：路径参数**必须**用双引号包裹（例如：`--db "C:\target path\db"`），避免空格/特殊字符导致解析错误。
+- **Unix/Linux/macOS 上下文**：
+  - 如果看到路径类似 `/home/...` 或 `/Users/...`，说明你在 Unix 环境。
+- **Session 连续性**：
+  - 当 `init` 完成时，**立即捕获输出中的 `Run ID` 和 Python 命令**。
+  - 所有后续命令（freeze、reach、next、evidence、submit）**必须**：
+    1. 使用 `init` 输出中显示的 Python 命令（保持一致）
+    2. **完整复制** `init` 输出中显示的命令（包含 `--run <ID>` 参数）
+  - **关键**：`init` 命令会在输出中打印下一条完整命令（用 `=` 分隔线标记），**必须完整复制整行命令**，不要只复制部分参数。
+  - **常见错误**：如果看到 "error: the following arguments are required: --run"，说明命令被截断了，需要重新查看 `init` 输出并完整复制命令。
 
 ## 操作细则（避免卡点）
 - 详细操作门禁（MCP 文件路径/anchor/SAFE-NEEDS_DEEPER 边界/扩展 sink/结束判定/工作目录）见：
@@ -25,7 +43,7 @@ description: 基于 jar-analyzer（SQLite + 内置 MCP）的证据驱动 Java �
   - `get_code_cfr` / `get_code_fernflower`（返回 JSON，含 `fullClassCode`）
 - 取证方式：
   - 先调用 MCP `get_code_*`（不要阅读/解析返回内容；输出过大时系统会自动落盘到 tool-results 文件）
-  - 立刻调用 `python3 scripts/cli.py evidence --mcp-tool-result-file <tool-results/xxx.txt>`（自动抽 `fullClassCode` 并完成切片+hash 落盘）
+  - 立刻调用 `<python> scripts/cli.py evidence --mcp-tool-result-file <tool-results/xxx.txt>`（`<python>` 为 `init` 输出中检测到的命令，自动抽 `fullClassCode` 并完成切片+hash 落盘）
   - 注意：`evidence` **不会自己去找代码**；如果没提供 `--mcp-tool-result-file/--code-json-file/--code-text-file`，工具会 fail-closed 直接报 “missing code input”
   - 若 MCP 输出未自动落盘且可手动保存：将 MCP 返回 JSON 保存到 `runs/<run_id>/inputs/mcp_<candidate_id>.json`，然后用 `--code-json-file`
 
@@ -35,7 +53,7 @@ description: 基于 jar-analyzer（SQLite + 内置 MCP）的证据驱动 Java �
 - **Report**：报告只读 artifacts 编译；`--strict` 未完成 coverage 直接 fail
 
 ## 状态机（唯一入口）
-用 `python3 scripts/cli.py`（等价 `scripts/jaudit.py`）：
+用 `<python> scripts/cli.py`（等价 `scripts/jaudit.py`，`<python>` 为 `init` 自动检测的命令）：
 - `init`：创建 `runs/<id>/session.json inventory.json rules/ graph_cache/ ...`
 - `profile --cwd <jar-analyzer>`：写 profile 并快照 `vulnerability.yaml/dfs-sink.json` 到 `runs/<id>/rules/`
 - `freeze --vector <v> --cwd <jar-analyzer>`：圈地+降噪+sink_resolution

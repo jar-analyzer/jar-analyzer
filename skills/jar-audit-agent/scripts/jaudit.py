@@ -2,6 +2,7 @@
 from __future__ import annotations
 import os, json, argparse, time
 import sys
+import shutil
 from pathlib import Path
 
 _ROOT = Path(__file__).resolve().parents[1]
@@ -89,16 +90,44 @@ def _env_or(arg: str | None, env_key: str) -> str:
         raise SystemExit(f"missing {env_key} (or pass flag).")
     return v
 
+def _detect_python_cmd() -> str:
+    """
+    自动检测可用的 Python 命令。
+    优先尝试 python，如果不存在则尝试 python3。
+    返回第一个可用的命令名。
+    """
+    for cmd in ["python", "python3"]:
+        if shutil.which(cmd):
+            return cmd
+    # 如果都找不到，默认返回 python3（脚本本身用 python3 运行）
+    return "python3"
+
 def cmd_init(args):
     p = init_run(args.out)
+    run_id = p.root.name
+    python_cmd = _detect_python_cmd()
     print(p.root.as_posix())
+    print(f"[*] Session initialized successfully.")
+    print(f"[*] Run ID: {run_id}")
+    print("=" * 60)
+    print("[!] IMPORTANT: Copy the FULL command below (including --run parameter)")
+    print("=" * 60)
+    # [核心优化] 使用更显眼的格式，确保 AI 能看到完整命令
+    next_cmd = f"{python_cmd} scripts/cli.py freeze --vector rce --run {run_id}"
+    print(f"\n{next_cmd}\n")
+    print("=" * 60)
+    print(f"[*] Python command detected: {python_cmd}")
+    print(f"[*] Use this Python command for ALL subsequent commands")
+    print("=" * 60)
 
 def _locate_db_by_cwd(cwd: str | None) -> str | None:
     base = Path(cwd or os.getcwd()).resolve()
-    c1 = base / "lib" / "jar-analyzer.db"
+    # [优化] 1. 优先检查当前目录 (适配 Windows/start.bat)
+    c1 = base / "jar-analyzer.db"
     if c1.exists():
         return c1.as_posix()
-    c2 = base / "jar-analyzer.db"
+    # [优化] 2. 其次才检查 lib 目录
+    c2 = base / "lib" / "jar-analyzer.db"
     if c2.exists():
         return c2.as_posix()
     return None
@@ -106,7 +135,7 @@ def _locate_db_by_cwd(cwd: str | None) -> str | None:
 def cmd_preflight(args):
     """
     Minimal fail-closed environment verification for skills:
-    1) Locate DB by cwd (lib/jar-analyzer.db or jar-analyzer.db)
+    1) Locate DB by cwd (jar-analyzer.db or lib/jar-analyzer.db, in that order)
     2) Schema lock (key tables exist)
     Note: evidence channel is MCP-only; HTTP is not used.
     """
@@ -117,8 +146,8 @@ def cmd_preflight(args):
             "stage": "db",
             "cwd": args.cwd,
             "checked": [
-                "lib/jar-analyzer.db",
                 "jar-analyzer.db",
+                "lib/jar-analyzer.db",
             ],
             "message": "DB not found. Please analyze target in GUI first (click Start), then re-run.",
         }
@@ -1436,8 +1465,28 @@ def cmd_status(args):
     if args.json:
         print(json.dumps(rows, ensure_ascii=False, indent=2))
 
+class CustomArgumentParser(argparse.ArgumentParser):
+    """自定义 ArgumentParser，提供更友好的错误提示"""
+    def error(self, message):
+        # 检查是否是缺少 --run 参数的错误
+        if "--run" in message and "required" in message.lower():
+            self.print_usage(sys.stderr)
+            print("\n" + "=" * 60, file=sys.stderr)
+            print("ERROR: Missing --run parameter!", file=sys.stderr)
+            print("=" * 60, file=sys.stderr)
+            print("\n[!] SOLUTION:", file=sys.stderr)
+            print("    1. Run 'init' command first to get a Run ID", file=sys.stderr)
+            print("    2. Copy the FULL command from init output (it includes --run <ID>)", file=sys.stderr)
+            print("    3. Make sure you copy the ENTIRE command, not just part of it", file=sys.stderr)
+            print("\nExample:", file=sys.stderr)
+            print("    python scripts/cli.py freeze --vector rce --run 20240101-120000", file=sys.stderr)
+            print("=" * 60 + "\n", file=sys.stderr)
+            sys.exit(2)
+        # 其他错误使用默认处理
+        super().error(message)
+
 def main():
-    ap = argparse.ArgumentParser(prog="jaudit")
+    ap = CustomArgumentParser(prog="jaudit")
     sub = ap.add_subparsers(dest="cmd", required=True)
 
     p = sub.add_parser("init")
@@ -1464,13 +1513,13 @@ def main():
     p.set_defaults(fn=cmd_run)
 
     p = sub.add_parser("profile")
-    p.add_argument("--run", required=True)
+    p.add_argument("--run", required=True, help="Run ID from 'init' command output (REQUIRED - copy from init output)")
     p.add_argument("--db")
     p.add_argument("--cwd", help="jar-analyzer cwd (for vulnerability.yaml / dfs-sink.json)")
     p.set_defaults(fn=cmd_profile)
 
     p = sub.add_parser("freeze")
-    p.add_argument("--run", required=True)
+    p.add_argument("--run", required=True, help="Run ID from 'init' command output (REQUIRED - copy from init output)")
     p.add_argument("--vector", required=True)
     p.add_argument("--db")
     p.add_argument("--cwd", help="jar-analyzer cwd (for vulnerability.yaml / dfs-sink.json)")
@@ -1479,26 +1528,26 @@ def main():
 
     
     p = sub.add_parser("graph")
-    p.add_argument("--run", required=True)
+    p.add_argument("--run", required=True, help="Run ID from 'init' command output (REQUIRED - copy from init output)")
     p.add_argument("--db")
     p.set_defaults(fn=cmd_graph)
 
     p = sub.add_parser("reach")
-    p.add_argument("--run", required=True)
+    p.add_argument("--run", required=True, help="Run ID from 'init' command output (REQUIRED - copy from init output)")
     p.add_argument("--vector", required=True)
     p.add_argument("--db")
     p.add_argument("--entry-no-auth-hints", action="store_true", help="only use entries without auth annotation hints (anno_table)")
     p.set_defaults(fn=cmd_reach)
 
     p = sub.add_parser("next")
-    p.add_argument("--run", required=True)
+    p.add_argument("--run", required=True, help="Run ID from 'init' command output (REQUIRED - copy from init output)")
     p.add_argument("--vector", required=True)
     p.add_argument("--limit")
     p.add_argument("--allow-unreachable", action="store_true")
     p.set_defaults(fn=cmd_next)
 
     p = sub.add_parser("evidence")
-    p.add_argument("--run", required=True)
+    p.add_argument("--run", required=True, help="Run ID from 'init' command output (REQUIRED - copy from init output)")
     p.add_argument("--vector", required=True)
     p.add_argument("--candidate-id", required=True)
     p.add_argument("--batch-id", help="optional: patch corresponding batch state")
@@ -1515,7 +1564,7 @@ def main():
     p.set_defaults(fn=cmd_evidence)
 
     p = sub.add_parser("submit")
-    p.add_argument("--run", required=True)
+    p.add_argument("--run", required=True, help="Run ID from 'init' command output (REQUIRED - copy from init output)")
     p.add_argument("--vector", required=True)
     p.add_argument("--candidate-id", required=True)
     p.add_argument("--batch-id", required=True)
@@ -1529,7 +1578,7 @@ def main():
     p.set_defaults(fn=cmd_submit)
 
     p = sub.add_parser("report")
-    p.add_argument("--run", required=True)
+    p.add_argument("--run", required=True, help="Run ID from 'init' command output (REQUIRED - copy from init output)")
     p.add_argument("--vectors", help="comma-separated; default=all freeze_*.json")
     p.add_argument("--template", help="default=assets/report_template.md.j2")
     p.add_argument("--out", help="default=<run>/audit_report.md")
@@ -1537,7 +1586,7 @@ def main():
     p.set_defaults(fn=cmd_report)
 
     p = sub.add_parser("status")
-    p.add_argument("--run", required=True)
+    p.add_argument("--run", required=True, help="Run ID from 'init' command output (REQUIRED - copy from init output)")
     p.add_argument("--vectors", help="comma-separated; default=all freeze_*.json")
     p.add_argument("--json", action="store_true")
     p.set_defaults(fn=cmd_status)

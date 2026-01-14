@@ -16,7 +16,7 @@
 
     <groupId>me.n1ar4</groupId>
     <artifactId>jar-analyzer</artifactId>
-    <version>5.12</version>
+    <version>5.13</version>
 
     <packaging>jar</packaging>
     <description>Jar Analyzer Project</description>
@@ -67,6 +67,10 @@
             <name>7-e1even</name>
             <url>https://github.com/7-e1even</url>
         </contributor>
+        <contributor>
+            <name>0cat</name>
+            <url>https://github.com/0cat-r</url>
+        </contributor>
     </contributors>
 
     <properties>
@@ -90,10 +94,10 @@
         <oshi.version>6.9.2</oshi.version>
         <lucene.version>7.7.3</lucene.version>
         <bcel.version>6.11.0</bcel.version>
-        <java.parser.version>3.27.1</java.parser.version>
+        <java.parser.version>3.28.0</java.parser.version>
         <snakeyaml.version>2.5</snakeyaml.version>
         <csv.version>1.14.1</csv.version>
-        <junit.version>5.14.1</junit.version>
+        <junit.version>5.14.2</junit.version>
         <compress.version>1.28.0</compress.version>
         <cfr.version>0.152</cfr.version>
         <!-- Maven Build Version -->

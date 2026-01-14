@@ -1,5 +1,41 @@
 # CHANGELOG
 
+## 5.13
+
+更新日志：
+
+- [重要] 提供 `SKILL` 能力进行代码审计 @0cat-r
+- [功能] 提供 `DFS` 分析的 `API` 和 `MCP` @4ra1n
+- [功能] `DFS` 分析允许导出 @4ra1n
+- [功能] `DFS` 分析允许设置最大次数防止分析不停 @4ra1n
+- [功能] `DFS` 分析允许设置黑名单类跳过分析 @4ra1n
+- [BUG] 修复 `API` 方法反编译定位不准确的问题 @4ra1n
+- [BUG] 修复污点分析黑暗主题 `UI` 问题 @4ra1n
+- [优化] 启动 `MCP` 时应该输出更多有意义的信息 @4ra1n
+- [其他] 所有依赖升级到支持 `Java 8` 的最新版 @4ra1n
+
+感谢以下用户的贡献:
+
+- 4ra1n (https://github.com/4ra1n)
+- 0cat (https://github.com/0cat-r)
+
+所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
+
+- `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (**完整版本**)
+- `windows-21` 版内置开启 `ZGC` 的 `JRE 21` 环境（激进用户尝试使用）
+- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
+- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
+
+一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
+
+如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
+
+可选的其他 `AI` 相关下载内容:
+
+- `mcp-build.zip` 包含所有系统的 `mcp` 一般使用 `mcp_windows_amd64.exe`
+- `report-mcp-build.zip` 配合 `workflow` 使用的自动报告生成 `mcp`
+- `jar-audit-agent.zip` 是 `AI` 分析使用到的 `SKILL`
+
 ## 5.12
 
 更新日志：

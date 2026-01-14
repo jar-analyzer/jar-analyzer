@@ -10,6 +10,25 @@ The `jar-analyzer` project has been continuously updated for `5` years, with `55
 
 如果贡献代码：fork 本项目到自己仓库，参考 [build](#build) 部分搭建项目，提交 Pull Requests 即可
 
+感谢以下贡献者（排名不分先后）
+
+<p>
+  <a href="https://github.com/4ra1n"><img src="https://github.com/4ra1n.png?size=80" width="56" height="56" alt="4ra1n" /></a>
+  <a href="https://github.com/whwlsfb"><img src="https://github.com/whwlsfb.png?size=80" width="56" height="56" alt="whwlsfb" /></a>
+  <a href="https://github.com/0cat-r"><img src="https://github.com/0cat-r.png?size=80" width="56" height="56" alt="0cat-r" /></a>
+  <a href="https://github.com/Gosiu"><img src="https://github.com/Gosiu.png?size=80" width="56" height="56" alt="Gosiu" /></a>
+  <a href="https://github.com/ly-test-fuzz"><img src="https://github.com/ly-test-fuzz.png?size=80" width="56" height="56" alt="ly-test-fuzz" /></a>
+  <a href="https://github.com/sensensen404"><img src="https://github.com/sensensen404.png?size=80" width="56" height="56" alt="sensensen404" /></a>
+  <a href="https://github.com/MyDynasty"><img src="https://github.com/MyDynasty.png?size=80" width="56" height="56" alt="MyDynasty" /></a>
+  <a href="https://github.com/TianMing2018"><img src="https://github.com/TianMing2018.png?size=80" width="56" height="56" alt="TianMing2018" /></a>
+  <a href="https://github.com/hacats"><img src="https://github.com/hacats.png?size=80" width="56" height="56" alt="hacats" /></a>
+  <a href="https://github.com/R0ser1"><img src="https://github.com/R0ser1.png?size=80" width="56" height="56" alt="R0ser1" /></a>
+  <a href="https://github.com/su18"><img src="https://github.com/su18.png?size=80" width="56" height="56" alt="su18" /></a>
+  <a href="https://github.com/7eleven"><img src="https://github.com/7eleven.png?size=80" width="56" height="56" alt="7eleven" /></a>
+  <a href="https://github.com/L-codes"><img src="https://github.com/L-codes.png?size=80" width="56" height="56" alt="L-codes" /></a>
+  <a href="https://github.com/osword"><img src="https://github.com/osword.png?size=80" width="56" height="56" alt="osword" /></a>
+</p>
+
 <img alt="gitleaks badge" src="https://img.shields.io/badge/protected%20by-gitleaks-blue">
 
 ![](https://img.shields.io/github/downloads/jar-analyzer/jar-analyzer/total)

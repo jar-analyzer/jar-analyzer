@@ -259,4 +259,80 @@ func RegisterCallGraphTools(s *server.MCPServer) {
 		}
 		return mcp.NewToolResultText(out), nil
 	})
+
+	dfsAnalyzeTool := mcp.NewTool("dfs_analyze",
+		mcp.WithDescription("DFS 调用链分析（sink/source 可点或斜杠分隔）"),
+		mcp.WithString("sink_class", mcp.Required(), mcp.Description("sink 类名（点或斜杠分隔均可）")),
+		mcp.WithString("sink_method", mcp.Required(), mcp.Description("sink 方法名")),
+		mcp.WithString("sink_method_desc", mcp.Description("sink 方法描述（可选）")),
+		mcp.WithString("source_class", mcp.Description("source 类名（可选，点或斜杠分隔均可）")),
+		mcp.WithString("source_method", mcp.Description("source 方法名（可选）")),
+		mcp.WithString("source_method_desc", mcp.Description("source 方法描述（可选）")),
+		mcp.WithString("depth", mcp.Description("搜索深度（默认 10）")),
+		mcp.WithString("limit", mcp.Description("最大返回数量（默认 10）")),
+		mcp.WithString("from_sink", mcp.Description("是否从 sink 开始搜索（默认 true）")),
+		mcp.WithString("search_null_source", mcp.Description("是否搜索无 source 的路径（默认 true）")),
+	)
+	s.AddTool(dfsAnalyzeTool, dfsAnalyzeToolHandler)
+}
+
+func dfsAnalyzeToolHandler(_ context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	if conf.McpAuth {
+		if req.Header.Get("Token") == "" {
+			return mcp.NewToolResultError("need token error"), nil
+		}
+		if req.Header.Get("Token") != conf.McpToken {
+			return mcp.NewToolResultError("need token error"), nil
+		}
+	}
+
+	sinkClass, err := req.RequireString("sink_class")
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+	sinkMethod, err := req.RequireString("sink_method")
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+
+	sinkDesc := req.GetString("sink_method_desc", "")
+
+	sourceClass := req.GetString("source_class", "")
+	sourceMethod := req.GetString("source_method", "")
+	sourceDesc := req.GetString("source_method_desc", "")
+
+	depth := req.GetString("depth", "10")
+	limit := req.GetString("limit", "10")
+	fromSink := req.GetString("from_sink", "true")
+	searchNullSource := req.GetString("search_null_source", "true")
+
+	log.Debugf("call %s, sink_class: %s, sink_method: %s, sink_desc: %s, source_class: %s, source_method: %s, source_desc: %s, depth: %s, limit: %s, from_sink: %s, search_null_source: %s",
+		"dfs_analyze", sinkClass, sinkMethod, sinkDesc, sourceClass, sourceMethod, sourceDesc, depth, limit, fromSink, searchNullSource)
+
+	params := url.Values{
+		"sink_class":         []string{sinkClass},
+		"sink_method":        []string{sinkMethod},
+		"depth":              []string{depth},
+		"limit":              []string{limit},
+		"from_sink":          []string{fromSink},
+		"search_null_source": []string{searchNullSource},
+	}
+	if sinkDesc != "" {
+		params.Set("sink_method_desc", sinkDesc)
+	}
+	if sourceClass != "" {
+		params.Set("source_class", sourceClass)
+	}
+	if sourceMethod != "" {
+		params.Set("source_method", sourceMethod)
+	}
+	if sourceDesc != "" {
+		params.Set("source_method_desc", sourceDesc)
+	}
+
+	out, err := util.HTTPGet("/api/dfs_analyze", params)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+	return mcp.NewToolResultText(out), nil
 }

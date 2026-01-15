@@ -33,3 +33,14 @@
 | /api/get_all_filters            | /                                                 | 得到所有的 FILTER 信息          |
 | /api/fernflower_code            | class=${class-name}&method=${method}&desc=${desc} | 使用 FERNFLOWER 反编译某个方法    |
 | /api/cfr_code                   | class=${class-name}&method=${method}&desc=${desc} | 使用 CFR 反编译某个方法           |
+| /api/dfs_analyze                | 参数过多请参考 DFSHandler 类                              | 执行 DFS 分析                |
+
+
+`DFSHandler` 示例
+
+```text
+http://127.0.0.1:10032/api/dfs_analyze?
+sink_class=java/lang/Runtime&sink_method=exec&sink_method_desc=(Ljava/lang/String;)Ljava/lang/Process;&
+source_class=[可选]&source_method=[可选]&source_method_desc=[可选]&
+depth=10&limit=10&from_sink=true&search_null_source=true
+```

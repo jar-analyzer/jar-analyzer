@@ -40,7 +40,6 @@
                 AND
             s.method_desc = m.method_desc
         WHERE s.value LIKE CONCAT('%', #{value}, '%')
-        LIMIT 1000
     </select>
     <select id="selectMethodByStringEqual" resultMap="methodMap">
         SELECT DISTINCT cf.jar_name, m.method_name, m.class_name, m.method_desc, m.is_static, m.access

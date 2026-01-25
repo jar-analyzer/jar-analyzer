@@ -282,7 +282,7 @@
             <el-dialog v-model="settingsVisible" title="Settings" width="500px">
                 <el-form :model="settings" label-width="120px">
                     <el-form-item label="API Address">
-                        <el-input v-model="settings.apiUrl" placeholder="http://127.0.0.1:8088"></el-input>
+                        <el-input v-model="settings.apiUrl" placeholder="http://127.0.0.1:10032"></el-input>
                     </el-form-item>
                     <el-form-item label="Decompiler">
                         <el-select v-model="settings.decompiler" placeholder="Select decompiler">
@@ -329,7 +329,7 @@
                 const codeBlock = ref(null);
                 
                 const settings = ref({
-                    apiUrl: localStorage.getItem('ja_api_url') || 'http://127.0.0.1:8088',
+                    apiUrl: localStorage.getItem('ja_api_url') || 'http://127.0.0.1:10032',
                     decompiler: localStorage.getItem('ja_decompiler') || 'fernflower'
                 });
 

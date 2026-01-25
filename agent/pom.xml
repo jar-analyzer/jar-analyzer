@@ -40,30 +40,29 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
-                    <outputDirectory>../</outputDirectory>
-                    <archive>
-                        <manifest>
-                            <mainClass>com.n1ar4.agent.Main</mainClass>
-                        </manifest>
-                        <manifestEntries>
-                            <Agent-Class>com.n1ar4.agent.Agent</Agent-Class>
-                            <Premain-Class>com.n1ar4.agent.Agent</Premain-Class>
-                            <Can-Retransform-Classes>true</Can-Retransform-Classes>
-                            <Can-Redefine-Classes>true</Can-Redefine-Classes>
-                        </manifestEntries>
-                    </archive>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                </configuration>
                 <executions>
                     <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
                         <goals>
                             <goal>single</goal>
                         </goals>
+                        <phase>package</phase>
+                        <configuration>
+                            <outputDirectory>../</outputDirectory>
+                            <archive>
+                                <manifest>
+                                    <mainClass>com.n1ar4.agent.Main</mainClass>
+                                </manifest>
+                                <manifestEntries>
+                                    <Agent-Class>com.n1ar4.agent.Agent</Agent-Class>
+                                    <Premain-Class>com.n1ar4.agent.Agent</Premain-Class>
+                                    <Can-Retransform-Classes>true</Can-Retransform-Classes>
+                                    <Can-Redefine-Classes>true</Can-Redefine-Classes>
+                                </manifestEntries>
+                            </archive>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

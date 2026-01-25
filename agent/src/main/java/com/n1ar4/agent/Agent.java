@@ -10,7 +10,7 @@
 
 package com.n1ar4.agent;
 
-import arthas.VmTool;
+import com.agent.vmTool.VmTool;
 import com.n1ar4.agent.core.Task;
 
 import java.lang.instrument.Instrumentation;

@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Agent-Class: com.n1ar4.agent.Agent
+Premain-Class: com.n1ar4.agent.Agent
+Can-Redefine-Classes: true
+Can-Retransform-Classes: true
+Main-Class: com.n1ar4.agent.Main

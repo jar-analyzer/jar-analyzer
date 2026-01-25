@@ -10,17 +10,19 @@
 
 package com.n1ar4.agent.service;
 
-import com.n1ar4.agent.service.tomcat.TomcatServerDiscovery;
-
+import com.n1ar4.agent.service.tomcat.TomcatBasicServerDiscovery;
+import com.n1ar4.agent.service.IOUnderTow.UnderTowServerDiscovery;
 public enum ServerDiscoveryType {
-    Tomcat(new TomcatServerDiscovery("org.apache.catalina.core.StandardServer"));
-    private final ServerDiscovery serverDiscovery;
+    Tomcat(new TomcatBasicServerDiscovery("org.apache.catalina.core.StandardServer")),
+    IOUnderTow(new UnderTowServerDiscovery("io.undertow.Undertow")),
+    ;
+    private BasicServerDiscovery serverDiscovery;
 
-    ServerDiscoveryType(ServerDiscovery serverDiscovery) {
-        this.serverDiscovery = serverDiscovery;
+    private ServerDiscoveryType(BasicServerDiscovery basicServerDiscovery) {
+        this.serverDiscovery = basicServerDiscovery;
     }
 
-    public ServerDiscovery getServerDiscovery() {
+    public BasicServerDiscovery getServerDiscovery() {
         return serverDiscovery;
     }
 }

@@ -10,7 +10,7 @@
 
 package com.n1ar4.agent.vmtools;
 
-import arthas.VmTool;
+import com.agent.vmTool.VmTool;
 import com.n1ar4.agent.Agent;
 
 import java.io.*;

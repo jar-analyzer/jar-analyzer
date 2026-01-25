@@ -10,17 +10,21 @@
 
 package com.n1ar4.agent.core;
 
-import arthas.VmTool;
+import com.agent.vmTool.VmTool;
 import com.n1ar4.agent.Agent;
+import com.n1ar4.agent.service.BasicFrameworkBaseInfo;
 import com.n1ar4.agent.dto.ResultReturn;
 import com.n1ar4.agent.dto.SourceResult;
 import com.n1ar4.agent.dto.UrlInfo;
-import com.n1ar4.agent.service.ServerDiscovery;
+import com.n1ar4.agent.frameworkDiscovery.FrameworkResolver;
+import com.n1ar4.agent.frameworkDiscovery.FrameworkResolverWrapper;
+import com.n1ar4.agent.service.BasicServerDiscovery;
 import com.n1ar4.agent.service.ServerDiscoveryType;
 import com.n1ar4.agent.transform.CoreTransformer;
-import com.n1ar4.agent.util.Base64Util;
-import com.n1ar4.agent.util.CustomOutputStream;
-import com.n1ar4.agent.util.FilterObjectInputStream;
+import com.n1ar4.agent.Utils.Base64Util;
+import com.n1ar4.agent.Utils.CustomOutputStream;
+import com.n1ar4.agent.Utils.FilterObjectInputStream;
+import com.n1ar4.agent.Utils.FrameworkUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
@@ -155,13 +159,43 @@ public class Task implements Runnable {
                     return;
                 }
                 ArrayList<SourceResult> sourceResults = new ArrayList<>();
+                HashMap<String, ArrayList<BasicFrameworkBaseInfo>> frameworkBaseInfoHashMap = new HashMap<String, ArrayList<BasicFrameworkBaseInfo>>();
                 for (ServerDiscoveryType serverDiscoveryType : ServerDiscoveryType.values()) {
-                    ServerDiscovery serverDiscovery = serverDiscoveryType.getServerDiscovery();
-                    if (!serverDiscovery.CanLoad(vmTool, instLocal)) {
+                    BasicServerDiscovery basicServerDiscovery = serverDiscoveryType.getServerDiscovery();
+                    if (!basicServerDiscovery.CanLoad(vmTool, instLocal))
                         continue;
-                    }
-                    sourceResults.addAll(serverDiscovery.getServerSources(vmTool, instLocal));
+                    basicServerDiscovery.getFrameworkInstances().clear();
+
+                    sourceResults.addAll(basicServerDiscovery.getServerSources(vmTool, instLocal));
+                    HashMap<String, ArrayList<BasicFrameworkBaseInfo>> frameworkInstances = basicServerDiscovery.getFrameworkInstances();
+                    FrameworkUtils.MergeFrameworkBaseInfoHashMap(frameworkBaseInfoHashMap, frameworkInstances);
                 }
+                HashMap<String, ArrayList<BasicFrameworkBaseInfo>> nextFrameworkBaseInfoHashMap = new HashMap<String, ArrayList<BasicFrameworkBaseInfo>>();
+                do {
+                    nextFrameworkBaseInfoHashMap.clear();
+                    for (FrameworkResolverWrapper frameworkResolverWrapper : FrameworkResolverWrapper.values()) {
+                        String resolverName = frameworkResolverWrapper.name();
+                        if (frameworkBaseInfoHashMap.containsKey(resolverName) == false)
+                            continue;
+
+                        FrameworkResolver frameworkResolver = frameworkResolverWrapper.getFrameworkResolver();
+                        ArrayList<BasicFrameworkBaseInfo> basicFrameworkBaseInfos = frameworkBaseInfoHashMap.get(resolverName);
+                        for (BasicFrameworkBaseInfo basicFrameworkBaseInfo : basicFrameworkBaseInfos) {
+                            try {
+                                Thread.sleep(100);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            sourceResults.addAll(frameworkResolver.resolve(basicFrameworkBaseInfo.getInstance(), basicFrameworkBaseInfo.getUrlInfos()));
+                        }
+                        HashMap<String, ArrayList<BasicFrameworkBaseInfo>> frameworkInstances = frameworkResolver.getFrameworkInstances();
+                        FrameworkUtils.MergeFrameworkBaseInfoHashMap(nextFrameworkBaseInfoHashMap, frameworkInstances);
+                    }
+                    frameworkBaseInfoHashMap.clear();
+                    if (nextFrameworkBaseInfoHashMap.size() != 0)
+                        frameworkBaseInfoHashMap.putAll(nextFrameworkBaseInfoHashMap);
+                } while (nextFrameworkBaseInfoHashMap.size() != 0);
+
                 ArrayList<SourceResult> sourceResultsFinal = mergeSourceResults(new HashSet<>(sourceResults));
                 Collections.sort(sourceResultsFinal);
                 ByteArrayOutputStream bao = new ByteArrayOutputStream();

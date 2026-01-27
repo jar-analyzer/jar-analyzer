@@ -8,10 +8,10 @@
  * https://github.com/jar-analyzer/jar-analyzer/blob/master/LICENSE
  */
 
-package com.n1ar4.agent.service.tomcat;
+package com.n1ar4.agent.webserver.tomcat;
 
 import com.n1ar4.agent.dto.SourceResult;
-import com.n1ar4.agent.service.ServerDiscovery;
+import com.n1ar4.agent.webserver.ServerDiscovery;
 import com.n1ar4.agent.util.ReflectUtils;
 
 import java.util.ArrayList;

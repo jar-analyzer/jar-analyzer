@@ -14,5 +14,12 @@ public enum SourceResultType {
     TomcatListener,
     TomcatFilter,
     TomcatServlet,
+    ioUnderTowListener,
+    ioUnderTowFilter,
+    ioUnderTowServlet,
     TomcatWebService,
+    SpringInterceptor,
+    SpringRequestMappingController,
+    SpringBeanNameController,
+    SpringRouterFunctionMapping,
 }

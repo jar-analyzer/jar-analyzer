@@ -8,7 +8,7 @@
  * https://github.com/jar-analyzer/jar-analyzer/blob/master/LICENSE
  */
 
-package com.n1ar4.agent.service.tomcat.info;
+package com.n1ar4.agent.webserver.tomcat.info;
 
 import com.n1ar4.agent.dto.UrlInfo;
 

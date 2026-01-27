@@ -33,12 +33,7 @@ public class SourceResult implements Serializable, Comparable<SourceResult> {
                         String name,
                         String sourceClass,
                         ArrayList<UrlInfo> urlInfos) {
-        this.type = type;
-        this.name = name;
-        this.sourceClass = sourceClass;
-        this.urlInfos = urlInfos;
-        this.methodInfo = null;
-        this.description = null;
+        this(type, name, sourceClass, null , urlInfos, new ArrayList<String>());
     }
 
     public SourceResult(SourceResultType type,
@@ -46,8 +41,7 @@ public class SourceResult implements Serializable, Comparable<SourceResult> {
                         String sourceClass,
                         String methodInfo,
                         ArrayList<UrlInfo> urlInfos) {
-        this(type, name, sourceClass, urlInfos);
-        this.methodInfo = methodInfo;
+        this(type, name, sourceClass, methodInfo , urlInfos , new ArrayList<String>());
     }
 
     public SourceResult(SourceResultType type,
@@ -55,9 +49,7 @@ public class SourceResult implements Serializable, Comparable<SourceResult> {
                         String sourceClass,
                         ArrayList<UrlInfo> urlInfos,
                         ArrayList<String> description) {
-        this(type, name, sourceClass, urlInfos);
-        if (description != null && !description.isEmpty())
-            this.description = description;
+        this(type, name, sourceClass, "", urlInfos , description);
     }
 
     public SourceResult(SourceResultType type,
@@ -66,8 +58,16 @@ public class SourceResult implements Serializable, Comparable<SourceResult> {
                         String methodInfo,
                         ArrayList<UrlInfo> urlInfos,
                         ArrayList<String> description) {
-        this(type, name, sourceClass, urlInfos, description);
+        this.type = type;
+        this.name = name;
+        this.sourceClass = sourceClass;
         this.methodInfo = methodInfo;
+        if (urlInfos != null) {
+            this.urlInfos = UrlInfo.UrlInfoCopy(urlInfos);
+        }
+        this.description = description;
+        //        if (description != null && !description.isEmpty())
+//            this.description = description;
     }
 
     public SourceResultType getType() {
@@ -186,7 +186,7 @@ public class SourceResult implements Serializable, Comparable<SourceResult> {
     }
 
     public HashMap<String, UrlInfoAndDescMapValue> getSourceTagMapForUrlInfosAndDesc() {
-        HashMap<String, UrlInfoAndDescMapValue> tagHashMap = new HashMap<>();
+        HashMap<String, UrlInfoAndDescMapValue> tagHashMap = new HashMap<String, UrlInfoAndDescMapValue>();
         ArrayList<String> descList = this.getDescription();
         String nowTag = "";
         for (String oneLineDesc : descList) {
@@ -214,7 +214,7 @@ public class SourceResult implements Serializable, Comparable<SourceResult> {
             String tag = lastUrlDesc.split(SourceResultTag)[1];
             UrlInfoAndDescMapValue urlInfoAndDescMapValue = tagHashMap.get(tag);
             if (urlInfoAndDescMapValue == null) {
-                System.out.println("[-] error out : not found target tag in url list: " + nowTag);
+                System.out.println("[-] error out : not found target tag in url list: " + tag);
                 continue;
             }
             urlInfoAndDescMapValue.urlInfos.add(urlInfo);
@@ -229,6 +229,9 @@ public class SourceResult implements Serializable, Comparable<SourceResult> {
         sb.append("Source Type : ").append(this.getType().toString()).append("\n");
         sb.append("\t Source Name : ").append(this.getName()).append("\n");
         sb.append("\t Source Class : ").append(this.getSourceClass()).append("\n");
+        if(this.methodInfo != null && !this.methodInfo.equals("")){
+            sb.append("\t Source MethodInfo : " + this.getMethodInfo() + "\n");
+        }
         HashMap<String, UrlInfoAndDescMapValue> sourceTagMapForUrlInfosAndDesc = getSourceTagMapForUrlInfosAndDesc();
         Collection<UrlInfoAndDescMapValue> values = sourceTagMapForUrlInfosAndDesc.values();
         for (UrlInfoAndDescMapValue value : values) {
@@ -252,17 +255,6 @@ public class SourceResult implements Serializable, Comparable<SourceResult> {
                 for (String desc : description) {
                     sb.append("\t\t\t ").append(desc).append("\n");
                 }
-            }
-        }
-        return sb.toString();
-    }
-
-    public String generateUrlInfo() {
-        StringBuilder sb = new StringBuilder();
-        if (this.urlInfos != null && !this.urlInfos.isEmpty()) {
-            for (UrlInfo urlInfo : this.urlInfos) {
-                sb.append(urlInfo.getUrl());
-                sb.append("\n");
             }
         }
         return sb.toString();

@@ -8,7 +8,7 @@
  * https://github.com/jar-analyzer/jar-analyzer/blob/master/LICENSE
  */
 
-package com.n1ar4.agent.service;
+package com.n1ar4.agent.webserver;
 
 import arthas.VmTool;
 import arthas.core.util.SearchUtils;
@@ -16,12 +16,18 @@ import com.n1ar4.agent.dto.SourceResult;
 
 import java.lang.instrument.Instrumentation;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public abstract class ServerDiscovery {
     protected String serverClass;
+    protected HashMap<String, ArrayList<FrameworkBaseInfo>> frameworkInstances = new HashMap<String, ArrayList<FrameworkBaseInfo>>();
 
     public ServerDiscovery(String serverClass) {
         this.serverClass = serverClass;
+    }
+
+    public HashMap<String, ArrayList<FrameworkBaseInfo>> getFrameworkInstances() {
+        return frameworkInstances;
     }
 
     public boolean CanLoad(VmTool vmTool, Instrumentation inst) {

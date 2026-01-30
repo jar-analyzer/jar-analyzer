@@ -29,6 +29,13 @@ The `jar-analyzer` project has been continuously updated for `5` years, with `55
   <a href="https://github.com/osword"><img src="https://github.com/osword.png?size=72" width="72" height="72" alt="osword" /></a>
 </p>
 
+感谢以下用户的赞赏和支持
+
+| 用户ID | 赞赏金额 |
+|--------|--------|
+| GGBond | 50     |
+| xrayl  | 50     |
+
 一些真实的用户使用评价和反馈，参考 [用户评价](#用户评价)
 
 <img alt="gitleaks badge" src="https://img.shields.io/badge/protected%20by-gitleaks-blue">

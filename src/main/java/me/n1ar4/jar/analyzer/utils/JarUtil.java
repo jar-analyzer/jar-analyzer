@@ -38,10 +38,7 @@ public class JarUtil {
 
     // 配置文件扩展名列表
     public static final Set<String> CONFIG_EXTENSIONS = new HashSet<>(Arrays.asList(
-            ".yml", ".yaml", ".properties", ".xml", ".json", ".conf", ".config",
-            ".ini", ".toml", "web.xml", "application.properties", "application.yml",
-            "application-dev.properties", "application-prod.properties",
-            "application-dev.yml", "application-prod.yml"
+            ".yml", ".yaml", ".properties", ".xml", ".json", ".conf", ".config", ".ini", ".toml", "web.xml"
     ));
 
     public static boolean isConfigFile(String fileName) {

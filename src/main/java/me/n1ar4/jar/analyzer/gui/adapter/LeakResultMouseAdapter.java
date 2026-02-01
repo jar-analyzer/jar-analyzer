@@ -16,16 +16,22 @@ import me.n1ar4.jar.analyzer.entity.LeakResult;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.ProcessDialog;
 import me.n1ar4.jar.analyzer.starter.Const;
+import me.n1ar4.jar.analyzer.utils.JarUtil;
 import me.n1ar4.jar.analyzer.utils.StringUtil;
+import me.n1ar4.log.LogManager;
+import me.n1ar4.log.Logger;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class LeakResultMouseAdapter extends MouseAdapter {
+    private static final Logger logger = LogManager.getLogger();
+
     @SuppressWarnings("all")
     public void mouseClicked(MouseEvent evt) {
         JList<?> list = (JList<?>) evt.getSource();
@@ -34,6 +40,46 @@ public class LeakResultMouseAdapter extends MouseAdapter {
             LeakResult res = (LeakResult) list.getModel().getElementAt(index);
 
             String className = res.getClassName();
+
+            // 2026/02/02 修复静态文件无法打开问题
+            boolean resource = false;
+            for (String ext : JarUtil.CONFIG_EXTENSIONS) {
+                if (className.endsWith(ext)) {
+                    resource = true;
+                }
+            }
+            if (resource) {
+                String tempPath = className.replace("/", File.separator);
+                tempPath = String.format("%s%s%s", Const.tempDir, File.separator, tempPath);
+                logger.debug("open resource {} file",tempPath);
+                Path resourcePath = Paths.get(tempPath);
+                if (Files.exists(resourcePath)) {
+                    try {
+                        String resourceContent = new String(Files.readAllBytes(resourcePath));
+                        MainForm.getCodeArea().setText(resourceContent);
+                        // 找 caret position
+                        String value = res.getValue();
+                        int idx = resourceContent.indexOf(value);
+                        if (idx != -1) {
+                            MainForm.getCodeArea().setSelectionStart(idx);
+                            MainForm.getCodeArea().setSelectionEnd(idx + value.length());
+                            // FIX BUG
+                            MainForm.getCodeArea().setCaretPosition(idx);
+                        }else{
+                            MainForm.getCodeArea().setCaretPosition(0);
+                        }
+                        return;
+                    } catch (Exception ex) {
+                        MainForm.getCodeArea().setText(ex.getMessage());
+                        MainForm.getCodeArea().setCaretPosition(0);
+                        return;
+                    }
+                }
+                MainForm.getCodeArea().setText("file not found");
+                MainForm.getCodeArea().setCaretPosition(0);
+                return;
+            }
+
             String tempPath = className.replace("/", File.separator);
             String classPath;
 

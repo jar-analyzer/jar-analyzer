@@ -33,7 +33,7 @@ public class SourceResult implements Serializable, Comparable<SourceResult> {
                         String name,
                         String sourceClass,
                         ArrayList<UrlInfo> urlInfos) {
-        this(type, name, sourceClass, null , urlInfos, new ArrayList<String>());
+        this(type, name, sourceClass, null, urlInfos, new ArrayList<String>());
     }
 
     public SourceResult(SourceResultType type,
@@ -41,7 +41,7 @@ public class SourceResult implements Serializable, Comparable<SourceResult> {
                         String sourceClass,
                         String methodInfo,
                         ArrayList<UrlInfo> urlInfos) {
-        this(type, name, sourceClass, methodInfo , urlInfos , new ArrayList<String>());
+        this(type, name, sourceClass, methodInfo, urlInfos, new ArrayList<String>());
     }
 
     public SourceResult(SourceResultType type,
@@ -49,7 +49,7 @@ public class SourceResult implements Serializable, Comparable<SourceResult> {
                         String sourceClass,
                         ArrayList<UrlInfo> urlInfos,
                         ArrayList<String> description) {
-        this(type, name, sourceClass, "", urlInfos , description);
+        this(type, name, sourceClass, "", urlInfos, description);
     }
 
     public SourceResult(SourceResultType type,
@@ -229,7 +229,7 @@ public class SourceResult implements Serializable, Comparable<SourceResult> {
         sb.append("Source Type : ").append(this.getType().toString()).append("\n");
         sb.append("\t Source Name : ").append(this.getName()).append("\n");
         sb.append("\t Source Class : ").append(this.getSourceClass()).append("\n");
-        if(this.methodInfo != null && !this.methodInfo.equals("")){
+        if (this.methodInfo != null && !this.methodInfo.equals("")) {
             sb.append("\t Source MethodInfo : " + this.getMethodInfo() + "\n");
         }
         HashMap<String, UrlInfoAndDescMapValue> sourceTagMapForUrlInfosAndDesc = getSourceTagMapForUrlInfosAndDesc();

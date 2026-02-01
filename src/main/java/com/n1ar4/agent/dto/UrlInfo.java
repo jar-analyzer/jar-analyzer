@@ -72,18 +72,18 @@ public class UrlInfo implements Serializable {
                 urlPattern = urlPattern.substring(1);
             }
         }
-        if(!urlPattern.startsWith("/") && !this.url.endsWith("/")){
+        if (!urlPattern.startsWith("/") && !this.url.endsWith("/")) {
             urlPattern = "/" + urlPattern;
         }
 
-        if(this.url.endsWith("*") && urlPattern.startsWith("*")){
+        if (this.url.endsWith("*") && urlPattern.startsWith("*")) {
             urlPattern = urlPattern.substring(1);
         }
         this.appendRawUrl(urlPattern);
     }
 
     public String getDescription() {
-        if(description == null){
+        if (description == null) {
             return "";
         }
         return description;
@@ -99,7 +99,7 @@ public class UrlInfo implements Serializable {
 
     public void appendDescription(String append) {
         StringBuilder appendDesc = new StringBuilder();
-        if(!this.description.equals("")){
+        if (!this.description.equals("")) {
             appendDesc.append(this.description);
             appendDesc.append(urlInfoDescTag);
         }
@@ -107,9 +107,9 @@ public class UrlInfo implements Serializable {
         this.description = appendDesc.toString();
     }
 
-    public static ArrayList<UrlInfo> UrlInfoCopy(ArrayList<UrlInfo> urlInfos){
+    public static ArrayList<UrlInfo> UrlInfoCopy(ArrayList<UrlInfo> urlInfos) {
         ArrayList<UrlInfo> newUrlInfos = new ArrayList<UrlInfo>();
-        for(UrlInfo urlInfo : urlInfos){
+        for (UrlInfo urlInfo : urlInfos) {
             newUrlInfos.add(new UrlInfo(urlInfo));
         }
         return newUrlInfos;

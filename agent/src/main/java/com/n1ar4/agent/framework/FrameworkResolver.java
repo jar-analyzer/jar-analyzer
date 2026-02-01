@@ -1,8 +1,8 @@
 package com.n1ar4.agent.framework;
 
-import com.n1ar4.agent.webserver.FrameworkBaseInfo;
 import com.n1ar4.agent.dto.SourceResult;
 import com.n1ar4.agent.dto.UrlInfo;
+import com.n1ar4.agent.webserver.FrameworkBaseInfo;
 
 import java.util.ArrayList;
 import java.util.HashMap;

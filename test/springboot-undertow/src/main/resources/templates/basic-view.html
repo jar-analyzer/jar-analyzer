@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>基本视图示例</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+</head>
+<body>
+<div class="container">
+    <h1>Thymeleaf视图示例</h1>
+
+    <div class="route-section">
+        <h2>视图数据</h2>
+        <p>消息: <span th:text="${message}">默认消息</span></p>
+        <p>时间戳: <span th:text="${timestamp}">0</span></p>
+        <p>格式化时间: <span th:text="${#dates.format(new java.util.Date(timestamp), 'yyyy-MM-dd HH:mm:ss')}">2023-01-01 00:00:00</span>
+        </p>
+    </div>
+
+    <div class="route-section">
+        <h2>Thymeleaf语法示例</h2>
+
+        <h3>条件判断</h3>
+        <p th:if="${timestamp % 2 == 0}">时间戳是偶数</p>
+        <p th:unless="${timestamp % 2 == 0}">时间戳是奇数</p>
+
+        <h3>循环示例</h3>
+        <ul>
+            <li th:each="i : ${#numbers.sequence(1, 5)}">
+                项目 <span th:text="${i}">1</span>
+            </li>
+        </ul>
+
+        <h3>内联表达式</h3>
+        <p>使用内联表达式: [[${message}]]</p>
+    </div>
+
+    <div class="route-section">
+        <a href="/" class="btn">返回首页</a>
+    </div>
+</div>
+</body>
+</html>

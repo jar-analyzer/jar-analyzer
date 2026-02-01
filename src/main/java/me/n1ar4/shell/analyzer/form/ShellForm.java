@@ -263,6 +263,8 @@ public class ShellForm {
         });
 
         urlList.addMouseListener(new UrlInfoMouse());
+
+        tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
     }
 
     public void doUrlInfo(MouseEvent evt, JList<?> list) {

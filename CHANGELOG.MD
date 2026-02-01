@@ -4,11 +4,14 @@
 
 更新日志：
 
-- [BUG] 修复 `report-mcp` 默认端口错误
+- [功能] `agent` 支持 `tomcat` 和 `undertow` 两种远程分析 @fantasy
+- [BUG] 修复 `report-mcp` 默认端口错误 (不影响使用) @4ra1n
+- [优化] 优化 `tomcat-analyzer` 组件 `UI` 展示 @4ra1n
 
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
+- fantasy (https://github.com/ly-test-fuzz)
 
 所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
 

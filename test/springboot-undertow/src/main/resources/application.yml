@@ -1,0 +1,41 @@
+# YAML格式配置示例
+# 注意：此文件与application.properties同时存在时，properties文件优先级更高
+
+spring:
+  application:
+    name: springboot2Test
+  thymeleaf:
+    cache: false
+  mvc:
+    static-path-pattern: /static/**
+
+server:
+  port: 8087
+  servlet:
+    context-path: /
+    encoding:
+      charset: UTF-8
+      force: true
+
+logging:
+  level:
+    root: INFO
+    com.example: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+
+# 自定义应用属性
+app:
+  name: SpringBoot2 路由配置示例
+  version: 1.0.0
+  debug: true
+  security:
+    enabled: true
+    token-expiration-sec: 7200

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SpringBoot2 路由示例</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+</head>
+<body>
+<div class="container">
+    <h1>SpringBoot2 路由配置示例</h1>
+
+    <div class="route-section">
+        <h2>基本路由示例</h2>
+        <ul>
+            <li><a th:href="@{/basic/hello}">基本GET请求 - /basic/hello</a></li>
+            <li><a th:href="@{/basic/param?name=测试用户}">带参数GET请求 - /basic/param?name=测试用户</a></li>
+            <li><a th:href="@{/basic/path/123}">路径变量 - /basic/path/123</a></li>
+        </ul>
+    </div>
+
+    <div class="route-section">
+        <h2>REST风格API示例</h2>
+        <ul>
+            <li><a th:href="@{/api/users}">获取所有用户 - GET /api/users</a></li>
+            <li><a th:href="@{/api/users/1}">获取单个用户 - GET /api/users/1</a></li>
+            <li>创建用户 - POST /api/users (需使用Postman等工具测试)</li>
+            <li>更新用户 - PUT /api/users/1 (需使用Postman等工具测试)</li>
+            <li>删除用户 - DELETE /api/users/1 (需使用Postman等工具测试)</li>
+        </ul>
+    </div>
+
+    <div class="route-section">
+        <h2>高级路由示例</h2>
+        <ul>
+            <li><a th:href="@{/advanced/headers}">请求头信息 - /advanced/headers</a></li>
+            <li><a th:href="@{/advanced/cookies}">Cookie信息 - /advanced/cookies</a></li>
+            <li><a th:href="@{/advanced/session}">Session示例 - /advanced/session</a></li>
+        </ul>
+    </div>
+
+    <div class="route-section">
+        <h2>静态资源示例</h2>
+        <ul>
+            <li><a th:href="@{/static/images/logo.png}">图片资源 - /static/images/logo.png</a></li>
+            <li><a th:href="@{/static/js/main.js}">JS资源 - /static/js/main.js</a></li>
+            <li><a th:href="@{/static/css/main.css}">CSS资源 - /static/css/main.css</a></li>
+        </ul>
+    </div>
+
+    <div class="route-section">
+        <h2>Actuator端点</h2>
+        <ul>
+            <li><a th:href="@{/actuator}">Actuator主页 - /actuator</a></li>
+            <li><a th:href="@{/actuator/health}">健康检查 - /actuator/health</a></li>
+            <li><a th:href="@{/actuator/info}">应用信息 - /actuator/info</a></li>
+        </ul>
+    </div>
+</div>
+
+<script src="/static/js/main.js"></script>
+</body>
+</html>

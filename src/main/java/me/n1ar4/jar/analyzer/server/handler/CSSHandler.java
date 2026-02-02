@@ -22,7 +22,7 @@ public class CSSHandler extends BaseHandler implements HttpHandler {
     public NanoHTTPD.Response handle(NanoHTTPD.IHTTPSession session) {
         InputStream is = CSSHandler.class.getClassLoader().getResourceAsStream("report/BT_CSS.css");
         if (is == null) {
-            return error();
+            return errorMsg("could not find BT_CSS.css");
         }
         String css = IOUtil.readString(is);
         return NanoHTTPD.newFixedLengthResponse(NanoHTTPD.Response.Status.OK, "text/css", css);

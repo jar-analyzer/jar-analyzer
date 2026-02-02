@@ -11,6 +11,7 @@
 package me.n1ar4.jar.analyzer.server.handler.base;
 
 import fi.iki.elonen.NanoHTTPD;
+import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.utils.StringUtil;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
@@ -95,8 +96,10 @@ public class BaseHandler {
         return NanoHTTPD.newFixedLengthResponse(
                 NanoHTTPD.Response.Status.INTERNAL_ERROR,
                 "text/html",
-                "<h1>JAR ANALYZER SERVER</h1>" +
-                        "<h2>CORE ENGINE IS NULL</h2>");
+                String.format("<h1>JAR ANALYZER SERVER</h1>" +
+                                "<h2>CORE ENGINE IS NULL</h2>" +
+                                "<h2>CHECK %s FILE AND %s DIR</h2>",
+                        Const.dbFile, Const.tempDir));
     }
 
     public NanoHTTPD.Response errorMsg(String s) {

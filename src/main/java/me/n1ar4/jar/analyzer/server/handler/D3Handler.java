@@ -22,7 +22,7 @@ public class D3Handler extends BaseHandler implements HttpHandler {
     public NanoHTTPD.Response handle(NanoHTTPD.IHTTPSession session) {
         InputStream is = CSSHandler.class.getClassLoader().getResourceAsStream("report/D3V6.js");
         if (is == null) {
-            return error();
+            return errorMsg("could not find D3V6.js");
         }
         String js = IOUtil.readString(is);
         return NanoHTTPD.newFixedLengthResponse(NanoHTTPD.Response.Status.OK, "text/javascript", js);

@@ -8,6 +8,7 @@
 - [功能] `agent` 支持 `tomcat` 和 `undertow` 两种远程分析 @fantasy
 - [BUG] 修复 `report-mcp` 默认端口错误 (不影响使用) @4ra1n
 - [优化] 优化 `tomcat-analyzer` 组件 `UI` 展示 @4ra1n
+- [优化] 优化 `API` 错误情况显示更多有效信息 @4ra1n
 - [其他] 补充序列化数据分析测试文件和默认数据 @4ra1n
 
 感谢以下用户的贡献:

@@ -6,6 +6,20 @@
 
 The `jar-analyzer` project has been continuously updated for `5` years, with `55` versions released, contains v1 and v2 version, completely open source and completely free.
 
+![](https://img.shields.io/github/last-commit/jar-analyzer/jar-analyzer)
+![](https://img.shields.io/github/release-date/jar-analyzer/jar-analyzer)
+![](https://img.shields.io/github/v/release/jar-analyzer/jar-analyzer)
+![](https://img.shields.io/github/downloads/jar-analyzer/jar-analyzer/total)
+
+![](https://img.shields.io/badge/protected%20by-gitleaks-blue)
+![](https://github.com/jar-analyzer/jar-analyzer/workflows/leak%20check/badge.svg)
+![](https://github.com/jar-analyzer/jar-analyzer/workflows/truffle%20check/badge.svg)
+
+![](https://github.com/jar-analyzer/jar-analyzer/workflows/maven%20check/badge.svg)
+![](https://github.com/jar-analyzer/jar-analyzer/workflows/golang%20check/badge.svg)
+![](https://github.com/jar-analyzer/jar-analyzer/workflows/python%20check/badge.svg)
+![](https://github.com/jar-analyzer/jar-analyzer/workflows/test%20core/badge.svg)
+
 官方文档：https://docs.qq.com/doc/DV3pKbG9GS0pJS0tk
 
 如果贡献代码：fork 本项目到自己仓库，参考 [build](#build) 部分搭建项目，提交 Pull Requests 即可
@@ -37,16 +51,6 @@ The `jar-analyzer` project has been continuously updated for `5` years, with `55
 | xrayl  | 50     |
 
 一些真实的用户使用评价和反馈，参考 [用户评价](#用户评价)
-
-<img alt="gitleaks badge" src="https://img.shields.io/badge/protected%20by-gitleaks-blue">
-
-![](https://img.shields.io/github/downloads/jar-analyzer/jar-analyzer/total)
-![](https://img.shields.io/github/v/release/jar-analyzer/jar-analyzer)
-
-![](https://github.com/jar-analyzer/jar-analyzer/workflows/maven%20check/badge.svg)
-![](https://github.com/jar-analyzer/jar-analyzer/workflows/leak%20check/badge.svg)
-![](https://github.com/jar-analyzer/jar-analyzer/workflows/truffle%20check/badge.svg)
-![](https://github.com/jar-analyzer/jar-analyzer/workflows/golang%20check/badge.svg)
 
 Jar Analyzer
 

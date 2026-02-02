@@ -24,9 +24,13 @@ public class PreviewForm {
     private JPanel rootPanel;
     private JPanel codePanel;
 
-    public PreviewForm(String code, int pos) {
+    public PreviewForm(String code, int pos, boolean java) {
         RSyntaxTextArea textArea = new RSyntaxTextArea(30, 60);
-        textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
+        if (java) {
+            textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
+        } else {
+            textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_NONE);
+        }
 
         if (OSUtil.isLinux()) {
             textArea.setFont(textArea.getFont().deriveFont(18.0f));
@@ -48,10 +52,10 @@ public class PreviewForm {
         textArea.setCaretPosition(pos);
     }
 
-    public static JFrame start(String code, int pos) {
+    public static JFrame start(String code, int pos, boolean java) {
         JFrame frame = new JFrame("preview");
         frame.setUndecorated(true);
-        frame.setContentPane(new PreviewForm(code, pos).rootPanel);
+        frame.setContentPane(new PreviewForm(code, pos, java).rootPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
 

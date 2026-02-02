@@ -14,6 +14,7 @@ import me.n1ar4.jar.analyzer.engine.CoreHelper;
 import me.n1ar4.jar.analyzer.engine.DecompileEngine;
 import me.n1ar4.jar.analyzer.entity.LeakResult;
 import me.n1ar4.jar.analyzer.gui.MainForm;
+import me.n1ar4.jar.analyzer.gui.PreviewForm;
 import me.n1ar4.jar.analyzer.gui.util.ProcessDialog;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.utils.JarUtil;
@@ -22,6 +23,9 @@ import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -32,8 +36,13 @@ import java.nio.file.Paths;
 public class LeakResultMouseAdapter extends MouseAdapter {
     private static final Logger logger = LogManager.getLogger();
 
+    private static JFrame frameIns = null;
+
     @SuppressWarnings("all")
     public void mouseClicked(MouseEvent evt) {
+        if (frameIns != null) {
+            frameIns.dispose();
+        }
         JList<?> list = (JList<?>) evt.getSource();
         if (evt.getClickCount() == 2) {
             int index = list.locationToIndex(evt.getPoint());
@@ -51,7 +60,7 @@ public class LeakResultMouseAdapter extends MouseAdapter {
             if (resource) {
                 String tempPath = className.replace("/", File.separator);
                 tempPath = String.format("%s%s%s", Const.tempDir, File.separator, tempPath);
-                logger.debug("open resource {} file",tempPath);
+                logger.debug("open resource {} file", tempPath);
                 Path resourcePath = Paths.get(tempPath);
                 if (Files.exists(resourcePath)) {
                     try {
@@ -65,7 +74,7 @@ public class LeakResultMouseAdapter extends MouseAdapter {
                             MainForm.getCodeArea().setSelectionEnd(idx + value.length());
                             // FIX BUG
                             MainForm.getCodeArea().setCaretPosition(idx);
-                        }else{
+                        } else {
                             MainForm.getCodeArea().setCaretPosition(0);
                         }
                         return;
@@ -155,6 +164,41 @@ public class LeakResultMouseAdapter extends MouseAdapter {
             MainForm.getInstance().getSuperImplList().setModel(new DefaultListModel<>());
             MainForm.getInstance().getCalleeList().setModel(new DefaultListModel<>());
             MainForm.getInstance().getCallerList().setModel(new DefaultListModel<>());
+        } else if (SwingUtilities.isRightMouseButton(evt)) {
+            JPopupMenu popupMenu = new JPopupMenu();
+
+            JMenuItem copyThis = new JMenuItem("复制值 / copy value");
+            popupMenu.add(copyThis);
+            copyThis.addActionListener(e -> {
+                LeakResult selectedItem = (LeakResult) list.getSelectedValue();
+                if (selectedItem == null) {
+                    JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                            "SELECTED ITEM IS NULL");
+                    return;
+                }
+                StringSelection stringSelection = new StringSelection(selectedItem.getValue());
+                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                clipboard.setContents(stringSelection, null);
+                JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(), "COPY OK");
+            });
+
+            JMenuItem previewItem = new JMenuItem("预览 / preview");
+            popupMenu.add(previewItem);
+            previewItem.addActionListener(e -> {
+                LeakResult selectedItem = (LeakResult) list.getSelectedValue();
+                if (selectedItem == null) {
+                    JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                            "SELECTED ITEM IS NULL");
+                    return;
+                }
+                String code = String.format("CLASSNAME: %s\nTYPE: %s\nVALUE: %s\n",
+                        selectedItem.getClassName(), selectedItem.getTypeName(), selectedItem.getValue());
+                frameIns = PreviewForm.start(code, 0, false);
+            });
+
+            int index = list.locationToIndex(evt.getPoint());
+            list.setSelectedIndex(index);
+            popupMenu.show(list, evt.getX(), evt.getY());
         }
     }
 }

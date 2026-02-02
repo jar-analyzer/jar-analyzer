@@ -11,6 +11,7 @@
 package me.n1ar4.jar.analyzer.entity;
 
 import com.alibaba.fastjson2.JSON;
+import me.n1ar4.jar.analyzer.utils.JarUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -65,21 +66,47 @@ public class LeakResult {
     @Override
     public String toString() {
         String displayValue = value.length() > 16 ? value.substring(0, 16) + "..." : value;
-        return "<html>" +
-                "TYPE: " +
-                "<font style=\"color: blue; font-weight: bold;\">" +
-                typeName +
-                "</font>" +
-                " " +
-                "VALUE: " +
-                "<font style=\"color: green; font-weight: bold;\">" +
-                displayValue +
-                "</font>" +
-                " " +
-                "<font style=\"color: orange; font-weight: bold;\">" +
-                className.replace("/", ".") +
-                "</font>" +
-                "</html>";
+
+        boolean isClass = true;
+        for (String ext : JarUtil.CONFIG_EXTENSIONS) {
+            if (this.className.endsWith(ext)) {
+                isClass = false;
+                break;
+            }
+        }
+        if (isClass) {
+            return "<html>" +
+                    "TYPE: " +
+                    "<font style=\"color: blue; font-weight: bold;\">" +
+                    typeName +
+                    "</font>" +
+                    " " +
+                    "VALUE: " +
+                    "<font style=\"color: green; font-weight: bold;\">" +
+                    displayValue +
+                    "</font>" +
+                    " " +
+                    "<font style=\"color: orange; font-weight: bold;\">" +
+                    className.replace("/", ".") +
+                    "</font>" +
+                    "</html>";
+        } else {
+            return "<html>" +
+                    "TYPE: " +
+                    "<font style=\"color: blue; font-weight: bold;\">" +
+                    typeName +
+                    "</font>" +
+                    " " +
+                    "VALUE: " +
+                    "<font style=\"color: green; font-weight: bold;\">" +
+                    displayValue +
+                    "</font>" +
+                    " " +
+                    "<font style=\"color: orange; font-weight: bold;\">" +
+                    className +
+                    "</font>" +
+                    "</html>";
+        }
     }
 
     public String getCopyString() {

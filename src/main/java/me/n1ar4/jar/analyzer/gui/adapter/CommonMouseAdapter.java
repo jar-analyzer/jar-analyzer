@@ -280,7 +280,7 @@ public class CommonMouseAdapter extends MouseAdapter {
                     return;
                 }
 
-                frameIns = PreviewForm.start(code, pos);
+                frameIns = PreviewForm.start(code, pos, true);
             });
 
             JMenuItem clearHis = new JMenuItem("清除历史 / clear history");

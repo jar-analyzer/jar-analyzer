@@ -1,5 +1,40 @@
 # CHANGELOG
 
+## 5.14
+
+更新日志：
+
+- [功能] 信息泄露检查允许跳转和高亮配置文件内容 @4ra1n
+- [功能] 信息泄露检查允许右键复制值和预览内容 @4ra1n
+- [功能] `agent` 支持 `tomcat` 和 `undertow` 两种远程分析 @fantasy
+- [BUG] 信息泄露检查配置文件路径显示错误问题 @4ra1n
+- [BUG] 修复 `report-mcp` 默认端口错误 (不影响使用) @4ra1n
+- [优化] 优化 `tomcat-analyzer` 组件 `UI` 展示 @4ra1n
+- [优化] 优化 `API` 错误情况显示更多有效信息 @4ra1n
+- [其他] 补充序列化数据分析测试文件和默认数据 @4ra1n
+
+感谢以下用户的贡献:
+
+- 4ra1n (https://github.com/4ra1n)
+- fantasy (https://github.com/ly-test-fuzz)
+
+所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
+
+- `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (**完整版本**)
+- `windows-21` 版内置开启 `ZGC` 的 `JRE 21` 环境（激进用户尝试使用）
+- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
+- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
+
+一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
+
+如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
+
+可选的其他 `AI` 相关下载内容:
+
+- `mcp-build.zip` 包含所有系统的 `mcp` 一般使用 `mcp_windows_amd64.exe`
+- `report-mcp-build.zip` 配合 `workflow` 使用的自动报告生成 `mcp`
+- `jar-audit-agent.zip` 是 `AI` 分析使用到的 `SKILL`
+
 ## 5.13
 
 更新日志：

@@ -28,3 +28,5 @@ Steps:
 - Run git commit and push
 - Github Action Build
 - Change `version.txt` on `OSS Browser`
+- UPDATE `README` version count
+- UPDATE https://docs.qq.com/doc/DV3pKbG9GS0pJS0tk

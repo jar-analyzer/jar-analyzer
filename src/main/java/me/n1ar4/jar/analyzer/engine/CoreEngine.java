@@ -53,11 +53,8 @@ public class CoreEngine {
         }
         try (Stream<Path> stream = Files.list(tempDir)) {
             List<Path> files = stream.collect(Collectors.toList());
-            if (files.size() == 1 && "console.dll".equals(files.get(0).getFileName().toString())) {
-                return false;
-            } else {
-                return files.size() > 1;
-            }
+            // 2026/02/05 BUG 如果 LINUX/MAC 且只有一个包名 则 API 不可用
+            return !files.isEmpty();
         } catch (IOException e) {
             logger.error(e.getMessage());
             return false;

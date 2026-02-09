@@ -33,7 +33,7 @@ public class CFRDecompileEngine {
             "// Jar Analyzer by 4ra1n\n" +
             "// (powered by CFR decompiler)\n" +
             "//\n";
-    private static final LRUCache lruCache = new LRUCache(30);
+    private static final LRUCache lruCache = new LRUCache();
 
     /**
      * 使用CFR反编译指定的class文件

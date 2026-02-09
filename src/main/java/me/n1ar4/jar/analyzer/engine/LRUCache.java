@@ -24,6 +24,10 @@ public class LRUCache {
     private final Node head;
     private final Node tail;
 
+    public LRUCache() {
+        this(0xff);
+    }
+
     public LRUCache(int capacity) {
         this.capacity = capacity;
         this.nodes = new Node[capacity];

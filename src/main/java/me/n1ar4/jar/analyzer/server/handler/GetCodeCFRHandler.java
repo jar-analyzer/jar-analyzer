@@ -57,7 +57,7 @@ public class GetCodeCFRHandler extends BaseHandler implements HttpHandler {
                 result.put("message", "failed to decompile class: " + className);
                 return buildJSON(JSON.toJSONString(result));
             }
-            String methodCode = extractMethodCode(decompiledCode, methodName, methodDesc);
+            String methodCode = extractMethodCode(className, decompiledCode, methodName, methodDesc);
             if (methodCode == null) {
                 methodCode = "";
             }

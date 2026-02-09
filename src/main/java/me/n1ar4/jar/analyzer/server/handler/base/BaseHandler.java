@@ -11,6 +11,7 @@
 package me.n1ar4.jar.analyzer.server.handler.base;
 
 import fi.iki.elonen.NanoHTTPD;
+import me.n1ar4.jar.analyzer.engine.LRUCache;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.utils.StringUtil;
 import me.n1ar4.log.LogManager;
@@ -25,6 +26,8 @@ import java.util.regex.Pattern;
 
 public class BaseHandler {
     private static final Logger logger = LogManager.getLogger();
+
+    private static final LRUCache lruCache = new LRUCache();
 
     public String getClassName(NanoHTTPD.IHTTPSession session) {
         List<String> clazz = session.getParameters().get("class");
@@ -118,9 +121,17 @@ public class BaseHandler {
      * @param methodDesc 方法描述符（可选）
      * @return 方法代码，如果未找到则返回null
      */
-    protected String extractMethodCode(String classCode, String methodName, String methodDesc) {
+    protected String extractMethodCode(String className, String classCode, String methodName, String methodDesc) {
         if (StringUtil.isNull(classCode) || StringUtil.isNull(methodName)) {
             return null;
+        }
+
+        // 2026-02-09 LRU CACHE
+        String key = className + "#" + methodName + "#" + methodDesc;
+        String resultCode = lruCache.get(key);
+        if (resultCode != null && !resultCode.isEmpty()) {
+            logger.info("return lru cache : {}", className);
+            return resultCode;
         }
 
         try {
@@ -173,9 +184,13 @@ public class BaseHandler {
             }
 
             if (foundMethod) {
-                return methodCode.toString().trim();
+                String foundResult = methodCode.toString().trim();
+                lruCache.put(key, foundResult);
+                return foundResult;
             } else {
-                return findMethodByFuzzyMatch(classCode, methodName);
+                String fuzzResult = findMethodByFuzzyMatch(classCode, methodName);
+                lruCache.put(key, fuzzResult);
+                return fuzzResult;
             }
 
         } catch (Exception e) {

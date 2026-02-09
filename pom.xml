@@ -88,12 +88,12 @@
         <spring.version>5.3.39</spring.version>
         <okhttp3.version>4.12.0</okhttp3.version>
         <nano.version>2.3.1</nano.version>
-        <fastjson.version>2.0.60</fastjson.version>
+        <fastjson.version>2.0.61</fastjson.version>
         <hutool.version>5.8.43</hutool.version>
         <jfreechart.version>1.5.6</jfreechart.version>
-        <oshi.version>6.9.2</oshi.version>
+        <oshi.version>6.9.3</oshi.version>
         <lucene.version>7.7.3</lucene.version>
-        <bcel.version>6.11.0</bcel.version>
+        <bcel.version>6.12.0</bcel.version>
         <java.parser.version>3.28.0</java.parser.version>
         <snakeyaml.version>2.5</snakeyaml.version>
         <csv.version>1.14.1</csv.version>
@@ -102,13 +102,13 @@
         <cfr.version>0.152</cfr.version>
         <!-- Maven Build Version -->
         <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-resources-plugin -->
-        <maven.resources.version>3.3.1</maven.resources.version>
+        <maven.resources.version>3.4.0</maven.resources.version>
         <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-assembly-plugin -->
-        <maven.assembly.version>3.7.1</maven.assembly.version>
+        <maven.assembly.version>3.8.0</maven.assembly.version>
         <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
-        <maven.compiler.version>3.13.0</maven.compiler.version>
+        <maven.compiler.version>3.15.0</maven.compiler.version>
         <!-- https://mvnrepository.com/artifact/org.codehaus.mojo/versions-maven-plugin -->
-        <maven.versions.version>2.18.0</maven.versions.version>
+        <maven.versions.version>2.21.0</maven.versions.version>
         <!-- Java Compiler Version -->
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>

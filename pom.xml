@@ -16,7 +16,7 @@
 
     <groupId>me.n1ar4</groupId>
     <artifactId>jar-analyzer</artifactId>
-    <version>5.14</version>
+    <version>5.15</version>
 
     <packaging>jar</packaging>
     <description>Jar Analyzer Project</description>

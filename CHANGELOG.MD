@@ -6,6 +6,7 @@
 
 - [BUG] `LINUX/MAC` 某些情况 `API` 和 `MCP` 不可用 @4ra1n
 - [其他] 升级内置 `JRE` 到 `8u482` 和 `21.0.10` @4ra1n
+- [其他] 升级 `mcp` 和 `report-mcp` 的依赖版本 @4ra1n
 
 感谢以下用户的贡献:
 

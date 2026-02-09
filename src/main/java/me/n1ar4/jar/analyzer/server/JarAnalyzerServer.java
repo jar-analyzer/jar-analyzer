@@ -10,9 +10,9 @@
 
 package me.n1ar4.jar.analyzer.server;
 
-import fi.iki.elonen.NanoHTTPD;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
+import me.n1ar4.server.NanoHTTPD;
 
 public class JarAnalyzerServer extends NanoHTTPD {
     private static final Logger logger = LogManager.getLogger();

@@ -10,12 +10,12 @@
 
 package me.n1ar4.jar.analyzer.server.handler.base;
 
-import fi.iki.elonen.NanoHTTPD;
 import me.n1ar4.jar.analyzer.engine.LRUCache;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.utils.StringUtil;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
+import me.n1ar4.server.NanoHTTPD;
 import org.objectweb.asm.Type;
 
 import java.nio.charset.StandardCharsets;

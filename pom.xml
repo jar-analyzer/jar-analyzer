@@ -87,7 +87,6 @@
         <dom4j.version>2.1.5</dom4j.version>
         <spring.version>5.3.39</spring.version>
         <okhttp3.version>4.12.0</okhttp3.version>
-        <nano.version>2.3.1</nano.version>
         <fastjson.version>2.0.61</fastjson.version>
         <hutool.version>5.8.43</hutool.version>
         <jfreechart.version>1.5.6</jfreechart.version>
@@ -223,11 +222,6 @@
             <groupId>com.github.javaparser</groupId>
             <artifactId>javaparser-symbol-solver-core</artifactId>
             <version>${java.parser.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.nanohttpd</groupId>
-            <artifactId>nanohttpd</artifactId>
-            <version>${nano.version}</version>
         </dependency>
         <dependency>
             <groupId>org.yaml</groupId>

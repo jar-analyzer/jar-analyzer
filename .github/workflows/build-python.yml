@@ -9,12 +9,12 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
-    - name: Zip jar-audit-agent
+    - name: zip jar-audit-agent
       run: |
         cd skills
         zip -r jar-audit-agent.zip jar-audit-agent
         
-    - name: Upload artifact
+    - name: upload artifact
       uses: actions/upload-artifact@v4
       with:
         name: jar-audit-agent

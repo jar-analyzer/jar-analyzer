@@ -121,14 +121,6 @@ Jar Analyzer
 
 ![](img/0083.png)
 
-从 `4.0` 版本开始可以和 `IDEA` 一样快捷键两次 `shift` 调出 `Lucene` 全局搜索
-
-![](img/0067.png)
-
-自从 `4.2` 版本后支持黑暗主题切换
-
-![](img/0071.png)
-
 ## AI 相关
 
 自从 `5.10` 版本后支持 `MCP` 请参考文档 [MCP](mcp-doc/README.md)

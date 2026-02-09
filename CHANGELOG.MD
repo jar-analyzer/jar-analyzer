@@ -4,7 +4,9 @@
 
 更新日志：
 
-- [BUG] `LINUX/MAC` 某些情况 `API` 和 `MCP` 不可用 @4ra1n
+- [重要] 重构 `HTTP` 服务端大幅提升 `API/MCP` 效率 @4ra1n
+- [BUG] `LINUX/MAC` 某些情况 `API/MCP` 不可用 @4ra1n
+- [优化] 使用 `LRU` 缓存提升 `API/MCP` 提取代码效率 @4ra1n
 - [其他] 升级内置 `JRE` 到 `8u482` 和 `21.0.10` @4ra1n
 - [其他] 升级 `mcp` 和 `report-mcp` 的依赖版本 @4ra1n
 - [其他] 所有依赖升级到支持 `Java 8` 的最新版 @4ra1n

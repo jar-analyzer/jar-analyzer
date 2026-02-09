@@ -27,7 +27,7 @@ The `jar-analyzer` project has been continuously updated for `5` years, with `57
 感谢以下贡献者（排名不分先后）
 
 <p>
-  <a href="https://github.com/4ra1n"><img src="https://github.com/4ra1n.png?size=72" width="72" height="172" alt="4ra1n" /></a>
+  <a href="https://github.com/4ra1n"><img src="https://github.com/4ra1n.png?size=72" width="72" height="72" alt="4ra1n" /></a>
   <a href="https://github.com/whwlsfb"><img src="https://github.com/whwlsfb.png?size=72" width="72" height="72" alt="whwlsfb" /></a>
   <a href="https://github.com/0cat-r"><img src="https://github.com/0cat-r.png?size=72" width="72" height="72" alt="0cat-r" /></a>
   <a href="https://github.com/Gosiu"><img src="https://github.com/Gosiu.png?size=72" width="72" height="72" alt="Gosiu" /></a>

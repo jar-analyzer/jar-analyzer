@@ -14,6 +14,7 @@ import me.n1ar4.jar.analyzer.core.asm.MethodCallClassVisitor;
 import me.n1ar4.jar.analyzer.core.reference.MethodReference;
 import me.n1ar4.jar.analyzer.entity.ClassFileEntity;
 import me.n1ar4.jar.analyzer.starter.Const;
+import me.n1ar4.jar.analyzer.utils.StackMapFrameHandler;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 import org.objectweb.asm.ClassReader;
@@ -34,6 +35,13 @@ public class MethodCallRunner {
                         new MethodCallClassVisitor(methodCalls);
                 ClassReader cr = new ClassReader(file.getFile());
                 cr.accept(mcv, Const.AnalyzeASMOptions);
+            } catch (IndexOutOfBoundsException e) {
+                // Handle corrupted StackMapTable by falling back to SKIP_FRAMES mode
+                if (!StackMapFrameHandler.handleParseException(file, 
+                        new MethodCallClassVisitor(methodCalls), 
+                        logger, "method call analysis", e)) {
+                    logger.error("method call error: {}", e.toString());
+                }
             } catch (Exception e) {
                 logger.error("method call error: {}", e.toString());
             }

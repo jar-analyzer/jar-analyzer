@@ -10,11 +10,13 @@
 
 package me.n1ar4.jar.analyzer.taint;
 
+import me.n1ar4.jar.analyzer.core.AnalyzeEnv;
 import me.n1ar4.jar.analyzer.core.reference.MethodReference;
 import me.n1ar4.jar.analyzer.dfs.DFSResult;
 import me.n1ar4.jar.analyzer.engine.CoreEngine;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.starter.Const;
+import me.n1ar4.jar.analyzer.utils.StackMapFrameHandler;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 import org.objectweb.asm.ClassReader;
@@ -130,6 +132,15 @@ public class TaintAnalyzer {
                             if (pass.get() != TAINT_FAIL) {
                                 break;
                             }
+                        } catch (IndexOutOfBoundsException e) {
+                            // Handle corrupted StackMapTable by falling back to SKIP_FRAMES mode
+                            TaintClassVisitor tcv = new TaintClassVisitor(k, m, next, pass, rule, text);
+                            if (!StackMapFrameHandler.handleParseException(clsBytes, tcv, 
+                                    absPath + "!" + m.getClassReference().getName(), logger, "taint analysis chain start", e)) {
+                                logger.error("污点分析 - 链开始 - 错误: {}", e.toString());
+                            } else {
+                                pass = tcv.getPass();
+                            }
                         } catch (Exception e) {
                             logger.error("污点分析 - 链开始 - 错误: {}", e.toString());
                         }
@@ -145,6 +156,15 @@ public class TaintAnalyzer {
                         logger.info("数据流结果 - 传播到第 {} 个参数", pass.get());
                         text.append(String.format("数据流结果 - 传播到第 %d 个参数", pass.get()));
                         text.append("\n");
+                    } catch (IndexOutOfBoundsException e) {
+                        // Handle corrupted StackMapTable by falling back to SKIP_FRAMES mode
+                        TaintClassVisitor tcv = new TaintClassVisitor(pass.get(), m, next, pass, rule, text);
+                        if (!StackMapFrameHandler.handleParseException(clsBytes, tcv, 
+                                absPath + "!" + m.getClassReference().getName(), logger, "taint analysis chain middle", e)) {
+                            logger.error("污点分析 - 链中 - 错误: {}", e.toString());
+                        } else {
+                            pass = tcv.getPass();
+                        }
                     } catch (Exception e) {
                         logger.error("污点分析 - 链中 - 错误: {}", e.toString());
                     }

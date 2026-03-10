@@ -28,6 +28,7 @@ import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.utils.CoreUtil;
 import me.n1ar4.jar.analyzer.utils.DirUtil;
 import me.n1ar4.jar.analyzer.utils.IOUtil;
+import me.n1ar4.jar.analyzer.utils.StackMapFrameHandler;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 import org.objectweb.asm.ClassReader;
@@ -50,6 +51,9 @@ public class CoreRunner {
     private static boolean quickMode = false;
 
     public static void run(Path jarPath, Path rtJarPath, boolean fixClass, JDialog dialog) {
+        // Clear corrupted files tracking at the start of each analysis
+        AnalyzeEnv.corruptedFiles.clear();
+
         // 2024-12-30
         // 非 CLI 才会弹窗
         if (!AnalyzeEnv.isCli) {
@@ -183,8 +187,15 @@ public class CoreRunner {
                 // fix class name
                 Path parPath = Paths.get(Const.tempDir);
                 FixClassVisitor cv = new FixClassVisitor();
-                ClassReader cr = new ClassReader(cf.getFile());
-                cr.accept(cv, Const.AnalyzeASMOptions);
+                try {
+                    ClassReader cr = new ClassReader(cf.getFile());
+                    cr.accept(cv, Const.AnalyzeASMOptions);
+                } catch (IndexOutOfBoundsException e) {
+                    // Handle corrupted StackMapTable by falling back to SKIP_FRAMES mode
+                    if (!StackMapFrameHandler.handleParseException(cf.getFile(), cv, cf.getJarName() + "!" + cf.getClassName(), logger, "fix class name", e)) {
+                        throw e;
+                    }
+                }
                 // get actual class name
                 Path path = parPath.resolve(Paths.get(cv.getName()));
                 File file = path.toFile();
@@ -272,6 +283,13 @@ public class CoreRunner {
                     StringClassVisitor dcv = new StringClassVisitor(AnalyzeEnv.strMap, AnalyzeEnv.classMap, AnalyzeEnv.methodMap);
                     ClassReader cr = new ClassReader(file.getFile());
                     cr.accept(dcv, Const.AnalyzeASMOptions);
+                } catch (IndexOutOfBoundsException e) {
+                    // Handle corrupted StackMapTable by falling back to SKIP_FRAMES mode
+                    if (!StackMapFrameHandler.handleParseException(file, 
+                            new StringClassVisitor(AnalyzeEnv.strMap, AnalyzeEnv.classMap, AnalyzeEnv.methodMap), 
+                            logger, "string analysis", e)) {
+                        logger.error("string analyze error: {}", e.toString());
+                    }
                 } catch (Exception ex) {
                     logger.error("string analyze error: {}", ex.toString());
                 }
@@ -359,6 +377,37 @@ public class CoreRunner {
         CoreHelper.refreshServlets();
         CoreHelper.refreshFilters();
         CoreHelper.refreshLiteners();
+
+        // Show popup notification if there are corrupted files with StackMapTable issues
+        if (!AnalyzeEnv.corruptedFiles.isEmpty()) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("<html><body>");
+            sb.append("<h3>以下文件存在 StackMapTable 损坏问题（已使用 SKIP_FRAMES 模式解析）：</h3>");
+            sb.append("<p>损坏文件总数: <b>").append(AnalyzeEnv.corruptedFiles.size()).append("</b></p>");
+            sb.append("<ul>");
+            for (String fileInfo : AnalyzeEnv.corruptedFiles) {
+                // Parse the file info: jarName!className [exceptionMessage]
+                String[] parts = fileInfo.split("!", 2);
+                if (parts.length == 2) {
+                    String jarName = parts[0];
+                    String classAndError = parts[1];
+                    sb.append("<li><b>Jar:</b> ").append(jarName)
+                      .append(" <b>Class:</b> ").append(classAndError).append("</li>");
+                } else {
+                    sb.append("<li>").append(fileInfo).append("</li>");
+                }
+            }
+            sb.append("</ul>");
+            sb.append("<p>这些文件可能经过混淆处理，分析结果可能不完整。</p>");
+            sb.append("</body></html>");
+            
+            JOptionPane.showMessageDialog(
+                MainForm.getInstance().getMasterPanel(),
+                sb.toString(),
+                "StackMapTable 损坏文件警告",
+                JOptionPane.WARNING_MESSAGE
+            );
+        }
 
         if (dialog != null) {
             dialog.setVisible(false);

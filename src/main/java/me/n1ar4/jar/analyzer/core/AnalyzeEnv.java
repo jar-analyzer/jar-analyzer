@@ -36,4 +36,10 @@ public class AnalyzeEnv {
     public static ArrayList<String> filters = new ArrayList<>();
     public static ArrayList<String> listeners = new ArrayList<>();
     public static Map<MethodReference.Handle, List<String>> stringAnnoMap = new HashMap<>();
+
+    /**
+     * Track corrupted class files with StackMapTable issues.
+     * Key: jarName + "!" + classFileName, Value: exception message
+     */
+    public static final Set<String> corruptedFiles = new HashSet<>();
 }

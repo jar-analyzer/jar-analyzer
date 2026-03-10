@@ -10,6 +10,7 @@
 
 package me.n1ar4.jar.analyzer.engine;
 
+import me.n1ar4.jar.analyzer.core.AnalyzeEnv;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
 import me.n1ar4.jar.analyzer.starter.Const;
@@ -191,7 +192,15 @@ public class DecompileEngine {
                 if (Files.exists(newFilePath)) {
                     byte[] code = Files.readAllBytes(newFilePath);
                     String codeStr = new String(code);
-                    codeStr = FERN_PREFIX + codeStr;
+                    // Check if this file was parsed with SKIP_FRAMES due to corrupted StackMapTable
+                    String classFileName = classFilePath.getFileName().toString();
+                    boolean isCorrupted = AnalyzeEnv.corruptedFiles.stream()
+                            .anyMatch(s -> s.contains(classFileName));
+                    if (isCorrupted) {
+                        codeStr = FERN_PREFIX + Const.CORRUPTED_STACKMAP_WARNING + codeStr;
+                    } else {
+                        codeStr = FERN_PREFIX + codeStr;
+                    }
                     // TRY DELETE CACHE
                     try {
                         Files.delete(newFilePath);

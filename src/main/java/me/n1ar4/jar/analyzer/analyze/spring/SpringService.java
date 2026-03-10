@@ -15,6 +15,7 @@ import me.n1ar4.jar.analyzer.core.reference.ClassReference;
 import me.n1ar4.jar.analyzer.core.reference.MethodReference;
 import me.n1ar4.jar.analyzer.entity.ClassFileEntity;
 import me.n1ar4.jar.analyzer.starter.Const;
+import me.n1ar4.jar.analyzer.utils.StackMapFrameHandler;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 import org.objectweb.asm.ClassReader;
@@ -37,6 +38,19 @@ public class SpringService {
                 SpringClassVisitor mcv = new SpringClassVisitor(controllers, classMap, methodMap);
                 ClassReader cr = new ClassReader(file.getFile());
                 cr.accept(mcv, Const.AnalyzeASMOptions);
+            } catch (IndexOutOfBoundsException e) {
+                // Handle corrupted StackMapTable by falling back to SKIP_FRAMES mode
+                if (!StackMapFrameHandler.handleParseException(file, 
+                        new SpringClassVisitor(controllers, classMap, methodMap), 
+                        logger, "spring analysis", e)) {
+                    ByteArrayOutputStream bao = new ByteArrayOutputStream();
+                    PrintWriter ps = new PrintWriter(bao);
+                    e.printStackTrace(ps);
+                    ps.flush();
+                    ps.close();
+                    System.out.println("#################### SPRING ANALYZE ERROR ####################");
+                    System.out.print(bao);
+                }
             } catch (Exception e) {
                 ByteArrayOutputStream bao = new ByteArrayOutputStream();
                 PrintWriter ps = new PrintWriter(bao);

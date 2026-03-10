@@ -135,11 +135,11 @@ if __name__ == '__main__':
     print("[*] copy jd-gui readme")
     copy_file("lib\\README.md", "release\\" + release_win_system_dir + "\\lib\\README.md")
     copy_file("lib\\README.md", "release\\" + release_win_full_dir + "\\lib\\README.md")
-    copy_file("lib\\README.md", "release\\" + release_win_21_dir + "\\lib\\README.md")
+    copy_file("lib\\README.md", "release\\" + release_win_25_dir + "\\lib\\README.md")
     copy_file("lib\\README.md", "release\\" + release_zip_dir + "\\lib\\README.md")
 
     print("[*] copy jd-gui license")
     copy_file("lib\\LICENSE", "release\\" + release_win_system_dir + "\\lib\\LICENSE")
     copy_file("lib\\LICENSE", "release\\" + release_win_full_dir + "\\lib\\LICENSE")
-    copy_file("lib\\LICENSE", "release\\" + release_win_21_dir + "\\lib\\LICENSE")
+    copy_file("lib\\LICENSE", "release\\" + release_win_25_dir + "\\lib\\LICENSE")
     copy_file("lib\\LICENSE", "release\\" + release_zip_dir + "\\lib\\LICENSE")

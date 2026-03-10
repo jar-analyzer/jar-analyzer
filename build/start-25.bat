@@ -28,7 +28,7 @@ rem arg --font-size to select font size (example: --font-size 16)
 set "program_args=--theme %theme_name% --port %api_server_port% --log-level %log_level%"
 
 rem start jar
-echo [*] RUN %jar-analyzer% ON JAVA 21
+echo [*] RUN %jar-analyzer% ON JAVA 25
 echo [*] JVM ARGS: %java_args%
 %jre_bin_abs% %java_args% -cp %java_cp% %main_class% gui %program_args%
 

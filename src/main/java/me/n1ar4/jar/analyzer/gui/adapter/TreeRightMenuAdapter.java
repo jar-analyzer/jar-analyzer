@@ -16,15 +16,15 @@ import me.n1ar4.jar.analyzer.engine.index.IndexPluginsSupport;
 import me.n1ar4.jar.analyzer.entity.ClassResult;
 import me.n1ar4.jar.analyzer.gui.LuceneSearchForm;
 import me.n1ar4.jar.analyzer.gui.MainForm;
+import me.n1ar4.jar.analyzer.gui.tree.FileTreeNode;
 import me.n1ar4.jar.analyzer.gui.util.IconManager;
 import me.n1ar4.jar.analyzer.utils.OpenUtil;
 import me.n1ar4.jar.analyzer.utils.StringUtil;
 
-import me.n1ar4.jar.analyzer.gui.tree.FileTreeNode;
-
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -208,18 +208,23 @@ public class TreeRightMenuAdapter extends MouseAdapter {
     @Override
     public void mouseReleased(MouseEvent e) {
         if (SwingUtilities.isRightMouseButton(e)) {
-            int row = fileTree.getRowForLocation(e.getX(), e.getY());
+            int row = fileTree.getClosestRowForLocation(e.getX(), e.getY());
+            if (row < 0) {
+                return;
+            }
+            Rectangle bounds = fileTree.getRowBounds(row);
+            if (bounds == null || e.getY() < bounds.y || e.getY() > bounds.y + bounds.height) {
+                return;
+            }
             TreePath path = fileTree.getPathForRow(row);
             if (path == null || path.getLastPathComponent() == null) {
                 return;
             }
             fileTree.setSelectionPath(path);
-            if (row >= 0) {
-                if (isClassNode(path)) {
-                    popupMenu.show(fileTree, e.getX(), e.getY());
-                } else if (isDirectoryNode(path)) {
-                    dirPopupMenu.show(fileTree, e.getX(), e.getY());
-                }
+            if (isClassNode(path)) {
+                popupMenu.show(fileTree, e.getX(), e.getY());
+            } else if (isDirectoryNode(path)) {
+                dirPopupMenu.show(fileTree, e.getX(), e.getY());
             }
         }
     }

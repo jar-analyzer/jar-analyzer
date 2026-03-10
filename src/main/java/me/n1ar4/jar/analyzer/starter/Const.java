@@ -21,6 +21,21 @@ public interface Const {
     int GlobalASMOptions = ClassReader.SKIP_FRAMES | ClassReader.SKIP_DEBUG;
     int AnalyzeASMOptions = ClassReader.EXPAND_FRAMES;
 
+    /**
+     * Fallback ASM option for handling corrupted StackMapTable class files.
+     * When EXPAND_FRAMES throws IndexOutOfBoundsException, use this option to skip frame parsing.
+     */
+    int FallbackASMOptions = ClassReader.SKIP_FRAMES;
+
+    /**
+     * Warning message for class files parsed with SKIP_FRAMES due to corrupted StackMapTable.
+     */
+    String CORRUPTED_STACKMAP_WARNING =
+            "// WARNING: This class file was parsed with SKIP_FRAMES mode due to corrupted StackMapTable\n" +
+            "// 警告：此 class 文件因 StackMapTable 损坏而使用 SKIP_FRAMES 模式解析\n" +
+            "// The StackMapTable contains invalid bytecode offset that exceeds code length\n" +
+            "// StackMapTable 包含超出代码长度的无效字节码偏移量\n";
+
     String app = "Jar Analyzer - 4ra1n - " + version;
     String checkUpdateUrl = "https://jar-analyzer.oss-cn-hangzhou.aliyuncs.com/jar-analyzer/version.txt";
     String authorUrl = "https://github.com/4ra1n";

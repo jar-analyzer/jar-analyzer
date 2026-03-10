@@ -27,11 +27,30 @@ public class ASMPrint {
     private static final Logger logger = LogManager.getLogger();
 
     public static String getPrint(InputStream is, boolean flag) {
+        return getPrint(is, flag, false);
+    }
+
+    /**
+     * Get ASM print output for a class file.
+     *
+     * @param is The input stream of the class file
+     * @param flag true for ASMifier output, false for Textifier output
+     * @param usedSkipFrames true if this class was parsed with SKIP_FRAMES due to corrupted StackMapTable
+     * @return The formatted output string
+     */
+    public static String getPrint(InputStream is, boolean flag, boolean usedSkipFrames) {
         try {
             int parsingOptions = Const.GlobalASMOptions;
             Printer printer = flag ? new ASMifier() : new Textifier();
             ByteArrayOutputStream bao = new ByteArrayOutputStream();
             PrintWriter printWriter = new PrintWriter(bao, true);
+            
+            // Add warning comment if this class was parsed with SKIP_FRAMES due to corrupted StackMapTable
+            if (usedSkipFrames) {
+                printWriter.print(Const.CORRUPTED_STACKMAP_WARNING);
+                printWriter.println();
+            }
+            
             TraceClassVisitor traceClassVisitor = new TraceClassVisitor(null, printer, printWriter);
             new ClassReader(is).accept(traceClassVisitor, parsingOptions);
             return bao.toString();

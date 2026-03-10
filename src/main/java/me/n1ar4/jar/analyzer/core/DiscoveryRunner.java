@@ -16,6 +16,7 @@ import me.n1ar4.jar.analyzer.core.reference.ClassReference;
 import me.n1ar4.jar.analyzer.core.reference.MethodReference;
 import me.n1ar4.jar.analyzer.entity.ClassFileEntity;
 import me.n1ar4.jar.analyzer.starter.Const;
+import me.n1ar4.jar.analyzer.utils.StackMapFrameHandler;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 import org.objectweb.asm.ClassReader;
@@ -40,6 +41,13 @@ public class DiscoveryRunner {
                         discoveredMethods, file.getJarName(), file.getJarId());
                 ClassReader cr = new ClassReader(file.getFile());
                 cr.accept(dcv, Const.AnalyzeASMOptions);
+            } catch (IndexOutOfBoundsException e) {
+                // Handle corrupted StackMapTable by falling back to SKIP_FRAMES mode
+                if (!StackMapFrameHandler.handleParseException(file, 
+                        new DiscoveryClassVisitor(discoveredClasses, discoveredMethods, file.getJarName(), file.getJarId()), 
+                        logger, "class discovery", e)) {
+                    logger.error("discovery error: {}", e.toString());
+                }
             } catch (Exception e) {
                 logger.error("discovery error: {}", e.toString());
             }
@@ -56,6 +64,13 @@ public class DiscoveryRunner {
                 StringAnnoClassVisitor sav = new StringAnnoClassVisitor(stringAnnoMap);
                 ClassReader cr = new ClassReader(file.getFile());
                 cr.accept(sav, Const.AnalyzeASMOptions);
+            } catch (IndexOutOfBoundsException e) {
+                // Handle corrupted StackMapTable by falling back to SKIP_FRAMES mode
+                if (!StackMapFrameHandler.handleParseException(file, 
+                        new StringAnnoClassVisitor(stringAnnoMap), 
+                        logger, "string annotation analysis", e)) {
+                    logger.error("discovery error: {}", e.toString());
+                }
             } catch (Exception e) {
                 logger.error("discovery error: {}", e.toString());
             }

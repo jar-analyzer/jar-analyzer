@@ -13,6 +13,7 @@ package me.n1ar4.jar.analyzer.core;
 import me.n1ar4.jar.analyzer.core.asm.JavaWebClassVisitor;
 import me.n1ar4.jar.analyzer.entity.ClassFileEntity;
 import me.n1ar4.jar.analyzer.starter.Const;
+import me.n1ar4.jar.analyzer.utils.StackMapFrameHandler;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 import org.objectweb.asm.ClassReader;
@@ -34,6 +35,13 @@ public class OtherWebService {
                 JavaWebClassVisitor jcv = new JavaWebClassVisitor(interceptors, servlets, filters, listeners);
                 ClassReader cr = new ClassReader(file.getFile());
                 cr.accept(jcv, Const.AnalyzeASMOptions);
+            } catch (IndexOutOfBoundsException e) {
+                // Handle corrupted StackMapTable by falling back to SKIP_FRAMES mode
+                if (!StackMapFrameHandler.handleParseException(file, 
+                        new JavaWebClassVisitor(interceptors, servlets, filters, listeners), 
+                        logger, "java web analysis", e)) {
+                    logger.error("error: {}", e.getMessage());
+                }
             } catch (Exception e) {
                 logger.error("error: {}", e.getMessage());
             }

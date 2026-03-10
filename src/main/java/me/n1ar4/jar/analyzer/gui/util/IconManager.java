@@ -36,6 +36,7 @@ public class IconManager {
     public static ImageIcon callIcon;
     public static ImageIcon pubIcon;
     public static ImageIcon fileIcon;
+    public static ImageIcon fileSmallIcon;
     public static ImageIcon engineIcon;
     public static ImageIcon cleanIcon;
     public static ImageIcon remoteIcon;
@@ -144,6 +145,12 @@ public class IconManager {
                             .getClassLoader().getResourceAsStream("img/file.png"))));
             resizedImage = fileIcon.getImage().getScaledInstance(70, 30, Image.SCALE_SMOOTH);
             fileIcon = new ImageIcon(resizedImage);
+
+            fileSmallIcon = new ImageIcon(ImageIO.read(
+                    Objects.requireNonNull(IconManager.class
+                            .getClassLoader().getResourceAsStream("img/file.png"))));
+            resizedImage = fileSmallIcon.getImage().getScaledInstance(35, 15, Image.SCALE_SMOOTH);
+            fileSmallIcon = new ImageIcon(resizedImage);
 
             engineIcon = new ImageIcon(ImageIO.read(
                     Objects.requireNonNull(IconManager.class

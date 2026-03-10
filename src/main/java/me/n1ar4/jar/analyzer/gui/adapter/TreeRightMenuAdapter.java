@@ -20,7 +20,10 @@ import me.n1ar4.jar.analyzer.gui.util.IconManager;
 import me.n1ar4.jar.analyzer.utils.OpenUtil;
 import me.n1ar4.jar.analyzer.utils.StringUtil;
 
+import me.n1ar4.jar.analyzer.gui.tree.FileTreeNode;
+
 import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -37,6 +40,7 @@ public class TreeRightMenuAdapter extends MouseAdapter {
             "</html>";
     private final JTree fileTree = MainForm.getInstance().getFileTree();
     private final JPopupMenu popupMenu;
+    private final JPopupMenu dirPopupMenu;
 
 
     public TreeRightMenuAdapter() {
@@ -50,6 +54,20 @@ public class TreeRightMenuAdapter extends MouseAdapter {
         popupMenu.add(decompileItem);
         popupMenu.add(superClassItem);
         popupMenu.add(openItem);
+
+        dirPopupMenu = new JPopupMenu();
+        JMenuItem expandItem = new JMenuItem("展开");
+        expandItem.setIcon(IconManager.fileSmallIcon);
+        JMenuItem collapseItem = new JMenuItem("折叠");
+        collapseItem.setIcon(IconManager.fileSmallIcon);
+        JMenuItem expandAllItem = new JMenuItem("展开所有");
+        expandAllItem.setIcon(IconManager.fileSmallIcon);
+        JMenuItem collapseAllItem = new JMenuItem("折叠所有");
+        collapseAllItem.setIcon(IconManager.fileSmallIcon);
+        dirPopupMenu.add(expandItem);
+        dirPopupMenu.add(collapseItem);
+        dirPopupMenu.add(expandAllItem);
+        dirPopupMenu.add(collapseAllItem);
 
         openItem.addActionListener(e -> {
             TreePath selectedPath = fileTree.getSelectionPath();
@@ -157,6 +175,34 @@ public class TreeRightMenuAdapter extends MouseAdapter {
                 MainForm.getInstance().getCallerList().setModel(new DefaultListModel<>());
             }
         });
+
+        expandItem.addActionListener(e -> {
+            TreePath selectedPath = fileTree.getSelectionPath();
+            if (selectedPath != null) {
+                fileTree.expandPath(selectedPath);
+            }
+        });
+
+        collapseItem.addActionListener(e -> {
+            TreePath selectedPath = fileTree.getSelectionPath();
+            if (selectedPath != null) {
+                fileTree.collapsePath(selectedPath);
+            }
+        });
+
+        expandAllItem.addActionListener(e -> {
+            TreePath selectedPath = fileTree.getSelectionPath();
+            if (selectedPath != null) {
+                setExpandedRecursive(selectedPath, true);
+            }
+        });
+
+        collapseAllItem.addActionListener(e -> {
+            TreePath selectedPath = fileTree.getSelectionPath();
+            if (selectedPath != null) {
+                setExpandedRecursive(selectedPath, false);
+            }
+        });
     }
 
     @Override
@@ -167,13 +213,54 @@ public class TreeRightMenuAdapter extends MouseAdapter {
             if (path == null || path.getLastPathComponent() == null) {
                 return;
             }
-            if (!path.getLastPathComponent().toString().endsWith(".class")) {
-                return;
-            }
             fileTree.setSelectionPath(path);
             if (row >= 0) {
-                popupMenu.show(fileTree, e.getX(), e.getY());
+                if (isClassNode(path)) {
+                    popupMenu.show(fileTree, e.getX(), e.getY());
+                } else if (isDirectoryNode(path)) {
+                    dirPopupMenu.show(fileTree, e.getX(), e.getY());
+                }
             }
+        }
+    }
+
+    private boolean isClassNode(TreePath path) {
+        Object component = path.getLastPathComponent();
+        return component != null && component.toString().endsWith(".class");
+    }
+
+    private boolean isDirectoryNode(TreePath path) {
+        Object component = path.getLastPathComponent();
+        if (!(component instanceof DefaultMutableTreeNode)) {
+            return false;
+        }
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) component;
+        Object userObject = node.getUserObject();
+        if (userObject instanceof FileTreeNode) {
+            FileTreeNode fileNode = (FileTreeNode) userObject;
+            return fileNode.file != null && fileNode.file.isDirectory();
+        }
+        return false;
+    }
+
+    private void setExpandedRecursive(TreePath parent, boolean expand) {
+        if (parent == null) {
+            return;
+        }
+        if (expand) {
+            fileTree.expandPath(parent);
+        }
+        Object component = parent.getLastPathComponent();
+        if (component instanceof DefaultMutableTreeNode) {
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) component;
+            int count = node.getChildCount();
+            for (int i = 0; i < count; i++) {
+                DefaultMutableTreeNode child = (DefaultMutableTreeNode) node.getChildAt(i);
+                setExpandedRecursive(parent.pathByAddingChild(child), expand);
+            }
+        }
+        if (!expand) {
+            fileTree.collapsePath(parent);
         }
     }
 }

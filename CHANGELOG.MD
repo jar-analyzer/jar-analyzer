@@ -4,11 +4,13 @@
 
 更新日志：
 
-- [其他] 更新 `tools.jar` 到 `1.8.0_482`
+- [BUG] 修复某些损坏的 `class` 文件导致无法继续分析 @Gosiu
+- [其他] 更新 `tools.jar` 到 `1.8.0_482` @4ra1n
 
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
+- Honey Baby (https://github.com/Gosiu)
 
 所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
 

@@ -43,8 +43,8 @@ public class DiscoveryRunner {
                 cr.accept(dcv, Const.AnalyzeASMOptions);
             } catch (IndexOutOfBoundsException e) {
                 // Handle corrupted StackMapTable by falling back to SKIP_FRAMES mode
-                if (!StackMapFrameHandler.handleParseException(file, 
-                        new DiscoveryClassVisitor(discoveredClasses, discoveredMethods, file.getJarName(), file.getJarId()), 
+                if (!StackMapFrameHandler.handleParseException(file,
+                        new DiscoveryClassVisitor(discoveredClasses, discoveredMethods, file.getJarName(), file.getJarId()),
                         logger, "class discovery", e)) {
                     logger.error("discovery error: {}", e.toString());
                 }
@@ -66,8 +66,8 @@ public class DiscoveryRunner {
                 cr.accept(sav, Const.AnalyzeASMOptions);
             } catch (IndexOutOfBoundsException e) {
                 // Handle corrupted StackMapTable by falling back to SKIP_FRAMES mode
-                if (!StackMapFrameHandler.handleParseException(file, 
-                        new StringAnnoClassVisitor(stringAnnoMap), 
+                if (!StackMapFrameHandler.handleParseException(file,
+                        new StringAnnoClassVisitor(stringAnnoMap),
                         logger, "string annotation analysis", e)) {
                     logger.error("discovery error: {}", e.toString());
                 }

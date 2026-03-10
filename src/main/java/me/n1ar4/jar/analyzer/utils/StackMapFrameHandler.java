@@ -29,11 +29,11 @@ public class StackMapFrameHandler {
      * Handle IndexOutOfBoundsException in class file parsing.
      * If caused by corrupted StackMapTable, fallback to SKIP_FRAMES mode.
      *
-     * @param file The class file entity being parsed
+     * @param file    The class file entity being parsed
      * @param visitor The ClassVisitor to reuse for fallback parsing
-     * @param logger The logger for warning messages
+     * @param logger  The logger for warning messages
      * @param context The context description for logging (e.g., "class discovery", "spring analysis")
-     * @param e The IndexOutOfBoundsException that was caught
+     * @param e       The IndexOutOfBoundsException that was caught
      * @return true if fallback parsing succeeded, false otherwise
      */
     public static boolean handleParseException(ClassFileEntity file, ClassVisitor visitor, Logger logger, String context, IndexOutOfBoundsException e) {
@@ -50,7 +50,7 @@ public class StackMapFrameHandler {
                 logger.info(successMsg);
                 LogUtil.info(successMsg);
                 // Track corrupted file for popup notification
-                AnalyzeEnv.corruptedFiles.add(file.getJarName() + "!" + file.getClassName() + 
+                AnalyzeEnv.corruptedFiles.add(file.getJarName() + "!" + file.getClassName() +
                         " [" + e.getMessage() + "]");
                 return true;
             } catch (Exception fallbackEx) {

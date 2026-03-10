@@ -37,8 +37,8 @@ public class OtherWebService {
                 cr.accept(jcv, Const.AnalyzeASMOptions);
             } catch (IndexOutOfBoundsException e) {
                 // Handle corrupted StackMapTable by falling back to SKIP_FRAMES mode
-                if (!StackMapFrameHandler.handleParseException(file, 
-                        new JavaWebClassVisitor(interceptors, servlets, filters, listeners), 
+                if (!StackMapFrameHandler.handleParseException(file,
+                        new JavaWebClassVisitor(interceptors, servlets, filters, listeners),
                         logger, "java web analysis", e)) {
                     logger.error("error: {}", e.getMessage());
                 }

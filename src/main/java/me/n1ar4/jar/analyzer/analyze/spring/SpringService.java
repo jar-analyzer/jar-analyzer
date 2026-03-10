@@ -40,8 +40,8 @@ public class SpringService {
                 cr.accept(mcv, Const.AnalyzeASMOptions);
             } catch (IndexOutOfBoundsException e) {
                 // Handle corrupted StackMapTable by falling back to SKIP_FRAMES mode
-                if (!StackMapFrameHandler.handleParseException(file, 
-                        new SpringClassVisitor(controllers, classMap, methodMap), 
+                if (!StackMapFrameHandler.handleParseException(file,
+                        new SpringClassVisitor(controllers, classMap, methodMap),
                         logger, "spring analysis", e)) {
                     ByteArrayOutputStream bao = new ByteArrayOutputStream();
                     PrintWriter ps = new PrintWriter(bao);

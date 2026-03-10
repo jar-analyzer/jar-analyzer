@@ -37,8 +37,8 @@ public class MethodCallRunner {
                 cr.accept(mcv, Const.AnalyzeASMOptions);
             } catch (IndexOutOfBoundsException e) {
                 // Handle corrupted StackMapTable by falling back to SKIP_FRAMES mode
-                if (!StackMapFrameHandler.handleParseException(file, 
-                        new MethodCallClassVisitor(methodCalls), 
+                if (!StackMapFrameHandler.handleParseException(file,
+                        new MethodCallClassVisitor(methodCalls),
                         logger, "method call analysis", e)) {
                     logger.error("method call error: {}", e.toString());
                 }

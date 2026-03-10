@@ -10,7 +10,6 @@
 
 package me.n1ar4.jar.analyzer.taint;
 
-import me.n1ar4.jar.analyzer.core.AnalyzeEnv;
 import me.n1ar4.jar.analyzer.core.reference.MethodReference;
 import me.n1ar4.jar.analyzer.dfs.DFSResult;
 import me.n1ar4.jar.analyzer.engine.CoreEngine;
@@ -135,7 +134,7 @@ public class TaintAnalyzer {
                         } catch (IndexOutOfBoundsException e) {
                             // Handle corrupted StackMapTable by falling back to SKIP_FRAMES mode
                             TaintClassVisitor tcv = new TaintClassVisitor(k, m, next, pass, rule, text);
-                            if (!StackMapFrameHandler.handleParseException(clsBytes, tcv, 
+                            if (!StackMapFrameHandler.handleParseException(clsBytes, tcv,
                                     absPath + "!" + m.getClassReference().getName(), logger, "taint analysis chain start", e)) {
                                 logger.error("污点分析 - 链开始 - 错误: {}", e.toString());
                             } else {
@@ -159,7 +158,7 @@ public class TaintAnalyzer {
                     } catch (IndexOutOfBoundsException e) {
                         // Handle corrupted StackMapTable by falling back to SKIP_FRAMES mode
                         TaintClassVisitor tcv = new TaintClassVisitor(pass.get(), m, next, pass, rule, text);
-                        if (!StackMapFrameHandler.handleParseException(clsBytes, tcv, 
+                        if (!StackMapFrameHandler.handleParseException(clsBytes, tcv,
                                 absPath + "!" + m.getClassReference().getName(), logger, "taint analysis chain middle", e)) {
                             logger.error("污点分析 - 链中 - 错误: {}", e.toString());
                         } else {

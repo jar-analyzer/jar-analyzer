@@ -32,9 +32,9 @@ public interface Const {
      */
     String CORRUPTED_STACKMAP_WARNING =
             "// WARNING: This class file was parsed with SKIP_FRAMES mode due to corrupted StackMapTable\n" +
-            "// 警告：此 class 文件因 StackMapTable 损坏而使用 SKIP_FRAMES 模式解析\n" +
-            "// The StackMapTable contains invalid bytecode offset that exceeds code length\n" +
-            "// StackMapTable 包含超出代码长度的无效字节码偏移量\n";
+                    "// 警告：此 class 文件因 StackMapTable 损坏而使用 SKIP_FRAMES 模式解析\n" +
+                    "// The StackMapTable contains invalid bytecode offset that exceeds code length\n" +
+                    "// StackMapTable 包含超出代码长度的无效字节码偏移量\n";
 
     String app = "Jar Analyzer - 4ra1n - " + version;
     String checkUpdateUrl = "https://jar-analyzer.oss-cn-hangzhou.aliyuncs.com/jar-analyzer/version.txt";

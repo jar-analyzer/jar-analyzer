@@ -285,8 +285,8 @@ public class CoreRunner {
                     cr.accept(dcv, Const.AnalyzeASMOptions);
                 } catch (IndexOutOfBoundsException e) {
                     // Handle corrupted StackMapTable by falling back to SKIP_FRAMES mode
-                    if (!StackMapFrameHandler.handleParseException(file, 
-                            new StringClassVisitor(AnalyzeEnv.strMap, AnalyzeEnv.classMap, AnalyzeEnv.methodMap), 
+                    if (!StackMapFrameHandler.handleParseException(file,
+                            new StringClassVisitor(AnalyzeEnv.strMap, AnalyzeEnv.classMap, AnalyzeEnv.methodMap),
                             logger, "string analysis", e)) {
                         logger.error("string analyze error: {}", e.toString());
                     }
@@ -392,7 +392,7 @@ public class CoreRunner {
                     String jarName = parts[0];
                     String classAndError = parts[1];
                     sb.append("<li><b>Jar:</b> ").append(jarName)
-                      .append(" <b>Class:</b> ").append(classAndError).append("</li>");
+                            .append(" <b>Class:</b> ").append(classAndError).append("</li>");
                 } else {
                     sb.append("<li>").append(fileInfo).append("</li>");
                 }
@@ -400,12 +400,12 @@ public class CoreRunner {
             sb.append("</ul>");
             sb.append("<p>这些文件可能经过混淆处理，分析结果可能不完整。</p>");
             sb.append("</body></html>");
-            
+
             JOptionPane.showMessageDialog(
-                MainForm.getInstance().getMasterPanel(),
-                sb.toString(),
-                "StackMapTable 损坏文件警告",
-                JOptionPane.WARNING_MESSAGE
+                    MainForm.getInstance().getMasterPanel(),
+                    sb.toString(),
+                    "StackMapTable 损坏文件警告",
+                    JOptionPane.WARNING_MESSAGE
             );
         }
 

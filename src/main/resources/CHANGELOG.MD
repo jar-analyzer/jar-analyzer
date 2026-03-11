@@ -1,5 +1,39 @@
 # CHANGELOG
 
+## 5.16
+
+更新日志：
+
+- [BUG] 修复某些损坏的 `class` 文件导致无法继续分析 @Gosiu
+- [优化] 文件树允许右键展开所有/折叠所有等操作 @4ra1n
+- [优化] 文件树选中本行空白处也应该可以展开菜单 @4ra1n
+- [优化] 提示某些情况下文件浏览器卡顿原因 @4ra1n
+- [其他] 更新 `tools.jar` 到 `1.8.0_482` @4ra1n
+- [其他] 更新内置 `jre` 到 `25.0.2` 版本 @4ra1n
+- [其他] 所有依赖升级到支持 `Java 8` 的最新版 @4ra1n
+
+感谢以下用户的贡献:
+
+- 4ra1n (https://github.com/4ra1n)
+- Honey Baby (https://github.com/Gosiu)
+
+所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
+
+- `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (主要版本)
+- `windows-25` 版内置开启 `ZGC` 的 `JRE 25` 环境（包含核心功能，未完全测试）
+- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
+- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
+
+一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
+
+如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
+
+可选的其他 `AI` 相关下载内容:
+
+- `mcp-build.zip` 包含所有系统的 `mcp` 一般使用 `mcp_windows_amd64.exe`
+- `report-mcp-build.zip` 配合 `workflow` 使用的自动报告生成 `mcp`
+- `jar-audit-agent.zip` 是 `AI` 分析使用到的 `SKILL`
+
 ## 5.15
 
 更新日志：

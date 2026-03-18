@@ -126,16 +126,22 @@ public class LeakResultMouseAdapter extends MouseAdapter {
 
                 String value = res.getValue();
                 int idx = code.indexOf(value);
-                if (idx != -1) {
-                    MainForm.getCodeArea().setText(code);
-                    MainForm.getCodeArea().setSelectionStart(idx);
-                    MainForm.getCodeArea().setSelectionEnd(idx + value.length());
-                    // FIX BUG
-                    MainForm.getCodeArea().setCaretPosition(idx);
-                } else {
-                    MainForm.getCodeArea().setText(code);
-                    MainForm.getCodeArea().setCaretPosition(0);
-                }
+
+                // 在新 Tab 中打开
+                SwingUtilities.invokeLater(() -> {
+                    me.n1ar4.jar.analyzer.gui.util.CodeTabPanel tabPanel = MainForm.getCodeTabPanel();
+                    if (tabPanel != null) {
+                        tabPanel.openTab(className, code, idx != -1 ? idx : 0);
+                    } else {
+                        MainForm.getCodeArea().setText(code);
+                        MainForm.getCodeArea().setCaretPosition(0);
+                    }
+                    if (idx != -1) {
+                        MainForm.getCodeArea().setSelectionStart(idx);
+                        MainForm.getCodeArea().setSelectionEnd(idx + value.length());
+                        MainForm.getCodeArea().setCaretPosition(idx);
+                    }
+                });
             }).start();
 
             JDialog dialog = ProcessDialog.createProgressDialog(MainForm.getInstance().getMasterPanel());

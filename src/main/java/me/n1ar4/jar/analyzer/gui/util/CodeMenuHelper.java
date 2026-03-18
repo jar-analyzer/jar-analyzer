@@ -25,6 +25,15 @@ public class CodeMenuHelper {
 
     public static void run() {
         RSyntaxTextArea rArea = (RSyntaxTextArea) MainForm.getCodeArea();
+        setupPopupMenu(rArea);
+    }
+
+    /**
+     * 给指定的 RSyntaxTextArea 设置右键菜单
+     * 在创建新 Tab 时调用此方法
+     */
+    public static void setupPopupMenu(RSyntaxTextArea rArea) {
+        if (rArea == null) return;
         JPopupMenu popupMenu = new JPopupMenu();
 
         JMenuItem selectItem = new JMenuItem("SELECT STRING (LDC)");

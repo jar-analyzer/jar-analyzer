@@ -58,22 +58,30 @@ public class LuceneMouseListener extends MouseAdapter {
                 // SET FILE TREE HIGHLIGHT
                 SearchInputListener.getFileTree().searchPathTarget(className);
 
-                MainForm.getCodeArea().setText(code);
-                MainForm.getCodeArea().setCaretPosition(0);
-
-                // 对于 Content 部分搜索的高亮展示
-                if (StrUtil.isNotBlank(code) && StrUtil.isNotBlank(searchKey)) {
-                    int idx;
-                    if (LuceneSearchForm.useCaseSensitive()) {
-                        idx = code.indexOf(searchKey);
+                // 在新 Tab 中打开
+                SwingUtilities.invokeLater(() -> {
+                    me.n1ar4.jar.analyzer.gui.util.CodeTabPanel tabPanel = MainForm.getCodeTabPanel();
+                    if (tabPanel != null) {
+                        tabPanel.openTab(className, code, 0);
                     } else {
-                        idx = code.toLowerCase().indexOf(searchKey.toLowerCase());
+                        MainForm.getCodeArea().setText(code);
+                        MainForm.getCodeArea().setCaretPosition(0);
                     }
-                    if (idx != -1) {
-                        MainForm.getCodeArea().setSelectionStart(idx);
-                        MainForm.getCodeArea().setSelectionEnd(idx + searchKey.length());
+
+                    // 对于 Content 部分搜索的高亮展示
+                    if (StrUtil.isNotBlank(code) && StrUtil.isNotBlank(searchKey)) {
+                        int idx;
+                        if (LuceneSearchForm.useCaseSensitive()) {
+                            idx = code.indexOf(searchKey);
+                        } else {
+                            idx = code.toLowerCase().indexOf(searchKey.toLowerCase());
+                        }
+                        if (idx != -1) {
+                            MainForm.getCodeArea().setSelectionStart(idx);
+                            MainForm.getCodeArea().setSelectionEnd(idx + searchKey.length());
+                        }
                     }
-                }
+                });
             }).start();
 
             JDialog dialog = ProcessDialog.createProgressDialog(MainForm.getInstance().getMasterPanel());

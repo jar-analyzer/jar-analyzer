@@ -82,8 +82,16 @@ public class ClassResultAdapter extends MouseAdapter {
                 // SET FILE TREE HIGHLIGHT
                 SearchInputListener.getFileTree().searchPathTarget(className);
 
-                MainForm.getCodeArea().setText(code);
-                MainForm.getCodeArea().setCaretPosition(0);
+                // 在新 Tab 中打开
+                SwingUtilities.invokeLater(() -> {
+                    me.n1ar4.jar.analyzer.gui.util.CodeTabPanel tabPanel = MainForm.getCodeTabPanel();
+                    if (tabPanel != null) {
+                        tabPanel.openTab(className, code, 0);
+                    } else {
+                        MainForm.getCodeArea().setText(code);
+                        MainForm.getCodeArea().setCaretPosition(0);
+                    }
+                });
             }).start();
 
             JDialog dialog = ProcessDialog.createProgressDialog(MainForm.getInstance().getMasterPanel());

@@ -15,6 +15,7 @@ import me.n1ar4.jar.analyzer.engine.DecompileEngine;
 import me.n1ar4.jar.analyzer.engine.index.IndexPluginsSupport;
 import me.n1ar4.jar.analyzer.gui.LuceneSearchForm;
 import me.n1ar4.jar.analyzer.gui.MainForm;
+import me.n1ar4.jar.analyzer.gui.util.CodeTabPanel;
 import me.n1ar4.jar.analyzer.utils.JarUtil;
 
 import javax.swing.*;
@@ -43,8 +44,14 @@ public class DecompileHelper {
 
         if (JarUtil.isConfigFile(filePath)) {
             try {
-                MainForm.getCodeArea().setText(new String(Files.readAllBytes(thePath)));
-                MainForm.getCodeArea().setCaretPosition(0);
+                String content = new String(Files.readAllBytes(thePath));
+                CodeTabPanel tabPanel = MainForm.getCodeTabPanel();
+                if (tabPanel != null) {
+                    tabPanel.openTab(filePath, content, 0);
+                } else {
+                    MainForm.getCodeArea().setText(content);
+                    MainForm.getCodeArea().setCaretPosition(0);
+                }
             } catch (Exception ignored) {
             }
             return;
@@ -68,9 +75,6 @@ public class DecompileHelper {
 
         // SET FILE TREE HIGHLIGHT
 
-        MainForm.getCodeArea().setText(code);
-        MainForm.getCodeArea().setCaretPosition(0);
-
         StringBuilder classNameBuilder = new StringBuilder();
         for (int i = 1; i < path.length; i++) {
             classNameBuilder.append(path[i]).append("/");
@@ -82,6 +86,15 @@ public class DecompileHelper {
             className = className.substring(i + 8, className.length() - 7);
         } else {
             className = className.substring(0, className.length() - 7);
+        }
+
+        // 在新 Tab 中打开
+        CodeTabPanel tabPanel = MainForm.getCodeTabPanel();
+        if (tabPanel != null) {
+            tabPanel.openTab(className, code, 0);
+        } else {
+            MainForm.getCodeArea().setText(code);
+            MainForm.getCodeArea().setCaretPosition(0);
         }
 
         CoreHelper.refreshAllMethods(className);

@@ -77,6 +77,7 @@ public class MainForm {
     private static ConfigFile config;
     private static CoreEngine engine;
     private static JTextArea codeArea;
+    private static CodeTabPanel codeTabPanel;
     private static MethodResult curMethod;
     private static String curClass;
 
@@ -825,6 +826,14 @@ public class MainForm {
 
     public static void setCodeArea(JTextArea codeArea) {
         MainForm.codeArea = codeArea;
+    }
+
+    public static CodeTabPanel getCodeTabPanel() {
+        return codeTabPanel;
+    }
+
+    public static void setCodeTabPanel(CodeTabPanel codeTabPanel) {
+        MainForm.codeTabPanel = codeTabPanel;
     }
 
     public static CoreEngine getEngine() {

@@ -11,7 +11,6 @@
 package me.n1ar4.jar.analyzer.gui.util;
 
 import com.intellij.uiDesigner.core.GridConstraints;
-import me.n1ar4.jar.analyzer.entity.MethodResult;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.OpcodeForm;
 import me.n1ar4.log.LogManager;
@@ -25,136 +24,47 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 import java.awt.*;
-import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class SyntaxAreaHelper {
     private static final Logger logger = LogManager.getLogger();
-    private static RSyntaxTextArea codeArea = null;
     private static int currentIndex = 0;
     private static ArrayList<Integer> searchResults = null;
+    private static CodeTabPanel codeTabPanel = null;
 
     public static void buildJava(JPanel codePanel) {
-        RSyntaxTextArea rArea = new RSyntaxTextArea();
-        // 不要使用其他字体
-        // 默认字体支持中文 其他的不一定
-
-        rArea.addCaretListener(e -> {
-            String selectedText = rArea.getSelectedText();
-            if (selectedText == null || selectedText.trim().isEmpty()) {
-                Highlighter highlighter = rArea.getHighlighter();
-                highlighter.removeAllHighlights();
-                return;
-            }
-            Highlighter highlighter = rArea.getHighlighter();
-            highlighter.removeAllHighlights();
-
-            String text = rArea.getText();
-            int index = 0;
-
-            while ((index = text.indexOf(selectedText, index)) >= 0) {
-                try {
-                    highlighter.addHighlight(index, index + selectedText.length(),
-                            new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW));
-                    index += selectedText.length();
-                } catch (BadLocationException ignored) {
-                }
-            }
-        });
-
-        codeArea = rArea;
-        codeArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
-        codeArea.setCodeFoldingEnabled(true);
-
-        codeArea.setFont(codeArea.getFont().deriveFont(MainForm.FONT_SIZE));
-
-        Highlighter highlighter = codeArea.getHighlighter();
-
-        // 保存默认光标
-        final Cursor defaultCursor = codeArea.getCursor();
-        final Cursor handCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
-
-        // Ctrl+Click 跳转导航
-        codeArea.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (e.isControlDown()) {
-                    int caretPosition = codeArea.getCaretPosition();
-                    int start = findWordStart(codeArea.getText(), caretPosition);
-                    int end = findWordEnd(codeArea.getText(), caretPosition);
-                    if (start != -1 && end != -1) {
-                        String word = codeArea.getText().substring(start, end);
-                        highlighter.removeAllHighlights();
-                        try {
-                            highlighter.addHighlight(start, end,
-                                    new DefaultHighlighter.DefaultHighlightPainter(Color.BLUE));
-                        } catch (BadLocationException ignored) {
-                        }
-
-                        String methodName = word.trim();
-                        if (methodName.isEmpty()) {
-                            return;
-                        }
-                        logger.info("ctrl+click navigate: {}", methodName);
-                        String className = MainForm.getCurClass();
-                        if (className == null || className.isEmpty()) {
-                            return;
-                        }
-
-                        // 使用 CtrlClickNavigator 进行跳转导航
-                        CtrlClickNavigator.navigate(methodName, className,
-                                e.getXOnScreen(), e.getYOnScreen());
-                    }
-                }
-            }
-        });
-
-        // Ctrl 悬停时显示手型光标 + 下划线效果
-        codeArea.addMouseMotionListener(new MouseMotionAdapter() {
-            @Override
-            public void mouseMoved(MouseEvent e) {
-                if (e.isControlDown()) {
-                    int offset = codeArea.viewToModel(e.getPoint());
-                    if (offset >= 0) {
-                        int start = findWordStart(codeArea.getText(), offset);
-                        int end = findWordEnd(codeArea.getText(), offset);
-                        if (start != -1 && end != -1 && start != end) {
-                            codeArea.setCursor(handCursor);
-                            return;
-                        }
-                    }
-                }
-                codeArea.setCursor(defaultCursor);
-            }
-        });
-
-        // 当 Ctrl 键松开时恢复默认光标
-        codeArea.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
-                    codeArea.setCursor(defaultCursor);
-                }
-            }
-        });
-        RTextScrollPane sp = new RTextScrollPane(codeArea);
-        codePanel.add(sp, new GridConstraints(0, 0, 1, 1,
+        // 创建多标签页代码编辑器面板
+        codeTabPanel = new CodeTabPanel();
+        codePanel.add(codeTabPanel, new GridConstraints(0, 0, 1, 1,
                 GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                 GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                 GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                 null, null, null, 0, false));
-        MainForm.setCodeArea(codeArea);
+
+        // MainForm.codeArea 初始指向欢迎 Tab 的编辑器
+        RSyntaxTextArea activeArea = codeTabPanel.getActiveCodeArea();
+        if (activeArea != null) {
+            MainForm.setCodeArea(activeArea);
+        }
+
+        MainForm.setCodeTabPanel(codeTabPanel);
     }
 
-    private static int findWordStart(String text, int position) {
+    /**
+     * 获取 CodeTabPanel 实例
+     */
+    public static CodeTabPanel getCodeTabPanel() {
+        return codeTabPanel;
+    }
+
+    public static int findWordStart(String text, int position) {
         while (position > 0 && Character.isLetterOrDigit(text.charAt(position - 1))) {
             position--;
         }
         return position;
     }
 
-    private static int findWordEnd(String text, int position) {
+    public static int findWordEnd(String text, int position) {
         while (position < text.length() && Character.isLetterOrDigit(text.charAt(position))) {
             position++;
         }
@@ -164,7 +74,9 @@ public class SyntaxAreaHelper {
     public static int addSearchAction(String text) {
         searchResults = new ArrayList<>();
         currentIndex = 0;
-        String content = codeArea.getText();
+        RSyntaxTextArea currentArea = (RSyntaxTextArea) MainForm.getCodeArea();
+        if (currentArea == null) return 0;
+        String content = currentArea.getText();
 
         int index = content.indexOf(text);
         while (index >= 0) {
@@ -180,7 +92,7 @@ public class SyntaxAreaHelper {
     }
 
     public static void navigate(String text, boolean forward) {
-        if (searchResults == null || codeArea == null) {
+        if (searchResults == null || MainForm.getCodeArea() == null) {
             return;
         }
         if (searchResults.isEmpty()) {
@@ -196,10 +108,12 @@ public class SyntaxAreaHelper {
 
     private static void highlightResult(String text) {
         if (searchResults.isEmpty()) return;
+        RSyntaxTextArea currentArea = (RSyntaxTextArea) MainForm.getCodeArea();
+        if (currentArea == null) return;
         int index = searchResults.get(currentIndex);
         try {
-            codeArea.setCaretPosition(index);
-            Highlighter highlighter = codeArea.getHighlighter();
+            currentArea.setCaretPosition(index);
+            Highlighter highlighter = currentArea.getHighlighter();
             Highlighter.HighlightPainter painter =
                     new DefaultHighlighter.DefaultHighlightPainter(Color.CYAN);
             highlighter.removeAllHighlights();

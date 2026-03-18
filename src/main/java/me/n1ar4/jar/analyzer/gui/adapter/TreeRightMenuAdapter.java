@@ -157,8 +157,14 @@ public class TreeRightMenuAdapter extends MouseAdapter {
                 // SET FILE TREE HIGHLIGHT
                 SearchInputListener.getFileTree().searchPathTarget(className);
 
-                MainForm.getCodeArea().setText(code);
-                MainForm.getCodeArea().setCaretPosition(0);
+                // 在新 Tab 中打开
+                me.n1ar4.jar.analyzer.gui.util.CodeTabPanel tabPanel = MainForm.getCodeTabPanel();
+                if (tabPanel != null) {
+                    tabPanel.openTab(className, code, 0);
+                } else {
+                    MainForm.getCodeArea().setText(code);
+                    MainForm.getCodeArea().setCaretPosition(0);
+                }
 
                 CoreHelper.refreshAllMethods(className);
 

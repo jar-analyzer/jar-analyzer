@@ -335,8 +335,16 @@ public class CtrlClickNavigator {
             // SET FILE TREE HIGHLIGHT
             SearchInputListener.getFileTree().searchPathTarget(className);
 
-            MainForm.getCodeArea().setText(code);
-            MainForm.getCodeArea().setCaretPosition(pos + 1);
+            // 在新 Tab 中打开（Ctrl+Click 跳转）
+            SwingUtilities.invokeLater(() -> {
+                CodeTabPanel tabPanel = MainForm.getCodeTabPanel();
+                if (tabPanel != null) {
+                    tabPanel.openTab(className, code, pos + 1);
+                } else {
+                    MainForm.getCodeArea().setText(code);
+                    MainForm.getCodeArea().setCaretPosition(pos + 1);
+                }
+            });
         }).start();
 
         JDialog dialog = ProcessDialog.createProgressDialog(MainForm.getInstance().getMasterPanel());

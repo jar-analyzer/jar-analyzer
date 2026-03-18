@@ -25,8 +25,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,6 +70,12 @@ public class SyntaxAreaHelper {
         codeArea.setFont(codeArea.getFont().deriveFont(MainForm.FONT_SIZE));
 
         Highlighter highlighter = codeArea.getHighlighter();
+
+        // 保存默认光标
+        final Cursor defaultCursor = codeArea.getCursor();
+        final Cursor handCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
+
+        // Ctrl+Click 跳转导航
         codeArea.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -91,39 +96,45 @@ public class SyntaxAreaHelper {
                         if (methodName.isEmpty()) {
                             return;
                         }
-                        logger.info("user selected string: {}", methodName);
+                        logger.info("ctrl+click navigate: {}", methodName);
                         String className = MainForm.getCurClass();
-                        if (className.contains("/")) {
-                            String shortClassName = className.substring(className.lastIndexOf('/') + 1);
-                            if (methodName.equals(shortClassName)) {
-                                methodName = "<init>";
-                            }
-                        } else {
-                            if (methodName.equals(className)) {
-                                methodName = "<init>";
-                            }
+                        if (className == null || className.isEmpty()) {
+                            return;
                         }
-                        String finalMethodName = methodName;
-                        new Thread(() -> {
-                            java.util.List<MethodResult> rL = MainForm.getEngine().getCallers(
-                                    className, finalMethodName, null);
-                            List<MethodResult> eL = MainForm.getEngine().getCallee(
-                                    className, finalMethodName, null);
-                            DefaultListModel<MethodResult> calleeData = (DefaultListModel<MethodResult>)
-                                    MainForm.getInstance().getCalleeList().getModel();
-                            DefaultListModel<MethodResult> callerData = (DefaultListModel<MethodResult>)
-                                    MainForm.getInstance().getCallerList().getModel();
-                            calleeData.clear();
-                            callerData.clear();
-                            for (MethodResult mr : rL) {
-                                callerData.addElement(mr);
-                            }
-                            for (MethodResult mr : eL) {
-                                calleeData.addElement(mr);
-                            }
-                            MainForm.getInstance().getTabbedPanel().setSelectedIndex(2);
-                        }).start();
+
+                        // 使用 CtrlClickNavigator 进行跳转导航
+                        CtrlClickNavigator.navigate(methodName, className,
+                                e.getXOnScreen(), e.getYOnScreen());
                     }
+                }
+            }
+        });
+
+        // Ctrl 悬停时显示手型光标 + 下划线效果
+        codeArea.addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                if (e.isControlDown()) {
+                    int offset = codeArea.viewToModel(e.getPoint());
+                    if (offset >= 0) {
+                        int start = findWordStart(codeArea.getText(), offset);
+                        int end = findWordEnd(codeArea.getText(), offset);
+                        if (start != -1 && end != -1 && start != end) {
+                            codeArea.setCursor(handCursor);
+                            return;
+                        }
+                    }
+                }
+                codeArea.setCursor(defaultCursor);
+            }
+        });
+
+        // 当 Ctrl 键松开时恢复默认光标
+        codeArea.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
+                    codeArea.setCursor(defaultCursor);
                 }
             }
         });

@@ -15,8 +15,7 @@ import me.n1ar4.jar.analyzer.gui.util.LogUtil;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
-import java.awt.BorderLayout;
-import java.awt.Window;
+import java.awt.*;
 import java.io.File;
 
 public class ChoseJarAction {

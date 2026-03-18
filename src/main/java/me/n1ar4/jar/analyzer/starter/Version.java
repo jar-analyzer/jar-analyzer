@@ -13,8 +13,6 @@ package me.n1ar4.jar.analyzer.starter;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 
-import javax.swing.*;
-
 public class Version {
     private static final Logger logger = LogManager.getLogger();
 

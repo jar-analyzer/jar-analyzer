@@ -23,6 +23,17 @@
 
 如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
 
+可选的其他 `AI` 相关下载内容:（可选，非必须，由社区师傅贡献）
+
+- `mcp-build.zip` 包含所有系统的 `mcp` 一般使用 `mcp_windows_amd64.exe`
+- `report-mcp-build.zip` 配合 `workflow` 使用的自动报告生成 `mcp`
+- `jar-audit-agent.zip` 是 `AI` 分析使用到的 `SKILL`
+
+相关项目：
+
+- 核心引擎：https://github.com/jar-analyzer/jar-analyzer-engine
+- `claude code` 插件：https://github.com/jar-analyzer/jar-analyzer-claude
+
 ## 5.16 - 已发布最新版
 
 更新日志：

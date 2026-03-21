@@ -52,11 +52,17 @@ public class CodeTabPanel extends JPanel {
         tabbedPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
         tabbedPane.setFont(tabbedPane.getFont().deriveFont(11f));
 
-        // Tab 切换时更新 MainForm.codeArea
+        // Tab 切换时更新 MainForm.codeArea 和 curClass
         tabbedPane.addChangeListener(e -> {
             RSyntaxTextArea activeArea = getActiveCodeArea();
             if (activeArea != null) {
                 MainForm.setCodeArea(activeArea);
+            }
+            // 同步更新 curClass，避免 Ctrl+Click 时 className 与当前 Tab 不一致
+            String activeClassName = getActiveClassName();
+            if (activeClassName != null) {
+                MainForm.setCurClass(activeClassName);
+                MainForm.getInstance().getCurClassText().setText(activeClassName);
             }
         });
 
@@ -83,6 +89,9 @@ public class CodeTabPanel extends JPanel {
                 }
             }
         });
+
+        // Tab 标签栏与代码区域之间留一点间隔
+        tabbedPane.setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0));
 
         add(tabbedPane, BorderLayout.CENTER);
 

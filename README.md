@@ -114,6 +114,10 @@ Jar Analyzer
 
 ![](img/0084.png)
 
+自从 `5.18` 版本以后支持多 `tab` 展示和方法名 `ctrl+左键` 展示调用并跳转
+
+![](img/0085.png)
+
 通过 `agent` 分析 `tomcat`
 
 ![](img/0065.png)

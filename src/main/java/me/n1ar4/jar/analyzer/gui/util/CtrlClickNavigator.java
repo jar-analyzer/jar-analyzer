@@ -77,6 +77,8 @@ public class CtrlClickNavigator {
         }
 
         String mn = finalMethodName;
+        // 弹窗最多展示的条目数
+        final int MAX_DISPLAY = 20;
         // 在后台线程查询 caller / callee
         new Thread(() -> {
             List<MethodResult> callerList = MainForm.getEngine().getCallers(
@@ -108,21 +110,40 @@ public class CtrlClickNavigator {
                 items.add(new NavigationItem(mr, NavigationType.CALLER));
             }
 
+            // 如果基于当前类的精确查询无结果，回退到只按方法名全局搜索
+            if (items.isEmpty()) {
+                logger.info("no caller/callee in current class, fallback to global method search: {}", mn);
+                List<MethodResult> globalMethods = MainForm.getEngine().getMethod(
+                        null, mn, null);
+                for (MethodResult mr : globalMethods) {
+                    items.add(new NavigationItem(mr, NavigationType.METHOD));
+                    if (items.size() >= MAX_DISPLAY) {
+                        break;
+                    }
+                }
+            }
+
+            // 限制最终结果数量不超过 MAX_DISPLAY
+            if (items.size() > MAX_DISPLAY) {
+                items = new ArrayList<>(items.subList(0, MAX_DISPLAY));
+            }
+
             if (items.isEmpty()) {
                 SwingUtilities.invokeLater(() ->
                         JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
-                                "no caller/callee found for: " + mn));
+                                "no caller/callee/method found for: " + mn));
                 return;
             }
 
             // 如果只有1个结果，直接跳转
+            List<NavigationItem> finalItems = items;
             if (items.size() == 1) {
-                SwingUtilities.invokeLater(() -> jumpToMethod(items.get(0).methodResult));
+                SwingUtilities.invokeLater(() -> jumpToMethod(finalItems.get(0).methodResult));
                 return;
             }
 
             // 多个结果，弹出选择窗口
-            SwingUtilities.invokeLater(() -> showNavigationPopup(items, mn, screenX, screenY));
+            SwingUtilities.invokeLater(() -> showNavigationPopup(finalItems, mn, screenX, screenY));
         }).start();
     }
 
@@ -150,7 +171,8 @@ public class CtrlClickNavigator {
         titleLabel.setFont(titleLabel.getFont().deriveFont(Font.BOLD, 12f));
         titlePanel.add(titleLabel, BorderLayout.WEST);
 
-        JLabel hintLabel = new JLabel("(callee=GO TO DEF, caller=WHO CALLS)");
+        JLabel hintLabel = new JLabel("(callee/method=GO TO DEF, caller=WHO CALLS)");
+
         hintLabel.setForeground(new Color(128, 128, 128));
         hintLabel.setFont(hintLabel.getFont().deriveFont(10f));
         titlePanel.add(hintLabel, BorderLayout.EAST);
@@ -183,9 +205,18 @@ public class CtrlClickNavigator {
                     if (shortClass.contains("/")) {
                         shortClass = shortClass.substring(shortClass.lastIndexOf('/') + 1);
                     }
-                    String tag = nav.type == NavigationType.CALLEE ? "[CALLEE] " : "[CALLER] ";
-                    Color tagColor = nav.type == NavigationType.CALLEE ?
-                            new Color(104, 151, 187) : new Color(152, 118, 170);
+                    String tag;
+                    Color tagColor;
+                    if (nav.type == NavigationType.CALLEE) {
+                        tag = "[CALLEE] ";
+                        tagColor = new Color(104, 151, 187);
+                    } else if (nav.type == NavigationType.CALLER) {
+                        tag = "[CALLER] ";
+                        tagColor = new Color(152, 118, 170);
+                    } else {
+                        tag = "[METHOD] ";
+                        tagColor = new Color(106, 171, 115);
+                    }
 
                     setText("<html><font color='" + toHex(tagColor) + "'>" + tag + "</font>"
                             + "<font color='#CC7832'>" + shortClass + "</font>"
@@ -413,7 +444,8 @@ public class CtrlClickNavigator {
      */
     enum NavigationType {
         CALLER,  // 谁调用了这个方法
-        CALLEE   // 这个方法调用了谁（跳转到定义）
+        CALLEE,  // 这个方法调用了谁（跳转到定义）
+        METHOD   // 全局搜索的方法定义（按方法名匹配）
     }
 
     /**
@@ -430,7 +462,14 @@ public class CtrlClickNavigator {
 
         @Override
         public String toString() {
-            String tag = type == NavigationType.CALLEE ? "[CALLEE] " : "[CALLER] ";
+            String tag;
+            if (type == NavigationType.CALLEE) {
+                tag = "[CALLEE] ";
+            } else if (type == NavigationType.CALLER) {
+                tag = "[CALLER] ";
+            } else {
+                tag = "[METHOD] ";
+            }
             return tag + methodResult.getClassName() + "." +
                     methodResult.getMethodName() + methodResult.getMethodDesc();
         }

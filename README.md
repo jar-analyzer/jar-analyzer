@@ -71,6 +71,11 @@ Jar Analyzer
 - 应急响应分析功能（一键提取序列化数据中的恶意 `class` 反编译，一键提取 `BCEL` 代码）
 - 测试功能：不同于 `IDEA` 等工具的源码级调试，实现了字节码级别的单步动态调试（仅初步实现）
 
+相关项目：
+
+- 核心引擎：https://github.com/jar-analyzer/jar-analyzer-engine
+- `claude code` 插件：https://github.com/jar-analyzer/jar-analyzer-claude
+
 为什么选择 Jar Analyzer 
 
 - 简单易上手，相比 `codeql/tabby` 简化很多，足够应对 `90%` 场景

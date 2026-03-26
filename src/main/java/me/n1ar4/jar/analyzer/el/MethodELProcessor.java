@@ -193,11 +193,17 @@ public class MethodELProcessor {
             }
         }
 
-        // 方法体内调用检查（containsInvoke）
-        // 利用数据库已有的方法调用关系表查询 callee
-        if (containsInvokeList != null && !containsInvokeList.isEmpty()) {
-            ArrayList<MethodResult> callees = MainForm.getEngine().getCallee(
+        // 方法体内调用检查（containsInvoke / excludeInvoke）
+        // 共享同一次 callee 查询，避免重复数据库访问
+        boolean needCallees = (containsInvokeList != null && !containsInvokeList.isEmpty())
+                || (excludeInvokeList != null && !excludeInvokeList.isEmpty());
+        ArrayList<MethodResult> callees = null;
+        if (needCallees) {
+            callees = MainForm.getEngine().getCallee(
                     ch.getName(), mr.getName(), mr.getDesc());
+        }
+
+        if (containsInvokeList != null && !containsInvokeList.isEmpty()) {
             for (String[] invokeTarget : containsInvokeList) {
                 String targetClass = invokeTarget[0].replace(".", "/");
                 String targetMethod = invokeTarget[1];
@@ -218,15 +224,9 @@ public class MethodELProcessor {
 
         // 方法体内调用排除（excludeInvoke）
         if (excludeInvokeList != null && !excludeInvokeList.isEmpty()) {
-            ArrayList<MethodResult> callees = null;
             for (String[] invokeTarget : excludeInvokeList) {
                 String targetClass = invokeTarget[0].replace(".", "/");
                 String targetMethod = invokeTarget[1];
-                // 延迟加载 callee，避免无必要的数据库查询
-                if (callees == null) {
-                    callees = MainForm.getEngine().getCallee(
-                            ch.getName(), mr.getName(), mr.getDesc());
-                }
                 for (MethodResult callee : callees) {
                     if (callee.getClassName().equals(targetClass) &&
                             callee.getMethodName().equals(targetMethod)) {

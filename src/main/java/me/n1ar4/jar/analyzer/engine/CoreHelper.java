@@ -19,6 +19,7 @@ import me.n1ar4.jar.analyzer.gui.render.AllMethodsRender;
 import me.n1ar4.jar.analyzer.gui.util.ListParser;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
 import me.n1ar4.jar.analyzer.gui.util.MenuUtil;
+import me.n1ar4.jar.analyzer.gui.util.SearchFilterHelper;
 import me.n1ar4.jar.analyzer.utils.StringUtil;
 
 import javax.swing.*;
@@ -297,27 +298,8 @@ public class CoreHelper {
         }
         ArrayList<MethodResult> results = MainForm.getEngine().getCallers(className, methodName, methodDesc);
 
-        // BALCK LIST
-        ArrayList<String> bl = ListParser.parse(MainForm.getInstance().getBlackArea().getText());
-        ArrayList<MethodResult> newReulst = new ArrayList<>();
-        for (MethodResult m : results) {
-            boolean filtered = false;
-            for (String b : bl) {
-                if (m.getClassName().equals(b)) {
-                    filtered = true;
-                    break;
-                }
-                // CHECK PACAKGE
-                b = b.replace(".", "/");
-                if (m.getClassName().startsWith(b)) {
-                    filtered = true;
-                    break;
-                }
-            }
-            if (!filtered) {
-                newReulst.add(m);
-            }
-        }
+        // FILTER LIST (BLACK/WHITE)
+        ArrayList<MethodResult> newReulst = SearchFilterHelper.filter(results);
 
         if (MenuUtil.sortedByMethod()) {
             newReulst.sort(Comparator.comparing(MethodResult::getMethodName));
@@ -327,15 +309,7 @@ public class CoreHelper {
             throw new RuntimeException("invalid sort");
         }
         if (MainForm.getInstance().getNullParamBox().isSelected()) {
-            ArrayList<MethodResult> newResults = new ArrayList<>();
-            for (MethodResult result : newReulst) {
-                if (result.getMethodDesc().contains("()")) {
-                    continue;
-                }
-                newResults.add(result);
-            }
-            newReulst.clear();
-            newReulst.addAll(newResults);
+            newReulst = SearchFilterHelper.filterNullParam(newReulst);
         }
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
         for (MethodResult result : newReulst) {
@@ -394,27 +368,8 @@ public class CoreHelper {
             ArrayList<MethodResult> results = MainForm.getEngine().getCallers(className, methodName, methodDesc);
             totalResults.addAll(results);
         }
-        // BALCK LIST
-        ArrayList<String> bl = ListParser.parse(MainForm.getInstance().getBlackArea().getText());
-        ArrayList<MethodResult> newReulst = new ArrayList<>();
-        for (MethodResult m : totalResults) {
-            boolean filtered = false;
-            for (String b : bl) {
-                if (m.getClassName().equals(b)) {
-                    filtered = true;
-                    break;
-                }
-                // CHECK PACAKGE
-                b = b.replace(".", "/");
-                if (m.getClassName().startsWith(b)) {
-                    filtered = true;
-                    break;
-                }
-            }
-            if (!filtered) {
-                newReulst.add(m);
-            }
-        }
+        // FILTER LIST (BLACK/WHITE)
+        ArrayList<MethodResult> newReulst = SearchFilterHelper.filter(totalResults);
 
         if (MenuUtil.sortedByMethod()) {
             newReulst.sort(Comparator.comparing(MethodResult::getMethodName));
@@ -425,15 +380,7 @@ public class CoreHelper {
         }
 
         if (MainForm.getInstance().getNullParamBox().isSelected()) {
-            ArrayList<MethodResult> newResults = new ArrayList<>();
-            for (MethodResult result : newReulst) {
-                if (result.getMethodDesc().contains("()")) {
-                    continue;
-                }
-                newResults.add(result);
-            }
-            newReulst.clear();
-            newReulst.addAll(newResults);
+            newReulst = SearchFilterHelper.filterNullParam(newReulst);
         }
 
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
@@ -469,27 +416,8 @@ public class CoreHelper {
         }
         ArrayList<MethodResult> results = MainForm.getEngine().getMethod(className, methodName, methodDesc);
 
-        // BALCK LIST
-        ArrayList<String> bl = ListParser.parse(MainForm.getInstance().getBlackArea().getText());
-        ArrayList<MethodResult> newReulst = new ArrayList<>();
-        for (MethodResult m : results) {
-            boolean filtered = false;
-            for (String b : bl) {
-                if (m.getClassName().equals(b)) {
-                    filtered = true;
-                    break;
-                }
-                // CHECK PACAKGE
-                b = b.replace(".", "/");
-                if (m.getClassName().startsWith(b)) {
-                    filtered = true;
-                    break;
-                }
-            }
-            if (!filtered) {
-                newReulst.add(m);
-            }
-        }
+        // FILTER LIST (BLACK/WHITE)
+        ArrayList<MethodResult> newReulst = SearchFilterHelper.filter(results);
 
         if (MenuUtil.sortedByMethod()) {
             newReulst.sort(Comparator.comparing(MethodResult::getMethodName));
@@ -500,15 +428,7 @@ public class CoreHelper {
         }
 
         if (MainForm.getInstance().getNullParamBox().isSelected()) {
-            ArrayList<MethodResult> newResults = new ArrayList<>();
-            for (MethodResult result : newReulst) {
-                if (result.getMethodDesc().contains("()")) {
-                    continue;
-                }
-                newResults.add(result);
-            }
-            newReulst.clear();
-            newReulst.addAll(newResults);
+            newReulst = SearchFilterHelper.filterNullParam(newReulst);
         }
 
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
@@ -561,27 +481,8 @@ public class CoreHelper {
             results.addAll(newReulst);
         }
 
-        // BALCK LIST
-        ArrayList<String> bl = ListParser.parse(MainForm.getInstance().getBlackArea().getText());
-        ArrayList<MethodResult> newReulst = new ArrayList<>();
-        for (MethodResult m : results) {
-            boolean filtered = false;
-            for (String b : bl) {
-                if (m.getClassName().equals(b)) {
-                    filtered = true;
-                    break;
-                }
-                // CHECK PACAKGE
-                b = b.replace(".", "/");
-                if (m.getClassName().startsWith(b)) {
-                    filtered = true;
-                    break;
-                }
-            }
-            if (!filtered) {
-                newReulst.add(m);
-            }
-        }
+        // FILTER LIST (BLACK/WHITE)
+        ArrayList<MethodResult> newReulst = SearchFilterHelper.filter(results);
 
         if (MenuUtil.sortedByMethod()) {
             newReulst.sort(Comparator.comparing(MethodResult::getMethodName));
@@ -592,15 +493,7 @@ public class CoreHelper {
         }
 
         if (MainForm.getInstance().getNullParamBox().isSelected()) {
-            ArrayList<MethodResult> newResults = new ArrayList<>();
-            for (MethodResult result : newReulst) {
-                if (result.getMethodDesc().contains("()")) {
-                    continue;
-                }
-                newResults.add(result);
-            }
-            newReulst.clear();
-            newReulst.addAll(newResults);
+            newReulst = SearchFilterHelper.filterNullParam(newReulst);
         }
 
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
@@ -653,27 +546,8 @@ public class CoreHelper {
             results.addAll(newReulst);
         }
 
-        // BALCK LIST
-        ArrayList<String> bl = ListParser.parse(MainForm.getInstance().getBlackArea().getText());
-        ArrayList<MethodResult> newReulst = new ArrayList<>();
-        for (MethodResult m : results) {
-            boolean filtered = false;
-            for (String b : bl) {
-                if (m.getClassName().equals(b)) {
-                    filtered = true;
-                    break;
-                }
-                // CHECK PACAKGE
-                b = b.replace(".", "/");
-                if (m.getClassName().startsWith(b)) {
-                    filtered = true;
-                    break;
-                }
-            }
-            if (!filtered) {
-                newReulst.add(m);
-            }
-        }
+        // FILTER LIST (BLACK/WHITE)
+        ArrayList<MethodResult> newReulst = SearchFilterHelper.filter(results);
 
         if (MenuUtil.sortedByMethod()) {
             newReulst.sort(Comparator.comparing(MethodResult::getMethodName));
@@ -684,15 +558,7 @@ public class CoreHelper {
         }
 
         if (MainForm.getInstance().getNullParamBox().isSelected()) {
-            ArrayList<MethodResult> newResults = new ArrayList<>();
-            for (MethodResult result : newReulst) {
-                if (result.getMethodDesc().contains("()")) {
-                    continue;
-                }
-                newResults.add(result);
-            }
-            newReulst.clear();
-            newReulst.addAll(newResults);
+            newReulst = SearchFilterHelper.filterNullParam(newReulst);
         }
 
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
@@ -755,27 +621,7 @@ public class CoreHelper {
         }
         ArrayList<MethodResult> results = MainForm.getEngine().getCallersLike(className, methodName, methodDesc);
 
-        // BALCK LIST
-        ArrayList<String> bl = ListParser.parse(MainForm.getInstance().getBlackArea().getText());
-        ArrayList<MethodResult> newReulst = new ArrayList<>();
-        for (MethodResult m : results) {
-            boolean filtered = false;
-            for (String b : bl) {
-                if (m.getClassName().equals(b)) {
-                    filtered = true;
-                    break;
-                }
-                // CHECK PACAKGE
-                b = b.replace(".", "/");
-                if (m.getClassName().startsWith(b)) {
-                    filtered = true;
-                    break;
-                }
-            }
-            if (!filtered) {
-                newReulst.add(m);
-            }
-        }
+        ArrayList<MethodResult> newReulst = SearchFilterHelper.filter(results);
 
         if (MenuUtil.sortedByMethod()) {
             newReulst.sort(Comparator.comparing(MethodResult::getMethodName));
@@ -785,17 +631,7 @@ public class CoreHelper {
             throw new RuntimeException("invalid sort");
         }
 
-        if (MainForm.getInstance().getNullParamBox().isSelected()) {
-            ArrayList<MethodResult> newResults = new ArrayList<>();
-            for (MethodResult result : newReulst) {
-                if (result.getMethodDesc().contains("()")) {
-                    continue;
-                }
-                newResults.add(result);
-            }
-            newReulst.clear();
-            newReulst.addAll(newResults);
-        }
+        newReulst = SearchFilterHelper.filterNullParam(newReulst);
 
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
         for (MethodResult result : newReulst) {
@@ -839,27 +675,7 @@ public class CoreHelper {
         }
         ArrayList<MethodResult> results = MainForm.getEngine().getMethodLike(className, methodName, methodDesc);
 
-        // BALCK LIST
-        ArrayList<String> bl = ListParser.parse(MainForm.getInstance().getBlackArea().getText());
-        ArrayList<MethodResult> newReulst = new ArrayList<>();
-        for (MethodResult m : results) {
-            boolean filtered = false;
-            for (String b : bl) {
-                if (m.getClassName().equals(b)) {
-                    filtered = true;
-                    break;
-                }
-                // CHECK PACAKGE
-                b = b.replace(".", "/");
-                if (m.getClassName().startsWith(b)) {
-                    filtered = true;
-                    break;
-                }
-            }
-            if (!filtered) {
-                newReulst.add(m);
-            }
-        }
+        ArrayList<MethodResult> newReulst = SearchFilterHelper.filter(results);
 
         if (MenuUtil.sortedByMethod()) {
             newReulst.sort(Comparator.comparing(MethodResult::getMethodName));
@@ -869,17 +685,7 @@ public class CoreHelper {
             throw new RuntimeException("invalid sort");
         }
 
-        if (MainForm.getInstance().getNullParamBox().isSelected()) {
-            ArrayList<MethodResult> newResults = new ArrayList<>();
-            for (MethodResult result : newReulst) {
-                if (result.getMethodDesc().contains("()")) {
-                    continue;
-                }
-                newResults.add(result);
-            }
-            newReulst.clear();
-            newReulst.addAll(newResults);
-        }
+        newReulst = SearchFilterHelper.filterNullParam(newReulst);
 
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
         for (MethodResult result : newReulst) {
@@ -936,16 +742,19 @@ public class CoreHelper {
             }
         }).collect(Collectors.toList());
 
+        ArrayList<MethodResult> filteredList = SearchFilterHelper.filter(
+                new ArrayList<>(methodResultList));
+
         if (MenuUtil.sortedByMethod()) {
-            methodResultList.sort(Comparator.comparing(MethodResult::getMethodName));
+            filteredList.sort(Comparator.comparing(MethodResult::getMethodName));
         }
         if (MenuUtil.sortedByClass()) {
-            Collections.sort(methodResultList, Comparator.comparing(MethodResult::getClassName)
+            Collections.sort(filteredList, Comparator.comparing(MethodResult::getClassName)
                     .thenComparing(MethodResult::getLineNumber));
         }
 
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
-        methodResultList.forEach(methodsList::addElement);
+        filteredList.forEach(methodsList::addElement);
 
         MainForm.getInstance().getSearchList().setModel(methodsList);
         MainForm.getInstance().getSearchList().repaint();

@@ -23,11 +23,17 @@
 | excludeAnno          | String     | 排除方法的注解      |
 | hasClassAnno         | String     | 类的注解         |
 | hasField             | String     | 类字段          |
+| containsInvoke       | String String | 方法内调用了指定方法   |
+| excludeInvoke        | String String | 方法内未调用指定方法   |
+| nameRegex            | String     | 方法名正则匹配      |
+| classNameRegex       | String     | 类名正则匹配       |
 
 注意：
 - `returnType`和`paramTypeMap`要求类似是完整类名，例如`java.lang.String`，基础类型直接写即可例如`int`
 - `isSubClassOf`和`isSuperClassOf`要求完整类名，例如`java.awt.Component`
 - `hasAnno`和`hasClassAnno`不要求完整类名，直接写即可例如`Controller`
+- `containsInvoke`和`excludeInvoke`第一个参数为完整类名，第二个参数为方法名，例如`containsInvoke("java.lang.Runtime","exec")`
+- `nameRegex`和`classNameRegex`使用 Java 标准正则表达式语法
 
 ### 1.基础搜索
 
@@ -136,3 +142,88 @@ public class sqlcontroller {
 参考图片
 
 ![](../img/0027.png)
+
+### 5.方法调用关系搜索
+
+`containsInvoke` 和 `excludeInvoke` 可以根据方法内部的调用关系来过滤搜索结果
+
+例如搜索所有内部调用了 `Runtime.exec` 的方法
+
+```java
+#method
+        .containsInvoke("java.lang.Runtime","exec")
+```
+
+例如搜索调用了 `JNDI lookup` 的方法
+
+```java
+#method
+        .containsInvoke("javax.naming.Context","lookup")
+```
+
+也可以排除调用了某些方法的结果，例如搜索调用了 `Runtime.exec` 但没有调用 `System.exit` 的方法
+
+```java
+#method
+        .containsInvoke("java.lang.Runtime","exec")
+        .excludeInvoke("java.lang.System","exit")
+```
+
+`containsInvoke` 和 `excludeInvoke` 可以多次使用，多个条件之间为 AND 关系
+
+```java
+#method
+        .containsInvoke("java.lang.Runtime","exec")
+        .containsInvoke("java.lang.ProcessBuilder","start")
+```
+
+注意：类名使用 `.` 分隔的完整类名
+
+### 6.正则表达式匹配
+
+`nameRegex` 和 `classNameRegex` 支持使用 Java 标准正则表达式来匹配方法名和类名
+
+例如搜索方法名匹配 `get.*` 或 `set.*` 模式的方法
+
+```java
+#method
+        .nameRegex("get.*|set.*")
+```
+
+例如搜索类名匹配 `.*Controller.*` 且方法名匹配 `do.*` 模式的方法
+
+```java
+#method
+        .classNameRegex(".*Controller.*")
+        .nameRegex("do.*")
+```
+
+正则表达式使用 Java 的 `Pattern.matches` 进行全匹配，如果只需要部分匹配请使用 `.*` 包裹
+
+### 7.搜索结果过滤模式
+
+搜索功能（包括普通搜索和表达式搜索）支持黑名单和白名单两种过滤模式
+
+- **黑名单模式（默认）**: 过滤列表中的类/包会被排除在搜索结果之外
+- **白名单模式**: 只有过滤列表中指定的类/包才会出现在搜索结果中
+
+可以在主界面右侧的过滤列表区域通过下拉框切换模式
+
+过滤规则支持：
+- 完整类名：`com/example/MyClass`
+- 包名前缀：`com/example/`（会匹配该包下的所有类）
+- 支持 `.` 和 `/` 两种分隔符
+- 支持注释：`#`、`//`、`/* */`
+- 多个规则用 `;` 或换行分隔
+
+### 8.导出搜索结果
+
+表达式搜索支持将搜索结果导出为 CSV 文件
+
+在表达式编辑器界面点击「导出CSV」按钮即可将当前搜索结果导出
+
+导出的 CSV 文件包含以下列：
+- `ClassName`: 类名
+- `MethodName`: 方法名
+- `MethodDesc`: 方法描述符
+- `LineNumber`: 行号

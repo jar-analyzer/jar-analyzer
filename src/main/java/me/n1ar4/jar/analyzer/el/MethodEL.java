@@ -10,7 +10,9 @@
 
 package me.n1ar4.jar.analyzer.el;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("unused")
@@ -32,6 +34,12 @@ public class MethodEL {
     private String excludedMethodAnno;
     private String classAnno;
     private String field;
+    // 方法体内调用检查（className + methodName 对）
+    private List<String[]> containsInvokeList;
+    private List<String[]> excludeInvokeList;
+    // 正则匹配
+    private String nameRegex;
+    private String classNameRegex;
 
     // -------------------- GETTER/SETTER -------------------- //
     public String getClassNameContains() {
@@ -170,11 +178,45 @@ public class MethodEL {
         this.field = field;
     }
 
+    public List<String[]> getContainsInvokeList() {
+        return containsInvokeList;
+    }
+
+    public void setContainsInvokeList(List<String[]> containsInvokeList) {
+        this.containsInvokeList = containsInvokeList;
+    }
+
+    public List<String[]> getExcludeInvokeList() {
+        return excludeInvokeList;
+    }
+
+    public void setExcludeInvokeList(List<String[]> excludeInvokeList) {
+        this.excludeInvokeList = excludeInvokeList;
+    }
+
+    public String getNameRegex() {
+        return nameRegex;
+    }
+
+    public void setNameRegex(String nameRegex) {
+        this.nameRegex = nameRegex;
+    }
+
+    public String getClassNameRegex() {
+        return classNameRegex;
+    }
+
+    public void setClassNameRegex(String classNameRegex) {
+        this.classNameRegex = classNameRegex;
+    }
+
     public MethodEL() {
         this.paramTypes = new HashMap<>();
         this.paramsNum = null;
         this.isStatic = null;
         this.isPublic = null;
+        this.containsInvokeList = new ArrayList<>();
+        this.excludeInvokeList = new ArrayList<>();
     }
 
     // -------------------- EL -------------------- //
@@ -261,6 +303,56 @@ public class MethodEL {
 
     public MethodEL hasField(String s) {
         this.field = s;
+        return this;
+    }
+
+    /**
+     * 检查方法体内是否包含对指定类的指定方法的调用
+     * 例如: containsInvoke("java.lang.Runtime", "exec")
+     *
+     * @param className  被调用方法所在类的全限定名（点分隔）
+     * @param methodName 被调用的方法名
+     * @return this（链式调用）
+     */
+    public MethodEL containsInvoke(String className, String methodName) {
+        this.containsInvokeList.add(new String[]{className, methodName});
+        return this;
+    }
+
+    /**
+     * 排除方法体内包含对指定类的指定方法调用的方法
+     * 例如: excludeInvoke("java.lang.System", "exit")
+     *
+     * @param className  被调用方法所在类的全限定名（点分隔）
+     * @param methodName 被调用的方法名
+     * @return this（链式调用）
+     */
+    public MethodEL excludeInvoke(String className, String methodName) {
+        this.excludeInvokeList.add(new String[]{className, methodName});
+        return this;
+    }
+
+    /**
+     * 使用正则表达式匹配方法名
+     * 例如: nameRegex("get.*URL|fetch.*Remote")
+     *
+     * @param regex Java 正则表达式
+     * @return this（链式调用）
+     */
+    public MethodEL nameRegex(String regex) {
+        this.nameRegex = regex;
+        return this;
+    }
+
+    /**
+     * 使用正则表达式匹配类名（内部格式，使用 / 分隔）
+     * 例如: classNameRegex(".*Controller.*|.*Servlet.*")
+     *
+     * @param regex Java 正则表达式
+     * @return this（链式调用）
+     */
+    public MethodEL classNameRegex(String regex) {
+        this.classNameRegex = regex;
         return this;
     }
 }

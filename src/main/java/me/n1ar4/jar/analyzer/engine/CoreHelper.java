@@ -16,7 +16,6 @@ import me.n1ar4.jar.analyzer.entity.ClassResult;
 import me.n1ar4.jar.analyzer.entity.MethodResult;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.render.AllMethodsRender;
-import me.n1ar4.jar.analyzer.gui.util.ListParser;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
 import me.n1ar4.jar.analyzer.gui.util.MenuUtil;
 import me.n1ar4.jar.analyzer.gui.util.SearchFilterHelper;
@@ -308,9 +307,7 @@ public class CoreHelper {
         } else {
             throw new RuntimeException("invalid sort");
         }
-        if (MainForm.getInstance().getNullParamBox().isSelected()) {
-            newReulst = SearchFilterHelper.filterNullParam(newReulst);
-        }
+        newReulst = SearchFilterHelper.filterNullParam(newReulst);
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
         for (MethodResult result : newReulst) {
             methodsList.addElement(result);
@@ -379,9 +376,7 @@ public class CoreHelper {
             throw new RuntimeException("invalid sort");
         }
 
-        if (MainForm.getInstance().getNullParamBox().isSelected()) {
-            newReulst = SearchFilterHelper.filterNullParam(newReulst);
-        }
+        newReulst = SearchFilterHelper.filterNullParam(newReulst);
 
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
         for (MethodResult result : newReulst) {
@@ -427,9 +422,7 @@ public class CoreHelper {
             throw new RuntimeException("invalid sort");
         }
 
-        if (MainForm.getInstance().getNullParamBox().isSelected()) {
-            newReulst = SearchFilterHelper.filterNullParam(newReulst);
-        }
+        newReulst = SearchFilterHelper.filterNullParam(newReulst);
 
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
         for (MethodResult result : newReulst) {
@@ -492,9 +485,7 @@ public class CoreHelper {
             throw new RuntimeException("invalid sort");
         }
 
-        if (MainForm.getInstance().getNullParamBox().isSelected()) {
-            newReulst = SearchFilterHelper.filterNullParam(newReulst);
-        }
+        newReulst = SearchFilterHelper.filterNullParam(newReulst);
 
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
         for (MethodResult result : newReulst) {
@@ -557,9 +548,7 @@ public class CoreHelper {
             throw new RuntimeException("invalid sort");
         }
 
-        if (MainForm.getInstance().getNullParamBox().isSelected()) {
-            newReulst = SearchFilterHelper.filterNullParam(newReulst);
-        }
+        newReulst = SearchFilterHelper.filterNullParam(newReulst);
 
         DefaultListModel<MethodResult> methodsList = new DefaultListModel<>();
         for (MethodResult result : newReulst) {

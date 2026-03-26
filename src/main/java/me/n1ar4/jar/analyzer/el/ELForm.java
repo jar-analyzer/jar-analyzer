@@ -12,6 +12,8 @@ package me.n1ar4.jar.analyzer.el;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
+import me.n1ar4.jar.analyzer.entity.MethodResult;
+import me.n1ar4.jar.analyzer.exporter.SearchResultCsvExporter;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
@@ -25,6 +27,8 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class ELForm {
@@ -42,6 +46,7 @@ public class ELForm {
     private JLabel builtinLabel;
     private JLabel msgLabel;
     private JButton stopBtn;
+    private JButton exportCsvBtn;
     private static ELForm elInstance;
 
     public static void setVal(int val) {
@@ -87,7 +92,11 @@ public class ELForm {
                 "        .hasClassAnno(\"Controller\")\n" +
                 "        .hasAnno(\"RequestMapping\")\n" +
                 "        .excludeAnno(\"Auth\")\n" +
-                "        .hasField(\"context\")");
+                "        .hasField(\"context\")\n" +
+                "        .containsInvoke(\"java.lang.Runtime\",\"exec\")\n" +
+                "        .excludeInvoke(\"java.lang.System\",\"exit\")\n" +
+                "        .nameRegex(\"get.*|set.*\")\n" +
+                "        .classNameRegex(\".*Controller.*\")");
 
         checkButton.addActionListener(e -> {
             try {
@@ -157,6 +166,35 @@ public class ELForm {
 
         elInstance = this;
 
+        exportCsvBtn = new JButton();
+        exportCsvBtn.setText("导出CSV");
+        opPanel.add(exportCsvBtn, new GridConstraints(0, 3, 1, 1,
+                GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
+                GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        exportCsvBtn.addActionListener(e -> {
+            if (MainForm.getInstance() == null) {
+                return;
+            }
+            JList<MethodResult> searchList = MainForm.getInstance().getSearchList();
+            if (searchList == null || searchList.getModel().getSize() == 0) {
+                JOptionPane.showMessageDialog(elPanel, "当前没有搜索结果可以导出");
+                return;
+            }
+            List<MethodResult> resultList = new ArrayList<>();
+            for (int i = 0; i < searchList.getModel().getSize(); i++) {
+                resultList.add(searchList.getModel().getElementAt(i));
+            }
+            SearchResultCsvExporter exporter = new SearchResultCsvExporter(resultList);
+            boolean success = exporter.doExport();
+            if (success) {
+                JOptionPane.showMessageDialog(elPanel,
+                        "导出成功: " + exporter.getFileName());
+            } else {
+                JOptionPane.showMessageDialog(elPanel, "导出失败");
+            }
+        });
+
         Set<String> keys = Templates.data.keySet();
         for (String key : keys) {
             tempCombo.addItem(key);
@@ -186,7 +224,7 @@ public class ELForm {
         elPanel = new JPanel();
         elPanel.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
         opPanel = new JPanel();
-        opPanel.setLayout(new GridLayoutManager(2, 3, new Insets(3, 3, 3, 3), -1, -1));
+        opPanel.setLayout(new GridLayoutManager(2, 4, new Insets(3, 3, 3, 3), -1, -1));
         elPanel.add(opPanel, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         checkButton = new JButton();
         checkButton.setText("验证表达式");
@@ -196,7 +234,7 @@ public class ELForm {
         opPanel.add(searchButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         templatesPanel = new JPanel();
         templatesPanel.setLayout(new GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
-        opPanel.add(templatesPanel, new GridConstraints(1, 0, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        opPanel.add(templatesPanel, new GridConstraints(1, 0, 1, 4, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         tempCombo = new JComboBox();
         templatesPanel.add(tempCombo, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         builtinLabel = new JLabel();

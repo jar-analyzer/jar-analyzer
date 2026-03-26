@@ -13,16 +13,17 @@ package me.n1ar4.jar.analyzer.el;
 import me.n1ar4.jar.analyzer.core.reference.AnnoReference;
 import me.n1ar4.jar.analyzer.core.reference.ClassReference;
 import me.n1ar4.jar.analyzer.core.reference.MethodReference;
+import me.n1ar4.jar.analyzer.entity.MethodResult;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 public class MethodELProcessor {
     private static final Logger logger = LogManager.getLogger();
@@ -66,6 +67,11 @@ public class MethodELProcessor {
 
         String hasField = condition.getField();
 
+        List<String[]> containsInvokeList = condition.getContainsInvokeList();
+        List<String[]> excludeInvokeList = condition.getExcludeInvokeList();
+        String nameRegexStr = condition.getNameRegex();
+        String classNameRegexStr = condition.getClassNameRegex();
+
         Integer i = condition.getParamsNum();
         Boolean f = condition.getStatic();
         Boolean p = condition.getPublic();
@@ -88,6 +94,10 @@ public class MethodELProcessor {
         boolean superClassFlag = true;
         boolean startWithFlag = true;
         boolean endWithFlag = true;
+        boolean containsInvokeFlag = true;
+        boolean excludeInvokeFlag = true;
+        boolean nameRegexFlag = true;
+        boolean classNameRegexFlag = true;
 
         if (classCon != null && !classCon.isEmpty()) {
             classNameContainsFlag = ch.getName().contains(classCon);
@@ -163,6 +173,73 @@ public class MethodELProcessor {
             }
         }
 
+        // 方法名正则匹配
+        if (nameRegexStr != null && !nameRegexStr.isEmpty()) {
+            try {
+                nameRegexFlag = Pattern.matches(nameRegexStr, mr.getName());
+            } catch (PatternSyntaxException ex) {
+                logger.error("invalid name regex: {}", nameRegexStr);
+                nameRegexFlag = false;
+            }
+        }
+
+        // 类名正则匹配
+        if (classNameRegexStr != null && !classNameRegexStr.isEmpty()) {
+            try {
+                classNameRegexFlag = Pattern.matches(classNameRegexStr, ch.getName());
+            } catch (PatternSyntaxException ex) {
+                logger.error("invalid class name regex: {}", classNameRegexStr);
+                classNameRegexFlag = false;
+            }
+        }
+
+        // 方法体内调用检查（containsInvoke）
+        // 利用数据库已有的方法调用关系表查询 callee
+        if (containsInvokeList != null && !containsInvokeList.isEmpty()) {
+            ArrayList<MethodResult> callees = MainForm.getEngine().getCallee(
+                    ch.getName(), mr.getName(), mr.getDesc());
+            for (String[] invokeTarget : containsInvokeList) {
+                String targetClass = invokeTarget[0].replace(".", "/");
+                String targetMethod = invokeTarget[1];
+                boolean found = false;
+                for (MethodResult callee : callees) {
+                    if (callee.getClassName().equals(targetClass) &&
+                            callee.getMethodName().equals(targetMethod)) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    containsInvokeFlag = false;
+                    break;
+                }
+            }
+        }
+
+        // 方法体内调用排除（excludeInvoke）
+        if (excludeInvokeList != null && !excludeInvokeList.isEmpty()) {
+            ArrayList<MethodResult> callees = null;
+            for (String[] invokeTarget : excludeInvokeList) {
+                String targetClass = invokeTarget[0].replace(".", "/");
+                String targetMethod = invokeTarget[1];
+                // 延迟加载 callee，避免无必要的数据库查询
+                if (callees == null) {
+                    callees = MainForm.getEngine().getCallee(
+                            ch.getName(), mr.getName(), mr.getDesc());
+                }
+                for (MethodResult callee : callees) {
+                    if (callee.getClassName().equals(targetClass) &&
+                            callee.getMethodName().equals(targetMethod)) {
+                        excludeInvokeFlag = false;
+                        break;
+                    }
+                }
+                if (!excludeInvokeFlag) {
+                    break;
+                }
+            }
+        }
+
         if (i != null) {
             paramNumFlag = i == paramNum;
         }
@@ -233,6 +310,8 @@ public class MethodELProcessor {
                 fieldFlag &&
                 subClassFlag && superClassFlag &&
                 startWithFlag && endWithFlag &&
+                containsInvokeFlag && excludeInvokeFlag &&
+                nameRegexFlag && classNameRegexFlag &&
                 !isExcludedMethod) {
             logger.info("found result {} - {}", ch.getName(), mr.getName());
             searchList.add(new ResObj(mr.getHandle(), ch.getName(), mr.getLineNumber()));

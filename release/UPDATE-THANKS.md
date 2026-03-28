@@ -2,6 +2,7 @@
 
 Steps:
 
+- update pom.xml
 - update readme '<a href'
 - update readme '## 感谢列表'
 - update CHANGELOG.MD

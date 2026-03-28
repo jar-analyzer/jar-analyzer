@@ -32,6 +32,7 @@ The `jar-analyzer` project has been continuously updated for `5` years, with `59
   <a href="https://github.com/0cat-r"><img src="https://github.com/0cat-r.png?size=72" width="72" height="72" alt="0cat-r" /></a>
   <a href="https://github.com/Gosiu"><img src="https://github.com/Gosiu.png?size=72" width="72" height="72" alt="Gosiu" /></a>
   <a href="https://github.com/ly-test-fuzz"><img src="https://github.com/ly-test-fuzz.png?size=72" width="72" height="72" alt="ly-test-fuzz" /></a>
+  <a href="https://github.com/AII12754"><img src="https://github.com/AII12754.png?size=72" width="72" height="72" alt="AII12754" /></a>
   <a href="https://github.com/sensensen404"><img src="https://github.com/sensensen404.png?size=72" width="72" height="72" alt="sensensen404" /></a>
   <a href="https://github.com/MyDynasty"><img src="https://github.com/MyDynasty.png?size=72" width="72" height="72" alt="MyDynasty" /></a>
   <a href="https://github.com/TianMing2018"><img src="https://github.com/TianMing2018.png?size=72" width="72" height="72" alt="TianMing2018" /></a>
@@ -270,6 +271,7 @@ set "java_args=-XX:+UseG1GC -Xms2g -XX:MaxGCPauseMillis=200 %other_args%"
 - 0cat (https://github.com/0cat-r) (重要 AI 贡献)
 - Honey Baby (https://github.com/Gosiu) (多次重要贡献) 
 - fantasy (https://github.com/ly-test-fuzz) 
+- AII (https://github.com/AII12754)
 - phil (https://github.com/sensensen404)
 - MyDynasty (https://github.com/MyDynasty) 
 - TianMing2018 (https://github.com/TianMing2018) 

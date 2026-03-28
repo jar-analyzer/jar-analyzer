@@ -17,7 +17,7 @@ jobs:
           echo "CORE_VERSION=v1.2.2" >> $GITHUB_ENV
           echo "REPORT_VERSION=v1.2.2" >> $GITHUB_ENV
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: set up go
         uses: actions/setup-go@v6

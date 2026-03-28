@@ -57,13 +57,13 @@ jobs:
           zip -r ../../../report-mcp-build.zip jar-analyzer-report-mcp/*
 
       - name: upload core
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: build-artifact-core
           path: mcp-build.zip
 
       - name: upload report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: build-artifact-report
           path: report-mcp-build.zip

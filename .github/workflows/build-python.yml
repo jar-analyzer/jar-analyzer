@@ -15,7 +15,7 @@ jobs:
         zip -r jar-audit-agent.zip jar-audit-agent
         
     - name: upload artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: jar-audit-agent
         path: skills/jar-audit-agent.zip

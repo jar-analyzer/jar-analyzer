@@ -1,5 +1,26 @@
 # CHANGELOG
 
+## 5.18
+
+更新日志：
+
+- [BUG] 修复低版本 `Java` 环境文件选择打开缓慢问题 @4ra1n
+- [功能] 搜索部分支持了选择黑名单或白名单两种过滤方式 @AII12754
+- [功能] 表达式支持 `containsInvoke` 和 `excludeInvoke` @AII12754
+- [功能] 表达式支持 `nameRegex` 和 `classNameRegex` 正则 @AII12754
+- [功能] 表达式支持导出结果到 `CSV` 文件 @AII12754
+- [优化] 拖拽功能优化支持拖拽到所有地方都可以加载 @4ra1n
+- [优化] 搜索部分黑白名单设置在表达式搜索结果中生效 @AII12754
+- [优化] 表达式新增了几个常用的内置模板 @AII12754
+- [优化] 首页新增按钮一键跳转快速 `sink` 搜索 @4ra1n
+- [其他] 有多标签页后不再需要前后步返回按钮 @4ra1n
+- [其他] 删除无意义的 `ObjectInputFilter` 机制 @4ra1n
+
+感谢以下用户的贡献:
+
+- 4ra1n (https://github.com/4ra1n)
+- AII (https://github.com/AII12754)
+
 ## 5.17
 
 更新日志：
@@ -11,23 +32,6 @@
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
-
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
-
-- `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (主要版本)
-- `windows-25` 版内置开启 `ZGC` 的 `JRE 25` 环境（包含核心功能，未完全测试）
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-
-一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
-
-可选的其他 `AI` 相关下载内容:（可选，非必须，由社区师傅贡献）
-
-- `mcp-build.zip` 包含所有系统的 `mcp` 一般使用 `mcp_windows_amd64.exe`
-- `report-mcp-build.zip` 配合 `workflow` 使用的自动报告生成 `mcp`
-- `jar-audit-agent.zip` 是 `AI` 分析使用到的 `SKILL`
 
 相关项目：
 
@@ -51,23 +55,6 @@
 - 4ra1n (https://github.com/4ra1n)
 - Honey Baby (https://github.com/Gosiu)
 
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
-
-- `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (主要版本)
-- `windows-25` 版内置开启 `ZGC` 的 `JRE 25` 环境（包含核心功能，未完全测试）
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-
-一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
-
-可选的其他 `AI` 相关下载内容:
-
-- `mcp-build.zip` 包含所有系统的 `mcp` 一般使用 `mcp_windows_amd64.exe`
-- `report-mcp-build.zip` 配合 `workflow` 使用的自动报告生成 `mcp`
-- `jar-audit-agent.zip` 是 `AI` 分析使用到的 `SKILL`
-
 ## 5.15
 
 更新日志：
@@ -82,23 +69,6 @@
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
-
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
-
-- `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (**完整版本**)
-- `windows-21` 版内置开启 `ZGC` 的 `JRE 21` 环境（激进用户尝试使用）
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-
-一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
-
-可选的其他 `AI` 相关下载内容:
-
-- `mcp-build.zip` 包含所有系统的 `mcp` 一般使用 `mcp_windows_amd64.exe`
-- `report-mcp-build.zip` 配合 `workflow` 使用的自动报告生成 `mcp`
-- `jar-audit-agent.zip` 是 `AI` 分析使用到的 `SKILL`
 
 ## 5.14
 
@@ -117,23 +87,6 @@
 
 - 4ra1n (https://github.com/4ra1n)
 - fantasy (https://github.com/ly-test-fuzz)
-
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
-
-- `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (**完整版本**)
-- `windows-21` 版内置开启 `ZGC` 的 `JRE 21` 环境（激进用户尝试使用）
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-
-一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
-
-可选的其他 `AI` 相关下载内容:
-
-- `mcp-build.zip` 包含所有系统的 `mcp` 一般使用 `mcp_windows_amd64.exe`
-- `report-mcp-build.zip` 配合 `workflow` 使用的自动报告生成 `mcp`
-- `jar-audit-agent.zip` 是 `AI` 分析使用到的 `SKILL`
 
 ## 5.13
 
@@ -154,23 +107,6 @@
 - 4ra1n (https://github.com/4ra1n)
 - 0cat (https://github.com/0cat-r)
 
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
-
-- `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (**完整版本**)
-- `windows-21` 版内置开启 `ZGC` 的 `JRE 21` 环境（激进用户尝试使用）
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-
-一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
-
-可选的其他 `AI` 相关下载内容:
-
-- `mcp-build.zip` 包含所有系统的 `mcp` 一般使用 `mcp_windows_amd64.exe`
-- `report-mcp-build.zip` 配合 `workflow` 使用的自动报告生成 `mcp`
-- `jar-audit-agent.zip` 是 `AI` 分析使用到的 `SKILL`
-
 ## 5.12
 
 更新日志：
@@ -183,23 +119,6 @@
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
-
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
-
-- `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (**完整版本**)
-- `windows-21` 版内置开启 `ZGC` 的 `JRE 21` 环境（激进用户尝试使用）
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-- `mcp-build.zip` 包含所有系统的 `mcp` 一般使用 `mcp_windows_amd64.exe`
-- `report-mcp-build.zip` 配合 `workflow` 使用的自动报告生成 `mcp`
-
-一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
-
-官方文档：https://docs.qq.com/doc/DV3pKbG9GS0pJS0tk
-
-`MCP` 文档：https://github.com/jar-analyzer/jar-analyzer/tree/master/mcp-doc
 
 ## 5.11
 
@@ -230,23 +149,6 @@
 - L-codes (https://github.com/L-codes) (AI 贡献)
 - osword (https://github.com/zhzhdoai) (AI 贡献)
 
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
-
-- `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (**完整版本**)
-- `windows-21` 版内置开启 `ZGC` 的 `JRE 21` 环境（激进用户尝试使用）
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-- `mcp-build.zip` 包含所有系统的 `mcp` 一般使用 `mcp_windows_amd64.exe`
-- `report-mcp-build.zip` 配合 `workflow` 使用的自动报告生成 `mcp`
-
-一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
-
-官方文档：https://docs.qq.com/doc/DV3pKbG9GS0pJS0tk
-
-`MCP` 文档：https://github.com/jar-analyzer/jar-analyzer/tree/master/mcp-doc
-
 ## 5.10
 
 更新日志：
@@ -261,22 +163,6 @@
 - 4ra1n (https://github.com/4ra1n)
 - 7eleven (https://github.com/7-e1even)
 
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
-
-- `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (**完整版本**)
-- `windows-21` 版内置开启 `ZGC` 的 `JRE 21` 环境（激进用户尝试使用）
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-- `mcp-build.zip` 包含所有系统的 `mcp` 一般使用 `mcp_windows_amd64.exe`
-
-一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
-
-官方文档：https://docs.qq.com/doc/DV3pKbG9GS0pJS0tk
-
-`MCP` 文档：https://github.com/jar-analyzer/jar-analyzer/tree/master/mcp-doc
-
 ## 5.9
 
 更新日志：
@@ -290,19 +176,6 @@
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
-
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
-
-- `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (**完整版本**)
-- `windows-21` 版内置开启 `ZGC` 的 `JRE 21` 环境（激进用户尝试使用）
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-
-一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
-
-官方文档：https://docs.qq.com/doc/DV3pKbG9GS0pJS0tk
 
 ## 5.8
 
@@ -319,19 +192,6 @@
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
-
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
-
-- `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (**完整版本**)
-- `windows-21` 版内置开启 `ZGC` 的 `JRE 21` 环境（激进用户尝试使用）
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-
-一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
-
-官方文档：https://docs.qq.com/doc/DV3pKbG9GS0pJS0tk
 
 ## 5.7
 
@@ -357,19 +217,6 @@
 - 4ra1n (https://github.com/4ra1n)
 - su18 (https://github.com/su18)
 
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
-
-- `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (**完整版本**)
-- `windows-21` 版内置开启 `ZGC` 的 `JRE 21` 环境（激进用户尝试使用）
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-
-一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
-
-官方文档：https://docs.qq.com/doc/DV3pKbG9GS0pJS0tk
-
 ## 5.6
 
 官方文档：https://docs.qq.com/doc/DV3pKbG9GS0pJS0tk
@@ -384,17 +231,6 @@
 
 - 4ra1n (https://github.com/4ra1n)
 - R0ser1 (https://github.com/R0ser1)
-
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
-
-- `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (**完整版本**)
-- `windows-21` 版内置开启 `ZGC` 的 `JRE 21` 环境（激进用户尝试使用）
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-
-一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
 
 ## 5.5
 
@@ -416,17 +252,6 @@
 - 4ra1n (https://github.com/4ra1n)
 - phil (https://github.com/sensensen404)
 
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
-
-- `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (**完整版本**)
-- `windows-21` 版内置开启 `ZGC` 的 `JRE 21` 环境（激进用户尝试使用）
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-
-一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
-
 ## 5.4
 
 更新日志：
@@ -443,17 +268,6 @@
 
 - 4ra1n (https://github.com/4ra1n)
 
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
-
-- `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (**完整版本**)
-- `windows-21` 版内置开启 `ZGC` 的 `JRE 21` 环境（激进用户尝试使用）
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-
-一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
-
 ## 5.3
 
 更新日志：
@@ -464,17 +278,6 @@
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
-
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
-
-- `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (**完整版本**)
-- `windows-21` 版内置开启 `ZGC` 的 `JRE 21` 环境（激进用户尝试使用）
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-
-一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
 
 ## 5.2
 
@@ -500,17 +303,6 @@
 - 4ra1n (https://github.com/4ra1n)
 - Honey Baby (https://github.com/Gosiu)
 
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
-
-- `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (**完整版本**)
-- `windows-21` 版内置开启 `ZGC` 的 `JRE 21` 环境（激进用户尝试使用）
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-
-一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
-
 ## 5.1
 
 注意：该版本数据库结构有变动，无法兼容之前的数据库结构，请重新构建数据库
@@ -533,17 +325,6 @@
 - 4ra1n (https://github.com/4ra1n)
 - Honey Baby (https://github.com/Gosiu)
 - TianMing2018 (https://github.com/TianMing2018)
-
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
-
-- `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (**完整版本**)
-- `windows-21` 版内置开启 `ZGC` 的 `JRE 21` 环境（激进用户尝试使用）
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-
-一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
 
 ## 5.0
 
@@ -587,17 +368,6 @@
 - ar3h (https://github.com/ar3h)
 - 某匿名安全研究员（提出多条改进建议）
 
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
-
-- `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (**完整版本**)
-- `windows-21` 版内置开启 `ZGC` 的 `JRE 21` 环境（激进用户尝试使用）
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-
-一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
-
 ## 4.4
 
 更新日志：
@@ -614,17 +384,6 @@
 
 - 4ra1n (https://github.com/4ra1n)
 
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
-
-- `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (**完整版本**)
-- `windows-23` 版内置开启 `ZGC` 的 `JRE 23` 环境（仅包含核心功能）
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-
-一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
-
 ## 4.3
 
 更新日志：
@@ -638,17 +397,6 @@
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
-
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
-
-- `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (**完整版本**)
-- `windows-23` 版内置开启 `ZGC` 的 `JRE 23` 环境（仅包含核心功能）
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-
-一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
 
 ## 4.2
 
@@ -664,17 +412,6 @@
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
-
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
-
-- `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (**完整版本**)
-- `windows-23` 版内置开启 `ZGC` 的 `JRE 23` 环境（仅包含核心功能）
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-
-一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
 
 ## 4.1
 
@@ -704,17 +441,6 @@
 - 4ra1n (https://github.com/4ra1n)
 - MyDynasty (https://github.com/MyDynasty)
 - hacats (https://github.com/hacats)
-
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
-
-- `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (**完整版本**)
-- `windows-23` 版内置开启 `ZGC` 的 `JRE 23` 环境（仅包含核心功能）
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-
-一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
 
 ## 4.0
 
@@ -756,17 +482,6 @@
 - 4ra1n (https://github.com/4ra1n)
 - Honey Baby (https://github.com/Gosiu)
 
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
-
-- `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (**完整版本**)
-- `windows-23` 版内置开启 `ZGC` 的 `JRE 23` 环境（仅包含核心功能）
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-
-一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
-
 ## 3.2
 
 更新日志：
@@ -805,17 +520,6 @@
 - 4ra1n (https://github.com/4ra1n)
 - fantasy (https://github.com/ly-test-fuzz)
 - phil (https://github.com/sensensen404)
-
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
-
-- `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (**完整版本**)
-- `windows-23` 版内置开启 `ZGC` 的 `JRE 23` 环境（仅包含核心功能）
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-
-一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
 
 ## 3.1
 
@@ -857,17 +561,6 @@
 - 4ra1n (https://github.com/4ra1n)
 - phil (https://github.com/sensensen404)
 - fantasy (https://github.com/ly-test-fuzz)
-
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
-
-- `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (**完整版本**)
-- `windows-22` 版内置开启 `ZGC` 的 `JRE 22` 环境（仅包含核心功能）
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-
-一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
 
 ## 3.0
 
@@ -913,17 +606,6 @@
 
 - 4ra1n (https://github.com/4ra1n)
 
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
-
-- `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (**完整版本**)
-- `windows-21` 版内置开启 `ZGC` 的 `JRE 21` 环境（仅包含核心功能）
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-
-一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
-
 ## 2.24
 
 大幅优化 `SCA` 扫描逻辑，提高扫描效率
@@ -944,17 +626,6 @@
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
-
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
-
-- `windows-full` 版内置 `JRE 8` 环境 (**完整功能版本**)
-- `windows-21` 版内置开启 `ZGC` 的 `JRE 21` 环境（仅包含核心功能）
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-
-一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
 
 ## 2.23
 
@@ -988,17 +659,6 @@
 
 - 4ra1n (https://github.com/4ra1n)
 
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
-
-- `windows-full` 版内置 `JRE 8` 环境 (**完整功能版本**)
-- `windows-21` 版内置开启 `ZGC` 的 `JRE 21` 环境（仅包含核心功能）
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-
-一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
-
 ## 2.22
 
 严重 `BUG` 紧急修复版本
@@ -1014,17 +674,6 @@
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
-
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
-
-- `windows-full` 版内置 `JRE 8` 环境 (**完整功能版本**)
-- `windows-21` 版内置开启 `ZGC` 的 `JRE 21` 环境（仅包含核心功能）
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-
-一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
 
 ## 2.21
 
@@ -1061,17 +710,6 @@
 - 4ra1n (https://github.com/4ra1n)
 - Honey Baby (https://github.com/Gosiu)
 
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
-
-- `windows-full` 版内置 `JRE 8` 环境 (**完整功能版本**)
-- `windows-full-21` 版内置开启 `ZGC` 的 `JRE 21` 环境（仅包含核心功能）
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-
-一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
-
 ## 2.20
 
 高亮显示已选中的字符串，优化用户体验
@@ -1092,16 +730,6 @@
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
-
-所有可供下载的文件都由 `Github Actions` 构建，提供以下三种:
-
-- `windows-full` 版内置 `JRE 8` 环境 (**完整功能版本**)
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-
-推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
 
 ## 2.19
 
@@ -1126,16 +754,6 @@
 
 - 4ra1n (https://github.com/4ra1n)
 
-所有可供下载的文件都由 `Github Actions` 构建，提供以下三种:
-
-- `windows-full` 版内置 `JRE 8` 环境 (**完整功能版本**)
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-
-推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
-
 ## 2.18
 
 新版本检查不再使用独立服务器了，成本过高，现在使用 `OSS` 方式
@@ -1156,16 +774,6 @@
 
 - 4ra1n (https://github.com/4ra1n)
 
-所有可供下载的文件都由 `Github Actions` 构建，提供以下三种:
-
-- `windows-full` 版内置 `JRE 8` 环境 (**完整功能版本**)
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-
-推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
-
 ## 2.17
 
 更新日志：
@@ -1179,16 +787,6 @@
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
-
-所有可供下载的文件都由 `Github Actions` 构建，提供以下三种:
-
-- `windows-full` 版内置 `JRE 8` 环境 (**完整功能版本**)
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-
-推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
 
 ## 2.16
 
@@ -1213,16 +811,6 @@
 
 - 4ra1n (https://github.com/4ra1n)
 
-所有可供下载的文件都由 `Github Actions` 构建，提供以下三种:
-
-- `windows-full` 版内置 `JRE 8` 环境 (**完整功能版本**)
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-
-推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
-
 ## 2.15
 
 更新日志：
@@ -1245,16 +833,6 @@
 - 4ra1n (https://github.com/4ra1n)
 - xishir (https://github.com/xishir)
 
-所有可供下载的文件都由 `Github Actions` 构建，提供以下三种:
-
-- `windows-full` 版内置 `JRE 8` 环境 (**完整功能版本**)
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-
-推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
-
 ## 2.14
 
 重构了 `UI` 允许放大和全屏显示
@@ -1272,16 +850,6 @@
 
 - 4ra1n (https://github.com/4ra1n)
 
-所有可供下载的文件都由 `Github Actions` 构建，提供以下三种:
-
-- `windows-full` 版内置 `JRE 8` 环境 (**完整功能版本**)
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-
-推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
-
 ## 2.13
 
 更新日志：
@@ -1292,16 +860,6 @@
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
-
-所有可供下载的文件都由 `Github Actions` 构建，提供以下三种:
-
-- `windows-full` 版内置 `JRE 8` 环境 (**完整功能版本**)
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-
-推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
 
 ## 2.12
 
@@ -1325,16 +883,6 @@
 - 4ra1n (https://github.com/4ra1n)
 - Gauss Zhou (https://github.com/gausszhou)
 
-所有可供下载的文件都由 `Github Actions` 构建，提供以下三种:
-
-- `windows-full` 版内置 `JRE 8` 环境 (**完整功能版本**)
-- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
-- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
-
-推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
-
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
-
 ## 2.11
 
 更新日志：
@@ -1351,15 +899,6 @@
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
-
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
-
-- 推荐 `embed` 版内置 `JRE 8` 的启动脚本 (**无需另外安装一键启动**)
-- `system` 使用系统 `JDK` 的启动脚本 (需要自行安装 `JDK`)
-- `linux` 内置 `shell` 启动脚本 (需要自行安装 `JDK/JRE`)
-- 简单的 `jar` 文件，不提供启动脚本 (使用 `java -jar` 启动)
-
-推荐使用 `embed` 版，经过了较多测试，完善支持 `tomcat-analyzer` 模块
 
 ## 2.10
 
@@ -1379,15 +918,6 @@
 
 - 4ra1n (https://github.com/4ra1n)
 - veo (https://github.com/veo)
-
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
-
-- 推荐 `embed` 版内置 `JRE 8` 的启动脚本 (**无需另外安装一键启动**)
-- `system` 使用系统 `JDK` 的启动脚本 (需要自行安装 `JDK`)
-- `linux` 内置 `shell` 启动脚本 (需要自行安装 `JDK/JRE`)
-- 简单的 `jar` 文件，不提供启动脚本 (使用 `java -jar` 启动)
-
-推荐使用 `embed` 版，经过了较多测试，完善支持 `tomcat-analyzer` 模块
 
 ## 2.9
 
@@ -1413,15 +943,6 @@
 - 4ra1n (https://github.com/4ra1n)
 - Y4tacker (https://github.com/Y4tacker)
 
-所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
-
-- 推荐 `embed` 版内置 `JRE 8` 的启动脚本 (**无需另外安装一键启动**)
-- `system` 使用系统 `JDK` 的启动脚本 (需要自行安装 `JDK`)
-- `linux` 内置 `shell` 启动脚本 (需要自行安装 `JDK/JRE`)
-- 简单的 `jar` 文件，不提供启动脚本 (使用 `java -jar` 启动)
-
-推荐使用 `embed` 版，经过了较多测试，完善支持 `tomcat-analyzer` 模块
-
 ## 2.8
 
 更新日志：
@@ -1442,15 +963,6 @@
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
-
-在 `release` 中提供四种下载:
-
-- 推荐 `embed` 版内置 `JRE 8` 的启动脚本 (**无需另外安装一键启动**)
-- `system` 使用系统 `JDK/JRE` 的启动脚本 (需要自行安装 `JDK/JRE`)
-- `linux` 内置 `shell` 启动脚本 (需要自行安装 `JDK/JRE`)
-- 简单的 `jar` 文件，不提供启动脚本 (使用 `java -jar` 启动)
-
-推荐使用 `embed` 版，经过了较多测试，完善支持 `tomcat-analyzer` 模块
 
 ## 2.7
 
@@ -1480,13 +992,6 @@
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
-
-在 `release` 中提供四种下载:
-
-- `system` 使用系统 `JDK/JRE` 的启动脚本 (需要自行安装 `JDK/JRE`)
-- `embed` 内置 `JRE 8` 的启动脚本 (**无需另外安装一键启动**)
-- `linux` 内置 `shell` 启动脚本 (需要自行安装 `JDK/JRE`)
-- 简单的 `Jar` 文件，不提供启动脚本 (使用 `java -jar` 启动)
 
 ## 2.6-beta
 
@@ -1518,13 +1023,6 @@
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
-
-在 `release` 中提供四种下载:
-
-- `system` 使用系统 `JDK/JRE` 的启动脚本 (需要自行安装 `JDK/JRE`)
-- `embed` 内置 `JRE 8` 的启动脚本 (**无需另外安装一键启动**)
-- `linux` 内置 `shell` 启动脚本 (需要自行安装 `JDK/JRE`)
-- 简单的 `Jar` 文件，不提供启动脚本 (使用 `java -jar` 启动)
 
 ## 2.5-beta
 

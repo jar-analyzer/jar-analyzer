@@ -1124,7 +1124,7 @@ public class MainForm {
         filterModeCombo.addItem("白名单模式 (White List) - 仅保留匹配项");
         filterModeCombo.setSelectedIndex(0);
 
-        quickSinkBtn.addActionListener(e-> tabbedPanel.setSelectedIndex(9));
+        quickSinkBtn.addActionListener(e -> tabbedPanel.setSelectedIndex(9));
 
         logger.info("init main form success");
     }

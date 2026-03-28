@@ -4,6 +4,7 @@
 
 更新日志：
 
+- [BUG] 修复低版本 `Java` 环境文件选择打开缓慢问题 @4ra1n
 - [功能] 搜索部分支持了选择黑名单或白名单两种过滤方式 @AII12754
 - [功能] 表达式支持 `containsInvoke` 和 `excludeInvoke` @AII12754
 - [功能] 表达式支持 `nameRegex` 和 `classNameRegex` 正则 @AII12754

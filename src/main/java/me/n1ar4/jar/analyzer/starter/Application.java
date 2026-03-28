@@ -52,11 +52,6 @@ public class Application {
      * 　　＞―r￣￣~∠--|
      */
     public static void main(String[] args) {
-        // SET SECURITY MANAGER
-        Security.setSecurityManager();
-        // SET OBJECT INPUT FILTER
-        Security.setObjectInputFilter();
-
         // CHECK WINDOWS
         if (OSUtil.isWindows()) {
             boolean ok = JNIUtil.extractDllSo("console.dll", null, true);
@@ -83,7 +78,11 @@ public class Application {
             return;
         }
 
-        GlobalOptions.setSecurity(startCmd.isSecurityMode());
+        if (startCmd.isSecurityMode()) {
+            GlobalOptions.setSecurity(startCmd.isSecurityMode());
+            // SET SECURITY MANAGER
+            Security.setSecurityManager();
+        }
 
         // DISABLE HTTP
         if (startCmd.isNoHttp()) {

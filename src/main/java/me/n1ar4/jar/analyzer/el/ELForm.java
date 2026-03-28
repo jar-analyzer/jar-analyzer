@@ -28,7 +28,6 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 public class ELForm {
@@ -46,7 +45,7 @@ public class ELForm {
     private JLabel builtinLabel;
     private JLabel msgLabel;
     private JButton stopBtn;
-    private JButton exportCsvBtn;
+    private JButton exportBtn;
     private static ELForm elInstance;
 
     public static void setVal(int val) {
@@ -166,13 +165,7 @@ public class ELForm {
 
         elInstance = this;
 
-        exportCsvBtn = new JButton();
-        exportCsvBtn.setText("导出CSV");
-        opPanel.add(exportCsvBtn, new GridConstraints(0, 3, 1, 1,
-                GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
-                GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        exportCsvBtn.addActionListener(e -> {
+        exportBtn.addActionListener(e -> {
             if (MainForm.getInstance() == null) {
                 return;
             }
@@ -181,7 +174,7 @@ public class ELForm {
                 JOptionPane.showMessageDialog(elPanel, "当前没有搜索结果可以导出");
                 return;
             }
-            List<MethodResult> resultList = new ArrayList<>();
+            java.util.List<MethodResult> resultList = new ArrayList<>();
             for (int i = 0; i < searchList.getModel().getSize(); i++) {
                 resultList.add(searchList.getModel().getElementAt(i));
             }
@@ -246,6 +239,9 @@ public class ELForm {
         stopBtn = new JButton();
         stopBtn.setText("强行停止");
         opPanel.add(stopBtn, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        exportBtn = new JButton();
+        exportBtn.setText("导出 CSV");
+        opPanel.add(exportBtn, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         editScroll = new JScrollPane();
         elPanel.add(editScroll, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(500, 350), null, null, 0, false));
         elCodePanel = new JPanel();

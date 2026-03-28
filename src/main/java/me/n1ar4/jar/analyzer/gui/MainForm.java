@@ -1128,6 +1128,10 @@ public class MainForm {
             advancePanel.repaint();
         });
 
+        filterModeCombo.addItem("黑名单模式 (Black List) - 排除匹配项");
+        filterModeCombo.addItem("白名单模式 (White List) - 仅保留匹配项");
+        filterModeCombo.setSelectedIndex(0);
+
         logger.info("init main form success");
     }
 
@@ -2057,10 +2061,10 @@ public class MainForm {
         equalsSearchRadioButton.setText("equals search (精确搜索模式)");
         soPanel.add(equalsSearchRadioButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         blackListPanel = new JPanel();
-        blackListPanel.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
+        blackListPanel.setLayout(new GridLayoutManager(3, 2, new Insets(0, 0, 0, 0), -1, -1));
         soPanel.add(blackListPanel, new GridConstraints(2, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         blackScroll = new JScrollPane();
-        blackListPanel.add(blackScroll, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(-1, 100), new Dimension(-1, 100), new Dimension(-1, 100), 0, false));
+        blackListPanel.add(blackScroll, new GridConstraints(2, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(-1, 100), new Dimension(-1, 100), new Dimension(-1, 100), 0, false));
         blackScroll.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         blackArea = new JTextArea();
         blackArea.setBackground(new Color(-12895429));
@@ -2069,13 +2073,10 @@ public class MainForm {
         blackArea.setForeground(new Color(-16711931));
         blackScroll.setViewportView(blackArea);
         classBlackLabel = new JLabel();
-        classBlackLabel.setText(" class / package filter list (split by ; and \\n) 类名包名过滤列表 (按照 ; 和 \\n 分割)");
+        classBlackLabel.setText(" class / package black list (split by ; and \\n) 类名包名黑名单 (按照 ; 和 \\n 分割)");
         blackListPanel.add(classBlackLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        filterModeCombo = new JComboBox<>();
-        filterModeCombo.addItem("黑名单模式 (Black List) - 排除匹配项");
-        filterModeCombo.addItem("白名单模式 (White List) - 仅保留匹配项");
-        filterModeCombo.setSelectedIndex(0);
-        blackListPanel.add(filterModeCombo, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        filterModeCombo = new JComboBox();
+        blackListPanel.add(filterModeCombo, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         npbPanel = new JPanel();
         npbPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         soPanel.add(npbPanel, new GridConstraints(1, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));

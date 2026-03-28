@@ -4,11 +4,17 @@
 
 更新日志：
 
-- todo
+- [功能] 搜索部分支持了选择黑名单或白名单两种过滤方式 @AII12754
+- [功能] 表达式支持 `containsInvoke` 和 `excludeInvoke` @AII12754
+- [功能] 表达式支持 `nameRegex` 和 `classNameRegex` 正则 @AII12754
+- [功能] 表达式支持导出结果到 `CSV` 文件 @AII12754
+- [优化] 搜索部分黑白名单设置在表达式搜索结果中生效 @AII12754
+- [优化] 表达式新增了几个常用的内置模板 @AII12754
 
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
+- AII (https://github.com/AII12754)
 
 所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
 

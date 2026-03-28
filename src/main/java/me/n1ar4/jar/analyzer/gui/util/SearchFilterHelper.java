@@ -12,6 +12,8 @@ package me.n1ar4.jar.analyzer.gui.util;
 
 import me.n1ar4.jar.analyzer.entity.MethodResult;
 import me.n1ar4.jar.analyzer.gui.MainForm;
+import me.n1ar4.log.LogManager;
+import me.n1ar4.log.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,8 @@ import java.util.List;
  * 白名单模式：只保留匹配的类/包
  */
 public class SearchFilterHelper {
+
+    private static final Logger logger = LogManager.getLogger();
 
     /**
      * 过滤模式枚举
@@ -70,6 +74,7 @@ public class SearchFilterHelper {
     public static ArrayList<MethodResult> filter(ArrayList<MethodResult> results) {
         String filterText = MainForm.getInstance().getBlackArea().getText();
         FilterMode mode = MainForm.getInstance().getFilterMode();
+        logger.info("search mode: {}", mode.toString());
         return filter(results, filterText, mode);
     }
 

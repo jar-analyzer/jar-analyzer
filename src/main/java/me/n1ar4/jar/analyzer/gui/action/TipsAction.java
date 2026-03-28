@@ -18,14 +18,6 @@ public class TipsAction {
                 "only one analysis is allowed per startup"
         );
 
-        MainForm.getInstance().getNextBtn().setToolTipText(
-                "go to next state"
-        );
-
-        MainForm.getInstance().getPrevBtn().setToolTipText(
-                "go to previous state"
-        );
-
         MainForm.getInstance().getChoseBtn().setToolTipText(
                 "support jar/jar dir/class dir"
         );

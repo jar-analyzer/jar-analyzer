@@ -156,8 +156,6 @@ public class MainForm {
     private JList<MethodResult> springMList;
     private JLabel encoderLabel;
     private JLabel listenerLabel;
-    private JButton prevBtn;
-    private JButton nextBtn;
     private JRadioButton likeSearchRadioButton;
     private JRadioButton equalsSearchRadioButton;
     private JTextArea blackArea;
@@ -713,14 +711,6 @@ public class MainForm {
         return superImplList;
     }
 
-    public JButton getPrevBtn() {
-        return prevBtn;
-    }
-
-    public JButton getNextBtn() {
-        return nextBtn;
-    }
-
     public JRadioButton getLikeSearchRadioButton() {
         return likeSearchRadioButton;
     }
@@ -1080,9 +1070,6 @@ public class MainForm {
         favData = new DefaultListModel<>();
         favList.setModel(favData);
 
-        prevBtn.setIcon(IconManager.prevIcon);
-        nextBtn.setIcon(IconManager.nextIcon);
-
         logoLabel.setIcon(IconManager.showIcon);
         jreRuntimeLabel.setIcon(IconManager.javaIcon);
         dbPathLabel.setIcon(IconManager.dbIcon);
@@ -1148,7 +1135,6 @@ public class MainForm {
         RuntimeJarAction.run();
         ASMAction.run();
         PluginsAction.run();
-        PrevNextAction.run();
         SpringAction.run();
         CleanAction.run();
         ShowStringAction.run();
@@ -1985,24 +1971,18 @@ public class MainForm {
         authorTextLabel.setText("4ra1n");
         authorPanel.add(authorTextLabel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         actionPanel = new JPanel();
-        actionPanel.setLayout(new GridLayoutManager(1, 5, new Insets(0, 0, 0, 0), -1, -1));
+        actionPanel.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
         startPanel.add(actionPanel, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         actionPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
-        prevBtn = new JButton();
-        prevBtn.setText("");
-        actionPanel.add(prevBtn, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        nextBtn = new JButton();
-        nextBtn.setText("");
-        actionPanel.add(nextBtn, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         cleanButton = new JButton();
         cleanButton.setText("Clean");
-        actionPanel.add(cleanButton, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        actionPanel.add(cleanButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         showStringListButton = new JButton();
         showStringListButton.setText("All Strings");
-        actionPanel.add(showStringListButton, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        actionPanel.add(showStringListButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         startELSearchButton = new JButton();
         startELSearchButton.setText("EL Search");
-        actionPanel.add(startELSearchButton, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        actionPanel.add(startELSearchButton, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         searchResPanel = new JPanel();
         searchResPanel.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPanel.addTab("search", searchResPanel);

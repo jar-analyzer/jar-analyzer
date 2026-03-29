@@ -9,7 +9,6 @@
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
-- AII (https://github.com/AII12754)
 
 所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
 

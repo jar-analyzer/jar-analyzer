@@ -2,9 +2,9 @@
 
 [CHANGE LOG](CHANGELOG.MD)
 
-`jar-analyzer` 项目连续 `5` 年更新，共发布 `60` 个版本（含 `v1` 和 `v2` 版本）完全开源，完全免费
+`jar-analyzer` 项目连续 `5` 年更新，共发布 `61` 个版本（含 `v1` 和 `v2` 版本）完全开源，完全免费
 
-The `jar-analyzer` project has been continuously updated for `5` years, with `60` versions released, contains v1 and v2 version, completely open source and completely free.
+The `jar-analyzer` project has been continuously updated for `5` years, with `61` versions released, contains v1 and v2 version, completely open source and completely free.
 
 ![](https://img.shields.io/github/last-commit/jar-analyzer/jar-analyzer)
 ![](https://img.shields.io/github/release-date/jar-analyzer/jar-analyzer)
@@ -291,6 +291,9 @@ set "java_args=-XX:+UseG1GC -Xms2g -XX:MaxGCPauseMillis=200 %other_args%"
 - `Jar Analyzer V2` 在 `2024.09.30` 总 `Star` 破千
 - `Jar Analyzer V2` 在 `2024.11.07` 发布 `4.0` 版本
 - `Jar Analyzer V2` 在 `2025.01.07` 日下载量破万
+- `Jar Analyzer` 在 `2025.03.19` 发布 `engine` 子项目
+- `Jar Analyzer` 在 `2025.03.21` 发布 `claude code` 插件
+- `Jar Analyzer V2` 在 `2025.03.23` 日下载量破两万
 
 ## 性能测试
 

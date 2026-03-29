@@ -291,9 +291,9 @@ set "java_args=-XX:+UseG1GC -Xms2g -XX:MaxGCPauseMillis=200 %other_args%"
 - `Jar Analyzer V2` 在 `2024.09.30` 总 `Star` 破千
 - `Jar Analyzer V2` 在 `2024.11.07` 发布 `4.0` 版本
 - `Jar Analyzer V2` 在 `2025.01.07` 日下载量破万
-- `Jar Analyzer` 在 `2025.03.19` 发布 `engine` 子项目
-- `Jar Analyzer` 在 `2025.03.21` 发布 `claude code` 插件
-- `Jar Analyzer V2` 在 `2025.03.23` 日下载量破两万
+- `Jar Analyzer` 在 `2026.03.19` 发布 `engine` 子项目
+- `Jar Analyzer` 在 `2026.03.21` 发布 `claude code` 插件
+- `Jar Analyzer V2` 在 `2026.03.23` 日下载量破两万
 
 ## 性能测试
 

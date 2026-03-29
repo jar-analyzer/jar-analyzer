@@ -83,6 +83,7 @@ Jar Analyzer
 - 完善且美观的 `GUI` 设计， 只需鼠标点点点，即可进行大多数的代码审计
 - 内置常见的 `source` 入口分析，支持动态的 `sink` 配置文件规则，方便快捷
 - 代码完全开源，构建基于 `github actions` 你可以随意查看功能代码，定制功能
+- 活跃的开源社区和维护，常年持续更新完善，欢迎贡献和参与
 - 本项目跟随主流技术路线，尝试基于 `AI` 做探索（支持 `mcp` 和 `n8n` 流程等）
 
 ![](img/0080.png)
@@ -119,37 +120,13 @@ Jar Analyzer
 
 ![](img/0085.png)
 
-通过 `agent` 分析 `tomcat`
-
-![](img/0065.png)
-
 自从 `5.0` 版本后大幅改进了表达式搜索功能
 
 ![](img/0073.png)
 
 从 `4.0` 版本后支持信息泄露检查（部分正则来源于 [HaE](https://github.com/gh0stkey/HaE) 项目）
 
-![](img/0083.png)
-
-## AI 相关
-
-自从 `5.10` 版本后支持 `MCP` 请参考文档 [MCP](mcp-doc/README.md)
-
-![](mcp-img/004.png)
-
-结合 `jar-analyzer mcp` 可以在 `n8n` 平台使用，文档：[n8n-doc](n8n-doc)
-
-![](mcp-img/010.png)
-
-![](mcp-img/022.png)
-
-使用 `jar-audit-agent` skill 配合 `jar-analyzer` 进行 `Java` 代码审计
-
-该功能正在开发中，不够稳定和完善，欢迎尝试使用，一起优化：[文档](skills)
-
-感谢 0cat https://github.com/0cat-r
-
-![](skills/img/007.png)
+`AI` 相关功能文档：[README-ai.md](doc/README-ai.md)
 
 ## 常见用途
 
@@ -293,7 +270,7 @@ set "java_args=-XX:+UseG1GC -Xms2g -XX:MaxGCPauseMillis=200 %other_args%"
 - `Jar Analyzer V2` 在 `2025.01.07` 日下载量破万
 - `Jar Analyzer` 在 `2026.03.19` 发布 `engine` 子项目
 - `Jar Analyzer` 在 `2026.03.21` 发布 `claude code` 插件
-- `Jar Analyzer V2` 在 `2026.03.23` 日下载量破两万
+- `Jar Analyzer V2` 在 `2026.03.23` 总 `Star` 破两千
 
 ## 性能测试
 

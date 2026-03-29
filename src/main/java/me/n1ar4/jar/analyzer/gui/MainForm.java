@@ -16,7 +16,6 @@ import com.intellij.uiDesigner.core.Spacer;
 import me.n1ar4.jar.analyzer.chains.ChainsBuilder;
 import me.n1ar4.jar.analyzer.config.ConfigEngine;
 import me.n1ar4.jar.analyzer.config.ConfigFile;
-import me.n1ar4.jar.analyzer.core.StateLinkedList;
 import me.n1ar4.jar.analyzer.dfs.DFSEngine;
 import me.n1ar4.jar.analyzer.dfs.DFSResult;
 import me.n1ar4.jar.analyzer.dfs.DFSUtil;
@@ -38,7 +37,6 @@ import me.n1ar4.jar.analyzer.gui.render.AllMethodsRender;
 import me.n1ar4.jar.analyzer.gui.render.ClassRender;
 import me.n1ar4.jar.analyzer.gui.render.MethodCallRender;
 import me.n1ar4.jar.analyzer.gui.render.SpringMethodRender;
-import me.n1ar4.jar.analyzer.gui.state.State;
 import me.n1ar4.jar.analyzer.gui.tree.FileTree;
 import me.n1ar4.jar.analyzer.gui.update.UpdateChecker;
 import me.n1ar4.jar.analyzer.gui.util.*;
@@ -80,11 +78,6 @@ public class MainForm {
     private static CodeTabPanel codeTabPanel;
     private static MethodResult curMethod;
     private static String curClass;
-
-    // STATE
-    private static int curStateIndex = 0;
-    private static final LinkedList<State> stateList = new StateLinkedList();
-
     private static DefaultListModel<MethodResult> historyListData;
     private JPanel masterPanel;
     private JTabbedPane tabbedPanel;
@@ -779,18 +772,6 @@ public class MainForm {
 
     public JButton getBcelBtn() {
         return bcelBtn;
-    }
-
-    public static LinkedList<State> getStateList() {
-        return stateList;
-    }
-
-    public static int getCurStateIndex() {
-        return curStateIndex;
-    }
-
-    public static void setCurStateIndex(int curStateIndex) {
-        MainForm.curStateIndex = curStateIndex;
     }
 
     public JTextField getOutputFileText() {

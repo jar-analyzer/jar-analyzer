@@ -19,7 +19,6 @@ import me.n1ar4.jar.analyzer.entity.MethodResult;
 import me.n1ar4.jar.analyzer.gui.LuceneSearchForm;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.adapter.SearchInputListener;
-import me.n1ar4.jar.analyzer.gui.state.State;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.utils.StringUtil;
 import me.n1ar4.log.LogManager;
@@ -404,35 +403,6 @@ public class CtrlClickNavigator {
         res.setClassPath(Paths.get(finalClassPath));
         MainForm.setCurMethod(res);
         MainForm.setCurClass(className);
-
-        // 状态压入历史栈，支持前进/后退导航
-        State newState = new State();
-        newState.setClassPath(Paths.get(finalClassPath));
-        newState.setJarName(jarName);
-        newState.setClassName(res.getClassName());
-        newState.setMethodDesc(res.getMethodDesc());
-        newState.setMethodName(res.getMethodName());
-
-        int curSI = MainForm.getCurStateIndex();
-        if (curSI == -1) {
-            MainForm.getStateList().add(curSI + 1, newState);
-            MainForm.setCurStateIndex(curSI + 1);
-        } else {
-            if (curSI >= MainForm.getStateList().size()) {
-                curSI = MainForm.getStateList().size() - 1;
-            }
-            State state = MainForm.getStateList().get(curSI);
-            if (state != null) {
-                int a = MainForm.getStateList().size();
-                MainForm.getStateList().add(curSI + 1, newState);
-                int b = MainForm.getStateList().size();
-                if (a == b) {
-                    MainForm.setCurStateIndex(curSI);
-                } else {
-                    MainForm.setCurStateIndex(curSI + 1);
-                }
-            }
-        }
     }
 
     private static String toHex(Color color) {

@@ -27,6 +27,14 @@ Steps:
 - Check MCP `build.yml` VERSION
 - Run git commit and push
 - Github Action Build
+- 严格测试步骤：确保可用性，然后进行正式发布
 - Change `version.txt` on `OSS Browser`
 - UPDATE `README` version count
 - UPDATE https://docs.qq.com/doc/DV3pKbG9GS0pJS0tk
+
+Test Steps:
+
+- Analyze `jar-analyzer.jar`
+- 一键 `SINK` 验证：确保有输出
+- `Chains` 空 `SOURCE` 列举看最长
+- `EL` 搜索 `Runtime Exec` 确认有效

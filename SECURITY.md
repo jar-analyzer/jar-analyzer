@@ -2,9 +2,21 @@
 
 ## Reporting a Vulnerability
 
-Welcome to report any security issues. 
+欢迎报告任何安全问题
 
-You can directly report them on Github's Security page.
+你可以直接在Github的安全页面上报告这些问题
+
+中低危漏洞仅发布 `GHSA` 安全公告，高危以上问题考虑申请 `CVE`
+
+---
+
+Welcome to report any security issues
+
+You can directly report them on Github's Security page
+
+For medium and low-risk vulnerabilities, only issue `GHSA` security advisories
+
+For high and critical-risk vulnerabilities, consider applying for `CVE`
 
 ## 安全公告
 

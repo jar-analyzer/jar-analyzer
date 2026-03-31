@@ -4,9 +4,17 @@
 
 欢迎报告任何安全问题
 
-你可以直接在Github的安全页面上报告这些问题
+你可以直接在 `Github` 的安全页面上报告这些问题
 
 中低危漏洞仅发布 `GHSA` 安全公告，高危以上问题考虑申请 `CVE`
+
+不再接受用户的输入导致的安全问题，除非恶意的输入 `class/jar` 文件可能导致的安全问题
+
+不再接收 `GUI` 中可能的漏洞，不认为通过 `Webswing` 等方式暴露到 `web` 端会产生漏洞
+
+注意：当 `Jar` 数量较多或巨大时 **可能导致临时目录和数据库文件巨大** 请确保足够的空间
+
+有 `UI` 兼容性问题请查看 `ISSUE` 部分的置顶
 
 ---
 
@@ -18,6 +26,14 @@ For medium and low-risk vulnerabilities, only issue `GHSA` security advisories
 
 For high and critical-risk vulnerabilities, consider applying for `CVE`
 
+We will no longer accept user input that poses security risks, except for malicious input that may cause security issues in `class/jar` files
+
+No longer accepting potential vulnerabilities in the `GUI`, and not considering vulnerabilities that may arise from exposure to the `web` side through methods such as `Webswing`
+
+Note: When there are a large number or extremely large `Jar` files, **it may lead to a huge temporary directory and database file**. Please ensure sufficient space
+
+If you encounter any `UI` compatibility issues, please refer to the top-posted issue in the `ISSUE` section
+
 ## 安全公告
 
 - [\[GHSA-43rf-3hm4-hv5f\] 反编译恶意的 CLASS 文件可能导致程序不可用](https://github.com/jar-analyzer/jar-analyzer/security/advisories/GHSA-43rf-3hm4-hv5f)
@@ -25,10 +41,4 @@ For high and critical-risk vulnerabilities, consider applying for `CVE`
 - [\[GHSA-jmcg-r2c5-7m29\] Jar Analyzer 存在 ZIP SLIP 漏洞（最坏情况可导致 RCE 风险）](https://github.com/jar-analyzer/jar-analyzer/security/advisories/GHSA-jmcg-r2c5-7m29)
 - [\[GHSA-h6vc-3rcp-p7qp\] 表达式分析功能中的 SpEL 注入漏洞可导致远程代码执行](https://github.com/jar-analyzer/jar-analyzer/security/advisories/GHSA-h6vc-3rcp-p7qp)
 
-不再接受用户的输入导致的安全问题，除非恶意的输入 `class/jar` 文件可能导致的安全问题
 
-不再接收 `GUI` 中可能的漏洞，不认为通过 `Webswing` 等方式暴露到 `web` 端会产生漏洞
-
-注意：当 `Jar` 数量较多或巨大时 **可能导致临时目录和数据库文件巨大** 请确保足够的空间
-
-有 `UI` 兼容性问题请查看 `ISSUE` 部分的置顶

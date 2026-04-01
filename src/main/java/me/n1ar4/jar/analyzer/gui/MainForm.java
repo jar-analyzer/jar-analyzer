@@ -373,6 +373,9 @@ public class MainForm {
     private JButton skillDocBtn;
     private JLabel jarAnMcpLabel;
     private JButton quickSinkBtn;
+    private JPanel springConfigPanel;
+    private JScrollPane springConfigScroll;
+    private JList<ClassResult> springConfigList;
     private static DefaultListModel<MethodResult> favData;
     private static int dfsMaxLimit = 30;
     private static String dfsBlacklist = "";
@@ -850,6 +853,10 @@ public class MainForm {
         return springIList;
     }
 
+    public JList<ClassResult> getSpringConfigList() {
+        return springConfigList;
+    }
+
     public JList<ClassResult> getServletList() {
         return servletList;
     }
@@ -1047,6 +1054,7 @@ public class MainForm {
         servletList.setCellRenderer(new ClassRender());
         filterList.setCellRenderer(new ClassRender());
         listenerList.setCellRenderer(new ClassRender());
+        springConfigList.setCellRenderer(new ClassRender());
 
         historyList.setCellRenderer(new MethodCallRender());
         favList.setCellRenderer(new MethodCallRender());
@@ -1157,6 +1165,7 @@ public class MainForm {
         instance.servletList.addMouseListener(new ClassResultAdapter());
         instance.filterList.addMouseListener(new ClassResultAdapter());
         instance.listenerList.addMouseListener(new ClassResultAdapter());
+        instance.springConfigList.addMouseListener(new ClassResultAdapter());
 
         instance.getLeakResultList().addMouseListener(new LeakResultMouseAdapter());
         instance.favList.addMouseListener(new FavMouseAdapter());
@@ -1237,9 +1246,10 @@ public class MainForm {
 
         instance.webTabbed.setIconAt(0, SvgManager.SpringIcon);
         instance.webTabbed.setIconAt(1, SvgManager.SpringIcon);
-        instance.webTabbed.setIconAt(2, SvgManager.TomcatIcon);
+        instance.webTabbed.setIconAt(2,SvgManager.SpringIcon);
         instance.webTabbed.setIconAt(3, SvgManager.TomcatIcon);
         instance.webTabbed.setIconAt(4, SvgManager.TomcatIcon);
+        instance.webTabbed.setIconAt(5, SvgManager.TomcatIcon);
         instance.getTabbedPanel().setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         instance.webTabbed.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
     }
@@ -2143,6 +2153,13 @@ public class MainForm {
         springIPanel.add(springIScroll, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         springIList = new JList();
         springIScroll.setViewportView(springIList);
+        springConfigPanel = new JPanel();
+        springConfigPanel.setLayout(new GridLayoutManager(1, 1, new Insets(3, 3, 3, 3), -1, -1));
+        webTabbed.addTab("spring config", springConfigPanel);
+        springConfigScroll = new JScrollPane();
+        springConfigPanel.add(springConfigScroll, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        springConfigList = new JList();
+        springConfigScroll.setViewportView(springConfigList);
         servletPanel = new JPanel();
         servletPanel.setLayout(new GridLayoutManager(1, 1, new Insets(3, 3, 3, 3), -1, -1));
         webTabbed.addTab("servlet", servletPanel);

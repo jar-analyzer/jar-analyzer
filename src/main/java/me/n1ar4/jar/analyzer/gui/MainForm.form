@@ -1036,6 +1036,29 @@
                                       </scrollpane>
                                     </children>
                                   </grid>
+                                  <grid id="6aa1e" binding="springConfigPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                                    <margin top="3" left="3" bottom="3" right="3"/>
+                                    <constraints>
+                                      <tabbedpane title="spring config"/>
+                                    </constraints>
+                                    <properties/>
+                                    <border type="none"/>
+                                    <children>
+                                      <scrollpane id="d5082" binding="springConfigScroll">
+                                        <constraints>
+                                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                                        </constraints>
+                                        <properties/>
+                                        <border type="none"/>
+                                        <children>
+                                          <component id="bd5ad" class="javax.swing.JList" binding="springConfigList">
+                                            <constraints/>
+                                            <properties/>
+                                          </component>
+                                        </children>
+                                      </scrollpane>
+                                    </children>
+                                  </grid>
                                   <grid id="8f23b" binding="servletPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                                     <margin top="3" left="3" bottom="3" right="3"/>
                                     <constraints>

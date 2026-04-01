@@ -11,6 +11,7 @@
 package me.n1ar4.jar.analyzer.core.mapper;
 
 import me.n1ar4.jar.analyzer.entity.AnnoEntity;
+import me.n1ar4.jar.analyzer.entity.ClassResult;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.ArrayList;
@@ -23,4 +24,6 @@ public interface AnnoMapper {
 
     ArrayList<String> selectAnnoByClassAndMethod(@Param("className") String className,
                                                  @Param("methodName") String methodName);
+
+    List<ClassResult> selectClassByAnnoLike(@Param("annoPattern") String annoPattern);
 }

@@ -186,6 +186,21 @@ public class CoreHelper {
         MainForm.getInstance().getSpringIList().setModel(springIModel);
     }
 
+    public static void refreshSpringConfig() {
+        if (MainForm.getInstance().getEngine() == null) {
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                    "PLEASE BUILD DATABASE FIRST");
+            return;
+        }
+        ArrayList<ClassResult> results = MainForm.getEngine().getAllSpringConfig();
+        results.sort(Comparator.comparing(ClassResult::getClassName));
+        DefaultListModel<ClassResult> springConfigModel = new DefaultListModel<>();
+        for (ClassResult result : results) {
+            springConfigModel.addElement(result);
+        }
+        MainForm.getInstance().getSpringConfigList().setModel(springConfigModel);
+    }
+
     public static void refreshServlets() {
         if (MainForm.getInstance().getEngine() == null) {
             JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),

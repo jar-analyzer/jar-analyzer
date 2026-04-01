@@ -223,6 +223,48 @@ public class CoreEngine {
         return new ArrayList<>(res);
     }
 
+    public ArrayList<ClassResult> getAllSpringConfig() {
+        SqlSession session = factory.openSession(true);
+        AnnoMapper annoMapper = session.getMapper(AnnoMapper.class);
+        // Spring 各种配置注解
+        String[] configAnnotations = {
+                "Lorg/springframework/context/annotation/Configuration;",
+                "Lorg/springframework/context/annotation/Bean;",
+                "Lorg/springframework/context/annotation/ComponentScan;",
+                "Lorg/springframework/context/annotation/Import;",
+                "Lorg/springframework/context/annotation/ImportResource;",
+                "Lorg/springframework/context/annotation/PropertySource;",
+                "Lorg/springframework/context/annotation/Conditional;",
+                "Lorg/springframework/boot/autoconfigure/EnableAutoConfiguration;",
+                "Lorg/springframework/boot/autoconfigure/SpringBootApplication;",
+                "Lorg/springframework/boot/context/properties/ConfigurationProperties;",
+                "Lorg/springframework/boot/context/properties/EnableConfigurationProperties;",
+                "Lorg/springframework/scheduling/annotation/EnableScheduling;",
+                "Lorg/springframework/scheduling/annotation/EnableAsync;",
+                "Lorg/springframework/cache/annotation/EnableCaching;",
+                "Lorg/springframework/transaction/annotation/EnableTransactionManagement;",
+                "Lorg/springframework/web/servlet/config/annotation/EnableWebMvc;",
+        };
+        Set<String> classNameSet = new LinkedHashSet<>();
+        for (String anno : configAnnotations) {
+            // 使用精确匹配查询
+            List<ClassResult> results = annoMapper.selectClassByAnnoLike(anno);
+            for (ClassResult cr : results) {
+                if (cr.getClassName() != null && !classNameSet.contains(cr.getClassName())) {
+                    classNameSet.add(cr.getClassName());
+                }
+            }
+        }
+        session.close();
+        ArrayList<ClassResult> resultList = new ArrayList<>();
+        for (String className : classNameSet) {
+            ClassResult cr = new ClassResult();
+            cr.setClassName(className);
+            resultList.add(cr);
+        }
+        return resultList;
+    }
+
     public ArrayList<ClassResult> getAllServlets() {
         SqlSession session = factory.openSession(true);
         JavaWebMapper javaWebMapper = session.getMapper(JavaWebMapper.class);

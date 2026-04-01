@@ -21,6 +21,7 @@ public class SpringAction {
         spRefreshBtn.addActionListener(e -> {
             CoreHelper.refreshSpringC();
             CoreHelper.refreshSpringI();
+            CoreHelper.refreshSpringConfig();
             CoreHelper.refreshServlets();
             CoreHelper.refreshFilters();
             CoreHelper.refreshLiteners();

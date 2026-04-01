@@ -35,7 +35,6 @@
     <select id="selectClassByAnnoLike" resultMap="classMap">
         SELECT DISTINCT class_name
         FROM anno_table
-        WHERE anno_name LIKE #{annoPattern}
-          AND method_name IS NULL
+        WHERE anno_name LIKE #{annoPattern} AND method_name IS NULL
     </select>
 </mapper>

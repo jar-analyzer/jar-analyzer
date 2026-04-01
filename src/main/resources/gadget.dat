@@ -1,14 +1,366 @@
 # JAR 名称（多个以英文逗号分隔） | 类型 NATIVE HESSIAN JDBC FASTJSON | 描述字符串
-# JAR 名称支持 * 通配符和 ![version] 白名单方式
-bsh-1.3.0.jar|NATIVE|存在 BeanShell 反序列化 GADGET
-bsh-2.0b4.jar|NATIVE|存在 BeanShell 反序列化 GADGET
-bsh-2.0b5.jar|NATIVE|存在 BeanShell 反序列化 GADGET
-c3p0-*.jar|NATIVE|C3P0 存在 JNDI 反序列化 GADGET
-commons-beanutils-*.jar|NATIVE|CB 存在原生反序列化 GADGET
-commons-collections-!3.2.2.jar|NATIVE|CC 3.2.1 及以下版本存在 GADGET
-commons-collections4-4.0.jar|NATIVE|CC 4.0 版本存在 GADGET
-commons-dbcp2-*.jar|NATIVE|DHCP 存在 JNDI 反序列化 GADGET
-commons-dbcp-*.jar|NATIVE|DHCP 存在 JNDI 反序列化 GADGET
-druid-*.jar|NATIVE|DRUID 存在 JNDI 反序列化 GADGET
-fastjson-1.*.jar|NATIVE|FASTJSON 1 存在原生反序列化 GADGET
-jackson-databind-2.*.jar|NATIVE|JACKSON 存在原生反序列化 GADGET
+# JAR 名称支持 * 通配符和 ![version] 白名单方式（例如 commons-collections-!3.2.2.jar 表示排除 3.2.2）
+
+# =====================================================================
+# NATIVE - 原生 Java 反序列化 Gadget
+# =====================================================================
+
+# --- BeanShell ---
+bsh-1.3.0.jar|NATIVE|BeanShell 1.3.0 存在原生反序列化 GADGET (BSH1)
+bsh-2.0b4.jar|NATIVE|BeanShell 2.0b4 存在原生反序列化 GADGET (BSH2)
+bsh-2.0b5.jar|NATIVE|BeanShell 2.0b5 存在原生反序列化 GADGET (BSH2)
+
+# --- Commons Collections (CC) ---
+commons-collections-!3.2.2.jar|NATIVE|CommonsCollections 3.2.1 及以下存在反序列化 GADGET (CC1/CC3/CC5/CC6/CC7)
+commons-collections4-4.0.jar|NATIVE|CommonsCollections4 4.0 存在反序列化 GADGET (CC2/CC4)
+commons-collections4-4.1.jar|NATIVE|CommonsCollections4 4.1 存在反序列化 GADGET (CC2/CC4)
+
+# --- Commons BeanUtils (CB) ---
+commons-beanutils-*.jar|NATIVE|CommonsBeanUtils 存在原生反序列化 GADGET (CB1，需配合 CC 或 shiro)
+
+# --- Commons FileUpload ---
+commons-fileupload-1.3.jar|NATIVE|CommonsFileUpload 1.3 存在反序列化 GADGET
+commons-fileupload-1.3.1.jar|NATIVE|CommonsFileUpload 1.3.1 存在反序列化 GADGET
+commons-fileupload-1.3.2.jar|NATIVE|CommonsFileUpload 1.3.2 存在反序列化 GADGET
+
+# --- Spring Framework ---
+spring-core-*.jar|NATIVE|Spring Core 存在反序列化 GADGET (Spring1/Spring2)
+spring-beans-*.jar|NATIVE|Spring Beans 存在反序列化 GADGET (Spring1/Spring2)
+spring-aop-*.jar|NATIVE|Spring AOP 存在反序列化 GADGET (Spring2)
+
+# --- Groovy ---
+groovy-*.jar|NATIVE|Groovy 存在反序列化 GADGET (Groovy1)
+groovy-all-*.jar|NATIVE|Groovy-All 存在反序列化 GADGET (Groovy1)
+
+# --- JRE内置 (sun.reflect/Trax/Jdk7u21) ---
+# JDK 7u21 及以下内置 GADGET，无需额外依赖，此处标注供参考
+
+# --- AspectJWeaver ---
+aspectjweaver-*.jar|NATIVE|AspectJWeaver 存在原生反序列化 GADGET (可写文件)
+
+# --- C3P0 ---
+c3p0-*.jar|NATIVE|C3P0 存在 JNDI/URLClassLoader 反序列化 GADGET
+
+# --- DBCP / DBCP2 ---
+commons-dbcp-*.jar|NATIVE|Commons DBCP 存在 JNDI 反序列化 GADGET
+commons-dbcp2-*.jar|NATIVE|Commons DBCP2 存在 JNDI 反序列化 GADGET
+
+# --- Druid ---
+druid-*.jar|NATIVE|Druid 存在 JNDI 反序列化 GADGET
+
+# --- Fastjson (原生反序列化) ---
+fastjson-1.*.jar|NATIVE|Fastjson 1.x 存在原生反序列化 GADGET
+
+# --- Jackson ---
+jackson-databind-2.*.jar|NATIVE|Jackson-Databind 存在原生反序列化 GADGET (需配合特定版本)
+
+# --- ROME (RSS/Atom 解析) ---
+rome-*.jar|NATIVE|ROME 存在原生反序列化 GADGET (ROME1，利用 ToStringBean)
+rome-utils-*.jar|NATIVE|ROME-Utils 存在原生反序列化 GADGET
+
+# --- Vaadin ---
+vaadin-server-*.jar|NATIVE|Vaadin Server 存在原生反序列化 GADGET
+vaadin-shared-*.jar|NATIVE|Vaadin Shared 存在原生反序列化 GADGET
+
+# --- Apache Wicket ---
+wicket-util-*.jar|NATIVE|Apache Wicket Util 存在原生反序列化 GADGET
+wicket-core-*.jar|NATIVE|Apache Wicket Core 存在原生反序列化 GADGET
+
+# --- JBoss/Wildfly Marshalling ---
+jboss-marshalling-*.jar|NATIVE|JBoss Marshalling 存在反序列化 GADGET
+jboss-common-core-*.jar|NATIVE|JBoss Common Core 存在反序列化 GADGET
+
+# --- XStream ---
+xstream-*.jar|NATIVE|XStream 存在反序列化 GADGET (CVE-2021-21351 等多个 CVE)
+
+# --- JNDI 触发类依赖 (RMI/LDAP 利用) ---
+jndi-*.jar|NATIVE|JNDI 相关库存在反序列化 GADGET
+
+# --- Mozilla Rhino (JS引擎) ---
+js-*.jar|NATIVE|Mozilla Rhino JS 引擎存在反序列化 GADGET
+rhino-*.jar|NATIVE|Mozilla Rhino 存在反序列化 GADGET
+
+# --- Clojure ---
+clojure-*.jar|NATIVE|Clojure 存在原生反序列化 GADGET
+
+# --- Apache Axis ---
+axis-*.jar|NATIVE|Apache Axis 存在反序列化 GADGET
+axis2-*.jar|NATIVE|Apache Axis2 存在反序列化 GADGET
+
+# --- Apache Shiro (反序列化 + JNDI) ---
+shiro-core-*.jar|NATIVE|Apache Shiro 存在 Cookie 反序列化 GADGET (CVE-2016-4437 等)
+shiro-web-*.jar|NATIVE|Apache Shiro Web 存在 Cookie 反序列化 GADGET
+
+# --- WebLogic 内置依赖 ---
+wlthint3client-*.jar|NATIVE|WebLogic T3/IIOP 协议反序列化 GADGET
+wljmsclient-*.jar|NATIVE|WebLogic JMS 客户端存在反序列化 GADGET
+
+# --- Apache MyFaces ---
+myfaces-impl-*.jar|NATIVE|Apache MyFaces 存在 ViewState 反序列化 GADGET
+
+# --- Log4j (JndiLookup) ---
+log4j-core-2.0.jar|NATIVE|Log4j2 2.0 存在 JNDI 注入 GADGET (CVE-2021-44228)
+log4j-core-2.0-beta*.jar|NATIVE|Log4j2 2.0-beta 存在 JNDI 注入 GADGET (CVE-2021-44228)
+log4j-core-2.0-rc*.jar|NATIVE|Log4j2 2.0-rc 存在 JNDI 注入 GADGET (CVE-2021-44228)
+log4j-core-2.1.jar|NATIVE|Log4j2 2.1 存在 JNDI 注入 GADGET (CVE-2021-44228)
+log4j-core-2.2.jar|NATIVE|Log4j2 2.2 存在 JNDI 注入 GADGET (CVE-2021-44228)
+log4j-core-2.3.jar|NATIVE|Log4j2 2.3 存在 JNDI 注入 GADGET (CVE-2021-44228)
+log4j-core-2.4.jar|NATIVE|Log4j2 2.4 存在 JNDI 注入 GADGET (CVE-2021-44228)
+log4j-core-2.4.1.jar|NATIVE|Log4j2 2.4.1 存在 JNDI 注入 GADGET (CVE-2021-44228)
+log4j-core-2.5.jar|NATIVE|Log4j2 2.5 存在 JNDI 注入 GADGET (CVE-2021-44228)
+log4j-core-2.6.jar|NATIVE|Log4j2 2.6 存在 JNDI 注入 GADGET (CVE-2021-44228)
+log4j-core-2.6.1.jar|NATIVE|Log4j2 2.6.1 存在 JNDI 注入 GADGET (CVE-2021-44228)
+log4j-core-2.6.2.jar|NATIVE|Log4j2 2.6.2 存在 JNDI 注入 GADGET (CVE-2021-44228)
+log4j-core-2.7.jar|NATIVE|Log4j2 2.7 存在 JNDI 注入 GADGET (CVE-2021-44228)
+log4j-core-2.8.jar|NATIVE|Log4j2 2.8 存在 JNDI 注入 GADGET (CVE-2021-44228)
+log4j-core-2.8.1.jar|NATIVE|Log4j2 2.8.1 存在 JNDI 注入 GADGET (CVE-2021-44228)
+log4j-core-2.8.2.jar|NATIVE|Log4j2 2.8.2 存在 JNDI 注入 GADGET (CVE-2021-44228)
+log4j-core-2.9.0.jar|NATIVE|Log4j2 2.9.0 存在 JNDI 注入 GADGET (CVE-2021-44228)
+log4j-core-2.9.1.jar|NATIVE|Log4j2 2.9.1 存在 JNDI 注入 GADGET (CVE-2021-44228)
+log4j-core-2.10.0.jar|NATIVE|Log4j2 2.10.0 存在 JNDI 注入 GADGET (CVE-2021-44228)
+log4j-core-2.11.0.jar|NATIVE|Log4j2 2.11.0 存在 JNDI 注入 GADGET (CVE-2021-44228)
+log4j-core-2.11.1.jar|NATIVE|Log4j2 2.11.1 存在 JNDI 注入 GADGET (CVE-2021-44228)
+log4j-core-2.11.2.jar|NATIVE|Log4j2 2.11.2 存在 JNDI 注入 GADGET (CVE-2021-44228)
+log4j-core-2.12.0.jar|NATIVE|Log4j2 2.12.0 存在 JNDI 注入 GADGET (CVE-2021-44228)
+log4j-core-2.12.1.jar|NATIVE|Log4j2 2.12.1 存在 JNDI 注入 GADGET (CVE-2021-44228)
+log4j-core-2.13.0.jar|NATIVE|Log4j2 2.13.0 存在 JNDI 注入 GADGET (CVE-2021-44228)
+log4j-core-2.13.1.jar|NATIVE|Log4j2 2.13.1 存在 JNDI 注入 GADGET (CVE-2021-44228)
+log4j-core-2.13.2.jar|NATIVE|Log4j2 2.13.2 存在 JNDI 注入 GADGET (CVE-2021-44228)
+log4j-core-2.13.3.jar|NATIVE|Log4j2 2.13.3 存在 JNDI 注入 GADGET (CVE-2021-44228)
+log4j-core-2.14.0.jar|NATIVE|Log4j2 2.14.0 存在 JNDI 注入 GADGET (CVE-2021-44228)
+log4j-core-2.14.1.jar|NATIVE|Log4j2 2.14.1 存在 JNDI 注入 GADGET (CVE-2021-44228，最广泛受影响版本)
+log4j-core-2.15.0.jar|NATIVE|Log4j2 2.15.0 CVE-2021-44228 修复不完整，存在 CVE-2021-45046
+
+# --- SnakeYAML (RCE via YAML) ---
+snakeyaml-*.jar|NATIVE|SnakeYAML 存在反序列化/JNDI 注入 GADGET (CVE-2022-1471)
+
+# --- Kryo 相关 ---
+kryo-*.jar|NATIVE|Kryo 序列化库潜在反序列化风险
+
+# --- Jython ---
+jython-*.jar|NATIVE|Jython 存在原生反序列化 GADGET
+
+# --- Hibernate ---
+hibernate-core-*.jar|NATIVE|Hibernate Core 存在反序列化 GADGET
+hibernate-validator-*.jar|NATIVE|Hibernate Validator 存在反序列化/EL 注入 GADGET
+
+# --- Flex / AMF ---
+flex-messaging-core-*.jar|NATIVE|Adobe Flex AMF 存在反序列化 GADGET (CVE-2017-5641)
+blazeds-*.jar|NATIVE|BlazeDS 存在 AMF 反序列化 GADGET
+
+# --- Pivotal Spring Web Flow ---
+spring-webflow-*.jar|NATIVE|Spring WebFlow 存在反序列化 GADGET
+
+# --- Apache OFBiz ---
+ofbiz-*.jar|NATIVE|Apache OFBiz 存在反序列化 GADGET
+
+# --- Resin ---
+resin-*.jar|NATIVE|Resin 内置类存在反序列化 GADGET
+
+# --- MVEL ---
+mvel2-*.jar|NATIVE|MVEL2 表达式引擎存在反序列化/代码执行风险
+
+# --- OGNL ---
+ognl-*.jar|NATIVE|OGNL 表达式引擎存在代码执行风险（Struts2 等框架使用）
+
+# --- Struts2 ---
+struts2-core-*.jar|NATIVE|Struts2 Core 存在 OGNL 注入/反序列化 GADGET
+
+# --- Apache CXF ---
+cxf-rt-frontend-jaxrs-*.jar|NATIVE|Apache CXF JAX-RS 存在反序列化 GADGET
+
+# --- MyBatis ---
+mybatis-*.jar|NATIVE|MyBatis 某些版本存在反序列化风险
+
+# --- Netty ---
+netty-all-*.jar|NATIVE|Netty 存在反序列化/HTTP 请求走私风险
+netty-handler-*.jar|NATIVE|Netty Handler 存在反序列化风险
+
+# =====================================================================
+# HESSIAN - Hessian/Hessian2 反序列化 Gadget
+# =====================================================================
+
+# --- Commons Collections ---
+commons-collections-!3.2.2.jar|HESSIAN|CommonsCollections 3.2.1 及以下存在 Hessian 反序列化 GADGET
+commons-collections4-4.0.jar|HESSIAN|CommonsCollections4 4.0 存在 Hessian 反序列化 GADGET
+commons-collections4-4.1.jar|HESSIAN|CommonsCollections4 4.1 存在 Hessian 反序列化 GADGET
+
+# --- Spring ---
+spring-core-*.jar|HESSIAN|Spring Core 存在 Hessian 反序列化 GADGET
+spring-beans-*.jar|HESSIAN|Spring Beans 存在 Hessian 反序列化 GADGET
+spring-aop-*.jar|HESSIAN|Spring AOP 存在 Hessian 反序列化 GADGET (SpringProxy)
+
+# --- Resin (内置 Hessian) ---
+resin-*.jar|HESSIAN|Resin 存在 Hessian 反序列化 GADGET (CVE-2021-44138 等)
+
+# --- XBean ---
+xbean-reflect-*.jar|HESSIAN|XBean Reflect 存在 Hessian 反序列化 GADGET
+
+# --- Hessian 本体 ---
+hessian-*.jar|HESSIAN|Hessian 库本身存在反序列化 GADGET (需关注版本)
+hessian4-*.jar|HESSIAN|Hessian4 库存在反序列化 GADGET
+caucho-hessian-*.jar|HESSIAN|Caucho Hessian 存在反序列化 GADGET
+
+# --- Dubbo (使用 Hessian2) ---
+dubbo-*.jar|HESSIAN|Dubbo 使用 Hessian2 协议，存在反序列化 GADGET (CVE-2020-11995 等)
+dubbo-common-*.jar|HESSIAN|Dubbo Common 存在 Hessian2 反序列化 GADGET
+dubbo-serialization-hessian2-*.jar|HESSIAN|Dubbo Hessian2 序列化存在反序列化 GADGET
+
+# --- ROME ---
+rome-*.jar|HESSIAN|ROME 存在 Hessian 反序列化 GADGET
+
+# --- Apache Commons BeanUtils ---
+commons-beanutils-*.jar|HESSIAN|CommonsBeanUtils 存在 Hessian 反序列化 GADGET
+
+# --- Javassist ---
+javassist-*.jar|HESSIAN|Javassist 存在 Hessian 反序列化 GADGET
+
+# --- Log4j ---
+log4j-core-2.14.1.jar|HESSIAN|Log4j2 2.14.1 存在 Hessian 反序列化 GADGET
+log4j-core-2.14.0.jar|HESSIAN|Log4j2 2.14.0 存在 Hessian 反序列化 GADGET
+
+# --- Hibernate ---
+hibernate-core-*.jar|HESSIAN|Hibernate Core 存在 Hessian 反序列化 GADGET
+
+# --- XStream ---
+xstream-*.jar|HESSIAN|XStream 存在 Hessian 反序列化 GADGET
+
+# =====================================================================
+# FASTJSON - Fastjson 反序列化/JNDI 注入 Gadget
+# =====================================================================
+
+# --- Fastjson 本体 ---
+fastjson-1.2.24.jar|FASTJSON|Fastjson 1.2.24 存在反序列化 RCE (CVE-2017-18349)
+fastjson-1.2.41.jar|FASTJSON|Fastjson 1.2.41 存在反序列化 RCE (绕过 autoType 黑名单)
+fastjson-1.2.42.jar|FASTJSON|Fastjson 1.2.42 存在反序列化 RCE (双写绕过)
+fastjson-1.2.43.jar|FASTJSON|Fastjson 1.2.43 存在反序列化 RCE (分号绕过)
+fastjson-1.2.44.jar|FASTJSON|Fastjson 1.2.44 存在反序列化 RCE
+fastjson-1.2.45.jar|FASTJSON|Fastjson 1.2.45 存在反序列化 RCE (ibatis 绕过)
+fastjson-1.2.46.jar|FASTJSON|Fastjson 1.2.46 存在反序列化 RCE
+fastjson-1.2.47.jar|FASTJSON|Fastjson 1.2.47 存在反序列化 RCE (cache 绕过，最广泛利用版本)
+fastjson-1.2.48.jar|FASTJSON|Fastjson 1.2.48 存在反序列化 RCE
+fastjson-1.2.49.jar|FASTJSON|Fastjson 1.2.49 存在反序列化 RCE
+fastjson-1.2.60.jar|FASTJSON|Fastjson 1.2.60 存在反序列化 RCE
+fastjson-1.2.61.jar|FASTJSON|Fastjson 1.2.61 存在反序列化 RCE
+fastjson-1.2.62.jar|FASTJSON|Fastjson 1.2.62 存在反序列化 RCE
+fastjson-1.2.66.jar|FASTJSON|Fastjson 1.2.66 存在反序列化 RCE (新型 JNDI Gadget)
+fastjson-1.2.67.jar|FASTJSON|Fastjson 1.2.67 存在反序列化 RCE
+fastjson-1.2.68.jar|FASTJSON|Fastjson 1.2.68 存在反序列化 RCE (expectClass 绕过)
+fastjson-1.2.69.jar|FASTJSON|Fastjson 1.2.69 存在反序列化 RCE
+fastjson-1.2.70.jar|FASTJSON|Fastjson 1.2.70 存在反序列化 RCE
+fastjson-1.2.71.jar|FASTJSON|Fastjson 1.2.71 存在反序列化 RCE
+fastjson-1.2.72.jar|FASTJSON|Fastjson 1.2.72 存在反序列化 RCE
+fastjson-1.2.73.jar|FASTJSON|Fastjson 1.2.73 存在反序列化 RCE
+fastjson-1.2.74.jar|FASTJSON|Fastjson 1.2.74 存在反序列化 RCE
+fastjson-1.2.75.jar|FASTJSON|Fastjson 1.2.75 存在反序列化 RCE
+fastjson-1.2.76.jar|FASTJSON|Fastjson 1.2.76 存在反序列化 RCE
+fastjson-1.2.77.jar|FASTJSON|Fastjson 1.2.77 存在反序列化 RCE
+fastjson-1.2.78.jar|FASTJSON|Fastjson 1.2.78 存在反序列化 RCE
+fastjson-1.2.79.jar|FASTJSON|Fastjson 1.2.79 存在反序列化 RCE
+fastjson-1.2.80.jar|FASTJSON|Fastjson 1.2.80 存在反序列化 RCE (autotype 绕过 CVE-2022-25845)
+fastjson-1.2.83.jar|FASTJSON|Fastjson 1.2.83 存在反序列化 RCE
+fastjson-2.0.0.jar|FASTJSON|Fastjson 2.0.0 存在反序列化风险 (新版本仍有潜在风险)
+fastjson-2.0.1.jar|FASTJSON|Fastjson 2.0.1 存在反序列化风险
+fastjson-2.0.2.jar|FASTJSON|Fastjson 2.0.2 存在反序列化风险
+fastjson-2.0.3.jar|FASTJSON|Fastjson 2.0.3 存在反序列化风险
+
+# --- Fastjson 利用依赖 (JNDI/TemplatesImpl 触发链) ---
+ibatis-core-*.jar|FASTJSON|iBatis Core 可作为 Fastjson JNDI Gadget 利用链依赖 (1.2.45 绕过)
+log4j-core-2.14.1.jar|FASTJSON|Log4j2 2.14.1 可作为 Fastjson JNDI Gadget 利用链依赖
+
+# =====================================================================
+# JDBC - JDBC 相关 JNDI 注入 / 反序列化 Gadget
+# =====================================================================
+
+# --- MySQL JDBC (JDBC Attack) ---
+mysql-connector-java-5.1.27.jar|JDBC|MySQL Connector/J 5.1.27 存在 JDBC JNDI 注入 (CVE-2019-2692)
+mysql-connector-java-5.1.28.jar|JDBC|MySQL Connector/J 5.1.28 存在 JDBC JNDI 注入
+mysql-connector-java-5.1.29.jar|JDBC|MySQL Connector/J 5.1.29 存在 JDBC JNDI 注入
+mysql-connector-java-5.1.30.jar|JDBC|MySQL Connector/J 5.1.30 存在 JDBC JNDI 注入
+mysql-connector-java-5.1.31.jar|JDBC|MySQL Connector/J 5.1.31 存在 JDBC JNDI 注入
+mysql-connector-java-5.1.32.jar|JDBC|MySQL Connector/J 5.1.32 存在 JDBC JNDI 注入
+mysql-connector-java-5.1.33.jar|JDBC|MySQL Connector/J 5.1.33 存在 JDBC JNDI 注入
+mysql-connector-java-5.1.34.jar|JDBC|MySQL Connector/J 5.1.34 存在 JDBC JNDI 注入
+mysql-connector-java-5.1.35.jar|JDBC|MySQL Connector/J 5.1.35 存在 JDBC JNDI 注入
+mysql-connector-java-5.1.36.jar|JDBC|MySQL Connector/J 5.1.36 存在 JDBC JNDI 注入
+mysql-connector-java-5.1.37.jar|JDBC|MySQL Connector/J 5.1.37 存在 JDBC JNDI 注入
+mysql-connector-java-5.1.38.jar|JDBC|MySQL Connector/J 5.1.38 存在 JDBC JNDI 注入
+mysql-connector-java-5.1.39.jar|JDBC|MySQL Connector/J 5.1.39 存在 JDBC JNDI 注入
+mysql-connector-java-5.1.40.jar|JDBC|MySQL Connector/J 5.1.40 存在 JDBC JNDI 注入
+mysql-connector-java-5.1.41.jar|JDBC|MySQL Connector/J 5.1.41 存在 JDBC JNDI 注入
+mysql-connector-java-5.1.42.jar|JDBC|MySQL Connector/J 5.1.42 存在 JDBC JNDI 注入
+mysql-connector-java-5.1.43.jar|JDBC|MySQL Connector/J 5.1.43 存在 JDBC JNDI 注入
+mysql-connector-java-5.1.44.jar|JDBC|MySQL Connector/J 5.1.44 存在 JDBC JNDI 注入
+mysql-connector-java-5.1.45.jar|JDBC|MySQL Connector/J 5.1.45 存在 JDBC JNDI 注入
+mysql-connector-java-5.1.46.jar|JDBC|MySQL Connector/J 5.1.46 存在 JDBC JNDI 注入
+mysql-connector-java-5.1.47.jar|JDBC|MySQL Connector/J 5.1.47 存在 JDBC JNDI 注入
+mysql-connector-java-5.1.48.jar|JDBC|MySQL Connector/J 5.1.48 存在 JDBC JNDI 注入
+mysql-connector-java-5.1.49.jar|JDBC|MySQL Connector/J 5.1.49 存在 JDBC JNDI 注入
+mysql-connector-java-6.0.2.jar|JDBC|MySQL Connector/J 6.0.2 存在 JDBC JNDI 注入
+mysql-connector-java-6.0.3.jar|JDBC|MySQL Connector/J 6.0.3 存在 JDBC JNDI 注入
+mysql-connector-java-6.0.4.jar|JDBC|MySQL Connector/J 6.0.4 存在 JDBC JNDI 注入
+mysql-connector-java-6.0.5.jar|JDBC|MySQL Connector/J 6.0.5 存在 JDBC JNDI 注入
+mysql-connector-java-6.0.6.jar|JDBC|MySQL Connector/J 6.0.6 存在 JDBC JNDI 注入
+mysql-connector-java-8.0.*.jar|JDBC|MySQL Connector/J 8.0.x 存在 JDBC JNDI 注入/反序列化 GADGET
+mysql-connector-j-8.*.jar|JDBC|MySQL Connector/J 8.x 存在 JDBC JNDI 注入/反序列化 GADGET
+
+# --- H2 Database (支持 INIT RUNSCRIPT) ---
+h2-*.jar|JDBC|H2 Database 存在 JDBC JNDI 注入/RUNSCRIPT RCE GADGET (CVE-2021-42392, CVE-2022-23221)
+h2-engine-*.jar|JDBC|H2 Database Engine 存在 JDBC RCE GADGET
+
+# --- Apache Derby ---
+derby-*.jar|JDBC|Apache Derby 存在 JDBC JNDI 注入风险
+
+# --- PostgreSQL JDBC ---
+postgresql-*.jar|JDBC|PostgreSQL JDBC 存在 JDBC JNDI 注入/XXE GADGET (CVE-2022-21724)
+postgresql-42.2.5.jar|JDBC|PostgreSQL JDBC 42.2.5 存在 JDBC socketFactory JNDI 注入
+postgresql-42.2.6.jar|JDBC|PostgreSQL JDBC 42.2.6 存在 JDBC socketFactory JNDI 注入
+postgresql-42.2.7.jar|JDBC|PostgreSQL JDBC 42.2.7 存在 JDBC socketFactory JNDI 注入
+postgresql-42.2.8.jar|JDBC|PostgreSQL JDBC 42.2.8 存在 JDBC socketFactory JNDI 注入
+postgresql-42.2.9.jar|JDBC|PostgreSQL JDBC 42.2.9 存在 JDBC socketFactory JNDI 注入
+postgresql-42.2.10.jar|JDBC|PostgreSQL JDBC 42.2.10 存在 JDBC socketFactory JNDI 注入
+postgresql-42.2.11.jar|JDBC|PostgreSQL JDBC 42.2.11 存在 JDBC socketFactory JNDI 注入
+postgresql-42.2.12.jar|JDBC|PostgreSQL JDBC 42.2.12 存在 JDBC socketFactory JNDI 注入
+postgresql-42.2.13.jar|JDBC|PostgreSQL JDBC 42.2.13 存在 JDBC socketFactory JNDI 注入
+postgresql-42.2.14.jar|JDBC|PostgreSQL JDBC 42.2.14 存在 JDBC socketFactory JNDI 注入
+postgresql-42.2.15.jar|JDBC|PostgreSQL JDBC 42.2.15 存在 JDBC socketFactory JNDI 注入
+postgresql-42.2.16.jar|JDBC|PostgreSQL JDBC 42.2.16 存在 JDBC socketFactory JNDI 注入
+postgresql-42.2.17.jar|JDBC|PostgreSQL JDBC 42.2.17 存在 JDBC socketFactory JNDI 注入
+postgresql-42.2.18.jar|JDBC|PostgreSQL JDBC 42.2.18 存在 JDBC socketFactory JNDI 注入
+postgresql-42.2.19.jar|JDBC|PostgreSQL JDBC 42.2.19 存在 JDBC socketFactory JNDI 注入
+postgresql-42.2.20.jar|JDBC|PostgreSQL JDBC 42.2.20 存在 JDBC socketFactory JNDI 注入
+postgresql-42.2.21.jar|JDBC|PostgreSQL JDBC 42.2.21 存在 JDBC socketFactory JNDI 注入
+postgresql-42.2.22.jar|JDBC|PostgreSQL JDBC 42.2.22 存在 JDBC socketFactory JNDI 注入
+postgresql-42.2.23.jar|JDBC|PostgreSQL JDBC 42.2.23 存在 JDBC socketFactory JNDI 注入
+postgresql-42.3.0.jar|JDBC|PostgreSQL JDBC 42.3.0 存在 JDBC socketFactory JNDI 注入
+postgresql-42.3.1.jar|JDBC|PostgreSQL JDBC 42.3.1 存在 JDBC socketFactory JNDI 注入 (CVE-2022-21724)
+
+# --- SQLite JDBC ---
+sqlite-jdbc-*.jar|JDBC|SQLite JDBC 存在 JDBC JNDI 注入风险
+
+# --- Apache DBCP (连接池 JNDI) ---
+commons-dbcp-*.jar|JDBC|Commons DBCP 存在 JDBC JNDI 注入 GADGET
+commons-dbcp2-*.jar|JDBC|Commons DBCP2 存在 JDBC JNDI 注入 GADGET
+tomcat-dbcp-*.jar|JDBC|Tomcat DBCP 存在 JDBC JNDI 注入 GADGET
+
+# --- Druid (连接池 JNDI) ---
+druid-*.jar|JDBC|Druid 连接池存在 JDBC JNDI 注入 GADGET
+druid-spring-boot-starter-*.jar|JDBC|Druid Spring Boot Starter 存在 JDBC JNDI 注入 GADGET
+
+# --- C3P0 (连接池 JNDI) ---
+c3p0-*.jar|JDBC|C3P0 连接池存在 JDBC JNDI 注入/URLClassLoader GADGET
+
+# --- HikariCP ---
+HikariCP-*.jar|JDBC|HikariCP 连接池在特定配置下存在 JDBC 攻击风险
+hikaricp-*.jar|JDBC|HikariCP 连接池在特定配置下存在 JDBC 攻击风险
+
+# --- IBM DB2 JDBC ---
+db2jcc*.jar|JDBC|IBM DB2 JDBC 存在 JNDI 注入风险
+db2jcc4*.jar|JDBC|IBM DB2 JDBC4 存在 JNDI 注入风险
+
+# --- Oracle JDBC (薄驱动) ---
+ojdbc*.jar|JDBC|Oracle JDBC 存在 JNDI 注入/反序列化 GADGET 风险
+
+# --- SQL Server JDBC ---
+mssql-jdbc-*.jar|JDBC|Microsoft SQL Server JDBC 存在 JNDI 注入风险
+sqljdbc*.jar|JDBC|Microsoft SQL Server JDBC 旧版本存在 JNDI 注入风险

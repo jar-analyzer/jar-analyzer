@@ -74,6 +74,8 @@ public interface Const {
             "# com.test.a.Test;\n";
     String welcome = "// Jar Analyzer - Code Viewer\n" +
             "// Jar Analyzer - 代码查看器 - 支持多 TAB\n\n" +
+            "// 点击 Chose File 选择文件或目录进行分析\n" +
+            "// 你也可以拖拽文件或目录到面板进行分析\n\n" +
             "// 可以在 call 面板查看当前方法的 caller/callee\n" +
             "// 选中方法 Ctrl+左键 可以查看 caller/callee\n\n" +
             "// 1. 基础 call/define 搜索前往 search 面板\n" +

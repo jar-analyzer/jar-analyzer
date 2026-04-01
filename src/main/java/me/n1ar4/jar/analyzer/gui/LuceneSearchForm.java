@@ -77,6 +77,13 @@ public class LuceneSearchForm {
         return instanceFrame;
     }
 
+    public static void closeInstanceFrame() {
+        if (instanceFrame != null) {
+            instanceFrame.dispose();
+            instanceFrame = null;
+        }
+    }
+
     private void init() {
         containsRadio.setSelected(true);
         paLuceneRadio.setSelected(true);
@@ -94,10 +101,20 @@ public class LuceneSearchForm {
     }
 
     public static void start(int position) {
-        // 全局只有一个 LuceneSearchForm GUI 对象
+        // 如果 frame 存在但已经被 dispose，重置为 null 强制重建
+        if (instanceFrame != null && !instanceFrame.isDisplayable()) {
+            instanceFrame = null;
+            instance = null;
+        }
+
         if (instanceFrame == null) {
             instanceFrame = new JFrame();
             instanceFrame.setUndecorated(true);
+
+            instance = new LuceneSearchForm();
+            instance.init();
+            instanceFrame.setContentPane(instance.rootPanel);
+            instanceFrame.pack();
 
             if (position == 0) {
                 Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
@@ -106,10 +123,6 @@ public class LuceneSearchForm {
                 instanceFrame.setLocationRelativeTo(null);
             }
 
-            instance = new LuceneSearchForm();
-            instance.init();
-            instanceFrame.setContentPane(instance.rootPanel);
-            instanceFrame.pack();
             instanceFrame.setVisible(true);
         } else {
             if (position == 0) {
@@ -119,6 +132,8 @@ public class LuceneSearchForm {
                 instanceFrame.setLocationRelativeTo(null);
             }
             instanceFrame.setVisible(true);
+            instanceFrame.toFront();
+            instanceFrame.requestFocus();
         }
     }
 

@@ -1150,6 +1150,8 @@ public class MainForm {
 
         codeArea.addKeyListener(new GlobalKeyListener());
         instance.allMethodList.addKeyListener(new GlobalKeyListener());
+        // 安装全局键盘分发器，使双 Shift 不依赖焦点所在组件
+        GlobalKeyListener.installGlobalKeyDispatcher();
         instance.fileTree.addKeyListener(new FileTreeKeyAdapter());
         instance.fileTree.addMouseListener(new TreeMouseAdapter());
         instance.fileTree.addMouseListener(new TreeRightMenuAdapter());

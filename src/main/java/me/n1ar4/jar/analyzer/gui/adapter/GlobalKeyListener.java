@@ -25,29 +25,90 @@ import java.awt.event.MouseEvent;
 public class GlobalKeyListener extends KeyAdapter {
     private static int shiftPressCount = 0;
     private static Timer resetTimer;
+    private static AWTEventListener globalMouseListener = null;
+    // 是否已注册全局键盘监听
+    private static boolean globalKeyDispatcherInstalled = false;
+
+    /**
+     * 安装全局键盘事件分发器，使双 Shift 检测不依赖当前焦点所在组件。
+     * 在 MainForm 初始化时调用一次即可。
+     */
+    public static void installGlobalKeyDispatcher() {
+        if (globalKeyDispatcherInstalled) return;
+        globalKeyDispatcherInstalled = true;
+        KeyboardFocusManager.getCurrentKeyboardFocusManager()
+                .addKeyEventDispatcher(e -> {
+                    if (e.getID() == KeyEvent.KEY_PRESSED
+                            && e.getKeyCode() == KeyEvent.VK_SHIFT) {
+                        handleShiftPress();
+                    }
+                    // 返回 false：不消费事件，让其继续传递
+                    return false;
+                });
+    }
+
+    private static void handleShiftPress() {
+        shiftPressCount++;
+        if (shiftPressCount == 2) {
+            triggerGlobalSearch();
+            shiftPressCount = 0;
+            if (resetTimer != null) resetTimer.stop();
+        } else {
+            if (resetTimer == null || !resetTimer.isRunning()) {
+                resetTimer = new Timer(500, ev -> shiftPressCount = 0);
+                resetTimer.setRepeats(false);
+                resetTimer.start();
+            }
+        }
+    }
 
     private static void triggerGlobalSearch() {
-        Toolkit.getDefaultToolkit().addAWTEventListener(new AWTEventListener() {
-            @Override
-            public void eventDispatched(AWTEvent event) {
-                if (event instanceof MouseEvent) {
-                    MouseEvent mouseEvent = (MouseEvent) event;
-                    if (mouseEvent.getID() == MouseEvent.MOUSE_CLICKED) {
-                        if (LuceneSearchForm.getInstanceFrame() != null &&
-                                LuceneSearchForm.getInstanceFrame().isShowing() &&
-                                !LuceneSearchForm.getInstanceFrame().getBounds().contains(
-                                        mouseEvent.getLocationOnScreen())) {
-                            LuceneSearchForm.getInstanceFrame().dispose();
-                            Toolkit.getDefaultToolkit().removeAWTEventListener(this);
+        // 如果窗口已经显示，直接移到鼠标位置并置顶
+        if (LuceneSearchForm.getInstanceFrame() != null
+                && LuceneSearchForm.getInstanceFrame().isShowing()) {
+            Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
+            LuceneSearchForm.getInstanceFrame().setLocation(mouseLocation.x + 10, mouseLocation.y + 10);
+            LuceneSearchForm.getInstanceFrame().toFront();
+            LuceneSearchForm.getInstanceFrame().requestFocus();
+            return;
+        }
+
+        // 防止重复注册：先移除旧的监听器
+        if (globalMouseListener != null) {
+            Toolkit.getDefaultToolkit().removeAWTEventListener(globalMouseListener);
+        }
+        globalMouseListener = event -> {
+            if (event instanceof MouseEvent) {
+                MouseEvent mouseEvent = (MouseEvent) event;
+                if (mouseEvent.getID() == MouseEvent.MOUSE_CLICKED) {
+                    JFrame frame = LuceneSearchForm.getInstanceFrame();
+                    if (frame == null || !frame.isShowing()) {
+                        Toolkit.getDefaultToolkit().removeAWTEventListener(globalMouseListener);
+                        globalMouseListener = null;
+                        return;
+                    }
+                    // 忽略来自其他弹窗（ProcessDialog 等）的事件
+                    Component source = mouseEvent.getComponent();
+                    if (source != null) {
+                        Window sourceWindow = SwingUtilities.getWindowAncestor(source);
+                        if (sourceWindow != null && sourceWindow != frame) {
+                            return;
                         }
+                    }
+                    if (!frame.getBounds().contains(mouseEvent.getLocationOnScreen())) {
+                        LuceneSearchForm.closeInstanceFrame();
+                        Toolkit.getDefaultToolkit().removeAWTEventListener(globalMouseListener);
+                        globalMouseListener = null;
                     }
                 }
             }
-        }, AWTEvent.MOUSE_EVENT_MASK);
+        };
+        Toolkit.getDefaultToolkit().addAWTEventListener(globalMouseListener, AWTEvent.MOUSE_EVENT_MASK);
         LuceneSearchWrapper.initEnv();
         LuceneSearchForm.start(0);
     }
 
+    // keyPressed 保留 Ctrl+X / Ctrl+F，双 Shift 已由全局 dispatcher 处理
     @Override
     public void keyPressed(KeyEvent e) {
         if ((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0 ||
@@ -66,22 +127,6 @@ public class GlobalKeyListener extends KeyAdapter {
                 (e.getModifiersEx() & KeyEvent.META_DOWN_MASK) != 0) {
             if (e.getKeyCode() == KeyEvent.VK_F) {
                 SearchForm.start();
-            }
-        }
-        if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
-            shiftPressCount++;
-            if (shiftPressCount == 2) {
-                triggerGlobalSearch();
-                shiftPressCount = 0;
-                if (resetTimer != null) {
-                    resetTimer.stop();
-                }
-            } else {
-                if (resetTimer == null || !resetTimer.isRunning()) {
-                    resetTimer = new Timer(500, event -> shiftPressCount = 0);
-                    resetTimer.setRepeats(false);
-                    resetTimer.start();
-                }
             }
         }
     }

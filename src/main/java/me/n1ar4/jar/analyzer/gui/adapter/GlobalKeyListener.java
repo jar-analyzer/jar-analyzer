@@ -26,12 +26,11 @@ public class GlobalKeyListener extends KeyAdapter {
     private static int shiftPressCount = 0;
     private static Timer resetTimer;
     private static AWTEventListener globalMouseListener = null;
-    // 是否已注册全局键盘监听
     private static boolean globalKeyDispatcherInstalled = false;
 
     /**
-     * 安装全局键盘事件分发器，使双 Shift 检测不依赖当前焦点所在组件。
-     * 在 MainForm 初始化时调用一次即可。
+     * 安装全局键盘事件分发器，专门处理双 Shift 触发全局搜索。
+     * 不依赖焦点所在组件，在 MainForm 初始化时调用一次即可。
      */
     public static void installGlobalKeyDispatcher() {
         if (globalKeyDispatcherInstalled) return;
@@ -42,7 +41,7 @@ public class GlobalKeyListener extends KeyAdapter {
                             && e.getKeyCode() == KeyEvent.VK_SHIFT) {
                         handleShiftPress();
                     }
-                    // 返回 false：不消费事件，让其继续传递
+                    // 返回 false：不消费事件，让其继续正常传递
                     return false;
                 });
     }
@@ -63,7 +62,7 @@ public class GlobalKeyListener extends KeyAdapter {
     }
 
     private static void triggerGlobalSearch() {
-        // 如果窗口已经显示，直接移到鼠标位置并置顶
+        // 若窗口已显示，直接移到鼠标位置并置顶
         if (LuceneSearchForm.getInstanceFrame() != null
                 && LuceneSearchForm.getInstanceFrame().isShowing()) {
             Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
@@ -108,7 +107,7 @@ public class GlobalKeyListener extends KeyAdapter {
         LuceneSearchForm.start(0);
     }
 
-    // keyPressed 保留 Ctrl+X / Ctrl+F，双 Shift 已由全局 dispatcher 处理
+    // Ctrl+X / Ctrl+F 由各组件自己注册的 KeyListener 处理
     @Override
     public void keyPressed(KeyEvent e) {
         if ((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0 ||

@@ -11,6 +11,7 @@
 package me.n1ar4.jar.analyzer.gui.util;
 
 import me.n1ar4.jar.analyzer.gui.MainForm;
+import me.n1ar4.jar.analyzer.gui.adapter.GlobalKeyListener;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
@@ -558,6 +559,9 @@ public class CodeTabPanel extends JPanel {
 
         // 设置右键菜单
         CodeMenuHelper.setupPopupMenu(rArea);
+
+        // 注册 Ctrl+F / Ctrl+X 快捷键（每个新 Tab 都需要）
+        rArea.addKeyListener(new GlobalKeyListener());
 
         return rArea;
     }

@@ -39,6 +39,11 @@ public class JarAnalyzerLaf extends FlatIntelliJLaf {
             theme.apply((RSyntaxTextArea) MainForm.getCodeArea());
             MainForm.getCodeArea().setFont(
                     MainForm.getCodeArea().getFont().deriveFont(MainForm.FONT_SIZE));
+            // 同步更新所有 Tab 的语法主题
+            CodeTabPanel tabPanel = MainForm.getCodeTabPanel();
+            if (tabPanel != null) {
+                tabPanel.applyThemeToAllTabs("syntax/dark.xml");
+            }
         } catch (Exception ex) {
             logger.error("change theme failed: {}", ex);
         }
@@ -55,6 +60,11 @@ public class JarAnalyzerLaf extends FlatIntelliJLaf {
             theme.apply((RSyntaxTextArea) MainForm.getCodeArea());
             MainForm.getCodeArea().setFont(
                     MainForm.getCodeArea().getFont().deriveFont(MainForm.FONT_SIZE));
+            // 同步更新所有 Tab 的语法主题
+            CodeTabPanel tabPanel = MainForm.getCodeTabPanel();
+            if (tabPanel != null) {
+                tabPanel.applyThemeToAllTabs("syntax/default.xml");
+            }
         } catch (Exception ex) {
             logger.error("change theme failed: {}", ex);
         }
@@ -71,6 +81,11 @@ public class JarAnalyzerLaf extends FlatIntelliJLaf {
                 theme.apply((RSyntaxTextArea) MainForm.getCodeArea());
                 MainForm.getCodeArea().setFont(
                         MainForm.getCodeArea().getFont().deriveFont(MainForm.FONT_SIZE));
+                // 同步更新所有 Tab 的语法主题
+                CodeTabPanel tabPanel = MainForm.getCodeTabPanel();
+                if (tabPanel != null) {
+                    tabPanel.applyThemeToAllTabs("syntax/default.xml");
+                }
             }
         } catch (Exception ex) {
             logger.error("change theme failed: {}", ex);

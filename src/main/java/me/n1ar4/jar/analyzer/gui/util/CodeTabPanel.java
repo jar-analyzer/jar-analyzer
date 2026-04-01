@@ -16,6 +16,7 @@ import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.*;
@@ -47,6 +48,8 @@ public class CodeTabPanel extends JPanel {
     private static final String WELCOME_KEY = "__welcome__";
     // 最大 Tab 数量
     private static final int MAX_TABS = 20;
+    // 当前语法主题路径（供新 Tab 使用）
+    private static String currentSyntaxTheme = "syntax/default.xml";
 
     public CodeTabPanel() {
         setLayout(new BorderLayout());
@@ -440,6 +443,16 @@ public class CodeTabPanel extends JPanel {
         rArea.setCodeFoldingEnabled(true);
         rArea.setFont(rArea.getFont().deriveFont(MainForm.FONT_SIZE));
 
+        // 应用当前语法主题（确保新 Tab 跟随已选主题）
+        try {
+            ClassLoader cl = CodeTabPanel.class.getClassLoader();
+            Theme theme = Theme.load(cl.getResourceAsStream(currentSyntaxTheme));
+            theme.apply(rArea);
+            rArea.setFont(rArea.getFont().deriveFont(MainForm.FONT_SIZE));
+        } catch (Exception ex) {
+            logger.error("apply theme to new code area failed: {}", ex.toString());
+        }
+
         // 选中文本高亮所有相同文本
         rArea.addCaretListener(e -> {
             String selectedText = rArea.getSelectedText();
@@ -572,6 +585,25 @@ public class CodeTabPanel extends JPanel {
      */
     public int getTabCount() {
         return tabbedPane.getTabCount();
+    }
+
+    /**
+     * 设置当前语法主题，并将主题应用到所有已打开的 Tab
+     *
+     * @param syntaxThemePath 语法主题资源路径，如 "syntax/dark.xml"
+     */
+    public void applyThemeToAllTabs(String syntaxThemePath) {
+        currentSyntaxTheme = syntaxThemePath;
+        ClassLoader cl = CodeTabPanel.class.getClassLoader();
+        try {
+            Theme theme = Theme.load(cl.getResourceAsStream(syntaxThemePath));
+            for (RSyntaxTextArea area : tabMap.values()) {
+                theme.apply(area);
+                area.setFont(area.getFont().deriveFont(MainForm.FONT_SIZE));
+            }
+        } catch (Exception ex) {
+            logger.error("apply theme to all tabs failed: {}", ex.toString());
+        }
     }
 
     /**

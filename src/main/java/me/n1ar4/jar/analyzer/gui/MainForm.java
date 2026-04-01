@@ -33,11 +33,7 @@ import me.n1ar4.jar.analyzer.graph.HtmlGraph;
 import me.n1ar4.jar.analyzer.gui.action.*;
 import me.n1ar4.jar.analyzer.gui.adapter.*;
 import me.n1ar4.jar.analyzer.gui.font.FontHelper;
-import me.n1ar4.jar.analyzer.gui.render.AllMethodsRender;
-import me.n1ar4.jar.analyzer.gui.render.ClassRender;
-import me.n1ar4.jar.analyzer.gui.render.LeakResultRender;
-import me.n1ar4.jar.analyzer.gui.render.MethodCallRender;
-import me.n1ar4.jar.analyzer.gui.render.SpringMethodRender;
+import me.n1ar4.jar.analyzer.gui.render.*;
 import me.n1ar4.jar.analyzer.gui.tree.FileTree;
 import me.n1ar4.jar.analyzer.gui.update.UpdateChecker;
 import me.n1ar4.jar.analyzer.gui.util.*;
@@ -1250,7 +1246,7 @@ public class MainForm {
 
         instance.webTabbed.setIconAt(0, SvgManager.SpringIcon);
         instance.webTabbed.setIconAt(1, SvgManager.SpringIcon);
-        instance.webTabbed.setIconAt(2,SvgManager.SpringIcon);
+        instance.webTabbed.setIconAt(2, SvgManager.SpringIcon);
         instance.webTabbed.setIconAt(3, SvgManager.TomcatIcon);
         instance.webTabbed.setIconAt(4, SvgManager.TomcatIcon);
         instance.webTabbed.setIconAt(5, SvgManager.TomcatIcon);

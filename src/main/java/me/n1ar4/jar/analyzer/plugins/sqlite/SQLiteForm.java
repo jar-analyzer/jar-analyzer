@@ -13,10 +13,9 @@ package me.n1ar4.jar.analyzer.plugins.sqlite;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import me.n1ar4.jar.analyzer.gui.MainForm;
+import me.n1ar4.jar.analyzer.gui.render.ZebraTableCellRenderer;
 import me.n1ar4.jar.analyzer.gui.util.SyntaxAreaHelper;
 import me.n1ar4.jar.analyzer.starter.Const;
-
-import me.n1ar4.jar.analyzer.gui.render.ZebraTableCellRenderer;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;

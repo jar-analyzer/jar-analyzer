@@ -11,8 +11,8 @@
 package me.n1ar4.jar.analyzer.lucene;
 
 import me.n1ar4.jar.analyzer.entity.LuceneSearchResult;
-import me.n1ar4.jar.analyzer.gui.render.ZebraListCellRenderer;
 import me.n1ar4.jar.analyzer.gui.MainForm;
+import me.n1ar4.jar.analyzer.gui.render.ZebraListCellRenderer;
 
 import javax.swing.*;
 import java.awt.*;

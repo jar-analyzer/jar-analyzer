@@ -91,9 +91,6 @@ public class CodeTabPanel extends JPanel {
             }
         });
 
-        // Tab 标签栏与代码区域之间留一点间隔
-        tabbedPane.setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0));
-
         add(tabbedPane, BorderLayout.CENTER);
 
         // 创建一个欢迎 Tab
@@ -110,7 +107,8 @@ public class CodeTabPanel extends JPanel {
         welcomeArea.setCaretPosition(0);
 
         RTextScrollPane sp = new RTextScrollPane(welcomeArea);
-        tabbedPane.addTab("Welcome", sp);
+        JPanel wrapper = createTabContentWrapper(sp);
+        tabbedPane.addTab("Welcome", wrapper);
         setTabCloseButton(tabbedPane.getTabCount() - 1);
 
         tabMap.put(WELCOME_KEY, welcomeArea);
@@ -167,7 +165,8 @@ public class CodeTabPanel extends JPanel {
         String shortName = getShortClassName(className);
 
         RTextScrollPane sp = new RTextScrollPane(newArea);
-        tabbedPane.addTab(shortName, sp);
+        JPanel wrapper = createTabContentWrapper(sp);
+        tabbedPane.addTab(shortName, wrapper);
         int newIndex = tabbedPane.getTabCount() - 1;
         setTabCloseButton(newIndex);
         tabbedPane.setToolTipTextAt(newIndex, className.replace("/", "."));
@@ -206,9 +205,9 @@ public class CodeTabPanel extends JPanel {
         if (selectedIndex < 0) {
             return null;
         }
-        Component comp = tabbedPane.getComponentAt(selectedIndex);
-        if (comp instanceof RTextScrollPane) {
-            Component view = ((RTextScrollPane) comp).getViewport().getView();
+        RTextScrollPane scrollPane = getScrollPaneAt(selectedIndex);
+        if (scrollPane != null) {
+            Component view = scrollPane.getViewport().getView();
             if (view instanceof RSyntaxTextArea) {
                 return (RSyntaxTextArea) view;
             }
@@ -239,10 +238,10 @@ public class CodeTabPanel extends JPanel {
         if (tabIndex < 0 || tabIndex >= tabbedPane.getTabCount()) return;
 
         // 找到对应的 className key
-        Component comp = tabbedPane.getComponentAt(tabIndex);
         String keyToRemove = null;
-        if (comp instanceof RTextScrollPane) {
-            Component view = ((RTextScrollPane) comp).getViewport().getView();
+        RTextScrollPane scrollPane = getScrollPaneAt(tabIndex);
+        if (scrollPane != null) {
+            Component view = scrollPane.getViewport().getView();
             for (Map.Entry<String, RSyntaxTextArea> entry : tabMap.entrySet()) {
                 if (entry.getValue() == view) {
                     keyToRemove = entry.getKey();
@@ -340,15 +339,45 @@ public class CodeTabPanel extends JPanel {
         RSyntaxTextArea area = tabMap.get(className);
         if (area == null) return -1;
         for (int i = 0; i < tabbedPane.getTabCount(); i++) {
-            Component comp = tabbedPane.getComponentAt(i);
-            if (comp instanceof RTextScrollPane) {
-                Component view = ((RTextScrollPane) comp).getViewport().getView();
+            RTextScrollPane scrollPane = getScrollPaneAt(i);
+            if (scrollPane != null) {
+                Component view = scrollPane.getViewport().getView();
                 if (view == area) {
                     return i;
                 }
             }
         }
         return -1;
+    }
+
+    /**
+     * 创建 Tab 内容的包装面板，在顶部留出间隙
+     * 使用独立的 JPanel 包装，避免 JTabbedPane 选中时边框高亮覆盖到间隙区域
+     */
+    private JPanel createTabContentWrapper(RTextScrollPane scrollPane) {
+        JPanel wrapper = new JPanel(new BorderLayout());
+        wrapper.setBorder(BorderFactory.createEmptyBorder(4, 0, 0, 0));
+        wrapper.add(scrollPane, BorderLayout.CENTER);
+        return wrapper;
+    }
+
+    /**
+     * 从 Tab 索引获取 RTextScrollPane（支持直接或包装在 JPanel 中的情况）
+     */
+    private RTextScrollPane getScrollPaneAt(int index) {
+        if (index < 0 || index >= tabbedPane.getTabCount()) return null;
+        Component comp = tabbedPane.getComponentAt(index);
+        if (comp instanceof RTextScrollPane) {
+            return (RTextScrollPane) comp;
+        }
+        if (comp instanceof JPanel) {
+            for (Component child : ((JPanel) comp).getComponents()) {
+                if (child instanceof RTextScrollPane) {
+                    return (RTextScrollPane) child;
+                }
+            }
+        }
+        return null;
     }
 
     /**

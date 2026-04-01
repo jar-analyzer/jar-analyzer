@@ -165,7 +165,7 @@ public class RemoteHttp {
         remotePanel = new JPanel();
         remotePanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         rootPanel = new JPanel();
-        rootPanel.setLayout(new GridLayoutManager(4, 2, new Insets(0, 0, 0, 5), -1, -1));
+        rootPanel.setLayout(new GridLayoutManager(4, 2, new Insets(0, 0, 10, 5), -1, -1));
         remotePanel.add(rootPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         urlLabel = new JLabel();
         urlLabel.setText("HTTP URL");

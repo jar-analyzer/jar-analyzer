@@ -89,8 +89,15 @@ public class SearchForm {
         closeBtn.setBorderPainted(false);
         closeBtn.setContentAreaFilled(false);
         closeBtn.addMouseListener(new MouseAdapter() {
-            @Override public void mouseEntered(MouseEvent e) { closeBtn.setForeground(Color.RED); }
-            @Override public void mouseExited(MouseEvent e) { closeBtn.setForeground(new Color(150, 150, 150)); }
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                closeBtn.setForeground(Color.RED);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                closeBtn.setForeground(new Color(150, 150, 150));
+            }
         });
 
         JPanel navPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 0));
@@ -111,9 +118,20 @@ public class SearchForm {
 
         // ---- 事件 ----
         DocumentListener docListener = new DocumentListener() {
-            @Override public void insertUpdate(DocumentEvent e) { refresh(); }
-            @Override public void removeUpdate(DocumentEvent e) { refresh(); }
-            @Override public void changedUpdate(DocumentEvent e) { refresh(); }
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                refresh();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                refresh();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                refresh();
+            }
         };
         searchText.getDocument().addDocumentListener(docListener);
 
@@ -121,15 +139,22 @@ public class SearchForm {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    if (e.isShiftDown()) getPrev(); else getNext();
+                    if (e.isShiftDown()) getPrev();
+                    else getNext();
                 } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     frame.dispose();
                 }
             }
         });
 
-        caseBtn.addActionListener(e -> { caseSensitive = caseBtn.isSelected(); refresh(); });
-        regexBtn.addActionListener(e -> { regexMode = regexBtn.isSelected(); refresh(); });
+        caseBtn.addActionListener(e -> {
+            caseSensitive = caseBtn.isSelected();
+            refresh();
+        });
+        regexBtn.addActionListener(e -> {
+            regexMode = regexBtn.isSelected();
+            refresh();
+        });
 
         prevBtn.addActionListener(e -> getPrev());
         nextBtn.addActionListener(e -> getNext());

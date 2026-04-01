@@ -11,6 +11,7 @@
 package me.n1ar4.jar.analyzer.gui.util;
 
 import me.n1ar4.jar.analyzer.gui.MainForm;
+import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
@@ -104,7 +105,8 @@ public class CodeTabPanel extends JPanel {
      */
     private void createWelcomeTab() {
         RSyntaxTextArea welcomeArea = createCodeArea();
-        welcomeArea.setText("// Jar Analyzer - Code Viewer\n// Double-click a method or Ctrl+Click to navigate");
+        welcomeArea.setText(Const.welcome);
+        welcomeArea.setEditable(false);
         welcomeArea.setCaretPosition(0);
 
         RTextScrollPane sp = new RTextScrollPane(welcomeArea);

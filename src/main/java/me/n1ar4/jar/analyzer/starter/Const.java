@@ -72,4 +72,14 @@ public interface Const {
             "# com.test.a.;\n" +
             "# class white list\n" +
             "# com.test.a.Test;\n";
+    String welcome = "// Jar Analyzer - Code Viewer\n" +
+            "// Jar Analyzer - 代码查看器 - 支持多 TAB\n\n" +
+            "// 可以在 call 面板查看当前方法的 caller/callee\n" +
+            "// 选中方法 Ctrl+左键 可以查看 caller/callee\n\n" +
+            "// 1. 基础 call/define 搜索前往 search 面板\n" +
+            "// 2. 高级搜索前往 EL Search 表达式搜索\n" +
+            "// 3. 前往 web 面板进行 Java Web Source 分析\n" +
+            "// 4. 前往 advance 面板可一键搜索 sink 方法\n" +
+            "// 5. 前往 chains 面板可进行方法调用链分析和污点分析\n\n" +
+            "// 作者：4ra1n @ jar-analyzer @ " + version;
 }

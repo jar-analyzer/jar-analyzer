@@ -10,175 +10,172 @@
 
 package me.n1ar4.jar.analyzer.gui;
 
-import com.intellij.uiDesigner.core.GridConstraints;
-import com.intellij.uiDesigner.core.GridLayoutManager;
-import com.intellij.uiDesigner.core.Spacer;
 import me.n1ar4.jar.analyzer.gui.util.SyntaxAreaHelper;
 import me.n1ar4.jar.analyzer.utils.StringUtil;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class SearchForm {
-    private JPanel rootPanel;
-    private JTextField searchText;
-    private JLabel searchLabel;
-    private JButton prevButton;
-    private JButton nextButton;
-    private JLabel resultLabel;
-    private JPanel showPanel;
-    private static SearchForm instance;
+
+    private static JFrame frame;
+    private static JTextField searchText;
+    private static JLabel resultLabel;
+    // 模式状态
+    private static boolean caseSensitive = false;
+    private static boolean regexMode = false;
+    // 模式切换按钮
+    private static JToggleButton caseBtn;
+    private static JToggleButton regexBtn;
+
     private static String searchTextGlobal = null;
     private static int total = 0;
 
     public static void start() {
-        JFrame frame = new JFrame();
-        instance = new SearchForm();
-        instance.init();
-        frame.setContentPane(instance.rootPanel);
-        frame.setTitle("SEARCH");
-        frame.pack();
+        if (frame != null && frame.isShowing()) {
+            frame.toFront();
+            searchText.requestFocus();
+            return;
+        }
+
+        frame = new JFrame("Search");
+        frame.setUndecorated(false);
         frame.setAlwaysOnTop(true);
-        frame.setLocationRelativeTo(MainForm.getInstance().getMasterPanel());
-        frame.setVisible(true);
         frame.setResizable(false);
-    }
 
-    private void init() {
-        resultLabel.setText("0/0");
+        JPanel root = new JPanel(new BorderLayout(4, 0));
+        root.setBorder(new EmptyBorder(5, 6, 5, 6));
 
-        instance.searchText.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                updateLabel(e);
-            }
+        // ---- 输入框 ----
+        searchText = new JTextField(22);
+        searchText.putClientProperty("JTextField.placeholderText", "Search...");
 
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                updateLabel(e);
-            }
+        // ---- 模式按钮：Aa（大小写） / .* （正则） ----
+        caseBtn = makeToggleBtn("Aa", "Case sensitive");
+        regexBtn = makeToggleBtn(".*", "Regular expression");
 
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                updateLabel(e);
-            }
+        JPanel modePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 0));
+        modePanel.setOpaque(false);
+        modePanel.add(caseBtn);
+        modePanel.add(regexBtn);
 
-            private void updateLabel(DocumentEvent e) {
-                try {
-                    String text = e.getDocument().getText(0, e.getDocument().getLength());
-                    // 修复卡死的 BUG
-                    if (StringUtil.isNull(text)) {
-                        return;
-                    }
-                    searchTextGlobal = text;
-                    total = SyntaxAreaHelper.addSearchAction(text);
-                    if (total == 0) {
-                        resultLabel.setText("0/0");
-                        return;
-                    }
-                    int cur = SyntaxAreaHelper.getCurrentIndex();
-                    resultLabel.setText(String.format("%d/%d", cur + 1, total));
-                } catch (Exception ignored) {
-                }
-            }
+        JPanel inputRow = new JPanel(new BorderLayout(3, 0));
+        inputRow.setOpaque(false);
+        inputRow.add(searchText, BorderLayout.CENTER);
+        inputRow.add(modePanel, BorderLayout.EAST);
+
+        // ---- 导航按钮 + 计数 ----
+        JButton prevBtn = new JButton("▲");
+        JButton nextBtn = new JButton("▼");
+        prevBtn.setFont(prevBtn.getFont().deriveFont(10f));
+        nextBtn.setFont(nextBtn.getFont().deriveFont(10f));
+        prevBtn.setMargin(new Insets(1, 4, 1, 4));
+        nextBtn.setMargin(new Insets(1, 4, 1, 4));
+
+        resultLabel = new JLabel("0/0");
+        resultLabel.setPreferredSize(new Dimension(58, 20));
+        resultLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JButton closeBtn = new JButton("✕");
+        closeBtn.setFont(closeBtn.getFont().deriveFont(10f));
+        closeBtn.setMargin(new Insets(1, 4, 1, 4));
+        closeBtn.setForeground(new Color(150, 150, 150));
+        closeBtn.setBorderPainted(false);
+        closeBtn.setContentAreaFilled(false);
+        closeBtn.addMouseListener(new MouseAdapter() {
+            @Override public void mouseEntered(MouseEvent e) { closeBtn.setForeground(Color.RED); }
+            @Override public void mouseExited(MouseEvent e) { closeBtn.setForeground(new Color(150, 150, 150)); }
         });
 
-        instance.searchText.addKeyListener(new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-            }
+        JPanel navPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 0));
+        navPanel.setOpaque(false);
+        navPanel.add(prevBtn);
+        navPanel.add(nextBtn);
+        navPanel.add(resultLabel);
+        navPanel.add(closeBtn);
 
+        root.add(inputRow, BorderLayout.CENTER);
+        root.add(navPanel, BorderLayout.EAST);
+
+        frame.setContentPane(root);
+        frame.pack();
+        frame.setLocationRelativeTo(MainForm.getInstance().getMasterPanel());
+        frame.setVisible(true);
+        searchText.requestFocus();
+
+        // ---- 事件 ----
+        DocumentListener docListener = new DocumentListener() {
+            @Override public void insertUpdate(DocumentEvent e) { refresh(); }
+            @Override public void removeUpdate(DocumentEvent e) { refresh(); }
+            @Override public void changedUpdate(DocumentEvent e) { refresh(); }
+        };
+        searchText.getDocument().addDocumentListener(docListener);
+
+        searchText.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    getNext();
+                    if (e.isShiftDown()) getPrev(); else getNext();
+                } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    frame.dispose();
                 }
             }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-            }
         });
 
-        instance.prevButton.addActionListener(e -> {
-            getPrev();
-        });
-        instance.nextButton.addActionListener(e -> {
-            getNext();
-        });
+        caseBtn.addActionListener(e -> { caseSensitive = caseBtn.isSelected(); refresh(); });
+        regexBtn.addActionListener(e -> { regexMode = regexBtn.isSelected(); refresh(); });
+
+        prevBtn.addActionListener(e -> getPrev());
+        nextBtn.addActionListener(e -> getNext());
+        closeBtn.addActionListener(e -> frame.dispose());
     }
 
-    private void getNext() {
-        if (searchTextGlobal == null || searchTextGlobal.isEmpty()) {
+    private static JToggleButton makeToggleBtn(String text, String tooltip) {
+        JToggleButton btn = new JToggleButton(text);
+        btn.setFont(btn.getFont().deriveFont(Font.BOLD, 11f));
+        btn.setMargin(new Insets(1, 4, 1, 4));
+        btn.setToolTipText(tooltip);
+        btn.setFocusable(false);
+        return btn;
+    }
+
+    private static void refresh() {
+        String text = searchText.getText();
+        if (StringUtil.isNull(text)) {
+            resultLabel.setText("0/0");
+            total = 0;
+            searchTextGlobal = null;
             return;
         }
+        searchTextGlobal = text;
+        total = SyntaxAreaHelper.addSearchAction(text, caseSensitive, regexMode);
         if (total == 0) {
-            return;
+            resultLabel.setText("0/0");
+            resultLabel.setForeground(new Color(200, 80, 80));
+        } else {
+            resultLabel.setForeground(UIManager.getColor("Label.foreground"));
+            int cur = SyntaxAreaHelper.getCurrentIndex();
+            resultLabel.setText(String.format("%d/%d", cur + 1, total));
         }
-        SyntaxAreaHelper.navigate(searchTextGlobal, true);
+    }
+
+    private static void getNext() {
+        if (searchTextGlobal == null || total == 0) return;
+        SyntaxAreaHelper.navigate(searchTextGlobal, true, caseSensitive, regexMode);
         int cur = SyntaxAreaHelper.getCurrentIndex();
         resultLabel.setText(String.format("%d/%d", cur + 1, total));
     }
 
-    private void getPrev() {
-        if (searchTextGlobal == null || searchTextGlobal.isEmpty()) {
-            return;
-        }
-        if (total == 0) {
-            return;
-        }
-        SyntaxAreaHelper.navigate(searchTextGlobal, false);
+    private static void getPrev() {
+        if (searchTextGlobal == null || total == 0) return;
+        SyntaxAreaHelper.navigate(searchTextGlobal, false, caseSensitive, regexMode);
         int cur = SyntaxAreaHelper.getCurrentIndex();
         resultLabel.setText(String.format("%d/%d", cur + 1, total));
     }
-
-    {
-// GUI initializer generated by IntelliJ IDEA GUI Designer
-// >>> IMPORTANT!! <<<
-// DO NOT EDIT OR ADD ANY CODE HERE!
-        $$$setupUI$$$();
-    }
-
-    /**
-     * Method generated by IntelliJ IDEA GUI Designer
-     * >>> IMPORTANT!! <<<
-     * DO NOT edit this method OR call it in your code!
-     *
-     * @noinspection ALL
-     */
-    private void $$$setupUI$$$() {
-        rootPanel = new JPanel();
-        rootPanel.setLayout(new GridLayoutManager(3, 2, new Insets(5, 5, 5, 5), -1, -1));
-        searchLabel = new JLabel();
-        searchLabel.setText("Search Text");
-        rootPanel.add(searchLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
-        final Spacer spacer1 = new Spacer();
-        rootPanel.add(spacer1, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        searchText = new JTextField();
-        rootPanel.add(searchText, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, new Dimension(250, -1), new Dimension(150, -1), null, 0, false));
-        showPanel = new JPanel();
-        showPanel.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
-        rootPanel.add(showPanel, new GridConstraints(1, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        prevButton = new JButton();
-        prevButton.setText("Prev");
-        showPanel.add(prevButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        nextButton = new JButton();
-        nextButton.setText("Next");
-        showPanel.add(nextButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        resultLabel = new JLabel();
-        resultLabel.setText("0");
-        showPanel.add(resultLabel, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, new Dimension(80, -1), null, null, 0, false));
-    }
-
-    /**
-     * @noinspection ALL
-     */
-    public JComponent $$$getRootComponent$$$() {
-        return rootPanel;
-    }
-
 }

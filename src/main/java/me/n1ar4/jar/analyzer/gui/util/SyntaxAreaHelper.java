@@ -25,6 +25,8 @@ import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SyntaxAreaHelper {
     private static final Logger logger = LogManager.getLogger();
@@ -71,17 +73,35 @@ public class SyntaxAreaHelper {
         return position;
     }
 
+    // 记录每次匹配的结束位置（用于高亮正确长度）
+    private static ArrayList<Integer> searchResultEnds = null;
+
     public static int addSearchAction(String text) {
+        return addSearchAction(text, false, false);
+    }
+
+    /**
+     * @param text          搜索文本或正则表达式
+     * @param caseSensitive 是否大小写敏感
+     * @param regex         是否正则模式
+     */
+    public static int addSearchAction(String text, boolean caseSensitive, boolean regex) {
         searchResults = new ArrayList<>();
+        searchResultEnds = new ArrayList<>();
         currentIndex = 0;
         RSyntaxTextArea currentArea = (RSyntaxTextArea) MainForm.getCodeArea();
         if (currentArea == null) return 0;
         String content = currentArea.getText();
-
-        int index = content.indexOf(text);
-        while (index >= 0) {
-            searchResults.add(index);
-            index = content.indexOf(text, index + 1);
+        try {
+            int flags = caseSensitive ? 0 : Pattern.CASE_INSENSITIVE;
+            String pattern = regex ? text : Pattern.quote(text);
+            Matcher matcher = Pattern.compile(pattern, flags).matcher(content);
+            while (matcher.find()) {
+                searchResults.add(matcher.start());
+                searchResultEnds.add(matcher.end());
+            }
+        } catch (Exception ignored) {
+            // 正则非法时不报错，返回 0 结果
         }
         currentIndex = 0;
         return searchResults.size();
@@ -92,32 +112,33 @@ public class SyntaxAreaHelper {
     }
 
     public static void navigate(String text, boolean forward) {
-        if (searchResults == null || MainForm.getCodeArea() == null) {
-            return;
-        }
-        if (searchResults.isEmpty()) {
-            return;
-        }
+        navigate(text, forward, false, false);
+    }
+
+    public static void navigate(String text, boolean forward, boolean caseSensitive, boolean regex) {
+        if (searchResults == null || MainForm.getCodeArea() == null) return;
+        if (searchResults.isEmpty()) return;
         if (forward) {
             currentIndex = (currentIndex + 1) % searchResults.size();
         } else {
             currentIndex = (currentIndex - 1 + searchResults.size()) % searchResults.size();
         }
-        highlightResult(text);
+        highlightResult();
     }
 
-    private static void highlightResult(String text) {
-        if (searchResults.isEmpty()) return;
+    private static void highlightResult() {
+        if (searchResults == null || searchResults.isEmpty()) return;
         RSyntaxTextArea currentArea = (RSyntaxTextArea) MainForm.getCodeArea();
         if (currentArea == null) return;
-        int index = searchResults.get(currentIndex);
+        int start = searchResults.get(currentIndex);
+        int end = (searchResultEnds != null && currentIndex < searchResultEnds.size())
+                ? searchResultEnds.get(currentIndex) : start;
         try {
-            currentArea.setCaretPosition(index);
+            currentArea.setCaretPosition(start);
             Highlighter highlighter = currentArea.getHighlighter();
-            Highlighter.HighlightPainter painter =
-                    new DefaultHighlighter.DefaultHighlightPainter(Color.CYAN);
             highlighter.removeAllHighlights();
-            highlighter.addHighlight(index, index + text.length(), painter);
+            highlighter.addHighlight(start, end,
+                    new DefaultHighlighter.DefaultHighlightPainter(Color.CYAN));
         } catch (BadLocationException ex) {
             logger.error("bad location: {}", ex.toString());
         }

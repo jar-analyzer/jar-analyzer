@@ -35,6 +35,7 @@ import me.n1ar4.jar.analyzer.gui.adapter.*;
 import me.n1ar4.jar.analyzer.gui.font.FontHelper;
 import me.n1ar4.jar.analyzer.gui.render.AllMethodsRender;
 import me.n1ar4.jar.analyzer.gui.render.ClassRender;
+import me.n1ar4.jar.analyzer.gui.render.LeakResultRender;
 import me.n1ar4.jar.analyzer.gui.render.MethodCallRender;
 import me.n1ar4.jar.analyzer.gui.render.SpringMethodRender;
 import me.n1ar4.jar.analyzer.gui.tree.FileTree;
@@ -1058,6 +1059,7 @@ public class MainForm {
 
         historyList.setCellRenderer(new MethodCallRender());
         favList.setCellRenderer(new MethodCallRender());
+        leakResultList.setCellRenderer(new LeakResultRender());
 
         historyListData = new DefaultListModel<>();
         historyList.setModel(historyListData);

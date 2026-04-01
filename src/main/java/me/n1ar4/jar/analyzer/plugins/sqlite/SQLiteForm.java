@@ -16,6 +16,8 @@ import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.SyntaxAreaHelper;
 import me.n1ar4.jar.analyzer.starter.Const;
 
+import me.n1ar4.jar.analyzer.gui.render.ZebraTableCellRenderer;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
@@ -90,6 +92,7 @@ public class SQLiteForm {
         ConnectAction.register();
         RunAction.register();
         sqlArea = SyntaxAreaHelper.buildSQL(instance.sqlPanel);
+        instance.resultTable.setDefaultRenderer(Object.class, new ZebraTableCellRenderer());
         frame.setContentPane(instance.masterPanel);
         frame.setResizable(false);
 
@@ -162,5 +165,4 @@ public class SQLiteForm {
     public JComponent $$$getRootComponent$$$() {
         return masterPanel;
     }
-
 }

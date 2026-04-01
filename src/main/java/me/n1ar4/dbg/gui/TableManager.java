@@ -10,6 +10,8 @@
 
 package me.n1ar4.dbg.gui;
 
+import me.n1ar4.jar.analyzer.gui.render.ZebraTableCellRenderer;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
@@ -91,7 +93,9 @@ public class TableManager {
                 } else if (jumpLocation != -1 && row == jumpRow) {
                     c.setBackground(lighterYellow);
                 } else {
-                    c.setBackground(Color.WHITE);
+                    Color base = UIManager.getColor("Table.background");
+                    if (base == null) base = table.getBackground();
+                    c.setBackground(row % 2 == 0 ? base : ZebraTableCellRenderer.zebraOdd(base));
                 }
 
                 return c;

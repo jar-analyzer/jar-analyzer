@@ -30,6 +30,10 @@ public class MethodCallRender extends DefaultListCellRenderer {
         } else {
             return null;
         }
+        if (!isSelected) {
+            Color base = ZebraListCellRenderer.listBase(list);
+            component.setBackground(index % 2 == 0 ? base : ZebraListCellRenderer.zebraOdd(base));
+        }
         return component;
     }
 }

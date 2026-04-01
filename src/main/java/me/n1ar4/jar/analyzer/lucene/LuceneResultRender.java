@@ -11,12 +11,14 @@
 package me.n1ar4.jar.analyzer.lucene;
 
 import me.n1ar4.jar.analyzer.entity.LuceneSearchResult;
+import me.n1ar4.jar.analyzer.gui.render.ZebraListCellRenderer;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class LuceneResultRender extends DefaultListCellRenderer {
+
     @Override
     @SuppressWarnings("all")
     public Component getListCellRendererComponent(JList<?> list, Object value,
@@ -65,6 +67,10 @@ public class LuceneResultRender extends DefaultListCellRenderer {
             }
         } else {
             return null;
+        }
+        if (!isSelected) {
+            Color base = ZebraListCellRenderer.listBase(list);
+            component.setBackground(index % 2 == 0 ? base : ZebraListCellRenderer.zebraOdd(base));
         }
         return component;
     }

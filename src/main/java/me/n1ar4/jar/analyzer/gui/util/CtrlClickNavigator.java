@@ -19,6 +19,7 @@ import me.n1ar4.jar.analyzer.entity.MethodResult;
 import me.n1ar4.jar.analyzer.gui.LuceneSearchForm;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.adapter.SearchInputListener;
+import me.n1ar4.jar.analyzer.gui.render.ZebraListCellRenderer;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.utils.StringUtil;
 import me.n1ar4.log.LogManager;
@@ -184,13 +185,23 @@ public class CtrlClickNavigator {
         }
 
         JList<NavigationItem> list = new JList<>(model);
-        list.setBackground(new Color(43, 43, 43));
-        list.setForeground(new Color(187, 187, 187));
-        list.setSelectionBackground(new Color(75, 110, 175));
-        list.setSelectionForeground(Color.WHITE);
+        Color listBg = UIManager.getColor("List.background");
+        if (listBg == null) listBg = Color.WHITE;
+        Color listFg = UIManager.getColor("List.foreground");
+        if (listFg == null) listFg = Color.BLACK;
+        Color selBg = UIManager.getColor("List.selectionBackground");
+        if (selBg == null) selBg = new Color(75, 110, 175);
+        Color selFg = UIManager.getColor("List.selectionForeground");
+        if (selFg == null) selFg = Color.WHITE;
+        list.setBackground(listBg);
+        list.setForeground(listFg);
+        list.setSelectionBackground(selBg);
+        list.setSelectionForeground(selFg);
         list.setFixedCellHeight(24);
         list.setSelectedIndex(0);
 
+        final Color finalListBg = listBg;
+        final Color finalListFg = listFg;
         list.setCellRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value,
@@ -223,8 +234,10 @@ public class CtrlClickNavigator {
                             + "<font color='#808080'>" + mr.getMethodDesc() + "</font></html>");
 
                     if (!isSelected) {
-                        setBackground(new Color(43, 43, 43));
-                        setForeground(new Color(187, 187, 187));
+                        setBackground(index % 2 == 0
+                                ? finalListBg
+                                : ZebraListCellRenderer.zebraOdd(finalListBg));
+                        setForeground(finalListFg);
                     }
                 }
                 return this;

@@ -18,6 +18,7 @@ import me.n1ar4.dbg.gui.MainForm;
 import me.n1ar4.dbg.gui.TableManager;
 import me.n1ar4.dbg.parser.MethodObject;
 import me.n1ar4.dbg.parser.OpcodeObject;
+import me.n1ar4.jar.analyzer.gui.render.ZebraTableCellRenderer;
 import me.n1ar4.dbg.utils.ASMUtil;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
@@ -144,6 +145,7 @@ public class Render {
         }
         DefaultTableModel model = new DefaultTableModel(data, columnNames);
         frameTable.setModel(model);
+        frameTable.setDefaultRenderer(Object.class, new ZebraTableCellRenderer());
         TableColumn column = frameTable.getColumnModel().getColumn(0);
         column.setMinWidth(100);
         column.setMaxWidth(100);
@@ -163,6 +165,7 @@ public class Render {
         }
         DefaultTableModel model = new DefaultTableModel(data, columnNames);
         varTable.setModel(model);
+        varTable.setDefaultRenderer(Object.class, new ZebraTableCellRenderer());
         varTable.repaint();
     }
 }

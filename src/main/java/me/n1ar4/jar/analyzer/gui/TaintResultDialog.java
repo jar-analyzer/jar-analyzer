@@ -19,6 +19,8 @@ import me.n1ar4.jar.analyzer.taint.TaintResult;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 
+import me.n1ar4.jar.analyzer.gui.render.ZebraTableCellRenderer;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
@@ -74,6 +76,7 @@ public class TaintResultDialog extends JFrame {
         resultTable = new JTable(resultTableModel);
         resultTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         resultTable.getTableHeader().setReorderingAllowed(false);
+        resultTable.setDefaultRenderer(Object.class, new ZebraTableCellRenderer());
 
         // 设置表格列宽
         resultTable.getColumnModel().getColumn(0).setPreferredWidth(50);
@@ -118,6 +121,7 @@ public class TaintResultDialog extends JFrame {
         sanitizerTable = new JTable(sanitizerTableModel);
         sanitizerTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         sanitizerTable.getTableHeader().setReorderingAllowed(false);
+        sanitizerTable.setDefaultRenderer(Object.class, new ZebraTableCellRenderer());
 
         // 设置Sanitizer表格列宽
         sanitizerTable.getColumnModel().getColumn(0).setPreferredWidth(300);

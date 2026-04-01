@@ -16,6 +16,7 @@ import com.n1ar4.agent.dto.SourceResult;
 import com.n1ar4.agent.dto.UrlInfo;
 import com.n1ar4.agent.dto.UrlInfoAndDescMapValue;
 import me.n1ar4.jar.analyzer.gui.MainForm;
+import me.n1ar4.jar.analyzer.gui.render.ZebraListCellRenderer;
 import me.n1ar4.jar.analyzer.gui.util.ProcessDialog;
 import me.n1ar4.shell.analyzer.model.ClassObj;
 import me.n1ar4.shell.analyzer.model.InfoObj;
@@ -80,6 +81,7 @@ public class ShellForm {
                     null, 0, false));
             newJScroll.setViewportView(this.dataList);
             this.dataList.addMouseListener(new CommonMouse());
+            this.dataList.setCellRenderer(new ZebraListCellRenderer());
             this.dataModel = new DefaultListModel<>();
             this.dataCache = new ArrayList<>();
         }
@@ -186,6 +188,7 @@ public class ShellForm {
             tabbedPane.add(nowPanelInfo.title, nowPanelInfo.panel);
         }
         urlList.setModel(infoModel);
+        urlList.setCellRenderer(new ZebraListCellRenderer());
     }
 
     private static RSyntaxTextArea codeArea;

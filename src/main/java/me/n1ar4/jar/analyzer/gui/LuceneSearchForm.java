@@ -19,6 +19,8 @@ import me.n1ar4.jar.analyzer.lucene.*;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.AWTEventListener;
+import java.awt.event.MouseEvent;
 
 public class LuceneSearchForm {
     private JPanel rootPanel;
@@ -40,6 +42,43 @@ public class LuceneSearchForm {
 
     private static LuceneSearchForm instance;
     private static JFrame instanceFrame;
+    private static AWTEventListener globalMouseListener = null;
+
+    /**
+     * 安装全局鼠标监听器：点击搜索窗口外部任意区域时自动关闭
+     */
+    private static void installClickOutsideListener() {
+        // 防止重复注册：先移除旧的监听器
+        if (globalMouseListener != null) {
+            Toolkit.getDefaultToolkit().removeAWTEventListener(globalMouseListener);
+        }
+        globalMouseListener = event -> {
+            if (event instanceof MouseEvent) {
+                MouseEvent mouseEvent = (MouseEvent) event;
+                if (mouseEvent.getID() == MouseEvent.MOUSE_CLICKED) {
+                    JFrame frame = instanceFrame;
+                    if (frame == null || !frame.isShowing()) {
+                        Toolkit.getDefaultToolkit().removeAWTEventListener(globalMouseListener);
+                        globalMouseListener = null;
+                        return;
+                    }
+                    // 点击在搜索窗口内部：不关闭
+                    Component source = mouseEvent.getComponent();
+                    if (source != null) {
+                        Window sourceWindow = SwingUtilities.getWindowAncestor(source);
+                        if (sourceWindow == frame) {
+                            return;
+                        }
+                    }
+                    // 点击在搜索窗口外部（主窗口、其他面板等）：关闭
+                    closeInstanceFrame();
+                    Toolkit.getDefaultToolkit().removeAWTEventListener(globalMouseListener);
+                    globalMouseListener = null;
+                }
+            }
+        };
+        Toolkit.getDefaultToolkit().addAWTEventListener(globalMouseListener, AWTEvent.MOUSE_EVENT_MASK);
+    }
 
     public static boolean usePaLucene() {
         return instance.paLuceneRadio.isSelected();
@@ -135,6 +174,9 @@ public class LuceneSearchForm {
             instanceFrame.toFront();
             instanceFrame.requestFocus();
         }
+
+        // 每次打开/显示窗口时都安装点击外部关闭监听器
+        installClickOutsideListener();
     }
 
     {

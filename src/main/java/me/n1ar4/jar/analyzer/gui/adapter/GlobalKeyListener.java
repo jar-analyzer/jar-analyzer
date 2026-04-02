@@ -17,15 +17,12 @@ import me.n1ar4.jar.analyzer.lucene.LuceneSearchWrapper;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.AWTEventListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 
 public class GlobalKeyListener extends KeyAdapter {
     private static int shiftPressCount = 0;
     private static Timer resetTimer;
-    private static AWTEventListener globalMouseListener = null;
     private static boolean globalKeyDispatcherInstalled = false;
 
     /**
@@ -72,37 +69,6 @@ public class GlobalKeyListener extends KeyAdapter {
             return;
         }
 
-        // 防止重复注册：先移除旧的监听器
-        if (globalMouseListener != null) {
-            Toolkit.getDefaultToolkit().removeAWTEventListener(globalMouseListener);
-        }
-        globalMouseListener = event -> {
-            if (event instanceof MouseEvent) {
-                MouseEvent mouseEvent = (MouseEvent) event;
-                if (mouseEvent.getID() == MouseEvent.MOUSE_CLICKED) {
-                    JFrame frame = LuceneSearchForm.getInstanceFrame();
-                    if (frame == null || !frame.isShowing()) {
-                        Toolkit.getDefaultToolkit().removeAWTEventListener(globalMouseListener);
-                        globalMouseListener = null;
-                        return;
-                    }
-                    // 忽略来自其他弹窗（ProcessDialog 等）的事件
-                    Component source = mouseEvent.getComponent();
-                    if (source != null) {
-                        Window sourceWindow = SwingUtilities.getWindowAncestor(source);
-                        if (sourceWindow != null && sourceWindow != frame) {
-                            return;
-                        }
-                    }
-                    if (!frame.getBounds().contains(mouseEvent.getLocationOnScreen())) {
-                        LuceneSearchForm.closeInstanceFrame();
-                        Toolkit.getDefaultToolkit().removeAWTEventListener(globalMouseListener);
-                        globalMouseListener = null;
-                    }
-                }
-            }
-        };
-        Toolkit.getDefaultToolkit().addAWTEventListener(globalMouseListener, AWTEvent.MOUSE_EVENT_MASK);
         LuceneSearchWrapper.initEnv();
         LuceneSearchForm.start(0);
     }

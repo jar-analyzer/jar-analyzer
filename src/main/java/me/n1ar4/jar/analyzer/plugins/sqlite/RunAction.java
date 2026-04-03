@@ -19,7 +19,7 @@ import java.util.Vector;
 public class RunAction {
     public static void register() {
         SQLiteForm.getInstance().getRunButton().addActionListener(e -> {
-            SQLiteForm.getInstance().getErrArea().setText(null);
+            SQLiteForm.getInstance().getPanel().clearError();
             if (SQLiteForm.getHelper() == null) {
                 JOptionPane.showMessageDialog(SQLiteForm.getInstance().getMasterPanel(),
                         "please connect first");
@@ -51,11 +51,11 @@ public class RunAction {
                 }
                 model.setDataVector(data, columnNames);
             } catch (Exception ex) {
-                SQLiteForm.getInstance().getErrArea().setText(ex.getMessage());
+                SQLiteForm.getInstance().getPanel().showError(ex.getMessage());
             } finally {
                 helper.close();
             }
-            SQLiteForm.getInstance().getResultTable().setModel(model);
+            SQLiteForm.getInstance().getPanel().setResultModel(model);
         });
     }
 }

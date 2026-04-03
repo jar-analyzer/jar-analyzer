@@ -195,6 +195,7 @@ public class MenuUtil {
         jdItem.addActionListener(e -> JDGUIStarter.start());
         plugins.add(jdItem);
         menuBar.add(plugins);
+        menuBar.add(createDevelopMenu());
         return menuBar;
     }
 
@@ -491,5 +492,15 @@ public class MenuUtil {
         } catch (Exception ex) {
             return null;
         }
+    }
+
+    private static JMenu createDevelopMenu() {
+        JMenu developMenu = new JMenu("develop");
+        JMenuItem connectDbItem = new JMenuItem("connect db");
+        connectDbItem.setIcon(IconManager.javaIcon);
+        connectDbItem.addActionListener(e ->
+                me.n1ar4.jar.analyzer.plugins.sqlite.SQLiteForm.start());
+        developMenu.add(connectDbItem);
+        return developMenu;
     }
 }

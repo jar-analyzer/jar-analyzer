@@ -44,6 +44,7 @@ public class ConnectAction {
                 helper.close();
             }
             SQLiteForm.getInstance().getTablesBox().setModel(model);
+            SQLiteForm.getInstance().getPanel().setConnected(true);
         });
     }
 }

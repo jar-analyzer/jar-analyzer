@@ -82,6 +82,7 @@ public interface Const {
             "// 2. 高级搜索前往 EL Search 表达式搜索\n" +
             "// 3. 前往 web 面板进行 Java Web Source 分析\n" +
             "// 4. 前往 advance 面板可一键搜索 sink 方法\n" +
-            "// 5. 前往 chains 面板可进行方法调用链分析和污点分析\n\n" +
+            "// 5. 前往 chains 面板可进行方法调用链分析和污点分析\n" +
+            "// 6. 可以两次 shift 打开全局索引搜索（测试功能）\n\n" +
             "// 作者：4ra1n @ jar-analyzer @ " + version;
 }

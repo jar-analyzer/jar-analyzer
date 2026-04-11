@@ -21,7 +21,6 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ItemEvent;
-import java.util.Map;
 
 public class SQLitePanel extends JPanel {
 

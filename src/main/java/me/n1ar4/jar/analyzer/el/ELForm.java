@@ -23,7 +23,6 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 import javax.swing.*;
 import java.util.ArrayList;
-import java.util.Set;
 
 public class ELForm {
     private static final Logger logger = LogManager.getLogger();

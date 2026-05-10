@@ -54,7 +54,17 @@ public class DatabaseManager {
     private static final HisMapper hisMapper;
 
     // --inner-jar 仅解析此jar包引用的 jdk 类及其它jar中的类,但不会保存其它jar的jarId等信息
-    private static final ClassReference notFoundClassReference = new ClassReference(-1, -1, null, null, null, false, null, null, "unknown", -1);
+    private static final ClassReference notFoundClassReference = new ClassReference(
+            -1,
+            -1,
+            "unknown-class",
+            "unknown-super-class",
+            null,
+            false,
+            null,
+            null,
+            "unknown-jar-name",
+            -1);
 
 
     static {
@@ -310,11 +320,14 @@ public class DatabaseManager {
                 mce.setCallerClassName(caller.getClassReference().getName());
                 mce.setCallerMethodName(caller.getName());
                 mce.setCallerMethodDesc(caller.getDesc());
-                mce.setCallerJarId(AnalyzeEnv.classMap.get(caller.getClassReference()).getJarId());
+                // 2026/05/10 修复可能的 NPE 问题
+                mce.setCallerJarId(AnalyzeEnv.classMap.getOrDefault(
+                        caller.getClassReference(), notFoundClassReference).getJarId());
                 mce.setCalleeClassName(mh.getClassReference().getName());
                 mce.setCalleeMethodName(mh.getName());
                 mce.setCalleeMethodDesc(mh.getDesc());
-                mce.setCalleeJarId(AnalyzeEnv.classMap.getOrDefault(mh.getClassReference(), notFoundClassReference).getJarId());
+                mce.setCalleeJarId(AnalyzeEnv.classMap.getOrDefault(
+                        mh.getClassReference(), notFoundClassReference).getJarId());
                 mce.setOpCode(mh.getOpcode());
                 mList.add(mce);
             }
@@ -342,8 +355,10 @@ public class DatabaseManager {
                 impl.setClassName(method.getClassReference().getName());
                 impl.setMethodName(mh.getName());
                 impl.setMethodDesc(mh.getDesc());
-                impl.setClassJarId(AnalyzeEnv.classMap.get(method.getClassReference()).getJarId());
-                impl.setImplClassJarId(AnalyzeEnv.classMap.get(mh.getClassReference()).getJarId());
+                impl.setClassJarId(AnalyzeEnv.classMap.getOrDefault(
+                        method.getClassReference(), notFoundClassReference).getJarId());
+                impl.setImplClassJarId(AnalyzeEnv.classMap.getOrDefault(
+                        mh.getClassReference(), notFoundClassReference).getJarId());
                 mList.add(impl);
             }
         }
@@ -367,7 +382,11 @@ public class DatabaseManager {
             List<String> strList = strEntry.getValue();
             for (String s : strList) {
                 MethodReference mr = AnalyzeEnv.methodMap.get(method);
-                ClassReference cr = AnalyzeEnv.classMap.get(mr.getClassReference());
+                if (mr == null) {
+                    continue;
+                }
+                ClassReference cr = AnalyzeEnv.classMap.getOrDefault(
+                        mr.getClassReference(), notFoundClassReference);
                 StringEntity stringEntity = new StringEntity();
                 stringEntity.setValue(s);
                 stringEntity.setAccess(mr.getAccess());
@@ -387,7 +406,11 @@ public class DatabaseManager {
             List<String> strList = strEntry.getValue();
             for (String s : strList) {
                 MethodReference mr = AnalyzeEnv.methodMap.get(method);
-                ClassReference cr = AnalyzeEnv.classMap.get(mr.getClassReference());
+                if (mr == null) {
+                    continue;
+                }
+                ClassReference cr = AnalyzeEnv.classMap.getOrDefault(
+                        mr.getClassReference(), notFoundClassReference);
                 StringEntity stringEntity = new StringEntity();
                 stringEntity.setValue(s);
                 stringEntity.setAccess(mr.getAccess());

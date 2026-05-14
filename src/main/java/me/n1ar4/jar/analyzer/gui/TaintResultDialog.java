@@ -268,7 +268,7 @@ public class TaintResultDialog extends JFrame {
                 sanitizerCountLabel.setText("无法加载Sanitizer规则");
             }
         } catch (Exception e) {
-            logger.error("加载Sanitizer规则失败: {}", e.getMessage());
+            logger.error("load Sanitizer rules failed: {}", e.getMessage());
             sanitizerCountLabel.setText("加载Sanitizer规则失败");
         }
     }
@@ -404,7 +404,7 @@ public class TaintResultDialog extends JFrame {
                         file.getAbsolutePath(), "导出完成", JOptionPane.INFORMATION_MESSAGE);
 
             } catch (Exception ex) {
-                logger.error("导出失败: {}", ex.getMessage());
+                logger.error("export failed: {}", ex.getMessage());
                 JOptionPane.showMessageDialog(this, "导出失败: " +
                         ex.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
             }

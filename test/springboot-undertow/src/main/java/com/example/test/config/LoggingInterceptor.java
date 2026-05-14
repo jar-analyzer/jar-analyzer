@@ -21,7 +21,7 @@ public class LoggingInterceptor implements HandlerInterceptor {
         long startTime = System.currentTimeMillis();
         request.setAttribute(START_TIME_ATTRIBUTE, startTime);
 
-        log.info("开始处理请求: {} {}", request.getMethod(), request.getRequestURI());
+        log.info("start handling request: {} {}", request.getMethod(), request.getRequestURI());
         return true;
     }
 
@@ -35,7 +35,7 @@ public class LoggingInterceptor implements HandlerInterceptor {
         Long startTime = (Long) request.getAttribute(START_TIME_ATTRIBUTE);
         if (startTime != null) {
             long duration = System.currentTimeMillis() - startTime;
-            log.info("请求处理完成: {} {} - 耗时: {}ms - 状态码: {}",
+            log.info("request handled: {} {} - duration: {}ms - status: {}",
                     request.getMethod(),
                     request.getRequestURI(),
                     duration,
@@ -43,7 +43,7 @@ public class LoggingInterceptor implements HandlerInterceptor {
         }
 
         if (ex != null) {
-            log.error("请求处理异常: {}", ex.getMessage(), ex);
+            log.error("request handling exception: {}", ex.getMessage(), ex);
         }
     }
 }

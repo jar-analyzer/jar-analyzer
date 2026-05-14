@@ -49,7 +49,7 @@ public class ChainsBuilder {
                     loaded = true;
                 }
             } catch (Exception e) {
-                logger.warn("从当前目录加载 dfs-sink.json 失败: {}", e.getMessage());
+                logger.warn("failed to load dfs-sink.json from current directory: {}", e.getMessage());
             }
         }
 
@@ -59,10 +59,10 @@ public class ChainsBuilder {
             if (resourceStream != null) {
                 try {
                     if (loadFromInputStream(resourceStream)) {
-                        logger.info("成功从 resources 目录加载 sink 规则");
+                        logger.info("successfully loaded sink rules from resources");
                     }
                 } catch (Exception e) {
-                    logger.warn("从 resources 加载 dfs-sink.json 失败: {}", e.getMessage());
+                    logger.warn("failed to load dfs-sink.json from resources: {}", e.getMessage());
                 } finally {
                     try {
                         resourceStream.close();
@@ -80,13 +80,13 @@ public class ChainsBuilder {
         try {
             String jsonData = IOUtil.readString(inputStream);
             if (jsonData == null || jsonData.trim().isEmpty()) {
-                logger.warn("JSON 数据为空");
+                logger.warn("JSON data is empty");
                 return false;
             }
             List<SinkModel> sinkList = JSON.parseObject(jsonData, new TypeReference<List<SinkModel>>() {
             });
             if (sinkList == null || sinkList.isEmpty()) {
-                logger.warn("解析的 sink 规则列表为空");
+                logger.warn("parsed sink rule list is empty");
                 return false;
             }
             sinkData.clear();
@@ -98,7 +98,7 @@ public class ChainsBuilder {
             logger.info("load {} sink rule", sinkData.size());
             return true;
         } catch (Exception e) {
-            logger.error("解析 JSON 格式的 sink 规则失败: {}", e.getMessage());
+            logger.error("failed to parse JSON-format sink rules: {}", e.getMessage());
             return false;
         }
     }

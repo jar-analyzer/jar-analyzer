@@ -275,7 +275,7 @@ public class ChainsResultPanel extends JPanel {
             navigateToMethodImpl(methodResult);
 
         } catch (Exception ex) {
-            logger.error("导航到方法失败: " + methodSignature, ex);
+            logger.error("navigate to method failed: " + methodSignature, ex);
             JOptionPane.showMessageDialog(this,
                     "导航到方法失败: " + ex.getMessage(),
                     "错误",

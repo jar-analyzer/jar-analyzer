@@ -140,12 +140,12 @@ public class LeakAction {
                             }
                         }
                     } catch (Exception e) {
-                        logger.warn("读取配置文件失败: {} - {}", filePath, e.getMessage());
+                        logger.warn("read config file failed: {} - {}", filePath, e.getMessage());
                     }
                 }
             }
         } catch (Exception e) {
-            logger.error("遍历静态文件时出错: {}", e.toString());
+            logger.error("error while traversing static files: {}", e.toString());
         }
 
         // 处理字符串映射

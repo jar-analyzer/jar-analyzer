@@ -64,7 +64,7 @@ public class TaintMethodAdapter extends JVMRuntimeAdapter<String> {
         } else {
             localVariables.set(paramsNum, TaintAnalyzer.TAINT);
         }
-        logger.info("污点分析进行中 {} - {} - {}", this.owner, this.name, this.desc);
+        logger.info("taint analysis in progress {} - {} - {}", this.owner, this.name, this.desc);
         text.append(String.format("污点分析进行中 %s - %s - %s", this.owner, this.name, this.desc));
         text.append("\n");
     }
@@ -113,7 +113,7 @@ public class TaintMethodAdapter extends JVMRuntimeAdapter<String> {
                         }
                         // 记录数据流
                         pass.set(paramIndex);
-                        logger.info("发现方法调用类型污点 - 方法调用传播 - 第 {} 个参数", paramIndex);
+                        logger.info("taint detected on method invocation - propagation - param index {}", paramIndex);
                         text.append(String.format("发现方法调用类型污点 - 方法调用传播 - 第 %d 个参数", paramIndex));
                         text.append("\n");
                     }
@@ -163,7 +163,7 @@ public class TaintMethodAdapter extends JVMRuntimeAdapter<String> {
                                 Set<String> targetParam = stack.get(targetStackIndex);
                                 if (targetParam.contains("TAINT")) {
                                     match = true;
-                                    logger.info("污点命中 净化器 规则 - {} - {} - {} - 参数索引: {}",
+                                    logger.info("taint matched sanitizer rule - {} - {} - {} - param index: {}",
                                             owner, name, desc, rule.getParamIndex());
                                     text.append(String.format("污点命中 净化器 规则 - %s - %s - %s - 参数索引: %d",
                                             owner, name, desc, rule.getParamIndex()));

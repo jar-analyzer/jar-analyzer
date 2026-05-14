@@ -56,10 +56,10 @@ public class TaintClassVisitor extends ClassVisitor {
         // 所以直接 iface -> impl 参数完全对应 即可污点分析
         if (this.iface) {
             pass.set(paramsNum);
-            logger.info("污点分析进行中 {} - {} - {}", cur.getClassReference().getName(), cur.getName(), cur.getDesc());
+            logger.info("taint analysis in progress {} - {} - {}", cur.getClassReference().getName(), cur.getName(), cur.getDesc());
             text.append(String.format("污点分析进行中 %s - %s - %s", cur.getClassReference().getName(), cur.getName(), cur.getDesc()));
             text.append("\n");
-            logger.info("发现接口类型污点 - 直接传递 - 第 {} 个参数", paramsNum);
+            logger.info("taint detected on interface - direct propagation - param index {}", paramsNum);
             text.append(String.format("发现接口类型污点 - 直接传递 - 第 %d 个参数", paramsNum));
             text.append("\n");
         }

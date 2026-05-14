@@ -58,7 +58,7 @@ public class ELSearchEngine {
             shouldStop = true;
             stopBtn.setEnabled(false);
             msgLabel.setText("正在停止搜索，请等待...");
-            logger.info("用户请求停止搜索");
+            logger.info("user requested to stop search");
         });
     }
 
@@ -99,7 +99,7 @@ public class ELSearchEngine {
 
                         for (MethodReference mr : taskMrs) {
                             if (shouldStop) {
-                                logger.info("任务被用户手动停止");
+                                logger.info("task stopped by user");
                                 break;
                             }
 
@@ -109,14 +109,14 @@ public class ELSearchEngine {
                                 processor.process();
                                 processedMethods.incrementAndGet();
                             } catch (Exception ex) {
-                                logger.error("处理方法引用时出错: {}", mr, ex);
+                                logger.error("error processing method reference: {}", mr, ex);
                             }
                         }
 
                         int completed = completedTasks.incrementAndGet();
                         logger.info("task - {} finish, completed tasks: {}", id, completed);
                     } catch (Exception ex) {
-                        logger.error("任务执行异常", ex);
+                        logger.error("task execution exception", ex);
                     }
                 });
 
@@ -139,7 +139,7 @@ public class ELSearchEngine {
 
                 if (shouldStop) {
                     msgLabel.setText("搜索已被用户停止");
-                    logger.info("搜索被用户手动停止");
+                    logger.info("search stopped by user");
                 }
 
                 int failedTasks = 0;
@@ -150,18 +150,18 @@ public class ELSearchEngine {
                         }
                     } catch (ExecutionException ex) {
                         failedTasks++;
-                        logger.error("任务执行失败", ex.getCause());
+                        logger.error("task execution failed", ex.getCause());
                     } catch (TimeoutException ex) {
-                        logger.debug("跳过未完成的任务");
+                        logger.debug("skip incomplete task");
                     }
                 }
 
                 if (failedTasks > 0) {
-                    logger.warn("有 {} 个任务执行失败", failedTasks);
+                    logger.warn("{} tasks failed", failedTasks);
                 }
 
             } catch (InterruptedException ex) {
-                logger.error("等待任务完成时被中断", ex);
+                logger.error("interrupted while waiting for tasks to complete", ex);
                 Thread.currentThread().interrupt();
                 executor.shutdownNow();
             }

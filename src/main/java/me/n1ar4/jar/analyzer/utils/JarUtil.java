@@ -181,17 +181,17 @@ public class JarUtil {
                     }
                     // 防止预期外错误
                     if (finalPath.length() < META_INF.length()) {
-                        logger.warn("路径长度不足: {}", finalPath);
+                        logger.warn("path length too short: {}", finalPath);
                         return;
                     }
                     try {
                         jarPathStr = jarPathStr.substring(finalPath.length() - META_INF.length());
                     } catch (StringIndexOutOfBoundsException e) {
-                        logger.error("字符串截取错误: jarPathStr={}, finalPath={}", jarPathStr, finalPath, e);
+                        logger.error("substring error: jarPathStr={}, finalPath={}", jarPathStr, finalPath, e);
                         return;
                     }
                     String saveClass = jarPathStr.replace("\\", "/");
-                    logger.info("加载 CLASS 文件 {}", saveClass);
+                    logger.info("load CLASS file {}", saveClass);
                     // #################################################
 
                     if (!shouldRun(whiteText, text, saveClass)) {
@@ -261,7 +261,7 @@ public class JarUtil {
                             IOUtil.copy(temp, outputStream);
                             temp.close();
                             outputStream.close();
-                            logger.info("保存配置文件: {}", jarEntryName);
+                            logger.info("save config file: {}", jarEntryName);
                             continue;
                         }
 
@@ -362,7 +362,7 @@ public class JarUtil {
                         IOUtil.copy(temp, outputStream);
                         temp.close();
                         outputStream.close();
-                        logger.info("保存配置文件: {}", jarEntryName);
+                        logger.info("save config file: {}", jarEntryName);
                         continue;
                     }
 

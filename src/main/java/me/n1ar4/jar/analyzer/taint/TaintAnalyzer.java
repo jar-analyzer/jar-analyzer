@@ -40,7 +40,7 @@ public class TaintAnalyzer {
 
         InputStream sin = TaintAnalyzer.class.getClassLoader().getResourceAsStream("sanitizer.json");
         SanitizerRule rule = SanitizerRule.loadJSON(sin);
-        logger.info("污点分析加载 sanitizer 规则数量：{}", rule.getRules().size());
+        logger.info("taint analysis loaded sanitizer rules count: {}", rule.getRules().size());
 
         CoreEngine engine = MainForm.getEngine();
         for (DFSResult result : resultList) {
@@ -62,12 +62,12 @@ public class TaintAnalyzer {
                 // 如果只要上一个可以到达最后一个
                 // 即可认为污点分析成功
                 if (i == methodList.size() - 1) {
-                    logger.info("污点分析执行结束");
+                    logger.info("taint analysis finished");
                     text.append("污点分析执行结束");
                     text.append("\n");
                     if (pass.get() != TAINT_FAIL) {
                         thisChainSuccess = true;
-                        logger.info("该链污点分析结果：通过");
+                        logger.info("chain taint analysis result: pass");
                         text.append("该链污点分析结果：通过");
                         text.append("\n");
                     }
@@ -82,14 +82,14 @@ public class TaintAnalyzer {
                 String absPath = engine.getAbsPath(classOrigin);
 
                 if (absPath == null || absPath.trim().isEmpty()) {
-                    logger.warn("污点分析找不到类: {}", m.getClassReference().getName());
+                    logger.warn("taint analysis class not found: {}", m.getClassReference().getName());
                     break;
                 }
                 byte[] clsBytes;
                 try {
                     clsBytes = Files.readAllBytes(Paths.get(absPath));
                 } catch (Exception ex) {
-                    logger.error("污点分析读文件错误: {}", ex.toString());
+                    logger.error("taint analysis read file error: {}", ex.toString());
                     return new ArrayList<>();
                 }
 
@@ -97,34 +97,34 @@ public class TaintAnalyzer {
                 Type[] argumentTypes = Type.getArgumentTypes(desc);
                 int paramCount = argumentTypes.length;
 
-                logger.info("方法: {} 参数数量: {}", m.getName(), paramCount);
+                logger.info("method: {} param count: {}", m.getName(), paramCount);
                 text.append(String.format("方法: %s 参数数量: %d", m.getName(), paramCount));
                 text.append("\n");
 
                 if (pass.get() == TAINT_FAIL) {
                     // 2025/08/31 预期不符 BUG
                     if (i != 0) {
-                        logger.info("第 {} 个链分析结束", i);
+                        logger.info("chain {} analysis finished", i);
                         text.append(String.format("第 %d 个链分析结束", i));
                         text.append("\n");
                         break;
                     }
                     // 第一次开始
-                    logger.info("开始污点分析 - 链开始 - 无数据流");
+                    logger.info("start taint analysis - chain start - no data flow");
                     text.append("开始污点分析 - 链开始 - 无数据流");
                     text.append("\n");
                     // 遍历所有 source 的参数
                     // 认为所有参数都可能是 source
                     for (int k = 0; k < paramCount; k++) {
                         try {
-                            logger.info("开始分析方法 {} 第 {} 个参数", m.getName(), k);
+                            logger.info("start analyzing method {} param index {}", m.getName(), k);
                             text.append(String.format("开始分析方法 %s 第 %d 个参数", m.getName(), k));
                             text.append("\n");
                             TaintClassVisitor tcv = new TaintClassVisitor(k, m, next, pass, rule, text);
                             ClassReader cr = new ClassReader(clsBytes);
                             cr.accept(tcv, Const.AnalyzeASMOptions);
                             pass = tcv.getPass();
-                            logger.info("数据流结果 - 传播到第 {} 个参数", pass.get());
+                            logger.info("data flow result - propagated to param index {}", pass.get());
                             text.append(String.format("数据流结果 - 传播到第 %d 个参数", pass.get()));
                             text.append("\n");
                             // 无法抵达第二个 chain 认为有问题
@@ -136,12 +136,12 @@ public class TaintAnalyzer {
                             TaintClassVisitor tcv = new TaintClassVisitor(k, m, next, pass, rule, text);
                             if (!StackMapFrameHandler.handleParseException(clsBytes, tcv,
                                     absPath + "!" + m.getClassReference().getName(), logger, "taint analysis chain start", e)) {
-                                logger.error("污点分析 - 链开始 - 错误: {}", e.toString());
+                                logger.error("taint analysis - chain start - error: {}", e.toString());
                             } else {
                                 pass = tcv.getPass();
                             }
                         } catch (Exception e) {
-                            logger.error("污点分析 - 链开始 - 错误: {}", e.toString());
+                            logger.error("taint analysis - chain start - error: {}", e.toString());
                         }
                     }
                 } else {
@@ -152,7 +152,7 @@ public class TaintAnalyzer {
                         ClassReader cr = new ClassReader(clsBytes);
                         cr.accept(tcv, Const.AnalyzeASMOptions);
                         pass = tcv.getPass();
-                        logger.info("数据流结果 - 传播到第 {} 个参数", pass.get());
+                        logger.info("data flow result - propagated to param index {}", pass.get());
                         text.append(String.format("数据流结果 - 传播到第 %d 个参数", pass.get()));
                         text.append("\n");
                     } catch (IndexOutOfBoundsException e) {
@@ -160,12 +160,12 @@ public class TaintAnalyzer {
                         TaintClassVisitor tcv = new TaintClassVisitor(pass.get(), m, next, pass, rule, text);
                         if (!StackMapFrameHandler.handleParseException(clsBytes, tcv,
                                 absPath + "!" + m.getClassReference().getName(), logger, "taint analysis chain middle", e)) {
-                            logger.error("污点分析 - 链中 - 错误: {}", e.toString());
+                            logger.error("taint analysis - chain middle - error: {}", e.toString());
                         } else {
                             pass = tcv.getPass();
                         }
                     } catch (Exception e) {
-                        logger.error("污点分析 - 链中 - 错误: {}", e.toString());
+                        logger.error("taint analysis - chain middle - error: {}", e.toString());
                     }
                     if (pass.get() == TAINT_FAIL) {
                         break;

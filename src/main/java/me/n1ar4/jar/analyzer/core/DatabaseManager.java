@@ -439,7 +439,7 @@ public class DatabaseManager {
         // 2025/06/26 处理 SPRING 分析错误时报错
         if (controllers == null || controllers.isEmpty()) {
             // 2025/08/05 SPRING 数据为空时不应该使用 WARN 日志
-            logger.info("SPRING CONTROLLER 分析错误数据为空");
+            logger.info("SPRING CONTROLLER analysis error: data is empty");
             return;
         }
         try {
@@ -498,7 +498,7 @@ public class DatabaseManager {
                 }
             }
         } catch (Throwable t) {
-            logger.warn("SPRING CONTROLLER 分析错误 请提 ISSUE 解决");
+            logger.warn("SPRING CONTROLLER analysis error, please submit an ISSUE");
         }
         logger.info("save all spring data success");
     }

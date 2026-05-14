@@ -31,7 +31,7 @@ public class LeakCsvExporter implements Exporter {
     @Override
     public boolean doExport() {
         if (leakResults == null || leakResults.isEmpty()) {
-            logger.warn("没有泄露检测结果可以导出");
+            logger.warn("no leak detection results to export");
             return false;
         }
 
@@ -49,7 +49,7 @@ public class LeakCsvExporter implements Exporter {
             }
             return true;
         } catch (Exception ex) {
-            logger.error("导出泄露检测结果到 CSV 失败: " + ex.getMessage());
+            logger.error("export leak detection results to CSV failed: " + ex.getMessage());
             return false;
         }
     }

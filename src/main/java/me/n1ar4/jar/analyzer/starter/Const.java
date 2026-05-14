@@ -59,6 +59,7 @@ public interface Const {
     String SerUtilForm = "Jar Analyzer - SerUtil";
     String ExportForm = "Jar Analyzer - Export Java Code";
     String ModeForm = "Jar Analyzer - Mode";
+    String JarDiffForm = "Jar Analyzer - Jar Diff";
     String blackAreaText = "# filter rule support white/black mode\n" +
             "# package filter list\n" +
             "java.util.;\n" +

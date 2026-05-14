@@ -16,6 +16,7 @@ import me.n1ar4.games.pocker.Main;
 import me.n1ar4.jar.analyzer.config.ConfigEngine;
 import me.n1ar4.jar.analyzer.config.ConfigFile;
 import me.n1ar4.jar.analyzer.gui.*;
+import me.n1ar4.jar.analyzer.gui.diff.JarDiffForm;
 import me.n1ar4.jar.analyzer.http.HttpResponse;
 import me.n1ar4.jar.analyzer.http.Y4Client;
 import me.n1ar4.jar.analyzer.os.SystemChart;
@@ -178,7 +179,6 @@ public class MenuUtil {
         menuBar.add(createConfigMenu());
         menuBar.add(language());
         menuBar.add(loadRemote());
-        menuBar.add(exportJava());
         menuBar.add(createGames());
         menuBar.add(createTheme());
         JMenu plugins = new JMenu("plugins");
@@ -194,6 +194,15 @@ public class MenuUtil {
         jdItem.setIcon(IconManager.jdIcon);
         jdItem.addActionListener(e -> JDGUIStarter.start());
         plugins.add(jdItem);
+        plugins.addSeparator();
+        JMenuItem exportItem = new JMenuItem("decompile and export");
+        exportItem.setIcon(IconManager.engineIcon);
+        exportItem.addActionListener(e -> ExportForm.start());
+        plugins.add(exportItem);
+        JMenuItem diffJarItem = new JMenuItem("diff jars");
+        diffJarItem.setIcon(IconManager.engineIcon);
+        diffJarItem.addActionListener(e -> JarDiffForm.start());
+        plugins.add(diffJarItem);
         menuBar.add(plugins);
         menuBar.add(createDevelopMenu());
         return menuBar;
@@ -246,15 +255,6 @@ public class MenuUtil {
         theme.add(themeDarkItem);
         theme.add(themeOrangeItem);
         return theme;
-    }
-
-    private static JMenu exportJava() {
-        JMenu export = new JMenu("export");
-        JMenuItem proxyItem = new JMenuItem("decompile and export");
-        proxyItem.setIcon(IconManager.engineIcon);
-        proxyItem.addActionListener(e -> ExportForm.start());
-        export.add(proxyItem);
-        return export;
     }
 
     private static JMenu loadRemote() {

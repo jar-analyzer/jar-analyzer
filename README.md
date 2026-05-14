@@ -56,6 +56,7 @@ The `jar-analyzer` project has been continuously updated for `5` years, with `62
 Jar Analyzer
 
 - 一个 `JAR` 包分析工具
+- 支持 `JAR DIFF` 深入分析源码变动（支持目录对比）
 - 完善美观的 `GUI` 支持（现代化 `Java GUI` 界面，可拖拽，明暗橙三主题，十种风格）
 - 基础分析（支持 `Jar/War/Classes` 输入，支持多文件，支持嵌套 `FatJar`）
 - 黑白名单配置（构建数据库和搜索功能都支持黑白名单过滤，支持精确类名和包名过滤）
@@ -115,6 +116,10 @@ Jar Analyzer
 ![](img/0081.png)
 
 ![](img/0084.png)
+
+自从 `5.21` 版本以后支持了 `JAR DIFF` 功能
+
+![](img/0086.png)
 
 自从 `5.17` 版本以后支持多 `tab` 展示和方法名 `ctrl+左键` 展示调用并跳转
 

@@ -24,13 +24,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Enumeration;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeSet;
+import java.util.*;
 
 public class JarDiffer {
     private static final Logger logger = LogManager.getLogger();
@@ -125,17 +119,25 @@ public class JarDiffer {
         }
         if (isClass) {
             switch (s) {
-                case MODIFIED: return 0;
-                case ADDED:    return 1;
-                case REMOVED:  return 2;
-                default:       return 8;
+                case MODIFIED:
+                    return 0;
+                case ADDED:
+                    return 1;
+                case REMOVED:
+                    return 2;
+                default:
+                    return 8;
             }
         } else {
             switch (s) {
-                case MODIFIED: return 3;
-                case ADDED:    return 4;
-                case REMOVED:  return 5;
-                default:       return 8;
+                case MODIFIED:
+                    return 3;
+                case ADDED:
+                    return 4;
+                case REMOVED:
+                    return 5;
+                default:
+                    return 8;
             }
         }
     }

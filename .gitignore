@@ -60,3 +60,4 @@ logs/
 *.ser
 *.html
 *.csv
+apache-tomcat-*

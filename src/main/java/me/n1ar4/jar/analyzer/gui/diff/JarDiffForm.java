@@ -19,6 +19,7 @@ import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -26,6 +27,8 @@ import javax.swing.table.TableRowSorter;
 import javax.swing.tree.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
@@ -45,6 +48,16 @@ public class JarDiffForm {
     private static final Color C_MOD_FG = new Color(0xC9, 0x77, 0x06);
     private static final Color C_BYTES_FG = new Color(0x55, 0x80, 0x99);
     private static final Color C_EQ_FG = new Color(0x55, 0x55, 0x55);
+
+    // Stronger, saturated colors used exclusively on the scroll bar's diff
+    // strip. The line backgrounds (C_*_LINE above) are intentionally pale so
+    // they don't fight with syntax highlighting; on the narrow scroll-bar
+    // strip those pastel colors disappear, so we use these "marker" tones
+    // and add a thin border for extra contrast.
+    private static final Color C_ADD_MARK = new Color(0x2E, 0xA0, 0x43);   // green
+    private static final Color C_DEL_MARK = new Color(0xCF, 0x22, 0x2E);   // red
+    private static final Color C_INFO_MARK = new Color(0x21, 0x6E, 0xDB);  // blue
+    private static final Color C_PAD_MARK = new Color(0xB0, 0xB0, 0xB0);   // gray
 
     private final JFrame frame = new JFrame(Const.JarDiffForm);
     private final JTextField leftPath = new JTextField();
@@ -79,6 +92,13 @@ public class JarDiffForm {
     private final RTextScrollPane unifiedScroll = new RTextScrollPane(unifiedPane);
     private final RTextScrollPane leftScroll = new RTextScrollPane(leftPane);
     private final RTextScrollPane rightScroll = new RTextScrollPane(rightPane);
+
+    // Per-pane diff line markers shown on the vertical scroll bar's track
+    // (similar to IDEA / VSCode mini-map). Updated each time a side-by-side
+    // diff is rendered, then the corresponding scroll bar is repainted.
+    private final DiffMarkScrollBarUI leftMarksUI = new DiffMarkScrollBarUI();
+    private final DiffMarkScrollBarUI rightMarksUI = new DiffMarkScrollBarUI();
+    private final DiffMarkScrollBarUI unifiedMarksUI = new DiffMarkScrollBarUI();
 
     private List<JarDiffEntry> entries;
     private DiffJob job;
@@ -276,10 +296,14 @@ public class JarDiffForm {
         JTabbedPane tabs = new JTabbedPane();
 
         configureEditor(unifiedPane, SyntaxConstants.SYNTAX_STYLE_NONE);
+        installDiffMarks(unifiedScroll, unifiedPane, unifiedMarksUI);
         tabs.addTab("Unified Diff", unifiedScroll);
 
         configureEditor(leftPane, SyntaxConstants.SYNTAX_STYLE_JAVA);
         configureEditor(rightPane, SyntaxConstants.SYNTAX_STYLE_JAVA);
+
+        installDiffMarks(leftScroll, leftPane, leftMarksUI);
+        installDiffMarks(rightScroll, rightPane, rightMarksUI);
 
         rightScroll.getVerticalScrollBar().setModel(
                 leftScroll.getVerticalScrollBar().getModel());
@@ -292,6 +316,51 @@ public class JarDiffForm {
         side.setResizeWeight(0.5);
         tabs.addTab("Side by Side", side);
         return tabs;
+    }
+
+    /**
+     * Installs an IDEA / VSCode style diff marker UI on the vertical scroll
+     * bar of the given scroll pane. The markers are tinted strips painted on
+     * the scroll bar's track to indicate where added / removed / padding
+     * lines are; clicking the strip jumps to that line.
+     */
+    private static void installDiffMarks(RTextScrollPane scroll,
+                                         RSyntaxTextArea area,
+                                         DiffMarkScrollBarUI ui) {
+        JScrollBar vbar = scroll.getVerticalScrollBar();
+        ui.bind(area);
+        vbar.setUI(ui);
+        // Make the bar a touch wider so the marker strip is visible without
+        // visually clobbering the thumb.
+        Dimension pref = vbar.getPreferredSize();
+        vbar.setPreferredSize(new Dimension(Math.max(pref.width, 14),
+                pref.height));
+        vbar.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int line = ui.lineAt(e.getY(), vbar.getHeight());
+                if (line < 0) {
+                    return;
+                }
+                try {
+                    int total = area.getLineCount();
+                    if (line >= total) {
+                        line = total - 1;
+                    }
+                    int offset = area.getLineStartOffset(line);
+                    Rectangle r = area.modelToView(offset);
+                    if (r != null) {
+                        // Center the target line in the viewport.
+                        Rectangle vis = area.getVisibleRect();
+                        r.y = Math.max(0, r.y - vis.height / 2);
+                        r.height = vis.height;
+                        area.scrollRectToVisible(r);
+                        area.setCaretPosition(offset);
+                    }
+                } catch (Exception ignored) {
+                }
+            }
+        });
     }
 
     private static void configureEditor(RSyntaxTextArea area, String style) {
@@ -366,6 +435,11 @@ public class JarDiffForm {
         unifiedPane.setText("");
         leftPane.setText("");
         rightPane.setText("");
+        leftMarksUI.clear();
+        rightMarksUI.clear();
+        unifiedMarksUI.clear();
+        repaintMarks();
+        unifiedScroll.getVerticalScrollBar().repaint();
 
         new SwingWorker<List<JarDiffEntry>, int[]>() {
             private volatile int total = 0;
@@ -586,6 +660,7 @@ public class JarDiffForm {
 
     private void renderUnified(JarDiffEntry entry, String left, String right) {
         unifiedPane.removeAllLineHighlights();
+        unifiedMarksUI.clear();
         StringBuilder sb = new StringBuilder();
         sb.append("--- LEFT : ").append(entry.getDisplayPath()).append('\n');
         sb.append("+++ RIGHT: ").append(entry.getDisplayPath())
@@ -659,6 +734,15 @@ public class JarDiffForm {
 
             }
         }
+        // Refresh the scroll bar markers (skip the header tints at indices 0..2).
+        List<int[]> bodyTints = new ArrayList<>(tints.size());
+        for (int[] t : tints) {
+            if (t[0] >= 3) {
+                bodyTints.add(t);
+            }
+        }
+        unifiedMarksUI.setMarkers(toMarkers(bodyTints, /*unified=*/true));
+        unifiedScroll.getVerticalScrollBar().repaint();
     }
 
 
@@ -667,6 +751,8 @@ public class JarDiffForm {
         rightPane.removeAllLineHighlights();
         leftPane.setText("");
         rightPane.setText("");
+        leftMarksUI.clear();
+        rightMarksUI.clear();
 
         JarDiffEntry.Status st = entry.getStatus();
         if (st == JarDiffEntry.Status.EQUAL || st == JarDiffEntry.Status.EQUAL_BYTES_DIFFER) {
@@ -674,6 +760,7 @@ public class JarDiffForm {
             rightPane.setText(right);
             leftPane.setCaretPosition(0);
             rightPane.setCaretPosition(0);
+            repaintMarks();
             return;
         }
         if (st == JarDiffEntry.Status.ADDED) {
@@ -683,6 +770,10 @@ public class JarDiffForm {
             tintAll(rightPane, C_ADD_LINE);
             leftPane.setCaretPosition(0);
             rightPane.setCaretPosition(0);
+            int lines = rightPane.getLineCount();
+            leftMarksUI.setMarkersAllLines(lines, C_PAD_MARK);
+            rightMarksUI.setMarkersAllLines(lines, C_ADD_MARK);
+            repaintMarks();
             return;
         }
         if (st == JarDiffEntry.Status.REMOVED) {
@@ -692,6 +783,10 @@ public class JarDiffForm {
             tintAll(rightPane, C_PAD_LINE);
             leftPane.setCaretPosition(0);
             rightPane.setCaretPosition(0);
+            int lines = leftPane.getLineCount();
+            leftMarksUI.setMarkersAllLines(lines, C_DEL_MARK);
+            rightMarksUI.setMarkersAllLines(lines, C_PAD_MARK);
+            repaintMarks();
             return;
         }
 
@@ -736,6 +831,59 @@ public class JarDiffForm {
         rightPane.setCaretPosition(0);
         applyTints(leftPane, lTints);
         applyTints(rightPane, rTints);
+
+        leftMarksUI.setMarkers(toMarkers(lTints, /*unified=*/false));
+        rightMarksUI.setMarkers(toMarkers(rTints, /*unified=*/false));
+        repaintMarks();
+    }
+
+    private void repaintMarks() {
+        leftScroll.getVerticalScrollBar().repaint();
+        rightScroll.getVerticalScrollBar().repaint();
+    }
+
+    /**
+     * Converts the [line, kind] tints into markers consumable by
+     * DiffMarkScrollBarUI. The kind encoding differs slightly between
+     * unified and side-by-side renders, so we map both into a uniform set
+     * of colors here.
+     *
+     * Side-by-side encoding: 0 = DEL, 1 = ADD, 2 = PAD
+     * Unified encoding:      0 = ADD, 1 = DEL, other = info
+     */
+    private static List<DiffMarkScrollBarUI.Marker> toMarkers(List<int[]> tints,
+                                                              boolean unified) {
+        List<DiffMarkScrollBarUI.Marker> out = new ArrayList<>(tints.size());
+        for (int[] t : tints) {
+            Color c;
+            if (unified) {
+                switch (t[1]) {
+                    case 0:
+                        c = C_ADD_MARK;
+                        break;
+                    case 1:
+                        c = C_DEL_MARK;
+                        break;
+                    default:
+                        c = C_INFO_MARK;
+                        break;
+                }
+            } else {
+                switch (t[1]) {
+                    case 0:
+                        c = C_DEL_MARK;
+                        break;
+                    case 1:
+                        c = C_ADD_MARK;
+                        break;
+                    default:
+                        c = C_PAD_MARK;
+                        break;
+                }
+            }
+            out.add(new DiffMarkScrollBarUI.Marker(t[0], c));
+        }
+        return out;
     }
 
     private static String allPadding(String basis) {
@@ -882,6 +1030,112 @@ public class JarDiffForm {
                 }
             }
             return c;
+        }
+    }
+
+    /**
+     * Custom scroll bar UI that paints diff line markers on the track,
+     * IDEA / VSCode style. Each marker maps a line index in the bound
+     * text area to a colored strip drawn at the corresponding vertical
+     * position of the track.
+     *
+     * The thumb / arrow buttons keep the platform Basic look so this stays
+     * lightweight and behaves predictably across Substance / FlatLaf / etc.
+     */
+    private static class DiffMarkScrollBarUI extends BasicScrollBarUI {
+
+        static class Marker {
+            final int line;
+            final Color color;
+
+            Marker(int line, Color color) {
+                this.line = line;
+                this.color = color;
+            }
+        }
+
+        private RSyntaxTextArea area;
+        private List<Marker> markers = Collections.emptyList();
+
+        void bind(RSyntaxTextArea a) {
+            this.area = a;
+        }
+
+        void setMarkers(List<Marker> m) {
+            this.markers = (m == null) ? Collections.<Marker>emptyList() : m;
+        }
+
+        void setMarkersAllLines(int totalLines, Color c) {
+            List<Marker> list = new ArrayList<>(totalLines);
+            for (int i = 0; i < totalLines; i++) {
+                list.add(new Marker(i, c));
+            }
+            this.markers = list;
+        }
+
+        void clear() {
+            this.markers = Collections.emptyList();
+        }
+
+        /**
+         * Maps a Y pixel within the scroll bar to a logical line index.
+         * Returns -1 when no text area is bound or the bar has no usable
+         * track height.
+         */
+        int lineAt(int y, int barHeight) {
+            if (area == null) {
+                return -1;
+            }
+            int total = area.getLineCount();
+            if (total <= 0 || barHeight <= 0) {
+                return -1;
+            }
+            int line = (int) ((long) y * total / Math.max(1, barHeight));
+            if (line < 0) {
+                return 0;
+            }
+            if (line >= total) {
+                return total - 1;
+            }
+            return line;
+        }
+
+        @Override
+        protected void paintTrack(Graphics g, JComponent c, Rectangle trackBounds) {
+            super.paintTrack(g, c, trackBounds);
+            if (markers.isEmpty() || area == null) {
+                return;
+            }
+            int total = Math.max(1, area.getLineCount());
+            int h = trackBounds.height;
+            if (h <= 0) {
+                return;
+            }
+            // Strip on the right edge of the track, leaving 2px gutters so
+            // it stays out of the thumb's way.
+            int stripW = Math.max(3, trackBounds.width - 6);
+            int stripX = trackBounds.x + (trackBounds.width - stripW) / 2;
+            // Clamp marker height to at least 3 px so single-line diffs are
+            // visible and noticeable even on very long files.
+            int markerH = Math.max(3, h / total);
+
+            Graphics2D g2 = (Graphics2D) g.create();
+            try {
+                Color border = new Color(0, 0, 0, 60);
+                for (Marker m : markers) {
+                    int y = trackBounds.y + (int) ((long) m.line * h / total);
+                    g2.setColor(m.color);
+                    g2.fillRect(stripX, y, stripW, markerH);
+                    // Thin per-marker outline boosts contrast against the
+                    // scroll-bar track on light themes.
+                    if (markerH >= 3 && stripW >= 3) {
+                        g2.setColor(border);
+                        g2.drawRect(stripX, y, stripW - 1, markerH - 1);
+                    }
+                }
+            } finally {
+                g2.dispose();
+            }
         }
     }
 }

@@ -55,7 +55,7 @@ public class JarDiffForm {
     private final JProgressBar progressBar = new JProgressBar();
 
     private final DefaultTableModel tableModel = new DefaultTableModel(
-            new Object[]{"Entry", "Kind", "Status", "ΔSize"}, 0) {
+            new Object[]{"Entry", "Kind", "Status", "Size +/-"}, 0) {
         @Override
         public boolean isCellEditable(int row, int column) {
             return false;
@@ -93,10 +93,39 @@ public class JarDiffForm {
 
     private void show0() {
         frame.setContentPane(buildContent());
+        applyGlobalFont(frame);
         frame.setSize(1200, 760);
         frame.setLocationRelativeTo(MainForm.getInstance().getMasterPanel());
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setVisible(true);
+    }
+
+    /**
+     * Walks the component tree and resizes every component's font to the
+     * current global FONT_SIZE while keeping each component's own font
+     * family. This avoids glyph-coverage issues on macOS where forcing a
+     * specific family can fall back to a font that does not include CJK
+     * or other extended characters.
+     */
+    private static void applyGlobalFont(Component root) {
+        if (root == null) {
+            return;
+        }
+        Font f = root.getFont();
+        if (f != null) {
+            root.setFont(f.deriveFont(MainForm.FONT_SIZE));
+        }
+        if (root instanceof Container) {
+            for (Component child : ((Container) root).getComponents()) {
+                applyGlobalFont(child);
+            }
+            // JTree / JTable have nested rendering components handled by
+            // their UI delegates; row height should follow font as well.
+            if (root instanceof JTable) {
+                JTable t = (JTable) root;
+                t.setRowHeight(Math.max(20, (int) (MainForm.FONT_SIZE * 1.5f)));
+            }
+        }
     }
 
 
@@ -247,7 +276,11 @@ public class JarDiffForm {
         area.setSyntaxEditingStyle(style);
         area.setCodeFoldingEnabled(false);
         area.setHighlightCurrentLine(false);
-        area.setFont(area.getFont().deriveFont(MainForm.FONT_SIZE - 2f));
+        // Keep the editor's native (monospaced) family, only override the
+        // size so it tracks the user's global preference (MainForm.FONT_SIZE).
+        // Forcing a specific family caused glyphs to fall back to a font
+        // that does not cover certain characters on macOS.
+        area.setFont(area.getFont().deriveFont(MainForm.FONT_SIZE));
     }
 
     private static JComponent wrap(String title, RTextScrollPane scroll) {

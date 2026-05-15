@@ -847,7 +847,7 @@ public class JarDiffForm {
      * DiffMarkScrollBarUI. The kind encoding differs slightly between
      * unified and side-by-side renders, so we map both into a uniform set
      * of colors here.
-     *
+     * <p>
      * Side-by-side encoding: 0 = DEL, 1 = ADD, 2 = PAD
      * Unified encoding:      0 = ADD, 1 = DEL, other = info
      */
@@ -929,7 +929,7 @@ public class JarDiffForm {
     }
 
 
-    private enum StatusLevel { IDLE, RUNNING, DONE, ERROR }
+    private enum StatusLevel {IDLE, RUNNING, DONE, ERROR}
 
     private void setStatus(StatusLevel level, String text) {
         statusLabel.setText(text);
@@ -1038,7 +1038,7 @@ public class JarDiffForm {
      * IDEA / VSCode style. Each marker maps a line index in the bound
      * text area to a colored strip drawn at the corresponding vertical
      * position of the track.
-     *
+     * <p>
      * The thumb / arrow buttons keep the platform Basic look so this stays
      * lightweight and behaves predictably across Substance / FlatLaf / etc.
      */

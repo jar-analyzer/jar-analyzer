@@ -93,39 +93,11 @@ public class JarDiffForm {
 
     private void show0() {
         frame.setContentPane(buildContent());
-        applyGlobalFont(frame);
+        setStatus(StatusLevel.IDLE, "idle");
         frame.setSize(1200, 760);
         frame.setLocationRelativeTo(MainForm.getInstance().getMasterPanel());
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setVisible(true);
-    }
-
-    /**
-     * Walks the component tree and resizes every component's font to the
-     * current global FONT_SIZE while keeping each component's own font
-     * family. This avoids glyph-coverage issues on macOS where forcing a
-     * specific family can fall back to a font that does not include CJK
-     * or other extended characters.
-     */
-    private static void applyGlobalFont(Component root) {
-        if (root == null) {
-            return;
-        }
-        Font f = root.getFont();
-        if (f != null) {
-            root.setFont(f.deriveFont(MainForm.FONT_SIZE));
-        }
-        if (root instanceof Container) {
-            for (Component child : ((Container) root).getComponents()) {
-                applyGlobalFont(child);
-            }
-            // JTree / JTable have nested rendering components handled by
-            // their UI delegates; row height should follow font as well.
-            if (root instanceof JTable) {
-                JTable t = (JTable) root;
-                t.setRowHeight(Math.max(20, (int) (MainForm.FONT_SIZE * 1.5f)));
-            }
-        }
     }
 
 
@@ -145,33 +117,40 @@ public class JarDiffForm {
 
     private JComponent buildTopPanel() {
         JPanel p = new JPanel(new GridBagLayout());
+        p.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createTitledBorder("Inputs"),
+                BorderFactory.createEmptyBorder(2, 6, 4, 6)));
         GridBagConstraints g = new GridBagConstraints();
         g.fill = GridBagConstraints.HORIZONTAL;
-        g.insets = new Insets(2, 4, 2, 4);
+        g.insets = new Insets(3, 4, 3, 4);
 
         g.gridy = 0;
         g.gridx = 0;
         g.weightx = 0;
-        p.add(new JLabel("LEFT  (jar / dir):"), g);
+        p.add(makeFieldLabel("LEFT"), g);
         g.gridx = 1;
         g.weightx = 1;
+        leftPath.setToolTipText("path to a jar / war file or a directory containing them");
         p.add(leftPath, g);
         g.gridx = 2;
         g.weightx = 0;
         JButton leftBrowse = new JButton("Browse");
+        leftBrowse.setMnemonic('L');
         leftBrowse.addActionListener(e -> browse(leftPath));
         p.add(leftBrowse, g);
 
         g.gridy = 1;
         g.gridx = 0;
         g.weightx = 0;
-        p.add(new JLabel("RIGHT (jar / dir):"), g);
+        p.add(makeFieldLabel("RIGHT"), g);
         g.gridx = 1;
         g.weightx = 1;
+        rightPath.setToolTipText("path to a jar / war file or a directory containing them");
         p.add(rightPath, g);
         g.gridx = 2;
         g.weightx = 0;
         JButton rightBrowse = new JButton("Browse");
+        rightBrowse.setMnemonic('R');
         rightBrowse.addActionListener(e -> browse(rightPath));
         p.add(rightBrowse, g);
 
@@ -179,13 +158,59 @@ public class JarDiffForm {
         g.gridx = 0;
         g.gridwidth = 3;
         g.weightx = 1;
-        JPanel ctrl = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 0));
+        g.insets = new Insets(8, 4, 2, 4);
+        p.add(buildControlBar(), g);
+
+        hideEqual.addActionListener(e -> {
+            applyRowFilter();
+            rebuildTreeView();
+        });
+        return p;
+    }
+
+    private static JLabel makeFieldLabel(String text) {
+        JLabel l = new JLabel(text, SwingConstants.RIGHT);
+        l.setFont(l.getFont().deriveFont(Font.BOLD));
+        l.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 6));
+        l.setPreferredSize(new Dimension(56, l.getPreferredSize().height));
+        return l;
+    }
+
+    private JComponent buildControlBar() {
+        JPanel ctrl = new JPanel(new GridBagLayout());
+        GridBagConstraints g = new GridBagConstraints();
+        g.insets = new Insets(0, 0, 0, 8);
+        g.gridy = 0;
+
+        runBtn.setMnemonic('D');
         runBtn.addActionListener(this::onRun);
-        ctrl.add(runBtn);
-        ctrl.add(hideEqual);
-        ctrl.add(Box.createHorizontalStrut(10));
-        ctrl.add(new JLabel("status:"));
-        ctrl.add(statusLabel);
+        leftPath.addActionListener(this::onRun);
+        rightPath.addActionListener(this::onRun);
+        g.gridx = 0;
+        g.weightx = 0;
+        ctrl.add(runBtn, g);
+
+        g.gridx = 1;
+        ctrl.add(hideEqual, g);
+
+        // separator that takes the slack so status / progress sit at the right
+        g.gridx = 2;
+        g.weightx = 1;
+        g.fill = GridBagConstraints.HORIZONTAL;
+        ctrl.add(Box.createHorizontalGlue(), g);
+
+        // status: keeps a stable footprint and ellipsises long text instead
+        // of pushing the progress bar off screen.
+        statusLabel.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
+        statusLabel.setForeground(C_EQ_FG);
+        statusLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        statusLabel.setMinimumSize(new Dimension(120, statusLabel.getPreferredSize().height));
+        statusLabel.setPreferredSize(new Dimension(360, statusLabel.getPreferredSize().height));
+        g.gridx = 3;
+        g.weightx = 0;
+        g.fill = GridBagConstraints.NONE;
+        ctrl.add(statusLabel, g);
+
         progressBar.setIndeterminate(false);
         progressBar.setMinimum(0);
         progressBar.setMaximum(100);
@@ -193,14 +218,11 @@ public class JarDiffForm {
         progressBar.setStringPainted(true);
         progressBar.setPreferredSize(new Dimension(220, 16));
         progressBar.setVisible(false);
-        ctrl.add(progressBar);
-        p.add(ctrl, g);
+        g.gridx = 4;
+        g.insets = new Insets(0, 0, 0, 0);
+        ctrl.add(progressBar, g);
 
-        hideEqual.addActionListener(e -> {
-            applyRowFilter();
-            rebuildTreeView();
-        });
-        return p;
+        return ctrl;
     }
 
     private JComponent buildNavigatorPanel() {
@@ -265,7 +287,8 @@ public class JarDiffForm {
                 leftScroll.getHorizontalScrollBar().getModel());
 
         JSplitPane side = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-                wrap("LEFT", leftScroll), wrap("RIGHT", rightScroll));
+                wrap("LEFT", leftScroll, C_DEL_LINE, C_DEL_FG),
+                wrap("RIGHT", rightScroll, C_ADD_LINE, C_ADD_FG));
         side.setResizeWeight(0.5);
         tabs.addTab("Side by Side", side);
         return tabs;
@@ -283,10 +306,17 @@ public class JarDiffForm {
         area.setFont(area.getFont().deriveFont(MainForm.FONT_SIZE));
     }
 
-    private static JComponent wrap(String title, RTextScrollPane scroll) {
+    private static JComponent wrap(String title, RTextScrollPane scroll,
+                                   Color bg, Color fg) {
         JPanel p = new JPanel(new BorderLayout());
-        JLabel header = new JLabel("  " + title);
-        header.setBorder(BorderFactory.createEmptyBorder(2, 4, 2, 4));
+        JLabel header = new JLabel(title, SwingConstants.CENTER);
+        header.setOpaque(true);
+        header.setBackground(bg);
+        header.setForeground(fg);
+        header.setFont(header.getFont().deriveFont(Font.BOLD));
+        header.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(0, 0, 1, 0, fg.brighter()),
+                BorderFactory.createEmptyBorder(4, 6, 4, 6)));
         p.add(header, BorderLayout.NORTH);
         p.add(scroll, BorderLayout.CENTER);
         return p;
@@ -328,7 +358,7 @@ public class JarDiffForm {
         progressBar.setIndeterminate(false);
         progressBar.setValue(0);
         progressBar.setString("0%");
-        statusLabel.setText("running...");
+        setStatus(StatusLevel.RUNNING, "running...");
         tableModel.setRowCount(0);
         treeRoot.removeAllChildren();
         treeRoot.setUserObject("(running...)");
@@ -385,11 +415,11 @@ public class JarDiffForm {
                     entries = get();
                     populateTable(entries);
                     rebuildTreeView();
-                    statusLabel.setText("done. total: " + entries.size()
+                    setStatus(StatusLevel.DONE, "done. total: " + entries.size()
                             + (job.isDirectoryMode() ? "  (directory mode)" : ""));
                 } catch (Exception ex) {
                     logger.error("jar diff failed", ex);
-                    statusLabel.setText("error: " + ex.getMessage());
+                    setStatus(StatusLevel.ERROR, "error: " + ex.getMessage());
                     JOptionPane.showMessageDialog(frame,
                             "diff failed: " + ex.getMessage(),
                             "Jar Diff", JOptionPane.ERROR_MESSAGE);
@@ -529,7 +559,7 @@ public class JarDiffForm {
         if (entry == null || job == null) {
             return;
         }
-        statusLabel.setText("loading: " + entry.getDisplayPath());
+        setStatus(StatusLevel.RUNNING, "loading: " + entry.getDisplayPath());
         new SwingWorker<String[], Void>() {
             @Override
             protected String[] doInBackground() throws IOException {
@@ -544,10 +574,10 @@ public class JarDiffForm {
                     String[] both = get();
                     renderSideBySide(entry, both[0], both[1]);
                     renderUnified(entry, both[0], both[1]);
-                    statusLabel.setText("loaded: " + entry.getDisplayPath());
+                    setStatus(StatusLevel.DONE, "loaded: " + entry.getDisplayPath());
                 } catch (Exception ex) {
                     logger.error("load entry failed", ex);
-                    statusLabel.setText("error: " + ex.getMessage());
+                    setStatus(StatusLevel.ERROR, "error: " + ex.getMessage());
                 }
             }
         }.execute();
@@ -748,6 +778,31 @@ public class JarDiffForm {
             } catch (Exception ignored) {
             }
         }
+    }
+
+
+    private enum StatusLevel { IDLE, RUNNING, DONE, ERROR }
+
+    private void setStatus(StatusLevel level, String text) {
+        statusLabel.setText(text);
+        statusLabel.setToolTipText(text);
+        Color c;
+        switch (level) {
+            case RUNNING:
+                c = C_HEAD_FG;
+                break;
+            case DONE:
+                c = C_ADD_FG;
+                break;
+            case ERROR:
+                c = C_DEL_FG;
+                break;
+            case IDLE:
+            default:
+                c = C_EQ_FG;
+                break;
+        }
+        statusLabel.setForeground(c);
     }
 
 

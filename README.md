@@ -89,6 +89,10 @@ Jar Analyzer
 
 ![](img/0080.png)
 
+自从 `5.21` 版本以后支持了 `JAR DIFF` 功能
+
+![](img/0087.png)
+
 静态分析 `spring / java web` 项目
 
 ![](img/0072.png)
@@ -116,10 +120,6 @@ Jar Analyzer
 ![](img/0081.png)
 
 ![](img/0084.png)
-
-自从 `5.21` 版本以后支持了 `JAR DIFF` 功能
-
-![](img/0087.png)
 
 自从 `5.17` 版本以后支持多 `tab` 展示和方法名 `ctrl+左键` 展示调用并跳转
 

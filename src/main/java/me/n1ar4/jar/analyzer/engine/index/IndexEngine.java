@@ -24,7 +24,6 @@ import org.apache.lucene.index.*;
 import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -100,7 +99,6 @@ public class IndexEngine {
         return getResult(reader, IndexSingletonClass.getSearcher().search(query, 110));
     }
 
-    @NotNull
     private static Result getResult(IndexReader reader, TopDocs search) throws IOException {
 
         ScoreDoc[] scoreDocs = search.scoreDocs;

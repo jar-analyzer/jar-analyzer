@@ -10,8 +10,6 @@
 
 package me.n1ar4.shell.analyzer.model;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 
 public class InfoObj implements Comparable<InfoObj> {
@@ -65,7 +63,7 @@ public class InfoObj implements Comparable<InfoObj> {
 
 
     @Override
-    public int compareTo(@NotNull InfoObj o) {
+    public int compareTo(InfoObj o) {
         return this.url.compareTo(o.url);
     }
 }

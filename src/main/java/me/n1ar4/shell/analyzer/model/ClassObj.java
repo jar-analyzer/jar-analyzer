@@ -10,8 +10,6 @@
 
 package me.n1ar4.shell.analyzer.model;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Objects;
 
 @SuppressWarnings("all")
@@ -63,7 +61,7 @@ public class ClassObj implements Comparable<ClassObj> {
     }
 
     @Override
-    public int compareTo(@NotNull ClassObj o) {
+    public int compareTo(ClassObj o) {
         return this.className.compareTo(o.className);
     }
 }

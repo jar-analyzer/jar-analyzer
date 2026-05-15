@@ -85,5 +85,7 @@ public interface Const {
             "// 4. 前往 advance 面板可一键搜索 sink 方法\n" +
             "// 5. 前往 chains 面板可进行方法调用链分析和污点分析\n" +
             "// 6. 可以两次 shift 打开全局索引搜索（测试功能）\n\n" +
+            "// 重要功能：JAR DIFF （支持单个 JAR 和目录方式）\n" +
+            "// 你可以从 plugins 菜单中通过 diff jars 选项使用\n\n" +
             "// 作者：4ra1n @ jar-analyzer @ " + version;
 }

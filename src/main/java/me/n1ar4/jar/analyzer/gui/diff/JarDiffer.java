@@ -194,6 +194,15 @@ public class JarDiffer {
     private JarDiffEntry.Status compareEntry(ZipFile left, ZipFile right,
                                              ZipArchiveEntry le, ZipArchiveEntry re,
                                              JarDiffEntry.Kind kind, String path) throws IOException {
+        // fast path 1: size differs -> definitely MODIFIED, skip byte read & decompile.
+        // sizes come straight from the central directory of the ZIP, no I/O on entry payload.
+        long ls = le.getSize();
+        long rs = re.getSize();
+        if (ls >= 0 && rs >= 0 && ls != rs) {
+            return JarDiffEntry.Status.MODIFIED;
+        }
+
+        // sizes equal (or unknown): read bytes and compare.
         byte[] lb = readAll(left, le);
         byte[] rb = readAll(right, re);
         if (sameBytes(lb, rb)) {
@@ -202,6 +211,8 @@ public class JarDiffer {
         if (kind == JarDiffEntry.Kind.RESOURCE) {
             return JarDiffEntry.Status.MODIFIED;
         }
+        // bytes differ but sizes match -> could just be timestamp / constant-pool noise.
+        // decompile to confirm whether the source is actually different.
         try {
             Path leftFile = extractToTemp(path, lb, "left");
             Path rightFile = extractToTemp(path, rb, "right");

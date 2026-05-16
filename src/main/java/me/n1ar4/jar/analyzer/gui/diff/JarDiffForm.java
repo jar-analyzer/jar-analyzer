@@ -1103,6 +1103,32 @@ public class JarDiffForm {
         @Override
         protected void paintTrack(Graphics g, JComponent c, Rectangle trackBounds) {
             super.paintTrack(g, c, trackBounds);
+            paintMarkers(g, trackBounds, null);
+        }
+
+        @Override
+        protected void paintThumb(Graphics g, JComponent c, Rectangle thumbBounds) {
+            // Draw the thumb first, then overlay the diff markers on top
+            // restricted to the thumb's rectangle. This keeps the red/blue
+            // highlight strip visible even where the thumb sits on top of
+            // it -- the highlight always wins, IDEA-style.
+            super.paintThumb(g, c, thumbBounds);
+            if (thumbBounds == null || thumbBounds.isEmpty()) {
+                return;
+            }
+            Rectangle track = getTrackBounds();
+            if (track == null || track.height <= 0) {
+                return;
+            }
+            paintMarkers(g, track, thumbBounds);
+        }
+
+        /**
+         * Paints the diff markers along {@code trackBounds}. When
+         * {@code clip} is non-null the painting is clipped to that
+         * rectangle so callers can overlay markers on top of the thumb.
+         */
+        private void paintMarkers(Graphics g, Rectangle trackBounds, Rectangle clip) {
             if (markers.isEmpty() || area == null) {
                 return;
             }
@@ -1111,19 +1137,29 @@ public class JarDiffForm {
             if (h <= 0) {
                 return;
             }
-            // Strip on the right edge of the track, leaving 2px gutters so
-            // it stays out of the thumb's way.
+            // Strip centered in the track, leaving small gutters. Width is
+            // independent of the thumb so markers line up between track and
+            // thumb overlay passes.
             int stripW = Math.max(3, trackBounds.width - 6);
             int stripX = trackBounds.x + (trackBounds.width - stripW) / 2;
-            // Clamp marker height to at least 3 px so single-line diffs are
-            // visible and noticeable even on very long files.
+            // Clamp marker height to at least 3 px so single-line diffs
+            // remain visible even on very long files.
             int markerH = Math.max(3, h / total);
 
             Graphics2D g2 = (Graphics2D) g.create();
             try {
+                if (clip != null) {
+                    g2.clipRect(clip.x, clip.y, clip.width, clip.height);
+                }
                 Color border = new Color(0, 0, 0, 60);
                 for (Marker m : markers) {
                     int y = trackBounds.y + (int) ((long) m.line * h / total);
+                    // When overlaying on the thumb, skip markers that
+                    // can't possibly intersect the clip rectangle.
+                    if (clip != null
+                            && (y + markerH < clip.y || y > clip.y + clip.height)) {
+                        continue;
+                    }
                     g2.setColor(m.color);
                     g2.fillRect(stripX, y, stripW, markerH);
                     // Thin per-marker outline boosts contrast against the

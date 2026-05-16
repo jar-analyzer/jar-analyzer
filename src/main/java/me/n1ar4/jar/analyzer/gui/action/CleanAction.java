@@ -11,6 +11,7 @@
 package me.n1ar4.jar.analyzer.gui.action;
 
 import me.n1ar4.jar.analyzer.config.ConfigEngine;
+import me.n1ar4.jar.analyzer.config.UIPrefs;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
 import me.n1ar4.jar.analyzer.starter.Const;
@@ -30,6 +31,7 @@ public class CleanAction {
                             "do you want to clean jar-analyzer?<br>" +
                             "delete jar-analyzer.db file <br>" +
                             "delete .jar-analyzer file <br>" +
+                            "delete .jar-analyzer-ui file <br>" +
                             "delete jar-analyzer-lockfile file <br>" +
                             "delete JAR-ANALYZER-ERROR.txt file <br>" +
                             "delete jar-analyzer-temp dir <br>" +
@@ -43,6 +45,10 @@ public class CleanAction {
                 }
                 try {
                     Files.delete(Paths.get(ConfigEngine.CONFIG_FILE_PATH));
+                } catch (Exception ignored) {
+                }
+                try {
+                    Files.delete(Paths.get(UIPrefs.FILE));
                 } catch (Exception ignored) {
                 }
                 try {

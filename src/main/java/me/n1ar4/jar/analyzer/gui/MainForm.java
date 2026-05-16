@@ -16,6 +16,7 @@ import com.intellij.uiDesigner.core.Spacer;
 import me.n1ar4.jar.analyzer.chains.ChainsBuilder;
 import me.n1ar4.jar.analyzer.config.ConfigEngine;
 import me.n1ar4.jar.analyzer.config.ConfigFile;
+import me.n1ar4.jar.analyzer.config.UIPrefs;
 import me.n1ar4.jar.analyzer.dfs.DFSEngine;
 import me.n1ar4.jar.analyzer.dfs.DFSResult;
 import me.n1ar4.jar.analyzer.dfs.DFSUtil;
@@ -1545,6 +1546,13 @@ public class MainForm {
                 int resp = JOptionPane.showConfirmDialog(frame, "CONFIRM EXIT?",
                         "EXIT", JOptionPane.OK_CANCEL_OPTION);
                 if (resp == JOptionPane.OK_OPTION) {
+                    // Persist UI geometry synchronously so a fast exit
+                    // can't lose the latest values to the debounced timer.
+                    try {
+                        UIPrefs.captureFrameGeometry(frame);
+                        UIPrefs.save();
+                    } catch (Exception ignored) {
+                    }
                     frame.dispose();
                     System.exit(0);
                 }
@@ -1585,7 +1593,25 @@ public class MainForm {
 
 
         frame.pack();
-        frame.setLocationRelativeTo(null);
+        // Apply remembered geometry / split-divider positions before the
+        // frame is shown so the user never sees a flicker. Falls back to
+        // setLocationRelativeTo(null) when no preference exists yet.
+        try {
+            UIPrefs.load();
+            boolean hadGeometry = UIPrefs.getInt(UIPrefs.K_FRAME_W) != null
+                    && UIPrefs.getInt(UIPrefs.K_FRAME_H) != null;
+            UIPrefs.applyFrameGeometry(frame);
+            if (!hadGeometry) {
+                frame.setLocationRelativeTo(null);
+            }
+            UIPrefs.installFrameListeners(frame);
+            UIPrefs.bindSplit(instance.rootSplit, UIPrefs.K_SPLIT_ROOT);
+            UIPrefs.bindSplit(instance.treeContentSplit, UIPrefs.K_SPLIT_TREE);
+            UIPrefs.bindSplit(instance.coreSplit, UIPrefs.K_SPLIT_CORE);
+        } catch (Exception ex) {
+            logger.warn("apply ui prefs failed: {}", ex.toString());
+            frame.setLocationRelativeTo(null);
+        }
         frame.setResizable(true);
         frame.setVisible(false);
         return frame;

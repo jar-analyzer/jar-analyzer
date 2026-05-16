@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  Annotation icon. Cyan disc with a white "@" mark.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <circle cx="8" cy="8" r="7" fill="#26A69A"/>
+  <path d="M10.4 11.2
+           a3 3 0 1 1 1.2 -2.4
+           v0.4
+           a1 1 0 0 1 -2 0
+           v-1.2
+           a1.6 1.6 0 1 0 0.4 1.6"
+        fill="none" stroke="#FFFFFF" stroke-width="1.2"
+        stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

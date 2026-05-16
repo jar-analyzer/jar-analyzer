@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- CSS file: blue sheet with "#" hash glyph. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <path d="M3 1.6 h7.2 l3.2 3.2 v9.6 a0.8 0.8 0 0 1 -0.8 0.8 h-9.6 a0.8 0.8 0 0 1 -0.8 -0.8 v-12 a0.8 0.8 0 0 1 0.8 -0.8 z" fill="#1A6FD0"/>
+  <path d="M10.2 1.6 v3.2 h3.2 z" fill="#0E4D96"/>
+  <path d="M6.6 7.4 L5.6 11.8 M9.4 7.4 L8.4 11.8 M5.0 8.8 H10.4 M4.6 10.4 H10.0"
+        stroke="#FFFFFF" stroke-width="0.9" stroke-linecap="round"/>
+</svg>

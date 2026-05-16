@@ -11,10 +11,11 @@
 package me.n1ar4.jar.analyzer.gui.tree;
 
 import cn.hutool.core.util.StrUtil;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
+import me.n1ar4.jar.analyzer.gui.util.SvgManager;
 import me.n1ar4.jar.analyzer.starter.Const;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
@@ -30,16 +31,36 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Objects;
 
 public class FileTree extends JTree {
-    private static ImageIcon classIcon;
 
-    static {
-        try {
-            classIcon = new ImageIcon(ImageIO.read(Objects.requireNonNull(
-                    FileTree.class.getClassLoader().getResourceAsStream("img/class.png"))));
-        } catch (Exception ignored) {
+    /**
+     * Maps a resolved {@link ClassIconKind} to its SVG icon. We keep
+     * this mapping local to the tree because only the file tree needs
+     * the per-kind distinction; other call-sites that draw a class icon
+     * (search results, favourites...) keep using the generic ClassIcon.
+     */
+    private static FlatSVGIcon iconFor(ClassIconKind kind) {
+        if (kind == null) {
+            return SvgManager.ClassIcon;
+        }
+        switch (kind) {
+            case ABSTRACT_CLASS:
+                return SvgManager.AbstractClassIcon;
+            case INTERFACE:
+                return SvgManager.InterfaceIcon;
+            case ANNOTATION:
+                return SvgManager.AnnotationIcon;
+            case ENUM:
+                return SvgManager.EnumIcon;
+            case RECORD:
+                return SvgManager.RecordIcon;
+            case EXCEPTION:
+                return SvgManager.ExceptionIcon;
+            case CLASS:
+            case UNKNOWN:
+            default:
+                return SvgManager.ClassIcon;
         }
     }
 
@@ -58,11 +79,33 @@ public class FileTree extends JTree {
                 super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
                 if (leaf && value instanceof DefaultMutableTreeNode) {
                     DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
-                    String nodeText = node.getUserObject().toString();
-                    String fileExtension = getFileExtension(nodeText);
-                    if (fileExtension != null && fileExtension.equalsIgnoreCase("class")) {
-                        setText(nodeText.split("\\.")[0]);
-                        setIcon(classIcon);
+                    Object userObj = node.getUserObject();
+                    File file = null;
+                    String nodeText = userObj == null ? "" : userObj.toString();
+                    if (userObj instanceof FileTreeNode) {
+                        file = ((FileTreeNode) userObj).file;
+                    }
+                    String ext = getFileExtension(nodeText);
+                    if (ext != null && "class".equalsIgnoreCase(ext)) {
+                        // Strip the ".class" suffix for display, matching
+                        // the previous behavior.
+                        int dot = nodeText.lastIndexOf('.');
+                        if (dot > 0) {
+                            setText(nodeText.substring(0, dot));
+                        }
+                        // Decide which SVG to show. If the kind is not
+                        // yet cached, paint the generic ClassIcon now
+                        // and ask the resolver to repaint the whole
+                        // tree once the answer arrives.
+                        ClassIconKind kind = (file != null)
+                                ? ClassKindResolver.getCached(file, FileTree.this::repaint)
+                                : null;
+                        setIcon(iconFor(kind));
+                    } else if (file != null && file.isFile()) {
+                        // Non-class leaf: pick an icon by file-name rules.
+                        // Pure pattern matching; no I/O, safe on the EDT.
+                        ResourceFileKind.Kind rk = ResourceFileKind.classify(nodeText);
+                        setIcon(ResourceFileKind.iconFor(rk));
                     }
                 }
                 return this;

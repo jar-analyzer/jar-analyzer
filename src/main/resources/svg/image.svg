@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Image file: purple sheet with "mountain + sun" pictogram. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <path d="M3 1.6 h7.2 l3.2 3.2 v9.6 a0.8 0.8 0 0 1 -0.8 0.8 h-9.6 a0.8 0.8 0 0 1 -0.8 -0.8 v-12 a0.8 0.8 0 0 1 0.8 -0.8 z" fill="#8E44AD"/>
+  <path d="M10.2 1.6 v3.2 h3.2 z" fill="#5E2C72"/>
+  <circle cx="6.2" cy="8.0" r="0.9" fill="#FFFFFF"/>
+  <path d="M3.6 12.4 L6.4 9.6 L8.4 11.4 L10.0 9.8 L12.4 12.4 Z"
+        fill="#FFFFFF"/>
+</svg>

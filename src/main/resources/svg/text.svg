@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Plain text / readme / log file: grey sheet with three text lines. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <path d="M3 1.6 h7.2 l3.2 3.2 v9.6 a0.8 0.8 0 0 1 -0.8 0.8 h-9.6 a0.8 0.8 0 0 1 -0.8 -0.8 v-12 a0.8 0.8 0 0 1 0.8 -0.8 z" fill="#9AA0A6"/>
+  <path d="M10.2 1.6 v3.2 h3.2 z" fill="#6E7479"/>
+  <rect x="4.6" y="7.4" width="6.8" height="1.0" rx="0.4" fill="#FFFFFF"/>
+  <rect x="4.6" y="9.2" width="6.8" height="1.0" rx="0.4" fill="#FFFFFF"/>
+  <rect x="4.6" y="11.0" width="4.4" height="1.0" rx="0.4" fill="#FFFFFF"/>
+</svg>

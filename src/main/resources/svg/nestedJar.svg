@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Nested jar / war / ear: dark green sheet with bold "J" badge. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <path d="M3 1.6 h7.2 l3.2 3.2 v9.6 a0.8 0.8 0 0 1 -0.8 0.8 h-9.6 a0.8 0.8 0 0 1 -0.8 -0.8 v-12 a0.8 0.8 0 0 1 0.8 -0.8 z" fill="#256D3F"/>
+  <path d="M10.2 1.6 v3.2 h3.2 z" fill="#163E23"/>
+  <text x="8" y="12.0" font-family="Arial, sans-serif"
+        font-size="7.4" font-weight="bold" text-anchor="middle"
+        fill="#FFFFFF">J</text>
+</svg>

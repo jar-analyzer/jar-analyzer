@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Native library (.so / .dll / .dylib / .jnilib): slate sheet with cog. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <path d="M3 1.6 h7.2 l3.2 3.2 v9.6 a0.8 0.8 0 0 1 -0.8 0.8 h-9.6 a0.8 0.8 0 0 1 -0.8 -0.8 v-12 a0.8 0.8 0 0 1 0.8 -0.8 z" fill="#3F4A55"/>
+  <path d="M10.2 1.6 v3.2 h3.2 z" fill="#1F2730"/>
+  <g fill="#FFFFFF">
+    <rect x="7.4" y="6.0" width="1.2" height="1.4"/>
+    <rect x="7.4" y="11.8" width="1.2" height="1.4"/>
+    <rect x="4.5" y="8.9" width="1.4" height="1.2"/>
+    <rect x="10.1" y="8.9" width="1.4" height="1.2"/>
+    <rect x="5.4" y="6.6" width="1.4" height="1.2" transform="rotate(-45 6.1 7.2)"/>
+    <rect x="9.2" y="6.6" width="1.4" height="1.2" transform="rotate(45 9.9 7.2)"/>
+    <rect x="5.4" y="11.4" width="1.4" height="1.2" transform="rotate(45 6.1 12.0)"/>
+    <rect x="9.2" y="11.4" width="1.4" height="1.2" transform="rotate(-45 9.9 12.0)"/>
+  </g>
+  <circle cx="8" cy="9.6" r="2.0" fill="#FFFFFF"/>
+  <circle cx="8" cy="9.6" r="0.9" fill="#3F4A55"/>
+</svg>

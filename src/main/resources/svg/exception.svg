@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  Exception icon. Red disc with a white exclamation mark, used for any
+  class whose direct superclass is Throwable / Exception /
+  RuntimeException / Error.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <circle cx="8" cy="8" r="7" fill="#D63B3B"/>
+  <rect x="7.2" y="3.6" width="1.6" height="6.0" rx="0.6" fill="#FFFFFF"/>
+  <rect x="7.2" y="10.8" width="1.6" height="1.8" rx="0.6" fill="#FFFFFF"/>
+</svg>

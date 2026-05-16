@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Font file: pink sheet with serif "F" letter. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <path d="M3 1.6 h7.2 l3.2 3.2 v9.6 a0.8 0.8 0 0 1 -0.8 0.8 h-9.6 a0.8 0.8 0 0 1 -0.8 -0.8 v-12 a0.8 0.8 0 0 1 0.8 -0.8 z" fill="#D87093"/>
+  <path d="M10.2 1.6 v3.2 h3.2 z" fill="#94476A"/>
+  <text x="8" y="12.0" font-family="'Times New Roman', Georgia, serif"
+        font-size="7.6" font-weight="bold" font-style="italic" text-anchor="middle"
+        fill="#FFFFFF">F</text>
+</svg>

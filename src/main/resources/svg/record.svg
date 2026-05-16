@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  Record icon. Steel-blue disc with a white "R" mark.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <circle cx="8" cy="8" r="7" fill="#1F8FD3"/>
+  <path d="M5.6 11.6
+           V4.4
+           h2.6
+           a2 2 0 0 1 0 4
+           h-2.6
+           m2 0
+           l2 3.2"
+        fill="none" stroke="#FFFFFF" stroke-width="1.4"
+        stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

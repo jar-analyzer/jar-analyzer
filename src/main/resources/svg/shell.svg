@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Shell / batch script: dark sheet with prompt ">_". -->
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <path d="M3 1.6 h7.2 l3.2 3.2 v9.6 a0.8 0.8 0 0 1 -0.8 0.8 h-9.6 a0.8 0.8 0 0 1 -0.8 -0.8 v-12 a0.8 0.8 0 0 1 0.8 -0.8 z" fill="#2E3338"/>
+  <path d="M10.2 1.6 v3.2 h3.2 z" fill="#15181B"/>
+  <path d="M5.0 8.4 L7.0 9.8 L5.0 11.2"
+        fill="none" stroke="#7CD982" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="7.6" y="11.0" width="3.6" height="1.0" rx="0.3" fill="#7CD982"/>
+</svg>

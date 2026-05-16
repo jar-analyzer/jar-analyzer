@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  Plain class icon. Mirrors IntelliJ's "C" badge style: a green disc with
+  a white "C" mark, sized to fit a 16x16 raster.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <circle cx="8" cy="8" r="7" fill="#3C9F40"/>
+  <path d="M10.6 6.1
+           a3.2 3.2 0 1 0 0 3.8"
+        fill="none" stroke="#FFFFFF" stroke-width="1.6"
+        stroke-linecap="round"/>
+</svg>

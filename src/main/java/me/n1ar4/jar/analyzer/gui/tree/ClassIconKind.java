@@ -16,20 +16,36 @@ package me.n1ar4.jar.analyzer.gui.tree;
  * flags + direct super name.
  */
 public enum ClassIconKind {
-    /** Plain concrete class (default). */
+    /**
+     * Plain concrete class (default).
+     */
     CLASS,
-    /** abstract non-interface class. */
+    /**
+     * abstract non-interface class.
+     */
     ABSTRACT_CLASS,
-    /** regular interface. */
+    /**
+     * regular interface.
+     */
     INTERFACE,
-    /** annotation type ({@code @interface}). */
+    /**
+     * annotation type ({@code @interface}).
+     */
     ANNOTATION,
-    /** enum type. */
+    /**
+     * enum type.
+     */
     ENUM,
-    /** record type (Java 16+). */
+    /**
+     * record type (Java 16+).
+     */
     RECORD,
-    /** class whose direct super is Throwable / Exception / RuntimeException / Error. */
+    /**
+     * class whose direct super is Throwable / Exception / RuntimeException / Error.
+     */
     EXCEPTION,
-    /** failed to parse the class file. */
+    /**
+     * failed to parse the class file.
+     */
     UNKNOWN
 }

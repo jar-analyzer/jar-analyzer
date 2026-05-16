@@ -15,7 +15,7 @@ import me.n1ar4.log.Logger;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.Opcodes;
 
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,10 +48,14 @@ public final class ClassKindResolver {
      */
     private static final int ACC_RECORD = 0x10000;
 
-    /** Cap the cache so a huge tree doesn't pin unlimited memory. */
+    /**
+     * Cap the cache so a huge tree doesn't pin unlimited memory.
+     */
     private static final int MAX_CACHE = 50_000;
 
-    /** Bound the input we read to defeat malicious / huge entries. */
+    /**
+     * Bound the input we read to defeat malicious / huge entries.
+     */
     private static final int MAX_CLASS_BYTES = 8 * 1024 * 1024;
 
     private static final ConcurrentHashMap<String, Entry> CACHE = new ConcurrentHashMap<>();

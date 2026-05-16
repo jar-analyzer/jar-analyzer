@@ -15,7 +15,6 @@ Jar Analyzer Workflow JRE Repo
 Steps:
 
 - Sync `CHANGELOG.MD` file to `src/main/resources`
-- Run `go run .\github\main.go proxy` to clean actions
 - Edit `thanks.txt` and `thanks.md`
 - Run `check-version.bat` and update `pom.xml`
 - Check `me/n1ar4/jar/analyzer/starter/Const.java` version

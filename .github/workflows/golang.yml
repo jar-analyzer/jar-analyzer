@@ -16,12 +16,6 @@ jobs:
         uses: actions/setup-go@v6
         with:
           go-version: '1.24.10'
-      - name: go test github
-        run: |
-          set -x
-          cd github
-          go mod download
-          go build -o test
       - name: go test core mcp
         run: |
           set -x

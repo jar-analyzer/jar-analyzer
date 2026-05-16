@@ -31,8 +31,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.*;
 
@@ -63,6 +65,7 @@ public class JarDiffForm {
     private final JTextField leftPath = new JTextField();
     private final JTextField rightPath = new JTextField();
     private final JButton runBtn = new JButton("Run Diff");
+    private final JButton exportBtn = new JButton("Export Diff");
     private final JCheckBox hideEqual = new JCheckBox("Hide unchanged", true);
     private final JLabel statusLabel = new JLabel("idle");
     private final JProgressBar progressBar = new JProgressBar();
@@ -213,8 +216,18 @@ public class JarDiffForm {
         g.gridx = 1;
         ctrl.add(hideEqual, g);
 
-        // separator that takes the slack so status / progress sit at the right
+        // Export button: enabled only after a successful diff run, and
+        // disabled again while a run / export is in progress.
+        exportBtn.setMnemonic('E');
+        exportBtn.setToolTipText("export a full diff report (modified / added / removed)"
+                + " for all entries to a text file");
+        exportBtn.setEnabled(false);
+        exportBtn.addActionListener(this::onExport);
         g.gridx = 2;
+        ctrl.add(exportBtn, g);
+
+        // separator that takes the slack so status / progress sit at the right
+        g.gridx = 3;
         g.weightx = 1;
         g.fill = GridBagConstraints.HORIZONTAL;
         ctrl.add(Box.createHorizontalGlue(), g);
@@ -226,7 +239,7 @@ public class JarDiffForm {
         statusLabel.setHorizontalAlignment(SwingConstants.LEFT);
         statusLabel.setMinimumSize(new Dimension(120, statusLabel.getPreferredSize().height));
         statusLabel.setPreferredSize(new Dimension(360, statusLabel.getPreferredSize().height));
-        g.gridx = 3;
+        g.gridx = 4;
         g.weightx = 0;
         g.fill = GridBagConstraints.NONE;
         ctrl.add(statusLabel, g);
@@ -238,7 +251,7 @@ public class JarDiffForm {
         progressBar.setStringPainted(true);
         progressBar.setPreferredSize(new Dimension(220, 16));
         progressBar.setVisible(false);
-        g.gridx = 4;
+        g.gridx = 5;
         g.insets = new Insets(0, 0, 0, 0);
         ctrl.add(progressBar, g);
 
@@ -423,6 +436,7 @@ public class JarDiffForm {
         }
 
         runBtn.setEnabled(false);
+        exportBtn.setEnabled(false);
         progressBar.setVisible(true);
         progressBar.setIndeterminate(false);
         progressBar.setValue(0);
@@ -491,6 +505,7 @@ public class JarDiffForm {
                     rebuildTreeView();
                     setStatus(StatusLevel.DONE, "done. total: " + entries.size()
                             + (job.isDirectoryMode() ? "  (directory mode)" : ""));
+                    exportBtn.setEnabled(entries != null && !entries.isEmpty());
                 } catch (Exception ex) {
                     logger.error("jar diff failed", ex);
                     setStatus(StatusLevel.ERROR, "error: " + ex.getMessage());
@@ -500,6 +515,237 @@ public class JarDiffForm {
                 }
             }
         }.execute();
+    }
+
+
+    /**
+     * Exports a full diff report containing every MODIFIED / ADDED /
+     * REMOVED entry into a single text file. EQUAL and EQUAL_BYTES_DIFFER
+     * are skipped so the report focuses on real changes. Runs on a
+     * background thread and drives the existing progress bar.
+     */
+    private void onExport(ActionEvent ev) {
+        if (entries == null || entries.isEmpty() || job == null) {
+            JOptionPane.showMessageDialog(frame,
+                    "no diff result to export -- please run a diff first",
+                    "Jar Diff", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Collect the entries that will end up in the report. Doing this
+        // up-front gives us an accurate denominator for the progress bar
+        // and lets us short-circuit when there is nothing to write.
+        final List<JarDiffEntry> toExport = new ArrayList<>();
+        for (JarDiffEntry e : entries) {
+            JarDiffEntry.Status s = e.getStatus();
+            if (s == JarDiffEntry.Status.MODIFIED
+                    || s == JarDiffEntry.Status.ADDED
+                    || s == JarDiffEntry.Status.REMOVED) {
+                toExport.add(e);
+            }
+        }
+        if (toExport.isEmpty()) {
+            JOptionPane.showMessageDialog(frame,
+                    "no MODIFIED / ADDED / REMOVED entries to export",
+                    "Jar Diff", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        // Default destination: <user.dir>/jar-diff-yyyyMMdd-HHmmss.txt.
+        // The user may redirect via the file chooser; the chosen path is
+        // validated to live under an existing, writable parent directory.
+        String stamp = new SimpleDateFormat("yyyyMMdd-HHmmss").format(new Date());
+        File defaultDir = new File(System.getProperty("user.dir"));
+        File defaultFile = new File(defaultDir, "jar-diff-" + stamp + ".txt");
+
+        JFileChooser fc = new JFileChooser(defaultDir);
+        fc.setDialogTitle("Export Diff Report");
+        fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fc.setMultiSelectionEnabled(false);
+        fc.setSelectedFile(defaultFile);
+        if (fc.showSaveDialog(frame) != JFileChooser.APPROVE_OPTION) {
+            return;
+        }
+        File chosen = fc.getSelectedFile();
+        if (chosen == null) {
+            return;
+        }
+        // Validate destination: parent must exist and be a directory we
+        // can write to. Resolve to an absolute, normalized path before
+        // any I/O so a user-typed "../foo" is interpreted consistently.
+        final Path dest;
+        try {
+            dest = chosen.toPath().toAbsolutePath().normalize();
+            Path parent = dest.getParent();
+            if (parent == null || !Files.isDirectory(parent)) {
+                JOptionPane.showMessageDialog(frame,
+                        "destination directory does not exist:\n"
+                                + (parent == null ? "(none)" : parent),
+                        "Jar Diff", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            if (!Files.isWritable(parent)) {
+                JOptionPane.showMessageDialog(frame,
+                        "destination directory is not writable:\n" + parent,
+                        "Jar Diff", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(frame,
+                    "invalid destination path: " + ex.getMessage(),
+                    "Jar Diff", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if (Files.exists(dest)) {
+            int ow = JOptionPane.showConfirmDialog(frame,
+                    "file already exists, overwrite?\n" + dest,
+                    "Jar Diff", JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE);
+            if (ow != JOptionPane.YES_OPTION) {
+                return;
+            }
+        }
+
+        runBtn.setEnabled(false);
+        exportBtn.setEnabled(false);
+        progressBar.setVisible(true);
+        progressBar.setIndeterminate(false);
+        progressBar.setValue(0);
+        progressBar.setString("0 / " + toExport.size());
+        setStatus(StatusLevel.RUNNING, "exporting diff to " + dest.getFileName());
+
+        new SwingWorker<Path, int[]>() {
+            @Override
+            protected Path doInBackground() throws Exception {
+                StringBuilder out = new StringBuilder(64 * 1024);
+                writeReportHeader(out, toExport.size());
+
+                int total = toExport.size();
+                int processed = 0;
+                for (JarDiffEntry entry : toExport) {
+                    try {
+                        appendEntryReport(out, entry);
+                    } catch (Exception ex) {
+                        // Don't let one bad entry abort the whole export;
+                        // record the error inline and keep going.
+                        out.append("\n# failed to render entry: ")
+                                .append(entry.getDisplayPath())
+                                .append(" -- ").append(ex).append('\n');
+                        logger.warn("export entry failed for {}: {}",
+                                entry.getDisplayPath(), ex.toString());
+                    }
+                    processed++;
+                    publish(new int[]{processed, total});
+                }
+
+                // Atomic-ish write: stage to a sibling .part file then
+                // move into place so a partial export never replaces an
+                // existing report.
+                Path tmp = dest.resolveSibling(dest.getFileName() + ".part");
+                Files.write(tmp, out.toString().getBytes(StandardCharsets.UTF_8));
+                try {
+                    Files.move(tmp, dest, StandardCopyOption.REPLACE_EXISTING,
+                            StandardCopyOption.ATOMIC_MOVE);
+                } catch (AtomicMoveNotSupportedException amnse) {
+                    Files.move(tmp, dest, StandardCopyOption.REPLACE_EXISTING);
+                }
+                return dest;
+            }
+
+            @Override
+            protected void process(List<int[]> chunks) {
+                if (chunks.isEmpty()) {
+                    return;
+                }
+                int[] last = chunks.get(chunks.size() - 1);
+                int processed = last[0];
+                int t = last[1];
+                int pct = (t > 0) ? (int) Math.min(100L, processed * 100L / t) : 0;
+                progressBar.setValue(pct);
+                progressBar.setString(processed + " / " + t + " (" + pct + "%)");
+            }
+
+            @Override
+            protected void done() {
+                runBtn.setEnabled(true);
+                exportBtn.setEnabled(entries != null && !entries.isEmpty());
+                progressBar.setVisible(false);
+                progressBar.setValue(0);
+                progressBar.setString(null);
+                try {
+                    Path written = get();
+                    setStatus(StatusLevel.DONE, "exported: " + written);
+                    JOptionPane.showMessageDialog(frame,
+                            "diff report written to:\n" + written,
+                            "Jar Diff", JOptionPane.INFORMATION_MESSAGE);
+                } catch (Exception ex) {
+                    logger.error("export diff failed", ex);
+                    setStatus(StatusLevel.ERROR, "export failed: " + ex.getMessage());
+                    JOptionPane.showMessageDialog(frame,
+                            "export failed: " + ex.getMessage(),
+                            "Jar Diff", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }.execute();
+    }
+
+    private void writeReportHeader(StringBuilder out, int count) {
+        String now = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        out.append("# Jar Analyzer - Diff Report\n");
+        out.append("# generated : ").append(now).append('\n');
+        out.append("# left      : ").append(leftPath.getText().trim()).append('\n');
+        out.append("# right     : ").append(rightPath.getText().trim()).append('\n');
+        out.append("# entries   : ").append(count)
+                .append("  (MODIFIED / ADDED / REMOVED only)\n");
+        out.append("# ----------------------------------------------------------------\n\n");
+    }
+
+    /**
+     * Renders the same unified-diff format used by the in-pane "Unified
+     * Diff" view, but for every entry, separated by a banner. Class
+     * entries go through the decompiler via {@link DiffJob#loadDisplayText};
+     * resource entries are emitted as-is.
+     */
+    private void appendEntryReport(StringBuilder out, JarDiffEntry entry) throws IOException {
+        out.append("================================================================\n");
+        out.append("--- LEFT : ").append(entry.getDisplayPath()).append('\n');
+        out.append("+++ RIGHT: ").append(entry.getDisplayPath())
+                .append("  [").append(entry.getStatus()).append("]\n");
+        out.append("size: ").append(entry.getLeftSize())
+                .append(" -> ").append(entry.getRightSize())
+                .append("  (delta ").append(entry.getSizeDelta()).append(")\n");
+        out.append("================================================================\n");
+
+        JarDiffEntry.Status st = entry.getStatus();
+        String left = job.loadDisplayText(entry, 'L');
+        String right = job.loadDisplayText(entry, 'R');
+        if (st == JarDiffEntry.Status.ADDED) {
+            for (String s : right.split("\\r?\\n", -1)) {
+                out.append('+').append(s).append('\n');
+            }
+        } else if (st == JarDiffEntry.Status.REMOVED) {
+            for (String s : left.split("\\r?\\n", -1)) {
+                out.append('-').append(s).append('\n');
+            }
+        } else {
+            // MODIFIED -- run a Myers diff so the report reflects the
+            // actual line-level changes, not just the two full bodies.
+            for (MyersDiff.Op op : MyersDiff.diff(left, right)) {
+                switch (op.type) {
+                    case INSERT:
+                        out.append('+').append(op.line).append('\n');
+                        break;
+                    case DELETE:
+                        out.append('-').append(op.line).append('\n');
+                        break;
+                    case EQUAL:
+                    default:
+                        out.append(' ').append(op.line).append('\n');
+                        break;
+                }
+            }
+        }
+        out.append('\n');
     }
 
 

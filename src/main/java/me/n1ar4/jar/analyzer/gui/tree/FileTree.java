@@ -81,7 +81,15 @@ public class FileTree extends JTree {
                     DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
                     Object userObj = node.getUserObject();
                     File file = null;
-                    String nodeText = userObj == null ? "" : userObj.toString();
+                    String nodeText;
+                    try {
+                        nodeText = userObj == null ? "" : userObj.toString();
+                    } catch (Throwable t) {
+                        // userObject.toString() must never break the
+                        // paint loop -- a single bad node would otherwise
+                        // blank out the whole tree on the EDT.
+                        nodeText = "";
+                    }
                     if (userObj instanceof FileTreeNode) {
                         file = ((FileTreeNode) userObj).file;
                     }
@@ -97,15 +105,29 @@ public class FileTree extends JTree {
                         // yet cached, paint the generic ClassIcon now
                         // and ask the resolver to repaint the whole
                         // tree once the answer arrives.
-                        ClassIconKind kind = (file != null)
-                                ? ClassKindResolver.getCached(file, FileTree.this::repaint)
-                                : null;
+                        ClassIconKind kind = null;
+                        if (file != null) {
+                            try {
+                                kind = ClassKindResolver.getCached(file, FileTree.this::repaint);
+                            } catch (Throwable t) {
+                                // Resolver is best-effort; never crash
+                                // rendering on its account.
+                                kind = null;
+                            }
+                        }
                         setIcon(iconFor(kind));
                     } else if (file != null && file.isFile()) {
                         // Non-class leaf: pick an icon by file-name rules.
-                        // Pure pattern matching; no I/O, safe on the EDT.
-                        ResourceFileKind.Kind rk = ResourceFileKind.classify(nodeText);
-                        setIcon(ResourceFileKind.iconFor(rk));
+                        // Pure pattern matching, no I/O. The try/catch is
+                        // defensive: ResourceFileKind is written to be
+                        // total, but a buggy future case branch must not
+                        // be allowed to abort the EDT paint cycle.
+                        try {
+                            ResourceFileKind.Kind rk = ResourceFileKind.classify(nodeText);
+                            setIcon(ResourceFileKind.iconFor(rk));
+                        } catch (Throwable t) {
+                            setIcon(SvgManager.FileIcon);
+                        }
                     }
                 }
                 return this;

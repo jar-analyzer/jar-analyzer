@@ -26,6 +26,7 @@ import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -166,23 +167,31 @@ public class CodeTabPanel extends JPanel {
             newArea.setCaretPosition(caretPos);
         }
 
+        // Decide the displayed title.
+        //   - For class entries the key is "com/foo/Bar" -> short "Bar".
+        //   - For resource entries the key is the full filesystem path
+        //     (separators may be '/' or '\\' depending on the OS).
+        // Default: show only the leaf segment. If another tab is already
+        // showing the same leaf (so the user could not tell them apart),
+        // promote BOTH tabs back to the full key, IDE-style.
         String shortName = getShortClassName(className);
+        String displayTitle = resolveDisplayTitle(className, shortName);
 
         RTextScrollPane sp = new RTextScrollPane(newArea);
         JPanel wrapper = createTabContentWrapper(sp);
-        tabbedPane.addTab(shortName, wrapper);
+        tabbedPane.addTab(displayTitle, wrapper);
         int newIndex = tabbedPane.getTabCount() - 1;
         setTabCloseButton(newIndex);
         tabbedPane.setToolTipTextAt(newIndex, className.replace("/", "."));
 
         tabMap.put(className, newArea);
-        titleMap.put(className, shortName);
+        titleMap.put(className, displayTitle);
 
         // 切换到新 Tab
         tabbedPane.setSelectedIndex(newIndex);
         MainForm.setCodeArea(newArea);
 
-        logger.info("opened new tab: {} (total: {})", shortName, tabMap.size());
+        logger.info("opened new tab: {} (total: {})", displayTitle, tabMap.size());
         return newArea;
     }
 
@@ -259,6 +268,11 @@ public class CodeTabPanel extends JPanel {
             tabMap.remove(keyToRemove);
             titleMap.remove(keyToRemove);
         }
+
+        // After any tab removal a previously-promoted full-path title
+        // may now be the only one of its short name and can be
+        // collapsed back. Cheap to run and keeps the UI tidy.
+        recomputeTitlesAfterRemoval();
 
         // 如果没有 Tab 了，创建欢迎 Tab
         if (tabbedPane.getTabCount() == 0) {
@@ -568,13 +582,119 @@ public class CodeTabPanel extends JPanel {
 
     /**
      * 获取短类名（用作 Tab 标题）
+     * <p>
+     * Splits on every common path separator so the leaf segment is
+     * found regardless of whether the key came from a class name
+     * ({@code com/foo/Bar}) or a filesystem path on Windows
+     * ({@code C:\proj\app.yml}) or POSIX ({@code /etc/app.yml}).
      */
     private String getShortClassName(String className) {
-        if (className == null) return "Untitled";
-        if (className.contains("/")) {
-            return className.substring(className.lastIndexOf('/') + 1);
+        if (className == null || className.isEmpty()) {
+            return "Untitled";
         }
-        return className;
+        int cut = -1;
+        for (int i = className.length() - 1; i >= 0; i--) {
+            char c = className.charAt(i);
+            if (c == '/' || c == '\\' || c == File.separatorChar) {
+                cut = i;
+                break;
+            }
+        }
+        if (cut < 0) {
+            return className;
+        }
+        if (cut == className.length() - 1) {
+            // Trailing separator, e.g. "foo/" -- fall back to the
+            // whole string rather than emitting an empty title.
+            return className;
+        }
+        return className.substring(cut + 1);
+    }
+
+    /**
+     * Decides the title shown on the new tab and, when needed,
+     * promotes existing tabs that would clash on their leaf name back
+     * to their full key, so two same-named files are always
+     * distinguishable visually.
+     * <p>
+     * Mutates the tab strip and {@link #titleMap} for the existing
+     * conflicting tabs as a side-effect; returns the title the caller
+     * should use for the new tab.
+     */
+    private String resolveDisplayTitle(String newKey, String shortName) {
+        // Walk every existing tab; if any non-welcome tab is currently
+        // displayed under the same shortName, both that tab and the
+        // new one need to fall back to their full key.
+        boolean conflict = false;
+        for (Map.Entry<String, String> e : titleMap.entrySet()) {
+            String key = e.getKey();
+            if (WELCOME_KEY.equals(key) || key.equals(newKey)) {
+                continue;
+            }
+            String existingShort = getShortClassName(key);
+            if (shortName.equals(existingShort)) {
+                conflict = true;
+                // Bump the existing tab's title to its full key.
+                if (!key.equals(e.getValue())) {
+                    setTabTitleFor(key, key);
+                    titleMap.put(key, key);
+                }
+            }
+        }
+        return conflict ? newKey : shortName;
+    }
+
+    /**
+     * Re-collapses tab titles after a tab has been removed: if a tab
+     * was previously shown by its full key only because of a clash,
+     * and the clash is gone, restore the short leaf-name title.
+     */
+    private void recomputeTitlesAfterRemoval() {
+        // Index every non-welcome tab by its short name so we can tell
+        // who is still in conflict.
+        Map<String, java.util.List<String>> byShort = new LinkedHashMap<>();
+        for (String key : titleMap.keySet()) {
+            if (WELCOME_KEY.equals(key)) {
+                continue;
+            }
+            byShort.computeIfAbsent(getShortClassName(key),
+                    k -> new java.util.ArrayList<>()).add(key);
+        }
+        for (Map.Entry<String, java.util.List<String>> e : byShort.entrySet()) {
+            String shortName = e.getKey();
+            java.util.List<String> keys = e.getValue();
+            if (keys.size() == 1) {
+                // No more conflict on this short name -- shrink the
+                // single survivor's title back to the short form, if
+                // it isn't already.
+                String key = keys.get(0);
+                if (!shortName.equals(titleMap.get(key))) {
+                    setTabTitleFor(key, shortName);
+                    titleMap.put(key, shortName);
+                }
+            }
+        }
+    }
+
+    /**
+     * Updates the title of the tab whose key is {@code className}.
+     * Silently no-ops when the tab cannot be located, so callers don't
+     * have to special-case races with concurrent close.
+     */
+    private void setTabTitleFor(String className, String title) {
+        int idx = findTabIndex(className);
+        if (idx < 0) {
+            return;
+        }
+        tabbedPane.setTitleAt(idx, title);
+        // The tab component may be a TabCloseComponent that pulls its
+        // text from getTitleAt(...) every paint -- nudge it to refresh
+        // immediately so the change is visible without a focus event.
+        Component comp = tabbedPane.getTabComponentAt(idx);
+        if (comp != null) {
+            comp.invalidate();
+            comp.repaint();
+        }
     }
 
     /**

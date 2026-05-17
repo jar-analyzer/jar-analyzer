@@ -32,6 +32,29 @@
         FROM anno_table
         WHERE class_name = #{className} AND method_name = #{methodName}
     </select>
+
+    <!--
+        Batch fetch every method-level annotation row for the given set
+        of classes in one round trip. The IN list is built via
+        parameterized #{} placeholders so no concatenation /
+        injection is possible. Used by SPEL search to defeat the
+        per-method N+1 pattern.
+    -->
+    <resultMap id="annoEntityMap" type="me.n1ar4.jar.analyzer.entity.AnnoEntity">
+        <result column="anno_name" property="annoName"/>
+        <result column="method_name" property="methodName"/>
+        <result column="class_name" property="className"/>
+    </resultMap>
+    <select id="selectMethodAnnoByClasses" resultMap="annoEntityMap">
+        SELECT DISTINCT anno_name, method_name, class_name
+        FROM anno_table
+        WHERE method_name IS NOT NULL
+        AND class_name IN
+        <foreach collection="classNames" item="cn" open="(" separator="," close=")">
+            #{cn}
+        </foreach>
+    </select>
+
     <select id="selectClassByAnnoLike" resultMap="classMap">
         SELECT DISTINCT class_name
         FROM anno_table

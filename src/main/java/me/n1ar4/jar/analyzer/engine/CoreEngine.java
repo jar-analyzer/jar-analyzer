@@ -427,6 +427,80 @@ public class CoreEngine {
         return list;
     }
 
+    /**
+     * Page-aware variant of {@link #getAllMethodRef(int)} that
+     * collapses the per-method annotation lookup into a single batched
+     * query covering every distinct class in the page. For SPEL
+     * search across a 30 MB jar this turns ~100k {@code SELECT}s into
+     * a few hundred -- more than an order of magnitude.
+     */
+    public ArrayList<MethodReference> getAllMethodRefBatch(int offset) {
+        int size = 100;
+        SqlSession session = factory.openSession(true);
+        try {
+            MethodMapper methodMapper = session.getMapper(MethodMapper.class);
+            AnnoMapper annoMapper = session.getMapper(AnnoMapper.class);
+            ArrayList<MethodResult> results = new ArrayList<>(methodMapper.selectAllMethods(size, offset));
+            results.sort(Comparator.comparing(MethodResult::getMethodName));
+            if (results.isEmpty()) {
+                return new ArrayList<>();
+            }
+
+            // Collect unique class names in this page.
+            LinkedHashSet<String> classSet = new LinkedHashSet<>(results.size());
+            for (MethodResult r : results) {
+                if (r.getClassName() != null) {
+                    classSet.add(r.getClassName());
+                }
+            }
+
+            // One IN-list query for the whole page.
+            // Result -> (class -> (method -> annotations)).
+            Map<String, Map<String, Set<AnnoReference>>> annoIndex = new HashMap<>();
+            if (!classSet.isEmpty()) {
+                List<String> classNames = new ArrayList<>(classSet);
+                List<me.n1ar4.jar.analyzer.entity.AnnoEntity> rows =
+                        annoMapper.selectMethodAnnoByClasses(classNames);
+                if (rows != null) {
+                    for (me.n1ar4.jar.analyzer.entity.AnnoEntity row : rows) {
+                        if (row.getClassName() == null || row.getMethodName() == null) {
+                            continue;
+                        }
+                        annoIndex
+                                .computeIfAbsent(row.getClassName(), k -> new HashMap<>())
+                                .computeIfAbsent(row.getMethodName(), k -> new HashSet<>())
+                                .add(new AnnoReference(row.getAnnoName()));
+                    }
+                }
+            }
+
+            ArrayList<MethodReference> list = new ArrayList<>(results.size());
+            for (MethodResult result : results) {
+                MethodReference.Handle mh = new MethodReference.Handle(
+                        new ClassReference.Handle(result.getClassName()),
+                        result.getMethodName(),
+                        result.getMethodDesc());
+                Set<AnnoReference> annos = Collections.emptySet();
+                Map<String, Set<AnnoReference>> byMethod = annoIndex.get(result.getClassName());
+                if (byMethod != null) {
+                    Set<AnnoReference> v = byMethod.get(result.getMethodName());
+                    if (v != null) {
+                        annos = v;
+                    }
+                }
+                MethodReference mr = new MethodReference(mh.getClassReference(),
+                        mh.getName(), mh.getDesc(),
+                        result.getIsStaticInt() == 1,
+                        annos,
+                        result.getAccessInt(), result.getLineNumber(), result.getJarName(), result.getJarId());
+                list.add(mr);
+            }
+            return list;
+        } finally {
+            session.close();
+        }
+    }
+
     public List<MemberEntity> getAllMembersInfo() {
         SqlSession session = factory.openSession(true);
         MemberMapper memberMapper = session.getMapper(MemberMapper.class);

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ GPLv3 License
+  ~
+  ~ Copyright (c) 2022-2026 4ra1n (Jar Analyzer Team)
+  ~
+  ~ This project is distributed under the GPLv3 license.
+  ~
+  ~ https://github.com/jar-analyzer/jar-analyzer/blob/master/LICENSE
+-->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.n1ar4.jar.analyzer.core.mapper.ELSearchMapper">
+
+    <resultMap id="methodMap" type="me.n1ar4.jar.analyzer.entity.MethodResult">
+        <result column="jar_name"     property="jarName"/>
+        <result column="method_name"  property="methodName"/>
+        <result column="class_name"   property="className"/>
+        <result column="method_desc"  property="methodDesc"/>
+        <result column="is_static"    property="isStaticInt"/>
+        <result column="access"       property="accessInt"/>
+        <result column="line_number"  property="lineNumber"/>
+        <result column="jar_id"       property="jarId"/>
+    </resultMap>
+
+    <!--
+      Candidate selection. Every fragment is optional; dynamic <if>
+      tags only emit when the matching parameter is present.
+
+      Performance notes:
+      * Annotation predicates use EXISTS so the planner can stop at
+        the first hit instead of materializing the full set.
+      * The class-IN list short-circuits the entire scan to the
+        inheritance closure, turning what used to be N method rows
+        into <= sizeof(closure) * avg-methods-per-class.
+      * The caller-key fragments rely on the reverse callee index
+        (idx_call_callee) which is now in place.
+    -->
+    <select id="selectCandidates" parameterType="map" resultMap="methodMap">
+        SELECT m.method_name,
+               m.class_name,
+               m.method_desc,
+               m.is_static,
+               m.access,
+               m.line_number,
+               m.jar_id,
+               jt.jar_name
+        FROM method_table m
+        LEFT JOIN jar_table jt ON m.jar_id = jt.jid
+        <where>
+            <if test="classNameContains != null and classNameContains != ''">
+                AND m.class_name LIKE '%' || #{classNameContains} || '%' ESCAPE '\'
+            </if>
+            <if test="classNameNotContains != null and classNameNotContains != ''">
+                AND m.class_name NOT LIKE '%' || #{classNameNotContains} || '%' ESCAPE '\'
+            </if>
+            <if test="methodNameContains != null and methodNameContains != ''">
+                AND m.method_name LIKE '%' || #{methodNameContains} || '%' ESCAPE '\'
+            </if>
+            <if test="methodNameNotContains != null and methodNameNotContains != ''">
+                AND m.method_name NOT LIKE '%' || #{methodNameNotContains} || '%' ESCAPE '\'
+            </if>
+            <if test="startWith != null and startWith != ''">
+                AND m.method_name LIKE #{startWith} || '%' ESCAPE '\'
+            </if>
+            <if test="endWith != null and endWith != ''">
+                AND m.method_name LIKE '%' || #{endWith} ESCAPE '\'
+            </if>
+            <!--
+              paramsNum / paramTypes / returnType are evaluated on the
+              Java side because their semantics rely on the parsed JVM
+              descriptor (Type.getArgumentTypes()). Pushing them into
+              SQL would require duplicating the descriptor parser in
+              SQL, which isn't worth the complexity.
+            -->
+            <if test="isStatic != null">
+                AND m.is_static = #{isStatic}
+            </if>
+            <if test="isPublic != null">
+                AND (m.access &amp; 1) = #{isPublicInt}
+            </if>
+
+            <if test="methodAnnoLike != null and methodAnnoLike != ''">
+                AND EXISTS (
+                    SELECT 1 FROM anno_table a
+                    WHERE a.class_name = m.class_name
+                      AND a.method_name = m.method_name
+                      AND a.anno_name LIKE '%' || #{methodAnnoLike} || '%' ESCAPE '\'
+                )
+            </if>
+
+            <if test="excludedMethodAnnoLike != null and excludedMethodAnnoLike != ''">
+                AND NOT EXISTS (
+                    SELECT 1 FROM anno_table a
+                    WHERE a.class_name = m.class_name
+                      AND a.method_name = m.method_name
+                      AND a.anno_name LIKE '%' || #{excludedMethodAnnoLike} || '%' ESCAPE '\'
+                )
+            </if>
+
+            <if test="classAnnoLike != null and classAnnoLike != ''">
+                AND EXISTS (
+                    SELECT 1 FROM anno_table a
+                    WHERE a.class_name = m.class_name
+                      AND a.method_name IS NULL
+                      AND a.anno_name LIKE '%' || #{classAnnoLike} || '%' ESCAPE '\'
+                )
+            </if>
+
+            <if test="fieldLike != null and fieldLike != ''">
+                AND EXISTS (
+                    SELECT 1 FROM member_table mb
+                    WHERE mb.class_name = m.class_name
+                      AND mb.member_name LIKE '%' || #{fieldLike} || '%' ESCAPE '\'
+                )
+            </if>
+
+            <if test="classNamesIn != null and classNamesIn.size() > 0">
+                AND m.class_name IN
+                <foreach collection="classNamesIn" item="cn" open="(" separator="," close=")">
+                    #{cn}
+                </foreach>
+            </if>
+
+            <!--
+              Caller-key intersection. Each key is the literal string
+              "class\u0001method\u0001desc" so we encode the same form
+              on the SQL side and let the planner walk the IN-list.
+              Done as a single SELECT with no JOIN explosion.
+            -->
+            <if test="containsCallerKeys != null and containsCallerKeys.size() > 0">
+                AND (m.class_name || char(1) || m.method_name || char(1) || m.method_desc) IN
+                <foreach collection="containsCallerKeys" item="k" open="(" separator="," close=")">
+                    #{k}
+                </foreach>
+            </if>
+
+            <if test="excludeCallerKeys != null and excludeCallerKeys.size() > 0">
+                AND (m.class_name || char(1) || m.method_name || char(1) || m.method_desc) NOT IN
+                <foreach collection="excludeCallerKeys" item="k" open="(" separator="," close=")">
+                    #{k}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="selectCallerKeys" resultType="java.lang.String">
+        SELECT DISTINCT
+            mc.caller_class_name || char(1) || mc.caller_method_name || char(1) || mc.caller_method_desc
+        FROM method_call_table mc
+        WHERE mc.callee_class_name = #{calleeClass}
+          AND mc.callee_method_name = #{calleeMethod}
+    </select>
+
+</mapper>

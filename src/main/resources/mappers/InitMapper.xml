@@ -228,4 +228,45 @@
             method_desc TEXT NOT NULL
         );
     </update>
+
+    <!--
+      Indexes for the EL search engine. Idempotent (IF NOT EXISTS).
+      Each is chosen to make the canonical predicate translate into an
+      index seek instead of a full table scan.
+    -->
+    <update id="createIdxMethodClass">
+        CREATE INDEX IF NOT EXISTS idx_method_class ON method_table(class_name)
+    </update>
+    <update id="createIdxMethodName">
+        CREATE INDEX IF NOT EXISTS idx_method_name ON method_table(method_name)
+    </update>
+    <update id="createIdxAnnoClassMethod">
+        CREATE INDEX IF NOT EXISTS idx_anno_class_method ON anno_table(class_name, method_name)
+    </update>
+    <update id="createIdxAnnoName">
+        CREATE INDEX IF NOT EXISTS idx_anno_name ON anno_table(anno_name)
+    </update>
+    <update id="createIdxMemberClass">
+        CREATE INDEX IF NOT EXISTS idx_member_class ON member_table(class_name)
+    </update>
+    <update id="createIdxCallCaller">
+        CREATE INDEX IF NOT EXISTS idx_call_caller
+        ON method_call_table(caller_class_name, caller_method_name, caller_method_desc)
+    </update>
+    <update id="createIdxCallCallee">
+        CREATE INDEX IF NOT EXISTS idx_call_callee
+        ON method_call_table(callee_class_name, callee_method_name)
+    </update>
+    <update id="createIdxClassTableName">
+        CREATE INDEX IF NOT EXISTS idx_class_table_name ON class_table(class_name)
+    </update>
+    <update id="createIdxIfaceClass">
+        CREATE INDEX IF NOT EXISTS idx_iface_class ON interface_table(class_name)
+    </update>
+    <update id="createIdxImplClass">
+        CREATE INDEX IF NOT EXISTS idx_impl_class ON method_impl_table(class_name)
+    </update>
+    <update id="createIdxImplImpl">
+        CREATE INDEX IF NOT EXISTS idx_impl_impl ON method_impl_table(impl_class_name)
+    </update>
 </mapper>

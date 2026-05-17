@@ -115,6 +115,61 @@ public class DatabaseManager {
         LogUtil.info("create database finish");
     }
 
+    /**
+     * Builds (idempotently) the indexes required by the EL search
+     * engine and applies SQLite PRAGMAs that drastically improve read
+     * throughput for analytical workloads.
+     * <p>
+     * Cheap on a freshly-built DB: each {@code CREATE INDEX IF NOT
+     * EXISTS} is a no-op once the index already exists. Called once
+     * lazily by the search engine to avoid paying the cost when the
+     * user never opens EL Search.
+     */
+    private static volatile boolean searchOptsApplied = false;
+
+    public static synchronized void ensureSearchOptimizations() {
+        if (searchOptsApplied) {
+            return;
+        }
+        searchOptsApplied = true;
+        try {
+            InitMapper im = session.getMapper(InitMapper.class);
+            im.createIdxMethodClass();
+            im.createIdxMethodName();
+            im.createIdxAnnoClassMethod();
+            im.createIdxAnnoName();
+            im.createIdxMemberClass();
+            im.createIdxCallCaller();
+            im.createIdxCallCallee();
+            im.createIdxClassTableName();
+            im.createIdxIfaceClass();
+            im.createIdxImplClass();
+            im.createIdxImplImpl();
+            // PRAGMAs need raw JDBC. WAL + NORMAL sync gives multi-
+            // reader concurrency without sacrificing crash safety.
+            // IMPORTANT: do NOT close the Connection returned by
+            // SqlSession.getConnection() -- it belongs to the session
+            // and closing it returns it to the DBCP pool, breaking
+            // every subsequent Mapper call.
+            java.sql.Connection conn = session.getConnection();
+            try (java.sql.Statement st = conn.createStatement()) {
+                st.execute("PRAGMA journal_mode=WAL");
+                st.execute("PRAGMA synchronous=NORMAL");
+                st.execute("PRAGMA temp_store=MEMORY");
+                st.execute("PRAGMA mmap_size=268435456");
+                st.execute("PRAGMA cache_size=-65536");
+                // ANALYZE feeds the planner with cardinality stats so
+                // it picks the right index even on small tables.
+                st.execute("ANALYZE");
+            }
+            logger.info("EL search optimizations applied (indexes + PRAGMAs)");
+        } catch (Throwable t) {
+            // Optimization is best-effort -- search will still work
+            // (slower) without it. Never let this kill the search.
+            logger.warn("ensureSearchOptimizations failed: {}", t.toString());
+        }
+    }
+
     public static void saveDFS(DFSResultEntity dfsResultEntity) {
         int a = dfsMapper.insertDFSResult(dfsResultEntity);
         if (a < 1) {

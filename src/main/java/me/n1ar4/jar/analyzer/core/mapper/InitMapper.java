@@ -46,4 +46,33 @@ public interface InitMapper {
     void createFavoriteTable();
 
     void createHistoryTable();
+
+    /**
+     * Creates the indexes that the EL search engine relies on for
+     * O(log N) lookups instead of full table scans. All idempotent.
+     * <p>
+     * Each statement is its own method so we don't depend on the
+     * driver's multi-statement support.
+     */
+    void createIdxMethodClass();
+
+    void createIdxMethodName();
+
+    void createIdxAnnoClassMethod();
+
+    void createIdxAnnoName();
+
+    void createIdxMemberClass();
+
+    void createIdxCallCaller();
+
+    void createIdxCallCallee();
+
+    void createIdxClassTableName();
+
+    void createIdxIfaceClass();
+
+    void createIdxImplClass();
+
+    void createIdxImplImpl();
 }

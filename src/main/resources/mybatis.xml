@@ -49,5 +49,6 @@
         <mapper resource="mappers/DFSResultMapper.xml" />
         <mapper resource="mappers/FavMapper.xml" />
         <mapper resource="mappers/HisMapper.xml" />
+        <mapper resource="mappers/ELSearchMapper.xml" />
     </mappers>
 </configuration>

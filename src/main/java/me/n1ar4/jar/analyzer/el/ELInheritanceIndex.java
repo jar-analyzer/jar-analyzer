@@ -17,15 +17,7 @@ import org.apache.ibatis.session.SqlSession;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * In-memory inheritance graph used by EL search to evaluate the
@@ -143,7 +135,9 @@ public final class ELInheritanceIndex {
         return seen;
     }
 
-    /** Trims a closure to a fresh List for SQL IN-list usage. */
+    /**
+     * Trims a closure to a fresh List for SQL IN-list usage.
+     */
     public static List<String> toList(Set<String> set) {
         return new ArrayList<>(set);
     }

@@ -13,14 +13,7 @@ package me.n1ar4.jar.analyzer.el;
 import me.n1ar4.jar.analyzer.core.mapper.ELSearchMapper;
 import org.apache.ibatis.session.SqlSession;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -37,7 +30,9 @@ import java.util.regex.PatternSyntaxException;
  */
 public final class ELQueryPlanner {
 
-    /** Holds the work split between SQL and Java. */
+    /**
+     * Holds the work split between SQL and Java.
+     */
     public static final class Plan {
         public final Map<String, Object> sqlParams;
         public final Pattern nameRegex;       // null = no filter

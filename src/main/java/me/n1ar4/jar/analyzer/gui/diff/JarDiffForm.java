@@ -5,7 +5,7 @@
  *
  * This project is distributed under the GPLv3 license.
  *
- * https:
+ * https://github.com/jar-analyzer/jar-analyzer/blob/master/LICENSE
  */
 
 package me.n1ar4.jar.analyzer.gui.diff;

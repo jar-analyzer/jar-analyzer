@@ -61,4 +61,21 @@ public class SvgManager {
     public static FlatSVGIcon NestedJarIcon = new FlatSVGIcon("svg/nestedJar.svg", 16, 16);
     public static FlatSVGIcon NativeIcon = new FlatSVGIcon("svg/native.svg", 16, 16);
     public static FlatSVGIcon JavaSourceIcon = new FlatSVGIcon("svg/javaSource.svg", 16, 16);
+
+    // ---- EL search workbench icons -------------------------------------
+    // IDEA-flavoured glyphs used by the SPEL search panel toolbar,
+    // template browser and output console.
+    public static FlatSVGIcon ElRunIcon = new FlatSVGIcon("svg/elRun.svg", 16, 16);
+    public static FlatSVGIcon ElStopIcon = new FlatSVGIcon("svg/elStop.svg", 16, 16);
+    public static FlatSVGIcon ElCheckIcon = new FlatSVGIcon("svg/elCheck.svg", 16, 16);
+    public static FlatSVGIcon ElExportIcon = new FlatSVGIcon("svg/elExport.svg", 16, 16);
+    public static FlatSVGIcon ElFormatIcon = new FlatSVGIcon("svg/elFormat.svg", 16, 16);
+    public static FlatSVGIcon ElClearIcon = new FlatSVGIcon("svg/elClear.svg", 16, 16);
+    public static FlatSVGIcon ElCopyIcon = new FlatSVGIcon("svg/elCopy.svg", 16, 16);
+    public static FlatSVGIcon ElClearLogIcon = new FlatSVGIcon("svg/elClearLog.svg", 16, 16);
+    public static FlatSVGIcon ElTemplateIcon = new FlatSVGIcon("svg/elTemplate.svg", 16, 16);
+    public static FlatSVGIcon ElGroupIcon = new FlatSVGIcon("svg/elGroup.svg", 16, 16);
+    public static FlatSVGIcon ElSnippetIcon = new FlatSVGIcon("svg/elSnippet.svg", 16, 16);
+    public static FlatSVGIcon ElConsoleIcon = new FlatSVGIcon("svg/elConsole.svg", 16, 16);
+    public static FlatSVGIcon ElFilterIcon = new FlatSVGIcon("svg/elFilter.svg", 16, 16);
 }

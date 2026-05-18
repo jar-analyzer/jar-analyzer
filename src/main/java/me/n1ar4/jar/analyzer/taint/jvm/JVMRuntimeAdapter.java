@@ -225,12 +225,14 @@ public class JVMRuntimeAdapter<T> extends MethodVisitor {
                 operandStack.pop();
                 break;
             case Opcodes.DUP:
-                operandStack.push(operandStack.get(0));
+                // 深拷贝以避免 Set 别名（多个槽位指向同一个 Set，
+                // 后续任何 mutation 都会跨槽传染）。
+                operandStack.push(new HashSet<>(operandStack.get(0)));
                 break;
             case Opcodes.DUP_X1:
                 saved0 = operandStack.pop();
                 saved1 = operandStack.pop();
-                operandStack.push(saved0);
+                operandStack.push(new HashSet<>(saved0));
                 operandStack.push(saved1);
                 operandStack.push(saved0);
                 break;
@@ -238,21 +240,30 @@ public class JVMRuntimeAdapter<T> extends MethodVisitor {
                 saved0 = operandStack.pop();
                 saved1 = operandStack.pop();
                 saved2 = operandStack.pop();
-                operandStack.push(saved0);
+                operandStack.push(new HashSet<>(saved0));
                 operandStack.push(saved2);
                 operandStack.push(saved1);
                 operandStack.push(saved0);
                 break;
             case Opcodes.DUP2:
-                operandStack.push(operandStack.get(1));
-                operandStack.push(operandStack.get(1));
-                break;
+                // JVM 规范 DUP2:
+                //   form 1 (两个 1-slot)：..., v2, v1 -> ..., v2, v1, v2, v1
+                //   form 2 (一个 2-slot)：..., v        -> ..., v, v
+                // 旧实现两次 get(1)，第二次 get 读到的是第一次 push 进去的元素，
+                // 导致结果错位为 ..., v2, v1, v2, v2。这里先把两个值取出来再 push。
+            {
+                Set<T> v1 = operandStack.get(0);
+                Set<T> v2 = operandStack.get(1);
+                operandStack.push(new HashSet<>(v2));
+                operandStack.push(new HashSet<>(v1));
+            }
+            break;
             case Opcodes.DUP2_X1:
                 saved0 = operandStack.pop();
                 saved1 = operandStack.pop();
                 saved2 = operandStack.pop();
-                operandStack.push(saved1);
-                operandStack.push(saved0);
+                operandStack.push(new HashSet<>(saved1));
+                operandStack.push(new HashSet<>(saved0));
                 operandStack.push(saved2);
                 operandStack.push(saved1);
                 operandStack.push(saved0);
@@ -262,8 +273,8 @@ public class JVMRuntimeAdapter<T> extends MethodVisitor {
                 saved1 = operandStack.pop();
                 saved2 = operandStack.pop();
                 saved3 = operandStack.pop();
-                operandStack.push(saved1);
-                operandStack.push(saved0);
+                operandStack.push(new HashSet<>(saved1));
+                operandStack.push(new HashSet<>(saved0));
                 operandStack.push(saved3);
                 operandStack.push(saved2);
                 operandStack.push(saved1);
@@ -464,22 +475,24 @@ public class JVMRuntimeAdapter<T> extends MethodVisitor {
 
     @Override
     public void visitVarInsn(int opcode, int var) {
-        for (int i = localVariables.size(); i <= var; i++) {
+        for (int i = localVariables.size(); i <= var + 1; i++) {
+            // 给 var+1 也预留槽位，方便 LSTORE/DSTORE 维护"高位"占位
             localVariables.add(new HashSet<>());
         }
         Set<T> saved0;
         switch (opcode) {
             case Opcodes.ILOAD:
             case Opcodes.FLOAD:
-                operandStack.push(localVariables.get(var));
+                operandStack.push(new HashSet<>(localVariables.get(var)));
                 break;
             case Opcodes.LLOAD:
             case Opcodes.DLOAD:
-                operandStack.push();
+                // 保留 var 的污点到 low slot；high slot 用空 set 占位
+                operandStack.push(new HashSet<>(localVariables.get(var)));
                 operandStack.push();
                 break;
             case Opcodes.ALOAD:
-                operandStack.push(localVariables.get(var));
+                operandStack.push(new HashSet<>(localVariables.get(var)));
                 break;
             case Opcodes.ISTORE:
             case Opcodes.FSTORE:
@@ -487,9 +500,14 @@ public class JVMRuntimeAdapter<T> extends MethodVisitor {
                 break;
             case Opcodes.DSTORE:
             case Opcodes.LSTORE:
-                operandStack.pop();
-                operandStack.pop();
-                localVariables.set(var, new HashSet<>());
+                // 栈上是 [..., low, high]，pop 顺序是 high -> low
+                operandStack.pop();                     // high (long/double 的高位 slot 无污点意义)
+                saved0 = operandStack.pop();            // low：保留污点
+                localVariables.set(var, saved0);
+                // var+1 仍然作为占位（second word），不带独立污点
+                if (var + 1 < localVariables.size()) {
+                    localVariables.set(var + 1, new HashSet<>());
+                }
                 break;
             case Opcodes.ASTORE:
                 saved0 = operandStack.pop();
@@ -580,23 +598,22 @@ public class JVMRuntimeAdapter<T> extends MethodVisitor {
                 for (int i = 0; i < argTypes.length; i++) {
                     argTaint.add(null);
                 }
+                // 自栈顶向下 pop：单 slot 直接 pop；
+                // long/double 双 slot 时把"高位"也合并到 argTaint，避免污点丢失。
                 for (int i = 0; i < argTypes.length; i++) {
                     Type argType = argTypes[i];
                     if (argType.getSize() > 0) {
+                        Set<T> merged = new HashSet<>();
                         for (int j = 0; j < argType.getSize() - 1; j++) {
-                            operandStack.pop();
+                            merged.addAll(operandStack.pop());   // high slot 也算污点
                         }
-                        argTaint.set(argTypes.length - 1 - i, operandStack.pop());
+                        merged.addAll(operandStack.pop());       // low slot 是真正语义的所在
+                        argTaint.set(argTypes.length - 1 - i, merged);
                     }
                 }
-                Set<T> resultTaint;
-                if (name.equals("<init>")) {
-                    resultTaint = argTaint.get(0);
-                } else {
-                    resultTaint = new HashSet<>();
-                }
                 if (retSize > 0) {
-                    operandStack.push(resultTaint);
+                    // 返回值默认无污点；具体的污点传播交给子类（TaintMethodAdapter）覆盖。
+                    operandStack.push();
                     for (int i = 1; i < retSize; i++) {
                         operandStack.push();
                     }
@@ -666,27 +683,67 @@ public class JVMRuntimeAdapter<T> extends MethodVisitor {
 
     @Override
     public void visitLabel(Label label) {
-        if (gotoStates.containsKey(label)) {
-            GotoState<T> state = gotoStates.get(label);
-            // old -> label
-            LocalVariables<T> oldLocalVariables = state.getLocalVariables();
-            OperandStack<T> oldOperandStack = state.getOperandStack();
-            // new -> null
-            LocalVariables<T> newLocalVariables = new LocalVariables<>();
-            OperandStack<T> newOperandStack = new OperandStack<>();
-            // init new
-            for (Set<T> original : oldLocalVariables.getList()) {
-                newLocalVariables.add(new HashSet<>(original));
+        // 1) 异常 handler 入口：JVM 规范要求此处栈应当被重置为"仅一个异常对象 ref"。
+        //    必须在与 gotoState 合并之前先做，避免叠加到旧栈造成 sanityCheck 失败。
+        boolean isHandler = exceptionHandlerLabels.contains(label);
+
+        // 2) 取出此 label 已收集到的"前驱（GOTO/IF/SWITCH 等）状态"。
+        GotoState<T> incoming = gotoStates.get(label);
+
+        if (isHandler) {
+            // 异常 handler：清空当前栈，仅 push 一个异常 ref（污点为前驱合并值，如有）
+            operandStack.clear();
+            Set<T> exTaint = new HashSet<>();
+            if (incoming != null) {
+                // handler 通常不会被 GOTO 直接命中，但若有，则保守取栈顶第一个槽
+                OperandStack<T> os = incoming.getOperandStack();
+                if (os.size() > 0) {
+                    exTaint.addAll(os.get(0));
+                }
+                // locals 从前驱合并（保守）
+                LocalVariables<T> lv = incoming.getLocalVariables();
+                LocalVariables<T> mergedLv = new LocalVariables<>();
+                for (Set<T> s : lv.getList()) {
+                    mergedLv.add(new HashSet<>(s));
+                }
+                // 合并当前 locals
+                for (int i = 0; i < localVariables.size(); i++) {
+                    while (mergedLv.size() <= i) mergedLv.add(new HashSet<>());
+                    mergedLv.get(i).addAll(localVariables.get(i));
+                }
+                this.localVariables = mergedLv;
             }
-            for (Set<T> original : oldOperandStack.getList()) {
-                newOperandStack.add(new HashSet<>(original));
+            operandStack.push(exTaint);
+        } else if (incoming != null) {
+            // 普通 label：合并"前驱状态" 与 "fall-through 进入时的当前状态"。
+            // 旧实现是直接替换，会把 fall-through 路径的状态丢掉；这里改为 union。
+            LocalVariables<T> mergedLv = new LocalVariables<>();
+            OperandStack<T> mergedOs = new OperandStack<>();
+
+            // 起点：前驱状态（深拷贝）
+            for (Set<T> s : incoming.getLocalVariables().getList()) {
+                mergedLv.add(new HashSet<>(s));
             }
-            this.operandStack = newOperandStack;
-            this.localVariables = newLocalVariables;
+            for (Set<T> s : incoming.getOperandStack().getList()) {
+                mergedOs.add(new HashSet<>(s));
+            }
+
+            // 合并：fall-through 进入时的当前 state
+            for (int i = 0; i < localVariables.size(); i++) {
+                while (mergedLv.size() <= i) mergedLv.add(new HashSet<>());
+                mergedLv.get(i).addAll(localVariables.get(i));
+            }
+            // 栈合并：以"前驱栈深"为准（fall-through 栈深应当一致；
+            // 若不一致，以前驱栈深为基准并把当前 state 的污点 union 上去）。
+            for (int i = 0; i < operandStack.size() && i < mergedOs.size(); i++) {
+                mergedOs.getList().get(i).addAll(operandStack.getList().get(i));
+            }
+
+            this.operandStack = mergedOs;
+            this.localVariables = mergedLv;
         }
-        if (exceptionHandlerLabels.contains(label)) {
-            operandStack.push(new HashSet<>());
-        }
+        // 否则（无前驱、非 handler）：fall-through 唯一流入路径，保持当前 state 即可。
+
         super.visitLabel(label);
         sanityCheck();
     }
@@ -750,20 +807,5 @@ public class JVMRuntimeAdapter<T> extends MethodVisitor {
     public void visitTryCatchBlock(Label start, Label end, Label handler, String type) {
         exceptionHandlerLabels.add(handler);
         super.visitTryCatchBlock(start, end, handler, type);
-    }
-
-    @Override
-    public AnnotationVisitor visitTryCatchAnnotation(int typeRef, TypePath typePath, String desc, boolean visible) {
-        return super.visitTryCatchAnnotation(typeRef, typePath, desc, visible);
-    }
-
-    @Override
-    public void visitMaxs(int maxStack, int maxLocals) {
-        super.visitMaxs(maxStack, maxLocals);
-    }
-
-    @Override
-    public void visitEnd() {
-        super.visitEnd();
     }
 }

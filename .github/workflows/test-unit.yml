@@ -23,7 +23,7 @@ jobs:
       - name: run pure unit tests
         run: |
           mvn -B test \
-            -Dtest='MethodELTest,SearchFilterHelperTest,SearchResultCsvExporterTest,TaintIndexUtilTest,TaintTransferTest,BaseHandlerTest' \
+            -Dtest='MethodELTest,SearchFilterHelperTest,SearchResultCsvExporterTest,TaintIndexUtilTest,TaintTransferTest,BaseHandlerTest,JVMRuntimeAdapterTest' \
             -DfailIfNoTests=true
 
       - name: upload surefire reports

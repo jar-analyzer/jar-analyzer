@@ -26,11 +26,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class TaintAnalyzer {
     private static final Logger logger = LogManager.getLogger();
 
+    /**
+     * 历史保留：标记本字段不变以避免外部依赖断裂。
+     */
     public static final Integer TAINT_FAIL = -1;
     public static final String TAINT = "TAINT";
 
@@ -42,34 +44,33 @@ public class TaintAnalyzer {
         SanitizerRule rule = SanitizerRule.loadJSON(sin);
         logger.info("taint analysis loaded sanitizer rules count: {}", rule.getRules().size());
 
+        InputStream pin = TaintAnalyzer.class.getClassLoader().getResourceAsStream("propagation.json");
+        PropagationRuleSet propagation = PropagationRuleSet.loadJSON(pin);
+        logger.info("taint analysis loaded propagation rules count: {}", propagation.getRules().size());
+
         CoreEngine engine = MainForm.getEngine();
         for (DFSResult result : resultList) {
             boolean thisChainSuccess = false;
-            StringBuilder text = new StringBuilder();
-            System.out.println("####################### 污点分析进行中 #######################");
+            TaintEventSink sink = new TaintEventSink();
+            sink.emit(TaintEvent.of(TaintEvent.Type.CHAIN_START, "开始分析新调用链"));
+
             List<MethodReference.Handle> methodList = result.getMethodList();
 
-            // 上一个方法调用 污点传递到第几个参数
-            // ！！关键！！
-            // 方法之间 数据流/污点传播 完全靠该字段实现
-            AtomicInteger pass = new AtomicInteger(TAINT_FAIL);
+            // 跨方法污点载荷。
+            // 旧实现是 AtomicInteger pass = -1，现升级为 TaintTransfer：
+            //   - 支持同时污染多个 callee 的 locals 槽（含 this）
+            //   - 携带返回值是否带污点的标记
+            TaintTransfer transfer = new TaintTransfer();
 
             // 遍历 chains
             for (int i = 0; i < methodList.size(); i++) {
-                // 不分析最后一个 chain
-                // 因为最后一个一般是 jdk 的 sink
-                // 但是用户很可能不加载 jdk 的东西
-                // 如果只要上一个可以到达最后一个
-                // 即可认为污点分析成功
+                // 不分析最后一个 chain（通常是 jdk sink，类不在工程内）
                 if (i == methodList.size() - 1) {
-                    logger.info("taint analysis finished");
-                    text.append("污点分析执行结束");
-                    text.append("\n");
-                    if (pass.get() != TAINT_FAIL) {
+                    if (transfer.hasTaint()) {
                         thisChainSuccess = true;
-                        logger.info("chain taint analysis result: pass");
-                        text.append("该链污点分析结果：通过");
-                        text.append("\n");
+                        sink.emit(TaintEvent.of(TaintEvent.Type.CHAIN_PASS, "该链污点分析结果：通过"));
+                    } else {
+                        sink.emit(TaintEvent.of(TaintEvent.Type.CHAIN_FAIL, "该链污点分析结果：未通过"));
                     }
                     break;
                 }
@@ -82,14 +83,18 @@ public class TaintAnalyzer {
                 String absPath = engine.getAbsPath(classOrigin);
 
                 if (absPath == null || absPath.trim().isEmpty()) {
-                    logger.warn("taint analysis class not found: {}", m.getClassReference().getName());
+                    sink.emit(TaintEvent.atMethod(TaintEvent.Type.WARN, i,
+                            m.getClassReference().getName(), m.getName(), m.getDesc(),
+                            "类文件未找到，链路中断"));
                     break;
                 }
                 byte[] clsBytes;
                 try {
                     clsBytes = Files.readAllBytes(Paths.get(absPath));
                 } catch (Exception ex) {
-                    logger.error("taint analysis read file error: {}", ex.toString());
+                    sink.emit(TaintEvent.atMethod(TaintEvent.Type.WARN, i,
+                            m.getClassReference().getName(), m.getName(), m.getDesc(),
+                            "读取类文件失败：" + ex));
                     return new ArrayList<>();
                 }
 
@@ -97,97 +102,106 @@ public class TaintAnalyzer {
                 Type[] argumentTypes = Type.getArgumentTypes(desc);
                 int paramCount = argumentTypes.length;
 
-                logger.info("method: {} param count: {}", m.getName(), paramCount);
-                text.append(String.format("方法: %s 参数数量: %d", m.getName(), paramCount));
-                text.append("\n");
+                if (i == 0) {
+                    // 链首：穷举每个形参作为 source 进行尝试。
+                    sink.emit(TaintEvent.atMethod(TaintEvent.Type.INFO, 0,
+                            m.getClassReference().getName(), m.getName(), m.getDesc(),
+                            "链首方法，参数数量 " + paramCount + "（穷举每个参数作为 source）"));
 
-                if (pass.get() == TAINT_FAIL) {
-                    // 2025/08/31 预期不符 BUG
-                    if (i != 0) {
-                        logger.info("chain {} analysis finished", i);
-                        text.append(String.format("第 %d 个链分析结束", i));
-                        text.append("\n");
-                        break;
-                    }
-                    // 第一次开始
-                    logger.info("start taint analysis - chain start - no data flow");
-                    text.append("开始污点分析 - 链开始 - 无数据流");
-                    text.append("\n");
-                    // 遍历所有 source 的参数
-                    // 认为所有参数都可能是 source
-                    for (int k = 0; k < paramCount; k++) {
-                        try {
-                            logger.info("start analyzing method {} param index {}", m.getName(), k);
-                            text.append(String.format("开始分析方法 %s 第 %d 个参数", m.getName(), k));
-                            text.append("\n");
-                            TaintClassVisitor tcv = new TaintClassVisitor(k, m, next, pass, rule, text);
-                            ClassReader cr = new ClassReader(clsBytes);
-                            cr.accept(tcv, Const.AnalyzeASMOptions);
-                            pass = tcv.getPass();
-                            logger.info("data flow result - propagated to param index {}", pass.get());
-                            text.append(String.format("数据流结果 - 传播到第 %d 个参数", pass.get()));
-                            text.append("\n");
-                            // 无法抵达第二个 chain 认为有问题
-                            if (pass.get() != TAINT_FAIL) {
-                                break;
+                    boolean reached = false;
+                    for (int paramSeq = 0; paramSeq < paramCount && !reached; paramSeq++) {
+                        // 先尝试"非 static 视角"（locals[0]=this，所以 arg = paramSeq+1）
+                        // 再尝试"static 视角"（arg = paramSeq）
+                        for (int viewStart = 1; viewStart >= 0 && !reached; viewStart--) {
+                            TaintTransfer entry = new TaintTransfer();
+                            entry.markLocal(viewStart + paramSeq);
+                            TaintTransfer exit = new TaintTransfer();
+
+                            sink.emit(TaintEvent.atMethod(TaintEvent.Type.SOURCE_TRY, 0,
+                                    m.getClassReference().getName(), m.getName(), m.getDesc(),
+                                    "尝试 source：第 " + paramSeq + " 个参数（locals 索引 " + (viewStart + paramSeq) + "）"));
+
+                            try {
+                                TaintClassVisitor tcv = new TaintClassVisitor(entry, m, next, exit, rule, propagation, sink, 0);
+                                ClassReader cr = new ClassReader(clsBytes);
+                                cr.accept(tcv, Const.AnalyzeASMOptions);
+                                exit = tcv.getExit();
+                            } catch (IndexOutOfBoundsException e) {
+                                TaintClassVisitor tcv = new TaintClassVisitor(entry, m, next, exit, rule, propagation, sink, 0);
+                                if (StackMapFrameHandler.handleParseException(clsBytes, tcv,
+                                        absPath + "!" + m.getClassReference().getName(),
+                                        logger, "taint analysis chain start", e)) {
+                                    exit = tcv.getExit();
+                                } else {
+                                    sink.emit(TaintEvent.atMethod(TaintEvent.Type.WARN, 0,
+                                            m.getClassReference().getName(), m.getName(), m.getDesc(),
+                                            "链首分析异常：" + e));
+                                }
+                            } catch (Exception e) {
+                                sink.emit(TaintEvent.atMethod(TaintEvent.Type.WARN, 0,
+                                        m.getClassReference().getName(), m.getName(), m.getDesc(),
+                                        "链首分析异常：" + e));
                             }
-                        } catch (IndexOutOfBoundsException e) {
-                            // Handle corrupted StackMapTable by falling back to SKIP_FRAMES mode
-                            TaintClassVisitor tcv = new TaintClassVisitor(k, m, next, pass, rule, text);
-                            if (!StackMapFrameHandler.handleParseException(clsBytes, tcv,
-                                    absPath + "!" + m.getClassReference().getName(), logger, "taint analysis chain start", e)) {
-                                logger.error("taint analysis - chain start - error: {}", e.toString());
-                            } else {
-                                pass = tcv.getPass();
+
+                            if (exit != null && exit.hasTaint()) {
+                                transfer = exit;
+                                reached = true;
+                                sink.emit(TaintEvent.atMethod(TaintEvent.Type.INFO, 0,
+                                        m.getClassReference().getName(), m.getName(), m.getDesc(),
+                                        "链首到达下一跳：" + transfer));
                             }
-                        } catch (Exception e) {
-                            logger.error("taint analysis - chain start - error: {}", e.toString());
                         }
+                    }
+
+                    if (!reached) {
+                        sink.emit(TaintEvent.atMethod(TaintEvent.Type.CHAIN_FAIL, 0,
+                                m.getClassReference().getName(), m.getName(), m.getDesc(),
+                                "链首无任何参数可达下一跳，结束分析"));
+                        break;
                     }
                 } else {
-                    // 第二个 chain 开始
-                    // 只要顺利 即可继续分析
+                    // 链中 / 链尾前一跳
+                    TaintTransfer entry = transfer;
+                    TaintTransfer exit = new TaintTransfer();
                     try {
-                        TaintClassVisitor tcv = new TaintClassVisitor(pass.get(), m, next, pass, rule, text);
+                        TaintClassVisitor tcv = new TaintClassVisitor(entry, m, next, exit, rule, propagation, sink, i);
                         ClassReader cr = new ClassReader(clsBytes);
                         cr.accept(tcv, Const.AnalyzeASMOptions);
-                        pass = tcv.getPass();
-                        logger.info("data flow result - propagated to param index {}", pass.get());
-                        text.append(String.format("数据流结果 - 传播到第 %d 个参数", pass.get()));
-                        text.append("\n");
+                        exit = tcv.getExit();
                     } catch (IndexOutOfBoundsException e) {
-                        // Handle corrupted StackMapTable by falling back to SKIP_FRAMES mode
-                        TaintClassVisitor tcv = new TaintClassVisitor(pass.get(), m, next, pass, rule, text);
-                        if (!StackMapFrameHandler.handleParseException(clsBytes, tcv,
-                                absPath + "!" + m.getClassReference().getName(), logger, "taint analysis chain middle", e)) {
-                            logger.error("taint analysis - chain middle - error: {}", e.toString());
+                        TaintClassVisitor tcv = new TaintClassVisitor(entry, m, next, exit, rule, propagation, sink, i);
+                        if (StackMapFrameHandler.handleParseException(clsBytes, tcv,
+                                absPath + "!" + m.getClassReference().getName(),
+                                logger, "taint analysis chain middle", e)) {
+                            exit = tcv.getExit();
                         } else {
-                            pass = tcv.getPass();
+                            sink.emit(TaintEvent.atMethod(TaintEvent.Type.WARN, i,
+                                    m.getClassReference().getName(), m.getName(), m.getDesc(),
+                                    "链中分析异常：" + e));
                         }
                     } catch (Exception e) {
-                        logger.error("taint analysis - chain middle - error: {}", e.toString());
+                        sink.emit(TaintEvent.atMethod(TaintEvent.Type.WARN, i,
+                                m.getClassReference().getName(), m.getName(), m.getDesc(),
+                                "链中分析异常：" + e));
                     }
-                    if (pass.get() == TAINT_FAIL) {
+
+                    if (exit == null || !exit.hasTaint()) {
+                        sink.emit(TaintEvent.atMethod(TaintEvent.Type.CHAIN_FAIL, i,
+                                m.getClassReference().getName(), m.getName(), m.getDesc(),
+                                "本步未将污点传播至下一跳，链路中断"));
                         break;
                     }
+                    transfer = exit;
                 }
             }
 
-            if (thisChainSuccess) {
-                TaintResult r = new TaintResult();
-                r.setDfsResult(result);
-                r.setSuccess(true);
-                r.setTaintText(text.toString());
-                taintResult.add(r);
-            } else {
-                // 2025/10/13
-                // 污点分析失败的也应该加入
-                TaintResult r = new TaintResult();
-                r.setDfsResult(result);
-                r.setSuccess(false);
-                r.setTaintText(text.toString());
-                taintResult.add(r);
-            }
+            TaintResult r = new TaintResult();
+            r.setDfsResult(result);
+            r.setSuccess(thisChainSuccess);
+            r.setTaintText(sink.getText());
+            r.setEvents(sink.getEvents());
+            r.setBadge(sink.shortBadge());
+            taintResult.add(r);
         }
 
         return taintResult;

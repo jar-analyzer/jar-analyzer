@@ -1,0 +1,2363 @@
+{
+  "rules": [
+    {
+      "className": "java/lang/StringBuilder",
+      "methodName": "append",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this,ret"
+    },
+    {
+      "className": "java/lang/StringBuilder",
+      "methodName": "insert",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this,ret"
+    },
+    {
+      "className": "java/lang/StringBuilder",
+      "methodName": "replace",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this,ret"
+    },
+    {
+      "className": "java/lang/StringBuilder",
+      "methodName": "deleteCharAt",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "this,ret"
+    },
+    {
+      "className": "java/lang/StringBuilder",
+      "methodName": "delete",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "this,ret"
+    },
+    {
+      "className": "java/lang/StringBuilder",
+      "methodName": "reverse",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "this,ret"
+    },
+    {
+      "className": "java/lang/StringBuilder",
+      "methodName": "toString",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/StringBuilder",
+      "methodName": "subSequence",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/StringBuilder",
+      "methodName": "substring",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/StringBuilder",
+      "methodName": "charAt",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/StringBuffer",
+      "methodName": "append",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this,ret"
+    },
+    {
+      "className": "java/lang/StringBuffer",
+      "methodName": "insert",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this,ret"
+    },
+    {
+      "className": "java/lang/StringBuffer",
+      "methodName": "replace",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this,ret"
+    },
+    {
+      "className": "java/lang/StringBuffer",
+      "methodName": "deleteCharAt",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "this,ret"
+    },
+    {
+      "className": "java/lang/StringBuffer",
+      "methodName": "delete",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "this,ret"
+    },
+    {
+      "className": "java/lang/StringBuffer",
+      "methodName": "reverse",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "this,ret"
+    },
+    {
+      "className": "java/lang/StringBuffer",
+      "methodName": "toString",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/StringBuffer",
+      "methodName": "subSequence",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/StringBuffer",
+      "methodName": "substring",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/StringBuffer",
+      "methodName": "charAt",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/String",
+      "methodName": "<init>",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/lang/String",
+      "methodName": "concat",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/String",
+      "methodName": "substring",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/String",
+      "methodName": "subSequence",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/String",
+      "methodName": "trim",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/String",
+      "methodName": "strip",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/String",
+      "methodName": "stripLeading",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/String",
+      "methodName": "stripTrailing",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/String",
+      "methodName": "toLowerCase",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/String",
+      "methodName": "toUpperCase",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/String",
+      "methodName": "replace",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/String",
+      "methodName": "replaceAll",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/String",
+      "methodName": "replaceFirst",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/String",
+      "methodName": "format",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/String",
+      "methodName": "formatted",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/String",
+      "methodName": "intern",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/String",
+      "methodName": "split",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/String",
+      "methodName": "splitWithDelimiters",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/String",
+      "methodName": "join",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/String",
+      "methodName": "valueOf",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/String",
+      "methodName": "copyValueOf",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/String",
+      "methodName": "getBytes",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/String",
+      "methodName": "getChars",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/String",
+      "methodName": "toCharArray",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/String",
+      "methodName": "chars",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/String",
+      "methodName": "codePoints",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/String",
+      "methodName": "lines",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/String",
+      "methodName": "describeConstable",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/String",
+      "methodName": "repeat",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/CharSequence",
+      "methodName": "subSequence",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/CharSequence",
+      "methodName": "chars",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/CharSequence",
+      "methodName": "toString",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/Integer",
+      "methodName": "valueOf",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/Integer",
+      "methodName": "parseInt",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/Integer",
+      "methodName": "toString",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/Integer",
+      "methodName": "decode",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/Integer",
+      "methodName": "toBinaryString",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/Integer",
+      "methodName": "toHexString",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/Integer",
+      "methodName": "toOctalString",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/Long",
+      "methodName": "valueOf",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/Long",
+      "methodName": "parseLong",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/Long",
+      "methodName": "toString",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/Long",
+      "methodName": "decode",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/Short",
+      "methodName": "valueOf",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/Short",
+      "methodName": "parseShort",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/Byte",
+      "methodName": "valueOf",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/Byte",
+      "methodName": "parseByte",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/Float",
+      "methodName": "valueOf",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/Float",
+      "methodName": "parseFloat",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/Double",
+      "methodName": "valueOf",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/Double",
+      "methodName": "parseDouble",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/Boolean",
+      "methodName": "valueOf",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/Boolean",
+      "methodName": "parseBoolean",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/Boolean",
+      "methodName": "toString",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/Character",
+      "methodName": "valueOf",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/Character",
+      "methodName": "toString",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/math/BigInteger",
+      "methodName": "<init>",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/math/BigInteger",
+      "methodName": "valueOf",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/math/BigInteger",
+      "methodName": "toString",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/math/BigDecimal",
+      "methodName": "<init>",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/math/BigDecimal",
+      "methodName": "valueOf",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/math/BigDecimal",
+      "methodName": "toString",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Objects",
+      "methodName": "toString",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Objects",
+      "methodName": "requireNonNull",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Objects",
+      "methodName": "requireNonNullElse",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Collection",
+      "methodName": "add",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/Collection",
+      "methodName": "addAll",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/Collection",
+      "methodName": "iterator",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Collection",
+      "methodName": "stream",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Collection",
+      "methodName": "parallelStream",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Collection",
+      "methodName": "toArray",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/List",
+      "methodName": "add",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/List",
+      "methodName": "addAll",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/List",
+      "methodName": "set",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/List",
+      "methodName": "get",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/List",
+      "methodName": "subList",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/List",
+      "methodName": "of",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/List",
+      "methodName": "copyOf",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Set",
+      "methodName": "of",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Set",
+      "methodName": "copyOf",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Iterator",
+      "methodName": "next",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/ListIterator",
+      "methodName": "next",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/ListIterator",
+      "methodName": "previous",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Enumeration",
+      "methodName": "nextElement",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/ArrayList",
+      "methodName": "<init>",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/ArrayList",
+      "methodName": "add",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/ArrayList",
+      "methodName": "addAll",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/ArrayList",
+      "methodName": "set",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/ArrayList",
+      "methodName": "get",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/ArrayList",
+      "methodName": "iterator",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/ArrayList",
+      "methodName": "stream",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/ArrayList",
+      "methodName": "toArray",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/LinkedList",
+      "methodName": "<init>",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/LinkedList",
+      "methodName": "add",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/LinkedList",
+      "methodName": "addAll",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/LinkedList",
+      "methodName": "addFirst",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/LinkedList",
+      "methodName": "addLast",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/LinkedList",
+      "methodName": "set",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/LinkedList",
+      "methodName": "get",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/LinkedList",
+      "methodName": "getFirst",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/LinkedList",
+      "methodName": "getLast",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/LinkedList",
+      "methodName": "peek",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/LinkedList",
+      "methodName": "peekFirst",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/LinkedList",
+      "methodName": "peekLast",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/LinkedList",
+      "methodName": "poll",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/LinkedList",
+      "methodName": "pollFirst",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/LinkedList",
+      "methodName": "pollLast",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/LinkedList",
+      "methodName": "pop",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/LinkedList",
+      "methodName": "iterator",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Vector",
+      "methodName": "add",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/Vector",
+      "methodName": "addElement",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/Vector",
+      "methodName": "elementAt",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Vector",
+      "methodName": "get",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Stack",
+      "methodName": "push",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this,ret"
+    },
+    {
+      "className": "java/util/Stack",
+      "methodName": "pop",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Stack",
+      "methodName": "peek",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/HashSet",
+      "methodName": "<init>",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/HashSet",
+      "methodName": "add",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/HashSet",
+      "methodName": "addAll",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/HashSet",
+      "methodName": "iterator",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/HashSet",
+      "methodName": "stream",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/LinkedHashSet",
+      "methodName": "<init>",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/LinkedHashSet",
+      "methodName": "add",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/LinkedHashSet",
+      "methodName": "iterator",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/TreeSet",
+      "methodName": "<init>",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/TreeSet",
+      "methodName": "add",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/TreeSet",
+      "methodName": "first",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/TreeSet",
+      "methodName": "last",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Map",
+      "methodName": "put",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/Map",
+      "methodName": "putIfAbsent",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/Map",
+      "methodName": "putAll",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/Map",
+      "methodName": "merge",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/Map",
+      "methodName": "compute",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/Map",
+      "methodName": "computeIfAbsent",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/Map",
+      "methodName": "computeIfPresent",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/Map",
+      "methodName": "get",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Map",
+      "methodName": "getOrDefault",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Map",
+      "methodName": "values",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Map",
+      "methodName": "keySet",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Map",
+      "methodName": "entrySet",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Map",
+      "methodName": "of",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Map",
+      "methodName": "ofEntries",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Map",
+      "methodName": "copyOf",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/HashMap",
+      "methodName": "<init>",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/HashMap",
+      "methodName": "put",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/HashMap",
+      "methodName": "putAll",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/HashMap",
+      "methodName": "get",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/HashMap",
+      "methodName": "values",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/HashMap",
+      "methodName": "keySet",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/HashMap",
+      "methodName": "entrySet",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/LinkedHashMap",
+      "methodName": "<init>",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/LinkedHashMap",
+      "methodName": "put",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/LinkedHashMap",
+      "methodName": "get",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/TreeMap",
+      "methodName": "<init>",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/TreeMap",
+      "methodName": "put",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/TreeMap",
+      "methodName": "get",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Hashtable",
+      "methodName": "put",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/Hashtable",
+      "methodName": "get",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Properties",
+      "methodName": "setProperty",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/Properties",
+      "methodName": "getProperty",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/concurrent/ConcurrentHashMap",
+      "methodName": "put",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/concurrent/ConcurrentHashMap",
+      "methodName": "putIfAbsent",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/concurrent/ConcurrentHashMap",
+      "methodName": "get",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/concurrent/ConcurrentHashMap",
+      "methodName": "values",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/concurrent/ConcurrentHashMap",
+      "methodName": "keySet",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Map$Entry",
+      "methodName": "getKey",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Map$Entry",
+      "methodName": "getValue",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Optional",
+      "methodName": "of",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Optional",
+      "methodName": "ofNullable",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Optional",
+      "methodName": "get",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Optional",
+      "methodName": "orElse",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Optional",
+      "methodName": "orElseGet",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Optional",
+      "methodName": "orElseThrow",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Optional",
+      "methodName": "map",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Optional",
+      "methodName": "flatMap",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Optional",
+      "methodName": "filter",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/stream/Stream",
+      "methodName": "of",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/stream/Stream",
+      "methodName": "concat",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/stream/Stream",
+      "methodName": "map",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/stream/Stream",
+      "methodName": "flatMap",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/stream/Stream",
+      "methodName": "filter",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/stream/Stream",
+      "methodName": "sorted",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/stream/Stream",
+      "methodName": "distinct",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/stream/Stream",
+      "methodName": "limit",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/stream/Stream",
+      "methodName": "skip",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/stream/Stream",
+      "methodName": "peek",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/stream/Stream",
+      "methodName": "collect",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/stream/Stream",
+      "methodName": "toList",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/stream/Stream",
+      "methodName": "toArray",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/stream/Stream",
+      "methodName": "reduce",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/stream/Stream",
+      "methodName": "findFirst",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/stream/Stream",
+      "methodName": "findAny",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/stream/Stream",
+      "methodName": "iterator",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/stream/Collectors",
+      "methodName": "toList",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/stream/Collectors",
+      "methodName": "toSet",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/stream/Collectors",
+      "methodName": "toMap",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/stream/Collectors",
+      "methodName": "joining",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/stream/Collectors",
+      "methodName": "groupingBy",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/io/BufferedReader",
+      "methodName": "<init>",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/io/BufferedReader",
+      "methodName": "readLine",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/io/BufferedReader",
+      "methodName": "lines",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/io/BufferedReader",
+      "methodName": "read",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/io/InputStreamReader",
+      "methodName": "<init>",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/io/InputStreamReader",
+      "methodName": "read",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/io/FileReader",
+      "methodName": "<init>",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/io/StringReader",
+      "methodName": "<init>",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/io/StringReader",
+      "methodName": "read",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/io/ByteArrayInputStream",
+      "methodName": "<init>",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/io/InputStream",
+      "methodName": "read",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/io/InputStream",
+      "methodName": "readAllBytes",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/io/InputStream",
+      "methodName": "readNBytes",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/io/DataInputStream",
+      "methodName": "readUTF",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/io/ObjectInputStream",
+      "methodName": "readObject",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Scanner",
+      "methodName": "<init>",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/Scanner",
+      "methodName": "next",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Scanner",
+      "methodName": "nextLine",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Scanner",
+      "methodName": "nextInt",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/nio/file/Path",
+      "methodName": "of",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/nio/file/Paths",
+      "methodName": "get",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/nio/file/Path",
+      "methodName": "resolve",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/nio/file/Path",
+      "methodName": "toString",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/nio/file/Path",
+      "methodName": "toFile",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/io/File",
+      "methodName": "<init>",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/io/File",
+      "methodName": "getPath",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/io/File",
+      "methodName": "getAbsolutePath",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/io/File",
+      "methodName": "getCanonicalPath",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/io/File",
+      "methodName": "toPath",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/nio/file/Files",
+      "methodName": "readAllBytes",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/nio/file/Files",
+      "methodName": "readString",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/nio/file/Files",
+      "methodName": "readAllLines",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/nio/file/Files",
+      "methodName": "newInputStream",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/nio/file/Files",
+      "methodName": "lines",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/net/URI",
+      "methodName": "<init>",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/net/URI",
+      "methodName": "create",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/net/URI",
+      "methodName": "toURL",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/net/URI",
+      "methodName": "toString",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/net/URI",
+      "methodName": "resolve",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/net/URL",
+      "methodName": "<init>",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/net/URL",
+      "methodName": "toString",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/net/URL",
+      "methodName": "openStream",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/net/URL",
+      "methodName": "openConnection",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/reflect/Method",
+      "methodName": "invoke",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/reflect/Constructor",
+      "methodName": "newInstance",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/reflect/Field",
+      "methodName": "get",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/reflect/Array",
+      "methodName": "get",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/Class",
+      "methodName": "newInstance",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/Class",
+      "methodName": "cast",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/invoke/MethodHandle",
+      "methodName": "invoke",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/invoke/MethodHandle",
+      "methodName": "invokeExact",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/lang/invoke/MethodHandle",
+      "methodName": "invokeWithArguments",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Base64$Encoder",
+      "methodName": "encode",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Base64$Encoder",
+      "methodName": "encodeToString",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/Base64$Decoder",
+      "methodName": "decode",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/net/URLEncoder",
+      "methodName": "encode",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/net/URLDecoder",
+      "methodName": "decode",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "javax/xml/bind/DatatypeConverter",
+      "methodName": "parseBase64Binary",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "javax/xml/bind/DatatypeConverter",
+      "methodName": "printBase64Binary",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "javax/xml/bind/DatatypeConverter",
+      "methodName": "parseHexBinary",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "javax/xml/bind/DatatypeConverter",
+      "methodName": "printHexBinary",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "org/apache/commons/codec/binary/Base64",
+      "methodName": "encodeBase64",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "org/apache/commons/codec/binary/Base64",
+      "methodName": "encodeBase64String",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "org/apache/commons/codec/binary/Base64",
+      "methodName": "decodeBase64",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "org/apache/commons/codec/binary/Hex",
+      "methodName": "encodeHex",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "org/apache/commons/codec/binary/Hex",
+      "methodName": "encodeHexString",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "org/apache/commons/codec/binary/Hex",
+      "methodName": "decodeHex",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "org/apache/commons/lang3/StringUtils",
+      "methodName": "*",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "org/apache/commons/lang/StringUtils",
+      "methodName": "*",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "org/apache/commons/io/IOUtils",
+      "methodName": "toString",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "org/apache/commons/io/IOUtils",
+      "methodName": "toByteArray",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "org/apache/commons/io/FileUtils",
+      "methodName": "readFileToString",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "org/apache/commons/io/FileUtils",
+      "methodName": "readFileToByteArray",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "com/google/common/base/Strings",
+      "methodName": "*",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "com/google/common/base/Joiner",
+      "methodName": "join",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "com/google/common/base/Splitter",
+      "methodName": "splitToList",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "com/google/common/collect/Lists",
+      "methodName": "newArrayList",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "com/google/common/collect/Maps",
+      "methodName": "newHashMap",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "com/google/common/io/ByteStreams",
+      "methodName": "toByteArray",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "com/google/common/io/CharStreams",
+      "methodName": "toString",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "com/fasterxml/jackson/databind/ObjectMapper",
+      "methodName": "readValue",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "com/fasterxml/jackson/databind/ObjectMapper",
+      "methodName": "readTree",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "com/fasterxml/jackson/databind/ObjectMapper",
+      "methodName": "writeValueAsString",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "com/fasterxml/jackson/databind/ObjectMapper",
+      "methodName": "writeValueAsBytes",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "com/google/gson/Gson",
+      "methodName": "fromJson",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "com/google/gson/Gson",
+      "methodName": "toJson",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "com/alibaba/fastjson/JSON",
+      "methodName": "parseObject",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "com/alibaba/fastjson/JSON",
+      "methodName": "parseArray",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "com/alibaba/fastjson/JSON",
+      "methodName": "toJSONString",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "com/alibaba/fastjson2/JSON",
+      "methodName": "parseObject",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "com/alibaba/fastjson2/JSON",
+      "methodName": "parseArray",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "com/alibaba/fastjson2/JSON",
+      "methodName": "toJSONString",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "javax/servlet/http/HttpServletRequest",
+      "methodName": "getParameter",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "javax/servlet/http/HttpServletRequest",
+      "methodName": "getParameterValues",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "javax/servlet/http/HttpServletRequest",
+      "methodName": "getHeader",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "javax/servlet/http/HttpServletRequest",
+      "methodName": "getHeaders",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "javax/servlet/http/HttpServletRequest",
+      "methodName": "getQueryString",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "javax/servlet/http/HttpServletRequest",
+      "methodName": "getRequestURI",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "javax/servlet/http/HttpServletRequest",
+      "methodName": "getCookies",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "javax/servlet/http/HttpServletRequest",
+      "methodName": "getInputStream",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "javax/servlet/http/HttpServletRequest",
+      "methodName": "getReader",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "jakarta/servlet/http/HttpServletRequest",
+      "methodName": "getParameter",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "jakarta/servlet/http/HttpServletRequest",
+      "methodName": "getHeader",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "org/springframework/util/MultiValueMap",
+      "methodName": "add",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "org/springframework/util/MultiValueMap",
+      "methodName": "set",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "org/springframework/util/MultiValueMap",
+      "methodName": "addAll",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "org/springframework/util/MultiValueMap",
+      "methodName": "getFirst",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "org/springframework/util/LinkedMultiValueMap",
+      "methodName": "add",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "org/springframework/http/HttpEntity",
+      "methodName": "<init>",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "org/springframework/http/HttpEntity",
+      "methodName": "getBody",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "org/springframework/http/HttpEntity",
+      "methodName": "getHeaders",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "org/springframework/http/ResponseEntity",
+      "methodName": "getBody",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "org/springframework/util/StringUtils",
+      "methodName": "*",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/StringJoiner",
+      "methodName": "<init>",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/StringJoiner",
+      "methodName": "add",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this,ret"
+    },
+    {
+      "className": "java/util/StringJoiner",
+      "methodName": "merge",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this,ret"
+    },
+    {
+      "className": "java/util/StringJoiner",
+      "methodName": "toString",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "java/util/StringTokenizer",
+      "methodName": "<init>",
+      "methodDesc": "*",
+      "from": "any",
+      "to": "this"
+    },
+    {
+      "className": "java/util/StringTokenizer",
+      "methodName": "nextToken",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    }
+  ]
+}

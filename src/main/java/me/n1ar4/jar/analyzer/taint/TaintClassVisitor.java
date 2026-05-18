@@ -17,32 +17,37 @@ import me.n1ar4.log.Logger;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.JSRInlinerAdapter;
-
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class TaintClassVisitor extends ClassVisitor {
     private static final Logger logger = LogManager.getLogger();
 
     private String className;
-    private final int paramsNum;
+    private final TaintTransfer entry;
     private final MethodReference.Handle cur;
     private final MethodReference.Handle next;
-    private final AtomicInteger pass;
+    private final TaintTransfer exit;
     private boolean iface;
     private final SanitizerRule rule;
-    private final StringBuilder text;
+    private final PropagationRuleSet propagation;
+    private final TaintEventSink sink;
+    private final int chainIndex;
 
-    public TaintClassVisitor(int i,
+    public TaintClassVisitor(TaintTransfer entry,
                              MethodReference.Handle cur, MethodReference.Handle next,
-                             AtomicInteger pass, SanitizerRule rule, StringBuilder text) {
+                             TaintTransfer exit, SanitizerRule rule,
+                             PropagationRuleSet propagation,
+                             TaintEventSink sink, int chainIndex) {
         super(Const.ASMVersion);
-        this.paramsNum = i;
+        this.entry = entry;
         this.cur = cur;
         this.next = next;
-        this.pass = pass;
+        this.exit = exit;
         this.rule = rule;
-        this.text = text;
+        this.propagation = propagation;
+        this.sink = sink;
+        this.chainIndex = chainIndex;
     }
 
     @Override
@@ -52,16 +57,38 @@ public class TaintClassVisitor extends ClassVisitor {
         this.className = name;
         this.iface = (access & Opcodes.ACC_INTERFACE) != 0;
 
-        // 现在的接口是直接按照实现记录 call 的
-        // 所以直接 iface -> impl 参数完全对应 即可污点分析
+        // 接口默认按"参数完全对应"的方式透传：
+        // 把 entry 的 locals 索引集合直接投影到 next 的 locals 索引上。
+        // 这比旧实现"全透传所有参数"更精准，能正确反映 entry 中被污染的具体参数位置。
         if (this.iface) {
-            pass.set(paramsNum);
-            logger.info("taint analysis in progress {} - {} - {}", cur.getClassReference().getName(), cur.getName(), cur.getDesc());
-            text.append(String.format("污点分析进行中 %s - %s - %s", cur.getClassReference().getName(), cur.getName(), cur.getDesc()));
-            text.append("\n");
-            logger.info("taint detected on interface - direct propagation - param index {}", paramsNum);
-            text.append(String.format("发现接口类型污点 - 直接传递 - 第 %d 个参数", paramsNum));
-            text.append("\n");
+            int nextArgCount = Type.getArgumentTypes(next.getDesc()).length;
+            for (int i = entry.getTaintedLocals().nextSetBit(0);
+                 i >= 0;
+                 i = entry.getTaintedLocals().nextSetBit(i + 1)) {
+                if (i == 0) {
+                    // 跳过 cur 的 this（接口 → 实现的 receiver 是新对象，污点不可靠）
+                    continue;
+                }
+                int curParamSeq = i - 1;
+                if (curParamSeq < 0 || curParamSeq >= nextArgCount) {
+                    continue;
+                }
+                exit.markLocal(1 + curParamSeq);
+            }
+            // 兜底：如果一个都没传到，至少透传"按 entry 第一个参数序号"，
+            // 维持与旧行为一致，避免接口断链。
+            if (!exit.hasTaint() && entry.hasTaint()) {
+                int first = entry.getTaintedLocals().nextSetBit(0);
+                if (first >= 0) {
+                    int curParamSeq = Math.max(0, first - 1);
+                    exit.markLocal(1 + curParamSeq);
+                }
+            }
+            logger.info("taint analysis (interface) {} - {} - {} -> {}",
+                    cur.getClassReference().getName(), cur.getName(), cur.getDesc(), exit);
+            sink.emit(TaintEvent.atMethod(TaintEvent.Type.INTERFACE_PASSTHROUGH, chainIndex,
+                    cur.getClassReference().getName(), cur.getName(), cur.getDesc(),
+                    "接口透传，出口污点 " + exit));
         }
     }
 
@@ -74,7 +101,8 @@ public class TaintClassVisitor extends ClassVisitor {
         }
         if (name.equals(this.cur.getName()) && desc.equals(this.cur.getDesc())) {
             TaintMethodAdapter tma = new TaintMethodAdapter(
-                    api, mv, this.className, access, name, desc, this.paramsNum, next, pass, rule, text);
+                    api, mv, this.className, access, name, desc,
+                    entry, next, exit, rule, propagation, sink, chainIndex);
             return new JSRInlinerAdapter(tma, access, name, desc, signature, exceptions);
         } else {
             return mv;
@@ -86,7 +114,7 @@ public class TaintClassVisitor extends ClassVisitor {
         super.visitEnd();
     }
 
-    public AtomicInteger getPass() {
-        return this.pass;
+    public TaintTransfer getExit() {
+        return this.exit;
     }
 }

@@ -1,0 +1,35 @@
+name: test unit
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  unit:
+    name: junit unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: set up java 8
+        uses: actions/setup-java@v5
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: run pure unit tests
+        run: |
+          mvn -B test \
+            -Dtest='MethodELTest,SearchFilterHelperTest,SearchResultCsvExporterTest,TaintIndexUtilTest,TaintTransferTest,BaseHandlerTest' \
+            -DfailIfNoTests=true
+
+      - name: upload surefire reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-reports-unit
+          path: target/surefire-reports/
+          if-no-files-found: ignore

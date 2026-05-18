@@ -7,7 +7,8 @@ on:
     branches: [ "master" ]
 
 jobs:
-  check:
+  spring-core:
+    name: SpringCoreTest (javasec-1.15.jar)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -21,11 +22,45 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y wget
-          wget https://raw.githubusercontent.com/jar-analyzer/test/refs/heads/main/javasec-1.15.jar -O javasec-1.15.jar
-          wget https://github.com/4ra1n/test-springboot/releases/download/0.0.1/test-0.0.1-SNAPSHOT.jar -O test-0.0.1-SNAPSHOT.jar
+          wget -q https://raw.githubusercontent.com/jar-analyzer/test/refs/heads/main/javasec-1.15.jar -O javasec-1.15.jar
       - name: run maven core test
-        run: mvn test -Dtest=SpringCoreTest#testRun
-      - name: run maven custom test
-        run: mvn test -Dtest=SpringCustomTest#testRun
+        run: mvn -B test -Dtest=SpringCoreTest#testRun -DfailIfNoTests=true
+      - name: upload surefire reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-reports-spring-core
+          path: target/surefire-reports/
+          if-no-files-found: ignore
       - name: clean test file
-        run: rm -f javasec-1.15.jar && rm -rf test-0.0.1-SNAPSHOT.jar
+        if: always()
+        run: rm -f javasec-1.15.jar jar-analyzer.db
+
+  spring-custom:
+    name: SpringCustomTest (test-0.0.1-SNAPSHOT.jar)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: set up java 8
+        uses: actions/setup-java@v5
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+          cache: maven
+      - name: download test file
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget
+          wget -q https://github.com/4ra1n/test-springboot/releases/download/0.0.1/test-0.0.1-SNAPSHOT.jar -O test-0.0.1-SNAPSHOT.jar
+      - name: run maven custom test
+        run: mvn -B test -Dtest=SpringCustomTest#testRun -DfailIfNoTests=true
+      - name: upload surefire reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-reports-spring-custom
+          path: target/surefire-reports/
+          if-no-files-found: ignore
+      - name: clean test file
+        if: always()
+        run: rm -f test-0.0.1-SNAPSHOT.jar jar-analyzer.db

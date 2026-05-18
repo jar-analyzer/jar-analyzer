@@ -28,7 +28,7 @@ jobs:
 
       - name: upload surefire reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: surefire-reports-unit
           path: target/surefire-reports/

@@ -14,6 +14,7 @@ import me.n1ar4.jar.analyzer.engine.DecompileEngine;
 import me.n1ar4.jar.analyzer.entity.MethodResult;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.starter.Const;
+import me.n1ar4.jar.analyzer.utils.MouseUtil;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 import org.objectweb.asm.ClassReader;
@@ -111,13 +112,23 @@ public class MethodRightMenuAdapter extends MouseAdapter {
     }
 
     @Override
+    public void mousePressed(MouseEvent e) {
+        // macOS 在 mousePressed 时触发 isPopupTrigger
+        maybeShowPopup(e);
+    }
+
+    @Override
     public void mouseReleased(MouseEvent e) {
-        if (SwingUtilities.isRightMouseButton(e)) {
-            if (e.isPopupTrigger()) {
-                int index = list.locationToIndex(e.getPoint());
-                list.setSelectedIndex(index);
-                popupMenu.show(e.getComponent(), e.getX(), e.getY());
-            }
+        // Windows / Linux 在 mouseReleased 时触发 isPopupTrigger
+        maybeShowPopup(e);
+    }
+
+    private void maybeShowPopup(MouseEvent e) {
+        if (!MouseUtil.isPopupTrigger(e)) {
+            return;
         }
+        int index = list.locationToIndex(e.getPoint());
+        list.setSelectedIndex(index);
+        popupMenu.show(e.getComponent(), e.getX(), e.getY());
     }
 }

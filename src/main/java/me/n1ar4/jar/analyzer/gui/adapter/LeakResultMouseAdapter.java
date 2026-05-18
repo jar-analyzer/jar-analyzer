@@ -18,6 +18,7 @@ import me.n1ar4.jar.analyzer.gui.PreviewForm;
 import me.n1ar4.jar.analyzer.gui.util.ProcessDialog;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.utils.JarUtil;
+import me.n1ar4.jar.analyzer.utils.MouseUtil;
 import me.n1ar4.jar.analyzer.utils.StringUtil;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
@@ -40,11 +41,16 @@ public class LeakResultMouseAdapter extends MouseAdapter {
 
     @SuppressWarnings("all")
     public void mouseClicked(MouseEvent evt) {
+        // 仅处理"左键双击"，右键菜单移至 mousePressed/mouseReleased 中
+        // 通过 isPopupTrigger 处理（macOS 在 pressed 触发，Win/Linux 在 released 触发）。
         if (frameIns != null) {
             frameIns.dispose();
         }
+        if (!SwingUtilities.isLeftMouseButton(evt) || evt.getClickCount() != 2) {
+            return;
+        }
         JList<?> list = (JList<?>) evt.getSource();
-        if (evt.getClickCount() == 2) {
+        {
             int index = list.locationToIndex(evt.getPoint());
             LeakResult res = (LeakResult) list.getModel().getElementAt(index);
 
@@ -170,41 +176,61 @@ public class LeakResultMouseAdapter extends MouseAdapter {
             MainForm.getInstance().getSuperImplList().setModel(new DefaultListModel<>());
             MainForm.getInstance().getCalleeList().setModel(new DefaultListModel<>());
             MainForm.getInstance().getCallerList().setModel(new DefaultListModel<>());
-        } else if (SwingUtilities.isRightMouseButton(evt)) {
-            JPopupMenu popupMenu = new JPopupMenu();
-
-            JMenuItem copyThis = new JMenuItem("复制值 / copy value");
-            popupMenu.add(copyThis);
-            copyThis.addActionListener(e -> {
-                LeakResult selectedItem = (LeakResult) list.getSelectedValue();
-                if (selectedItem == null) {
-                    JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
-                            "SELECTED ITEM IS NULL");
-                    return;
-                }
-                StringSelection stringSelection = new StringSelection(selectedItem.getValue());
-                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                clipboard.setContents(stringSelection, null);
-                JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(), "COPY OK");
-            });
-
-            JMenuItem previewItem = new JMenuItem("预览 / preview");
-            popupMenu.add(previewItem);
-            previewItem.addActionListener(e -> {
-                LeakResult selectedItem = (LeakResult) list.getSelectedValue();
-                if (selectedItem == null) {
-                    JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
-                            "SELECTED ITEM IS NULL");
-                    return;
-                }
-                String code = String.format("CLASSNAME: %s\nTYPE: %s\nVALUE: %s\n",
-                        selectedItem.getClassName(), selectedItem.getTypeName(), selectedItem.getValue());
-                frameIns = PreviewForm.start(code, 0, false);
-            });
-
-            int index = list.locationToIndex(evt.getPoint());
-            list.setSelectedIndex(index);
-            popupMenu.show(list, evt.getX(), evt.getY());
         }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent evt) {
+        maybeShowPopup(evt);
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent evt) {
+        maybeShowPopup(evt);
+    }
+
+    @SuppressWarnings("all")
+    private void maybeShowPopup(MouseEvent evt) {
+        if (!MouseUtil.isPopupTrigger(evt)) {
+            return;
+        }
+        if (!(evt.getSource() instanceof JList)) {
+            return;
+        }
+        final JList<?> list = (JList<?>) evt.getSource();
+        JPopupMenu popupMenu = new JPopupMenu();
+
+        JMenuItem copyThis = new JMenuItem("复制值 / copy value");
+        popupMenu.add(copyThis);
+        copyThis.addActionListener(e -> {
+            LeakResult selectedItem = (LeakResult) list.getSelectedValue();
+            if (selectedItem == null) {
+                JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                        "SELECTED ITEM IS NULL");
+                return;
+            }
+            StringSelection stringSelection = new StringSelection(selectedItem.getValue());
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(stringSelection, null);
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(), "COPY OK");
+        });
+
+        JMenuItem previewItem = new JMenuItem("预览 / preview");
+        popupMenu.add(previewItem);
+        previewItem.addActionListener(e -> {
+            LeakResult selectedItem = (LeakResult) list.getSelectedValue();
+            if (selectedItem == null) {
+                JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                        "SELECTED ITEM IS NULL");
+                return;
+            }
+            String code = String.format("CLASSNAME: %s\nTYPE: %s\nVALUE: %s\n",
+                    selectedItem.getClassName(), selectedItem.getTypeName(), selectedItem.getValue());
+            frameIns = PreviewForm.start(code, 0, false);
+        });
+
+        int index = list.locationToIndex(evt.getPoint());
+        list.setSelectedIndex(index);
+        popupMenu.show(list, evt.getX(), evt.getY());
     }
 }

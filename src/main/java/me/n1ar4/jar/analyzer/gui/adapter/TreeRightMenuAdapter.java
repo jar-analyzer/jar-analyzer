@@ -18,6 +18,7 @@ import me.n1ar4.jar.analyzer.gui.LuceneSearchForm;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.tree.FileTreeNode;
 import me.n1ar4.jar.analyzer.gui.util.IconManager;
+import me.n1ar4.jar.analyzer.utils.MouseUtil;
 import me.n1ar4.jar.analyzer.utils.OpenUtil;
 import me.n1ar4.jar.analyzer.utils.StringUtil;
 
@@ -212,26 +213,38 @@ public class TreeRightMenuAdapter extends MouseAdapter {
     }
 
     @Override
+    public void mousePressed(MouseEvent e) {
+        // macOS 上 popup 在 mousePressed 时触发
+        maybeShowPopup(e);
+    }
+
+    @Override
     public void mouseReleased(MouseEvent e) {
-        if (SwingUtilities.isRightMouseButton(e)) {
-            int row = fileTree.getClosestRowForLocation(e.getX(), e.getY());
-            if (row < 0) {
-                return;
-            }
-            Rectangle bounds = fileTree.getRowBounds(row);
-            if (bounds == null || e.getY() < bounds.y || e.getY() > bounds.y + bounds.height) {
-                return;
-            }
-            TreePath path = fileTree.getPathForRow(row);
-            if (path == null || path.getLastPathComponent() == null) {
-                return;
-            }
-            fileTree.setSelectionPath(path);
-            if (isClassNode(path)) {
-                popupMenu.show(fileTree, e.getX(), e.getY());
-            } else if (isDirectoryNode(path)) {
-                dirPopupMenu.show(fileTree, e.getX(), e.getY());
-            }
+        // Windows / Linux 上 popup 在 mouseReleased 时触发
+        maybeShowPopup(e);
+    }
+
+    private void maybeShowPopup(MouseEvent e) {
+        if (!MouseUtil.isPopupTrigger(e)) {
+            return;
+        }
+        int row = fileTree.getClosestRowForLocation(e.getX(), e.getY());
+        if (row < 0) {
+            return;
+        }
+        Rectangle bounds = fileTree.getRowBounds(row);
+        if (bounds == null || e.getY() < bounds.y || e.getY() > bounds.y + bounds.height) {
+            return;
+        }
+        TreePath path = fileTree.getPathForRow(row);
+        if (path == null || path.getLastPathComponent() == null) {
+            return;
+        }
+        fileTree.setSelectionPath(path);
+        if (isClassNode(path)) {
+            popupMenu.show(fileTree, e.getX(), e.getY());
+        } else if (isDirectoryNode(path)) {
+            dirPopupMenu.show(fileTree, e.getX(), e.getY());
         }
     }
 

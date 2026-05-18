@@ -13,6 +13,7 @@ package me.n1ar4.jar.analyzer.gui.util;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.adapter.GlobalKeyListener;
 import me.n1ar4.jar.analyzer.starter.Const;
+import me.n1ar4.jar.analyzer.utils.MouseUtil;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
@@ -73,10 +74,21 @@ public class CodeTabPanel extends JPanel {
         });
 
         // Tab 右键菜单
+        // 注意：macOS 在 mousePressed 时触发 isPopupTrigger，
+        // Windows/Linux 在 mouseReleased 时触发，因此两边都需要处理。
         tabbedPane.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if (SwingUtilities.isRightMouseButton(e)) {
+                maybeShowTabPopup(e);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                maybeShowTabPopup(e);
+            }
+
+            private void maybeShowTabPopup(MouseEvent e) {
+                if (MouseUtil.isPopupTrigger(e)) {
                     int tabIndex = tabbedPane.indexAtLocation(e.getX(), e.getY());
                     if (tabIndex >= 0) {
                         showTabContextMenu(e, tabIndex);
@@ -497,46 +509,50 @@ public class CodeTabPanel extends JPanel {
         final Cursor defaultCursor = rArea.getCursor();
         final Cursor handCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
 
-        // Ctrl+Click 跳转导航
+        // Ctrl+Click（macOS 上是 Cmd+Click）跳转导航
         rArea.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.isControlDown()) {
-                    int caretPosition = rArea.getCaretPosition();
-                    int start = SyntaxAreaHelper.findWordStart(rArea.getText(), caretPosition);
-                    int end = SyntaxAreaHelper.findWordEnd(rArea.getText(), caretPosition);
-                    if (start != -1 && end != -1) {
-                        String word = rArea.getText().substring(start, end);
-                        highlighter.removeAllHighlights();
-                        try {
-                            highlighter.addHighlight(start, end,
-                                    new DefaultHighlighter.DefaultHighlightPainter(Color.BLUE));
-                        } catch (BadLocationException ignored) {
-                        }
-
-                        String methodName = word.trim();
-                        if (methodName.isEmpty()) {
-                            return;
-                        }
-                        logger.info("ctrl+click navigate: {}", methodName);
-                        String className = MainForm.getCurClass();
-                        if (className == null || className.isEmpty()) {
-                            return;
-                        }
-
-                        // 使用 CtrlClickNavigator 进行跳转导航（新 Tab 中打开）
-                        CtrlClickNavigator.navigate(methodName, className,
-                                e.getXOnScreen(), e.getYOnScreen());
+                // 必须是真正的左键 + 跳转修饰键。
+                // macOS 上 Ctrl+左键 会被识别为右键（BUTTON3），
+                // 因此跳转修饰键在 macOS 上必须使用 Command（Meta）。
+                if (!MouseUtil.isNavigateClick(e)) {
+                    return;
+                }
+                int caretPosition = rArea.getCaretPosition();
+                int start = SyntaxAreaHelper.findWordStart(rArea.getText(), caretPosition);
+                int end = SyntaxAreaHelper.findWordEnd(rArea.getText(), caretPosition);
+                if (start != -1 && end != -1) {
+                    String word = rArea.getText().substring(start, end);
+                    highlighter.removeAllHighlights();
+                    try {
+                        highlighter.addHighlight(start, end,
+                                new DefaultHighlighter.DefaultHighlightPainter(Color.BLUE));
+                    } catch (BadLocationException ignored) {
                     }
+
+                    String methodName = word.trim();
+                    if (methodName.isEmpty()) {
+                        return;
+                    }
+                    logger.info("ctrl/cmd+click navigate: {}", methodName);
+                    String className = MainForm.getCurClass();
+                    if (className == null || className.isEmpty()) {
+                        return;
+                    }
+
+                    // 使用 CtrlClickNavigator 进行跳转导航（新 Tab 中打开）
+                    CtrlClickNavigator.navigate(methodName, className,
+                            e.getXOnScreen(), e.getYOnScreen());
                 }
             }
         });
 
-        // Ctrl 悬停时显示手型光标
+        // 跳转修饰键（Win/Linux: Ctrl, macOS: Cmd）悬停时显示手型光标
         rArea.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
-                if (e.isControlDown()) {
+                if (MouseUtil.isMenuShortcutDown(e)) {
                     int offset = rArea.viewToModel(e.getPoint());
                     if (offset >= 0) {
                         int start = SyntaxAreaHelper.findWordStart(rArea.getText(), offset);
@@ -551,19 +567,20 @@ public class CodeTabPanel extends JPanel {
             }
         });
 
-        // 当 Ctrl 键松开时恢复默认光标
+        // 当跳转修饰键松开时恢复默认光标
         rArea.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
+                int code = e.getKeyCode();
+                if (code == KeyEvent.VK_CONTROL || code == KeyEvent.VK_META) {
                     rArea.setCursor(defaultCursor);
                 }
             }
         });
 
-        // Ctrl+W 关闭当前 Tab 快捷键
+        // Ctrl+W（macOS 上为 Cmd+W）关闭当前 Tab 快捷键
         rArea.getInputMap(JComponent.WHEN_FOCUSED).put(
-                KeyStroke.getKeyStroke(KeyEvent.VK_W, InputEvent.CTRL_DOWN_MASK), "closeTab");
+                KeyStroke.getKeyStroke(KeyEvent.VK_W, MouseUtil.getMenuShortcutKeyMask()), "closeTab");
         rArea.getActionMap().put("closeTab", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {

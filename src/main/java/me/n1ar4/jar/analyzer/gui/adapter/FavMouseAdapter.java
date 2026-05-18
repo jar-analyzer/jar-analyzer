@@ -17,6 +17,7 @@ import me.n1ar4.jar.analyzer.entity.MethodResult;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.ProcessDialog;
 import me.n1ar4.jar.analyzer.starter.Const;
+import me.n1ar4.jar.analyzer.utils.MouseUtil;
 import me.n1ar4.jar.analyzer.utils.StringUtil;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
@@ -33,9 +34,13 @@ public class FavMouseAdapter extends MouseAdapter {
 
     @SuppressWarnings("all")
     public void mouseClicked(MouseEvent evt) {
+        // 仅处理"左键双击"，右键菜单移至 mousePressed / mouseReleased 中通过
+        // isPopupTrigger 触发，以兼容 macOS（pressed）与 Windows/Linux（released）。
+        if (!SwingUtilities.isLeftMouseButton(evt) || evt.getClickCount() != 2) {
+            return;
+        }
         JList<?> list = (JList<?>) evt.getSource();
-        // 左键双击
-        if (evt.getClickCount() == 2) {
+        {
             int index = list.locationToIndex(evt.getPoint());
             MethodResult res = null;
             try {
@@ -122,47 +127,67 @@ public class FavMouseAdapter extends MouseAdapter {
             MainForm.getInstance().getCurMethodText().setText(res.getMethodName());
             res.setClassPath(Paths.get(finalClassPath));
             MainForm.setCurMethod(res);
-        } else if (SwingUtilities.isRightMouseButton(evt)) {
-            JPopupMenu popupMenu = new JPopupMenu();
-            JMenuItem cleanAllFavorite = new JMenuItem("clean all favorite");
-            JMenuItem cleanCurItems = new JMenuItem("clean this favorite");
-            JMenuItem sendToSink = new JMenuItem("send to chains sink");
-            JMenuItem sendToSource = new JMenuItem("send to chains source");
-            popupMenu.add(cleanAllFavorite);
-            popupMenu.add(cleanCurItems);
-            popupMenu.add(sendToSink);
-            popupMenu.add(sendToSource);
-            cleanAllFavorite.addActionListener(e -> {
-                MainForm.getFavData().clear();
-                JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
-                        "CLEAN ALL FAVORIATES FINISH");
-                MainForm.getEngine().cleanFav();
-            });
-            cleanCurItems.addActionListener(e -> {
-                MethodResult selectedItem = (MethodResult) list.getSelectedValue();
-                if (MainForm.getFavData().removeElement(selectedItem)) {
-                    JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
-                            "CLEAN FAVORIATE " + selectedItem.getMethodName() + " FINISH");
-                    MainForm.getEngine().cleanFavItem(selectedItem);
-                }
-            });
-            sendToSink.addActionListener(e -> {
-                MethodResult selectedItem = (MethodResult) list.getSelectedValue();
-                MainForm.getInstance().setSink(
-                        selectedItem.getClassName(), selectedItem.getMethodName(), selectedItem.getMethodDesc());
-                JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
-                        "SEND SINK " + selectedItem.getMethodName() + " FINISH");
-            });
-            sendToSource.addActionListener(e -> {
-                MethodResult selectedItem = (MethodResult) list.getSelectedValue();
-                MainForm.getInstance().setSource(
-                        selectedItem.getClassName(), selectedItem.getMethodName(), selectedItem.getMethodDesc());
-                JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
-                        "SEND SOURCE " + selectedItem.getMethodName() + " FINISH");
-            });
-            int index = list.locationToIndex(evt.getPoint());
-            list.setSelectedIndex(index);
-            popupMenu.show(list, evt.getX(), evt.getY());
         }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent evt) {
+        maybeShowPopup(evt);
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent evt) {
+        maybeShowPopup(evt);
+    }
+
+    @SuppressWarnings("all")
+    private void maybeShowPopup(MouseEvent evt) {
+        if (!MouseUtil.isPopupTrigger(evt)) {
+            return;
+        }
+        if (!(evt.getSource() instanceof JList)) {
+            return;
+        }
+        final JList<?> list = (JList<?>) evt.getSource();
+        JPopupMenu popupMenu = new JPopupMenu();
+        JMenuItem cleanAllFavorite = new JMenuItem("clean all favorite");
+        JMenuItem cleanCurItems = new JMenuItem("clean this favorite");
+        JMenuItem sendToSink = new JMenuItem("send to chains sink");
+        JMenuItem sendToSource = new JMenuItem("send to chains source");
+        popupMenu.add(cleanAllFavorite);
+        popupMenu.add(cleanCurItems);
+        popupMenu.add(sendToSink);
+        popupMenu.add(sendToSource);
+        cleanAllFavorite.addActionListener(e -> {
+            MainForm.getFavData().clear();
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                    "CLEAN ALL FAVORIATES FINISH");
+            MainForm.getEngine().cleanFav();
+        });
+        cleanCurItems.addActionListener(e -> {
+            MethodResult selectedItem = (MethodResult) list.getSelectedValue();
+            if (MainForm.getFavData().removeElement(selectedItem)) {
+                JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                        "CLEAN FAVORIATE " + selectedItem.getMethodName() + " FINISH");
+                MainForm.getEngine().cleanFavItem(selectedItem);
+            }
+        });
+        sendToSink.addActionListener(e -> {
+            MethodResult selectedItem = (MethodResult) list.getSelectedValue();
+            MainForm.getInstance().setSink(
+                    selectedItem.getClassName(), selectedItem.getMethodName(), selectedItem.getMethodDesc());
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                    "SEND SINK " + selectedItem.getMethodName() + " FINISH");
+        });
+        sendToSource.addActionListener(e -> {
+            MethodResult selectedItem = (MethodResult) list.getSelectedValue();
+            MainForm.getInstance().setSource(
+                    selectedItem.getClassName(), selectedItem.getMethodName(), selectedItem.getMethodDesc());
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                    "SEND SOURCE " + selectedItem.getMethodName() + " FINISH");
+        });
+        int index = list.locationToIndex(evt.getPoint());
+        list.setSelectedIndex(index);
+        popupMenu.show(list, evt.getX(), evt.getY());
     }
 }

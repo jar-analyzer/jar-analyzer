@@ -21,6 +21,7 @@ import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.PreviewForm;
 import me.n1ar4.jar.analyzer.gui.util.ProcessDialog;
 import me.n1ar4.jar.analyzer.starter.Const;
+import me.n1ar4.jar.analyzer.utils.MouseUtil;
 import me.n1ar4.jar.analyzer.utils.StringUtil;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
@@ -43,12 +44,17 @@ public class CommonMouseAdapter extends MouseAdapter {
 
     @SuppressWarnings("all")
     public void mouseClicked(MouseEvent evt) {
+        // 在 mouseClicked 中只处理"左键双击"。
+        // 右键菜单在 mousePressed / mouseReleased 中通过 isPopupTrigger 处理，
+        // 以兼容 macOS（pressed 时触发）与 Windows/Linux（released 时触发）。
         if (frameIns != null) {
             frameIns.dispose();
         }
+        if (!SwingUtilities.isLeftMouseButton(evt) || evt.getClickCount() != 2) {
+            return;
+        }
         JList<?> list = (JList<?>) evt.getSource();
-        // 左键双击
-        if (evt.getClickCount() == 2) {
+        {
             int index = list.locationToIndex(evt.getPoint());
             MethodResult res = null;
             try {
@@ -157,119 +163,141 @@ public class CommonMouseAdapter extends MouseAdapter {
             MainForm.getInstance().getCurMethodText().setText(res.getMethodName());
             res.setClassPath(Paths.get(finalClassPath));
             MainForm.setCurMethod(res);
-        } else if (SwingUtilities.isRightMouseButton(evt)) {
-            JPopupMenu popupMenu = new JPopupMenu();
+        }
+    }
 
-            JMenuItem addToFavorite = new JMenuItem("add to favorite");
-            popupMenu.add(addToFavorite);
-            addToFavorite.addActionListener(e -> {
-                MethodResult selectedItem = (MethodResult) list.getSelectedValue();
-                if (selectedItem == null) {
-                    JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
-                            "SELECTED METHOD IS NULL");
-                    return;
-                }
-                MainForm.getFavData().addElement(selectedItem);
-                MainForm.getEngine().addFav(selectedItem);
-            });
+    @Override
+    public void mousePressed(MouseEvent evt) {
+        // macOS 的弹出菜单在 mousePressed 时触发
+        maybeShowPopup(evt);
+    }
 
-            JMenuItem copyThis = new JMenuItem("copy this");
-            popupMenu.add(copyThis);
-            copyThis.addActionListener(e -> {
-                MethodResult selectedItem = (MethodResult) list.getSelectedValue();
-                if (selectedItem == null) {
-                    JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
-                            "SELECTED METHOD IS NULL");
-                    return;
-                }
-                StringSelection stringSelection = new StringSelection(selectedItem.getCopyString());
-                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                clipboard.setContents(stringSelection, null);
-                JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(), "COPY OK");
-            });
+    @Override
+    public void mouseReleased(MouseEvent evt) {
+        // Windows / Linux 的弹出菜单在 mouseReleased 时触发
+        maybeShowPopup(evt);
+    }
 
-            JMenuItem copyAll = new JMenuItem("copy all");
-            popupMenu.add(copyAll);
-            copyAll.addActionListener(e -> {
-                ListModel<?> all = list.getModel();
-                if (all.getSize() == 0) {
-                    return;
-                }
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < all.getSize(); i++) {
-                    MethodResult mr = (MethodResult) all.getElementAt(i);
-                    sb.append(mr.getCopyString());
-                    sb.append("\n");
-                }
-                StringSelection stringSelection = new StringSelection(sb.toString());
-                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                clipboard.setContents(stringSelection, null);
-                JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(), "COPY OK");
-            });
+    @SuppressWarnings("all")
+    private void maybeShowPopup(MouseEvent evt) {
+        if (!MouseUtil.isPopupTrigger(evt)) {
+            return;
+        }
+        if (!(evt.getSource() instanceof JList)) {
+            return;
+        }
+        final JList<?> list = (JList<?>) evt.getSource();
+        JPopupMenu popupMenu = new JPopupMenu();
 
-            JMenuItem previewItem = new JMenuItem("预览 / preview");
-            popupMenu.add(previewItem);
-            previewItem.addActionListener(e -> {
-                MethodResult selectedItem = (MethodResult) list.getSelectedValue();
-                if (selectedItem == null) {
-                    JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
-                            "SELECTED METHOD IS NULL");
-                    return;
-                }
-                String className = selectedItem.getClassName();
-                String tempPath = className.replace("/", File.separator);
-                String classPath;
+        JMenuItem addToFavorite = new JMenuItem("add to favorite");
+        popupMenu.add(addToFavorite);
+        addToFavorite.addActionListener(e -> {
+            MethodResult selectedItem = (MethodResult) list.getSelectedValue();
+            if (selectedItem == null) {
+                JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                        "SELECTED METHOD IS NULL");
+                return;
+            }
+            MainForm.getFavData().addElement(selectedItem);
+            MainForm.getEngine().addFav(selectedItem);
+        });
 
-                classPath = String.format("%s%s%s.class", Const.tempDir, File.separator, tempPath);
+        JMenuItem copyThis = new JMenuItem("copy this");
+        popupMenu.add(copyThis);
+        copyThis.addActionListener(e -> {
+            MethodResult selectedItem = (MethodResult) list.getSelectedValue();
+            if (selectedItem == null) {
+                JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                        "SELECTED METHOD IS NULL");
+                return;
+            }
+            StringSelection stringSelection = new StringSelection(selectedItem.getCopyString());
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(stringSelection, null);
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(), "COPY OK");
+        });
+
+        JMenuItem copyAll = new JMenuItem("copy all");
+        popupMenu.add(copyAll);
+        copyAll.addActionListener(e -> {
+            ListModel<?> all = list.getModel();
+            if (all.getSize() == 0) {
+                return;
+            }
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < all.getSize(); i++) {
+                MethodResult mr = (MethodResult) all.getElementAt(i);
+                sb.append(mr.getCopyString());
+                sb.append("\n");
+            }
+            StringSelection stringSelection = new StringSelection(sb.toString());
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(stringSelection, null);
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(), "COPY OK");
+        });
+
+        JMenuItem previewItem = new JMenuItem("预览 / preview");
+        popupMenu.add(previewItem);
+        previewItem.addActionListener(e -> {
+            MethodResult selectedItem = (MethodResult) list.getSelectedValue();
+            if (selectedItem == null) {
+                JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                        "SELECTED METHOD IS NULL");
+                return;
+            }
+            String className = selectedItem.getClassName();
+            String tempPath = className.replace("/", File.separator);
+            String classPath;
+
+            classPath = String.format("%s%s%s.class", Const.tempDir, File.separator, tempPath);
+            if (!Files.exists(Paths.get(classPath))) {
+                classPath = String.format("%s%sBOOT-INF%sclasses%s%s.class",
+                        Const.tempDir, File.separator, File.separator, File.separator, tempPath);
                 if (!Files.exists(Paths.get(classPath))) {
-                    classPath = String.format("%s%sBOOT-INF%sclasses%s%s.class",
+                    classPath = String.format("%s%sWEB-INF%sclasses%s%s.class",
                             Const.tempDir, File.separator, File.separator, File.separator, tempPath);
                     if (!Files.exists(Paths.get(classPath))) {
-                        classPath = String.format("%s%sWEB-INF%sclasses%s%s.class",
-                                Const.tempDir, File.separator, File.separator, File.separator, tempPath);
-                        if (!Files.exists(Paths.get(classPath))) {
-                            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
-                                    "<html>" +
-                                            "<p>need dependency or class file not found</p>" +
-                                            "<p>缺少依赖或者文件找不到（考虑加载 rt.jar 并检查你的 JAR 是否合法）</p>" +
-                                            "<p>默认以三种方式找类：</p>" +
-                                            "<p>1.根据类名直接从根目录找（例如 <strong>com/a/b/Demo</strong> ）</p>" +
-                                            "<p>2.从 <strong>BOOT-INF</strong> 找（" +
-                                            "例如 <strong>BOOT-INF/classes/com/a/Demo</strong> ）</p>" +
-                                            "<p>3.从 <strong>WEB-INF</strong> 找（" +
-                                            "例如 <strong>WEB-INF/classes/com/a/Demo</strong> ）<p>" +
-                                            "</html>");
-                            return;
-                        }
+                        JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                                "<html>" +
+                                        "<p>need dependency or class file not found</p>" +
+                                        "<p>缺少依赖或者文件找不到（考虑加载 rt.jar 并检查你的 JAR 是否合法）</p>" +
+                                        "<p>默认以三种方式找类：</p>" +
+                                        "<p>1.根据类名直接从根目录找（例如 <strong>com/a/b/Demo</strong> ）</p>" +
+                                        "<p>2.从 <strong>BOOT-INF</strong> 找（" +
+                                        "例如 <strong>BOOT-INF/classes/com/a/Demo</strong> ）</p>" +
+                                        "<p>3.从 <strong>WEB-INF</strong> 找（" +
+                                        "例如 <strong>WEB-INF/classes/com/a/Demo</strong> ）<p>" +
+                                        "</html>");
+                        return;
                     }
                 }
+            }
 
-                String code = DecompileEngine.decompile(Paths.get(classPath));
-                String methodName = selectedItem.getMethodName();
+            String code = DecompileEngine.decompile(Paths.get(classPath));
+            String methodName = selectedItem.getMethodName();
 
-                int pos = FinderRunner.find(code, methodName, selectedItem.getMethodDesc());
+            int pos = FinderRunner.find(code, methodName, selectedItem.getMethodDesc());
 
-                if (code == null || code.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "找不到代码无法预览");
-                    return;
-                }
+            if (code == null || code.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "找不到代码无法预览");
+                return;
+            }
 
-                frameIns = PreviewForm.start(code, pos, true);
-            });
+            frameIns = PreviewForm.start(code, pos, true);
+        });
 
-            JMenuItem clearHis = new JMenuItem("清除历史 / clear history");
-            popupMenu.add(clearHis);
-            clearHis.addActionListener(e -> {
-                MainForm.getEngine().cleanHistory();
-                MainForm.getInstance().getHistoryListData().clear();
-                MainForm.getInstance().getHistoryList().revalidate();
-                MainForm.getInstance().getHistoryList().repaint();
-                JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(), "CLEAR OK");
-            });
+        JMenuItem clearHis = new JMenuItem("清除历史 / clear history");
+        popupMenu.add(clearHis);
+        clearHis.addActionListener(e -> {
+            MainForm.getEngine().cleanHistory();
+            MainForm.getInstance().getHistoryListData().clear();
+            MainForm.getInstance().getHistoryList().revalidate();
+            MainForm.getInstance().getHistoryList().repaint();
+            JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(), "CLEAR OK");
+        });
 
-            int index = list.locationToIndex(evt.getPoint());
-            list.setSelectedIndex(index);
-            popupMenu.show(list, evt.getX(), evt.getY());
-        }
+        int index = list.locationToIndex(evt.getPoint());
+        list.setSelectedIndex(index);
+        popupMenu.show(list, evt.getX(), evt.getY());
     }
 }

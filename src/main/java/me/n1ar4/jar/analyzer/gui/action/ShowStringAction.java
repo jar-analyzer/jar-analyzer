@@ -18,6 +18,11 @@ import javax.swing.*;
 import java.util.ArrayList;
 
 public class ShowStringAction {
+    /**
+     * 超过此阈值仅做友好提示，不再阻断（新版用 JList 渲染，不会卡顿）。
+     */
+    private static final int LARGE_STRING_HINT = 5000;
+
     public static void run() {
         JButton showString = MainForm.getInstance().getShowStringListButton();
         showString.addActionListener(e -> {
@@ -27,19 +32,24 @@ public class ShowStringAction {
                 return;
             }
 
-            // 2025/06/26 优化 ALL STRING 字符串展示和引导
-            StringBuilder show = new StringBuilder();
             int allStringSize = MainForm.getEngine().getStringCount();
-            if (allStringSize > 1000) {
-                show.append("字符串数量过大不易展示，请前往 SEARCH 搜索面板进行精确的字符串搜索");
-                JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
-                        show.toString());
-                MainForm.getInstance().getTabbedPanel().setSelectedIndex(1);
-                return;
-            } else {
-                show.append("该功能仅简单展示字符串，请前往 SEARCH 搜索面板进行精确的字符串搜索");
-                JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
-                        show.toString());
+
+            // 给一个温和的提示：数量很大时建议用 SEARCH 精确搜索；
+            // 但不再像旧版那样强制 return —— JList 渲染对几千上万条都没问题。
+            if (allStringSize > LARGE_STRING_HINT) {
+                int resp = JOptionPane.showConfirmDialog(
+                        MainForm.getInstance().getMasterPanel(),
+                        "<html>" +
+                                "<p>当前共有 " + allStringSize + " 条字符串，数量较多。</p>" +
+                                "<p>建议优先使用 SEARCH 面板按关键词精确搜索。</p>" +
+                                "<p>仍要打开 All Strings 列表？</p>" +
+                                "</html>",
+                        "提示",
+                        JOptionPane.OK_CANCEL_OPTION);
+                if (resp != JOptionPane.OK_OPTION) {
+                    MainForm.getInstance().getTabbedPanel().setSelectedIndex(1);
+                    return;
+                }
             }
 
             JDialog dialog = ProcessDialog.createProgressDialog(MainForm.getInstance().getMasterPanel());

@@ -173,6 +173,36 @@ public class MenuUtil {
         return disableFixMethodImplConfig.getState();
     }
 
+    // ---------- setters used by ConfigHelpDialog (面板内直接设置) ----------
+
+    public static void setShowInner(boolean v) {
+        showInnerConfig.setState(v);
+    }
+
+    public static void setFixClassPath(boolean v) {
+        fixClassPathConfig.setState(v);
+    }
+
+    public static void setLogAllSql(boolean v) {
+        logAllSqlConfig.setState(v);
+    }
+
+    /**
+     * 互斥：true = 按方法名排序；false = 按类名排序
+     */
+    public static void setSortedByMethod(boolean byMethod) {
+        sortedByMethodConfig.setState(byMethod);
+        sortedByClassConfig.setState(!byMethod);
+    }
+
+    /**
+     * 互斥：true = 启用方法实现/重写修复；false = 禁用
+     */
+    public static void setEnableFixMethodImpl(boolean enable) {
+        enableFixMethodImplConfig.setState(enable);
+        disableFixMethodImplConfig.setState(!enable);
+    }
+
     public static JMenuBar createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(createAboutMenu());
@@ -324,17 +354,11 @@ public class MenuUtil {
     private static JMenu createConfigMenu() {
         try {
             JMenu configMenu = new JMenu("config");
-            configMenu.add(showInnerConfig);
-            configMenu.add(fixClassPathConfig);
-            configMenu.add(sortedByMethodConfig);
-            configMenu.add(sortedByClassConfig);
-            configMenu.add(enableFixMethodImplConfig);
-            configMenu.add(disableFixMethodImplConfig);
-            configMenu.add(logAllSqlConfig);
-            JMenuItem partitionConfig = new JMenuItem("partition config");
-            partitionConfig.setIcon(IconManager.javaIcon);
-            partitionConfig.addActionListener(e -> PartForm.start());
-            configMenu.add(partitionConfig);
+            // 所有具体配置项（含 partition 分片大小）已统一迁移到 ConfigHelpDialog 面板里管理。
+            JMenuItem helpItem = new JMenuItem("配置说明与设置");
+            helpItem.setIcon(IconManager.javaIcon);
+            helpItem.addActionListener(e -> ConfigHelpDialog.start());
+            configMenu.add(helpItem);
             return configMenu;
         } catch (Exception ex) {
             logger.error("error: {}", ex.toString());

@@ -34,6 +34,7 @@ Steps:
 Test Steps:
 
 - Analyze `jar-analyzer.jar`
-- 一键 `SINK` 验证：确保有输出
+- 一键 `SINK RCE/JNDI` 验证：确保有输出
 - `Chains` 空 `SOURCE` 列举看最长
 - `EL` 搜索 `Runtime Exec` 确认有效
+- `DIFF` 两版本 `TOMCAT` 确认有效

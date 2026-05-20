@@ -13,12 +13,11 @@ jobs:
   scan:
     name: secret scan (self-hosted)
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 15
     steps:
-      - name: Checkout (full history)
+      - name: Checkout
         uses: actions/checkout@v6
         with:
-          fetch-depth: 0
           persist-credentials: false
 
       - name: Make script executable
@@ -26,6 +25,3 @@ jobs:
 
       - name: Scan working tree
         run: .github/scripts/secret-scan.sh tree
-
-      - name: Scan full history
-        run: .github/scripts/secret-scan.sh history

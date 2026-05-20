@@ -11,7 +11,6 @@ The `jar-analyzer` project has been continuously updated for `5` years, with `63
 ![](https://img.shields.io/github/v/release/jar-analyzer/jar-analyzer)
 ![](https://img.shields.io/github/downloads/jar-analyzer/jar-analyzer/total)
 
-![](https://img.shields.io/badge/protected%20by-gitleaks-blue)
 ![](https://github.com/jar-analyzer/jar-analyzer/workflows/leak%20check/badge.svg)
 ![](https://github.com/jar-analyzer/jar-analyzer/workflows/truffle%20check/badge.svg)
 

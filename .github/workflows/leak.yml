@@ -6,19 +6,26 @@ on:
   pull_request:
     branches: [ "master" ]
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+permissions:
+  contents: read
 
 jobs:
-
-  check:
+  scan:
+    name: secret scan (self-hosted)
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout (full history)
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
-      - uses: gitleaks/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
+          persist-credentials: false
 
+      - name: Make script executable
+        run: chmod +x .github/scripts/secret-scan.sh
+
+      - name: Scan working tree
+        run: .github/scripts/secret-scan.sh tree
+
+      - name: Scan full history
+        run: .github/scripts/secret-scan.sh history

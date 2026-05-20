@@ -8,7 +8,7 @@ on:
 
 jobs:
   spring-core:
-    name: SpringCoreTest (javasec-1.15.jar)
+    name: spring core test - javasec
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -37,7 +37,7 @@ jobs:
         run: rm -f javasec-1.15.jar jar-analyzer.db
 
   spring-custom:
-    name: SpringCustomTest (test-0.0.1-SNAPSHOT.jar)
+    name: spring core test - custom
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6

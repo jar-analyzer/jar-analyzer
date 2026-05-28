@@ -152,6 +152,7 @@ public class CodeTabPanel extends JPanel {
             existingArea.setText(code);
             if (caretPos >= 0 && caretPos < code.length()) {
                 existingArea.setCaretPosition(caretPos);
+                centerCaretInViewport(existingArea, caretPos);
             }
             // 切换到这个 Tab
             int index = findTabIndex(className);
@@ -203,6 +204,11 @@ public class CodeTabPanel extends JPanel {
         tabbedPane.setSelectedIndex(newIndex);
         MainForm.setCodeArea(newArea);
 
+        // 跳转目标行尽量居中显示，避免出现在视口最顶/最底
+        if (caretPos >= 0 && caretPos < code.length()) {
+            centerCaretInViewport(newArea, caretPos);
+        }
+
         logger.info("opened new tab: {} (total: {})", displayTitle, tabMap.size());
         return newArea;
     }
@@ -216,6 +222,7 @@ public class CodeTabPanel extends JPanel {
             activeArea.setText(code);
             if (caretPos >= 0 && caretPos <= code.length()) {
                 activeArea.setCaretPosition(caretPos);
+                centerCaretInViewport(activeArea, caretPos);
             }
             return activeArea;
         }
@@ -720,6 +727,78 @@ public class CodeTabPanel extends JPanel {
     public JTabbedPane getTabbedPane() {
         return tabbedPane;
     }
+
+    /**
+     * Scroll the given text area so the line containing {@code caretPos}
+     * sits roughly in the vertical middle of its enclosing viewport.
+     * <p>
+     * The default {@link javax.swing.text.JTextComponent#setCaretPosition}
+     * only guarantees the caret is visible -- the target line therefore
+     * often ends up at the very top or bottom edge of the viewport,
+     * which makes navigation feel jarring. Centering matches IDE-style
+     * "Go to definition" behavior.
+     * <p>
+     * Safe to call before the component is fully laid out: when
+     * {@code modelToView} returns {@code null} (still being sized), the
+     * call is silently re-posted via {@link SwingUtilities#invokeLater}
+     * so it runs after the pending layout pass.
+     */
+    public static void centerCaretInViewport(final RSyntaxTextArea area, final int caretPos) {
+        if (area == null || caretPos < 0) {
+            return;
+        }
+        // Defer to the EDT to ensure setText / addTab layout has settled.
+        SwingUtilities.invokeLater(() -> {
+            try {
+                int safePos = Math.min(caretPos, area.getDocument().getLength());
+                Rectangle target = area.modelToView(safePos);
+                if (target == null) {
+                    // Layout still pending; try one more time on the next tick.
+                    SwingUtilities.invokeLater(() -> {
+                        try {
+                            int p = Math.min(caretPos, area.getDocument().getLength());
+                            Rectangle r = area.modelToView(p);
+                            if (r != null) {
+                                applyCenteredScroll(area, r);
+                            }
+                        } catch (BadLocationException ignored) {
+                        }
+                    });
+                    return;
+                }
+                applyCenteredScroll(area, target);
+            } catch (BadLocationException ignored) {
+            }
+        });
+    }
+
+    /**
+     * Build an enlarged rectangle around {@code target} that, when
+     * passed to {@link javax.swing.JComponent#scrollRectToVisible}, asks
+     * the viewport to place the original line near the vertical middle.
+     * <p>
+     * Near the top or bottom of the document the rectangle is clamped
+     * to the document bounds so the viewport simply shows the start/end
+     * of the file rather than scrolling past it.
+     */
+    private static void applyCenteredScroll(RSyntaxTextArea area, Rectangle target) {
+        Rectangle visible = area.getVisibleRect();
+        int viewH = visible.height;
+        if (viewH <= 0) {
+            // Component not realized yet; fall back to default behavior.
+            area.scrollRectToVisible(target);
+            return;
+        }
+        Rectangle r = new Rectangle(target);
+        // Shift the rect up by half the viewport so the original line
+        // ends up roughly centered when the viewport scrolls to show
+        // the rect's top edge. Clamp to >= 0 so we never request a
+        // negative y (which would just cap to 0 anyway).
+        r.y = Math.max(0, target.y - viewH / 2);
+        r.height = viewH;
+        area.scrollRectToVisible(r);
+    }
+
 
     /**
      * 获取 Tab 数量

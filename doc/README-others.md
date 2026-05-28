@@ -1,5 +1,44 @@
 ## 其他
 
+### 进阶功能
+
+以上是基础功能，进阶和测试性的功能请参考：[进阶测试性功能](../doc/README-advance.md)
+
+例如类似 `OD/GDB` 的指令级 `GUI` 调试（未完成）
+
+![](../img/0035.png)
+
+### 快捷键
+
+- `CTRL+X` 方法交叉引用 快速跳转方法 `caller` 和 `callee` 页面
+- `CTRL+F` 代码区域搜索 打开搜索面板 支持 `next` 和 `prev` 选项
+- `CTRL+F` 文件树区搜索 显示搜索面板 搜索文件树中的类名以及内部类
+
+### UI 主题
+
+支持以下：
+
+- default (默认使用 类似 `IDEA` 主题)
+- metal
+- win (仅 `Windows` 支持)
+- win-classic (仅 `Windows` 支持)
+- motif
+- mac (仅 `MacOS` 支持)
+- gtk (仅某些 `Linux` 支持)
+- cross
+- aqua (仅 `MacOS` 支持)
+- nimbus
+
+在启动时指定：`java -jar jar-analyzer.jar gui -t [theme]`
+
+例如：`java -jar jar-analyzer.jar gui -t win-classic`
+
+或者修改启动脚本的代码
+
+```shell
+set "theme_name=default"
+```
+
 早期的一些文章和视频
 
 ### 文章视频

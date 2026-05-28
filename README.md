@@ -1,6 +1,6 @@
 # Jar-Analyzer
 
-[CHANGE LOG](CHANGELOG.MD)
+[CHANGE LOG](src/main/resources/CHANGELOG.MD)
 
 `jar-analyzer` 项目连续 `5` 年更新，共发布 `64` 个版本（含 `v1` 和 `v2` 版本）完全开源，完全免费
 
@@ -43,13 +43,6 @@ The `jar-analyzer` project has been continuously updated for `5` years, with `64
   <a href="https://github.com/osword"><img src="https://github.com/osword.png?size=72" width="72" height="72" alt="osword" /></a>
 </p>
 
-感谢以下用户的赞赏和支持
-
-| 用户ID | 赞赏金额 |
-|--------|--------|
-| GGBond | 50     |
-| xrayl  | 50     |
-
 一些真实的用户使用评价和反馈，参考 [用户评价](#用户评价)
 
 Jar Analyzer
@@ -72,6 +65,10 @@ Jar Analyzer
 - 应急响应分析功能（一键提取序列化数据中的恶意 `class` 反编译，一键提取 `BCEL` 代码）
 - 测试功能：不同于 `IDEA` 等工具的源码级调试，实现了字节码级别的单步动态调试（仅初步实现）
 
+设计架构：
+
+![](img/0088.png)
+
 相关项目：
 
 - 核心引擎：https://github.com/jar-analyzer/jar-analyzer-engine
@@ -83,10 +80,9 @@ Jar Analyzer
 - 完善且美观的 `GUI` 设计， 只需鼠标点点点，即可进行大多数的代码审计
 - 内置常见的 `source` 入口分析，支持动态的 `sink` 配置文件规则，方便快捷
 - 代码完全开源，构建基于 `github actions` 你可以随意查看功能代码，定制功能
+- 简单易用无需额外配置的 `污点分析` 能力，帮助您进行深入的漏洞和程序分析
 - 活跃的开源社区和维护，常年持续更新完善，欢迎贡献和参与
 - 本项目跟随主流技术路线，尝试基于 `AI` 做探索（支持 `mcp` 和 `n8n` 流程等）
-
-![](img/0088.png)
 
 ![](img/0080.png)
 
@@ -120,17 +116,9 @@ Jar Analyzer
 
 ![](img/0091.png)
 
-自从 `5.17` 版本以后支持多 `tab` 展示和方法名 `ctrl+左键` 展示调用并跳转
-
-![](img/0085.png)
-
 自从 `5.22` 版本后大幅改进了表达式搜索功能
 
 ![](img/0090.png)
-
-从 `4.0` 版本后支持信息泄露检查（部分正则来源于 [HaE](https://github.com/gh0stkey/HaE) 项目）
-
-`AI` 相关功能文档：[README-ai.md](doc/README-ai.md)
 
 ## 常见用途
 
@@ -150,50 +138,12 @@ Jar Analyzer
 - 场景14：你有一大堆 `Jar` 文件或目录需要全部批量反编译导出代码
 - 场景15：从大量 `JAR` 中分析 `IP` 地址/手机号/邮箱等各种信息泄露
 - 场景16：需要将 `JAR` 分析加入到已有的工作流（`CICD` / `AI workflow` 等） 
+- 场景17：需要 `DIFF` 两个 `JAR/目录` 的文件变动分析漏洞修复补丁等
 - 测试功能：字节码指令级别的调试
 
 ## 更新记录
 
-- 自从 `2.14` 版本之后支持了全屏显示的功能
-- 自从 `2.15` 版本后支持代码区域字符串搜索功能
-- 自从 `2.15` 版本后支持通过 `HTTP` 分析远程文件
-- 自从 `2.16` 版本后支持一键导出反编译 `JAVA` 代码
-- 自从 `2.17` 版本后支持字节码指令级别的远程调试（参考 [示例图](img/0035.png)）
-- 自从 `2.17` 版本后支持从序列化数据一键提取恶意 `JAVA` 代码（参考 [示例图](img/0036.png)）
-- 自从 `2.18` 版本后支持 `HTTP API` 查询接口（参考 [示例图](img/0038.png)）
-- 自从 `2.19` 版本后支持启动时配置 `10` 种 `UI` 主题（`LookAndFeel`）
-- 自从 `2.19` 版本后支持实时的 `CPU` 占用和内存的折线图展示（参考 [示例图](img/0040.png)）
-- 自从 `2.20` 版本后支持选中字符串全局高亮显示（参考 [示例图](img/0041.png)）
-- 自从 `2.21` 版本后支持分析配置类和包名的白名单
-- 自从 `2.21` 版本后支持左侧文件数使用 `CTRL+F` 打开类名搜索（参考 [示例图](img/0045.png)）
-- 自从 `2.21` 版本后新增内置开启 `ZGC` 的 `JRE 21` 环境（仅包含核心功能）
-- 自从 `2.23` 版本后新增 `SCA` 分析（参考 [示例图1](img/0051.png) [示例图2](img/0050.png)）
-- 自从 `2.24` 版本后改善 `SCA` 分析逻辑（显著提高扫描效率）
-- 自从 `3.0` 版本后支持生成 `HTML` 方法调用图（参考 [示例图](img/0053.png)）
-- 自从 `3.0` 版本后支持代码区域选中字符串右键搜索（参考 [示例图](img/0054.png)）
-- 自从 `3.0` 版本后支持方法右键添加备忘录（参考 [示例图](img/0055.png)）
-- 自从 `3.0` 版本后新增多种常见的 `JAVA RCE` 漏洞调用一键搜索功能
-- 自从 `3.1` 版本后支持 `BCEL` 字符串一键反编译 `Java` 代码（参考 [示例图](img/0061.png)）
-- 自从 `3.1` 版本后远程 `Tomcat` 分析改为 `premain` 方式（参考 [示例图](img/0062.png)）
-- 自从 `3.2` 版本后远程 `Tomcat` 分析功能重写和增强（参考 [示例图](img/0065.png)）
-- 自从 `4.0` 版本后方法跳转的定位大幅优化和精确（使用 `JavaParser` 库实现）
-- 自从 `4.0` 版本后支持一键的信息泄露检查（参考 [示例图](img/0084.png)）
-- 自从 `4.0` 版本后支持类似 `IDEA` 的全局搜索（基于 `Lucene` 支持代码片段）
-- 自从 `4.0` 版本后支持不限制次数的前进后退步骤（记录所有的操作信息）
-- 自从 `4.0` 版本批量反编译 `Jar` 导出源码功能修复增强
-- 自从 `4.0` 版本后新增多个图标 `GUI` 界面进一步美化
-- 自从 `4.1` 版本后内置 `JD-GUI` 可以跳过分析快速查看
-- 自从 `4.2` 版本后支持黑暗主题切换
-- 自从 `4.4` 版本后支持不跳转情况下右键预览方法代码
-- 自从 `5.0` 版本之后 `Panel` 支持拖动拉伸缩小
-- 自从 `5.0` 版本之后支持了 `Interceptor/Servlet/Filter/Listener` 分析
-- 自从 `5.0` 版本之后大幅改进了表达式搜索相关功能
-- 自从 `5.1` 版本之后支持了简单的 `Gadget` 分析
-- 自从 `5.3` 版本后支持深度优先搜索算法自动分析漏洞链
-- 自从 `5.7` 版本后支持污点分析（beta）并在 `5.8` 版本修复和完善
-- 自从 `5.10` 版本后支持了 `MCP` 请参考文档 [MCP](mcp-doc/README.md)
-
-[详细更新日志 - CHANGE LOG](CHANGELOG.MD)
+[详细更新日志 - CHANGE LOG](src/main/resources/CHANGELOG.MD)
 
 有问题和建议欢迎提 `issue` 更多的功能正在开发中 [前往下载](https://github.com/jar-analyzer/jar-analyzer/releases/latest)
 
@@ -239,8 +189,6 @@ Jar Analyzer
 
 表达式搜索位于首页以及 `Advance` 的 `Plugins` 部分
 
-注意：如果表达式效率过低，可能是默认内存过小原因，可以考虑修改启动脚本 `-Xms` 参数
-
 [详细文档](doc/README-el.md)
 
 ## 感谢列表
@@ -261,6 +209,13 @@ Jar Analyzer
 - L-codes (https://github.com/L-codes) (AI 贡献)
 - osword (https://github.com/zhzhdoai) (AI 贡献)
 
+感谢以下用户的赞赏和支持
+
+| 用户ID | 赞赏金额 |
+|--------|--------|
+| GGBond | 50     |
+| xrayl  | 50     |
+
 ## 时间
 
 - `Jar Analyzer V1` 最初版诞生于 `2022.11.27`
@@ -277,10 +232,6 @@ Jar Analyzer
 ## 性能测试
 
 参考 [性能测试文档](doc/README-test.md) 对比分析 `G1GC` 和 `ZGC` 情况
-
-## 其他截图
-
-[截图文档](doc/README-screenshot.md)
 
 ## BUILD
 
@@ -318,44 +269,9 @@ MCP 构建
 2. 可选：使用 `winres` 和 `gcc` 构建启动 `exe` 文件和图标信息
 3. 可选：完整发版参考 `build.py` 和 `build.yml` 文件
 
-## 进阶功能
+## AI 相关内容
 
-以上是基础功能，进阶和测试性的功能请参考：[进阶测试性功能](doc/README-advance.md)
-
-例如类似 `OD/GDB` 的指令级 `GUI` 调试（未完成）
-
-![](img/0035.png)
-
-## 快捷键
-
-- `CTRL+X` 方法交叉引用 快速跳转方法 `caller` 和 `callee` 页面
-- `CTRL+F` 代码区域搜索 打开搜索面板 支持 `next` 和 `prev` 选项
-- `CTRL+F` 文件树区搜索 显示搜索面板 搜索文件树中的类名以及内部类
-
-## UI 主题
-
-支持以下：
-
-- default (默认使用 类似 `IDEA` 主题)
-- metal
-- win (仅 `Windows` 支持)
-- win-classic (仅 `Windows` 支持)
-- motif
-- mac (仅 `MacOS` 支持)
-- gtk (仅某些 `Linux` 支持)
-- cross
-- aqua (仅 `MacOS` 支持)
-- nimbus
-
-在启动时指定：`java -jar jar-analyzer.jar gui -t [theme]`
-
-例如：`java -jar jar-analyzer.jar gui -t win-classic`
-
-或者修改启动脚本的代码
-
-```shell
-set "theme_name=default"
-```
+`AI` 相关功能文档：[README-ai.md](doc/README-ai.md)
 
 ## 注意
 

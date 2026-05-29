@@ -1693,6 +1693,9 @@ public class MainForm {
             }
         });
 
+        // 2026/05/29 默认启用 Null Source 优化体验
+        instance.sourceNullRadio.setSelected(true);
+
         instance.startChainsBtn.addActionListener(e -> {
             DFSEngine dfsEngine = new DFSEngine(
                     instance.chainsResult,

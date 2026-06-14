@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 5.23 - 开发中 - 未发布
+## 6.0 - 开发中 - 未发布
 
 更新日志：
 
@@ -20,18 +20,7 @@
 
 一般推荐使用 `windows-full` 版，包含完整功能，其他版本某些功能**可能**不可用
 
-如果你是 `ubuntu/mac` 用户请使用 `zip` 版本（**核心功能**可以正常使用）
-
-可选的其他 `AI` 相关下载内容:（可选，非必须，由社区师傅贡献）
-
-- `mcp-build.zip` 包含所有系统的 `mcp` 一般使用 `mcp_windows_amd64.exe`
-- `report-mcp-build.zip` 配合 `workflow` 使用的自动报告生成 `mcp`
-- `jar-audit-agent.zip` 是 `AI` 分析使用到的 `SKILL`
-
-相关项目：
-
-- 核心引擎：https://github.com/jar-analyzer/jar-analyzer-engine
-- `claude code` 插件：https://github.com/jar-analyzer/jar-analyzer-claude
+注意：本项目的 `MCP` 和 `SKILL` 等内容从 6.0 版本后不再维护
 
 ## 5.22 - 已发布最新版
 

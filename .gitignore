@@ -63,3 +63,4 @@ logs/
 *.csv
 apache-tomcat-*
 jar-analyzer.db-*
+jar-analyzer-ai.json

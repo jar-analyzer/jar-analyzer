@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+  <!-- AI robot head with sparkle -->
+  <rect x="3" y="4" width="10" height="8" rx="2" ry="2"
+        stroke="#7B61FF" stroke-width="1.2" fill="none"/>
+  <!-- antenna -->
+  <line x1="8" y1="4" x2="8" y2="2" stroke="#7B61FF" stroke-width="1.2" stroke-linecap="round"/>
+  <circle cx="8" cy="1.6" r="0.8" fill="#7B61FF"/>
+  <!-- eyes -->
+  <circle cx="6" cy="8" r="1" fill="#7B61FF"/>
+  <circle cx="10" cy="8" r="1" fill="#7B61FF"/>
+  <!-- mouth -->
+  <line x1="6" y1="11" x2="10" y2="11" stroke="#7B61FF" stroke-width="1.1" stroke-linecap="round"/>
+  <!-- spark -->
+  <path d="M13.2 3.2 L13.6 4.0 L14.4 4.4 L13.6 4.8 L13.2 5.6 L12.8 4.8 L12.0 4.4 L12.8 4.0 Z"
+        fill="#FFB020"/>
+</svg>

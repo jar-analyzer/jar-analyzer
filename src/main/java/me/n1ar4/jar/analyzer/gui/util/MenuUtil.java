@@ -13,6 +13,8 @@ package me.n1ar4.jar.analyzer.gui.util;
 import com.github.rjeschke.txtmark.Processor;
 import me.n1ar4.games.flappy.FBMainFrame;
 import me.n1ar4.games.pocker.Main;
+import me.n1ar4.jar.analyzer.ai.AIChatDialog;
+import me.n1ar4.jar.analyzer.ai.AISettingsDialog;
 import me.n1ar4.jar.analyzer.config.ConfigEngine;
 import me.n1ar4.jar.analyzer.config.ConfigFile;
 import me.n1ar4.jar.analyzer.gui.*;
@@ -233,9 +235,38 @@ public class MenuUtil {
         diffJarItem.setIcon(IconManager.engineIcon);
         diffJarItem.addActionListener(e -> JarDiffForm.start());
         plugins.add(diffJarItem);
+        plugins.addSeparator();
+        // 合并自原 develop 菜单
+        JMenuItem connectDbItem = new JMenuItem("connect db");
+        connectDbItem.setIcon(IconManager.javaIcon);
+        connectDbItem.addActionListener(e ->
+                me.n1ar4.jar.analyzer.plugins.sqlite.SQLiteForm.start());
+        plugins.add(connectDbItem);
         menuBar.add(plugins);
-        menuBar.add(createDevelopMenu());
+        menuBar.add(createAIMenu());
         return menuBar;
+    }
+
+    private static JMenu createAIMenu() {
+        JMenu aiMenu = new JMenu("AI");
+        aiMenu.setIcon(SvgManager.AiIcon);
+
+        JMenuItem chatItem = new JMenuItem("AI 助手对话");
+        chatItem.setIcon(SvgManager.AiChatIcon);
+        chatItem.addActionListener(e -> AIChatDialog.open());
+        aiMenu.add(chatItem);
+
+        JMenuItem settingsItem = new JMenuItem("AI 设置 (DeepSeek / 智谱 GLM)");
+        settingsItem.setIcon(SvgManager.AiSettingsIcon);
+        settingsItem.addActionListener(e -> AISettingsDialog.open());
+        aiMenu.add(settingsItem);
+
+        aiMenu.addSeparator();
+        JMenuItem hintItem = new JMenuItem("已支持: DeepSeek / 智谱 GLM / 自定义");
+        hintItem.setEnabled(false);
+        aiMenu.add(hintItem);
+
+        return aiMenu;
     }
 
     private static JMenu createTheme() {
@@ -516,15 +547,5 @@ public class MenuUtil {
         } catch (Exception ex) {
             return null;
         }
-    }
-
-    private static JMenu createDevelopMenu() {
-        JMenu developMenu = new JMenu("develop");
-        JMenuItem connectDbItem = new JMenuItem("connect db");
-        connectDbItem.setIcon(IconManager.javaIcon);
-        connectDbItem.addActionListener(e ->
-                me.n1ar4.jar.analyzer.plugins.sqlite.SQLiteForm.start());
-        developMenu.add(connectDbItem);
-        return developMenu;
     }
 }

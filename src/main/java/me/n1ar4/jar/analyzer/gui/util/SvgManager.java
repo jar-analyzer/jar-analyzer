@@ -78,4 +78,11 @@ public class SvgManager {
     public static FlatSVGIcon ElSnippetIcon = new FlatSVGIcon("svg/elSnippet.svg", 16, 16);
     public static FlatSVGIcon ElConsoleIcon = new FlatSVGIcon("svg/elConsole.svg", 16, 16);
     public static FlatSVGIcon ElFilterIcon = new FlatSVGIcon("svg/elFilter.svg", 16, 16);
+
+    // ---- AI menu icons -------------------------------------------------
+    // Icons used by the top-level AI menu and its sub-items
+    // (chat dialog / provider settings).
+    public static FlatSVGIcon AiIcon = new FlatSVGIcon("svg/ai.svg", 16, 16);
+    public static FlatSVGIcon AiChatIcon = new FlatSVGIcon("svg/aiChat.svg", 16, 16);
+    public static FlatSVGIcon AiSettingsIcon = new FlatSVGIcon("svg/aiSettings.svg", 16, 16);
 }

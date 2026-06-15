@@ -87,5 +87,7 @@ public interface Const {
             "// 6. 可以两次 shift 打开全局索引搜索（测试功能）\n\n" +
             "// 重要功能：JAR DIFF （支持单个 JAR 和目录方式）\n" +
             "// 你可以从 plugins 菜单中通过 diff jars 选项使用\n\n" +
+            "// 6.0 版本内置 AI 助手，支持 DeepSeek 和 GLM\n" +
+            "// 可以对话，DFS 验证，DIFF 分析辅助，表达式生成等\n\n" +
             "// 作者：4ra1n @ jar-analyzer @ " + version;
 }

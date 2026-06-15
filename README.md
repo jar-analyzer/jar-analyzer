@@ -94,8 +94,6 @@ Jar Analyzer
 
 ![](img/1000.png)
 
-![](img/1002.png)
-
 漏洞链 `DFS` 分析使用 `AI` 研判
 
 ![](img/1001.png)

@@ -843,24 +843,24 @@ public class AIChatDialog extends JDialog {
                 // 自定义 stylesheet：代码块 / 行内代码 / 列表 / 标题
                 String wrapped =
                         "<html><head><style>" +
-                        "body{font-family:'Microsoft YaHei','PingFang SC','Helvetica Neue',Arial,sans-serif;" +
-                        "font-size:13px;color:#111827;margin:0;padding:0;line-height:1.55;}" +
-                        "h1,h2,h3,h4{color:#111827;margin:8px 0 4px 0;}" +
-                        "h1{font-size:16px;}h2{font-size:15px;}h3{font-size:14px;}" +
-                        "p{margin:4px 0;}" +
-                        "code{background-color:#EEF1F4;color:#B91C1C;padding:1px 4px;" +
-                        "border-radius:3px;font-family:'Consolas','Menlo',monospace;font-size:12px;}" +
-                        "pre{background-color:#F3F4F6;border:1px solid #E5E7EB;border-radius:6px;" +
-                        "padding:8px 10px;margin:6px 0;font-family:'Consolas','Menlo',monospace;" +
-                        "font-size:12px;overflow:auto;}" +
-                        "pre code{background:none;color:#111827;padding:0;}" +
-                        "ul,ol{margin:4px 0 4px 22px;padding:0;}" +
-                        "li{margin:2px 0;}" +
-                        "blockquote{border-left:3px solid #D1D5DB;color:#6B7280;margin:6px 0;padding:0 10px;}" +
-                        "a{color:#2563EB;text-decoration:none;}" +
-                        "table{border-collapse:collapse;margin:6px 0;}" +
-                        "th,td{border:1px solid #E5E7EB;padding:4px 8px;}" +
-                        "</style></head><body>" + html + "</body></html>";
+                                "body{font-family:'Microsoft YaHei','PingFang SC','Helvetica Neue',Arial,sans-serif;" +
+                                "font-size:13px;color:#111827;margin:0;padding:0;line-height:1.55;}" +
+                                "h1,h2,h3,h4{color:#111827;margin:8px 0 4px 0;}" +
+                                "h1{font-size:16px;}h2{font-size:15px;}h3{font-size:14px;}" +
+                                "p{margin:4px 0;}" +
+                                "code{background-color:#EEF1F4;color:#B91C1C;padding:1px 4px;" +
+                                "border-radius:3px;font-family:'Consolas','Menlo',monospace;font-size:12px;}" +
+                                "pre{background-color:#F3F4F6;border:1px solid #E5E7EB;border-radius:6px;" +
+                                "padding:8px 10px;margin:6px 0;font-family:'Consolas','Menlo',monospace;" +
+                                "font-size:12px;overflow:auto;}" +
+                                "pre code{background:none;color:#111827;padding:0;}" +
+                                "ul,ol{margin:4px 0 4px 22px;padding:0;}" +
+                                "li{margin:2px 0;}" +
+                                "blockquote{border-left:3px solid #D1D5DB;color:#6B7280;margin:6px 0;padding:0 10px;}" +
+                                "a{color:#2563EB;text-decoration:none;}" +
+                                "table{border-collapse:collapse;margin:6px 0;}" +
+                                "th,td{border:1px solid #E5E7EB;padding:4px 8px;}" +
+                                "</style></head><body>" + html + "</body></html>";
                 pane.setText(wrapped);
                 pane.setCaretPosition(0);
 

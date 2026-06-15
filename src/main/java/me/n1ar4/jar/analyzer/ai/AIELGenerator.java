@@ -32,15 +32,21 @@ import java.util.regex.Pattern;
 public final class AIELGenerator {
     private static final Logger logger = LogManager.getLogger();
 
-    /** 单次生成的硬上限，避免极端情况下耗光 token */
+    /**
+     * 单次生成的硬上限，避免极端情况下耗光 token
+     */
     private static final int MAX_USER_INPUT = 4000;
 
-    /** 抽取标签：&lt;EL&gt;...&lt;/EL&gt;（DOTALL） */
+    /**
+     * 抽取标签：&lt;EL&gt;...&lt;/EL&gt;（DOTALL）
+     */
     private static final Pattern TAG_RE =
             Pattern.compile("<\\s*EL\\s*>(.*?)<\\s*/\\s*EL\\s*>",
                     Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
 
-    /** 备用：```spel / ```java / ``` 代码块 */
+    /**
+     * 备用：```spel / ```java / ``` 代码块
+     */
     private static final Pattern FENCE_RE =
             Pattern.compile("```(?:spel|java|el)?\\s*\\n([\\s\\S]*?)```",
                     Pattern.CASE_INSENSITIVE);
@@ -48,7 +54,9 @@ public final class AIELGenerator {
     private AIELGenerator() {
     }
 
-    /** 生成结果（成功或失败） */
+    /**
+     * 生成结果（成功或失败）
+     */
     public static final class Result {
         public final boolean ok;
         public final String expression;   // 提取到的纯表达式（可直接 setText）
@@ -170,7 +178,9 @@ public final class AIELGenerator {
         return sb.toString();
     }
 
-    /** DSL 方法签名清单（与 MethodEL 保持同步） */
+    /**
+     * DSL 方法签名清单（与 MethodEL 保持同步）
+     */
     private static final String[] DSL_SIGNATURES = new String[]{
             "nameContains(String)",
             "nameNotContains(String)",

@@ -51,10 +51,14 @@ public class AIELDialog extends JDialog {
     private final JLabel statusLabel;
     private final JProgressBar busyBar;
 
-    /** 用户点击"插入到编辑器"时的回调，参数为最终的 SpEL 表达式 */
+    /**
+     * 用户点击"插入到编辑器"时的回调，参数为最终的 SpEL 表达式
+     */
     private final Consumer<String> onInsert;
 
-    /** 当前线程是否正在运行 */
+    /**
+     * 当前线程是否正在运行
+     */
     private volatile Thread worker;
 
     private AIELDialog(Window owner, Consumer<String> onInsert) {

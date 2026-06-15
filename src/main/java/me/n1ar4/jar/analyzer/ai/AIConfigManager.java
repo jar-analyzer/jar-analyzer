@@ -21,24 +21,20 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.PosixFilePermission;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * AI 配置加载/保存（多配置版本）
  * <p>
  * 文件格式 (./jar-analyzer-ai.json)：
  * {
- *   "activeId": "xxxx",
- *   "profiles": [ {AIConfig...}, ... ]
+ * "activeId": "xxxx",
+ * "profiles": [ {AIConfig...}, ... ]
  * }
  * <p>
  * 安全约束：
  * - 配置文件保存在当前工作目录: ./jar-analyzer-ai.json
- *   （与项目原有 .jar-analyzer 配置文件位置策略保持一致）
+ * （与项目原有 .jar-analyzer 配置文件位置策略保持一致）
  * - POSIX 系统强制 0600 权限；Windows 走默认 ACL
  * - 日志中绝不输出 apiKey
  */

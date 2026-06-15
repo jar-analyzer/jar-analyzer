@@ -18,7 +18,7 @@ import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 
 import javax.swing.*;
-import java.awt.Window;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -35,7 +35,7 @@ import java.awt.event.WindowEvent;
  * 2. 仅对 dialog 子树调 updateComponentTreeUI
  * 3. 主程序已存在窗口因为没被刷新，UI 实例保持原主题不变
  * 4. dialog 关闭后：根据用户已保存的主题，调用项目自身的 JarAnalyzerLaf.setupXxx
- *    重新还原全局 LaF 状态，保证后续新开窗口主题正确
+ * 重新还原全局 LaF 状态，保证后续新开窗口主题正确
  */
 final class LightLafContext {
     private static final Logger logger = LogManager.getLogger();

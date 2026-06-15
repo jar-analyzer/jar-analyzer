@@ -41,13 +41,21 @@ import java.util.List;
 public final class AIActionHelper {
     private static final Logger logger = LogManager.getLogger();
 
-    /** 单段代码 prompt 的最大字符数（约对应 8~16K token，覆盖大多数反编译方法） */
+    /**
+     * 单段代码 prompt 的最大字符数（约对应 8~16K token，覆盖大多数反编译方法）
+     */
     private static final int MAX_CODE_CHARS = 32000;
-    /** DIFF 文本最大字符数（覆盖较大的 unified diff） */
+    /**
+     * DIFF 文本最大字符数（覆盖较大的 unified diff）
+     */
     private static final int MAX_DIFF_CHARS = 64000;
-    /** 调用链中每个节点附带反编译时的最大字符数（单节点） */
+    /**
+     * 调用链中每个节点附带反编译时的最大字符数（单节点）
+     */
     private static final int MAX_PER_METHOD_CHARS = 12000;
-    /** 调用链整体 prompt 最大字符数（10 节点 × 12K 仍可控） */
+    /**
+     * 调用链整体 prompt 最大字符数（10 节点 × 12K 仍可控）
+     */
     private static final int MAX_CHAIN_TOTAL_CHARS = 96000;
 
     private AIActionHelper() {
@@ -276,7 +284,7 @@ public final class AIActionHelper {
                 : SwingUtilities.getWindowAncestor(anchor);
         final java.awt.Window progressOwner = ownerWin != null ? ownerWin
                 : (MainForm.getInstance() == null ? null
-                        : SwingUtilities.getWindowAncestor(MainForm.getInstance().getMasterPanel()));
+                : SwingUtilities.getWindowAncestor(MainForm.getInstance().getMasterPanel()));
         final JDialog progress = new JDialog(progressOwner, "正在反编译调用链…",
                 Dialog.ModalityType.MODELESS);
         JLabel msg = new JLabel("准备中…");

@@ -47,7 +47,7 @@ The `jar-analyzer` project has been continuously updated for `5` years, with `64
 
 Jar Analyzer
 
-- 一个 `JAR` 包分析工具
+- 一个 `JAR` 包分析工具，`AI` 赋能古法安全审计
 - 支持 `JAR DIFF` 深入分析源码变动（支持目录对比）
 - 完善美观的 `GUI` 支持（现代化 `Java GUI` 界面，可拖拽，明暗橙三主题，十种风格）
 - 基础分析（支持 `Jar/War/Classes` 输入，支持多文件，支持嵌套 `FatJar`）
@@ -82,13 +82,27 @@ Jar Analyzer
 - 代码完全开源，构建基于 `github actions` 你可以随意查看功能代码，定制功能
 - 简单易用无需额外配置的 `污点分析` 能力，帮助您进行深入的漏洞和程序分析
 - 活跃的开源社区和维护，常年持续更新完善，欢迎贡献和参与
-- 本项目跟随主流技术路线，尝试基于 `AI` 做探索（支持 `mcp` 和 `n8n` 流程等）
+- 本项目跟随主流技术路线，尝试基于 `AI` 做探索
 
 ![](img/0080.png)
 
 自从 `5.21` 版本以后支持了 `JAR DIFF` 功能，在 `5.22` 版本支持导出完整记录，便于 `AI` 分析漏洞
 
 ![](img/0087.png)
+
+自从 `6.0` 版本以后，内置了 `AI` 助手（支持 `DeepSeek` 和 `GLM` 快速配置）
+
+![](img/1000.png)
+
+![](img/1002.png)
+
+漏洞链 `DFS` 分析使用 `AI` 研判
+
+![](img/1001.png)
+
+`DIFF` 分析是否有安全修复 `AI` 研判
+
+![](img/1003.png)
 
 静态分析 `spring / java web` 项目
 

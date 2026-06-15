@@ -10,6 +10,7 @@
 
 package me.n1ar4.jar.analyzer.ai;
 
+import com.github.rjeschke.txtmark.Processor;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.SvgManager;
 import me.n1ar4.log.LogManager;
@@ -18,6 +19,8 @@ import me.n1ar4.log.Logger;
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
@@ -62,6 +65,11 @@ public class AIChatDialog extends JDialog {
     private final JTextArea inputArea;
     private final JButton sendBtn;
     private final JButton stopBtn;
+    private final JLabel inputMetaLabel = new JLabel(" ");
+    private final JLabel sessionMetaLabel = new JLabel(" ");
+
+    // 会话累积 token（粗略估计）
+    private int sessionTokens = 0;
 
     // 业务
     private final List<LLMClient.ChatMessage> history = new ArrayList<>();
@@ -90,6 +98,13 @@ public class AIChatDialog extends JDialog {
         left.add(statusDot);
         left.add(statusLabel);
         toolbar.add(left, BorderLayout.WEST);
+
+        JPanel center = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        center.setOpaque(false);
+        sessionMetaLabel.setForeground(META_TEXT);
+        sessionMetaLabel.setFont(sessionMetaLabel.getFont().deriveFont(11f));
+        center.add(sessionMetaLabel);
+        toolbar.add(center, BorderLayout.CENTER);
 
         JPanel right = new JPanel(new FlowLayout(FlowLayout.RIGHT, 6, 0));
         right.setOpaque(false);
@@ -145,22 +160,50 @@ public class AIChatDialog extends JDialog {
         inScroll.setPreferredSize(new Dimension(0, 96));
         composer.add(inScroll, BorderLayout.CENTER);
 
-        // 输入区右下：Stop / Send
-        JPanel actionRow = new JPanel(new FlowLayout(FlowLayout.RIGHT, 6, 6));
+        // 输入区下方：左侧字符/token 估计；右侧 Stop / Send
+        JPanel actionRow = new JPanel(new BorderLayout());
         actionRow.setOpaque(false);
+        actionRow.setBorder(new EmptyBorder(0, 6, 4, 6));
+
+        inputMetaLabel.setForeground(META_TEXT);
+        inputMetaLabel.setFont(inputMetaLabel.getFont().deriveFont(11f));
+        actionRow.add(inputMetaLabel, BorderLayout.WEST);
+
+        JPanel btnRow = new JPanel(new FlowLayout(FlowLayout.RIGHT, 6, 0));
+        btnRow.setOpaque(false);
         stopBtn = makeFlatButton("停止", null);
         stopBtn.setEnabled(false);
         stopBtn.addActionListener(e -> doStop());
         sendBtn = makePrimaryButton("发送 ⏎");
         sendBtn.addActionListener(e -> doSend());
-        actionRow.add(stopBtn);
-        actionRow.add(sendBtn);
+        btnRow.add(stopBtn);
+        btnRow.add(sendBtn);
+        actionRow.add(btnRow, BorderLayout.EAST);
         composer.add(actionRow, BorderLayout.SOUTH);
 
         bottom.add(composer, BorderLayout.CENTER);
         root.add(bottom, BorderLayout.SOUTH);
 
         setContentPane(root);
+
+        // 输入框文档变化时刷新字符 / token 估计
+        inputArea.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                refreshInputMeta();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                refreshInputMeta();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                refreshInputMeta();
+            }
+        });
+        refreshInputMeta();
 
         // 键盘绑定：Enter 发送 / Shift+Enter 换行 / Ctrl+Enter 也兼容
         bindKeys();
@@ -188,6 +231,59 @@ public class AIChatDialog extends JDialog {
         }
     }
 
+    /**
+     * 输入字符 / token 估算
+     */
+    private void refreshInputMeta() {
+        String text = inputArea.getText();
+        int chars = text == null ? 0 : text.length();
+        int tokens = estimateTokens(text);
+        inputMetaLabel.setText(String.format("%d chars · ~%d tokens", chars, tokens));
+    }
+
+    private void refreshSessionMeta() {
+        if (sessionTokens <= 0) {
+            sessionMetaLabel.setText(" ");
+        } else {
+            sessionMetaLabel.setText(String.format("会话累计 ≈ %s tokens",
+                    formatCompact(sessionTokens)));
+        }
+    }
+
+    private static String formatCompact(int n) {
+        if (n < 1000) {
+            return String.valueOf(n);
+        }
+        if (n < 1_000_000) {
+            return String.format("%.1fK", n / 1000.0);
+        }
+        return String.format("%.1fM", n / 1_000_000.0);
+    }
+
+    /**
+     * 简化版 token 估算（无外部依赖）：
+     * - ASCII 可见字符按 1 token / 4 chars
+     * - 其他（中文 / 日文 / 韩文 等 CJK）按 1 token / 1.5 chars
+     * <p>
+     * 真实 BPE 数会有 10~20% 偏差，但作为输入指示已足够。
+     */
+    static int estimateTokens(String s) {
+        if (s == null || s.isEmpty()) {
+            return 0;
+        }
+        int ascii = 0;
+        int cjk = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c < 0x80) {
+                ascii++;
+            } else {
+                cjk++;
+            }
+        }
+        return (int) Math.ceil(ascii / 4.0 + cjk / 1.5);
+    }
+
     // ---------------- 业务动作 ----------------
 
     private void doClear() {
@@ -195,6 +291,8 @@ public class AIChatDialog extends JDialog {
             currentHandle.cancel();
         }
         history.clear();
+        sessionTokens = 0;
+        refreshSessionMeta();
         messagesPanel.clearAll();
         showEmptyStateIfNeeded();
         refreshStatus();
@@ -210,6 +308,8 @@ public class AIChatDialog extends JDialog {
             // 把已生成的部分写入 history（即使被中断）
             if (pendingAcc.length() > 0) {
                 history.add(LLMClient.ChatMessage.assistant(pendingAcc.toString()));
+                sessionTokens += estimateTokens(pendingAcc.toString());
+                refreshSessionMeta();
             }
             pendingAssistant = null;
             pendingAcc.setLength(0);
@@ -244,6 +344,10 @@ public class AIChatDialog extends JDialog {
         messages.addAll(history);
         messages.add(LLMClient.ChatMessage.user(userInput));
         history.add(LLMClient.ChatMessage.user(userInput));
+
+        // 累计输入 token（粗估）
+        sessionTokens += estimateTokens(userInput);
+        refreshSessionMeta();
 
         // 添加 assistant 占位气泡（带"思考中"效果）
         pendingAssistant = new MessageBubble(MessageBubble.Role.ASSISTANT, "");
@@ -312,6 +416,9 @@ public class AIChatDialog extends JDialog {
             } else {
                 pendingAssistant.markDone();
                 history.add(LLMClient.ChatMessage.assistant(pendingAcc.toString()));
+                // 累计输出 token
+                sessionTokens += estimateTokens(pendingAcc.toString());
+                refreshSessionMeta();
             }
         }
         pendingAssistant = null;
@@ -370,27 +477,59 @@ public class AIChatDialog extends JDialog {
 
     // ---------------- 静态入口 ----------------
 
-    public static void open() {
-        Window owner = MainForm.getInstance() != null ? SwingUtilities.getWindowAncestor(
+    /**
+     * 解析"应作为弹窗 owner 的 Window"。优先使用 anchor 所属的 Window，
+     * 这样从 EL / Diff / 调用链等子窗口触发 AI 时，弹窗会浮在触发源之上，
+     * 不会被反复挡到主窗口下层。
+     */
+    private static Window resolveOwner(Component anchor) {
+        if (anchor != null) {
+            Window w = SwingUtilities.getWindowAncestor(anchor);
+            if (w != null) {
+                return w;
+            }
+        }
+        return MainForm.getInstance() != null ? SwingUtilities.getWindowAncestor(
                 MainForm.getInstance().getMasterPanel()) : null;
-        AIChatDialog dlg = new AIChatDialog(owner);
-        // AI 对话窗口强制浅色主题：不受用户当前主题影响（暗色/橙色）
+    }
+
+    private static void showOnTop(AIChatDialog dlg) {
         LightLafContext.applyLightTo(dlg);
         dlg.setVisible(true);
+        // 进入前台，避免在多窗口场景下被触发源窗口反盖
+        dlg.toFront();
+        dlg.requestFocus();
+    }
+
+    public static void open() {
+        open((Component) null);
+    }
+
+    /**
+     * 以 {@code anchor} 所在窗口为 owner 打开 AI 对话框。
+     */
+    public static void open(Component anchor) {
+        AIChatDialog dlg = new AIChatDialog(resolveOwner(anchor));
+        showOnTop(dlg);
     }
 
     /**
      * 带初始上下文打开（如：右键反编译代码 → AI 解释）
      */
     public static void openWithPrompt(String preset) {
-        Window owner = MainForm.getInstance() != null ? SwingUtilities.getWindowAncestor(
-                MainForm.getInstance().getMasterPanel()) : null;
-        AIChatDialog dlg = new AIChatDialog(owner);
+        openWithPrompt(null, preset);
+    }
+
+    /**
+     * 带初始上下文 + 触发源组件打开。owner 取 anchor 所在的窗口，
+     * 弹窗会稳定浮在该子窗口之上。
+     */
+    public static void openWithPrompt(Component anchor, String preset) {
+        AIChatDialog dlg = new AIChatDialog(resolveOwner(anchor));
         if (preset != null) {
             dlg.inputArea.setText(preset);
         }
-        LightLafContext.applyLightTo(dlg);
-        dlg.setVisible(true);
+        showOnTop(dlg);
     }
 
     private static String safeMsg(Throwable t) {
@@ -678,11 +817,80 @@ public class AIChatDialog extends JDialog {
             pending = false;
             // 若文字以光标占位符开头则去掉
             String t = textArea.getText();
-            if (t.startsWith("▍")) {
-                textArea.setText(t.substring(1));
+            if (t != null && t.startsWith("▍")) {
+                t = t.substring(1);
+                textArea.setText(t);
             }
             metaLabel.setText(role == Role.USER ? "You" : "Assistant");
-            // 完成后允许复制
+            // 助手消息：用 markdown 渲染替换纯文本
+            if (role == Role.ASSISTANT && t != null && !t.isEmpty()) {
+                renderMarkdown(t);
+            }
+        }
+
+        /**
+         * 将 textArea 内容渲染为 markdown HTML，并替换显示组件
+         */
+        private void renderMarkdown(String md) {
+            try {
+                String html = Processor.process(md);
+                JEditorPane pane = new JEditorPane();
+                pane.setContentType("text/html");
+                pane.setEditable(false);
+                pane.setOpaque(false);
+                pane.setBorder(null);
+                pane.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 14));
+                // 自定义 stylesheet：代码块 / 行内代码 / 列表 / 标题
+                String wrapped =
+                        "<html><head><style>" +
+                        "body{font-family:'Microsoft YaHei','PingFang SC','Helvetica Neue',Arial,sans-serif;" +
+                        "font-size:13px;color:#111827;margin:0;padding:0;line-height:1.55;}" +
+                        "h1,h2,h3,h4{color:#111827;margin:8px 0 4px 0;}" +
+                        "h1{font-size:16px;}h2{font-size:15px;}h3{font-size:14px;}" +
+                        "p{margin:4px 0;}" +
+                        "code{background-color:#EEF1F4;color:#B91C1C;padding:1px 4px;" +
+                        "border-radius:3px;font-family:'Consolas','Menlo',monospace;font-size:12px;}" +
+                        "pre{background-color:#F3F4F6;border:1px solid #E5E7EB;border-radius:6px;" +
+                        "padding:8px 10px;margin:6px 0;font-family:'Consolas','Menlo',monospace;" +
+                        "font-size:12px;overflow:auto;}" +
+                        "pre code{background:none;color:#111827;padding:0;}" +
+                        "ul,ol{margin:4px 0 4px 22px;padding:0;}" +
+                        "li{margin:2px 0;}" +
+                        "blockquote{border-left:3px solid #D1D5DB;color:#6B7280;margin:6px 0;padding:0 10px;}" +
+                        "a{color:#2563EB;text-decoration:none;}" +
+                        "table{border-collapse:collapse;margin:6px 0;}" +
+                        "th,td{border:1px solid #E5E7EB;padding:4px 8px;}" +
+                        "</style></head><body>" + html + "</body></html>";
+                pane.setText(wrapped);
+                pane.setCaretPosition(0);
+
+                // 替换 contentBubble 中的 textArea 为 pane
+                contentBubble.removeAll();
+                contentBubble.add(pane, BorderLayout.CENTER);
+                contentBubble.revalidate();
+                contentBubble.repaint();
+
+                // 复制按钮取的也要换为 markdown 原文
+                rebindCopyToMarkdown(md);
+            } catch (Throwable ex) {
+                // 渲染失败保留纯文本
+                logger.debug("markdown render failed: {}", ex.toString());
+            }
+        }
+
+        private void rebindCopyToMarkdown(String md) {
+            // 替换 copyBtn 的 ActionListener，使其复制 markdown 原文
+            for (java.awt.event.ActionListener l : copyBtn.getActionListeners()) {
+                copyBtn.removeActionListener(l);
+            }
+            copyBtn.addActionListener(e -> {
+                Toolkit.getDefaultToolkit().getSystemClipboard().setContents(
+                        new StringSelection(md == null ? "" : md), null);
+                copyBtn.setText("已复制");
+                Timer timer = new Timer(1200, ev -> copyBtn.setText("复制"));
+                timer.setRepeats(false);
+                timer.start();
+            });
         }
 
         void markError(String msg) {

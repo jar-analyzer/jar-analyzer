@@ -10,6 +10,7 @@
 
 package me.n1ar4.jar.analyzer.el.ui;
 
+import me.n1ar4.jar.analyzer.ai.AIELDialog;
 import me.n1ar4.jar.analyzer.config.UIPrefs;
 import me.n1ar4.jar.analyzer.el.Templates;
 import me.n1ar4.jar.analyzer.gui.MainForm;
@@ -133,6 +134,9 @@ public class ELPanel extends JPanel {
                 "把编辑区内容复制到系统剪贴板", SvgManager.ElCopyIcon);
         JButton clearLogBtn = makeIconBtn("清空日志",
                 "清空下方输出区", SvgManager.ElClearLogIcon);
+        JButton aiGenBtn = makeIconBtn("AI 生成",
+                "用自然语言描述需求，让 AI 生成 SpEL 表达式（复用全局 AI 配置）",
+                SvgManager.AiGenIcon);
 
         toolbar.add(searchButton);
         toolbar.add(stopBtn);
@@ -145,6 +149,8 @@ public class ELPanel extends JPanel {
         toolbar.add(copyBtn);
         toolbar.addSeparator(new Dimension(8, 16));
         toolbar.add(clearLogBtn);
+        toolbar.addSeparator(new Dimension(8, 16));
+        toolbar.add(aiGenBtn);
         toolbar.add(Box.createHorizontalGlue());
 
         add(toolbar, BorderLayout.NORTH);
@@ -413,6 +419,18 @@ public class ELPanel extends JPanel {
             appendOutput("INFO ", "已复制到系统剪贴板 (" + codeArea.getText().length() + " chars)");
         });
         clearLogBtn.addActionListener(e -> outputArea.setText(""));
+
+        // AI 生成 SpEL：弹窗里自然语言→表达式，回调写入编辑器
+        // anchor=aiGenBtn：弹窗 owner 绑定到 EL 面板所在 Window，避免被 EL 子窗口反盖
+        aiGenBtn.addActionListener(e -> AIELDialog.open(aiGenBtn, expr -> {
+            if (expr == null || expr.isEmpty()) {
+                return;
+            }
+            codeArea.setText(expr);
+            codeArea.setCaretPosition(0);
+            appendOutput("INFO ", "已通过 AI 生成 SpEL 表达式 ("
+                    + expr.length() + " chars)");
+        }));
 
         // welcome banner
         appendOutput("INFO ", "EL search workbench ready. 点击左侧模板即可替换当前表达式。");

@@ -85,4 +85,5 @@ public class SvgManager {
     public static FlatSVGIcon AiIcon = new FlatSVGIcon("svg/ai.svg", 16, 16);
     public static FlatSVGIcon AiChatIcon = new FlatSVGIcon("svg/aiChat.svg", 16, 16);
     public static FlatSVGIcon AiSettingsIcon = new FlatSVGIcon("svg/aiSettings.svg", 16, 16);
+    public static FlatSVGIcon AiGenIcon = new FlatSVGIcon("svg/aiGen.svg", 16, 16);
 }

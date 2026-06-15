@@ -10,6 +10,7 @@
 
 package me.n1ar4.jar.analyzer.gui;
 
+import me.n1ar4.jar.analyzer.ai.AIActionHelper;
 import me.n1ar4.jar.analyzer.core.FinderRunner;
 import me.n1ar4.jar.analyzer.engine.CoreHelper;
 import me.n1ar4.jar.analyzer.engine.DecompileEngine;
@@ -18,6 +19,7 @@ import me.n1ar4.jar.analyzer.entity.MethodResult;
 import me.n1ar4.jar.analyzer.gui.adapter.SearchInputListener;
 import me.n1ar4.jar.analyzer.gui.util.ProcessDialog;
 import me.n1ar4.jar.analyzer.starter.Const;
+import me.n1ar4.jar.analyzer.utils.MouseUtil;
 import me.n1ar4.jar.analyzer.utils.StringUtil;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
@@ -156,12 +158,16 @@ public class ChainsResultPanel extends JPanel {
      */
     private class ChainPanel extends JPanel {
         private final String chainId;
+        private final String chainTitle;
+        private final List<String> chainMethods;
         private final JButton toggleButton;
         private final JPanel methodsPanel;
         private boolean expanded = false;
 
         public ChainPanel(String chainId, String title, List<String> methods) {
             this.chainId = chainId;
+            this.chainTitle = title;
+            this.chainMethods = methods;
 
             setLayout(new BorderLayout());
             setBorder(BorderFactory.createEtchedBorder());
@@ -177,6 +183,10 @@ public class ChainsResultPanel extends JPanel {
 
             titlePanel.add(toggleButton, BorderLayout.CENTER);
             add(titlePanel, BorderLayout.NORTH);
+
+            // 在标题区域上挂右键菜单：AI 研判此调用链
+            installRightClickMenu(titlePanel);
+            installRightClickMenu(toggleButton);
 
             // 创建方法列表面板
             methodsPanel = new JPanel();
@@ -210,6 +220,36 @@ public class ChainsResultPanel extends JPanel {
 
             // 默认折叠状态
             methodsPanel.setVisible(expanded);
+        }
+
+        /**
+         * 给组件挂右键菜单：AI 研判此调用链
+         */
+        private void installRightClickMenu(Component target) {
+            target.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    show(e);
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    show(e);
+                }
+
+                private void show(MouseEvent e) {
+                    if (!MouseUtil.isPopupTrigger(e)) {
+                        return;
+                    }
+                    JPopupMenu m = new JPopupMenu();
+                    JMenuItem ai = new JMenuItem("AI 研判此调用链");
+                    final java.awt.Component anchor = e.getComponent();
+                    ai.addActionListener(ev ->
+                            AIActionHelper.auditChain(anchor, chainTitle, chainMethods));
+                    m.add(ai);
+                    m.show(e.getComponent(), e.getX(), e.getY());
+                }
+            });
         }
 
         private void toggleExpansion() {

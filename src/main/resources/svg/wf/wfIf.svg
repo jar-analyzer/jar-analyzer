@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <!-- If: diamond -->
+  <polygon points="12,3 21,12 12,21 3,12" stroke="#9B51E0" stroke-width="1.5" fill="#F4ECFF"/>
+  <text x="7.5" y="15" fill="#7B61FF" font-size="9" font-family="monospace" font-weight="bold">if</text>
+</svg>

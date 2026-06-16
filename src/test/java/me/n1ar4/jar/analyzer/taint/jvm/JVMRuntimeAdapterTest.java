@@ -11,15 +11,9 @@
 package me.n1ar4.jar.analyzer.taint.jvm;
 
 import org.junit.jupiter.api.Test;
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.*;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -127,8 +121,16 @@ class JVMRuntimeAdapterTest {
         final Probe[] holder = new Probe[1];
 
         MethodEmitter emitter = new MethodEmitter() {
-            @Override public String name() { return "dup2Test"; }
-            @Override public String desc() { return "()V"; }
+            @Override
+            public String name() {
+                return "dup2Test";
+            }
+
+            @Override
+            public String desc() {
+                return "()V";
+            }
+
             @Override
             public void emit(MethodVisitor mv) {
                 // 通过 IINC + ICONST 构造两个不同的栈位并染色
@@ -188,10 +190,10 @@ class JVMRuntimeAdapterTest {
 
     /**
      * 字节码：
-     *   LCONST_1            ; 栈顶有一个 long（两 slot）
-     *   LSTORE 1
-     *   LLOAD 1
-     *   LRETURN
+     * LCONST_1            ; 栈顶有一个 long（两 slot）
+     * LSTORE 1
+     * LLOAD 1
+     * LRETURN
      * 在 LSTORE 前我们手动把栈上的 low slot 染色，验证 LSTORE 后 locals[1] 也染色，
      * LLOAD 后栈顶（low slot）仍然染色。
      */
@@ -201,8 +203,16 @@ class JVMRuntimeAdapterTest {
         final Set<String> markedAfterLload = new HashSet<>();
 
         MethodEmitter emitter = new MethodEmitter() {
-            @Override public String name() { return "longTest"; }
-            @Override public String desc() { return "()J"; }
+            @Override
+            public String name() {
+                return "longTest";
+            }
+
+            @Override
+            public String desc() {
+                return "()J";
+            }
+
             @Override
             public void emit(MethodVisitor mv) {
                 mv.visitInsn(Opcodes.LCONST_1);
@@ -258,8 +268,16 @@ class JVMRuntimeAdapterTest {
         final Set<String> localSnapshotAfterStackMutation = new HashSet<>();
 
         MethodEmitter emitter = new MethodEmitter() {
-            @Override public String name() { return "aloadTest"; }
-            @Override public String desc() { return "(Ljava/lang/Object;)V"; }
+            @Override
+            public String name() {
+                return "aloadTest";
+            }
+
+            @Override
+            public String desc() {
+                return "(Ljava/lang/Object;)V";
+            }
+
             @Override
             public void emit(MethodVisitor mv) {
                 mv.visitVarInsn(Opcodes.ALOAD, 0);
@@ -303,8 +321,16 @@ class JVMRuntimeAdapterTest {
         final Set<String> originalAfterTopMutation = new HashSet<>();
 
         MethodEmitter emitter = new MethodEmitter() {
-            @Override public String name() { return "dupTest"; }
-            @Override public String desc() { return "()V"; }
+            @Override
+            public String name() {
+                return "dupTest";
+            }
+
+            @Override
+            public String desc() {
+                return "()V";
+            }
+
             @Override
             public void emit(MethodVisitor mv) {
                 mv.visitInsn(Opcodes.ICONST_1);
@@ -354,8 +380,16 @@ class JVMRuntimeAdapterTest {
         final int[] handlerStackSize = new int[]{-1};
 
         MethodEmitter emitter = new MethodEmitter() {
-            @Override public String name() { return "tryCatchTest"; }
-            @Override public String desc() { return "()V"; }
+            @Override
+            public String name() {
+                return "tryCatchTest";
+            }
+
+            @Override
+            public String desc() {
+                return "()V";
+            }
+
             @Override
             public void emit(MethodVisitor mv) {
                 Label start = new Label();
@@ -380,6 +414,7 @@ class JVMRuntimeAdapterTest {
 
         runWithProbe(emitter, (mv, owner, access, name, desc) -> new Probe(mv, owner, access, name, desc, null) {
             boolean afterHandler = false;
+
             // 我们记录"刚进入 handler label 后的栈深"
             @Override
             public void visitLabel(Label label) {

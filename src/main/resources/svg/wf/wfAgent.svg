@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <!-- AI Agent: robot head with chip + spark -->
+  <rect x="4" y="6" width="16" height="12" rx="3" ry="3"
+        stroke="#7B61FF" stroke-width="1.5" fill="#F4F0FF"/>
+  <line x1="12" y1="6" x2="12" y2="3" stroke="#7B61FF" stroke-width="1.4" stroke-linecap="round"/>
+  <circle cx="12" cy="2.4" r="1.0" fill="#7B61FF"/>
+  <circle cx="9" cy="12" r="1.4" fill="#7B61FF"/>
+  <circle cx="15" cy="12" r="1.4" fill="#7B61FF"/>
+  <line x1="9" y1="15.5" x2="15" y2="15.5" stroke="#7B61FF" stroke-width="1.4" stroke-linecap="round"/>
+  <path d="M21 4 L21.6 5.4 L23 6 L21.6 6.6 L21 8 L20.4 6.6 L19 6 L20.4 5.4 Z" fill="#FFB020"/>
+</svg>

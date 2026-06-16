@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <!-- Loop: circular arrow -->
+  <path d="M5 12 A7 7 0 1 1 12 19" stroke="#E67E22" stroke-width="1.7" fill="none"
+        stroke-linecap="round"/>
+  <polygon points="14,16 12,19 9,18" fill="#E67E22"/>
+  <text x="9.5" y="13.5" fill="#E67E22" font-size="6" font-family="monospace" font-weight="bold">N</text>
+</svg>

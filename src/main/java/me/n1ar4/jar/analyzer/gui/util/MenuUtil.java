@@ -15,6 +15,7 @@ import me.n1ar4.games.flappy.FBMainFrame;
 import me.n1ar4.games.pocker.Main;
 import me.n1ar4.jar.analyzer.ai.AIChatDialog;
 import me.n1ar4.jar.analyzer.ai.AISettingsDialog;
+import me.n1ar4.jar.analyzer.ai.workflow.AIWorkflowDialog;
 import me.n1ar4.jar.analyzer.config.ConfigEngine;
 import me.n1ar4.jar.analyzer.config.ConfigFile;
 import me.n1ar4.jar.analyzer.gui.*;
@@ -260,6 +261,13 @@ public class MenuUtil {
         settingsItem.setIcon(SvgManager.AiSettingsIcon);
         settingsItem.addActionListener(e -> AISettingsDialog.open());
         aiMenu.add(settingsItem);
+
+        aiMenu.addSeparator();
+        JMenuItem workflowItem = new JMenuItem("AI 漏洞扫描工作流 (DAG)");
+        workflowItem.setIcon(SvgManager.AiIcon);
+        workflowItem.addActionListener(e ->
+                AIWorkflowDialog.open(MainForm.getInstance().getMasterPanel()));
+        aiMenu.add(workflowItem);
 
         aiMenu.addSeparator();
         JMenuItem hintItem = new JMenuItem("已支持: DeepSeek / 智谱 GLM / 自定义");

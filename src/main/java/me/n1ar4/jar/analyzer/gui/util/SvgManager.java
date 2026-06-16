@@ -86,4 +86,17 @@ public class SvgManager {
     public static FlatSVGIcon AiChatIcon = new FlatSVGIcon("svg/aiChat.svg", 16, 16);
     public static FlatSVGIcon AiSettingsIcon = new FlatSVGIcon("svg/aiSettings.svg", 16, 16);
     public static FlatSVGIcon AiGenIcon = new FlatSVGIcon("svg/aiGen.svg", 16, 16);
+
+    // ---- Workflow (DAG canvas) icons -----------------------------------
+    // Per-node-type glyphs rendered inside a node card on the workflow
+    // canvas (28x28 looks crisp on HiDPI without jagged edges).
+    public static FlatSVGIcon WfTriggerIcon = new FlatSVGIcon("svg/wf/wfTrigger.svg", 28, 28);
+    public static FlatSVGIcon WfConstantsIcon = new FlatSVGIcon("svg/wf/wfConstants.svg", 28, 28);
+    public static FlatSVGIcon WfHttpIcon = new FlatSVGIcon("svg/wf/wfHttp.svg", 28, 28);
+    public static FlatSVGIcon WfMergeIcon = new FlatSVGIcon("svg/wf/wfMerge.svg", 28, 28);
+    public static FlatSVGIcon WfLoopIcon = new FlatSVGIcon("svg/wf/wfLoop.svg", 28, 28);
+    public static FlatSVGIcon WfIfIcon = new FlatSVGIcon("svg/wf/wfIf.svg", 28, 28);
+    public static FlatSVGIcon WfTransformIcon = new FlatSVGIcon("svg/wf/wfTransform.svg", 28, 28);
+    public static FlatSVGIcon WfAgentIcon = new FlatSVGIcon("svg/wf/wfAgent.svg", 28, 28);
+    public static FlatSVGIcon WfReportIcon = new FlatSVGIcon("svg/wf/wfReport.svg", 28, 28);
 }

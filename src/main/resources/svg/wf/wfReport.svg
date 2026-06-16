@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <!-- Report: shield + check -->
+  <path d="M12 2 L20 5 V12 C20 17 16 20 12 22 C8 20 4 17 4 12 V5 Z"
+        stroke="#E03131" stroke-width="1.5" fill="#FFF5F5"/>
+  <path d="M8 12 L11 15 L16 9" stroke="#E03131" stroke-width="1.8" fill="none"
+        stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

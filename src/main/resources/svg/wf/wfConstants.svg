@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <!-- Constants: braces { } -->
+  <path d="M9 3 C 6 3 6 7 6 9 C 6 10.5 5 11 4 12 C 5 13 6 13.5 6 15 C 6 17 6 21 9 21"
+        stroke="#7B61FF" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+  <path d="M15 3 C 18 3 18 7 18 9 C 18 10.5 19 11 20 12 C 19 13 18 13.5 18 15 C 18 17 18 21 15 21"
+        stroke="#7B61FF" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+  <circle cx="12" cy="12" r="1.4" fill="#7B61FF"/>
+</svg>

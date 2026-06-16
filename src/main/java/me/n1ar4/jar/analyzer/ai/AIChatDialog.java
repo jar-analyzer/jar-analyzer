@@ -25,8 +25,6 @@ import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,6 +75,9 @@ public class AIChatDialog extends JDialog {
     private MessageBubble pendingAssistant;        // 当前正在流式接收的助手气泡
     private final StringBuilder pendingAcc = new StringBuilder();
 
+    // 渲染模式：Markdown 开关（默认关闭，原样输出）
+    private final JCheckBox renderMarkdownToggle = new JCheckBox("Markdown 渲染", false);
+
     public AIChatDialog(Window owner) {
         super(owner, "AI 助手", ModalityType.MODELESS);
         setSize(960, 720);
@@ -108,6 +109,12 @@ public class AIChatDialog extends JDialog {
 
         JPanel right = new JPanel(new FlowLayout(FlowLayout.RIGHT, 6, 0));
         right.setOpaque(false);
+        renderMarkdownToggle.setOpaque(false);
+        renderMarkdownToggle.setForeground(META_TEXT);
+        renderMarkdownToggle.setFont(renderMarkdownToggle.getFont().deriveFont(12f));
+        renderMarkdownToggle.setFocusPainted(false);
+        renderMarkdownToggle.setToolTipText("勾选时将助手回复按 Markdown 渲染；取消则按原文显示");
+        renderMarkdownToggle.addActionListener(e -> rerenderAllAssistantBubbles());
         JButton clearBtn = makeFlatButton("清空", null);
         clearBtn.addActionListener(e -> doClear());
         JButton settingsBtn = makeFlatButton("设置", SvgManager.AiSettingsIcon);
@@ -115,6 +122,7 @@ public class AIChatDialog extends JDialog {
             AISettingsDialog.open();
             refreshStatus();
         });
+        right.add(renderMarkdownToggle);
         right.add(clearBtn);
         right.add(settingsBtn);
         toolbar.add(right, BorderLayout.EAST);
@@ -351,6 +359,7 @@ public class AIChatDialog extends JDialog {
 
         // 添加 assistant 占位气泡（带"思考中"效果）
         pendingAssistant = new MessageBubble(MessageBubble.Role.ASSISTANT, "");
+        pendingAssistant.setMarkdownEnabled(renderMarkdownToggle.isSelected());
         pendingAssistant.markPending();
         messagesPanel.addBubble(pendingAssistant);
         pendingAcc.setLength(0);
@@ -441,6 +450,25 @@ public class AIChatDialog extends JDialog {
             JScrollBar bar = messagesScroll.getVerticalScrollBar();
             bar.setValue(bar.getMaximum());
         });
+    }
+
+    /**
+     * 切换 Markdown 渲染开关时：
+     * - 对所有"已完成"的 ASSISTANT 气泡按当前模式重新渲染
+     * - 正在流式生成的 pending 气泡保持纯文本，待 onDone() 时再走分支
+     */
+    private void rerenderAllAssistantBubbles() {
+        boolean enabled = renderMarkdownToggle.isSelected();
+        for (Component c : messagesPanel.getComponents()) {
+            if (c instanceof MessageBubble) {
+                MessageBubble b = (MessageBubble) c;
+                if (b.isAssistant() && !b.isPending()) {
+                    b.setMarkdownEnabled(enabled);
+                }
+            }
+        }
+        messagesPanel.revalidate();
+        messagesPanel.repaint();
     }
 
     // ---------------- 键位 ----------------
@@ -686,6 +714,12 @@ public class AIChatDialog extends JDialog {
         private final JButton copyBtn;
         private final JPanel contentBubble;
         private boolean pending;
+        // 原始文本（始终保存 markdown 原文 / 用户输入原文），用于复制 & 切换渲染模式
+        private final StringBuilder rawText = new StringBuilder();
+        // 是否启用 markdown 渲染（由外层切换；仅对 ASSISTANT 角色有意义）
+        private boolean markdownEnabled = false;
+        // 当前是否处于 markdown HTML 渲染态
+        private boolean rendered = false;
 
         MessageBubble(Role role, String initial) {
             this.role = role;
@@ -703,7 +737,9 @@ public class AIChatDialog extends JDialog {
             avatar.setBorder(new RoundedBorder(14, role == Role.USER ? new Color(0xFB923C) : new Color(0x6366F1)));
 
             // 文本（用 JTextArea 便于流式 append + 选择/复制）
-            textArea = new JTextArea(initial == null ? "" : initial);
+            String init = initial == null ? "" : initial;
+            rawText.append(init);
+            textArea = new JTextArea(init);
             textArea.setEditable(false);
             textArea.setLineWrap(true);
             textArea.setWrapStyleWord(true);
@@ -731,18 +767,19 @@ public class AIChatDialog extends JDialog {
             metaLabel.setFont(metaLabel.getFont().deriveFont(11f));
             metaRow.add(metaLabel, BorderLayout.WEST);
 
+            // 一键复制按钮：始终可见，复制原始文本
             copyBtn = new JButton("复制");
-            copyBtn.setBorder(new EmptyBorder(0, 6, 0, 6));
+            copyBtn.setBorder(new EmptyBorder(0, 8, 0, 8));
             copyBtn.setFocusPainted(false);
             copyBtn.setContentAreaFilled(false);
             copyBtn.setForeground(META_TEXT);
             copyBtn.setFont(copyBtn.getFont().deriveFont(11f));
             copyBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-            copyBtn.setVisible(false);
+            copyBtn.setToolTipText("复制本条消息原文到剪贴板");
             copyBtn.addActionListener(e -> {
-                String t = textArea.getText();
+                String t = rawText.toString();
                 Toolkit.getDefaultToolkit().getSystemClipboard().setContents(
-                        new StringSelection(t == null ? "" : t), null);
+                        new StringSelection(t), null);
                 copyBtn.setText("已复制");
                 Timer timer = new Timer(1200, ev -> copyBtn.setText("复制"));
                 timer.setRepeats(false);
@@ -769,39 +806,13 @@ public class AIChatDialog extends JDialog {
                 add(avatarBox, BorderLayout.WEST);
                 add(column, BorderLayout.CENTER);
             }
-
-            // 用户消息显示 hover 复制
-            if (role == Role.USER) {
-                copyBtn.setVisible(false);
-            }
-
-            // 鼠标进入显示复制按钮
-            MouseAdapter hover = new MouseAdapter() {
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    if (!pending) {
-                        copyBtn.setVisible(true);
-                    }
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    Point p = SwingUtilities.convertPoint(
-                            (Component) e.getSource(), e.getPoint(), MessageBubble.this);
-                    if (!MessageBubble.this.contains(p)) {
-                        copyBtn.setVisible(false);
-                    }
-                }
-            };
-            contentBubble.addMouseListener(hover);
-            textArea.addMouseListener(hover);
-            metaRow.addMouseListener(hover);
         }
 
         void appendText(String s) {
             if (s == null || s.isEmpty()) {
                 return;
             }
+            rawText.append(s);
             textArea.append(s);
         }
 
@@ -815,17 +826,52 @@ public class AIChatDialog extends JDialog {
 
         void markDone() {
             pending = false;
-            // 若文字以光标占位符开头则去掉
+            // 若文字以光标占位符开头则去掉（仅影响展示，不影响 rawText）
             String t = textArea.getText();
             if (t != null && t.startsWith("▍")) {
                 t = t.substring(1);
                 textArea.setText(t);
             }
             metaLabel.setText(role == Role.USER ? "You" : "Assistant");
-            // 助手消息：用 markdown 渲染替换纯文本
-            if (role == Role.ASSISTANT && t != null && !t.isEmpty()) {
-                renderMarkdown(t);
+            // 助手消息：根据 markdownEnabled 决定是否渲染
+            if (role == Role.ASSISTANT && rawText.length() > 0 && markdownEnabled) {
+                renderMarkdown(rawText.toString());
             }
+        }
+
+        /**
+         * 设置 markdown 渲染开关，并立即对已完成的 ASSISTANT 气泡重新应用
+         */
+        void setMarkdownEnabled(boolean enabled) {
+            if (this.markdownEnabled == enabled) {
+                return;
+            }
+            this.markdownEnabled = enabled;
+            // 仅在已完成（非 pending）的 ASSISTANT 气泡上即时切换
+            if (pending || role != Role.ASSISTANT) {
+                return;
+            }
+            if (enabled) {
+                if (rawText.length() > 0) {
+                    renderMarkdown(rawText.toString());
+                }
+            } else {
+                showPlainText();
+            }
+        }
+
+        /**
+         * 切回纯文本视图（撤销 markdown HTML 渲染）
+         */
+        private void showPlainText() {
+            contentBubble.removeAll();
+            // 恢复 textArea 内容并放回
+            textArea.setText(rawText.toString());
+            textArea.setCaretPosition(0);
+            contentBubble.add(textArea, BorderLayout.CENTER);
+            contentBubble.revalidate();
+            contentBubble.repaint();
+            rendered = false;
         }
 
         /**
@@ -864,33 +910,24 @@ public class AIChatDialog extends JDialog {
                 pane.setText(wrapped);
                 pane.setCaretPosition(0);
 
-                // 替换 contentBubble 中的 textArea 为 pane
+                // 替换 contentBubble 中的内容为 pane
                 contentBubble.removeAll();
                 contentBubble.add(pane, BorderLayout.CENTER);
                 contentBubble.revalidate();
                 contentBubble.repaint();
-
-                // 复制按钮取的也要换为 markdown 原文
-                rebindCopyToMarkdown(md);
+                rendered = true;
             } catch (Throwable ex) {
                 // 渲染失败保留纯文本
                 logger.debug("markdown render failed: {}", ex.toString());
             }
         }
 
-        private void rebindCopyToMarkdown(String md) {
-            // 替换 copyBtn 的 ActionListener，使其复制 markdown 原文
-            for (java.awt.event.ActionListener l : copyBtn.getActionListeners()) {
-                copyBtn.removeActionListener(l);
-            }
-            copyBtn.addActionListener(e -> {
-                Toolkit.getDefaultToolkit().getSystemClipboard().setContents(
-                        new StringSelection(md == null ? "" : md), null);
-                copyBtn.setText("已复制");
-                Timer timer = new Timer(1200, ev -> copyBtn.setText("复制"));
-                timer.setRepeats(false);
-                timer.start();
-            });
+        boolean isAssistant() {
+            return role == Role.ASSISTANT;
+        }
+
+        boolean isPending() {
+            return pending;
         }
 
         void markError(String msg) {
@@ -904,7 +941,11 @@ public class AIChatDialog extends JDialog {
             if (prev.startsWith("▍")) {
                 prev = prev.substring(1);
             }
-            textArea.setText((prev == null || prev.isEmpty() ? "" : prev + "\n\n") + "⚠ 请求失败：" + msg);
+            String full = (prev == null || prev.isEmpty() ? "" : prev + "\n\n") + "⚠ 请求失败：" + msg;
+            textArea.setText(full);
+            // 错误信息也纳入 rawText，方便复制
+            rawText.setLength(0);
+            rawText.append(full);
             metaLabel.setText("Assistant · 错误");
             metaLabel.setForeground(ERROR_TEXT);
         }

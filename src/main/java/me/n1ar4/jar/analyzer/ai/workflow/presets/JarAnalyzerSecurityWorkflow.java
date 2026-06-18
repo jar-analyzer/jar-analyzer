@@ -11,9 +11,7 @@
 package me.n1ar4.jar.analyzer.ai.workflow.presets;
 
 import me.n1ar4.jar.analyzer.ai.AIConfig;
-import me.n1ar4.jar.analyzer.ai.workflow.agent.AgentToolRegistry;
-import me.n1ar4.jar.analyzer.ai.workflow.agent.JarAnalyzerTools;
-import me.n1ar4.jar.analyzer.ai.workflow.agent.ReportTool;
+import me.n1ar4.jar.analyzer.ai.workflow.agent.*;
 import me.n1ar4.jar.analyzer.ai.workflow.core.*;
 import me.n1ar4.jar.analyzer.ai.workflow.nodes.*;
 import me.n1ar4.jar.analyzer.ai.workflow.report.ReportSink;
@@ -63,6 +61,8 @@ public final class JarAnalyzerSecurityWorkflow {
     private final ReportSink sink;
     private final ReportTool reportTool;
     private final JarAnalyzerTools jarTools;
+    private final AgentTraceStore agentTraceStore = new AgentTraceStore();
+    private final TokenUsageCounter tokenCounter = new TokenUsageCounter();
     private final int maxClasses;
     private final int agentMaxIterations;
 
@@ -92,6 +92,31 @@ public final class JarAnalyzerSecurityWorkflow {
 
     public List<VulnReport> getCollectedReports() {
         return reportTool.getCollected();
+    }
+
+    public AgentTraceStore getAgentTraceStore() {
+        return agentTraceStore;
+    }
+
+    /**
+     * 返回当前累计 token 用量快照（实时）。
+     */
+    public TokenUsage getTokenUsage() {
+        return tokenCounter.snapshot();
+    }
+
+    /**
+     * 已上报 usage 的 chat/completions 调用次数。
+     */
+    public long getTokenCallCount() {
+        return tokenCounter.callCount();
+    }
+
+    /**
+     * 返回 AI Agent 每一轮发送的 prompt 与收到的 response 记录（按发生顺序）。
+     */
+    public List<AgentTurn> getAgentTurns() {
+        return agentTraceStore.getAll();
     }
 
     /**
@@ -258,7 +283,7 @@ public final class JarAnalyzerSecurityWorkflow {
         prepPromptNode.setDisplayOnly(true);
 
         final AiAgentNode aiAgentNode = new AiAgentNode("aiAgent", cfg, registry,
-                buildSystemPrompt(), agentMaxIterations);
+                buildSystemPrompt(), agentMaxIterations, agentTraceStore, tokenCounter);
         aiAgentNode.setDisplayOnly(true);
 
         // 用一个无参 Transform 节点作为 "Report" 视觉占位（同步显示当前已收集报告数量）

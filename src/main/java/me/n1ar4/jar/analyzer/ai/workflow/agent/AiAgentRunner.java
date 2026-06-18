@@ -51,6 +51,19 @@ public final class AiAgentRunner {
     private final AgentToolRegistry registry;
     private final int maxIterations;
 
+    /**
+     * 交互记录接收器（可选）。设置后，每一轮发送的 prompt 与收到的 response 都会被记录。
+     */
+    private AgentTraceSink traceSink;
+    /**
+     * Token 用量接收器（可选）。每次成功的 chat 调用都会上报一次，无论是否触发 tool_calls。
+     */
+    private TokenUsageSink tokenSink;
+    /**
+     * 交互记录的上下文标签（一般为当前分析的 className）。
+     */
+    private String contextLabel = "";
+
     public AiAgentRunner(AIConfig cfg, AgentToolRegistry registry, int maxIterations) {
         if (cfg == null) {
             throw new IllegalArgumentException("ai config required");
@@ -61,6 +74,18 @@ public final class AiAgentRunner {
         this.cfg = cfg;
         this.registry = registry;
         this.maxIterations = Math.max(1, maxIterations);
+    }
+
+    public void setTraceSink(AgentTraceSink traceSink) {
+        this.traceSink = traceSink;
+    }
+
+    public void setTokenSink(TokenUsageSink tokenSink) {
+        this.tokenSink = tokenSink;
+    }
+
+    public void setContextLabel(String contextLabel) {
+        this.contextLabel = contextLabel == null ? "" : contextLabel;
     }
 
     /**
@@ -105,22 +130,31 @@ public final class AiAgentRunner {
                     .post(RequestBody.create(JSON_TYPE,
                             reqBody.toJSONString().getBytes(StandardCharsets.UTF_8)))
                     .build();
+            // 在发送前对本轮 prompt（完整对话消息）做一次快照，避免后续 add 影响记录
+            String promptSnapshot = formatMessages(messages);
             String text;
             try (Response resp = http.newCall(request).execute()) {
                 ResponseBody body = resp.body();
                 text = body == null ? "" : body.string();
                 if (!resp.isSuccessful()) {
+                    recordTurn(round, promptSnapshot,
+                            "[HTTP " + resp.code() + "]\n" + truncate(text, 2000));
                     throw new IOException("HTTP " + resp.code() + ": " + truncate(text, 500));
                 }
             }
             JSONObject json = JSON.parseObject(text);
+            // 上报 token 用量（若服务商返回 usage）。在 choices 解析之前调用，
+            // 即使响应里没有 choices 也至少能记录到本次调用的消耗。
+            reportUsage(json);
             JSONArray choices = json.getJSONArray("choices");
             if (choices == null || choices.isEmpty()) {
+                recordTurn(round, promptSnapshot, "(no choices)\n" + truncate(text, 2000));
                 return "";
             }
             JSONObject first = choices.getJSONObject(0);
             JSONObject msg = first.getJSONObject("message");
             if (msg == null) {
+                recordTurn(round, promptSnapshot, "(no message)\n" + truncate(text, 2000));
                 return "";
             }
             // 兼容字段：message.tool_calls
@@ -129,8 +163,11 @@ public final class AiAgentRunner {
             if (toolCalls == null || toolCalls.isEmpty()) {
                 // 模型给出最终结果
                 logger.debug("agent finished after {} round(s)", round + 1);
+                recordTurn(round, promptSnapshot, content == null ? "" : content);
                 return content == null ? "" : content;
             }
+            // 记录本轮 response（含工具调用）
+            recordTurn(round, promptSnapshot, buildResponseText(content, toolCalls));
             // 把 assistant message 原样添加进对话
             JSONObject assistantMsg = new JSONObject();
             assistantMsg.put("role", "assistant");
@@ -187,6 +224,128 @@ public final class AiAgentRunner {
         m.put("tool_call_id", tcId);
         m.put("content", content == null ? "" : content);
         messages.add(m);
+    }
+
+    /**
+     * 记录一轮交互（若设置了 sink）。任何异常都不应影响主流程。
+     */
+    private void recordTurn(int round, String prompt, String response) {
+        if (traceSink == null) {
+            return;
+        }
+        try {
+            traceSink.record(new AgentTurn(contextLabel, round, prompt, response));
+        } catch (Throwable ignored) {
+        }
+    }
+
+    /**
+     * 解析响应里 OpenAI 兼容的 {@code usage} 对象并上报。
+     * <p>
+     * 兼容字段：{@code prompt_tokens / completion_tokens / total_tokens}。
+     * 任何字段缺失则按 0 处理；若 usage 整体缺失，则不上报（避免污染计数）。
+     */
+    private void reportUsage(JSONObject json) {
+        if (tokenSink == null || json == null) {
+            return;
+        }
+        try {
+            JSONObject u = json.getJSONObject("usage");
+            if (u == null) {
+                return;
+            }
+            long pt = readLong(u, "prompt_tokens");
+            long ct = readLong(u, "completion_tokens");
+            long tt = readLong(u, "total_tokens");
+            if (tt == 0) {
+                tt = pt + ct;
+            }
+            tokenSink.onUsage(new TokenUsage(pt, ct, tt));
+        } catch (Throwable ignored) {
+        }
+    }
+
+    private static long readLong(JSONObject o, String key) {
+        if (o == null) {
+            return 0L;
+        }
+        Object v = o.get(key);
+        if (v == null) {
+            return 0L;
+        }
+        if (v instanceof Number) {
+            return ((Number) v).longValue();
+        }
+        try {
+            return Long.parseLong(String.valueOf(v).trim());
+        } catch (Throwable t) {
+            return 0L;
+        }
+    }
+
+    /**
+     * 把对话消息数组格式化为可读文本（用于展示本轮发送的 prompt 快照）。
+     */
+    private static String formatMessages(JSONArray messages) {
+        StringBuilder sb = new StringBuilder();
+        if (messages == null) {
+            return "";
+        }
+        for (int i = 0; i < messages.size(); i++) {
+            JSONObject m = messages.getJSONObject(i);
+            if (m == null) {
+                continue;
+            }
+            String role = m.getString("role");
+            sb.append("================ ")
+                    .append(role == null ? "?" : role.toUpperCase())
+                    .append(" ================\n");
+            String content = m.getString("content");
+            if (content != null && !content.isEmpty()) {
+                sb.append(content).append('\n');
+            }
+            String tcId = m.getString("tool_call_id");
+            if (tcId != null && !tcId.isEmpty()) {
+                sb.append("(tool_call_id=").append(tcId).append(")\n");
+            }
+            JSONArray tc = m.getJSONArray("tool_calls");
+            if (tc != null && !tc.isEmpty()) {
+                sb.append(formatToolCalls(tc));
+            }
+            sb.append('\n');
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 组装本轮 response 文本：自然语言 content + 工具调用概要。
+     */
+    private static String buildResponseText(String content, JSONArray toolCalls) {
+        StringBuilder sb = new StringBuilder();
+        if (content != null && !content.isEmpty()) {
+            sb.append(content).append('\n');
+        }
+        if (toolCalls != null && !toolCalls.isEmpty()) {
+            sb.append("\n[工具调用 tool_calls]\n");
+            sb.append(formatToolCalls(toolCalls));
+        }
+        return sb.toString();
+    }
+
+    private static String formatToolCalls(JSONArray toolCalls) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < toolCalls.size(); i++) {
+            JSONObject tc = toolCalls.getJSONObject(i);
+            if (tc == null) {
+                continue;
+            }
+            JSONObject fn = tc.getJSONObject("function");
+            String name = fn == null ? "?" : fn.getString("name");
+            String args = fn == null ? "" : fn.getString("arguments");
+            sb.append("  - ").append(name).append("(")
+                    .append(args == null ? "" : args).append(")\n");
+        }
+        return sb.toString();
     }
 
     private static OkHttpClient newHttpClient(int timeoutSec) {

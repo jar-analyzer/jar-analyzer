@@ -12,7 +12,9 @@ package me.n1ar4.jar.analyzer.ai.workflow.nodes;
 
 import me.n1ar4.jar.analyzer.ai.AIConfig;
 import me.n1ar4.jar.analyzer.ai.workflow.agent.AgentToolRegistry;
+import me.n1ar4.jar.analyzer.ai.workflow.agent.AgentTraceSink;
 import me.n1ar4.jar.analyzer.ai.workflow.agent.AiAgentRunner;
+import me.n1ar4.jar.analyzer.ai.workflow.agent.TokenUsageSink;
 import me.n1ar4.jar.analyzer.ai.workflow.core.DagContext;
 import me.n1ar4.jar.analyzer.ai.workflow.core.DagNode;
 import me.n1ar4.jar.analyzer.ai.workflow.core.NodeResult;
@@ -38,9 +40,22 @@ public final class AiAgentNode extends DagNode {
     private final AgentToolRegistry registry;
     private final String systemPrompt;
     private final int maxIterations;
+    private final AgentTraceSink traceSink;
+    private final TokenUsageSink tokenSink;
 
     public AiAgentNode(String id, AIConfig cfg, AgentToolRegistry registry,
                        String systemPrompt, int maxIterations) {
+        this(id, cfg, registry, systemPrompt, maxIterations, null, null);
+    }
+
+    public AiAgentNode(String id, AIConfig cfg, AgentToolRegistry registry,
+                       String systemPrompt, int maxIterations, AgentTraceSink traceSink) {
+        this(id, cfg, registry, systemPrompt, maxIterations, traceSink, null);
+    }
+
+    public AiAgentNode(String id, AIConfig cfg, AgentToolRegistry registry,
+                       String systemPrompt, int maxIterations,
+                       AgentTraceSink traceSink, TokenUsageSink tokenSink) {
         super(id, "AI Agent");
         if (cfg == null) {
             throw new IllegalArgumentException("ai config required");
@@ -52,6 +67,8 @@ public final class AiAgentNode extends DagNode {
         this.registry = registry;
         this.systemPrompt = systemPrompt == null ? "" : systemPrompt;
         this.maxIterations = Math.max(1, maxIterations);
+        this.traceSink = traceSink;
+        this.tokenSink = tokenSink;
     }
 
     @SuppressWarnings("unchecked")
@@ -59,10 +76,16 @@ public final class AiAgentNode extends DagNode {
     public NodeResult execute(DagContext ctx, List<NodeResult> inputs) {
         Object data = (inputs == null || inputs.isEmpty()) ? null : inputs.get(0).getData();
         String userPrompt = "";
+        String label = "";
         if (data instanceof Map) {
-            Object v = ((Map<String, Object>) data).get("chatInput");
+            Map<String, Object> bag = (Map<String, Object>) data;
+            Object v = bag.get("chatInput");
             if (v != null) {
                 userPrompt = String.valueOf(v);
+            }
+            Object cn = bag.get("className");
+            if (cn != null) {
+                label = String.valueOf(cn);
             }
         } else if (data != null) {
             userPrompt = String.valueOf(data);
@@ -74,6 +97,9 @@ public final class AiAgentNode extends DagNode {
             return NodeResult.ok(empty);
         }
         AiAgentRunner runner = new AiAgentRunner(cfg, registry, maxIterations);
+        runner.setTraceSink(traceSink);
+        runner.setTokenSink(tokenSink);
+        runner.setContextLabel(label);
         String out;
         try {
             out = runner.run(systemPrompt, userPrompt);

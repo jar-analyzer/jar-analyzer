@@ -27,9 +27,6 @@ import java.util.*;
 /**
  * 默认的报告存储：写入到 ${tempDir}/reports/yyyyMMdd-HHmmss-uuid.json
  * <p>
- * 安全：
- * - 输出目录是固定子目录（不接受外部参数），避免路径穿越
- * - 文件名使用 UUID + 时间戳，禁止包含 .. / 等危险字符
  */
 public final class ReportStore implements ReportSink {
 

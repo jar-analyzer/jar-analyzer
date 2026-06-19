@@ -18,11 +18,6 @@ The `jar-analyzer` project has been continuously updated for `5` years, with `64
 ![](https://github.com/jar-analyzer/jar-analyzer/workflows/python%20check/badge.svg)
 ![](https://github.com/jar-analyzer/jar-analyzer/workflows/test%20core/badge.svg)
 
-快速开始：
-
-- 你是 `Java` 老手：选择 `Jar` 分析结束后，人工搜索 `sink` 逐步跟调用，结合 `DFS` 分析，`AI` 助手辅助等
-- 不了解 `Java` 也想审计：选择 `Jar` 分析结束后，点开 `MCP` 面板启动，然后在 `Agent` 端完成配置交给 `AI`
-
 官方文档：https://docs.qq.com/doc/DV3pKbG9GS0pJS0tk
 
 如果贡献代码：fork 本项目到自己仓库，参考 [build](#build) 部分搭建项目，提交 Pull Requests 即可
@@ -90,6 +85,24 @@ Jar Analyzer
 - 本项目跟随主流技术路线，尝试基于 `AI` 做探索
 
 ![](img/0080.png)
+
+## 快速开始
+
+(1) 你是 `Java` 老手
+
+- 选择 `Jar` 分析结束后，人工搜索 `sink` 逐步跟调用，内部集成了众多常见的 `Java` 漏洞 `sink` 点
+- 自动化分析，支持 `DFS` 调用链分析，支持模拟 `JVM` 的污点分析，人工经验结合自动化，进阶分析
+- 信息泄露分析：帮你找到 `Jar` 包中所有静态资源文件和 `class` 中的敏感信息，内置 `AI` 研判
+- 更多专业级功能：支持 `DIFF JAR` 以及目录对比，功能更新分析，漏洞补丁分析，内置 `AI` 研判
+
+(2) 不了解 `Java` 也想审计
+
+- 选择 `Jar` 分析结束后，完成构建数据库信息
+- 点开 `MCP` 面板，一键启动 `MCP`
+- 在 `Claude Code / Codex / Qwen Code / ZCode` 等工具中完成 `MCP` 配置
+- 对话：请使用 `jar-analyzer-mcp` 分析下漏洞吧
+
+## 近期更新
 
 自从 `5.21` 版本以后支持了 `JAR DIFF` 功能，在 `5.22` 版本支持导出完整记录，便于 `AI` 分析漏洞
 

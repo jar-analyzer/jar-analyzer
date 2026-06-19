@@ -415,7 +415,7 @@ public final class AIWorkflowDialog {
         hintBox.setOpaque(false);
         JLabel hint = new JLabel(
                 "<html><div style='color:#888; line-height:150%;'>"
-                        + "鼠标悬停字段可见配置含义；点击节点查看详情。"
+                        + "鼠标悬停见配置含义；点击节点查看详情。"
                         + "</div></html>");
         hint.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));
         JButton helpBtn = new JButton("查看完整说明 / 使用方法");
@@ -464,7 +464,7 @@ public final class AIWorkflowDialog {
                 + "</ol>"
                 + "<h3 style='margin:14px 0 6px 0; color:#d73a49;'>注意事项</h3>"
                 + "<ul style='margin:0; padding-left:20px;'>"
-                + "<li>Workflow 通过 OpenAI 兼容协议解析 <code>usage</code> 字段统计 token；"
+                + "<li>Workflow 通过 OpenAI 兼容协议解析 usage 字段统计 token；"
                 + "若服务端不返回 usage，顶栏 Tokens 计数会保持为 0。</li>"
                 + "</ul>"
                 + "</body></html>";

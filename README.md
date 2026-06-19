@@ -15,7 +15,6 @@ The `jar-analyzer` project has been continuously updated for `5` years, with `64
 ![](https://github.com/jar-analyzer/jar-analyzer/workflows/truffle%20check/badge.svg)
 
 ![](https://github.com/jar-analyzer/jar-analyzer/workflows/maven%20check/badge.svg)
-![](https://github.com/jar-analyzer/jar-analyzer/workflows/golang%20check/badge.svg)
 ![](https://github.com/jar-analyzer/jar-analyzer/workflows/python%20check/badge.svg)
 ![](https://github.com/jar-analyzer/jar-analyzer/workflows/test%20core/badge.svg)
 
@@ -49,6 +48,7 @@ Jar Analyzer
 
 - 一个 `JAR` 包分析工具，`AI` 赋能古法安全审计
 - 支持 `JAR DIFF` 深入分析源码变动（支持目录对比）
+- 自从 `6.0` 版本后内置 `AI` 助手和 `MCP`
 - 完善美观的 `GUI` 支持（现代化 `Java GUI` 界面，可拖拽，明暗橙三主题，十种风格）
 - 基础分析（支持 `Jar/War/Classes` 输入，支持多文件，支持嵌套 `FatJar`）
 - 黑白名单配置（构建数据库和搜索功能都支持黑白名单过滤，支持精确类名和包名过滤）

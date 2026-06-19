@@ -281,8 +281,10 @@ public class MCPPanel extends JPanel implements McpEventListener {
     }
 
     private void doStart() {
+        // 1. 准备配置 + 校验
+        final McpConfig cfg;
         try {
-            McpConfig cfg = new McpConfig();
+            cfg = new McpConfig();
             cfg.setBind(bindField.getText().trim());
             cfg.setPort(parseInt(portField.getText().trim(), 20032));
             cfg.setEnableSse(sseBox.isSelected());
@@ -290,31 +292,63 @@ public class MCPPanel extends JPanel implements McpEventListener {
             cfg.setAuth(authBox.isSelected());
             cfg.setToken(tokenField.getText());
             cfg.setDebug(debugBox.isSelected());
-            if (!cfg.isEnableSse() && !cfg.isEnableStreamable()) {
-                JOptionPane.showMessageDialog(this,
-                        "至少启用一个传输方式（SSE 或 Streamable HTTP）",
-                        "MCP", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-            McpServerLauncher.getInstance().start(cfg, this);
-            appendLog("INFO ", "MCP 已启动: http://" + cfg.getBind() + ":" + cfg.getPort());
-            if (cfg.isEnableSse()) {
-                appendLog("INFO ", "SSE 接入: http://" + cfg.getBind() + ":" + cfg.getPort() + "/sse");
-            }
-            if (cfg.isEnableStreamable()) {
-                appendLog("INFO ", "Streamable: http://" + cfg.getBind() + ":" + cfg.getPort() + "/mcp");
-            }
-            refreshUiState();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this,
-                    "MCP 启动失败: " + ex.getMessage(),
-                    "MCP", JOptionPane.ERROR_MESSAGE);
-        } catch (IllegalStateException ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(),
-                    "MCP", JOptionPane.WARNING_MESSAGE);
         } catch (Exception ex) {
-            appendLog("ERROR", ex.getClass().getSimpleName() + ": " + ex.getMessage());
+            JOptionPane.showMessageDialog(this,
+                    "配置无效: " + ex.getMessage(),
+                    "MCP", JOptionPane.WARNING_MESSAGE);
+            return;
         }
+        if (!cfg.isEnableSse() && !cfg.isEnableStreamable()) {
+            JOptionPane.showMessageDialog(this,
+                    "至少启用一个传输方式（SSE 或 Streamable HTTP）",
+                    "MCP", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // 2. 弹进度对话框（非模态），立刻禁用启动按钮防双击
+        startBtn.setEnabled(false);
+        Window owner = SwingUtilities.getWindowAncestor(this);
+        final McpStartDialog dlg = new McpStartDialog(owner);
+        dlg.showAsync();
+
+        // 3. 启动放到后台线程执行，通过 progress 回调把阶段同步到对话框
+        Thread t = new Thread(() -> {
+            try {
+                McpServerLauncher.getInstance().start(cfg, MCPPanel.this, dlg::onStage);
+                // 成功
+                SwingUtilities.invokeLater(() -> {
+                    appendLog("INFO ", "MCP 已启动: http://" + cfg.getBind() + ":" + cfg.getPort());
+                    if (cfg.isEnableSse()) {
+                        appendLog("INFO ", "SSE 接入: http://" + cfg.getBind() + ":" + cfg.getPort() + "/sse");
+                    }
+                    if (cfg.isEnableStreamable()) {
+                        appendLog("INFO ", "Streamable: http://" + cfg.getBind() + ":" + cfg.getPort() + "/mcp");
+                    }
+                    refreshUiState();
+                });
+                dlg.markDone();
+            } catch (IOException ex) {
+                dlg.markFailed("启动失败: " + ex.getMessage());
+                SwingUtilities.invokeLater(() -> {
+                    appendLog("ERROR", "启动失败: " + ex.getMessage());
+                    refreshUiState();
+                });
+            } catch (IllegalStateException ex) {
+                dlg.markFailed(ex.getMessage());
+                SwingUtilities.invokeLater(() -> {
+                    appendLog("WARN ", ex.getMessage());
+                    refreshUiState();
+                });
+            } catch (Throwable ex) {
+                dlg.markFailed(ex.getClass().getSimpleName() + ": " + ex.getMessage());
+                SwingUtilities.invokeLater(() -> {
+                    appendLog("ERROR", ex.getClass().getSimpleName() + ": " + ex.getMessage());
+                    refreshUiState();
+                });
+            }
+        }, "mcp-start-thread");
+        t.setDaemon(true);
+        t.start();
     }
 
     private void doStop() {

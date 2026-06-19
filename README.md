@@ -90,29 +90,15 @@ Jar Analyzer
 
 ![](img/0087.png)
 
-自从 `6.0` 版本以后，内置了 `AI` 助手（支持 `DeepSeek` 和 `GLM` 快速配置）
+自从 `6.0` 版本以后，内置了 `MCP` 面板，可以轻松配置和启动，支持 `SSE/Streamable HTTP`
 
-![](img/1000.png)
+![](img/1008.png)
 
-纯 `Java Swing` 实现的 `workflow`
-
-![](img/1004.png)
-
-![](img/1005.png)
-
-![](img/1006.png)
-
-信息泄露 `AI` 研判
-
-![](img/1007.png)
-
-漏洞链 `DFS` 分析使用 `AI` 研判
+自从 `6.0` 版本以后，内置了 `AI` 助手和 `workflow` 内容，详情参考 [AI 文档](doc/README-ai.md)
 
 ![](img/1001.png)
 
-`DIFF` 分析是否有安全修复 `AI` 研判
-
-![](img/1003.png)
+![](img/1004.png)
 
 静态分析 `spring / java web` 项目
 
@@ -280,12 +266,6 @@ git clone --depth 1 https://github.com/jar-analyzer/jar-analyzer
 3. 重要：确保你安装了 `Maven 3.X` （一般 `IDEA` 已自带）
 4. 可选：完善贡献者信息：检查修改 `thanks.md/thanks.txt` 和 `pom.xml`
 5. 可选：使用 `cmake` 构建 `native` 目录生成 `dll` 文件放入 `resources`
-
-MCP 构建
-
-1. 确保安装了 `golang 1.24` 及以上版本
-2. 打开 `mcp` 目录即可（标准 `go mod` 项目）
-3. 可以基于 `gox` 目录编译多平台可执行文件（开源 `gox` 修改版）
 
 其他组件构建
 

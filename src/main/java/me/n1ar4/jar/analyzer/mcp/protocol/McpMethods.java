@@ -18,7 +18,7 @@ import me.n1ar4.jar.analyzer.mcp.tools.ToolRegistry;
 /**
  * 处理 MCP（基于 JSON-RPC 2.0）的核心方法
  * 支持: initialize, ping, notifications/initialized,
- *       tools/list, tools/call
+ * tools/list, tools/call
  */
 public class McpMethods {
 

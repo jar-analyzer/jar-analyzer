@@ -64,7 +64,7 @@ public class McpServerLauncher {
     /**
      * 启动 MCP 服务器
      *
-     * @throws IOException     启动失败（端口占用等）
+     * @throws IOException           启动失败（端口占用等）
      * @throws IllegalStateException 已经在运行
      */
     public synchronized void start(McpConfig cfg, McpEventListener listener) throws IOException {

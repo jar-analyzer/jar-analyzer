@@ -12,7 +12,6 @@ package me.n1ar4.jar.analyzer.gui;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import com.intellij.uiDesigner.core.Spacer;
 import me.n1ar4.jar.analyzer.mcp.McpConfig;
 import me.n1ar4.jar.analyzer.mcp.McpEventListener;
 import me.n1ar4.jar.analyzer.mcp.McpServerLauncher;

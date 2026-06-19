@@ -13,6 +13,7 @@ package me.n1ar4.jar.analyzer.engine;
 import me.n1ar4.jar.analyzer.core.AnalyzeEnv;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
+import me.n1ar4.jar.analyzer.mcp.McpContext;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
@@ -103,7 +104,13 @@ public class DecompileEngine {
      */
     public static String decompile(Path classFilePath) {
         try {
-            boolean fern = MainForm.getInstance().getFernRadio().isSelected();
+            // 在 MCP 上下文里默认采用 FernFlower（避免读取可能未在 EDT 的 GUI 单选状态时阻塞）
+            boolean fern;
+            if (McpContext.isInMcp()) {
+                fern = true;
+            } else {
+                fern = MainForm.getInstance().getFernRadio().isSelected();
+            }
             if (fern) {
                 // USE LRU CACHE
                 String key = classFilePath.toAbsolutePath().toString();
@@ -117,10 +124,21 @@ public class DecompileEngine {
                 if (!Files.exists(deDirPath)) {
                     Files.createDirectory(deDirPath);
                 }
+                // 并发下不同线程使用不同子目录，避免临时文件互相覆盖
+                if (McpContext.isInMcp()) {
+                    deDirPath = deDirPath.resolve("t-" + Thread.currentThread().getId());
+                    if (!Files.exists(deDirPath)) {
+                        Files.createDirectories(deDirPath);
+                    }
+                }
                 String javaDir = deDirPath.toAbsolutePath().toString();
                 String fileName = classFilePath.getFileName().toString();
 
                 if (!fileName.endsWith(".class")) {
+                    if (McpContext.isInMcp()) {
+                        logger.warn("decompile: not a .class file: " + fileName);
+                        return null;
+                    }
                     JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                             "<html>" +
                                     "<p>你选择的目标不是 class 文件，请检查您的操作</p>" +
@@ -153,6 +171,10 @@ public class DecompileEngine {
                 // BUG FIX 2025/02/27
                 // 全局搜索某些不存在的类无法打开且没有报错信息
                 if (!Files.exists(classDirPath)) {
+                    if (McpContext.isInMcp()) {
+                        logger.warn("decompile: class dir not exists: " + classDirPath);
+                        return null;
+                    }
                     JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                             "<html>" +
                                     "<p>临时目录目录不存在，考虑可能是依赖没有导入（尝试开启 jars in jar 选项或 add rt.jar 分析）</p>" +

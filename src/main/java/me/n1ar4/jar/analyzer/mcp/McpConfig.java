@@ -29,6 +29,17 @@ public class McpConfig {
     private boolean enableStreamable = true;
     // 是否启用 DEBUG 日志
     private boolean debug = false;
+    // 单次 tools/call 最大执行时长（秒），超时则取消并向客户端返回 isError
+    // 设置为 <=0 表示不做服务端侧的超时限制
+    private int toolCallTimeoutSec = 120;
+    // SSE 心跳间隔（秒），同时也是 SSE 写超时上限（建议 5~15）
+    private int sseHeartbeatSec = 10;
+    // tools/call 工作线程池上限（高负载下避免线程数无限膨胀）
+    private int toolMaxConcurrency = 16;
+    // tools/call 排队队列上限，超出时直接 busy
+    private int toolQueueCapacity = 64;
+    // HTTP 请求体最大字节数（防 OOM，远端可控）
+    private int maxBodyBytes = 8 * 1024 * 1024;
 
     public String getBind() {
         return bind;
@@ -84,5 +95,45 @@ public class McpConfig {
 
     public void setDebug(boolean debug) {
         this.debug = debug;
+    }
+
+    public int getToolCallTimeoutSec() {
+        return toolCallTimeoutSec;
+    }
+
+    public void setToolCallTimeoutSec(int toolCallTimeoutSec) {
+        this.toolCallTimeoutSec = toolCallTimeoutSec;
+    }
+
+    public int getSseHeartbeatSec() {
+        return sseHeartbeatSec;
+    }
+
+    public void setSseHeartbeatSec(int sseHeartbeatSec) {
+        this.sseHeartbeatSec = sseHeartbeatSec;
+    }
+
+    public int getToolMaxConcurrency() {
+        return toolMaxConcurrency;
+    }
+
+    public void setToolMaxConcurrency(int toolMaxConcurrency) {
+        this.toolMaxConcurrency = toolMaxConcurrency;
+    }
+
+    public int getToolQueueCapacity() {
+        return toolQueueCapacity;
+    }
+
+    public void setToolQueueCapacity(int toolQueueCapacity) {
+        this.toolQueueCapacity = toolQueueCapacity;
+    }
+
+    public int getMaxBodyBytes() {
+        return maxBodyBytes;
+    }
+
+    public void setMaxBodyBytes(int maxBodyBytes) {
+        this.maxBodyBytes = maxBodyBytes;
     }
 }

@@ -12,6 +12,7 @@ package me.n1ar4.jar.analyzer.mcp;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
+import me.n1ar4.jar.analyzer.mcp.protocol.JsonRpc;
 import me.n1ar4.jar.analyzer.mcp.protocol.McpMethods;
 import me.n1ar4.jar.analyzer.mcp.transport.SseSession;
 import me.n1ar4.log.LogManager;
@@ -26,9 +27,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -49,6 +48,16 @@ public class McpServer {
 
     private final McpConfig config;
     private final ExecutorService workers;
+    /**
+     * 单独跑 tools/call 的线程池（有界 + 拒绝即返 busy），便于控并发与精确取消
+     * 与 HTTP IO 处理用的 workers 分离，避免阻塞路由
+     */
+    private final ThreadPoolExecutor toolExecutor;
+    /**
+     * SSE 心跳调度器：所有 SSE 长连接共享一个 ScheduledExecutorService，
+     * 不再为每个连接占用一个 worker 线程，避免长跑下 workers 池无限膨胀
+     */
+    private final ScheduledExecutorService sseHeartbeatExecutor;
     private ServerSocket serverSocket;
     private Thread acceptThread;
     private volatile boolean running = false;
@@ -57,6 +66,12 @@ public class McpServer {
     private final Map<String, SseSession> sseSessions = new ConcurrentHashMap<>();
     // Streamable HTTP 当前活跃流响应数
     private final AtomicInteger streamableActive = new AtomicInteger(0);
+
+    /**
+     * 全局正在执行的 tools/call（覆盖所有 transport），key = JSON-RPC requestId 字符串
+     * 用于 notifications/cancelled 的精确取消（包括 Streamable HTTP，因取消通知是另一条独立 POST）
+     */
+    private final Map<String, Future<?>> pendingRequests = new ConcurrentHashMap<>();
 
     // 事件监听
     private volatile McpEventListener listener;
@@ -68,6 +83,27 @@ public class McpServer {
             t.setDaemon(true);
             return t;
         });
+        int conc = Math.max(1, config.getToolMaxConcurrency());
+        int qcap = Math.max(1, config.getToolQueueCapacity());
+        this.toolExecutor = new ThreadPoolExecutor(
+                conc, conc,
+                60L, TimeUnit.SECONDS,
+                new ArrayBlockingQueue<>(qcap),
+                r -> {
+                    Thread t = new Thread(r, "mcp-tool");
+                    t.setDaemon(true);
+                    return t;
+                },
+                new ThreadPoolExecutor.AbortPolicy());
+        this.toolExecutor.allowCoreThreadTimeOut(true);
+        // 心跳用一个固定容量的调度池即可（每个 schedule 任务只是写一行 ping）
+        this.sseHeartbeatExecutor = Executors.newScheduledThreadPool(
+                Math.max(1, Math.min(4, Runtime.getRuntime().availableProcessors())),
+                r -> {
+                    Thread t = new Thread(r, "mcp-sse-heartbeat");
+                    t.setDaemon(true);
+                    return t;
+                });
     }
 
     public void setListener(McpEventListener listener) {
@@ -108,9 +144,25 @@ public class McpServer {
             s.close();
         }
         sseSessions.clear();
+        // 取消所有 pending 工具调用
+        for (Future<?> f : pendingRequests.values()) {
+            try {
+                f.cancel(true);
+            } catch (Throwable ignored) {
+            }
+        }
+        pendingRequests.clear();
         notifyConnections();
         try {
             workers.shutdownNow();
+        } catch (Throwable ignored) {
+        }
+        try {
+            toolExecutor.shutdownNow();
+        } catch (Throwable ignored) {
+        }
+        try {
+            sseHeartbeatExecutor.shutdownNow();
         } catch (Throwable ignored) {
         }
         log("MCP server stopped");
@@ -132,15 +184,43 @@ public class McpServer {
     // ACCEPT
     // ------------------------------------------------------------
     private void acceptLoop() {
+        // 容忍 accept 偶发异常（FD 暂时耗尽、临时网络抖动等），不要让单次失败拖垮整个 server
+        // 仅当 serverSocket 已关闭时退出
         while (running) {
+            final Socket sock;
             try {
-                final Socket sock = serverSocket.accept();
-                workers.submit(() -> handleSocket(sock));
+                sock = serverSocket.accept();
             } catch (IOException e) {
-                if (running) {
-                    warn("accept error: " + e.getMessage());
+                if (!running || serverSocket == null || serverSocket.isClosed()) {
+                    break; // 正常停服路径
                 }
-                break;
+                warn("accept error (will retry): " + e.getMessage());
+                // 短暂退避，避免在持续异常时占满 CPU
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
+                continue;
+            } catch (Throwable t) {
+                // 其它意外（OOME/SecurityException 等）也兜住
+                if (!running) break;
+                warn("accept fatal (will retry): " + t.getClass().getSimpleName()
+                        + ": " + t.getMessage());
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
+                continue;
+            }
+            try {
+                workers.submit(() -> handleSocket(sock));
+            } catch (RejectedExecutionException ree) {
+                // workers 池关闭中，安全关闭新连接
+                safeClose(sock);
             }
         }
     }
@@ -272,7 +352,18 @@ public class McpServer {
     // SSE TRANSPORT
     // ------------------------------------------------------------
     private void handleSseGet(Socket sock) throws IOException {
-        sock.setSoTimeout(0); // 不超时（长连接）
+        // 长连接：读不超时；写交给 socket 自身缓冲。
+        // 通过定时心跳 + sendComment 写失败立即关会话来识别半开连接
+        sock.setSoTimeout(0);
+        // 关闭 Nagle，让 SSE 事件尽快到达
+        try {
+            sock.setTcpNoDelay(true);
+        } catch (Throwable ignored) {
+        }
+        try {
+            sock.setKeepAlive(true);
+        } catch (Throwable ignored) {
+        }
         OutputStream out = sock.getOutputStream();
 
         // 写 SSE 响应头
@@ -287,36 +378,63 @@ public class McpServer {
         out.write(sb.toString().getBytes(StandardCharsets.ISO_8859_1));
         out.flush();
 
-        SseSession session = new SseSession(sock, out);
+        final SseSession session = new SseSession(sock, out);
         sseSessions.put(session.getSessionId(), session);
         notifyConnections();
         log("SSE session opened: " + session.getSessionId() + " from " + session.getRemote());
 
+        // 推送 endpoint 事件 - 告诉客户端 POST 到何处
         try {
-            // 推送 endpoint 事件 - 告诉客户端 POST 到何处
             String endpoint = "/message?sessionId=" + session.getSessionId();
             session.sendEvent("endpoint", endpoint);
-
-            // 心跳：每 25 秒一个注释行
-            while (running && !session.isClosed()) {
-                try {
-                    Thread.sleep(25000);
-                } catch (InterruptedException ie) {
-                    break;
-                }
-                if (session.isClosed()) break;
-                try {
-                    session.sendComment("ping");
-                } catch (IOException ioe) {
-                    // 客户端断开
-                    break;
-                }
-            }
-        } finally {
+        } catch (IOException ioe) {
+            // 第一次写就失败：直接清理，不调度心跳
             sseSessions.remove(session.getSessionId());
             session.close();
             notifyConnections();
+            log("SSE session closed (initial write failed): " + session.getSessionId());
+            return;
+        }
+
+        // 调度周期性心跳，不再阻塞 worker 线程
+        // 注意：这里不需要把心跳 future 单独保存，session.close() 会触发 sendComment 抛异常自动取消
+        final int heartbeatSec = Math.max(2, config.getSseHeartbeatSec());
+        final ScheduledFuture<?>[] holder = new ScheduledFuture<?>[1];
+        Runnable beat = () -> {
+            if (!running || session.isClosed()) {
+                if (holder[0] != null) holder[0].cancel(false);
+                cleanupSseSession(session);
+                return;
+            }
+            try {
+                session.sendComment("ping");
+            } catch (IOException ioe) {
+                // sendComment 内部已 close 了 session
+                if (holder[0] != null) holder[0].cancel(false);
+                cleanupSseSession(session);
+            } catch (Throwable t) {
+                if (holder[0] != null) holder[0].cancel(false);
+                cleanupSseSession(session);
+            }
+        };
+        try {
+            holder[0] = sseHeartbeatExecutor.scheduleWithFixedDelay(
+                    beat, heartbeatSec, heartbeatSec, TimeUnit.SECONDS);
+        } catch (RejectedExecutionException ree) {
+            // 调度器已关闭：直接清理
+            cleanupSseSession(session);
+        }
+        // handleSseGet 立即返回，worker 线程被释放
+    }
+
+    private void cleanupSseSession(SseSession session) {
+        if (session == null) return;
+        if (sseSessions.remove(session.getSessionId()) != null) {
+            session.close();
+            notifyConnections();
             log("SSE session closed: " + session.getSessionId());
+        } else {
+            session.close();
         }
     }
 
@@ -349,13 +467,158 @@ public class McpServer {
         writeSimple(sock, 202, "Accepted", "", "text/plain");
         safeClose(sock);
 
-        // 异步处理后通过 SSE 通道推送响应
+        // 通知类消息（无 id）单独处理
+        if (JsonRpc.isNotification(msg)) {
+            handleNotification("sse", session, msg);
+            return;
+        }
+
+        final String mname = msg.getString("method");
+
+        // tools/call 走带超时和取消的执行路径
+        if ("tools/call".equals(mname)) {
+            dispatchToolCallAsync(session, msg);
+            return;
+        }
+
+        // 其它请求（initialize / tools/list / ping ...）走 IO worker，快速响应
         workers.submit(() -> {
-            String mname = msg.getString("method");
             JSONObject resp = McpMethods.dispatch(msg);
             boolean ok = resp != null && resp.get("error") == null;
             requestLog("sse", mname, ok);
             if (resp != null) {
+                try {
+                    session.sendEvent("message", resp.toJSONString());
+                } catch (IOException e) {
+                    warn("sse push failed: " + e.getMessage());
+                }
+            }
+        });
+    }
+
+    /**
+     * 处理 JSON-RPC 通知（无 id），不产生响应、不计入 request 统计
+     * 当前重点支持: notifications/cancelled
+     */
+    private void handleNotification(String transport, SseSession session, JSONObject msg) {
+        String method = msg.getString("method");
+        if ("notifications/cancelled".equals(method)) {
+            JSONObject params = msg.getJSONObject("params");
+            String reqId = params == null ? null
+                    : (params.get("requestId") == null ? null : String.valueOf(params.get("requestId")));
+            String reason = params == null ? null : params.getString("reason");
+            boolean cancelled = false;
+            if (reqId != null) {
+                // 优先查 SSE 会话，命中失败再查全局表（Streamable HTTP 走全局）
+                if (session != null) {
+                    cancelled = session.cancelInflight(reqId);
+                }
+                if (!cancelled) {
+                    Future<?> f = pendingRequests.remove(reqId);
+                    if (f != null) {
+                        cancelled = f.cancel(true);
+                    }
+                }
+            }
+            if (config.isDebug()) {
+                logger.info("MCP {} cancelled requestId={} reason={} effective={}",
+                        transport, reqId, reason, cancelled);
+            }
+            return;
+        }
+        // notifications/initialized 等其它通知静默处理
+        if (config.isDebug()) {
+            logger.info("MCP {} notification: {}", transport, method);
+        }
+        // 仍然让 dispatch 走一遍，以兼容未来扩展（其内部会返回 null）
+        try {
+            McpMethods.dispatch(msg);
+        } catch (Throwable ignored) {
+        }
+    }
+
+    /**
+     * 异步执行 tools/call，带超时与可取消能力
+     * 失败/超时也以 "isError + content" 的标准 tool 结果返回，避免 Agent 端等到协议层超时
+     */
+    private void dispatchToolCallAsync(final SseSession session, final JSONObject msg) {
+        final Object id = msg.get("id");
+        final String reqId = id == null ? null : String.valueOf(id);
+        final String mname = msg.getString("method");
+        final int timeoutSec = config.getToolCallTimeoutSec();
+
+        final Future<JSONObject> future;
+        try {
+            future = toolExecutor.submit(() -> {
+                long timeoutMs = (long) Math.max(0, timeoutSec) * 1000L;
+                McpContext.enter(timeoutMs);
+                try {
+                    return McpMethods.dispatch(msg);
+                } finally {
+                    McpContext.leave();
+                }
+            });
+        } catch (RejectedExecutionException ree) {
+            // tool 池已满，立刻给出 busy 错误，避免 Agent 端干等
+            warn("tools/call rejected (busy), requestId=" + reqId);
+            JSONObject busy = McpMethods.buildToolResult(id,
+                    "server busy: tool executor saturated, please retry later", true);
+            requestLog("sse", mname, false);
+            try {
+                session.sendEvent("message", busy.toJSONString());
+            } catch (IOException e) {
+                warn("sse push failed: " + e.getMessage());
+            }
+            return;
+        }
+
+        if (reqId != null) {
+            session.registerInflight(reqId, future);
+            pendingRequests.put(reqId, future);
+        }
+
+        // 用 workers 起一个等待任务，避免阻塞 toolExecutor 自身
+        workers.submit(() -> {
+            JSONObject resp = null;
+            boolean ok = false;
+            boolean cancelled = false;
+            try {
+                if (timeoutSec > 0) {
+                    resp = future.get(timeoutSec, TimeUnit.SECONDS);
+                } else {
+                    resp = future.get();
+                }
+                ok = resp != null && resp.get("error") == null;
+            } catch (TimeoutException te) {
+                future.cancel(true);
+                resp = McpMethods.buildToolResult(id,
+                        "tool execution timeout after " + timeoutSec + "s, cancelled by server",
+                        true);
+                warn("tools/call timeout, requestId=" + reqId);
+            } catch (java.util.concurrent.CancellationException ce) {
+                cancelled = true;
+                if (config.isDebug()) {
+                    logger.info("tools/call cancelled, requestId={}", reqId);
+                }
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+                future.cancel(true);
+                cancelled = true;
+            } catch (Throwable ex) {
+                Throwable cause = ex.getCause() != null ? ex.getCause() : ex;
+                resp = McpMethods.buildToolResult(id,
+                        "tool error: " + cause.getClass().getSimpleName()
+                                + ": " + cause.getMessage(),
+                        true);
+            } finally {
+                if (reqId != null) {
+                    session.unregisterInflight(reqId);
+                    pendingRequests.remove(reqId);
+                }
+            }
+            if (cancelled) return; // 客户端已放弃，不再回复
+            requestLog("sse", mname, ok);
+            if (resp != null && !session.isClosed()) {
                 try {
                     session.sendEvent("message", resp.toJSONString());
                 } catch (IOException e) {
@@ -405,19 +668,16 @@ public class McpServer {
     }
 
     private void handleStreamableJsonResponse(Socket sock, JSONObject msg) throws IOException {
-        // 通知没有响应
-        if (!msg.containsKey("id")) {
-            String mname = msg.getString("method");
-            requestLog("streamable", mname, true);
-            // 处理但不响应内容
-            McpMethods.dispatch(msg);
+        // 通知：不响应、不计 request 统计
+        if (JsonRpc.isNotification(msg)) {
+            handleNotification("streamable", null, msg);
             writeSimple(sock, 202, "Accepted", "", "text/plain");
             safeClose(sock);
             return;
         }
 
         String mname = msg.getString("method");
-        JSONObject resp = McpMethods.dispatch(msg);
+        JSONObject resp = invokeWithTimeout(msg);
         boolean ok = resp != null && resp.get("error") == null;
         requestLog("streamable", mname, ok);
         String body = resp == null ? "{}" : resp.toJSONString();
@@ -440,6 +700,14 @@ public class McpServer {
 
     private void handleStreamableSseResponse(Socket sock, JSONObject msg) throws IOException {
         sock.setSoTimeout(0);
+        try {
+            sock.setTcpNoDelay(true);
+        } catch (Throwable ignored) {
+        }
+        try {
+            sock.setKeepAlive(true);
+        } catch (Throwable ignored) {
+        }
         OutputStream out = sock.getOutputStream();
         StringBuilder sb = new StringBuilder();
         sb.append("HTTP/1.1 200 OK\r\n");
@@ -455,15 +723,13 @@ public class McpServer {
         streamableActive.incrementAndGet();
         notifyConnections();
         try {
-            // 通知则不响应
-            if (!msg.containsKey("id")) {
-                String mname = msg.getString("method");
-                McpMethods.dispatch(msg);
-                requestLog("streamable", mname, true);
+            // 通知：不计 request 统计、不响应
+            if (JsonRpc.isNotification(msg)) {
+                handleNotification("streamable", null, msg);
                 return;
             }
             String mname = msg.getString("method");
-            JSONObject resp = McpMethods.dispatch(msg);
+            JSONObject resp = invokeWithTimeout(msg);
             boolean ok = resp != null && resp.get("error") == null;
             requestLog("streamable", mname, ok);
             String body = resp == null ? "{}" : resp.toJSONString();
@@ -480,6 +746,65 @@ public class McpServer {
             streamableActive.decrementAndGet();
             notifyConnections();
             safeClose(sock);
+        }
+    }
+
+    /**
+     * 同步调用 dispatch，对 tools/call 加超时；其它方法直接走 dispatch
+     * 用于 streamable 同步分支
+     * 关键点：把 future 注册到全局 pendingRequests，让 notifications/cancelled 也能取消 streamable 的请求
+     */
+    private JSONObject invokeWithTimeout(final JSONObject msg) {
+        String mname = msg.getString("method");
+        int timeoutSec = config.getToolCallTimeoutSec();
+        if (!"tools/call".equals(mname) || timeoutSec <= 0) {
+            return McpMethods.dispatch(msg);
+        }
+        final Object id = msg.get("id");
+        final String reqId = id == null ? null : String.valueOf(id);
+
+        final Future<JSONObject> future;
+        try {
+            future = toolExecutor.submit(() -> {
+                long timeoutMs = (long) Math.max(0, timeoutSec) * 1000L;
+                McpContext.enter(timeoutMs);
+                try {
+                    return McpMethods.dispatch(msg);
+                } finally {
+                    McpContext.leave();
+                }
+            });
+        } catch (RejectedExecutionException ree) {
+            warn("tools/call rejected (busy, streamable), id=" + id);
+            return McpMethods.buildToolResult(id,
+                    "server busy: tool executor saturated, please retry later", true);
+        }
+        if (reqId != null) {
+            pendingRequests.put(reqId, future);
+        }
+        try {
+            return future.get(timeoutSec, TimeUnit.SECONDS);
+        } catch (TimeoutException te) {
+            future.cancel(true);
+            warn("tools/call timeout (streamable), id=" + id);
+            return McpMethods.buildToolResult(id,
+                    "tool execution timeout after " + timeoutSec + "s, cancelled by server",
+                    true);
+        } catch (java.util.concurrent.CancellationException ce) {
+            // 客户端主动取消：仍然要给 HTTP 端一个回复（协议要求每个 request 都有 response）
+            return McpMethods.buildToolResult(id,
+                    "request cancelled by client", true);
+        } catch (Throwable ex) {
+            future.cancel(true);
+            Throwable cause = ex.getCause() != null ? ex.getCause() : ex;
+            return McpMethods.buildToolResult(id,
+                    "tool error: " + cause.getClass().getSimpleName()
+                            + ": " + cause.getMessage(),
+                    true);
+        } finally {
+            if (reqId != null) {
+                pendingRequests.remove(reqId);
+            }
         }
     }
 
@@ -524,6 +849,12 @@ public class McpServer {
                 contentLength = Integer.parseInt(cl.trim());
             } catch (NumberFormatException ignored) {
             }
+        }
+        // 防 OOM：拒绝过大的请求体
+        int maxBody = config.getMaxBodyBytes();
+        if (maxBody > 0 && contentLength > maxBody) {
+            throw new IOException("request body too large: " + contentLength
+                    + " > " + maxBody);
         }
         if (contentLength > 0) {
             // 因为 reader 用了 ISO-8859-1 buffer，会缓存字节

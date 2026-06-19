@@ -11,6 +11,7 @@
 package me.n1ar4.jar.analyzer.mcp.tools;
 
 import com.alibaba.fastjson2.JSONObject;
+import me.n1ar4.jar.analyzer.mcp.McpContext;
 import me.n1ar4.jar.analyzer.server.PathMatcher;
 import me.n1ar4.jar.analyzer.server.handler.base.HttpHandler;
 import me.n1ar4.server.NanoHTTPD;
@@ -201,6 +202,7 @@ public class JarAnalyzerTools {
 
     /**
      * 调用本地 jar-analyzer handler，零网络开销
+     * 在执行前后维护 McpContext，使下游 API 可识别 MCP 调用、避免弹窗与 GUI 阻塞
      */
     private static String callApi(String uri, String[][] params) throws Exception {
         HttpHandler handler = lookupHandler(uri);
@@ -215,8 +217,19 @@ public class JarAnalyzerTools {
                 session.addParam(p[0], p[1]);
             }
         }
-        NanoHTTPD.Response resp = handler.handle(session);
-        return readResponse(resp);
+        // 标记 MCP 上下文（McpServer 已在外层 enter/leave，这里幂等增强一次以兜底）
+        boolean owned = !McpContext.isInMcp();
+        if (owned) {
+            McpContext.enter(0);
+        }
+        try {
+            NanoHTTPD.Response resp = handler.handle(session);
+            return readResponse(resp);
+        } finally {
+            if (owned) {
+                McpContext.leave();
+            }
+        }
     }
 
     /**

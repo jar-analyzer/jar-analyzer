@@ -17,6 +17,7 @@ import me.n1ar4.jar.analyzer.entity.ClassResult;
 import me.n1ar4.jar.analyzer.entity.MethodResult;
 import me.n1ar4.jar.analyzer.gui.ChainsResultPanel;
 import me.n1ar4.jar.analyzer.gui.MainForm;
+import me.n1ar4.jar.analyzer.mcp.McpContext;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 
@@ -163,7 +164,13 @@ public class DFSEngine {
 
         // 检查是否为查找所有 SOURCE 的模式
         boolean findAllSources = this.fromSink && this.searchNullSource;
-        boolean onlyFromWeb = MainForm.getInstance().getSourceOnlyWebBox().isSelected();
+        // MCP 上下文里不依赖 GUI 单选状态，默认走全量；GUI 模式保持原行为
+        boolean onlyFromWeb;
+        if (McpContext.isInMcp()) {
+            onlyFromWeb = false;
+        } else {
+            onlyFromWeb = MainForm.getInstance().getSourceOnlyWebBox().isSelected();
+        }
 
         logger.info("find all sources from sink : " + findAllSources);
 
@@ -238,6 +245,7 @@ public class DFSEngine {
 
         // 对每个 web source 进行 DFS 搜索
         for (MethodResult webSource : webSources) {
+            if (McpContext.isCancelled()) return;
             if (results.size() >= maxLimit) {
                 return;
             }
@@ -260,6 +268,7 @@ public class DFSEngine {
             Set<String> visited,
             int currentDepth) {
 
+        if (McpContext.isCancelled()) return false;
         if (currentDepth >= depth) {
             return false;
         }
@@ -307,6 +316,7 @@ public class DFSEngine {
             List<MethodResult> path,
             Set<String> visited,
             int currentDepth) {
+        if (McpContext.isCancelled()) return;
         if (results.size() >= maxLimit) {
             return;
         }
@@ -351,6 +361,7 @@ public class DFSEngine {
             List<MethodResult> path,
             Set<String> visited,
             int currentDepth) {
+        if (McpContext.isCancelled()) return;
         if (results.size() >= maxLimit) {
             return;
         }
@@ -394,6 +405,7 @@ public class DFSEngine {
             List<MethodResult> path,
             Set<String> visited,
             int currentDepth) {
+        if (McpContext.isCancelled()) return;
         if (results.size() >= maxLimit) {
             return;
         }

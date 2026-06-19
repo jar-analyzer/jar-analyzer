@@ -225,12 +225,19 @@ public final class VulnReportHtmlRenderer {
         String levelText = score >= 8 ? "高危" : (score >= 4 ? "中危" : "低危");
         String type = r.getType() == null ? "other" : r.getType();
         String reason = r.getReason() == null ? "" : r.getReason();
+        String title = r.getTitle() == null ? "" : r.getTitle().trim();
+        String attack = r.getAttackVector() == null ? "" : r.getAttackVector();
+        String poc = r.getPoc() == null ? "" : r.getPoc();
+        // 兜底标题：当模型未返回 title 时退化使用类型名
+        String displayTitle = title.isEmpty() ? typeName(type) : title;
         String timeStr = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT)
                 .format(new Date(r.getTimestamp()));
 
         // 用于 JS 搜索的纯文本（小写）
         StringBuilder search = new StringBuilder();
-        search.append(type).append(' ').append(typeName(type)).append(' ').append(reason);
+        search.append(type).append(' ').append(typeName(type)).append(' ')
+                .append(displayTitle).append(' ').append(reason).append(' ')
+                .append(attack).append(' ').append(poc);
         if (r.getTrace() != null) {
             for (VulnTrace t : r.getTrace()) {
                 if (t == null) {
@@ -251,7 +258,8 @@ public final class VulnReportHtmlRenderer {
         sb.append("    <div class=\"report-head\" onclick=\"toggleReport(this)\">\n");
         sb.append("      <span class=\"badge badge-").append(level).append("\">").append(levelText)
                 .append(" · ").append(score).append("/10</span>\n");
-        sb.append("      <span class=\"r-type\">").append(escape(typeName(type))).append("</span>\n");
+        sb.append("      <span class=\"r-title\">").append(escape(displayTitle)).append("</span>\n");
+        sb.append("      <span class=\"r-type-tag\">").append(escape(typeName(type))).append("</span>\n");
         sb.append("      <span class=\"r-type-raw\">").append(escape(type)).append("</span>\n");
         sb.append("      <span class=\"r-time\">").append(escape(timeStr)).append("</span>\n");
         sb.append("      <span class=\"toggle-ico\">▾</span>\n");
@@ -274,6 +282,22 @@ public final class VulnReportHtmlRenderer {
         sb.append("        <div class=\"block-title\">判断依据</div>\n");
         sb.append("        <div class=\"reason\">").append(escapeMultiline(reason)).append("</div>\n");
         sb.append("      </div>\n");
+
+        // 攻击方式
+        if (!attack.isEmpty()) {
+            sb.append("      <div class=\"block\">\n");
+            sb.append("        <div class=\"block-title\">攻击方式</div>\n");
+            sb.append("        <div class=\"attack\">").append(escapeMultiline(attack)).append("</div>\n");
+            sb.append("      </div>\n");
+        }
+
+        // 推断 PoC（含 RAW HTTP，使用 <pre> 保留格式）
+        if (!poc.isEmpty()) {
+            sb.append("      <div class=\"block\">\n");
+            sb.append("        <div class=\"block-title\">推断 PoC（含 RAW HTTP）</div>\n");
+            sb.append("        <pre class=\"poc\"><code>").append(escape(poc)).append("</code></pre>\n");
+            sb.append("      </div>\n");
+        }
 
         // trace
         List<VulnTrace> trace = r.getTrace();
@@ -414,7 +438,10 @@ public final class VulnReportHtmlRenderer {
                 "white-space:nowrap;}" +
                 ".badge-high{background:var(--high);}.badge-mid{background:var(--mid);}" +
                 ".badge-low{background:var(--low);}" +
-                ".r-type{font-size:15px;font-weight:600;}" +
+                ".r-title{font-size:15px;font-weight:600;color:var(--text);" +
+                "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:520px;}" +
+                ".r-type-tag{font-size:12px;color:var(--primary);background:#eef4ff;border:1px solid #dbe6ff;" +
+                "padding:2px 8px;border-radius:10px;white-space:nowrap;}" +
                 ".r-type-raw{font-size:12px;color:var(--muted);font-family:Consolas,monospace;}" +
                 ".r-time{margin-left:auto;font-size:12px;color:var(--muted);}" +
                 ".toggle-ico{transition:transform .2s;color:var(--muted);font-size:14px;}" +
@@ -432,6 +459,12 @@ public final class VulnReportHtmlRenderer {
                 "text-transform:uppercase;letter-spacing:.5px;}" +
                 ".reason{background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:12px 14px;" +
                 "font-size:14px;white-space:normal;word-break:break-word;}" +
+                ".attack{background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:12px 14px;" +
+                "font-size:14px;color:#7c2d12;white-space:normal;word-break:break-word;}" +
+                ".poc{margin:0;background:#0f172a;color:#e2e8f0;border-radius:8px;padding:14px 16px;" +
+                "font-family:Consolas,Menlo,'Courier New',monospace;font-size:13px;line-height:1.55;" +
+                "white-space:pre-wrap;word-break:break-word;overflow-x:auto;border:1px solid #1e293b;}" +
+                ".poc code{font-family:inherit;color:inherit;background:transparent;padding:0;}" +
                 ".trace{margin:0;padding-left:0;list-style:none;counter-reset:step;}" +
                 ".trace li{position:relative;padding:10px 12px 10px 40px;border:1px solid var(--border);" +
                 "border-radius:8px;margin-bottom:8px;background:#fbfcfd;}" +

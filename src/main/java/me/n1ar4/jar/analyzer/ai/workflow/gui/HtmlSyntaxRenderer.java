@@ -45,6 +45,37 @@ public final class HtmlSyntaxRenderer {
     private static final String CLR_ROLE_BG_SYSTEM = "#fdf2f2";
     private static final String CLR_ROLE_BG_TOOL = "#fff8e1";
 
+    /**
+     * 中文兼容的等宽字体栈：先尝试常见等宽字体，再回退到中文字体。
+     * <p>
+     * Swing {@link javax.swing.JEditorPane}（HTML 3.2 + HTMLEditorKit）对 font-family
+     * 带空格 / 双引号的字体名解析较弱，因此这里所有字体名一律不加引号、用逗号分隔；
+     * 把支持中文的字体（Microsoft YaHei / SimSun / PingFang SC）放到前部，
+     * 避免英文等宽字体（Consolas、Courier New）拒绝绘制中文导致的方块乱码。
+     */
+    private static final String FONT_MONO =
+            "Microsoft YaHei Mono, Microsoft YaHei, SimSun, PingFang SC, "
+                    + "Consolas, Courier New, monospace";
+    /**
+     * 中文兼容的无衬线字体栈，用于元信息卡片等普通文本场景。
+     */
+    private static final String FONT_SANS =
+            "Microsoft YaHei, PingFang SC, Hiragino Sans GB, SimSun, "
+                    + "Segoe UI, Tahoma, sans-serif";
+
+    /**
+     * Swing 用的 HTML 头。
+     * <p>
+     * 注意：<b>不要</b>在这里写 {@code <meta http-equiv="..." content="...">}！
+     * Swing 内置的 HTMLEditorKit（HTML 3.2 + 自家小解析器）对 {@code <meta>} 的某些
+     * 属性写法解析会抛异常，触发：页面整页空白 + 操作系统警告 beep 声。
+     * <p>
+     * JEditorPane 接收的是已在 JVM 中以 String（UTF-16）存在的字符序列，
+     * 完全不存在"用何种字节编码解析"的环节，因此 charset 声明既无意义也有害。
+     * 中文支持只需依赖字体栈与组件级字体即可。
+     */
+    private static final String HTML_HEAD = "<html>";
+
     /* ============================================================================
      * 入口 1：JSON
      * ============================================================================ */
@@ -55,9 +86,10 @@ public final class HtmlSyntaxRenderer {
      */
     public static String renderJson(String raw) {
         StringBuilder html = new StringBuilder(4096);
-        html.append("<html><body style='margin:0; padding:8px; "
-                + "font-family:Consolas,\"Courier New\",monospace; font-size:12px;'>");
-        html.append("<pre style='white-space:pre-wrap; word-break:break-word; margin:0;'>");
+        html.append(HTML_HEAD).append("<body style='margin:0; padding:8px; "
+                + "font-family:" + FONT_MONO + "; font-size:12px;'>");
+        html.append("<pre style='white-space:pre-wrap; word-break:break-word; margin:0; "
+                + "font-family:" + FONT_MONO + ";'>");
         if (raw == null || raw.isEmpty()) {
             html.append("</pre></body></html>");
             return html.toString();
@@ -178,8 +210,8 @@ public final class HtmlSyntaxRenderer {
     public static String renderAgentTurn(String classLabel, int round, String time,
                                          String prompt, String response) {
         StringBuilder html = new StringBuilder(8192);
-        html.append("<html><body style='margin:0; padding:0; "
-                + "font-family:\"Segoe UI\",\"Microsoft YaHei\",sans-serif; font-size:12px; "
+        html.append(HTML_HEAD).append("<body style='margin:0; padding:0; "
+                + "font-family:" + FONT_SANS + "; font-size:12px; "
                 + "color:#222;'>");
 
         // 元信息卡片
@@ -320,7 +352,7 @@ public final class HtmlSyntaxRenderer {
                 .append(escape(r))
                 .append("</div>");
         sb.append("<pre style='white-space:pre-wrap; word-break:break-word; "
-                        + "margin:0; font-family:Consolas,\"Courier New\",monospace; "
+                        + "margin:0; font-family:" + FONT_MONO + "; "
                         + "font-size:12px; color:#24292e;'>")
                 .append(highlightInlineCode(escape(body)))
                 .append("</pre>");
@@ -355,7 +387,7 @@ public final class HtmlSyntaxRenderer {
         sb.append("<div style='font-weight:bold; color:#b08800; font-size:11px; "
                 + "margin-bottom:4px;'>TOOL CALLS</div>");
         sb.append("<pre style='white-space:pre-wrap; word-break:break-word; "
-                        + "margin:0; font-family:Consolas,\"Courier New\",monospace; "
+                        + "margin:0; font-family:" + FONT_MONO + "; "
                         + "font-size:12px;'>")
                 .append(highlightToolCalls(escape(tail)))
                 .append("</pre>");
@@ -371,7 +403,7 @@ public final class HtmlSyntaxRenderer {
         return "<pre style='white-space:pre-wrap; word-break:break-word; "
                 + "background:#f6f8fa; border:1px solid #e1e4e8; "
                 + "border-radius:4px; padding:8px 10px; margin:6px 0; "
-                + "font-family:Consolas,\"Courier New\",monospace; font-size:12px;'>"
+                + "font-family:" + FONT_MONO + "; font-size:12px;'>"
                 + highlightInlineCode(escape(text))
                 + "</pre>";
     }

@@ -23,9 +23,25 @@ public final class VulnReport {
      */
     private String type;
     /**
-     * AI 给出的判断依据。
+     * 由大模型命名的漏洞独特标题（中文，简短）。
+     * 例如："UserController#login 接口 SQL 注入"。
+     */
+    private String title;
+    /**
+     * AI 给出的判断依据（中文）。
      */
     private String reason;
+    /**
+     * 攻击方式（中文）：描述攻击者可以如何触发该漏洞，
+     * 以及触发所需的前置条件 / 入口点 / 数据流。
+     */
+    private String attackVector;
+    /**
+     * 推断的 PoC（中文 + RAW HTTP）：
+     * 一段可读的 PoC 描述，必须包含一段 RAW HTTP 请求示例
+     * （含请求行、Host、Content-Type、关键 Header 与 Body）。
+     */
+    private String poc;
     /**
      * 风险评分 1-10。
      */
@@ -47,12 +63,36 @@ public final class VulnReport {
         this.type = type;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public String getReason() {
         return reason;
     }
 
     public void setReason(String reason) {
         this.reason = reason;
+    }
+
+    public String getAttackVector() {
+        return attackVector;
+    }
+
+    public void setAttackVector(String attackVector) {
+        this.attackVector = attackVector;
+    }
+
+    public String getPoc() {
+        return poc;
+    }
+
+    public void setPoc(String poc) {
+        this.poc = poc;
     }
 
     public int getScore() {

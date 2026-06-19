@@ -688,6 +688,7 @@ public final class AIWorkflowDialog {
         JEditorPane pane = new JEditorPane();
         pane.setContentType("text/html");
         pane.setEditable(false);
+        applyChineseFriendlyFont(pane);
         pane.setText(HtmlSyntaxRenderer.renderJson(json));
         pane.setCaretPosition(0);
         pane.setBackground(Color.WHITE);
@@ -770,6 +771,7 @@ public final class AIWorkflowDialog {
         detail.setContentType("text/html");
         detail.setEditable(false);
         detail.setBackground(Color.WHITE);
+        applyChineseFriendlyFont(detail);
 
         final JButton copyBtn = new JButton("复制本轮原文");
         copyBtn.setEnabled(false);
@@ -861,6 +863,74 @@ public final class AIWorkflowDialog {
             ta.append(ts + " " + line + "\n");
             ta.setCaretPosition(ta.getDocument().getLength());
         });
+    }
+
+    /**
+     * 给 {@link JEditorPane}（text/html）应用一套支持中文的兜底字体。
+     * <p>
+     * Swing {@code HTMLEditorKit} 默认使用 Serif/Monospaced 逻辑字体，
+     * 在 Windows 上这些字体不一定包含中日韩字形，会导致中文渲染成方块或缺字现象。
+     * 这里同时做两层兜底：
+     * <ol>
+     *   <li>组件级 {@link Component#setFont(Font)}：影响 HTMLEditorKit 在 CSS 未命中
+     *       时的回退字体；</li>
+     *   <li>StyleSheet 注入 body / pre / code 的 font-family，把 CSS 默认字体
+     *       也指向支持中文的字体栈。</li>
+     * </ol>
+     * 必须在 {@code setText} 之前调用，避免已渲染内容沿用旧字体。
+     */
+    private static void applyChineseFriendlyFont(JEditorPane pane) {
+        if (pane == null) {
+            return;
+        }
+        // 优先选择系统中确实存在的中文字体；找不到时回退 Dialog（Swing 逻辑字体）。
+        Font cn = pickChineseFont(13);
+        pane.setFont(cn);
+        try {
+            javax.swing.text.EditorKit kit = pane.getEditorKit();
+            if (kit instanceof javax.swing.text.html.HTMLEditorKit) {
+                javax.swing.text.html.HTMLEditorKit hkit =
+                        (javax.swing.text.html.HTMLEditorKit) kit;
+                javax.swing.text.html.StyleSheet ss = hkit.getStyleSheet();
+                String fam = cn.getFamily();
+                // 这里的字体名不能加引号——HTMLEditorKit 的 CSS 解析器会把引号当字符串。
+                ss.addRule("body { font-family: " + fam
+                        + ", Microsoft YaHei, SimSun, sans-serif; }");
+                ss.addRule("pre, code, kbd, samp { font-family: "
+                        + fam + ", Microsoft YaHei, SimSun, monospace; }");
+            }
+        } catch (Throwable ignored) {
+            // 任何 LookAndFeel / EditorKit 异常都不能阻塞 UI 弹出
+        }
+    }
+
+    /**
+     * 在系统已安装字体中按优先级挑一个支持中文的字体。
+     * 全部不存在时回退 {@code Dialog}（保证不为 null）。
+     */
+    private static Font pickChineseFont(int size) {
+        String[] candidates = new String[]{
+                "Microsoft YaHei",
+                "Microsoft YaHei UI",
+                "PingFang SC",
+                "Hiragino Sans GB",
+                "WenQuanYi Micro Hei",
+                "SimSun",
+                "SimHei",
+                "NSimSun",
+        };
+        try {
+            String[] avail = GraphicsEnvironment.getLocalGraphicsEnvironment()
+                    .getAvailableFontFamilyNames();
+            Set<String> set = new HashSet<>(Arrays.asList(avail));
+            for (String name : candidates) {
+                if (set.contains(name)) {
+                    return new Font(name, Font.PLAIN, size);
+                }
+            }
+        } catch (Throwable ignored) {
+        }
+        return new Font(Font.DIALOG, Font.PLAIN, size);
     }
 
     @SuppressWarnings("unused")

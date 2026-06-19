@@ -96,7 +96,7 @@ Jar Analyzer
 
 自从 `6.0` 版本以后，内置了 `AI` 助手和 `workflow` 内容，详情参考 [AI 文档](doc/README-ai.md)
 
-![](img/1001.png)
+![](img/1000.png)
 
 ![](img/1004.png)
 

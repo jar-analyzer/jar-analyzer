@@ -92,6 +92,8 @@ Jar Analyzer
 
 自从 `6.0` 版本以后，内置了 `MCP` 面板，可以轻松配置和启动，支持 `SSE/Streamable HTTP`
 
+`Agent` 端配置参考 [MCP 配置](#MCP)
+
 ![](img/1008.png)
 
 自从 `6.0` 版本以后，内置了 `AI` 助手和 `workflow` 内容，详情参考 [AI 文档](doc/README-ai.md)

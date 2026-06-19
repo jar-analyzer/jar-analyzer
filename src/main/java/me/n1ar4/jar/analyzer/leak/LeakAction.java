@@ -10,6 +10,8 @@
 
 package me.n1ar4.jar.analyzer.leak;
 
+import me.n1ar4.jar.analyzer.ai.AIConfig;
+import me.n1ar4.jar.analyzer.ai.AIConfigManager;
 import me.n1ar4.jar.analyzer.engine.CoreEngine;
 import me.n1ar4.jar.analyzer.entity.LeakResult;
 import me.n1ar4.jar.analyzer.entity.LeakTriageEntry;
@@ -225,6 +227,33 @@ public class LeakAction {
         // AI 研判默认关闭，避免用户在未配置 AI 时误开
         aiTriageBox.setSelected(false);
 
+        // 勾选 AI Triage 时立即检查 LLM 配置，未配置则提示并取消勾选
+        aiTriageBox.addActionListener(e -> {
+            if (!aiTriageBox.isSelected()) {
+                return;
+            }
+            AIConfig cfg = AIConfigManager.getActive();
+            if (!cfg.isReady()) {
+                aiTriageBox.setSelected(false);
+                JOptionPane.showMessageDialog(instance.getMasterPanel(),
+                        "<html>AI 尚未配置，无法启用研判。<br><br>" +
+                                "请先在菜单栏 <b>AI</b> → <b>AI 配置</b> 中填写：<br>" +
+                                "&nbsp;&nbsp;• Base URL（OpenAI 兼容协议）<br>" +
+                                "&nbsp;&nbsp;• Model<br>" +
+                                "&nbsp;&nbsp;• API Key<br><br>" +
+                                "并选择启用一条配置后，再回来勾选。</html>",
+                        "AI 未配置",
+                        JOptionPane.WARNING_MESSAGE);
+            } else {
+                // 简单回显当前生效的 provider/model（不显示 apiKey）
+                String name = cfg.getName() == null || cfg.getName().isEmpty() ? "(未命名)" : cfg.getName();
+                log("ai triage enabled, profile=" + name +
+                        ", provider=" + cfg.getProvider() +
+                        ", model=" + cfg.getModel());
+            }
+        });
+
+
         JList<LeakResult> leakList = instance.getLeakResultList();
 
         logger.info("registering leak action");
@@ -263,75 +292,94 @@ public class LeakAction {
             LeakAITriageForm.start(entries);
         });
 
-        instance.getLeakStartBtn().addActionListener(e -> new Thread(() -> {
-            CoreEngine engine = MainForm.getEngine();
-            List<MemberEntity> members = engine.getAllMembersInfo();
-            Map<String, String> stringMap = engine.getStringMap();
-
-            Set<LeakResult> results = new LinkedHashSet<>();
-
-            // 配置所有规则
-            RuleConfig[] ruleConfigs = {
-                    new RuleConfig(jwtBox, JWTRule::match, "JWT-TOKEN", "jwt-token"),
-                    new RuleConfig(idCardBox, IDCardRule::match, "ID-CARD", "id-card"),
-                    new RuleConfig(ipAddrBox, IPAddressRule::match, "IP-ADDR", "ip-addr"),
-                    new RuleConfig(emailBox, EmailRule::match, "EMAIL", "email"),
-                    new RuleConfig(urlBox, UrlRule::match, "URL", "url"),
-                    new RuleConfig(jdbcBox, JDBCRule::match, "JDBC", "jdbc"),
-                    new RuleConfig(filePathBox, FilePathRule::match, "FILE-PATH", "file-path"),
-                    new RuleConfig(macAddrBox, MacAddressRule::match, "MAC-ADDR", "mac-addr"),
-                    new RuleConfig(phoneBox, PhoneRule::match, "PHONE", "phone"),
-                    new RuleConfig(apiKeyBox, ApiKeyRule::match, "API-KEY", "api-key"),
-                    new RuleConfig(bankBox, BankCardRule::match, "BANK-CARD", "bank-card"),
-                    new RuleConfig(cloudAkSkBox, CloudAKSKRule::match, "CLOUD-AKSK", "cloud-aksk"),
-                    new RuleConfig(cryptoBox, CryptoKeyRule::match, "CRYPTO-KEY", "crypto-key"),
-                    new RuleConfig(aiKeyBox, OpenAITokenRule::match, "AI-KEY", "ai-key"),
-                    new RuleConfig(passBox, PasswordRule::match, "PASSWORD", "password")
-            };
-
-            // 处理所有规则
-            for (RuleConfig config : ruleConfigs) {
-                processRule(config, members, stringMap, results);
-            }
-
-            // AI 研判（可选）
-            List<LeakResult> finalResults;
-            if (aiTriageBox.isSelected() && !results.isEmpty()) {
-                List<LeakResult> raw = new ArrayList<>(results);
-                final int total = raw.size();
-                log("ai triage start (total=" + total + ")");
-                List<LeakTriageEntry> entries = LeakAITriageService.triageAll(raw,
-                        (done, t, current) -> {
-                            // 每 5 条或最后一条刷新一次进度
-                            if (done == t || done % 5 == 0) {
-                                log("ai triage progress: " + done + "/" + t);
-                            }
-                        });
-                lastTriageEntries = entries;
-                // 仅保留 AI 判定为敏感的（未通过的从最终结果剔除）
-                finalResults = new ArrayList<>(entries.size());
-                int filtered = 0;
-                for (LeakTriageEntry entry : entries) {
-                    if (entry.isSensitive()) {
-                        finalResults.add(entry.getResult());
-                    } else {
-                        filtered++;
+        instance.getLeakStartBtn().addActionListener(e -> {
+            // START 前再做一次 AI 配置校验（双保险：勾选后用户可能又改/删了配置）
+            if (aiTriageBox.isSelected()) {
+                AIConfig cfg = AIConfigManager.getActive();
+                if (!cfg.isReady()) {
+                    int choice = JOptionPane.showConfirmDialog(instance.getMasterPanel(),
+                            "<html>已勾选 <b>AI Triage</b>，但当前 AI 未配置或配置不完整。<br><br>" +
+                                    "<b>是</b>：取消 AI 研判，继续按原始规则扫描<br>" +
+                                    "<b>否</b>：本次不执行扫描，去配置 AI</html>",
+                            "AI 未配置",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.WARNING_MESSAGE);
+                    if (choice != JOptionPane.YES_OPTION) {
+                        return;
                     }
+                    aiTriageBox.setSelected(false);
                 }
-                log("ai triage finish, filtered=" + filtered + ", kept=" + finalResults.size());
-            } else {
-                // 未启用 AI：清空旧的研判记录，避免误以为是当前结果
-                lastTriageEntries = Collections.emptyList();
-                finalResults = new ArrayList<>(results);
             }
+            new Thread(() -> {
+                CoreEngine engine = MainForm.getEngine();
+                List<MemberEntity> members = engine.getAllMembersInfo();
+                Map<String, String> stringMap = engine.getStringMap();
 
-            // 更新UI
-            DefaultListModel<LeakResult> model = new DefaultListModel<>();
-            for (LeakResult leakResult : finalResults) {
-                model.addElement(leakResult);
-            }
-            SwingUtilities.invokeLater(() -> leakList.setModel(model));
-        }).start());
+                Set<LeakResult> results = new LinkedHashSet<>();
+
+                // 配置所有规则
+                RuleConfig[] ruleConfigs = {
+                        new RuleConfig(jwtBox, JWTRule::match, "JWT-TOKEN", "jwt-token"),
+                        new RuleConfig(idCardBox, IDCardRule::match, "ID-CARD", "id-card"),
+                        new RuleConfig(ipAddrBox, IPAddressRule::match, "IP-ADDR", "ip-addr"),
+                        new RuleConfig(emailBox, EmailRule::match, "EMAIL", "email"),
+                        new RuleConfig(urlBox, UrlRule::match, "URL", "url"),
+                        new RuleConfig(jdbcBox, JDBCRule::match, "JDBC", "jdbc"),
+                        new RuleConfig(filePathBox, FilePathRule::match, "FILE-PATH", "file-path"),
+                        new RuleConfig(macAddrBox, MacAddressRule::match, "MAC-ADDR", "mac-addr"),
+                        new RuleConfig(phoneBox, PhoneRule::match, "PHONE", "phone"),
+                        new RuleConfig(apiKeyBox, ApiKeyRule::match, "API-KEY", "api-key"),
+                        new RuleConfig(bankBox, BankCardRule::match, "BANK-CARD", "bank-card"),
+                        new RuleConfig(cloudAkSkBox, CloudAKSKRule::match, "CLOUD-AKSK", "cloud-aksk"),
+                        new RuleConfig(cryptoBox, CryptoKeyRule::match, "CRYPTO-KEY", "crypto-key"),
+                        new RuleConfig(aiKeyBox, OpenAITokenRule::match, "AI-KEY", "ai-key"),
+                        new RuleConfig(passBox, PasswordRule::match, "PASSWORD", "password")
+                };
+
+                // 处理所有规则
+                for (RuleConfig config : ruleConfigs) {
+                    processRule(config, members, stringMap, results);
+                }
+
+                // AI 研判（可选）
+                List<LeakResult> finalResults;
+                if (aiTriageBox.isSelected() && !results.isEmpty()) {
+                    List<LeakResult> raw = new ArrayList<>(results);
+                    final int total = raw.size();
+                    log("ai triage start (total=" + total + ")");
+                    List<LeakTriageEntry> entries = LeakAITriageService.triageAll(raw,
+                            (done, t, current) -> {
+                                // 每 5 条或最后一条刷新一次进度
+                                if (done == t || done % 5 == 0) {
+                                    log("ai triage progress: " + done + "/" + t);
+                                }
+                            });
+                    lastTriageEntries = entries;
+                    // 仅保留 AI 判定为敏感的（未通过的从最终结果剔除）
+                    finalResults = new ArrayList<>(entries.size());
+                    int filtered = 0;
+                    for (LeakTriageEntry entry : entries) {
+                        if (entry.isSensitive()) {
+                            finalResults.add(entry.getResult());
+                        } else {
+                            filtered++;
+                        }
+                    }
+                    log("ai triage finish, filtered=" + filtered + ", kept=" + finalResults.size());
+                } else {
+                    // 未启用 AI：清空旧的研判记录，避免误以为是当前结果
+                    lastTriageEntries = Collections.emptyList();
+                    finalResults = new ArrayList<>(results);
+                }
+
+                // 更新UI
+                DefaultListModel<LeakResult> model = new DefaultListModel<>();
+                for (LeakResult leakResult : finalResults) {
+                    model.addElement(leakResult);
+                }
+                SwingUtilities.invokeLater(() -> leakList.setModel(model));
+            }).start();
+        });
 
         instance.getLeakCleanBtn().addActionListener(e -> {
             leakList.setModel(new DefaultListModel<>());

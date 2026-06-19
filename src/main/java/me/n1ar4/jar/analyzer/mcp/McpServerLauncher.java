@@ -10,6 +10,8 @@
 
 package me.n1ar4.jar.analyzer.mcp;
 
+import me.n1ar4.jar.analyzer.engine.CoreEngine;
+import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.mcp.tools.JarAnalyzerTools;
 import me.n1ar4.jar.analyzer.mcp.tools.ToolRegistry;
 import me.n1ar4.jar.analyzer.utils.SocketUtil;
@@ -112,7 +114,32 @@ public class McpServerLauncher {
         notify(progress, McpStartStage.ACCEPT);
         this.server.start();
 
+        // 启动后给出 jar 加载状态提示（不阻断启动，允许"先开 MCP 再载 jar"的用法）
+        warnIfJarNotLoaded(listener);
+
         notify(progress, McpStartStage.DONE);
+    }
+
+    /**
+     * 在 MCP 启动后检查 jar-analyzer 是否已加载 jar
+     * 未加载时通过 listener 与日志面板给出提示，避免用户误以为 MCP 工作正常但"找不到数据"
+     */
+    private static void warnIfJarNotLoaded(McpEventListener listener) {
+        try {
+            CoreEngine engine = MainForm.getEngine();
+            boolean ready = engine != null && engine.isEnabled();
+            if (!ready) {
+                String msg = "[MCP] no jar loaded - tools will return JAR_NOT_LOADED. " +
+                        "Please open a jar/project in jar-analyzer GUI to enable analysis.";
+                if (listener != null) {
+                    try {
+                        listener.onWarn(msg);
+                    } catch (Throwable ignored) {
+                    }
+                }
+            }
+        } catch (Throwable ignored) {
+        }
     }
 
     private static void notify(McpStartProgress p, McpStartStage stage) {

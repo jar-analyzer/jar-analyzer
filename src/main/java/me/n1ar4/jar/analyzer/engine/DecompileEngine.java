@@ -104,12 +104,14 @@ public class DecompileEngine {
      */
     public static String decompile(Path classFilePath) {
         try {
-            // 在 MCP 上下文里默认采用 FernFlower（避免读取可能未在 EDT 的 GUI 单选状态时阻塞）
+            // 读取 GUI 单选状态（isSelected 仅读 volatile 字段，线程安全）
+            // GUI 未就绪等极端情况兜底为 true（fern 是默认值）
             boolean fern;
-            if (McpContext.isInMcp()) {
-                fern = true;
-            } else {
+            try {
                 fern = MainForm.getInstance().getFernRadio().isSelected();
+            } catch (Throwable t) {
+                fern = true;
+                logger.warn("read fernRadio failed, fallback to true: " + t.getMessage());
             }
             if (fern) {
                 // USE LRU CACHE

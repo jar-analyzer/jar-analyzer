@@ -11,6 +11,8 @@
 package me.n1ar4.jar.analyzer.mcp.tools;
 
 import com.alibaba.fastjson2.JSONObject;
+import me.n1ar4.jar.analyzer.engine.CoreEngine;
+import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.mcp.McpContext;
 import me.n1ar4.jar.analyzer.server.PathMatcher;
 import me.n1ar4.jar.analyzer.server.handler.base.HttpHandler;
@@ -205,9 +207,18 @@ public class JarAnalyzerTools {
      * 在执行前后维护 McpContext，使下游 API 可识别 MCP 调用、避免弹窗与 GUI 阻塞
      */
     private static String callApi(String uri, String[][] params) throws Exception {
+        // 在调用任何 handler 前显式校验 engine 状态，给出对 LLM 友好的明确错误
+        // 否则 jar 未加载时 handler 会返回 HTML（CORE ENGINE IS NULL），
+        // LLM 难以解析，常被误判为"无数据/空结果"
+        String notReady = checkEngineReady();
+        if (notReady != null) {
+            return notReady;
+        }
+
         HttpHandler handler = lookupHandler(uri);
         if (handler == null) {
-            return "[ERROR] handler not found: " + uri;
+            return jsonError("handler not found: " + uri,
+                    "MCP_HANDLER_NOT_FOUND", null);
         }
         FakeHttpSession session = FakeHttpSession.of(uri);
         if (params != null) {
@@ -230,6 +241,53 @@ public class JarAnalyzerTools {
                 McpContext.leave();
             }
         }
+    }
+
+    /**
+     * 检查 jar-analyzer 引擎是否已就绪（jar 已被加载/分析）
+     *
+     * @return null 表示已就绪；非 null 表示一段对 LLM 友好的错误 JSON
+     */
+    private static String checkEngineReady() {
+        CoreEngine engine = MainForm.getEngine();
+        if (engine == null) {
+            return jsonError(
+                    "no jar loaded: please open jar-analyzer GUI, drop a jar (or open a project), wait for analysis to finish, then retry",
+                    "JAR_NOT_LOADED",
+                    "engine is null - user has not loaded any jar yet");
+        }
+        try {
+            if (!engine.isEnabled()) {
+                return jsonError(
+                        "jar analysis not ready: database or temp dir missing, please rebuild the jar in jar-analyzer GUI and retry",
+                        "JAR_NOT_READY",
+                        "engine.isEnabled() == false");
+            }
+        } catch (Throwable t) {
+            return jsonError(
+                    "jar analysis state check failed: " + t.getMessage(),
+                    "ENGINE_CHECK_FAILED",
+                    t.getClass().getSimpleName());
+        }
+        return null;
+    }
+
+    /**
+     * 构造一段对 LLM 友好的、稳定结构的错误 JSON
+     * 形如:
+     * {"success":false,"error":{"code":"JAR_NOT_LOADED","message":"...","detail":"..."}}
+     */
+    private static String jsonError(String message, String code, String detail) {
+        JSONObject err = new JSONObject();
+        err.put("code", code);
+        err.put("message", message);
+        if (detail != null) {
+            err.put("detail", detail);
+        }
+        JSONObject obj = new JSONObject();
+        obj.put("success", false);
+        obj.put("error", err);
+        return obj.toJSONString();
     }
 
     /**

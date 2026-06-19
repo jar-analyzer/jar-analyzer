@@ -164,12 +164,14 @@ public class DFSEngine {
 
         // 检查是否为查找所有 SOURCE 的模式
         boolean findAllSources = this.fromSink && this.searchNullSource;
-        // MCP 上下文里不依赖 GUI 单选状态，默认走全量；GUI 模式保持原行为
+        // 读取 GUI 单选状态（isSelected 仅读 volatile 字段，线程安全，不会阻塞 EDT）
+        // 万一 GUI 未初始化（极端情况），回退到 GUI 默认值 false（不勾选 = 全量）
         boolean onlyFromWeb;
-        if (McpContext.isInMcp()) {
-            onlyFromWeb = false;
-        } else {
+        try {
             onlyFromWeb = MainForm.getInstance().getSourceOnlyWebBox().isSelected();
+        } catch (Throwable t) {
+            onlyFromWeb = false;
+            logger.warn("read sourceOnlyWebBox failed, fallback to false: " + t.getMessage());
         }
 
         logger.info("find all sources from sink : " + findAllSources);

@@ -24,12 +24,8 @@ public class JarAnalyzerServer extends NanoHTTPD {
         try {
             start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
             System.out.print("#######################################################\n");
-            if (config.isAuth()) {
-                System.out.print("API SERVER ENABLE AUTH TOKEN\n");
-            } else {
-                System.out.print("API SERVER DISABLE AUTH TOKEN\n");
-            }
-            System.out.printf("API SERVER BIND %s:%d\n", config.getBind(), config.getPort());
+            System.out.printf("API SERVER BIND %s:%d (loopback only, no auth)\n",
+                    config.getBind(), config.getPort());
             System.out.printf("API SERVER: http://127.0.0.1:%d\n", config.getPort());
             System.out.print("#######################################################\n");
         } catch (Exception e) {

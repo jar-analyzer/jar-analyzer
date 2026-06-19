@@ -22,7 +22,6 @@ import java.util.Map;
 public class PathMatcher {
     private static final Logger logger = LogManager.getLogger();
     public static Map<String, HttpHandler> handlers = new HashMap<>();
-    private final ServerConfig config;
 
     static {
         IndexHandler handler = new IndexHandler();
@@ -40,8 +39,8 @@ public class PathMatcher {
         handlers.put("/api/get_abs_path", new GetAbsPathHandler());
 
         //
-        // 以上 API 不应该被 MCP 调用 内部使用
-        // 以下 API 允许被 MCP 调用 对外
+        // 以上 API 内部使用
+        // 以下 API 也允许被 MCP 在进程内调用
         //
 
         handlers.put("/api/get_callers", new GetCallersHandler());
@@ -74,40 +73,11 @@ public class PathMatcher {
     }
 
     public PathMatcher(ServerConfig config) {
-        this.config = config;
-    }
-
-    private NanoHTTPD.Response buildTokenError() {
-        return NanoHTTPD.newFixedLengthResponse(
-                NanoHTTPD.Response.Status.INTERNAL_ERROR,
-                "text/html",
-                "<h1>JAR ANALYZER SERVER</h1>" +
-                        "<h2>NEED TOKEN HEADER</h2>");
+        // 配置已固化（仅本机访问），无需保存
     }
 
     public NanoHTTPD.Response handleReq(NanoHTTPD.IHTTPSession session) {
         String uri = session.getUri();
-
-        if (config.isAuth()) {
-            // 这个框架有 BUG 大小写问题
-            String authA = session.getHeaders().get("Token");
-            String authB = session.getHeaders().get("token");
-            boolean access = false;
-            if (authA != null && !authA.trim().isEmpty()) {
-                if (authA.equals(config.getToken())) {
-                    access = true;
-                }
-            }
-            if (authB != null && !authB.trim().isEmpty()) {
-                if (authB.equals(config.getToken())) {
-                    access = true;
-                }
-            }
-            if (!access) {
-                return buildTokenError();
-            }
-        }
-
         logger.debug("receive {} from {}", session.getRemoteIpAddress(), uri);
 
         for (Map.Entry<String, HttpHandler> entry : handlers.entrySet()) {

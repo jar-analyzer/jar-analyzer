@@ -42,7 +42,6 @@ import me.n1ar4.jar.analyzer.gui.vul.VulnerabilityBuilder;
 import me.n1ar4.jar.analyzer.leak.LeakAction;
 import me.n1ar4.jar.analyzer.plugins.jd.JDGUIStarter;
 import me.n1ar4.jar.analyzer.sca.SCAAction;
-import me.n1ar4.jar.analyzer.server.APIAction;
 import me.n1ar4.jar.analyzer.starter.Application;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.taint.TaintAnalyzer;
@@ -355,24 +354,7 @@ public class MainForm {
     private JLabel sinkJarLabel;
     private JButton loadFavBtn;
     private JPanel favHisPanel;
-    private JPanel apiPanel;
-    private JPanel apiShowPanel;
-    private JTextField bindText;
-    private JTextField authText;
-    private JTextField portText;
-    private JTextField tokenText;
-    private JButton apiDocBtn;
-    private JButton mcpDocBtn;
-    private JButton n8nDocBtn;
-    private JPanel apiDocPanel;
-    private JLabel bindLabel;
-    private JLabel portLabel;
-    private JLabel authLabel;
-    private JLabel tokenLabel;
     private JButton dfsAdvanceBtn;
-    private JButton skillDocBtn;
-    private JLabel jarAnMcpLabel;
-    private JLabel version60Label;
     private JButton quickSinkBtn;
     private JPanel springConfigPanel;
     private JScrollPane springConfigScroll;
@@ -946,38 +928,6 @@ public class MainForm {
         return sourceOnlyWebBox;
     }
 
-    public JButton getN8nDocBtn() {
-        return n8nDocBtn;
-    }
-
-    public JButton getSkillDocBtn() {
-        return skillDocBtn;
-    }
-
-    public JButton getMcpDocBtn() {
-        return mcpDocBtn;
-    }
-
-    public JButton getApiDocBtn() {
-        return apiDocBtn;
-    }
-
-    public JTextField getTokenText() {
-        return tokenText;
-    }
-
-    public JTextField getPortText() {
-        return portText;
-    }
-
-    public JTextField getAuthText() {
-        return authText;
-    }
-
-    public JTextField getBindText() {
-        return bindText;
-    }
-
     public MainForm(boolean fake) {
         $$$setupUI$$$();
         if (fake) {
@@ -1149,7 +1099,7 @@ public class MainForm {
 
         SCAAction.register();
         LeakAction.register();
-        APIAction.register();
+        MCPAction.register();
 
         Font codeFont = FontHelper.getFont(FONT_SIZE);
         instance.blackArea.setFont(codeFont);
@@ -1254,7 +1204,9 @@ public class MainForm {
         instance.getTabbedPanel().setIconAt(8, SvgManager.GadgetIcon);
         instance.getTabbedPanel().setIconAt(9, SvgManager.AdvanceIcon);
         instance.getTabbedPanel().setIconAt(10, SvgManager.DogIcon);
-        instance.getTabbedPanel().setIconAt(11, SvgManager.ConnectIcon);
+        if (instance.getTabbedPanel().getTabCount() > 11) {
+            instance.getTabbedPanel().setIconAt(11, SvgManager.ConnectIcon);
+        }
 
         instance.webTabbed.setIconAt(0, SvgManager.SpringIcon);
         instance.webTabbed.setIconAt(1, SvgManager.SpringIcon);
@@ -1301,7 +1253,7 @@ public class MainForm {
                 instance.tabbedPanel.setTitleAt(8, "GADGET");
                 instance.tabbedPanel.setTitleAt(9, "高级");
                 instance.tabbedPanel.setTitleAt(10, "漏洞链");
-                instance.tabbedPanel.setTitleAt(11, "API");
+                instance.tabbedPanel.setTitleAt(11, "MCP");
 
                 instance.chosePanel.setBorder(
                         BorderFactory.createTitledBorder(null,
@@ -1426,7 +1378,7 @@ public class MainForm {
                 instance.tabbedPanel.setTitleAt(8, "gadget");
                 instance.tabbedPanel.setTitleAt(9, "advance");
                 instance.tabbedPanel.setTitleAt(10, "chains");
-                instance.tabbedPanel.setTitleAt(11, "API");
+                instance.tabbedPanel.setTitleAt(11, "MCP");
 
                 instance.chosePanel.setBorder(
                         BorderFactory.createTitledBorder(null,
@@ -2646,64 +2598,6 @@ public class MainForm {
         dfsAdvanceBtn.setText("高级设置（数量限制/导出等）");
         chainsOpPanel.add(dfsAdvanceBtn, new GridConstraints(1, 1, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         chainsPanel.add(chainsResult, new GridConstraints(2, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        apiPanel = new JPanel();
-        apiPanel.setLayout(new GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
-        tabbedPanel.addTab("API", apiPanel);
-        apiShowPanel = new JPanel();
-        apiShowPanel.setLayout(new GridLayoutManager(7, 2, new Insets(8, 10, 8, 10), -1, -1));
-        apiPanel.add(apiShowPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1, false));
-        apiShowPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "HTTP API Server", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
-        bindLabel = new JLabel();
-        bindLabel.setText("BIND IP");
-        apiShowPanel.add(bindLabel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        bindText = new JTextField();
-        bindText.setEditable(false);
-        apiShowPanel.add(bindText, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        portLabel = new JLabel();
-        portLabel.setText("PORT");
-        apiShowPanel.add(portLabel, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        authLabel = new JLabel();
-        authLabel.setText("ENABLE AUTH");
-        apiShowPanel.add(authLabel, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        authText = new JTextField();
-        authText.setEditable(false);
-        apiShowPanel.add(authText, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        portText = new JTextField();
-        portText.setEditable(false);
-        apiShowPanel.add(portText, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        tokenLabel = new JLabel();
-        tokenLabel.setText("AUTH TOKEN");
-        apiShowPanel.add(tokenLabel, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        tokenText = new JTextField();
-        tokenText.setEditable(false);
-        apiShowPanel.add(tokenText, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        apiDocPanel = new JPanel();
-        apiDocPanel.setLayout(new GridLayoutManager(1, 4, new Insets(4, 6, 4, 6), -1, -1));
-        apiShowPanel.add(apiDocPanel, new GridConstraints(5, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        apiDocPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Documentation", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
-        apiDocBtn = new JButton();
-        apiDocBtn.setText("API 文档");
-        apiDocPanel.add(apiDocBtn, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        mcpDocBtn = new JButton();
-        mcpDocBtn.setText("MCP 文档");
-        apiDocPanel.add(mcpDocBtn, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        n8nDocBtn = new JButton();
-        n8nDocBtn.setText("N8N 集成文档");
-        apiDocPanel.add(n8nDocBtn, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        skillDocBtn = new JButton();
-        skillDocBtn.setText("SKILL 文档");
-        apiDocPanel.add(skillDocBtn, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        jarAnMcpLabel = new JLabel();
-        jarAnMcpLabel.setText("<html><div style='padding:4px 0'><span style='font-size:13pt; font-weight:bold; color:#2E5BFF'>♦ jar-analyzer HTTP API</span> <span style='color:#666'><span style='color:#444'>对外提供分析能力的 RESTful 接口</span></div><div style='font-size:12pt; color:#666; padding-top:2px'>原本用于联动 <b>jar-analyzer-mcp</b> / <b>n8n</b> / <b>skills</b></div></html>");
-        apiShowPanel.add(jarAnMcpLabel, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        version60Label = new JLabel();
-        version60Label.setText("<html><div style='border:1px solid #E0A800; background:#FFF8E1; padding:8px 10px; margin-top:6px'><span style='font-size:11pt; color:#B37400; font-weight:bold'>⚠ 6.0 版本弃用通知</span><br><span style='color:#444'>6.0 版本以后 <b>MCP</b> / <b>n8n</b> / <b>SKILL</b> 集成不再维护，优先使用 <b style='color:#2E5BFF'>jar-analyzer 内嵌 AI 助手</b>。</span><br><span style='color:#1B7F3A'>✓ 初步实现内嵌 n8n workflow，在菜单 <b>AI</b> 中体验。</span></div></html>");
-        version60Label.setToolTipText("自 6.0 起 MCP/n8n/SKILL 不再维护，请使用内嵌 AI 助手");
-        apiShowPanel.add(version60Label, new GridConstraints(6, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final Spacer spacer8 = new Spacer();
-        apiPanel.add(spacer8, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
-        final Spacer spacer9 = new Spacer();
-        apiPanel.add(spacer9, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         curPanel = new JPanel();
         curPanel.setLayout(new GridLayoutManager(3, 3, new Insets(0, 0, 0, 0), -1, -1));
         coreRightSplit.add(curPanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
@@ -2729,8 +2623,8 @@ public class MainForm {
         addToFavoritesButton = new JButton();
         addToFavoritesButton.setText("add to favorites");
         curPanel.add(addToFavoritesButton, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final Spacer spacer10 = new Spacer();
-        coreRightSplit.add(spacer10, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        final Spacer spacer8 = new Spacer();
+        coreRightSplit.add(spacer8, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         logPanel = new JPanel();
         logPanel.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
         treeContentSplit.setRightComponent(logPanel);

@@ -67,7 +67,10 @@ public final class AIWorkflowDialog {
         dlg.setLocationRelativeTo(owner);
 
         // ===== 表单字段 =====
+        // API 已固化为本机 127.0.0.1:10032，不允许修改
         final JTextField apiField = new JTextField("http://127.0.0.1:10032");
+        apiField.setEditable(false);
+        apiField.setToolTipText("API 已固化为本机 127.0.0.1:10032，不可修改");
         final JSpinner maxClassesSp = new JSpinner(new SpinnerNumberModel(50, 1, 5000, 10));
         final JSpinner maxItersSp = new JSpinner(new SpinnerNumberModel(10, 1, 50, 1));
         final JTextField modelField = new JTextField(cfg.getModel());

@@ -10,41 +10,39 @@
 
 package me.n1ar4.jar.analyzer.server;
 
+/**
+ * HTTP API Server 配置（已固化）
+ *
+ * <p>自 6.0 起，jar-analyzer HTTP API 不再对外暴露：</p>
+ * <ul>
+ *   <li>固定绑定 {@value #BIND}（仅本机环回）</li>
+ *   <li>固定端口 {@value #PORT}</li>
+ *   <li>不再提供 token 鉴权（同机进程才可访问）</li>
+ * </ul>
+ */
 public class ServerConfig {
-    private String bind;
-    private int port;
-    private boolean auth;
-    private String token;
 
-    public boolean isAuth() {
-        return auth;
-    }
+    /**
+     * 固定绑定地址 —— 仅环回，不允许修改
+     */
+    public static final String BIND = "127.0.0.1";
 
-    public void setAuth(boolean auth) {
-        this.auth = auth;
-    }
+    /**
+     * 固定监听端口 —— 不允许修改
+     */
+    public static final int PORT = 10032;
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
+    /**
+     * @return 绑定地址（恒为 127.0.0.1）
+     */
     public String getBind() {
-        return bind;
+        return BIND;
     }
 
-    public void setBind(String bind) {
-        this.bind = bind;
-    }
-
+    /**
+     * @return 监听端口（恒为 10032）
+     */
     public int getPort() {
-        return port;
-    }
-
-    public void setPort(int port) {
-        this.port = port;
+        return PORT;
     }
 }

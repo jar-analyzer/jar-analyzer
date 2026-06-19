@@ -140,18 +140,13 @@ public class Application {
             System.setErr(new LoggingStream(System.err, logger));
             System.err.println("set y4-log err-streams");
 
-            int port = startCmd.getPort();
-            if (port < 1 || port > 65535) {
-                port = 10032;
-            }
-            logger.info("set server port {}", port);
+            logger.info("API SERVER fixed at {}:{} (loopback only, no auth)",
+                    ServerConfig.BIND, ServerConfig.PORT);
 
             // START HTTP SERVER
+            // 已固化：固定 bind=127.0.0.1，port=10032，无鉴权
+            // 命令行参数 -p / -sb / -sa / -st 已不再生效（仅保留以兼容老脚本）
             ServerConfig config = new ServerConfig();
-            config.setBind(startCmd.getServerBind());
-            config.setPort(startCmd.getPort());
-            config.setAuth(startCmd.isServerAuth());
-            config.setToken(startCmd.getServerToken());
             new Thread(() -> HttpServer.start(config)).start();
 
             GlobalOptions.setServerConfig(config);

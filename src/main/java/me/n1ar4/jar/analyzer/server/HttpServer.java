@@ -15,13 +15,18 @@ import me.n1ar4.jar.analyzer.utils.SocketUtil;
 
 import javax.swing.*;
 
+/**
+ * 启动 jar-analyzer 内置 HTTP API Server
+ *
+ * <p>已固化为：仅本机 127.0.0.1:10032 监听，无任何鉴权。</p>
+ */
 public class HttpServer {
     public static void start(ServerConfig config) {
-        if (SocketUtil.isPortInUse("localhost", config.getPort())) {
+        if (SocketUtil.isPortInUse(ServerConfig.BIND, ServerConfig.PORT)) {
             JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                     "<html>" +
-                            "<p>无法启动 API SERVER 因为端口 " + config.getPort() + "被占用</p>" +
-                            "<p>请使用 java -jar jar-analyzer.jar gui --port [其他] 修改端口</p>" +
+                            "<p>无法启动 API SERVER，因为端口 " + ServerConfig.PORT + " 被占用</p>" +
+                            "<p>请关闭占用该端口的进程后再启动 jar-analyzer</p>" +
                             "</html>");
             return;
         }

@@ -191,6 +191,38 @@ Jar Analyzer
 
 (16) 使用 `jar-anlyzer mcp` 配合 `n8n` 工作流，确实能挖到洞 (某安全专家)
  
+## MCP
+
+在使用 `MCP` 之前，请确保你已经完成了分析，成功构建了数据库
+
+然后前往 `MCP` 面板点击 `启动 MCP` 即可
+
+支持 `SSE`
+
+```json
+{
+  "mcpServers": {
+    "jar-analyzer-mcp": {
+      "type": "sse",
+      "url": "http://127.0.0.1:20032/sse"
+    }
+  }
+}
+```
+
+支持 `Streamable HTTP`
+
+```json
+{
+  "mcpServers": {
+    "jar-analyzer-mcp": {
+      "type": "http",
+      "url": "http://127.0.0.1:20032/mcp"
+    }
+  }
+}
+```
+
 ## 表达式
 
 表达式搜索是 `jar-analzyer` 重要的高级功能：可以自定义多种条件组合搜索方法

@@ -102,6 +102,10 @@ Jar Analyzer
 
 ![](img/1006.png)
 
+信息泄露 `AI` 研判
+
+![](img/1007.png)
+
 漏洞链 `DFS` 分析使用 `AI` 研判
 
 ![](img/1001.png)

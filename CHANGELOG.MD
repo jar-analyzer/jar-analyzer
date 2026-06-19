@@ -7,6 +7,7 @@
 - [功能] 内置 `AI` 助手，默认集成 `DeepSeek/GLM` @4ra1n
 - [功能] 纯 `Java Swing` 实现的 `AI workflow` 分析 @4ra1n
 - [功能] 支持 `AI` 分析代码片段，`DIFF` 和 `DFS` 辅助分析 @4ra1n 
+- [功能] 信息泄露检查支持 `AI` 研判过滤保留有意义结果 @4ra1n
 - [优化] 方法跳转代码始终展示在页面中央优化体验 @4ra1n
 - [优化] `DFS` 默认启用空 `SOURCE` 列举 @4ra1n
 

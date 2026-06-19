@@ -17,15 +17,13 @@ set "main_class=me.n1ar4.jar.analyzer.starter.Application"
 
 rem support default metal win win-classic motif mac gtk cross aqua nimbus
 set "theme_name=default"
-rem http api server port
-set "api_server_port=10032"
 rem log level (debug info warn error)
 set "log_level=info"
 rem arg --no-check to disable update check
 rem arg --skip-load to disable loading animation
 rem arg --security to enable security mode
 rem arg --font-size to select font size (example: --font-size 16)
-set "program_args=--theme %theme_name% --port %api_server_port% --log-level %log_level%"
+set "program_args=--theme %theme_name% --log-level %log_level%"
 
 rem start jar
 echo [*] RUN %jar-analyzer% ON JAVA 25

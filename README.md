@@ -18,6 +18,11 @@ The `jar-analyzer` project has been continuously updated for `5` years, with `64
 ![](https://github.com/jar-analyzer/jar-analyzer/workflows/python%20check/badge.svg)
 ![](https://github.com/jar-analyzer/jar-analyzer/workflows/test%20core/badge.svg)
 
+快速开始：
+
+- 你是 `Java` 老手：选择 `Jar` 分析结束后，人工搜索 `sink` 逐步跟调用，结合 `DFS` 分析，`AI` 助手辅助等
+- 不了解 `Java` 也想审计：选择 `Jar` 分析结束后，点开 `MCP` 面板启动，然后在 `Agent` 端完成配置交给 `AI`
+
 官方文档：https://docs.qq.com/doc/DV3pKbG9GS0pJS0tk
 
 如果贡献代码：fork 本项目到自己仓库，参考 [build](#build) 部分搭建项目，提交 Pull Requests 即可

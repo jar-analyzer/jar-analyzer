@@ -90,17 +90,18 @@ Jar Analyzer
 
 (1) 你是 `Java` 老手
 
-- 选择 `Jar` 分析结束后，人工搜索 `sink` 逐步跟调用，内部集成了众多常见的 `Java` 漏洞 `sink` 点
+- 选择 `JAR` 分析结束后，人工搜索 `sink` 逐步跟调用，内部集成了众多常见的 `Java` 漏洞 `sink`
+- `Java WEB` 入口分析：支持 `Spring Controller/Serlvet` 等常见入口点定位和导出，辅助分析
 - 自动化分析，支持 `DFS` 调用链分析，支持模拟 `JVM` 的污点分析，人工经验结合自动化，进阶分析
-- 信息泄露分析：帮你找到 `Jar` 包中所有静态资源文件和 `class` 中的敏感信息，内置 `AI` 研判
+- 信息泄露分析：帮你找到 `JAR` 包中所有静态资源文件和 `class` 中的敏感信息，内置 `AI` 研判
 - 更多专业级功能：支持 `DIFF JAR` 以及目录对比，功能更新分析，漏洞补丁分析，内置 `AI` 研判
 
 (2) 不了解 `Java` 也想审计
 
-- 选择 `Jar` 分析结束后，完成构建数据库信息
-- 点开 `MCP` 面板，一键启动 `MCP`
+- 选择 `JAR` 分析结束后，点开 `MCP` 面板，一键启动 `MCP`
 - 在 `Claude Code / Codex / Qwen Code / ZCode` 等工具中完成 `MCP` 配置
-- 对话：请使用 `jar-analyzer-mcp` 分析下漏洞吧
+- 对话：请使用 `jar-analyzer-mcp` 分析漏洞吧
+- 可选：让 `AI` 帮你写一个针对 `jar-analyzer-mcp` 的 `SKILL` 进行辅助分析
 
 ## 近期更新
 

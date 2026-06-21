@@ -99,12 +99,20 @@ public class CoreEngine {
     }
 
     public String getAbsPath(String className) {
-        SqlSession session = factory.openSession(true);
-        ClassFileMapper classMapper = session.getMapper(ClassFileMapper.class);
-        className = className + ".class";
-        String res = classMapper.selectPathByClass(className);
-        session.close();
-        return res;
+        // 使用 try-with-resources 保证任何异常路径下连接都能归还，避免 DBCP 连接池耗尽
+        try (SqlSession session = factory.openSession(true)) {
+            ClassFileMapper classMapper = session.getMapper(ClassFileMapper.class);
+            String key = className + ".class";
+            List<String> paths = classMapper.selectPathByClass(key);
+            if (paths == null || paths.isEmpty()) {
+                return null;
+            }
+            if (paths.size() > 1) {
+                logger.warn("multiple class files found for {} (count={}), using first one",
+                        className, paths.size());
+            }
+            return paths.get(0);
+        }
     }
 
     public ArrayList<MethodResult> getCallers(String calleeClass, String calleeMethod, String calleeDesc) {

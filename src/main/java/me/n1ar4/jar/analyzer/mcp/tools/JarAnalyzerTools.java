@@ -48,8 +48,10 @@ public class JarAnalyzerTools {
         ));
 
         r.register(new ToolDefinition(
-                "get_methods_by_str",
-                "搜索包含指定字符串(String类型的变量、注解)的方法（模糊）",
+                "get_methods_by_ldc",
+                "搜索包含指定 LDC 指令的方法（注意：" +
+                        "1.不是代码搜索，请勿用于方法调用搜索；" +
+                        "2.该方法执行时间可能较长，请设置超时在 60 秒以上）",
                 ToolRegistry.buildSchema(new String[][]{
                         {"str", "string", "搜索关键字", "true"}
                 }),
@@ -145,43 +147,6 @@ public class JarAnalyzerTools {
                         {"method", str(args, "method")},
                         {"desc", str(args, "desc")}
                 })
-        ));
-
-        // ---------- DFS analyze ----------
-        JSONObject dfsSchema = ToolRegistry.buildSchema(new String[][]{
-                {"sink_class", "string", "sink 类名（点或斜杠分隔均可）", "true"},
-                {"sink_method", "string", "sink 方法名", "true"},
-                {"sink_method_desc", "string", "sink 方法描述（可选）", "false"},
-                {"source_class", "string", "source 类名（可选）", "false"},
-                {"source_method", "string", "source 方法名（可选）", "false"},
-                {"source_method_desc", "string", "source 方法描述（可选）", "false"},
-                {"depth", "string", "搜索深度（默认 10）", "false"},
-                {"limit", "string", "最大返回数量（默认 10）", "false"},
-                {"from_sink", "string", "是否从 sink 开始搜索（默认 true）", "false"},
-                {"search_null_source", "string", "是否搜索无 source 的路径（默认 true）", "false"}
-        });
-        r.register(new ToolDefinition(
-                "dfs_analyze",
-                "DFS 调用链分析（sink/source 可点或斜杠分隔）",
-                dfsSchema,
-                args -> {
-                    String depth = strOrDefault(args, "depth", "10");
-                    String limit = strOrDefault(args, "limit", "10");
-                    String fromSink = strOrDefault(args, "from_sink", "true");
-                    String searchNull = strOrDefault(args, "search_null_source", "true");
-                    return callApi("/api/dfs_analyze", new String[][]{
-                            {"sink_class", str(args, "sink_class")},
-                            {"sink_method", str(args, "sink_method")},
-                            {"sink_method_desc", str(args, "sink_method_desc")},
-                            {"source_class", str(args, "source_class")},
-                            {"source_method", str(args, "source_method")},
-                            {"source_method_desc", str(args, "source_method_desc")},
-                            {"depth", depth},
-                            {"limit", limit},
-                            {"from_sink", fromSink},
-                            {"search_null_source", searchNull}
-                    });
-                }
         ));
     }
 

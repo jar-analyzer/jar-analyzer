@@ -17,15 +17,36 @@ import me.n1ar4.jar.analyzer.engine.CoreEngine;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.server.handler.base.BaseHandler;
 import me.n1ar4.jar.analyzer.server.handler.base.HttpHandler;
+import me.n1ar4.jar.analyzer.utils.StringUtil;
 import me.n1ar4.server.NanoHTTPD;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 // http://127.0.0.1:10032/api/dfs_analyze?
 // sink_class=java/lang/Runtime&sink_method=exec&sink_method_desc=(Ljava/lang/String;)Ljava/lang/Process;&
 // source_class=&source_method=&source_method_desc=&
 // depth=10&limit=10&from_sink=true&search_null_source=true
 public class DFSHandler extends BaseHandler implements HttpHandler {
+
+    // 修复 P2: 参数边界，避免 depth=99,limit=999 致超时
+    private static final int MAX_DEPTH = 20;
+    private static final int MAX_LIMIT = 100;
+    private static final int DEFAULT_DEPTH = 10;
+    private static final int DEFAULT_LIMIT = 10;
+
+    private static int parseIntSafe(String s, int def) {
+        if (StringUtil.isNull(s)) {
+            return def;
+        }
+        try {
+            return Integer.parseInt(s.trim());
+        } catch (NumberFormatException e) {
+            return def;
+        }
+    }
+
     @Override
     public NanoHTTPD.Response handle(NanoHTTPD.IHTTPSession session) {
         try {
@@ -44,8 +65,23 @@ public class DFSHandler extends BaseHandler implements HttpHandler {
 
             boolean fromSink = Boolean.parseBoolean(getFromSink(session));
             boolean searchNullSource = Boolean.parseBoolean(getSearchNullSource(session));
-            int depth = Integer.parseInt(getDepth(session));
-            int limit = Integer.parseInt(getLimit(session));
+
+            // 修复 P2: 安全解析 + 边界校验
+            int depth = parseIntSafe(getDepth(session), DEFAULT_DEPTH);
+            int limit = parseIntSafe(getLimit(session), DEFAULT_LIMIT);
+
+            if (depth < 1 || depth > MAX_DEPTH) {
+                Map<String, Object> result = new HashMap<>();
+                result.put("success", false);
+                result.put("message", "depth must be in [1, " + MAX_DEPTH + "], got " + depth);
+                return buildJSON(JSON.toJSONString(result));
+            }
+            if (limit < 1 || limit > MAX_LIMIT) {
+                Map<String, Object> result = new HashMap<>();
+                result.put("success", false);
+                result.put("message", "limit must be in [1, " + MAX_LIMIT + "], got " + limit);
+                return buildJSON(JSON.toJSONString(result));
+            }
 
             DFSEngine dfsEngine = new DFSEngine(null, fromSink, searchNullSource, depth);
             dfsEngine.setMaxLimit(limit);
@@ -59,7 +95,11 @@ public class DFSHandler extends BaseHandler implements HttpHandler {
             String json = JSON.toJSONString(dfsResults);
             return buildJSON(json);
         } catch (Exception ex) {
-            return errorMsg(ex.getMessage());
+            // 返回结构化 JSON 错误，便于 LLM/客户端解析
+            Map<String, Object> result = new HashMap<>();
+            result.put("success", false);
+            result.put("message", "error: " + ex.getMessage());
+            return buildJSON(JSON.toJSONString(result));
         }
     }
 

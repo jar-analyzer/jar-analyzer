@@ -59,8 +59,15 @@ public class GetCodeFernflowerHandler extends BaseHandler implements HttpHandler
                 return buildJSON(JSON.toJSONString(result));
             }
             String methodCode = extractMethodCode(className, decompiledCode, methodName, methodDesc);
-            if (methodCode == null) {
-                methodCode = "";
+            // 修复 P1: 不存在方法时返回 success:false 而不是把整个类塞进 fullClassCode
+            if (methodCode == null || methodCode.isEmpty()) {
+                Map<String, Object> result = new HashMap<>();
+                result.put("success", false);
+                result.put("className", className);
+                result.put("methodName", methodName);
+                result.put("methodDesc", methodDesc);
+                result.put("message", "method '" + methodName + "' not found in class '" + className + "'");
+                return buildJSON(JSON.toJSONString(result));
             }
             Map<String, Object> result = new HashMap<>();
             result.put("success", true);

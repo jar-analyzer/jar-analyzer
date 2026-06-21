@@ -18,5 +18,5 @@ import java.util.List;
 public interface ClassFileMapper {
     int insertClassFile(List<ClassFileEntity> ct);
 
-    String selectPathByClass(@Param("className") String className);
+    List<String> selectPathByClass(@Param("className") String className);
 }

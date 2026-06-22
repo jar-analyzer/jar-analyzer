@@ -1747,9 +1747,9 @@ public class MainForm {
                         List<TaintResult> taintResult = TaintAnalyzer.analyze(resultList);
                         TaintCache.cache.clear();
                         TaintCache.cache.addAll(taintResult);
-                    // 显示污点分析结果的详细GUI窗体
-                    TaintResultDialog.showTaintResults(instance.getMasterPanel().getTopLevelAncestor() instanceof Frame ?
-                            (Frame) instance.getMasterPanel().getTopLevelAncestor() : null, new ArrayList<>(TaintCache.cache));
+                        // 显示污点分析结果的详细GUI窗体
+                        TaintResultDialog.showTaintResults(instance.getMasterPanel().getTopLevelAncestor() instanceof Frame ?
+                                (Frame) instance.getMasterPanel().getTopLevelAncestor() : null, new ArrayList<>(TaintCache.cache));
                     } finally {
                         closeProgressDialog(taintDialog);
                     }

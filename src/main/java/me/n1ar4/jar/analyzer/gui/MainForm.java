@@ -209,7 +209,7 @@ public class MainForm {
     private JList<LeakResult> leakResultList;
     private JButton leakCleanBtn;
     private JButton leakStartBtn;
-    private JTextArea leakLogArea;
+    private JProgressBar leakProgressBar;
     private JButton openJDBtn;
     private JTabbedPane webTabbed;
     private JPanel leftPanel;
@@ -263,7 +263,6 @@ public class MainForm {
     private JPanel leakConfigPanel;
     private JPanel leakResultPanel;
     private JScrollPane leakResultScroll;
-    private JScrollPane leakLogScroll;
     private JPanel advancePanel;
     private JPanel piPanel;
     private JPanel logPanel;
@@ -433,6 +432,10 @@ public class MainForm {
 
     public JButton getLeakStartBtn() {
         return leakStartBtn;
+    }
+
+    public JProgressBar getLeakProgressBar() {
+        return leakProgressBar;
     }
 
     public static String getCurClass() {
@@ -782,10 +785,6 @@ public class MainForm {
         } else {
             return instance;
         }
-    }
-
-    public JTextArea getLeakLogArea() {
-        return leakLogArea;
     }
 
     public JTextPane getLogArea() {
@@ -2341,22 +2340,19 @@ public class MainForm {
         exportLeakBtn = new JButton();
         exportLeakBtn.setText("EXPORT");
         leakConfigPanel.add(exportLeakBtn, new GridConstraints(0, 5, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        leakProgressBar = new JProgressBar();
+        leakProgressBar.setBorderPainted(true);
+        leakProgressBar.setString("ready");
+        leakProgressBar.setStringPainted(true);
+        leakPanel.add(leakProgressBar, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         leakResultPanel = new JPanel();
         leakResultPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-        leakPanel.add(leakResultPanel, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        leakPanel.add(leakResultPanel, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         leakResultPanel.setBorder(BorderFactory.createTitledBorder(null, "Result", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         leakResultScroll = new JScrollPane();
         leakResultPanel.add(leakResultScroll, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(-1, 300), null, null, 0, false));
         leakResultList = new JList();
         leakResultScroll.setViewportView(leakResultList);
-        leakLogScroll = new JScrollPane();
-        leakPanel.add(leakLogScroll, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        leakLogArea = new JTextArea();
-        leakLogArea.setBackground(new Color(-12895429));
-        leakLogArea.setColumns(30);
-        leakLogArea.setEditable(false);
-        leakLogArea.setForeground(new Color(-16718519));
-        leakLogScroll.setViewportView(leakLogArea);
         gadgetPanel = new JPanel();
         gadgetPanel.setLayout(new GridLayoutManager(2, 1, new Insets(3, 3, 3, 3), -1, -1));
         tabbedPanel.addTab("gadget", gadgetPanel);

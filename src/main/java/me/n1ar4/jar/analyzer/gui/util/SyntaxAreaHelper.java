@@ -60,14 +60,14 @@ public class SyntaxAreaHelper {
     }
 
     public static int findWordStart(String text, int position) {
-        while (position > 0 && Character.isLetterOrDigit(text.charAt(position - 1))) {
+        while (position > 0 && Character.isJavaIdentifierPart(text.charAt(position - 1))) {
             position--;
         }
         return position;
     }
 
     public static int findWordEnd(String text, int position) {
-        while (position < text.length() && Character.isLetterOrDigit(text.charAt(position))) {
+        while (position < text.length() && Character.isJavaIdentifierPart(text.charAt(position))) {
             position++;
         }
         return position;

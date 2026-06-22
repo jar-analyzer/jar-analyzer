@@ -354,7 +354,12 @@ public class CoreHelper {
     }
 
     public static void refreshCallSearchList(List<SearchCondition> conditions) {
+        refreshCallSearchList(conditions, null);
+    }
+
+    public static void refreshCallSearchList(List<SearchCondition> conditions, JDialog dialog) {
         if (MainForm.getInstance().getEngine() == null) {
+            closeDialog(dialog);
             JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                     "PLEASE BUILD DATABASE FIRST");
             return;
@@ -399,6 +404,7 @@ public class CoreHelper {
         }
 
         if (methodsList.isEmpty() || methodsList.size() == 0) {
+            closeDialog(dialog);
             JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                     "result is null");
             return;
@@ -410,8 +416,24 @@ public class CoreHelper {
 
         MainForm.getInstance().getTabbedPanel().setSelectedIndex(1);
 
+        closeDialog(dialog);
         JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                 String.format("result number: %d", methodsList.size()));
+    }
+
+    private static void closeDialog(JDialog dialog) {
+        if (dialog == null) {
+            return;
+        }
+        if (SwingUtilities.isEventDispatchThread()) {
+            dialog.dispose();
+            dialog.setVisible(false);
+            return;
+        }
+        SwingUtilities.invokeLater(() -> {
+            dialog.dispose();
+            dialog.setVisible(false);
+        });
     }
 
     public static void refreshDefSearch(String className, String methodName, String methodDesc, JDialog dialog) {

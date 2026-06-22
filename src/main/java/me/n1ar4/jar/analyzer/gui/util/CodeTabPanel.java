@@ -526,11 +526,15 @@ public class CodeTabPanel extends JPanel {
                 if (!MouseUtil.isNavigateClick(e)) {
                     return;
                 }
-                int caretPosition = rArea.getCaretPosition();
-                int start = SyntaxAreaHelper.findWordStart(rArea.getText(), caretPosition);
-                int end = SyntaxAreaHelper.findWordEnd(rArea.getText(), caretPosition);
+                String text = rArea.getText();
+                int caretPosition = rArea.viewToModel(e.getPoint());
+                if (caretPosition < 0) {
+                    return;
+                }
+                int start = SyntaxAreaHelper.findWordStart(text, caretPosition);
+                int end = SyntaxAreaHelper.findWordEnd(text, caretPosition);
                 if (start != -1 && end != -1) {
-                    String word = rArea.getText().substring(start, end);
+                    String word = text.substring(start, end);
                     highlighter.removeAllHighlights();
                     try {
                         highlighter.addHighlight(start, end,
@@ -549,7 +553,7 @@ public class CodeTabPanel extends JPanel {
                     }
 
                     // 使用 CtrlClickNavigator 进行跳转导航（新 Tab 中打开）
-                    CtrlClickNavigator.navigate(methodName, className,
+                    CtrlClickNavigator.navigate(methodName, className, text, start, end,
                             e.getXOnScreen(), e.getYOnScreen());
                 }
             }

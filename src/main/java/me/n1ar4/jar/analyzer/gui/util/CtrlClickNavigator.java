@@ -33,6 +33,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -53,6 +54,11 @@ public class CtrlClickNavigator {
      * @param screenY    鼠标屏幕 Y 坐标（用于定位弹窗）
      */
     public static void navigate(String methodName, String className, int screenX, int screenY) {
+        navigate(methodName, className, null, -1, -1, screenX, screenY);
+    }
+
+    public static void navigate(String methodName, String className, String code,
+                                int wordStart, int wordEnd, int screenX, int screenY) {
         if (MainForm.getEngine() == null) {
             JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
                     "PLEASE BUILD DATABASE FIRST");
@@ -77,16 +83,39 @@ public class CtrlClickNavigator {
         }
 
         String mn = finalMethodName;
-        // 弹窗最多展示的条目数
-        final int MAX_DISPLAY = 20;
-        // 在后台线程查询 caller / callee
+        JDialog dialog = ProcessDialog.createProgressDialog(MainForm.getInstance().getMasterPanel());
+        new Thread(() -> dialog.setVisible(true)).start();
         new Thread(() -> {
-            List<MethodResult> callerList = MainForm.getEngine().getCallers(
-                    className, mn, null);
-            List<MethodResult> calleeList = MainForm.getEngine().getCallee(
-                    className, mn, null);
+            try {
+                ClickContext context = resolveClickContext(className, code, wordStart, wordEnd);
+                if (context != null && context.isDefinitionClick(mn, wordStart, wordEnd)) {
+                    showCallers(context.method, dialog);
+                    return;
+                }
 
-            // 同时刷新侧边面板的 caller/callee 列表
+                MethodResult caller = context == null ? null : context.method;
+                if (caller == null && code == null) {
+                    caller = MainForm.getCurMethod();
+                }
+                navigateToDefinitionAtCallSite(caller, mn, screenX, screenY, dialog);
+            } catch (Throwable t) {
+                closeProgressDialog(dialog);
+                logger.error("ctrl click navigate failed", t);
+                SwingUtilities.invokeLater(() ->
+                        JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                                "ctrl click navigate failed: " + t.getMessage()));
+            }
+        }).start();
+    }
+
+    private static void showCallers(MethodResult method, JDialog dialog) {
+        if (method == null) {
+            closeProgressDialog(dialog);
+            return;
+        }
+        List<MethodResult> callerList = MainForm.getEngine().getCallers(
+                method.getClassName(), method.getMethodName(), method.getMethodDesc());
+        SwingUtilities.invokeLater(() -> {
             DefaultListModel<MethodResult> calleeData = (DefaultListModel<MethodResult>)
                     MainForm.getInstance().getCalleeList().getModel();
             DefaultListModel<MethodResult> callerData = (DefaultListModel<MethodResult>)
@@ -96,55 +125,140 @@ public class CtrlClickNavigator {
             for (MethodResult mr : callerList) {
                 callerData.addElement(mr);
             }
-            for (MethodResult mr : calleeList) {
-                calleeData.addElement(mr);
-            }
             MainForm.getInstance().getTabbedPanel().setSelectedIndex(2);
+            closeProgressDialog(dialog);
+            if (callerList.isEmpty()) {
+                JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                        "no caller found for: " + method.getMethodName());
+            }
+        });
+    }
 
-            // 合并 caller + callee 的结果
-            List<NavigationItem> items = new ArrayList<>();
-            for (MethodResult mr : calleeList) {
+    private static void navigateToDefinitionAtCallSite(MethodResult caller, String methodName,
+                                                       int screenX, int screenY, JDialog dialog) {
+        final int MAX_DISPLAY = 20;
+        List<NavigationItem> items = new ArrayList<>();
+        if (caller != null) {
+            List<MethodResult> calleeList = MainForm.getEngine().getCallee(
+                    caller.getClassName(), caller.getMethodName(), caller.getMethodDesc());
+            List<MethodResult> matched = filterByMethodName(calleeList, methodName);
+            for (MethodResult mr : matched) {
                 items.add(new NavigationItem(mr, NavigationType.CALLEE));
             }
-            for (MethodResult mr : callerList) {
-                items.add(new NavigationItem(mr, NavigationType.CALLER));
-            }
+            SwingUtilities.invokeLater(() -> {
+                DefaultListModel<MethodResult> calleeData = (DefaultListModel<MethodResult>)
+                        MainForm.getInstance().getCalleeList().getModel();
+                DefaultListModel<MethodResult> callerData = (DefaultListModel<MethodResult>)
+                        MainForm.getInstance().getCallerList().getModel();
+                calleeData.clear();
+                callerData.clear();
+                for (MethodResult mr : matched) {
+                    calleeData.addElement(mr);
+                }
+            });
+        }
 
-            // 如果基于当前类的精确查询无结果，回退到只按方法名全局搜索
-            if (items.isEmpty()) {
-                logger.info("no caller/callee in current class, fallback to global method search: {}", mn);
-                List<MethodResult> globalMethods = MainForm.getEngine().getMethod(
-                        null, mn, null);
-                for (MethodResult mr : globalMethods) {
-                    items.add(new NavigationItem(mr, NavigationType.METHOD));
-                    if (items.size() >= MAX_DISPLAY) {
-                        break;
-                    }
+        if (items.isEmpty()) {
+            logger.info("no callee in current method, fallback to global method search: {}", methodName);
+            List<MethodResult> globalMethods = MainForm.getEngine().getMethod(
+                    null, methodName, null);
+            for (MethodResult mr : globalMethods) {
+                items.add(new NavigationItem(mr, NavigationType.METHOD));
+                if (items.size() >= MAX_DISPLAY) {
+                    break;
                 }
             }
+        }
 
-            // 限制最终结果数量不超过 MAX_DISPLAY
-            if (items.size() > MAX_DISPLAY) {
-                items = new ArrayList<>(items.subList(0, MAX_DISPLAY));
+        if (items.size() > MAX_DISPLAY) {
+            items = new ArrayList<>(items.subList(0, MAX_DISPLAY));
+        }
+
+        if (items.isEmpty()) {
+            SwingUtilities.invokeLater(() ->
+            {
+                closeProgressDialog(dialog);
+                JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
+                        "no callee/method found for: " + methodName);
+            });
+            return;
+        }
+
+        List<NavigationItem> finalItems = items;
+        if (items.size() == 1) {
+            SwingUtilities.invokeLater(() -> {
+                closeProgressDialog(dialog);
+                jumpToMethod(finalItems.get(0).methodResult);
+            });
+            return;
+        }
+
+        SwingUtilities.invokeLater(() -> {
+            closeProgressDialog(dialog);
+            showNavigationPopup(finalItems, methodName, screenX, screenY);
+        });
+    }
+
+    private static void closeProgressDialog(JDialog dialog) {
+        if (dialog == null) {
+            return;
+        }
+        if (SwingUtilities.isEventDispatchThread()) {
+            dialog.dispose();
+            dialog.setVisible(false);
+        } else {
+            SwingUtilities.invokeLater(() -> {
+                dialog.dispose();
+                dialog.setVisible(false);
+            });
+        }
+    }
+
+    private static List<MethodResult> filterByMethodName(List<MethodResult> methods, String methodName) {
+        List<MethodResult> matched = new ArrayList<>();
+        for (MethodResult method : methods) {
+            if (methodName.equals(method.getMethodName()) || isConstructorMatch(method, methodName)) {
+                matched.add(method);
             }
+        }
+        return matched;
+    }
 
-            if (items.isEmpty()) {
-                SwingUtilities.invokeLater(() ->
-                        JOptionPane.showMessageDialog(MainForm.getInstance().getMasterPanel(),
-                                "no caller/callee/method found for: " + mn));
-                return;
+    private static boolean isConstructorMatch(MethodResult method, String methodName) {
+        if (!"<init>".equals(method.getMethodName()) || method.getClassName() == null) {
+            return false;
+        }
+        String className = method.getClassName();
+        String shortClassName = className.contains("/")
+                ? className.substring(className.lastIndexOf('/') + 1)
+                : className;
+        return shortClassName.equals(methodName);
+    }
+
+    private static ClickContext resolveClickContext(String className, String code,
+                                                    int wordStart, int wordEnd) {
+        if (className == null || code == null || wordStart < 0 || wordEnd < 0) {
+            return null;
+        }
+        List<MethodResult> methods = MainForm.getEngine().getMethod(className, null, null);
+        List<ClickContext> contexts = new ArrayList<>();
+        for (MethodResult method : methods) {
+            int namePos = FinderRunner.find(code, method.getMethodName(), method.getMethodDesc());
+            if (namePos <= 0) {
+                continue;
             }
-
-            // 如果只有1个结果，直接跳转
-            List<NavigationItem> finalItems = items;
-            if (items.size() == 1) {
-                SwingUtilities.invokeLater(() -> jumpToMethod(finalItems.get(0).methodResult));
-                return;
+            contexts.add(new ClickContext(method, namePos));
+        }
+        contexts.sort(Comparator.comparingInt(c -> c.declarationNameStart));
+        ClickContext current = null;
+        for (ClickContext context : contexts) {
+            if (context.declarationNameStart <= wordStart + 2) {
+                current = context;
+            } else {
+                break;
             }
-
-            // 多个结果，弹出选择窗口
-            SwingUtilities.invokeLater(() -> showNavigationPopup(finalItems, mn, screenX, screenY));
-        }).start();
+        }
+        return current;
     }
 
     /**
@@ -171,7 +285,7 @@ public class CtrlClickNavigator {
         titleLabel.setFont(titleLabel.getFont().deriveFont(Font.BOLD, 12f));
         titlePanel.add(titleLabel, BorderLayout.WEST);
 
-        JLabel hintLabel = new JLabel("(callee/method=GO TO DEF, caller=WHO CALLS)");
+        JLabel hintLabel = new JLabel("(callee/method=GO TO DEF)");
 
         hintLabel.setForeground(new Color(128, 128, 128));
         hintLabel.setFont(hintLabel.getFont().deriveFont(10f));
@@ -220,9 +334,6 @@ public class CtrlClickNavigator {
                     if (nav.type == NavigationType.CALLEE) {
                         tag = "[CALLEE] ";
                         tagColor = new Color(104, 151, 187);
-                    } else if (nav.type == NavigationType.CALLER) {
-                        tag = "[CALLER] ";
-                        tagColor = new Color(152, 118, 170);
                     } else {
                         tag = "[METHOD] ";
                         tagColor = new Color(106, 171, 115);
@@ -426,7 +537,6 @@ public class CtrlClickNavigator {
      * 导航项类型
      */
     enum NavigationType {
-        CALLER,  // 谁调用了这个方法
         CALLEE,  // 这个方法调用了谁（跳转到定义）
         METHOD   // 全局搜索的方法定义（按方法名匹配）
     }
@@ -434,6 +544,28 @@ public class CtrlClickNavigator {
     /**
      * 导航项
      */
+    private static class ClickContext {
+        final MethodResult method;
+        final int declarationNameStart;
+
+        ClickContext(MethodResult method, int declarationNameStart) {
+            this.method = method;
+            this.declarationNameStart = declarationNameStart;
+        }
+
+        boolean isDefinitionClick(String clickedName, int wordStart, int wordEnd) {
+            if (method == null || clickedName == null) {
+                return false;
+            }
+            if (!clickedName.equals(method.getMethodName())) {
+                return false;
+            }
+            int start = declarationNameStart - 2;
+            int end = declarationNameStart + method.getMethodName().length() + 2;
+            return wordStart <= end && wordEnd >= start;
+        }
+    }
+
     static class NavigationItem {
         final MethodResult methodResult;
         final NavigationType type;
@@ -448,8 +580,6 @@ public class CtrlClickNavigator {
             String tag;
             if (type == NavigationType.CALLEE) {
                 tag = "[CALLEE] ";
-            } else if (type == NavigationType.CALLER) {
-                tag = "[CALLER] ";
             } else {
                 tag = "[METHOD] ";
             }

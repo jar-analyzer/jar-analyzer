@@ -1617,6 +1617,21 @@ public class MainForm {
         instance.sourceDescText.setText(methodDesc);
     }
 
+    private static void closeProgressDialog(JDialog dialog) {
+        if (dialog == null) {
+            return;
+        }
+        if (SwingUtilities.isEventDispatchThread()) {
+            dialog.dispose();
+            dialog.setVisible(false);
+            return;
+        }
+        SwingUtilities.invokeLater(() -> {
+            dialog.dispose();
+            dialog.setVisible(false);
+        });
+    }
+
     private static void initChains() {
         instance.chainsLabel.setText("<html>" +
                 "&nbsp;<font color='red'><b>漏洞利用链模块</b></font>（<font color='blue'><b>chains</b></font>）" +
@@ -1687,16 +1702,28 @@ public class MainForm {
             JDialog dialog = ProcessDialog.createProgressDialog(instance.getMasterPanel());
             new Thread(() -> dialog.setVisible(true)).start();
             new Thread(() -> {
-                dfsEngine.doAnalyze();
+                List<DFSResult> resultList;
                 try {
-                    Thread.sleep(500);
-                } catch (InterruptedException ex) {
-                    throw new RuntimeException(ex);
+                    dfsEngine.doAnalyze();
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException ex) {
+                        Thread.currentThread().interrupt();
+                    }
+                    resultList = dfsEngine.getResults();
+                    DFSUtil.save(resultList);
+                    TaintCache.dfsCache.clear();
+                    TaintCache.dfsCache.addAll(resultList);
+                    SwingUtilities.invokeLater(() -> instance.getTabbedPanel().setSelectedIndex(10));
+                } catch (Throwable ex) {
+                    logger.error("chains dfs analyze failed", ex);
+                    SwingUtilities.invokeLater(() ->
+                            JOptionPane.showMessageDialog(instance.getMasterPanel(),
+                                    "chains dfs analyze failed: " + ex.getMessage()));
+                    return;
+                } finally {
+                    closeProgressDialog(dialog);
                 }
-                List<DFSResult> resultList = dfsEngine.getResults();
-                DFSUtil.save(resultList);
-                TaintCache.dfsCache.clear();
-                TaintCache.dfsCache.addAll(resultList);
                 if (instance.getTaintBox().isSelected()) {
                     // 弹框提醒用户即将开始污点分析验证
                     int result = JOptionPane.showConfirmDialog(
@@ -1710,19 +1737,23 @@ public class MainForm {
                     // 如果用户选择取消，直接返回
                     if (result != JOptionPane.YES_OPTION) {
                         logger.info("user cancelled taint analysis");
-                        dialog.dispose();
                         return;
                     }
 
                     logger.info("start taint analyze");
-                    List<TaintResult> taintResult = TaintAnalyzer.analyze(resultList);
-                    TaintCache.cache.clear();
-                    TaintCache.cache.addAll(taintResult);
+                    JDialog taintDialog = ProcessDialog.createProgressDialog(instance.getMasterPanel());
+                    new Thread(() -> taintDialog.setVisible(true)).start();
+                    try {
+                        List<TaintResult> taintResult = TaintAnalyzer.analyze(resultList);
+                        TaintCache.cache.clear();
+                        TaintCache.cache.addAll(taintResult);
                     // 显示污点分析结果的详细GUI窗体
                     TaintResultDialog.showTaintResults(instance.getMasterPanel().getTopLevelAncestor() instanceof Frame ?
                             (Frame) instance.getMasterPanel().getTopLevelAncestor() : null, new ArrayList<>(TaintCache.cache));
+                    } finally {
+                        closeProgressDialog(taintDialog);
+                    }
                 }
-                dialog.dispose();
             }).start();
         });
 

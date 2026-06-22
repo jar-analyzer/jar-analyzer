@@ -80,15 +80,16 @@ public interface Const {
             "// 可以在 call 面板查看当前方法的 caller/callee\n" +
             "// 选中方法 Ctrl+左键 可以查看 caller/callee\n\n" +
             "// 1. 基础 call/define 搜索前往 search 面板\n" +
-            "// 2. 高级搜索前往 EL Search 表达式搜索\n" +
+            "// 2. 高级搜索前往 EL Search 表达式搜索（支持 AI 助手）\n" +
             "// 3. 前往 web 面板进行 Java Web Source 分析\n" +
             "// 4. 前往 advance 面板可一键搜索 sink 方法\n" +
             "// 5. 前往 chains 面板可进行方法调用链分析和污点分析\n" +
             "// 6. 可以两次 shift 打开全局索引搜索（测试功能）\n\n" +
             "// 重要功能：JAR DIFF （支持单个 JAR 和目录方式）\n" +
-            "// 你可以从 plugins 菜单中通过 diff jars 选项使用\n\n" +
-            "// 6.0 版本内置 AI 助手，支持 DeepSeek 和 GLM\n" +
-            "// 可以对话，DFS 验证，DIFF 分析辅助，表达式生成等\n" +
+            "// 从 plugins 菜单中通过 diff jars 选项使用\n\n" +
+            "// 重要：6.0 版本内置了 MCP 可前往 MCP 菜单一键开启\n\n" +
+            "// 6.0 版本内置 AI 助手，默认支持 DeepSeek 和 GLM 接入\n" +
+            "// 可以简单的对话，DFS 验证，DIFF 分析辅助，表达式生成等\n" +
             "// 可以尝试使用初步实现的 AI workflow 分析\n\n" +
             "// 作者：4ra1n @ jar-analyzer @ " + version;
 }

@@ -286,9 +286,11 @@ Jar Analyzer
 - `Jar Analyzer V2` 在 `2024.09.30` 总 `Star` 破千
 - `Jar Analyzer V2` 在 `2024.11.07` 发布 `4.0` 版本
 - `Jar Analyzer V2` 在 `2025.01.07` 日下载量破万
+- `Jar Analyzer V2` 在 `2025.04.28` 发布 `5.0` 版本
 - `Jar Analyzer` 在 `2026.03.19` 发布 `engine` 子项目
 - `Jar Analyzer` 在 `2026.03.21` 发布 `claude code` 插件
 - `Jar Analyzer V2` 在 `2026.03.23` 总 `Star` 破两千
+- `Jar Analyzer V2` 在 `2026.06.23` 发布 `6.0` 版本
 
 ## 性能测试
 

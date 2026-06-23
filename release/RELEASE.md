@@ -22,8 +22,6 @@ Steps:
 - Check `pom.xml` version tag
 - Check `build.py` VERSION
 - Check `build.yml` VERSION
-- Check MCP BUILD VERSION
-- Check MCP `build.yml` VERSION
 - Run git commit and push
 - Github Action Build
 - 严格测试步骤：确保可用性，然后进行正式发布

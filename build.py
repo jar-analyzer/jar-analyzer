@@ -3,7 +3,7 @@ import shutil
 import sys
 import subprocess
 
-VERSION = "5.22"
+VERSION = "6.0"
 PROJECT = "PROJECT: https://github.com/jar-analyzer/jar-analyzer"
 
 

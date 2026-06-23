@@ -37,7 +37,7 @@ The `jar-analyzer` project has been continuously updated for `5` years, with `65
   <a href="https://github.com/hacats"><img src="https://github.com/hacats.png?size=72" width="72" height="72" alt="hacats" /></a>
   <a href="https://github.com/R0ser1"><img src="https://github.com/R0ser1.png?size=72" width="72" height="72" alt="R0ser1" /></a>
   <a href="https://github.com/su18"><img src="https://github.com/su18.png?size=72" width="72" height="72" alt="su18" /></a>
-  <a href="https://github.com/7eleven"><img src="https://github.com/7eleven.png?size=72" width="72" height="72" alt="7eleven" /></a>
+  <a href="https://github.com/7-e1even"><img src="https://github.com/7-e1even.png?size=72" width="72" height="72" alt="7eleven" /></a>
   <a href="https://github.com/L-codes"><img src="https://github.com/L-codes.png?size=72" width="72" height="72" alt="L-codes" /></a>
   <a href="https://github.com/osword"><img src="https://github.com/osword.png?size=72" width="72" height="72" alt="osword" /></a>
 </p>

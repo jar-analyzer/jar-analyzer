@@ -259,14 +259,14 @@
 更新日志：
 
 - [重要] 支持 `MCP` @4ra1n
-- [功能] `API` 完善补充 @4ra1n @7eleven
+- [功能] `API` 完善补充 @4ra1n @7-e1even
 - [BUG] `API` 路径处理存在混淆问题 @4ra1n
 - [BUG] 修复多次点击按钮导致数据重复问题 @4ra1n
 
 感谢以下用户的贡献:
 
 - 4ra1n (https://github.com/4ra1n)
-- 7eleven (https://github.com/7-e1even)
+- 7-e1even (https://github.com/7-e1even)
 
 ## 5.9
 

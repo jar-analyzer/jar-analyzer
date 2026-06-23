@@ -26,8 +26,10 @@ Steps:
 - Github Action Build
 - 严格测试步骤：确保可用性，然后进行正式发布
 - Change `version.txt` on `OSS Browser`
+- 更新 `RELEASE` 内容到蓝奏云
 - UPDATE `README` version count
-- UPDATE https://docs.qq.com/doc/DV3pKbG9GS0pJS0tk
+- 更新 `README` 最新版蓝奏云地址
+- 更新官方文档：版本数量，蓝奏云地址，修改时间
 
 Test Steps:
 

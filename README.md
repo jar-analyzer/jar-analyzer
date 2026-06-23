@@ -86,7 +86,20 @@ Jar Analyzer
 
 ## 快速开始
 
-(1) 你是 `Java` 老手
+(1) 下载
+
+所有可供下载的文件由 `Github Actions` 构建
+
+一般情况建议从 `Github Release` 页面下载：[下载地址](https://github.com/jar-analyzer/jar-analyzer/releases/latest)
+
+`6.0` 版本也提供了 `蓝奏云` 的下载地址：
+
+- [jar-analyzer-6.0-windows-system.zip](https://jar-analyzer.lanzout.com/ipTAj3sr1lde)
+- [jar-analyzer-6.0-windows-full.zip](https://jar-analyzer.lanzout.com/i2ClC3sr1jva)
+- [jar-analyzer-6.0-windows-25.zip](https://jar-analyzer.lanzout.com/ibzlS3sr1hna)
+- [jar-analyzer-6.0.zip](https://jar-analyzer.lanzout.com/iurpu3sr1ecb)
+
+(2) 你是 `Java` 老手
 
 - 选择 `JAR` 分析结束后，人工搜索 `sink` 逐步跟调用，内部集成了众多常见的 `Java` 漏洞 `sink`
 - `Java WEB` 入口分析：支持 `Spring Controller/Serlvet` 等常见入口点定位和导出，辅助分析
@@ -94,7 +107,7 @@ Jar Analyzer
 - 信息泄露分析：帮你找到 `JAR` 包中所有静态资源文件和 `class` 中的敏感信息，内置 `AI` 研判
 - 更多专业级功能：支持 `DIFF JAR` 以及目录对比，功能更新分析，漏洞补丁分析，内置 `AI` 研判
 
-(2) 不了解 `Java` 也想审计
+(3) 不了解 `Java` 也想审计
 
 - 选择 `JAR` 分析结束后，点开 `MCP` 面板，一键启动 `MCP`
 - 在 `Claude Code / Codex / Qwen Code / ZCode` 等工具中完成 `MCP` 配置

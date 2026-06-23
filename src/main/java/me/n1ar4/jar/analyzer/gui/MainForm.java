@@ -25,10 +25,7 @@ import me.n1ar4.jar.analyzer.engine.DecompileEngine;
 import me.n1ar4.jar.analyzer.entity.ClassResult;
 import me.n1ar4.jar.analyzer.entity.LeakResult;
 import me.n1ar4.jar.analyzer.entity.MethodResult;
-import me.n1ar4.jar.analyzer.exporter.CsvExporter;
-import me.n1ar4.jar.analyzer.exporter.Exporter;
-import me.n1ar4.jar.analyzer.exporter.JsonExporter;
-import me.n1ar4.jar.analyzer.exporter.TxtExporter;
+import me.n1ar4.jar.analyzer.exporter.*;
 import me.n1ar4.jar.analyzer.gadget.GadgetUIBuilder;
 import me.n1ar4.jar.analyzer.graph.HtmlGraph;
 import me.n1ar4.jar.analyzer.gui.action.*;
@@ -120,6 +117,7 @@ public class MainForm {
     private JTextField searchMethodText;
     private JTextField searchStrText;
     private JList<MethodResult> searchList;
+    private JButton exportSearchJsonBtn;
     private JTextField curJarText;
     private JLabel curJarLabel;
     private JTextField rtText;
@@ -1144,6 +1142,23 @@ public class MainForm {
             }
         });
 
+        instance.exportSearchJsonBtn.addActionListener(e -> {
+            List<MethodResult> results = new ArrayList<>();
+            ListModel<MethodResult> model = instance.searchList.getModel();
+            for (int i = 0; i < model.getSize(); i++) {
+                results.add(model.getElementAt(i));
+            }
+            Exporter exporter = new SearchResultJsonExporter(results);
+            boolean success = exporter.doExport();
+            if (success) {
+                JOptionPane.showMessageDialog(instance.masterPanel,
+                        "export success: " + exporter.getFileName());
+            } else {
+                JOptionPane.showMessageDialog(instance.masterPanel,
+                        "no search results to export");
+            }
+        });
+
         instance.exportTxtBtn.addActionListener(e -> {
             Exporter exporter = new TxtExporter();
             boolean success = exporter.doExport();
@@ -2050,9 +2065,13 @@ public class MainForm {
         startSearchButton = new JButton();
         startSearchButton.setText("Start Search");
         searchInnerPanel.add(startSearchButton, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        exportSearchJsonBtn = new JButton();
+        exportSearchJsonBtn.setText("导出");
+        exportSearchJsonBtn.setToolTipText("Export current search results as JSON");
+        searchInnerPanel.add(exportSearchJsonBtn, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(72, -1), null, 0, false));
         logoLabel = new JLabel();
         logoLabel.setText("");
-        searchInnerPanel.add(logoLabel, new GridConstraints(0, 2, 2, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        searchInnerPanel.add(logoLabel, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         soPanel = new JPanel();
         soPanel.setLayout(new GridLayoutManager(3, 2, new Insets(0, 0, 0, 0), -1, -1));
         searchOptionsPanel.add(soPanel, new GridConstraints(2, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));

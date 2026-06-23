@@ -2,9 +2,9 @@
 
 [CHANGE LOG](src/main/resources/CHANGELOG.MD)
 
-`jar-analyzer` 项目连续 `5` 年更新，共发布 `64` 个版本（含 `v1` 和 `v2` 版本）完全开源，完全免费
+`jar-analyzer` 项目连续 `5` 年更新，共发布 `65` 个版本（含 `v1` 和 `v2` 版本）完全开源，完全免费
 
-The `jar-analyzer` project has been continuously updated for `5` years, with `64` versions released, contains v1 and v2 version, completely open source and completely free.
+The `jar-analyzer` project has been continuously updated for `5` years, with `65` versions released, contains v1 and v2 version, completely open source and completely free.
 
 ![](https://img.shields.io/github/last-commit/jar-analyzer/jar-analyzer)
 ![](https://img.shields.io/github/release-date/jar-analyzer/jar-analyzer)

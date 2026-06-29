@@ -224,6 +224,8 @@ Jar Analyzer
 (15) `DFS` 漏洞利用链分析功能完整，用起来比 `tabby` 和 `codeql` 都要简单（某安全工程师）
 
 (16) 使用 `jar-anlyzer mcp` 配合 `n8n` 工作流，确实能挖到洞 (某安全专家)
+
+(17) 我用某大型项目测试，许少的 `jar-analyzer` 确实有实力的 (某顶级 `Java` 安全专家)
  
 ## MCP
 

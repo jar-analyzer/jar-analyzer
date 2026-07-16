@@ -4,7 +4,7 @@
 
 更新日志：
 
-- todo
+- [优化] 替代所有 `IDEA GUI Designer` 为原生 `Swing`
 
 感谢以下用户的贡献:
 

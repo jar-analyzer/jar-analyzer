@@ -10,8 +10,7 @@
 
 package me.n1ar4.jar.analyzer.gui;
 
-import com.intellij.uiDesigner.core.GridConstraints;
-import com.intellij.uiDesigner.core.GridLayoutManager;
+import me.n1ar4.jar.analyzer.gui.util.SwingLayout;
 import me.n1ar4.jar.analyzer.mcp.McpConfig;
 import me.n1ar4.jar.analyzer.mcp.McpEventListener;
 import me.n1ar4.jar.analyzer.mcp.McpServerLauncher;
@@ -32,13 +31,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * MCP 控制面板
  *
- * <p>不使用 IDEA GUI Designer 的 .form 文件，纯 Java Swing 构建。</p>
- *
- * <p>布局采用项目同款 {@link GridLayoutManager}，与 MainForm 一致以保持视觉风格统一。</p>
+ * <p>使用纯 Java Swing 构建，并通过 {@link GridBagLayout} 保持统一的视觉风格。</p>
  *
  * <p>自身作为一个独立 {@link JPanel}，由 {@code MCPAction.register} 通过
  * {@code tabbedPanel.addTab("MCP", panel)} 加入到 MainForm 的 tabbedPanel 中，
- * 这样不会污染 MainForm.form，IDEA Designer 重新生成时不会破坏。</p>
+ * 这样可以作为独立面板维护，不影响主窗口的布局代码。</p>
  */
 public class MCPPanel extends JPanel implements McpEventListener {
 
@@ -81,7 +78,8 @@ public class MCPPanel extends JPanel implements McpEventListener {
     private final JTextArea logArea = new JTextArea();
 
     public MCPPanel() {
-        super(new GridLayoutManager(5, 1, new Insets(8, 8, 8, 8), -1, -1));
+        super(new GridBagLayout());
+        SwingLayout.configureGrid(this, 5, 1, new Insets(8, 8, 8, 8), -1, -1);
         buildHeader();
         buildConfigPanel();
         buildControlPanel();
@@ -107,61 +105,63 @@ public class MCPPanel extends JPanel implements McpEventListener {
                 "可被任意 MCP Client 接入（如 Claude Desktop、Cursor 等），暴露 jar-analyzer 的全部分析能力" +
                 "</div>" +
                 "</html>");
-        add(descLabel, gc(0, 0, 1, 1, GridConstraints.ANCHOR_WEST,
-                GridConstraints.FILL_HORIZONTAL,
-                GridConstraints.SIZEPOLICY_CAN_GROW,
-                GridConstraints.SIZEPOLICY_FIXED));
+        add(descLabel, gc(0, 0, 1, 1, GridBagConstraints.WEST,
+                GridBagConstraints.HORIZONTAL,
+                true,
+                false));
     }
 
     private void buildConfigPanel() {
-        JPanel p = new JPanel(new GridLayoutManager(4, 4, new Insets(6, 8, 6, 8), -1, -1));
+        JPanel p = new JPanel();
+        SwingLayout.configureGrid(p, 4, 4, new Insets(6, 8, 6, 8), -1, -1);
         p.setBorder(BorderFactory.createTitledBorder(
                 BorderFactory.createEtchedBorder(), "配置",
                 TitledBorder.DEFAULT_JUSTIFICATION,
                 TitledBorder.DEFAULT_POSITION));
 
         p.add(new JLabel("Bind"), gc(0, 0, 1, 1,
-                GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
-                GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED));
+                GridBagConstraints.WEST, GridBagConstraints.NONE,
+                false, false));
         p.add(bindField, gc(0, 1, 1, 1,
-                GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
-                GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED));
+                GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
+                true, false));
         p.add(new JLabel("Port"), gc(0, 2, 1, 1,
-                GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
-                GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED));
+                GridBagConstraints.WEST, GridBagConstraints.NONE,
+                false, false));
         p.add(portField, gc(0, 3, 1, 1,
-                GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
-                GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED));
+                GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
+                true, false));
 
         p.add(sseBox, gc(1, 0, 1, 2,
-                GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
-                GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED));
+                GridBagConstraints.WEST, GridBagConstraints.NONE,
+                false, false));
         p.add(streamableBox, gc(1, 2, 1, 2,
-                GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
-                GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED));
+                GridBagConstraints.WEST, GridBagConstraints.NONE,
+                false, false));
 
         p.add(authBox, gc(2, 0, 1, 1,
-                GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
-                GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED));
+                GridBagConstraints.WEST, GridBagConstraints.NONE,
+                false, false));
         p.add(new JLabel("Token"), gc(2, 1, 1, 1,
-                GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
-                GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED));
+                GridBagConstraints.WEST, GridBagConstraints.NONE,
+                false, false));
         p.add(tokenField, gc(2, 2, 1, 2,
-                GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
-                GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED));
+                GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
+                true, false));
 
         p.add(debugBox, gc(3, 0, 1, 4,
-                GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
-                GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED));
+                GridBagConstraints.WEST, GridBagConstraints.NONE,
+                false, false));
 
-        add(p, gc(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER,
-                GridConstraints.FILL_HORIZONTAL,
-                GridConstraints.SIZEPOLICY_CAN_GROW,
-                GridConstraints.SIZEPOLICY_FIXED));
+        add(p, gc(1, 0, 1, 1, GridBagConstraints.CENTER,
+                GridBagConstraints.HORIZONTAL,
+                true,
+                false));
     }
 
     private void buildControlPanel() {
-        JPanel p = new JPanel(new GridLayoutManager(2, 6, new Insets(6, 8, 6, 8), -1, -1));
+        JPanel p = new JPanel();
+        SwingLayout.configureGrid(p, 2, 6, new Insets(6, 8, 6, 8), -1, -1);
         p.setBorder(BorderFactory.createTitledBorder(
                 BorderFactory.createEtchedBorder(), "控制 / 状态",
                 TitledBorder.DEFAULT_JUSTIFICATION,
@@ -173,38 +173,39 @@ public class MCPPanel extends JPanel implements McpEventListener {
         stopBtn.setForeground(Color.WHITE);
 
         p.add(startBtn, gc(0, 0, 1, 1,
-                GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
-                GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED));
+                GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
+                true, false));
         p.add(stopBtn, gc(0, 1, 1, 1,
-                GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
-                GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED));
+                GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
+                true, false));
 
         statusLabel.setForeground(new Color(0xCC3333));
         p.add(new JLabel("状态:"), gc(0, 2, 1, 1,
-                GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
-                GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED));
+                GridBagConstraints.WEST, GridBagConstraints.NONE,
+                false, false));
         p.add(statusLabel, gc(0, 3, 1, 1,
-                GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
-                GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED));
+                GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
+                true, false));
         p.add(sseLabel, gc(0, 4, 1, 1,
-                GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
-                GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED));
+                GridBagConstraints.WEST, GridBagConstraints.NONE,
+                false, false));
         p.add(streamLabel, gc(0, 5, 1, 1,
-                GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
-                GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED));
+                GridBagConstraints.WEST, GridBagConstraints.NONE,
+                false, false));
 
         p.add(reqStatLabel, gc(1, 0, 1, 6,
-                GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
-                GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED));
+                GridBagConstraints.WEST, GridBagConstraints.NONE,
+                false, false));
 
-        add(p, gc(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER,
-                GridConstraints.FILL_HORIZONTAL,
-                GridConstraints.SIZEPOLICY_CAN_GROW,
-                GridConstraints.SIZEPOLICY_FIXED));
+        add(p, gc(2, 0, 1, 1, GridBagConstraints.CENTER,
+                GridBagConstraints.HORIZONTAL,
+                true,
+                false));
     }
 
     private void buildToolsPanel() {
-        JPanel p = new JPanel(new GridLayoutManager(1, 1, new Insets(6, 8, 6, 8), -1, -1));
+        JPanel p = new JPanel();
+        SwingLayout.configureGrid(p, 1, 1, new Insets(6, 8, 6, 8), -1, -1);
         p.setBorder(BorderFactory.createTitledBorder(
                 BorderFactory.createEtchedBorder(), "已注册工具",
                 TitledBorder.DEFAULT_JUSTIFICATION,
@@ -215,17 +216,18 @@ public class MCPPanel extends JPanel implements McpEventListener {
         toolsTable.getColumnModel().getColumn(1).setPreferredWidth(600);
         JScrollPane sp = new JScrollPane(toolsTable);
         p.add(sp, gc(0, 0, 1, 1,
-                GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
-                GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_CAN_SHRINK,
-                GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_CAN_SHRINK));
-        add(p, gc(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER,
-                GridConstraints.FILL_BOTH,
-                GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_CAN_SHRINK,
-                GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_CAN_SHRINK));
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                true,
+                true));
+        add(p, gc(3, 0, 1, 1, GridBagConstraints.CENTER,
+                GridBagConstraints.BOTH,
+                true,
+                true));
     }
 
     private void buildLogPanel() {
-        JPanel p = new JPanel(new GridLayoutManager(1, 2, new Insets(6, 8, 6, 8), -1, -1));
+        JPanel p = new JPanel();
+        SwingLayout.configureGrid(p, 1, 2, new Insets(6, 8, 6, 8), -1, -1);
         p.setBorder(BorderFactory.createTitledBorder(
                 BorderFactory.createEtchedBorder(), "日志",
                 TitledBorder.DEFAULT_JUSTIFICATION,
@@ -237,27 +239,27 @@ public class MCPPanel extends JPanel implements McpEventListener {
         JScrollPane sp = new JScrollPane(logArea);
         sp.setPreferredSize(new Dimension(600, 160));
         p.add(sp, gc(0, 0, 1, 1,
-                GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
-                GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_CAN_SHRINK,
-                GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_CAN_SHRINK));
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                true,
+                true));
 
         JButton clearBtn = new JButton("清空日志");
         clearBtn.addActionListener(e -> SwingUtilities.invokeLater(() -> logArea.setText("")));
         p.add(clearBtn, gc(0, 1, 1, 1,
-                GridConstraints.ANCHOR_NORTHEAST, GridConstraints.FILL_NONE,
-                GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED));
+                GridBagConstraints.NORTHEAST, GridBagConstraints.NONE,
+                false, false));
 
-        add(p, gc(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER,
-                GridConstraints.FILL_BOTH,
-                GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_CAN_SHRINK,
-                GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_CAN_SHRINK));
+        add(p, gc(4, 0, 1, 1, GridBagConstraints.CENTER,
+                GridBagConstraints.BOTH,
+                true,
+                true));
     }
 
-    private static GridConstraints gc(int row, int col, int rowSpan, int colSpan,
-                                      int anchor, int fill,
-                                      int hSize, int vSize) {
-        return new GridConstraints(row, col, rowSpan, colSpan,
-                anchor, fill, hSize, vSize, null, null, null, 0, false);
+    private static GridBagConstraints gc(int row, int col, int rowSpan, int colSpan,
+                                         int anchor, int fill,
+                                         boolean growX, boolean growY) {
+        return SwingLayout.constraints(row, col, rowSpan, colSpan,
+                anchor, fill, growX, growY);
     }
 
     // ------------------------------------------------------------

@@ -315,12 +315,6 @@ Jar Analyzer
 
 ## BUILD
 
-注意：首先对你的 `IDEA` 进行设置（本项目不支持 `Eclipse/VS Code` 等 `IDE` 环境）
-
-![](img/0063.png)
-
-注意：过高版本的 `IDEA` 可能删除了该功能，可以在插件市场搜索 `Swing UI Designer` 安装
-
 编译和构建过程如下：（以 `Windows` 为例其他环境类似）
 
 由于 `jar-analyzer` 历史提交过大，请使用 `--depth 1` 加速克隆
@@ -332,10 +326,9 @@ git clone --depth 1 https://github.com/jar-analyzer/jar-analyzer
 核心项目构建
 
 1. 重要：确保你安装了 `JDK 8 64位` （建议 `OpenJDK`）
-2. 重要：如果你修改了代码请确保在 `IDEA` 环境中至少启动一次（生成 `GUI` 代码）
-3. 重要：确保你安装了 `Maven 3.X` （一般 `IDEA` 已自带）
-4. 可选：完善贡献者信息：检查修改 `thanks.md/thanks.txt` 和 `pom.xml`
-5. 可选：使用 `cmake` 构建 `native` 目录生成 `dll` 文件放入 `resources`
+2. 重要：确保你安装了 `Maven 3.X` （一般 `IDEA` 已自带）
+3. 可选：完善贡献者信息：检查修改 `thanks.md/thanks.txt` 和 `pom.xml`
+4. 可选：使用 `cmake` 构建 `native` 目录生成 `dll` 文件放入 `resources`
 
 其他组件构建
 

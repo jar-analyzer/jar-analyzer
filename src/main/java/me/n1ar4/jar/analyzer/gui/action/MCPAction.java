@@ -20,12 +20,12 @@ import javax.swing.*;
 /**
  * MCP 面板注册器
  *
- * <p>不修改 MainForm.form，而是在 MainForm 初始化结束后，
+ * <p>不侵入 MainForm 的布局代码，而是在主界面初始化结束后，
  * 通过 tabbedPanel.addTab(...) 把 MCPPanel 加进去。</p>
  *
  * <p>这样的好处：</p>
  * <ul>
- *  <li>IDEA GUI Designer 重新生成 MainForm.java 时不会破坏（form 没改）</li>
+ *  <li>MCP 面板与主窗口布局解耦，便于独立维护</li>
  *  <li>便于卸载/单测，控件都集中在 MCPPanel 内</li>
  * </ul>
  */

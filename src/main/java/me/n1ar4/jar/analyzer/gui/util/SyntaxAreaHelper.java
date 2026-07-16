@@ -10,7 +10,6 @@
 
 package me.n1ar4.jar.analyzer.gui.util;
 
-import com.intellij.uiDesigner.core.GridConstraints;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.OpcodeForm;
 import me.n1ar4.log.LogManager;
@@ -37,11 +36,7 @@ public class SyntaxAreaHelper {
     public static void buildJava(JPanel codePanel) {
         // 创建多标签页代码编辑器面板
         codeTabPanel = new CodeTabPanel();
-        codePanel.add(codeTabPanel, new GridConstraints(0, 0, 1, 1,
-                GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
-                GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                null, null, null, 0, false));
+        SwingLayout.add(codePanel, codeTabPanel, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, true, true, null, null, null, 0);
 
         // MainForm.codeArea 初始指向欢迎 Tab 的编辑器
         RSyntaxTextArea activeArea = codeTabPanel.getActiveCodeArea();
@@ -152,11 +147,7 @@ public class SyntaxAreaHelper {
         textArea.setFont(textArea.getFont().deriveFont(MainForm.FONT_SIZE));
 
         RTextScrollPane sp = new RTextScrollPane(textArea);
-        codePanel.add(sp, new GridConstraints(0, 0, 1, 1,
-                GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
-                GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                null, null, null, 0, false));
+        SwingLayout.add(codePanel, sp, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, true, true, null, null, null, 0);
         OpcodeForm.setCodeArea(textArea);
     }
 
@@ -168,11 +159,7 @@ public class SyntaxAreaHelper {
         textArea.setFont(textArea.getFont().deriveFont(MainForm.FONT_SIZE));
 
         RTextScrollPane sp = new RTextScrollPane(textArea);
-        codePanel.add(sp, new GridConstraints(0, 0, 1, 1,
-                GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
-                GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                null, null, null, 0, false));
+        SwingLayout.add(codePanel, sp, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, true, true, null, null, null, 0);
         return textArea;
     }
 }

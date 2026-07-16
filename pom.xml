@@ -81,7 +81,6 @@
         <!-- Dependencies Version -->
         <asm.version>9.10.1</asm.version>
         <flatlaf.version>3.7.1</flatlaf.version>
-        <idea.forms.version>7.0.3</idea.forms.version>
         <syntax.version>3.6.3</syntax.version>
         <slf4j.api.version>2.0.18</slf4j.api.version>
         <slf4j.simple.version>2.0.18</slf4j.simple.version>
@@ -251,26 +250,6 @@
             <groupId>org.benf</groupId>
             <artifactId>cfr</artifactId>
             <version>${cfr.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.intellij</groupId>
-            <artifactId>forms_rt</artifactId>
-            <version>${idea.forms.version}</version>
-            <!-- Avoiding Conflicts -->
-            <exclusions>
-                <exclusion>
-                    <groupId>asm</groupId>
-                    <artifactId>asm</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>asm</groupId>
-                    <artifactId>asm-commons</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>asm</groupId>
-                    <artifactId>asm-tree</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>tools</groupId>

@@ -1,26 +1,15 @@
-/*
+﻿/*
  * Adapted from JetBrains IntelliJ IDEA UI Designer forms runtime 7.0.3.
  * Licensed under the Apache License, Version 2.0.
  */
 package me.n1ar4.jar.analyzer.gui.util.layout;
 
-import me.n1ar4.jar.analyzer.gui.util.layout.AbstractLayout;
-import me.n1ar4.jar.analyzer.gui.util.layout.DimensionInfo;
-import me.n1ar4.jar.analyzer.gui.util.layout.GridConstraints;
-import me.n1ar4.jar.analyzer.gui.util.layout.HorizontalInfo;
-import me.n1ar4.jar.analyzer.gui.util.layout.LayoutState;
-import me.n1ar4.jar.analyzer.gui.util.layout.Spacer;
-import me.n1ar4.jar.analyzer.gui.util.layout.Util;
-import me.n1ar4.jar.analyzer.gui.util.layout.VerticalInfo;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Insets;
+import javax.swing.*;
+import java.awt.*;
 import java.util.Arrays;
-import javax.swing.JComponent;
 
 public final class GridLayoutManager
-extends AbstractLayout {
+        extends AbstractLayout {
     private int myMinCellSize = 20;
     private final int[] myRowStretches;
     private final int[] myColumnStretches;
@@ -77,7 +66,7 @@ extends AbstractLayout {
     }
 
     public void addLayoutComponent(Component comp, Object constraints) {
-        GridConstraints c = (GridConstraints)constraints;
+        GridConstraints c = (GridConstraints) constraints;
         int row = c.getRow();
         int rowSpan = c.getRowSpan();
         int rowCount = this.getRowCount();
@@ -219,7 +208,7 @@ extends AbstractLayout {
     private static int getDesignTimeInsets(Container container) {
         while (container != null) {
             Integer designTimeInsets;
-            if (container instanceof JComponent && (designTimeInsets = (Integer)((JComponent)container).getClientProperty(DESIGN_TIME_INSETS)) != null) {
+            if (container instanceof JComponent && (designTimeInsets = (Integer) ((JComponent) container).getClientProperty(DESIGN_TIME_INSETS)) != null) {
                 return designTimeInsets;
             }
             container = container.getParent();
@@ -405,12 +394,12 @@ extends AbstractLayout {
         Container parent = container.getParent();
         if (parent != null) {
             if (parent.getLayout() instanceof GridLayoutManager) {
-                parentGridLayout = (GridLayoutManager)parent.getLayout();
+                parentGridLayout = (GridLayoutManager) parent.getLayout();
                 parentGridConstraints = parentGridLayout.getConstraintsForComponent(container);
             } else {
                 Container parent2 = parent.getParent();
                 if (parent2 != null && parent2.getLayout() instanceof GridLayoutManager) {
-                    parentGridLayout = (GridLayoutManager)parent2.getLayout();
+                    parentGridLayout = (GridLayoutManager) parent2.getLayout();
                     parentGridConstraints = parentGridLayout.getConstraintsForComponent(parent);
                 }
             }
@@ -508,7 +497,7 @@ extends AbstractLayout {
                 int size = min ? GridLayoutManager.getMin2(info, i2) : Math.max(info.getMinimumWidth(i2), info.getPreferredWidth(i2));
                 int gap = GridLayoutManager.countGap(info, info.getCell(i2), info.getSpan(i2));
                 size = Math.max(size - gap, 0);
-                widths[info.getCell((int)i2)] = Math.max(widths[info.getCell(i2)], size);
+                widths[info.getCell((int) i2)] = Math.max(widths[info.getCell(i2)], size);
             }
             --i2;
         }
@@ -546,10 +535,10 @@ extends AbstractLayout {
             GridConstraints c = info.getConstraints(i);
             if (c.isUseParentLayout() && child instanceof Container) {
                 Container childContainer;
-                Container container = (Container)child;
+                Container container = (Container) child;
                 if (container.getLayout() instanceof GridLayoutManager) {
                     GridLayoutManager.updateSizesFromChild(info, min, widths, container, i);
-                } else if (container.getComponentCount() == 1 && container.getComponent(0) instanceof Container && (childContainer = (Container)container.getComponent(0)).getLayout() instanceof GridLayoutManager) {
+                } else if (container.getComponentCount() == 1 && container.getComponent(0) instanceof Container && (childContainer = (Container) container.getComponent(0)).getLayout() instanceof GridLayoutManager) {
                     GridLayoutManager.updateSizesFromChild(info, min, widths, childContainer, i);
                 }
             }
@@ -558,7 +547,7 @@ extends AbstractLayout {
     }
 
     private static void updateSizesFromChild(DimensionInfo info, boolean min, int[] widths, Container container, int childIndex) {
-        GridLayoutManager childLayout = (GridLayoutManager)container.getLayout();
+        GridLayoutManager childLayout = (GridLayoutManager) container.getLayout();
         if (info.getSpan(childIndex) == info.getChildLayoutCellCount(childLayout)) {
             childLayout.validateInfos(container);
             DimensionInfo childInfo = info instanceof HorizontalInfo ? childLayout.myHorizontalInfo : childLayout.myVerticalInfo;

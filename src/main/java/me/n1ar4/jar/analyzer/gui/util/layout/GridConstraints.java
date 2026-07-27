@@ -1,13 +1,13 @@
-/*
+﻿/*
  * Adapted from JetBrains IntelliJ IDEA UI Designer forms runtime 7.0.3.
  * Licensed under the Apache License, Version 2.0.
  */
 package me.n1ar4.jar.analyzer.gui.util.layout;
 
-import java.awt.Dimension;
+import java.awt.*;
 
 public final class GridConstraints
-implements Cloneable {
+        implements Cloneable {
     public static final GridConstraints[] EMPTY_ARRAY = new GridConstraints[0];
     public static final int FILL_NONE = 0;
     public static final int FILL_HORIZONTAL = 1;
@@ -231,7 +231,7 @@ implements Cloneable {
         if (!(o instanceof GridConstraints)) {
             return false;
         }
-        GridConstraints gridConstraints = (GridConstraints)o;
+        GridConstraints gridConstraints = (GridConstraints) o;
         if (this.myAnchor != gridConstraints.myAnchor) {
             return false;
         }

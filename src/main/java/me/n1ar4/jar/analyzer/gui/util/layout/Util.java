@@ -1,12 +1,10 @@
-/*
+﻿/*
  * Adapted from JetBrains IntelliJ IDEA UI Designer forms runtime 7.0.3.
  * Licensed under the Apache License, Version 2.0.
  */
 package me.n1ar4.jar.analyzer.gui.util.layout;
 
-import me.n1ar4.jar.analyzer.gui.util.layout.GridConstraints;
-import java.awt.Component;
-import java.awt.Dimension;
+import java.awt.*;
 import java.util.ArrayList;
 
 public final class Util {

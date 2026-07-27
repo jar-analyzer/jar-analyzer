@@ -1,18 +1,13 @@
-/*
+﻿/*
  * Adapted from JetBrains IntelliJ IDEA UI Designer forms runtime 7.0.3.
  * Licensed under the Apache License, Version 2.0.
  */
 package me.n1ar4.jar.analyzer.gui.util.layout;
 
-import me.n1ar4.jar.analyzer.gui.util.layout.GridConstraints;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Insets;
-import java.awt.LayoutManager2;
+import java.awt.*;
 
 public abstract class AbstractLayout
-implements LayoutManager2 {
+        implements LayoutManager2 {
     public static final int DEFAULT_HGAP = 10;
     public static final int DEFAULT_VGAP = 5;
     protected Component[] myComponents = COMPONENT_EMPTY_ARRAY;
@@ -23,7 +18,7 @@ implements LayoutManager2 {
     private static final Component[] COMPONENT_EMPTY_ARRAY = new Component[0];
 
     public final Insets getMargin() {
-        return (Insets)this.myMargin.clone();
+        return (Insets) this.myMargin.clone();
     }
 
     public final int getHGap() {
@@ -38,7 +33,7 @@ implements LayoutManager2 {
             if (container.getLayout() instanceof AbstractLayout) {
                 AbstractLayout layout = (AbstractLayout) container.getLayout();
                 if (layout.getHGap() != -1) {
-                return layout.getHGap();
+                    return layout.getHGap();
                 }
             }
             container = container.getParent();
@@ -84,7 +79,7 @@ implements LayoutManager2 {
         if (margin == null) {
             throw new IllegalArgumentException("margin cannot be null");
         }
-        this.myMargin = (Insets)margin.clone();
+        this.myMargin = (Insets) margin.clone();
     }
 
     final int getComponentCount() {
@@ -109,7 +104,7 @@ implements LayoutManager2 {
         this.myComponents = newComponents;
         GridConstraints[] newConstraints = new GridConstraints[this.myConstraints.length + 1];
         System.arraycopy(this.myConstraints, 0, newConstraints, 0, this.myConstraints.length);
-        newConstraints[this.myConstraints.length] = (GridConstraints)constraints;
+        newConstraints[this.myConstraints.length] = (GridConstraints) constraints;
         this.myConstraints = newConstraints;
     }
 

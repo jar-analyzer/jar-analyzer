@@ -1,17 +1,10 @@
-/*
+﻿/*
  * Adapted from JetBrains IntelliJ IDEA UI Designer forms runtime 7.0.3.
  * Licensed under the Apache License, Version 2.0.
  */
 package me.n1ar4.jar.analyzer.gui.util.layout;
 
-import me.n1ar4.jar.analyzer.gui.util.layout.GridConstraints;
-import me.n1ar4.jar.analyzer.gui.util.layout.GridLayoutManager;
-import me.n1ar4.jar.analyzer.gui.util.layout.LayoutState;
-import me.n1ar4.jar.analyzer.gui.util.layout.Spacer;
-import me.n1ar4.jar.analyzer.gui.util.layout.Util;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
+import java.awt.*;
 import java.util.ArrayList;
 
 public abstract class DimensionInfo {
@@ -48,8 +41,8 @@ public abstract class DimensionInfo {
             ++i2;
         }
         ArrayList<Integer> eliminated = new ArrayList<>();
-        this.mySpansAfterElimination = (int[])this.mySpan.clone();
-        Util.eliminate((int[])this.myCell.clone(), this.mySpansAfterElimination, eliminated);
+        this.mySpansAfterElimination = (int[]) this.mySpan.clone();
+        Util.eliminate((int[]) this.myCell.clone(), this.mySpansAfterElimination, eliminated);
         this.myCellSizePolicies = new int[this.getCellCount()];
         int i3 = 0;
         while (i3 < this.myCellSizePolicies.length) {
@@ -120,7 +113,7 @@ public abstract class DimensionInfo {
         }
         int i = eliminatedCells.size() - 1;
         while (i >= 0) {
-            if (cellIndex == (Integer)eliminatedCells.get(i)) {
+            if (cellIndex == (Integer) eliminatedCells.get(i)) {
                 return 1;
             }
             --i;
@@ -171,7 +164,7 @@ public abstract class DimensionInfo {
                 Component child = this.getComponent(i);
                 Container container = DimensionInfo.findAlignedChild(child, c = this.getConstraints(i));
                 if (container != null) {
-                    GridLayoutManager grid = (GridLayoutManager)container.getLayout();
+                    GridLayoutManager grid = (GridLayoutManager) container.getLayout();
                     grid.validateInfos(container);
                     DimensionInfo info = this.getDimensionInfo(grid);
                     int policy = info.calcCellSizePolicy(cellIndex - this.getOriginalCell(c));
@@ -191,11 +184,11 @@ public abstract class DimensionInfo {
     public static Container findAlignedChild(Component child, GridConstraints c) {
         if (c.isUseParentLayout() && child instanceof Container) {
             Container childContainer;
-            Container container = (Container)child;
+            Container container = (Container) child;
             if (container.getLayout() instanceof GridLayoutManager) {
                 return container;
             }
-            if (container.getComponentCount() == 1 && container.getComponent(0) instanceof Container && (childContainer = (Container)container.getComponent(0)).getLayout() instanceof GridLayoutManager) {
+            if (container.getComponentCount() == 1 && container.getComponent(0) instanceof Container && (childContainer = (Container) container.getComponent(0)).getLayout() instanceof GridLayoutManager) {
                 return childContainer;
             }
         }

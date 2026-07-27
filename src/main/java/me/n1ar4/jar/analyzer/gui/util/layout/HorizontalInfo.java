@@ -1,16 +1,11 @@
-/*
+﻿/*
  * Adapted from JetBrains IntelliJ IDEA UI Designer forms runtime 7.0.3.
  * Licensed under the Apache License, Version 2.0.
  */
 package me.n1ar4.jar.analyzer.gui.util.layout;
 
-import me.n1ar4.jar.analyzer.gui.util.layout.DimensionInfo;
-import me.n1ar4.jar.analyzer.gui.util.layout.GridConstraints;
-import me.n1ar4.jar.analyzer.gui.util.layout.GridLayoutManager;
-import me.n1ar4.jar.analyzer.gui.util.layout.LayoutState;
-
 final class HorizontalInfo
-extends DimensionInfo {
+        extends DimensionInfo {
     public HorizontalInfo(LayoutState layoutState, int gap) {
         super(layoutState, gap);
     }
@@ -32,7 +27,7 @@ extends DimensionInfo {
     }
 
     public int getMinimumWidth(int componentIndex) {
-        return this.getMinimumSize((int)componentIndex).width;
+        return this.getMinimumSize((int) componentIndex).width;
     }
 
     public DimensionInfo getDimensionInfo(GridLayoutManager grid) {
@@ -44,7 +39,7 @@ extends DimensionInfo {
     }
 
     public int getPreferredWidth(int componentIndex) {
-        return this.getPreferredSize((int)componentIndex).width;
+        return this.getPreferredSize((int) componentIndex).width;
     }
 }
 

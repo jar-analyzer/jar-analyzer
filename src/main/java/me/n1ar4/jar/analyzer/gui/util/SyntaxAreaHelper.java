@@ -36,7 +36,7 @@ public class SyntaxAreaHelper {
     public static void buildJava(JPanel codePanel) {
         // 创建多标签页代码编辑器面板
         codeTabPanel = new CodeTabPanel();
-        SwingLayout.add(codePanel, codeTabPanel, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, true, true, null, null, null, 0);
+        SwingLayout.add(codePanel, codeTabPanel, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, null, null, null, 0);
 
         // MainForm.codeArea 初始指向欢迎 Tab 的编辑器
         RSyntaxTextArea activeArea = codeTabPanel.getActiveCodeArea();
@@ -147,7 +147,7 @@ public class SyntaxAreaHelper {
         textArea.setFont(textArea.getFont().deriveFont(MainForm.FONT_SIZE));
 
         RTextScrollPane sp = new RTextScrollPane(textArea);
-        SwingLayout.add(codePanel, sp, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, true, true, null, null, null, 0);
+        SwingLayout.add(codePanel, sp, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, null, null, null, 0);
         OpcodeForm.setCodeArea(textArea);
     }
 
@@ -159,7 +159,7 @@ public class SyntaxAreaHelper {
         textArea.setFont(textArea.getFont().deriveFont(MainForm.FONT_SIZE));
 
         RTextScrollPane sp = new RTextScrollPane(textArea);
-        SwingLayout.add(codePanel, sp, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, true, true, null, null, null, 0);
+        SwingLayout.add(codePanel, sp, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, null, null, null, 0);
         return textArea;
     }
 }

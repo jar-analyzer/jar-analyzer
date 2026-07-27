@@ -133,7 +133,7 @@ public class BcelForm {
         masterPanel = new JPanel();
         SwingLayout.configureGrid(masterPanel, 2, 1, new Insets(5, 5, 5, 5), -1, -1);
         bcelScroll = new JScrollPane();
-        SwingLayout.add(masterPanel, bcelScroll, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, true, true, null, null, null, 0);
+        SwingLayout.add(masterPanel, bcelScroll, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_WANT_GROW, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_WANT_GROW, null, null, null, 0);
         bcelArea = new JTextArea();
         bcelArea.setColumns(50);
         bcelArea.setLineWrap(true);
@@ -141,16 +141,16 @@ public class BcelForm {
         bcelScroll.setViewportView(bcelArea);
         opPanel = new JPanel();
         SwingLayout.configureGrid(opPanel, 1, 3, new Insets(0, 0, 0, 0), -1, -1);
-        SwingLayout.add(masterPanel, opPanel, 1, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, true, true, null, null, null, 0);
+        SwingLayout.add(masterPanel, opPanel, 1, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, null, null, null, 0);
         cleanBtn = new JButton();
         cleanBtn.setText("CLEAN");
-        SwingLayout.add(opPanel, cleanBtn, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, true, false, null, null, null, 0);
+        SwingLayout.add(opPanel, cleanBtn, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_FIXED, null, null, null, 0);
         checkBtn = new JButton();
         checkBtn.setText("CHECK");
-        SwingLayout.add(opPanel, checkBtn, 0, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, true, false, null, null, null, 0);
+        SwingLayout.add(opPanel, checkBtn, 0, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_FIXED, null, null, null, 0);
         decompileBtn = new JButton();
         decompileBtn.setText("DECOMPILE");
-        SwingLayout.add(opPanel, decompileBtn, 0, 2, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, true, false, null, null, null, 0);
+        SwingLayout.add(opPanel, decompileBtn, 0, 2, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_FIXED, null, null, null, 0);
     }
 
     /**

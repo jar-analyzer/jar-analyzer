@@ -39,8 +39,8 @@ public class PreviewForm {
         textArea.setEnabled(true);
         textArea.setEditable(true);
         RTextScrollPane sp = new RTextScrollPane(textArea);
-        SwingLayout.add(codePanel, sp, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, true, true, null, null, null, 0);
-        SwingLayout.add(codePanel, sp, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, true, true, null, null, null, 0);
+        SwingLayout.add(codePanel, sp, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, null, null, null, 0);
+        SwingLayout.add(codePanel, sp, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, null, null, null, 0);
         codePanel.repaint();
 
         textArea.setText(code);
@@ -102,7 +102,7 @@ public class PreviewForm {
         SwingLayout.configureGrid(rootPanel, 1, 1, new Insets(0, 0, 0, 0), -1, -1);
         codePanel = new JPanel();
         SwingLayout.configureGrid(codePanel, 1, 1, new Insets(0, 0, 0, 0), -1, -1);
-        SwingLayout.add(rootPanel, codePanel, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, true, true, new Dimension(600, 400), null, null, 0);
+        SwingLayout.add(rootPanel, codePanel, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, new Dimension(600, 400), null, null, 0);
     }
 
     /**

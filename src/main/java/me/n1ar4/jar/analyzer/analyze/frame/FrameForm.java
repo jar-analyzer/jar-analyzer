@@ -74,7 +74,7 @@ public class FrameForm {
         masterPanel = new JPanel();
         SwingLayout.configureGrid(masterPanel, 1, 1, new Insets(0, 0, 0, 0), -1, -1);
         rootScroll = new JScrollPane();
-        SwingLayout.add(masterPanel, rootScroll, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, true, true, null, new Dimension(800, 800), null, 0);
+        SwingLayout.add(masterPanel, rootScroll, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_WANT_GROW, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_WANT_GROW, null, new Dimension(800, 800), null, 0);
         frameArea = new JTextArea();
         frameArea.setEditable(false);
         Font frameAreaFont = this.resolveFont("Consolas", -1, -1, frameArea.getFont());

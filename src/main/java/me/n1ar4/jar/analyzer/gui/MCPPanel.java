@@ -11,6 +11,7 @@
 package me.n1ar4.jar.analyzer.gui;
 
 import me.n1ar4.jar.analyzer.gui.util.SwingLayout;
+import me.n1ar4.jar.analyzer.gui.util.layout.GridConstraints;
 import me.n1ar4.jar.analyzer.mcp.McpConfig;
 import me.n1ar4.jar.analyzer.mcp.McpEventListener;
 import me.n1ar4.jar.analyzer.mcp.McpServerLauncher;
@@ -31,7 +32,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * MCP 控制面板
  *
- * <p>使用纯 Java Swing 构建，并通过 {@link GridBagLayout} 保持统一的视觉风格。</p>
+ * <p>使用纯 Java Swing 构建，并通过兼容网格布局保持统一的视觉风格。</p>
  *
  * <p>自身作为一个独立 {@link JPanel}，由 {@code MCPAction.register} 通过
  * {@code tabbedPanel.addTab("MCP", panel)} 加入到 MainForm 的 tabbedPanel 中，
@@ -78,7 +79,6 @@ public class MCPPanel extends JPanel implements McpEventListener {
     private final JTextArea logArea = new JTextArea();
 
     public MCPPanel() {
-        super(new GridBagLayout());
         SwingLayout.configureGrid(this, 5, 1, new Insets(8, 8, 8, 8), -1, -1);
         buildHeader();
         buildConfigPanel();
@@ -105,10 +105,10 @@ public class MCPPanel extends JPanel implements McpEventListener {
                 "可被任意 MCP Client 接入（如 Claude Desktop、Cursor 等），暴露 jar-analyzer 的全部分析能力" +
                 "</div>" +
                 "</html>");
-        add(descLabel, gc(0, 0, 1, 1, GridBagConstraints.WEST,
-                GridBagConstraints.HORIZONTAL,
-                true,
-                false));
+        add(descLabel, gc(0, 0, 1, 1,
+                GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
+                SwingLayout.SIZEPOLICY_CAN_GROW,
+                SwingLayout.SIZEPOLICY_FIXED));
     }
 
     private void buildConfigPanel() {
@@ -121,42 +121,52 @@ public class MCPPanel extends JPanel implements McpEventListener {
 
         p.add(new JLabel("Bind"), gc(0, 0, 1, 1,
                 GridBagConstraints.WEST, GridBagConstraints.NONE,
-                false, false));
+                SwingLayout.SIZEPOLICY_FIXED,
+                SwingLayout.SIZEPOLICY_FIXED));
         p.add(bindField, gc(0, 1, 1, 1,
                 GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
-                true, false));
+                SwingLayout.SIZEPOLICY_WANT_GROW,
+                SwingLayout.SIZEPOLICY_FIXED));
         p.add(new JLabel("Port"), gc(0, 2, 1, 1,
                 GridBagConstraints.WEST, GridBagConstraints.NONE,
-                false, false));
+                SwingLayout.SIZEPOLICY_FIXED,
+                SwingLayout.SIZEPOLICY_FIXED));
         p.add(portField, gc(0, 3, 1, 1,
                 GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
-                true, false));
+                SwingLayout.SIZEPOLICY_WANT_GROW,
+                SwingLayout.SIZEPOLICY_FIXED));
 
         p.add(sseBox, gc(1, 0, 1, 2,
                 GridBagConstraints.WEST, GridBagConstraints.NONE,
-                false, false));
+                SwingLayout.SIZEPOLICY_FIXED,
+                SwingLayout.SIZEPOLICY_FIXED));
         p.add(streamableBox, gc(1, 2, 1, 2,
                 GridBagConstraints.WEST, GridBagConstraints.NONE,
-                false, false));
+                SwingLayout.SIZEPOLICY_FIXED,
+                SwingLayout.SIZEPOLICY_FIXED));
 
         p.add(authBox, gc(2, 0, 1, 1,
                 GridBagConstraints.WEST, GridBagConstraints.NONE,
-                false, false));
+                SwingLayout.SIZEPOLICY_FIXED,
+                SwingLayout.SIZEPOLICY_FIXED));
         p.add(new JLabel("Token"), gc(2, 1, 1, 1,
                 GridBagConstraints.WEST, GridBagConstraints.NONE,
-                false, false));
+                SwingLayout.SIZEPOLICY_FIXED,
+                SwingLayout.SIZEPOLICY_FIXED));
         p.add(tokenField, gc(2, 2, 1, 2,
                 GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
-                true, false));
+                SwingLayout.SIZEPOLICY_WANT_GROW,
+                SwingLayout.SIZEPOLICY_FIXED));
 
         p.add(debugBox, gc(3, 0, 1, 4,
                 GridBagConstraints.WEST, GridBagConstraints.NONE,
-                false, false));
+                SwingLayout.SIZEPOLICY_FIXED,
+                SwingLayout.SIZEPOLICY_FIXED));
 
-        add(p, gc(1, 0, 1, 1, GridBagConstraints.CENTER,
-                GridBagConstraints.HORIZONTAL,
-                true,
-                false));
+        add(p, gc(1, 0, 1, 1,
+                GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
+                SwingLayout.SIZEPOLICY_CAN_GROW,
+                SwingLayout.SIZEPOLICY_FIXED));
     }
 
     private void buildControlPanel() {
@@ -174,33 +184,40 @@ public class MCPPanel extends JPanel implements McpEventListener {
 
         p.add(startBtn, gc(0, 0, 1, 1,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
-                true, false));
+                SwingLayout.SIZEPOLICY_CAN_GROW,
+                SwingLayout.SIZEPOLICY_FIXED));
         p.add(stopBtn, gc(0, 1, 1, 1,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
-                true, false));
+                SwingLayout.SIZEPOLICY_CAN_GROW,
+                SwingLayout.SIZEPOLICY_FIXED));
 
         statusLabel.setForeground(new Color(0xCC3333));
         p.add(new JLabel("状态:"), gc(0, 2, 1, 1,
                 GridBagConstraints.WEST, GridBagConstraints.NONE,
-                false, false));
+                SwingLayout.SIZEPOLICY_FIXED,
+                SwingLayout.SIZEPOLICY_FIXED));
         p.add(statusLabel, gc(0, 3, 1, 1,
                 GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
-                true, false));
+                SwingLayout.SIZEPOLICY_WANT_GROW,
+                SwingLayout.SIZEPOLICY_FIXED));
         p.add(sseLabel, gc(0, 4, 1, 1,
                 GridBagConstraints.WEST, GridBagConstraints.NONE,
-                false, false));
+                SwingLayout.SIZEPOLICY_FIXED,
+                SwingLayout.SIZEPOLICY_FIXED));
         p.add(streamLabel, gc(0, 5, 1, 1,
                 GridBagConstraints.WEST, GridBagConstraints.NONE,
-                false, false));
+                SwingLayout.SIZEPOLICY_FIXED,
+                SwingLayout.SIZEPOLICY_FIXED));
 
         p.add(reqStatLabel, gc(1, 0, 1, 6,
                 GridBagConstraints.WEST, GridBagConstraints.NONE,
-                false, false));
+                SwingLayout.SIZEPOLICY_FIXED,
+                SwingLayout.SIZEPOLICY_FIXED));
 
-        add(p, gc(2, 0, 1, 1, GridBagConstraints.CENTER,
-                GridBagConstraints.HORIZONTAL,
-                true,
-                false));
+        add(p, gc(2, 0, 1, 1,
+                GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
+                SwingLayout.SIZEPOLICY_CAN_GROW,
+                SwingLayout.SIZEPOLICY_FIXED));
     }
 
     private void buildToolsPanel() {
@@ -217,12 +234,12 @@ public class MCPPanel extends JPanel implements McpEventListener {
         JScrollPane sp = new JScrollPane(toolsTable);
         p.add(sp, gc(0, 0, 1, 1,
                 GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                true,
-                true));
-        add(p, gc(3, 0, 1, 1, GridBagConstraints.CENTER,
-                GridBagConstraints.BOTH,
-                true,
-                true));
+                SwingLayout.SIZEPOLICY_CAN_GROW | SwingLayout.SIZEPOLICY_CAN_SHRINK,
+                SwingLayout.SIZEPOLICY_CAN_GROW | SwingLayout.SIZEPOLICY_CAN_SHRINK));
+        add(p, gc(3, 0, 1, 1,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                SwingLayout.SIZEPOLICY_CAN_GROW | SwingLayout.SIZEPOLICY_CAN_SHRINK,
+                SwingLayout.SIZEPOLICY_CAN_GROW | SwingLayout.SIZEPOLICY_CAN_SHRINK));
     }
 
     private void buildLogPanel() {
@@ -240,26 +257,28 @@ public class MCPPanel extends JPanel implements McpEventListener {
         sp.setPreferredSize(new Dimension(600, 160));
         p.add(sp, gc(0, 0, 1, 1,
                 GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                true,
-                true));
+                SwingLayout.SIZEPOLICY_CAN_GROW | SwingLayout.SIZEPOLICY_CAN_SHRINK,
+                SwingLayout.SIZEPOLICY_CAN_GROW | SwingLayout.SIZEPOLICY_CAN_SHRINK));
 
         JButton clearBtn = new JButton("清空日志");
         clearBtn.addActionListener(e -> SwingUtilities.invokeLater(() -> logArea.setText("")));
         p.add(clearBtn, gc(0, 1, 1, 1,
                 GridBagConstraints.NORTHEAST, GridBagConstraints.NONE,
-                false, false));
+                SwingLayout.SIZEPOLICY_FIXED,
+                SwingLayout.SIZEPOLICY_FIXED));
 
-        add(p, gc(4, 0, 1, 1, GridBagConstraints.CENTER,
-                GridBagConstraints.BOTH,
-                true,
-                true));
+        add(p, gc(4, 0, 1, 1,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                SwingLayout.SIZEPOLICY_CAN_GROW | SwingLayout.SIZEPOLICY_CAN_SHRINK,
+                SwingLayout.SIZEPOLICY_CAN_GROW | SwingLayout.SIZEPOLICY_CAN_SHRINK));
     }
 
-    private static GridBagConstraints gc(int row, int col, int rowSpan, int colSpan,
-                                         int anchor, int fill,
-                                         boolean growX, boolean growY) {
+    private static GridConstraints gc(int row, int col, int rowSpan, int colSpan,
+                                      int anchor, int fill,
+                                      int horizontalSizePolicy,
+                                      int verticalSizePolicy) {
         return SwingLayout.constraints(row, col, rowSpan, colSpan,
-                anchor, fill, growX, growY);
+                anchor, fill, horizontalSizePolicy, verticalSizePolicy);
     }
 
     // ------------------------------------------------------------

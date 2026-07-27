@@ -100,33 +100,33 @@ public class ConnectForm {
         SwingLayout.configureGrid(masterPanel, 5, 2, new Insets(3, 3, 3, 3), -1, -1);
         jdwpIpLabel = new JLabel();
         jdwpIpLabel.setText("JDWP IP");
-        SwingLayout.add(masterPanel, jdwpIpLabel, 1, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE, false, false, null, null, null, 1);
+        SwingLayout.add(masterPanel, jdwpIpLabel, 1, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE, SwingLayout.SIZEPOLICY_FIXED, SwingLayout.SIZEPOLICY_FIXED, null, null, null, 1);
         ipText = new JTextField();
-        SwingLayout.add(masterPanel, ipText, 1, 1, 1, 1, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, true, false, null, new Dimension(150, -1), null, 0);
+        SwingLayout.add(masterPanel, ipText, 1, 1, 1, 1, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, SwingLayout.SIZEPOLICY_WANT_GROW, SwingLayout.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0);
         jdwpPortLabel = new JLabel();
         jdwpPortLabel.setText("JDWP Port");
-        SwingLayout.add(masterPanel, jdwpPortLabel, 2, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE, false, false, null, null, null, 1);
+        SwingLayout.add(masterPanel, jdwpPortLabel, 2, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE, SwingLayout.SIZEPOLICY_FIXED, SwingLayout.SIZEPOLICY_FIXED, null, null, null, 1);
         portText = new JTextField();
-        SwingLayout.add(masterPanel, portText, 2, 1, 1, 1, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, true, false, null, new Dimension(150, -1), null, 0);
+        SwingLayout.add(masterPanel, portText, 2, 1, 1, 1, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, SwingLayout.SIZEPOLICY_WANT_GROW, SwingLayout.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0);
         jdwpArgLabel = new JLabel();
         jdwpArgLabel.setText("Args");
-        SwingLayout.add(masterPanel, jdwpArgLabel, 0, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE, false, false, null, null, null, 1);
+        SwingLayout.add(masterPanel, jdwpArgLabel, 0, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE, SwingLayout.SIZEPOLICY_FIXED, SwingLayout.SIZEPOLICY_FIXED, null, null, null, 1);
         jdwpArgText = new JTextField();
-        SwingLayout.add(masterPanel, jdwpArgText, 0, 1, 1, 1, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, true, false, new Dimension(250, -1), new Dimension(250, -1), null, 0);
+        SwingLayout.add(masterPanel, jdwpArgText, 0, 1, 1, 1, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, SwingLayout.SIZEPOLICY_WANT_GROW, SwingLayout.SIZEPOLICY_FIXED, new Dimension(250, -1), new Dimension(250, -1), null, 0);
         actionPanel = new JPanel();
         SwingLayout.configureGrid(actionPanel, 1, 2, new Insets(3, 3, 3, 3), -1, -1);
-        SwingLayout.add(masterPanel, actionPanel, 4, 0, 1, 2, GridBagConstraints.CENTER, GridBagConstraints.BOTH, true, true, null, null, null, 0);
+        SwingLayout.add(masterPanel, actionPanel, 4, 0, 1, 2, GridBagConstraints.CENTER, GridBagConstraints.BOTH, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, null, null, null, 0);
         connectButton = new JButton();
         connectButton.setText("Connect");
-        SwingLayout.add(actionPanel, connectButton, 0, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, true, false, null, null, null, 0);
+        SwingLayout.add(actionPanel, connectButton, 0, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_FIXED, null, null, null, 0);
         copyArgsButton = new JButton();
         copyArgsButton.setText("Copy Args");
-        SwingLayout.add(actionPanel, copyArgsButton, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, true, false, null, null, null, 0);
+        SwingLayout.add(actionPanel, copyArgsButton, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_FIXED, null, null, null, 0);
         mainClassLabel = new JLabel();
         mainClassLabel.setText("Main Class");
-        SwingLayout.add(masterPanel, mainClassLabel, 3, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE, false, false, null, null, null, 1);
+        SwingLayout.add(masterPanel, mainClassLabel, 3, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE, SwingLayout.SIZEPOLICY_FIXED, SwingLayout.SIZEPOLICY_FIXED, null, null, null, 1);
         mainClassText = new JTextField();
-        SwingLayout.add(masterPanel, mainClassText, 3, 1, 1, 1, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, true, false, null, new Dimension(150, -1), null, 0);
+        SwingLayout.add(masterPanel, mainClassText, 3, 1, 1, 1, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, SwingLayout.SIZEPOLICY_WANT_GROW, SwingLayout.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0);
     }
 
     /**

@@ -56,7 +56,7 @@ public class ChangeLogForm {
         masterPanel = new JPanel();
         SwingLayout.configureGrid(masterPanel, 1, 1, new Insets(0, 0, 0, 0), -1, -1);
         scroll = new JScrollPane();
-        SwingLayout.add(masterPanel, scroll, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, true, true, new Dimension(800, 800), new Dimension(800, 800), new Dimension(800, 800), 0);
+        SwingLayout.add(masterPanel, scroll, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_WANT_GROW, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_WANT_GROW, new Dimension(800, 800), new Dimension(800, 800), new Dimension(800, 800), 0);
         text = new JEditorPane();
         text.setEditable(false);
         Font textFont = this.resolveFont("Consolas", -1, 20, text.getFont());

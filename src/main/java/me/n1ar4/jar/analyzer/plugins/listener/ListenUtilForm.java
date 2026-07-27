@@ -85,19 +85,19 @@ public class ListenUtilForm {
         centerPanel = new JPanel();
         SwingLayout.configureGrid(centerPanel, 1, 3, new Insets(0, 0, 0, 0), -1, -1);
         centerPanel.setBackground(new Color(-1120293));
-        SwingLayout.add(listenUtilPanel, centerPanel, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, true, true, null, null, null, 0);
+        SwingLayout.add(listenUtilPanel, centerPanel, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, null, null, null, 0);
         portLabel = new JLabel();
         portLabel.setText("监听端口");
-        SwingLayout.add(centerPanel, portLabel, 0, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE, false, false, null, null, null, 0);
+        SwingLayout.add(centerPanel, portLabel, 0, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE, SwingLayout.SIZEPOLICY_FIXED, SwingLayout.SIZEPOLICY_FIXED, null, null, null, 0);
         portText = new JTextField();
-        SwingLayout.add(centerPanel, portText, 0, 1, 1, 1, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, true, false, null, new Dimension(150, -1), null, 0);
+        SwingLayout.add(centerPanel, portText, 0, 1, 1, 1, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, SwingLayout.SIZEPOLICY_WANT_GROW, SwingLayout.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0);
         listenButton = new JButton();
         listenButton.setText("开始监听端口");
-        SwingLayout.add(centerPanel, listenButton, 0, 2, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, true, false, null, null, null, 0);
+        SwingLayout.add(centerPanel, listenButton, 0, 2, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_FIXED, null, null, null, 0);
         terminalScroll = new JScrollPane();
         terminalScroll.setBackground(new Color(-1120293));
         terminalScroll.setForeground(new Color(-12828863));
-        SwingLayout.add(listenUtilPanel, terminalScroll, 2, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, true, true, new Dimension(500, 300), new Dimension(500, 300), new Dimension(500, 300), 0);
+        SwingLayout.add(listenUtilPanel, terminalScroll, 2, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_WANT_GROW, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_WANT_GROW, new Dimension(500, 300), new Dimension(500, 300), new Dimension(500, 300), 0);
         terminalScroll.setBorder(BorderFactory.createTitledBorder(null, "terminal", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         terminalArea = new JTextArea();
         terminalArea.setBackground(new Color(-12828863));
@@ -108,12 +108,12 @@ public class ListenUtilForm {
         sendPanel = new JPanel();
         SwingLayout.configureGrid(sendPanel, 1, 2, new Insets(0, 0, 0, 0), -1, -1);
         sendPanel.setBackground(new Color(-1120293));
-        SwingLayout.add(listenUtilPanel, sendPanel, 1, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, true, true, null, null, null, 0);
+        SwingLayout.add(listenUtilPanel, sendPanel, 1, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, null, null, null, 0);
         sendButton = new JButton();
         sendButton.setText("发送");
-        SwingLayout.add(sendPanel, sendButton, 0, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, true, false, null, null, null, 0);
+        SwingLayout.add(sendPanel, sendButton, 0, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_FIXED, null, null, null, 0);
         sendText = new JTextField();
-        SwingLayout.add(sendPanel, sendText, 0, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, true, false, null, new Dimension(150, -1), null, 0);
+        SwingLayout.add(sendPanel, sendText, 0, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, SwingLayout.SIZEPOLICY_WANT_GROW, SwingLayout.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0);
     }
 
     /**

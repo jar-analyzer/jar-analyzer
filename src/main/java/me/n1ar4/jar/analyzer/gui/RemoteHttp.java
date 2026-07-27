@@ -154,27 +154,27 @@ public class RemoteHttp {
         SwingLayout.configureGrid(remotePanel, 1, 1, new Insets(0, 0, 0, 0), -1, -1);
         rootPanel = new JPanel();
         SwingLayout.configureGrid(rootPanel, 4, 2, new Insets(0, 0, 10, 5), -1, -1);
-        SwingLayout.add(remotePanel, rootPanel, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, true, true, null, null, null, 0);
+        SwingLayout.add(remotePanel, rootPanel, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, null, null, null, 0);
         urlLabel = new JLabel();
         urlLabel.setText("HTTP URL");
-        SwingLayout.add(rootPanel, urlLabel, 0, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE, false, false, null, null, null, 1);
-        final Component spacer1 = Box.createGlue();
-        SwingLayout.add(rootPanel, spacer1, 3, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.VERTICAL, false, true, null, null, null, 0);
+        SwingLayout.add(rootPanel, urlLabel, 0, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE, SwingLayout.SIZEPOLICY_FIXED, SwingLayout.SIZEPOLICY_FIXED, null, null, null, 1);
+        final Component spacer1 = SwingLayout.spacer();
+        SwingLayout.add(rootPanel, spacer1, 3, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.VERTICAL, SwingLayout.SIZEPOLICY_CAN_SHRINK, SwingLayout.SIZEPOLICY_WANT_GROW, null, null, null, 0);
         urlText = new JTextField();
-        SwingLayout.add(rootPanel, urlText, 0, 1, 1, 1, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, true, false, new Dimension(400, -1), new Dimension(150, -1), null, 0);
+        SwingLayout.add(rootPanel, urlText, 0, 1, 1, 1, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, SwingLayout.SIZEPOLICY_WANT_GROW, SwingLayout.SIZEPOLICY_FIXED, new Dimension(400, -1), new Dimension(150, -1), null, 0);
         progressBar = new JProgressBar();
         progressBar.setBorderPainted(true);
         progressBar.setStringPainted(true);
-        SwingLayout.add(rootPanel, progressBar, 2, 0, 1, 2, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, true, false, null, null, null, 1);
+        SwingLayout.add(rootPanel, progressBar, 2, 0, 1, 2, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, SwingLayout.SIZEPOLICY_WANT_GROW, SwingLayout.SIZEPOLICY_FIXED, null, null, null, 1);
         opPanel = new JPanel();
         SwingLayout.configureGrid(opPanel, 1, 2, new Insets(0, 0, 0, 0), -1, -1);
-        SwingLayout.add(rootPanel, opPanel, 1, 0, 1, 2, GridBagConstraints.CENTER, GridBagConstraints.BOTH, true, true, null, null, null, 0);
+        SwingLayout.add(rootPanel, opPanel, 1, 0, 1, 2, GridBagConstraints.CENTER, GridBagConstraints.BOTH, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, null, null, null, 0);
         downBtn = new JButton();
         downBtn.setText("DOWNLOAD");
-        SwingLayout.add(opPanel, downBtn, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, true, false, null, null, null, 1);
+        SwingLayout.add(opPanel, downBtn, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_FIXED, null, null, null, 1);
         loadBtn = new JButton();
         loadBtn.setText("LOAD");
-        SwingLayout.add(opPanel, loadBtn, 0, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, true, false, null, null, null, 0);
+        SwingLayout.add(opPanel, loadBtn, 0, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_FIXED, null, null, null, 0);
     }
 
     /**

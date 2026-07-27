@@ -179,22 +179,22 @@ public class LeakAITriageForm {
         SwingLayout.configureGrid(rootPanel, 3, 1, new Insets(6, 6, 6, 6), -1, -1);
         summaryLabel = new JLabel();
         summaryLabel.setText("AI 研判结果");
-        SwingLayout.add(rootPanel, summaryLabel, 0, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE, true, false, null, null, null, 0);
+        SwingLayout.add(rootPanel, summaryLabel, 0, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_FIXED, null, null, null, 0);
         tableScroll = new JScrollPane();
-        SwingLayout.add(rootPanel, tableScroll, 1, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, true, true, new Dimension(700, 380), null, null, 0);
+        SwingLayout.add(rootPanel, tableScroll, 1, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_WANT_GROW, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_WANT_GROW, new Dimension(700, 380), null, null, 0);
         resultTable = new JTable();
         tableScroll.setViewportView(resultTable);
         bottomPanel = new JPanel();
         SwingLayout.configureGrid(bottomPanel, 1, 3, new Insets(0, 0, 0, 0), -1, -1);
-        SwingLayout.add(rootPanel, bottomPanel, 2, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, true, true, null, null, null, 0);
+        SwingLayout.add(rootPanel, bottomPanel, 2, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, null, null, null, 0);
         onlyFailedBox = new JCheckBox();
         onlyFailedBox.setText("仅显示未通过");
-        SwingLayout.add(bottomPanel, onlyFailedBox, 0, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE, true, false, null, null, null, 0);
-        final Component spacer1 = Box.createGlue();
-        SwingLayout.add(bottomPanel, spacer1, 0, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, true, false, null, null, null, 0);
+        SwingLayout.add(bottomPanel, onlyFailedBox, 0, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_FIXED, null, null, null, 0);
+        final Component spacer1 = SwingLayout.spacer();
+        SwingLayout.add(bottomPanel, spacer1, 0, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, SwingLayout.SIZEPOLICY_WANT_GROW, SwingLayout.SIZEPOLICY_CAN_SHRINK, null, null, null, 0);
         closeBtn = new JButton();
         closeBtn.setText("关闭");
-        SwingLayout.add(bottomPanel, closeBtn, 0, 2, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, true, false, null, null, null, 0);
+        SwingLayout.add(bottomPanel, closeBtn, 0, 2, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_FIXED, null, null, null, 0);
     }
 
     /**

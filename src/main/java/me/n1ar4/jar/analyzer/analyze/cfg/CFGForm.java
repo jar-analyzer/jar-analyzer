@@ -58,9 +58,9 @@ public class CFGForm {
         SwingLayout.configureGrid(masterPanel, 1, 1, new Insets(0, 0, 0, 0), -1, -1);
         taintPanel = new JPanel();
         SwingLayout.configureGrid(taintPanel, 1, 1, new Insets(0, 0, 0, 0), -1, -1);
-        SwingLayout.add(masterPanel, taintPanel, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, true, true, null, null, null, 0);
+        SwingLayout.add(masterPanel, taintPanel, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, null, null, null, 0);
         taintScroll = new JScrollPane();
-        SwingLayout.add(taintPanel, taintScroll, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, true, true, null, new Dimension(600, 400), null, 0);
+        SwingLayout.add(taintPanel, taintScroll, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_WANT_GROW, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_WANT_GROW, null, new Dimension(600, 400), null, 0);
         resArea = new JTextArea();
         resArea.setEditable(false);
         Font resAreaFont = this.resolveFont("Consolas", -1, -1, resArea.getFont());

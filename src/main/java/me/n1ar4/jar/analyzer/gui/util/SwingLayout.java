@@ -10,137 +10,121 @@
 
 package me.n1ar4.jar.analyzer.gui.util;
 
+import me.n1ar4.jar.analyzer.gui.util.layout.GridConstraints;
+import me.n1ar4.jar.analyzer.gui.util.layout.GridLayoutManager;
+import me.n1ar4.jar.analyzer.gui.util.layout.Spacer;
+
 import javax.swing.*;
 import java.awt.*;
 
 /**
- * Small helpers for building row/column based forms with Swing's native
- * {@link GridBagLayout}. The grid metadata is used only to calculate cell
- * gaps and outer margins; components are always added with standard
- * {@link GridBagConstraints}.
+ * Pure-Java Swing facade for the project's Designer-compatible grid layout.
+ *
+ * <p>The public API uses AWT anchor/fill constants so form code does not
+ * depend on the compatibility implementation. Size policies retain their
+ * original three-state semantics: shrink, grow, and prefer-to-grow.</p>
  */
 public final class SwingLayout {
-    private static final String GRID_SPEC_KEY = SwingLayout.class.getName() + ".gridSpec";
+    public static final int SIZEPOLICY_FIXED = GridConstraints.SIZEPOLICY_FIXED;
+    public static final int SIZEPOLICY_CAN_SHRINK = GridConstraints.SIZEPOLICY_CAN_SHRINK;
+    public static final int SIZEPOLICY_CAN_GROW = GridConstraints.SIZEPOLICY_CAN_GROW;
+    public static final int SIZEPOLICY_WANT_GROW = GridConstraints.SIZEPOLICY_WANT_GROW;
 
     private SwingLayout() {
     }
 
     public static void configureGrid(JPanel panel, int rows, int columns,
                                      Insets margin, int horizontalGap, int verticalGap) {
-        panel.setLayout(new GridBagLayout());
-        panel.putClientProperty(GRID_SPEC_KEY, new GridSpec(
+        panel.setLayout(new GridLayoutManager(
                 rows,
                 columns,
                 margin == null ? new Insets(0, 0, 0, 0) : margin,
-                Math.max(horizontalGap, 0),
-                Math.max(verticalGap, 0)));
+                horizontalGap,
+                verticalGap));
     }
 
     public static void add(Container parent, Component child,
                            int row, int column, int rowSpan, int columnSpan,
-                           int anchor, int fill, boolean growX, boolean growY,
+                           int anchor, int fill, int horizontalSizePolicy,
+                           int verticalSizePolicy,
                            Dimension minimumSize, Dimension preferredSize,
                            Dimension maximumSize, int indent) {
-        applySize(child, minimumSize, SizeKind.MINIMUM);
-        applySize(child, preferredSize, SizeKind.PREFERRED);
-        applySize(child, maximumSize, SizeKind.MAXIMUM);
-
-        GridBagConstraints constraints = constraints(
-                row, column, rowSpan, columnSpan, anchor, fill, growX, growY);
-        constraints.insets = cellInsets(parent, row, column, rowSpan, columnSpan, indent);
-        parent.add(child, constraints);
+        parent.add(child, constraints(
+                row, column, rowSpan, columnSpan,
+                anchor, fill, horizontalSizePolicy, verticalSizePolicy,
+                minimumSize, preferredSize, maximumSize, indent));
     }
 
-    public static GridBagConstraints constraints(int row, int column,
-                                                 int rowSpan, int columnSpan,
-                                                 int anchor, int fill,
-                                                 boolean growX, boolean growY) {
-        GridBagConstraints constraints = new GridBagConstraints();
-        constraints.gridx = column;
-        constraints.gridy = row;
-        constraints.gridwidth = columnSpan;
-        constraints.gridheight = rowSpan;
-        constraints.anchor = anchor;
-        constraints.fill = fill;
-        constraints.weightx = growX ? 1.0 : 0.0;
-        constraints.weighty = growY ? 1.0 : 0.0;
-        return constraints;
+    public static GridConstraints constraints(
+            int row, int column, int rowSpan, int columnSpan,
+            int anchor, int fill, int horizontalSizePolicy,
+            int verticalSizePolicy) {
+        return constraints(
+                row, column, rowSpan, columnSpan,
+                anchor, fill, horizontalSizePolicy, verticalSizePolicy,
+                null, null, null, 0);
     }
 
-    private static Insets cellInsets(Container parent, int row, int column,
-                                     int rowSpan, int columnSpan, int indent) {
-        GridSpec spec = null;
-        if (parent instanceof JComponent) {
-            Object value = ((JComponent) parent).getClientProperty(GRID_SPEC_KEY);
-            if (value instanceof GridSpec) {
-                spec = (GridSpec) value;
-            }
-        }
-        if (spec == null) {
-            return new Insets(0, indent * 10, 0, 0);
-        }
-
-        int top = row == 0 ? spec.margin.top : spec.verticalGap / 2;
-        int bottom = row + rowSpan >= spec.rows
-                ? spec.margin.bottom : spec.verticalGap - spec.verticalGap / 2;
-        int left = column == 0 ? spec.margin.left : spec.horizontalGap / 2;
-        int right = column + columnSpan >= spec.columns
-                ? spec.margin.right : spec.horizontalGap - spec.horizontalGap / 2;
-        return new Insets(top, left + indent * 10, bottom, right);
+    public static Component spacer() {
+        return new Spacer();
     }
 
-    private static void applySize(Component component, Dimension requested, SizeKind kind) {
-        if (requested == null) {
-            return;
-        }
-        Dimension current;
-        switch (kind) {
-            case MINIMUM:
-                current = component.getMinimumSize();
-                break;
-            case MAXIMUM:
-                current = component.getMaximumSize();
-                break;
+    private static GridConstraints constraints(
+            int row, int column, int rowSpan, int columnSpan,
+            int anchor, int fill, int horizontalSizePolicy,
+            int verticalSizePolicy, Dimension minimumSize,
+            Dimension preferredSize, Dimension maximumSize, int indent) {
+        return new GridConstraints(
+                row,
+                column,
+                rowSpan,
+                columnSpan,
+                toGridAnchor(anchor),
+                toGridFill(fill),
+                horizontalSizePolicy,
+                verticalSizePolicy,
+                minimumSize,
+                preferredSize,
+                maximumSize,
+                indent,
+                false);
+    }
+
+    private static int toGridAnchor(int anchor) {
+        switch (anchor) {
+            case GridBagConstraints.NORTH:
+                return GridConstraints.ANCHOR_NORTH;
+            case GridBagConstraints.SOUTH:
+                return GridConstraints.ANCHOR_SOUTH;
+            case GridBagConstraints.EAST:
+                return GridConstraints.ANCHOR_EAST;
+            case GridBagConstraints.WEST:
+                return GridConstraints.ANCHOR_WEST;
+            case GridBagConstraints.NORTHEAST:
+                return GridConstraints.ANCHOR_NORTHEAST;
+            case GridBagConstraints.SOUTHEAST:
+                return GridConstraints.ANCHOR_SOUTHEAST;
+            case GridBagConstraints.SOUTHWEST:
+                return GridConstraints.ANCHOR_SOUTHWEST;
+            case GridBagConstraints.NORTHWEST:
+                return GridConstraints.ANCHOR_NORTHWEST;
+            case GridBagConstraints.CENTER:
             default:
-                current = component.getPreferredSize();
-                break;
+                return GridConstraints.ANCHOR_CENTER;
         }
-        Dimension normalized = new Dimension(
-                requested.width < 0 ? current.width : requested.width,
-                requested.height < 0 ? current.height : requested.height);
-        switch (kind) {
-            case MINIMUM:
-                component.setMinimumSize(normalized);
-                break;
-            case MAXIMUM:
-                component.setMaximumSize(normalized);
-                break;
+    }
+
+    private static int toGridFill(int fill) {
+        switch (fill) {
+            case GridBagConstraints.HORIZONTAL:
+                return GridConstraints.FILL_HORIZONTAL;
+            case GridBagConstraints.VERTICAL:
+                return GridConstraints.FILL_VERTICAL;
+            case GridBagConstraints.BOTH:
+                return GridConstraints.FILL_BOTH;
+            case GridBagConstraints.NONE:
             default:
-                component.setPreferredSize(normalized);
-                break;
-        }
-    }
-
-    private enum SizeKind {
-        MINIMUM,
-        PREFERRED,
-        MAXIMUM
-    }
-
-    private static final class GridSpec {
-        private final int rows;
-        private final int columns;
-        private final Insets margin;
-        private final int horizontalGap;
-        private final int verticalGap;
-
-        private GridSpec(int rows, int columns, Insets margin,
-                         int horizontalGap, int verticalGap) {
-            this.rows = rows;
-            this.columns = columns;
-            this.margin = margin;
-            this.horizontalGap = horizontalGap;
-            this.verticalGap = verticalGap;
+                return GridConstraints.FILL_NONE;
         }
     }
 }

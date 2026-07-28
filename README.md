@@ -36,7 +36,6 @@ The `jar-analyzer` project has been continuously updated for `5` years, with `65
   <a href="https://github.com/sensensen404"><img src="https://github.com/sensensen404.png?size=72" width="72" height="72" alt="sensensen404" /></a>
   <a href="https://github.com/MyDynasty"><img src="https://github.com/MyDynasty.png?size=72" width="72" height="72" alt="MyDynasty" /></a>
   <a href="https://github.com/TianMing2018"><img src="https://github.com/TianMing2018.png?size=72" width="72" height="72" alt="TianMing2018" /></a>
-  <a href="https://github.com/hacats"><img src="https://github.com/hacats.png?size=72" width="72" height="72" alt="hacats" /></a>
   <a href="https://github.com/R0ser1"><img src="https://github.com/R0ser1.png?size=72" width="72" height="72" alt="R0ser1" /></a>
   <a href="https://github.com/su18"><img src="https://github.com/su18.png?size=72" width="72" height="72" alt="su18" /></a>
   <a href="https://github.com/7-e1even"><img src="https://github.com/7-e1even.png?size=72" width="72" height="72" alt="7eleven" /></a>
@@ -272,8 +271,7 @@ Jar Analyzer
 - AII (https://github.com/AII12754)
 - phil (https://github.com/sensensen404)
 - MyDynasty (https://github.com/MyDynasty) 
-- TianMing2018 (https://github.com/TianMing2018) 
-- hacats (https://github.com/hacats) 
+- TianMing2018 (https://github.com/TianMing2018)
 - R0ser1 (https://github.com/R0ser1) 
 - su18 (https://github.com/su18) 
 - 7eleven (https://github.com/7-e1even)

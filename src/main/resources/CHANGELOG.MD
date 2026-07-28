@@ -545,7 +545,6 @@
 
 - 4ra1n (https://github.com/4ra1n)
 - MyDynasty (https://github.com/MyDynasty)
-- hacats (https://github.com/hacats)
 
 ## 4.0
 

@@ -24,9 +24,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * 现代化 AI 配置面板（多配置 + 启用切换）
@@ -394,13 +391,7 @@ public class AISettingsDialog extends JDialog {
         suppressEvents = true;
         try {
             modelBox.removeAllItems();
-            List<String> options = new ArrayList<>();
-            if (p == AIProvider.DEEPSEEK) {
-                options.addAll(Arrays.asList("deepseek-v4-pro", "deepseek-v4-flash"));
-            } else if (p == AIProvider.GLM) {
-                options.addAll(Arrays.asList("glm-5", "glm-5-turbo", "glm-5.1", "glm-4.7"));
-            }
-            for (String o : options) {
+            for (String o : p.getModelOptions()) {
                 modelBox.addItem(o);
             }
             if (currentModel != null && !currentModel.isEmpty()) {

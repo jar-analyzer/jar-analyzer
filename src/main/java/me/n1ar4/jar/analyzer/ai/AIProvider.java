@@ -10,6 +10,10 @@
 
 package me.n1ar4.jar.analyzer.ai;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * 内置 AI Provider（仅展示已支持的厂商，实际通过 OpenAI 兼容协议对接）
  * <p>
@@ -20,11 +24,13 @@ public enum AIProvider {
     DEEPSEEK("DeepSeek",
             "https://api.deepseek.com",
             "deepseek-v4-pro",
-            "https://platform.deepseek.com/api_keys"),
+            "https://platform.deepseek.com/api_keys",
+            "deepseek-v4-pro", "deepseek-v4-flash"),
     GLM("智谱 GLM",
             "https://open.bigmodel.cn/api/paas/v4",
-            "glm-5",
-            "https://bigmodel.cn/apikey/platform"),
+            "glm-5.2",
+            "https://bigmodel.cn/apikey/platform",
+            "glm-5.2", "glm-5", "glm-5-turbo", "glm-5.1", "glm-4.7"),
     CUSTOM("自定义 (OpenAI 兼容)",
             "",
             "",
@@ -34,12 +40,16 @@ public enum AIProvider {
     private final String defaultBaseUrl;
     private final String defaultModel;
     private final String applyUrl;
+    private final List<String> modelOptions;
 
-    AIProvider(String displayName, String defaultBaseUrl, String defaultModel, String applyUrl) {
+    AIProvider(String displayName, String defaultBaseUrl, String defaultModel,
+               String applyUrl, String... modelOptions) {
         this.displayName = displayName;
         this.defaultBaseUrl = defaultBaseUrl;
         this.defaultModel = defaultModel;
         this.applyUrl = applyUrl;
+        this.modelOptions = Collections.unmodifiableList(
+                Arrays.asList(modelOptions.clone()));
     }
 
     public String getDisplayName() {
@@ -56,6 +66,10 @@ public enum AIProvider {
 
     public String getApplyUrl() {
         return applyUrl;
+    }
+
+    public List<String> getModelOptions() {
+        return modelOptions;
     }
 
     @Override

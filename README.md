@@ -94,13 +94,6 @@ Jar Analyzer
 
 一般情况建议从 `Github Release` 页面下载：[下载地址](https://github.com/jar-analyzer/jar-analyzer/releases/latest)
 
-`6.0` 版本也提供了 `蓝奏云` 的下载地址：
-
-- [jar-analyzer-6.0-windows-system.zip](https://jar-analyzer.lanzout.com/ipTAj3sr1lde)
-- [jar-analyzer-6.0-windows-full.zip](https://jar-analyzer.lanzout.com/i2ClC3sr1jva)
-- [jar-analyzer-6.0-windows-25.zip](https://jar-analyzer.lanzout.com/ibzlS3sr1hna)
-- [jar-analyzer-6.0.zip](https://jar-analyzer.lanzout.com/iurpu3sr1ecb)
-
 (2) 你是 `Java` 老手
 
 - 选择 `JAR` 分析结束后，人工搜索 `sink` 逐步跟调用，内部集成了众多常见的 `Java` 漏洞 `sink`

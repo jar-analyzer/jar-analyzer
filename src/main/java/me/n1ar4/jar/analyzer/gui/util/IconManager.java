@@ -32,11 +32,6 @@ public class IconManager {
     public static ImageIcon gsIcon;
     public static ImageIcon luceneIcon;
     public static ImageIcon systemIcon;
-    public static ImageIcon stringIcon;
-    public static ImageIcon callIcon;
-    public static ImageIcon pubIcon;
-    public static ImageIcon fileIcon;
-    public static ImageIcon fileSmallIcon;
     public static ImageIcon engineIcon;
     public static ImageIcon cleanIcon;
     public static ImageIcon remoteIcon;
@@ -125,32 +120,6 @@ public class IconManager {
                             .getClassLoader().getResourceAsStream("img/system.png"))));
             resizedImage = systemIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
             systemIcon = new ImageIcon(resizedImage);
-
-            stringIcon = new ImageIcon(ImageIO.read(
-                    Objects.requireNonNull(IconManager.class
-                            .getClassLoader().getResourceAsStream("img/string.png"))));
-
-            callIcon = new ImageIcon(ImageIO.read(
-                    Objects.requireNonNull(IconManager.class
-                            .getClassLoader().getResourceAsStream("img/call.png"))));
-            resizedImage = callIcon.getImage().getScaledInstance(70, 30, Image.SCALE_SMOOTH);
-            callIcon = new ImageIcon(resizedImage);
-
-            pubIcon = new ImageIcon(ImageIO.read(
-                    Objects.requireNonNull(IconManager.class
-                            .getClassLoader().getResourceAsStream("img/pub.png"))));
-
-            fileIcon = new ImageIcon(ImageIO.read(
-                    Objects.requireNonNull(IconManager.class
-                            .getClassLoader().getResourceAsStream("img/file.png"))));
-            resizedImage = fileIcon.getImage().getScaledInstance(70, 30, Image.SCALE_SMOOTH);
-            fileIcon = new ImageIcon(resizedImage);
-
-            fileSmallIcon = new ImageIcon(ImageIO.read(
-                    Objects.requireNonNull(IconManager.class
-                            .getClassLoader().getResourceAsStream("img/file.png"))));
-            resizedImage = fileSmallIcon.getImage().getScaledInstance(35, 15, Image.SCALE_SMOOTH);
-            fileSmallIcon = new ImageIcon(resizedImage);
 
             engineIcon = new ImageIcon(ImageIO.read(
                     Objects.requireNonNull(IconManager.class

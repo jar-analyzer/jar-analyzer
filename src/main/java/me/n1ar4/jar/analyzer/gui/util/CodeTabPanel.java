@@ -431,10 +431,12 @@ public class CodeTabPanel extends JPanel {
         JPopupMenu popup = new JPopupMenu();
 
         JMenuItem closeItem = new JMenuItem("Close");
+        closeItem.setIcon(SvgManager.TabCloseIcon);
         closeItem.addActionListener(ev -> closeTabAt(tabIndex));
         popup.add(closeItem);
 
         JMenuItem closeOthersItem = new JMenuItem("Close Others");
+        closeOthersItem.setIcon(SvgManager.TabCloseOthersIcon);
         closeOthersItem.addActionListener(ev -> {
             tabbedPane.setSelectedIndex(tabIndex);
             closeOtherTabs();
@@ -442,12 +444,14 @@ public class CodeTabPanel extends JPanel {
         popup.add(closeOthersItem);
 
         JMenuItem closeAllItem = new JMenuItem("Close All");
+        closeAllItem.setIcon(SvgManager.TabCloseAllIcon);
         closeAllItem.addActionListener(ev -> closeAllTabs());
         popup.add(closeAllItem);
 
         popup.addSeparator();
 
         JMenuItem closeLeftItem = new JMenuItem("Close Tabs to the Left");
+        closeLeftItem.setIcon(SvgManager.TabCloseLeftIcon);
         closeLeftItem.addActionListener(ev -> {
             for (int i = tabIndex - 1; i >= 0; i--) {
                 closeTabAt(i);
@@ -457,6 +461,7 @@ public class CodeTabPanel extends JPanel {
         popup.add(closeLeftItem);
 
         JMenuItem closeRightItem = new JMenuItem("Close Tabs to the Right");
+        closeRightItem.setIcon(SvgManager.TabCloseRightIcon);
         closeRightItem.addActionListener(ev -> {
             for (int i = tabbedPane.getTabCount() - 1; i > tabIndex; i--) {
                 closeTabAt(i);

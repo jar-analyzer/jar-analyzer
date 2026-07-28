@@ -87,6 +87,44 @@ public class SvgManager {
     public static FlatSVGIcon AiSettingsIcon = new FlatSVGIcon("svg/aiSettings.svg", 16, 16);
     public static FlatSVGIcon AiGenIcon = new FlatSVGIcon("svg/aiGen.svg", 16, 16);
 
+    // ---- context menu icons --------------------------------------------
+    // A single 16x16 visual system for the file tree, code editor and
+    // code-tab popup menus. These replace the old stretched PNG assets.
+    public static FlatSVGIcon MenuDecompileIcon =
+            new FlatSVGIcon("svg/context/menuDecompile.svg", 16, 16);
+    public static FlatSVGIcon MenuSuperClassIcon =
+            new FlatSVGIcon("svg/context/menuSuperClass.svg", 16, 16);
+    public static FlatSVGIcon MenuRevealIcon =
+            new FlatSVGIcon("svg/context/menuReveal.svg", 16, 16);
+    public static FlatSVGIcon MenuExpandIcon =
+            new FlatSVGIcon("svg/context/menuExpand.svg", 16, 16);
+    public static FlatSVGIcon MenuCollapseIcon =
+            new FlatSVGIcon("svg/context/menuCollapse.svg", 16, 16);
+    public static FlatSVGIcon MenuExpandAllIcon =
+            new FlatSVGIcon("svg/context/menuExpandAll.svg", 16, 16);
+    public static FlatSVGIcon MenuCollapseAllIcon =
+            new FlatSVGIcon("svg/context/menuCollapseAll.svg", 16, 16);
+    public static FlatSVGIcon MenuStringSearchIcon =
+            new FlatSVGIcon("svg/context/menuStringSearch.svg", 16, 16);
+    public static FlatSVGIcon MenuCallSearchIcon =
+            new FlatSVGIcon("svg/context/menuCallSearch.svg", 16, 16);
+    public static FlatSVGIcon MenuClassSearchIcon =
+            new FlatSVGIcon("svg/context/menuClassSearch.svg", 16, 16);
+    public static FlatSVGIcon MenuGlobalSearchIcon =
+            new FlatSVGIcon("svg/context/menuGlobalSearch.svg", 16, 16);
+    public static FlatSVGIcon MenuAiExplainIcon =
+            new FlatSVGIcon("svg/context/menuAiExplain.svg", 16, 16);
+    public static FlatSVGIcon TabCloseIcon =
+            new FlatSVGIcon("svg/context/tabClose.svg", 16, 16);
+    public static FlatSVGIcon TabCloseOthersIcon =
+            new FlatSVGIcon("svg/context/tabCloseOthers.svg", 16, 16);
+    public static FlatSVGIcon TabCloseAllIcon =
+            new FlatSVGIcon("svg/context/tabCloseAll.svg", 16, 16);
+    public static FlatSVGIcon TabCloseLeftIcon =
+            new FlatSVGIcon("svg/context/tabCloseLeft.svg", 16, 16);
+    public static FlatSVGIcon TabCloseRightIcon =
+            new FlatSVGIcon("svg/context/tabCloseRight.svg", 16, 16);
+
     // ---- Workflow (DAG canvas) icons -----------------------------------
     // Per-node-type glyphs rendered inside a node card on the workflow
     // canvas (28x28 looks crisp on HiDPI without jagged edges).

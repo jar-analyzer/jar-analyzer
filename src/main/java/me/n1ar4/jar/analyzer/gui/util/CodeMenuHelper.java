@@ -38,7 +38,7 @@ public class CodeMenuHelper {
         JPopupMenu popupMenu = new JPopupMenu();
 
         JMenuItem selectItem = new JMenuItem("SELECT STRING (LDC)");
-        selectItem.setIcon(IconManager.stringIcon);
+        selectItem.setIcon(SvgManager.MenuStringSearchIcon);
         selectItem.addActionListener(e -> {
             String str = rArea.getSelectedText();
 
@@ -62,7 +62,7 @@ public class CodeMenuHelper {
         popupMenu.add(selectItem);
 
         JMenuItem searchCallItem = new JMenuItem("SEARCH CALL INFO");
-        searchCallItem.setIcon(IconManager.callIcon);
+        searchCallItem.setIcon(SvgManager.MenuCallSearchIcon);
         searchCallItem.addActionListener(e -> {
             String methodName = rArea.getSelectedText();
 
@@ -102,7 +102,7 @@ public class CodeMenuHelper {
         popupMenu.add(searchCallItem);
 
         JMenuItem classItem = new JMenuItem("SEARCH CLASS FROM JARS");
-        classItem.setIcon(IconManager.pubIcon);
+        classItem.setIcon(SvgManager.MenuClassSearchIcon);
         classItem.addActionListener(e -> {
             String className = rArea.getSelectedText();
 
@@ -127,19 +127,19 @@ public class CodeMenuHelper {
         popupMenu.add(classItem);
 
         JMenuItem openItem = new JMenuItem("OPEN IN EXPLORER");
-        openItem.setIcon(IconManager.fileIcon);
+        openItem.setIcon(SvgManager.MenuRevealIcon);
         openItem.addActionListener(e -> OpenUtil.openCurrent());
         popupMenu.add(openItem);
 
         JMenuItem luceneItem = new JMenuItem("OPEN GLOBAL SEARCH");
-        luceneItem.setIcon(IconManager.luceneIcon);
+        luceneItem.setIcon(SvgManager.MenuGlobalSearchIcon);
         luceneItem.addActionListener(e -> LuceneSearchForm.start(1));
         popupMenu.add(luceneItem);
 
         // ===== AI 解释代码 =====
         popupMenu.addSeparator();
         JMenuItem aiExplainItem = new JMenuItem("AI 解释这段代码");
-        aiExplainItem.setIcon(SvgManager.AiChatIcon);
+        aiExplainItem.setIcon(SvgManager.MenuAiExplainIcon);
         aiExplainItem.addActionListener(e -> {
             String selected = rArea.getSelectedText();
             String code = (selected != null && !selected.trim().isEmpty())

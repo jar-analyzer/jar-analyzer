@@ -3,7 +3,7 @@ package me.n1ar4.jar.analyzer.gui.util;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import org.junit.jupiter.api.Test;
 
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

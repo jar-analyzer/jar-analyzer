@@ -21,11 +21,10 @@ import me.n1ar4.log.Logger;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipFile;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.*;
 
 @SuppressWarnings("all")
@@ -49,6 +48,100 @@ public class JarUtil {
             }
         }
         return false;
+    }
+
+    /**
+     * Resolves an untrusted archive entry to a writable path under tempDir.
+     * The returned path is the only path callers may use for extraction.
+     */
+    static Path safeExtractionPath(Path tempDir, String entryName) throws IOException {
+        if (tempDir == null) {
+            throw new IOException("temp directory is null");
+        }
+        if (entryName == null || entryName.indexOf('\0') >= 0) {
+            throw new IOException("invalid archive entry name");
+        }
+
+        // ZIP names use '/', but treating '\' as a separator as well prevents
+        // platform-dependent traversal and Windows paths from passing on Unix.
+        String portableName = entryName.replace('\\', '/');
+        if (portableName.isEmpty() || portableName.startsWith("/")
+                || hasWindowsDrivePrefix(portableName)) {
+            throw new IOException("absolute archive entry rejected: " + entryName);
+        }
+
+        final Path relativePath;
+        try {
+            relativePath = Paths.get(portableName);
+        } catch (InvalidPathException e) {
+            throw new IOException("invalid archive entry rejected: " + entryName, e);
+        }
+        if (relativePath.isAbsolute()) {
+            throw new IOException("absolute archive entry rejected: " + entryName);
+        }
+
+        Path root = tempDir.toAbsolutePath().normalize();
+        Path target = root.resolve(relativePath).normalize();
+        if (target.equals(root) || !target.startsWith(root)) {
+            throw new IOException("archive entry escapes temp directory: " + entryName);
+        }
+
+        Files.createDirectories(root);
+        Path parent = target.getParent();
+        rejectSymbolicLinkComponents(root, parent);
+        Files.createDirectories(parent);
+        rejectSymbolicLinkComponents(root, parent);
+
+        // Resolve existing directory links as a second containment check.
+        Path realRoot = root.toRealPath();
+        Path realParent = parent.toRealPath();
+        if (!realParent.startsWith(realRoot)) {
+            throw new IOException("archive entry escapes temp directory: " + entryName);
+        }
+        if (Files.isSymbolicLink(target)) {
+            throw new IOException("symbolic-link archive target rejected: " + entryName);
+        }
+        return target;
+    }
+
+    private static boolean hasWindowsDrivePrefix(String path) {
+        return path.length() >= 2
+                && ((path.charAt(0) >= 'A' && path.charAt(0) <= 'Z')
+                || (path.charAt(0) >= 'a' && path.charAt(0) <= 'z'))
+                && path.charAt(1) == ':';
+    }
+
+    private static void rejectSymbolicLinkComponents(Path root, Path parent)
+            throws IOException {
+        Path current = root;
+        for (Path component : root.relativize(parent)) {
+            current = current.resolve(component);
+            if (Files.isSymbolicLink(current)) {
+                throw new IOException("symbolic link in extraction path: " + current);
+            }
+        }
+    }
+
+    private static void copyArchiveEntry(ZipFile jarFile,
+                                         ZipArchiveEntry jarEntry,
+                                         Path target) throws IOException {
+        try (InputStream input = jarFile.getInputStream(jarEntry);
+             OutputStream output = Files.newOutputStream(target,
+                     StandardOpenOption.CREATE,
+                     StandardOpenOption.TRUNCATE_EXISTING,
+                     StandardOpenOption.WRITE,
+                     LinkOption.NOFOLLOW_LINKS)) {
+            IOUtil.copy(input, output);
+        }
+    }
+
+    private static Path safeExtractionPathOrNull(Path tempDir, String entryName) {
+        try {
+            return safeExtractionPath(tempDir, entryName);
+        } catch (IOException e) {
+            logger.warn("reject unsafe archive entry: {}", entryName);
+            return null;
+        }
     }
 
     public static List<ClassFileEntity> resolveNormalJarFile(String jarPath, Integer jarId) {
@@ -198,24 +291,24 @@ public class JarUtil {
                         return;
                     }
 
-                    ClassFileEntity classFile = new ClassFileEntity(saveClass, jarPath, jarId);
+                    Path fullPath;
+                    try {
+                        fullPath = safeExtractionPath(tmpDir, jarPathStr);
+                    } catch (IOException e) {
+                        logger.warn("reject unsafe CLASS path: {}", jarPathStr);
+                        return;
+                    }
+                    try (InputStream input = Files.newInputStream(Paths.get(backPath));
+                         OutputStream output = Files.newOutputStream(fullPath,
+                                 StandardOpenOption.CREATE,
+                                 StandardOpenOption.TRUNCATE_EXISTING,
+                                 StandardOpenOption.WRITE,
+                                 LinkOption.NOFOLLOW_LINKS)) {
+                        IOUtil.copy(input, output);
+                    }
+                    ClassFileEntity classFile = new ClassFileEntity(saveClass, fullPath, jarId);
                     classFile.setJarName("class");
                     classFileSet.add(classFile);
-
-                    Path fullPath = tmpDir.resolve(jarPathStr);
-                    Path parPath = fullPath.getParent();
-                    if (!Files.exists(parPath)) {
-                        Files.createDirectories(parPath);
-                    }
-                    try {
-                        Files.createFile(fullPath);
-                    } catch (Exception ignored) {
-                    }
-                    InputStream fis = Files.newInputStream(Paths.get(backPath));
-                    OutputStream outputStream = Files.newOutputStream(fullPath);
-                    IOUtil.copy(fis, outputStream);
-                    outputStream.close();
-                    fis.close();
                 } else {
                     return;
                 }
@@ -225,63 +318,28 @@ public class JarUtil {
                 Enumeration<? extends ZipArchiveEntry> entries = jarFile.getEntries();
                 while (entries.hasMoreElements()) {
                     ZipArchiveEntry jarEntry = entries.nextElement();
-                    // =============== 2024/04/26 修复 ZIP SLIP 漏洞 ===============
                     String jarEntryName = jarEntry.getName();
-                    // 第一次检查是否包含 ../ ..\\ 绕过
-                    if (jarEntryName.contains("../") || jarEntryName.contains("..\\")) {
-                        logger.warn("detect zip slip vulnearbility");
-                        // 不抛出异常只跳过这个文件继续处理其他文件
-                        continue;
-                    }
-                    // 可能还有其他的绕过情况？
-                    // 先 normalize 处理 ../ 情况
-                    // 再保证 entryPath 绝对路径必须以解压临时目录 tmpDir 开头
-                    Path entryPath = tmpDir.resolve(jarEntryName).toAbsolutePath().normalize();
-                    Path tmpDirAbs = tmpDir.toAbsolutePath();
-                    if (!entryPath.toString().startsWith(tmpDirAbs.toString())) {
-                        // 不抛出异常只跳过这个文件继续处理其他文件
-                        logger.warn("detect zip slip vulnearbility");
-                        continue;
-                    }
-                    // ============================================================
-                    Path fullPath = tmpDir.resolve(jarEntryName);
                     if (!jarEntry.isDirectory()) {
                         // 处理配置文件
                         if (isConfigFile(jarEntryName)) {
-                            Path dirName = fullPath.getParent();
-                            if (!Files.exists(dirName)) {
-                                Files.createDirectories(dirName);
+                            Path fullPath = safeExtractionPathOrNull(tmpDir, jarEntryName);
+                            if (fullPath == null) {
+                                continue;
                             }
-                            try {
-                                Files.createFile(fullPath);
-                            } catch (Exception ignored) {
-                            }
-                            OutputStream outputStream = Files.newOutputStream(fullPath);
-                            InputStream temp = jarFile.getInputStream(jarEntry);
-                            IOUtil.copy(temp, outputStream);
-                            temp.close();
-                            outputStream.close();
+                            copyArchiveEntry(jarFile, jarEntry, fullPath);
                             logger.info("save config file: {}", jarEntryName);
                             continue;
                         }
 
                         if (!jarEntry.getName().endsWith(".class")) {
                             if (AnalyzeEnv.jarsInJar && jarEntry.getName().endsWith(".jar")) {
+                                Path fullPath = safeExtractionPathOrNull(tmpDir, jarEntryName);
+                                if (fullPath == null) {
+                                    continue;
+                                }
                                 LogUtil.info("analyze jars in jar");
-                                Path dirName = fullPath.getParent();
-                                if (!Files.exists(dirName)) {
-                                    Files.createDirectories(dirName);
-                                }
-                                try {
-                                    Files.createFile(fullPath);
-                                } catch (Exception ignored) {
-                                }
-                                OutputStream outputStream = Files.newOutputStream(fullPath);
-                                InputStream temp = jarFile.getInputStream(jarEntry);
-                                IOUtil.copy(temp, outputStream);
-                                temp.close();
+                                copyArchiveEntry(jarFile, jarEntry, fullPath);
                                 doInternal(jarId, fullPath, tmpDir, text, whiteText);
-                                outputStream.close();
                             }
                             continue;
                         }
@@ -290,15 +348,11 @@ public class JarUtil {
                             continue;
                         }
 
-                        Path dirName = fullPath.getParent();
-                        if (!Files.exists(dirName)) {
-                            Files.createDirectories(dirName);
+                        Path fullPath = safeExtractionPathOrNull(tmpDir, jarEntryName);
+                        if (fullPath == null) {
+                            continue;
                         }
-                        OutputStream outputStream = Files.newOutputStream(fullPath);
-                        InputStream temp = jarFile.getInputStream(jarEntry);
-                        IOUtil.copy(temp, outputStream);
-                        temp.close();
-                        outputStream.close();
+                        copyArchiveEntry(jarFile, jarEntry, fullPath);
                         ClassFileEntity classFile = new ClassFileEntity(jarEntry.getName(), fullPath, jarId);
                         String splitStr;
                         if (OSUtil.isWindows()) {
@@ -326,42 +380,15 @@ public class JarUtil {
             Enumeration<? extends ZipArchiveEntry> entries = jarFile.getEntries();
             while (entries.hasMoreElements()) {
                 ZipArchiveEntry jarEntry = entries.nextElement();
-                // =============== 2024/04/26 修复 ZIP SLIP 漏洞 ===============
                 String jarEntryName = jarEntry.getName();
-                // 第一次检查是否包含 ../ ..\\ 绕过
-                if (jarEntryName.contains("../") || jarEntryName.contains("..\\")) {
-                    logger.warn("detect zip slip vulnearbility");
-                    // 不抛出异常只跳过这个文件继续处理其他文件
-                    continue;
-                }
-                // 可能还有其他的绕过情况？
-                // 先 normalize 处理 ../ 情况
-                // 再保证 entryPath 绝对路径必须以解压临时目录 tmpDir 开头
-                Path entryPath = tmpDir.resolve(jarEntryName).toAbsolutePath().normalize();
-                Path tmpDirAbs = tmpDir.toAbsolutePath();
-                if (!entryPath.toString().startsWith(tmpDirAbs.toString())) {
-                    // 不抛出异常只跳过这个文件继续处理其他文件
-                    logger.warn("detect zip slip vulnearbility");
-                    continue;
-                }
-                // ============================================================
-                Path fullPath = tmpDir.resolve(jarEntryName);
                 if (!jarEntry.isDirectory()) {
                     // 处理配置文件
                     if (isConfigFile(jarEntryName)) {
-                        Path dirName = fullPath.getParent();
-                        if (!Files.exists(dirName)) {
-                            Files.createDirectories(dirName);
+                        Path fullPath = safeExtractionPathOrNull(tmpDir, jarEntryName);
+                        if (fullPath == null) {
+                            continue;
                         }
-                        try {
-                            Files.createFile(fullPath);
-                        } catch (Exception ignored) {
-                        }
-                        OutputStream outputStream = Files.newOutputStream(fullPath);
-                        InputStream temp = jarFile.getInputStream(jarEntry);
-                        IOUtil.copy(temp, outputStream);
-                        temp.close();
-                        outputStream.close();
+                        copyArchiveEntry(jarFile, jarEntry, fullPath);
                         logger.info("save config file: {}", jarEntryName);
                         continue;
                     }
@@ -374,15 +401,11 @@ public class JarUtil {
                         continue;
                     }
 
-                    Path dirName = fullPath.getParent();
-                    if (!Files.exists(dirName)) {
-                        Files.createDirectories(dirName);
+                    Path fullPath = safeExtractionPathOrNull(tmpDir, jarEntryName);
+                    if (fullPath == null) {
+                        continue;
                     }
-                    OutputStream outputStream = Files.newOutputStream(fullPath);
-                    InputStream temp = jarFile.getInputStream(jarEntry);
-                    IOUtil.copy(temp, outputStream);
-                    temp.close();
-                    outputStream.close();
+                    copyArchiveEntry(jarFile, jarEntry, fullPath);
                     ClassFileEntity classFile = new ClassFileEntity(jarEntry.getName(), fullPath, jarId);
                     String splitStr;
                     if (OSUtil.isWindows()) {

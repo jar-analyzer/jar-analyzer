@@ -12,21 +12,28 @@ package me.n1ar4.jar.analyzer.gui;
 
 import me.n1ar4.jar.analyzer.gui.util.SwingLayout;
 import me.n1ar4.jar.analyzer.gui.util.layout.GridConstraints;
+import me.n1ar4.jar.analyzer.mcp.McpClientConfig;
 import me.n1ar4.jar.analyzer.mcp.McpConfig;
 import me.n1ar4.jar.analyzer.mcp.McpEventListener;
 import me.n1ar4.jar.analyzer.mcp.McpServerLauncher;
 import me.n1ar4.jar.analyzer.mcp.tools.ToolDefinition;
 import me.n1ar4.jar.analyzer.mcp.tools.ToolRegistry;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -54,6 +61,7 @@ public class MCPPanel extends JPanel implements McpEventListener {
     private final JCheckBox authBox = new JCheckBox("启用 Token 鉴权");
     private final JTextField tokenField = new JTextField("JAR-ANALYZER-MCP-TOKEN");
     private final JCheckBox debugBox = new JCheckBox("DEBUG 日志");
+    private final JButton clientConfigBtn = new JButton("查看 / 复制 MCP 配置");
 
     // ------- group: control -------
     private final JButton startBtn = new JButton("启动 MCP");
@@ -149,17 +157,22 @@ public class MCPPanel extends JPanel implements McpEventListener {
                 GridBagConstraints.WEST, GridBagConstraints.NONE,
                 SwingLayout.SIZEPOLICY_FIXED,
                 SwingLayout.SIZEPOLICY_FIXED));
-        p.add(new JLabel("Token"), gc(2, 1, 1, 1,
-                GridBagConstraints.WEST, GridBagConstraints.NONE,
-                SwingLayout.SIZEPOLICY_FIXED,
-                SwingLayout.SIZEPOLICY_FIXED));
-        p.add(tokenField, gc(2, 2, 1, 2,
+
+        JPanel tokenPanel = new JPanel(new BorderLayout(6, 0));
+        tokenPanel.setOpaque(false);
+        tokenPanel.add(new JLabel("Token"), BorderLayout.WEST);
+        tokenPanel.add(tokenField, BorderLayout.CENTER);
+        p.add(tokenPanel, gc(2, 1, 1, 3,
                 GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
                 SwingLayout.SIZEPOLICY_WANT_GROW,
                 SwingLayout.SIZEPOLICY_FIXED));
 
-        p.add(debugBox, gc(3, 0, 1, 4,
+        p.add(debugBox, gc(3, 0, 1, 2,
                 GridBagConstraints.WEST, GridBagConstraints.NONE,
+                SwingLayout.SIZEPOLICY_FIXED,
+                SwingLayout.SIZEPOLICY_FIXED));
+        p.add(clientConfigBtn, gc(3, 2, 1, 2,
+                GridBagConstraints.EAST, GridBagConstraints.NONE,
                 SwingLayout.SIZEPOLICY_FIXED,
                 SwingLayout.SIZEPOLICY_FIXED));
 
@@ -299,6 +312,84 @@ public class MCPPanel extends JPanel implements McpEventListener {
         };
         startBtn.addActionListener(startAl);
         stopBtn.addActionListener(stopAl);
+        clientConfigBtn.addActionListener(e -> showClientConfig());
+    }
+
+    private void showClientConfig() {
+        List<McpClientConfig.Transport> transports = new ArrayList<>();
+        if (sseBox.isSelected()) {
+            transports.add(McpClientConfig.Transport.SSE);
+        }
+        if (streamableBox.isSelected()) {
+            transports.add(McpClientConfig.Transport.STREAMABLE_HTTP);
+        }
+        if (transports.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "请先选择 SSE 或 Streamable HTTP。",
+                    "MCP", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String bind = bindField.getText().trim();
+        int port = parseInt(portField.getText().trim(), 20032);
+        if (port < 1 || port > 65535) {
+            JOptionPane.showMessageDialog(this,
+                    "端口必须在 1 到 65535 之间。",
+                    "MCP", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        JComboBox<McpClientConfig.Transport> transportBox =
+                new JComboBox<>(transports.toArray(new McpClientConfig.Transport[0]));
+        RSyntaxTextArea configArea = new RSyntaxTextArea(9, 48);
+        configArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JSON);
+        configArea.setEditable(false);
+        configArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+        configArea.setLineWrap(false);
+        configArea.setHighlightCurrentLine(false);
+        configArea.setAntiAliasingEnabled(true);
+        RTextScrollPane configScroll = new RTextScrollPane(configArea);
+        configScroll.setLineNumbersEnabled(false);
+
+        Runnable refreshConfig = () -> {
+            McpClientConfig.Transport selected =
+                    (McpClientConfig.Transport) transportBox.getSelectedItem();
+            configArea.setText(McpClientConfig.build(selected, bind, port));
+            configArea.setCaretPosition(0);
+        };
+        transportBox.addActionListener(e -> refreshConfig.run());
+        refreshConfig.run();
+
+        JButton copyBtn = new JButton("一键复制配置");
+        copyBtn.addActionListener(e -> {
+            try {
+                StringSelection selection = new StringSelection(configArea.getText());
+                Toolkit.getDefaultToolkit().getSystemClipboard()
+                        .setContents(selection, selection);
+                copyBtn.setText("已复制");
+                Timer timer = new Timer(1200, event -> copyBtn.setText("一键复制配置"));
+                timer.setRepeats(false);
+                timer.start();
+            } catch (IllegalStateException | HeadlessException | SecurityException ex) {
+                JOptionPane.showMessageDialog(this,
+                        "复制失败: " + ex.getMessage(),
+                        "MCP", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        JPanel selectorPanel = new JPanel(new BorderLayout(8, 0));
+        selectorPanel.add(new JLabel("传输方式"), BorderLayout.WEST);
+        selectorPanel.add(transportBox, BorderLayout.CENTER);
+        selectorPanel.add(copyBtn, BorderLayout.EAST);
+
+        JPanel content = new JPanel(new BorderLayout(0, 8));
+        content.add(selectorPanel, BorderLayout.NORTH);
+        content.add(configScroll, BorderLayout.CENTER);
+        content.add(new JLabel("配置内容会根据已启用的传输方式和当前 Bind / Port 自动生成。"),
+                BorderLayout.SOUTH);
+
+        JOptionPane.showMessageDialog(this, content,
+                "MCP 客户端配置", JOptionPane.PLAIN_MESSAGE);
     }
 
     private void doStart() {

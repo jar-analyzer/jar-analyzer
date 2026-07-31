@@ -4,7 +4,8 @@
 
 更新日志：
 
-- [优化] 替代所有 `IDEA GUI Designer` 为原生 `Swing`
+- [优化] 所有 `GUI Designer` 换成原生 `Swing` @4ra1n
+- [优化] 优化 `MCP` 面板 @4ra1n
 
 感谢以下用户的贡献:
 

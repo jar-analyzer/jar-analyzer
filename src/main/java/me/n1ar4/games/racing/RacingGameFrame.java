@@ -17,7 +17,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-/** Original, asset-light lane racing game bundled with Jar Analyzer. */
+/**
+ * Original, asset-light lane racing game bundled with Jar Analyzer.
+ */
 public final class RacingGameFrame extends GameFrame {
     private static final long serialVersionUID = 1L;
 

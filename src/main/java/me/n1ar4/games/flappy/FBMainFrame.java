@@ -20,7 +20,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 
-/** Rewritten Flappy Bird: pure model, vector UI and managed game loop. */
+/**
+ * Rewritten Flappy Bird: pure model, vector UI and managed game loop.
+ */
 public final class FBMainFrame extends GameFrame {
     private static final long serialVersionUID = 1L;
     private final FlappyGame game = new FlappyGame();

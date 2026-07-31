@@ -58,7 +58,9 @@ public abstract class GameFrame extends JFrame {
         }
     }
 
-    /** Backward-compatible launcher for callers that do not need de-duplication. */
+    /**
+     * Backward-compatible launcher for callers that do not need de-duplication.
+     */
     public static void launch(Supplier<? extends GameFrame> factory) {
         launch(factory.getClass().getName(), factory);
     }

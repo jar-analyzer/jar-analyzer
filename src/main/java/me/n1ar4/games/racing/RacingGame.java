@@ -10,13 +10,11 @@
 
 package me.n1ar4.games.racing;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
-/** Pure game state for the bundled lane-dodging racing game. */
+/**
+ * Pure game state for the bundled lane-dodging racing game.
+ */
 public final class RacingGame {
     public static final int WORLD_WIDTH = 420;
     public static final int WORLD_HEIGHT = 640;

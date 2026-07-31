@@ -6,7 +6,9 @@
 
 package me.n1ar4.games.landlord;
 
-/** Small, thread-safe presentation clock for the initial deal animation. */
+/**
+ * Small, thread-safe presentation clock for the initial deal animation.
+ */
 final class LandlordTableAnimator {
     static final int HAND_CARDS = 51;
     static final int TOTAL_CARDS = 54;
@@ -22,7 +24,9 @@ final class LandlordTableAnimator {
         dealing = true;
     }
 
-    /** @return true only on the update that completes the deal. */
+    /**
+     * @return true only on the update that completes the deal.
+     */
     synchronized boolean update(double deltaSeconds) {
         if (!dealing) {
             return false;

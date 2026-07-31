@@ -15,13 +15,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-/** Rewritten Fight the Landlord with vector cards and a testable rule model. */
+/**
+ * Rewritten Fight the Landlord with vector cards and a testable rule model.
+ */
 public final class PokerGameFrame extends GameFrame {
     private static final long serialVersionUID = 1L;
     private final LandlordGame game = new LandlordGame();

@@ -6,14 +6,11 @@
 
 package me.n1ar4.games.landlord;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
-/** Thread-safe three-player Fight the Landlord state machine. */
+/**
+ * Thread-safe three-player Fight the Landlord state machine.
+ */
 public final class LandlordGame {
     public static final int HUMAN = 0;
     public static final int LEFT_AI = 1;
@@ -218,7 +215,9 @@ public final class LandlordGame {
         return true;
     }
 
-    /** Performs exactly one AI bid/play/pass action. */
+    /**
+     * Performs exactly one AI bid/play/pass action.
+     */
     public synchronized boolean performAiStep() {
         if (state == State.GAME_OVER || currentPlayer == HUMAN) {
             return false;

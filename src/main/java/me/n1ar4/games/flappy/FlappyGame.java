@@ -10,13 +10,11 @@
 
 package me.n1ar4.games.flappy;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
-/** Thread-safe, UI-independent model for the rewritten Flappy Bird game. */
+/**
+ * Thread-safe, UI-independent model for the rewritten Flappy Bird game.
+ */
 public final class FlappyGame {
     public static final int WIDTH = 360;
     public static final int HEIGHT = 600;

@@ -6,11 +6,7 @@
 
 package me.n1ar4.games.landlord;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public final class LandlordRules {
     private LandlordRules() {

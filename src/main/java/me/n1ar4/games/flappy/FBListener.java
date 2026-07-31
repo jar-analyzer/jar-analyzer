@@ -37,13 +37,17 @@ public class FBListener implements MouseListener, MouseMotionListener, Runnable 
     @Override
     @SuppressWarnings("all")
     public void run() {
-        while (true) {
+        while (frame.isGameRunning()) {
             frame.repaint();
             try {
                 Thread.sleep(100);
-            } catch (InterruptedException ignored) {
+            } catch (InterruptedException ex) {
+                Thread.currentThread().interrupt();
+                break;
             }
-            move();
+            if (frame.isGameRunning()) {
+                move();
+            }
         }
     }
 

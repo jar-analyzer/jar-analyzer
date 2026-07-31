@@ -16,9 +16,9 @@ import java.util.List;
 import java.util.Vector;
 
 @SuppressWarnings("unchecked")
-public class Time extends Thread {
+public class Time implements Runnable {
     Main main;
-    boolean isRun = true;
+    volatile boolean isRun = true;
     int i;
 
     public Time(Main m, int i) {
@@ -29,7 +29,15 @@ public class Time extends Thread {
     @Override
     @SuppressWarnings("all")
     public void run() {
-        while (i > -1 && isRun) {
+        try {
+            runGame();
+        } catch (GameStoppedException ignored) {
+            // Closing the frame interrupts the worker and ends the game here.
+        }
+    }
+
+    private void runGame() {
+        while (i > -1 && isRun && main.isGameRunning()) {
             main.time[1].setText("倒计时:" + i--);
             second(1);
         }
@@ -79,7 +87,7 @@ public class Time extends Thread {
             main.time[i].setVisible(false);
         }
         main.turn = main.dizhuFlag;
-        while (true) {
+        while (main.isGameRunning()) {
             if (main.turn == 1) {
                 if (main.time[0].getText().equals("不要")
                         && main.time[2].getText().equals("不要"))
@@ -111,11 +119,14 @@ public class Time extends Thread {
 
     @SuppressWarnings("all")
     public void second(int i) {
+        ensureRunning();
         try {
             Thread.sleep(i * 1000);
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            Thread.currentThread().interrupt();
+            throw new GameStoppedException();
         }
+        ensureRunning();
     }
 
     @SuppressWarnings("all")
@@ -475,7 +486,7 @@ public class Time extends Thread {
         if (player == 1) {
             int i = n;
 
-            while (main.nextPlayer == false && i >= 0) {
+            while (!main.nextPlayer && i >= 0 && main.isGameRunning()) {
 
                 main.time[player].setText("倒计时:" + i);
                 main.time[player].setVisible(true);
@@ -487,7 +498,7 @@ public class Time extends Thread {
             }
             main.nextPlayer = false;
         } else {
-            for (int i = n; i >= 0; i--) {
+            for (int i = n; i >= 0 && main.isGameRunning(); i--) {
                 second(1);
                 main.time[player].setText("倒计时:" + i);
                 main.time[player].setVisible(true);
@@ -510,7 +521,7 @@ public class Time extends Thread {
     }
 
     public boolean win() {
-        if (Main.closed()) {
+        if (!main.isGameRunning()) {
             return true;
         }
         for (int i = 0; i < 3; i++) {
@@ -530,5 +541,15 @@ public class Time extends Thread {
             }
         }
         return false;
+    }
+
+    private void ensureRunning() {
+        if (!main.isGameRunning()) {
+            throw new GameStoppedException();
+        }
+    }
+
+    private static final class GameStoppedException extends RuntimeException {
+        private static final long serialVersionUID = 1L;
     }
 }

@@ -10,6 +10,7 @@
 
 package me.n1ar4.games.flappy;
 
+import me.n1ar4.games.GameFrame;
 import org.dom4j.Element;
 
 import javax.swing.*;
@@ -18,7 +19,7 @@ import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.util.LinkedList;
 
-public class FBMainFrame extends JFrame implements InXMLAnalysis {
+public class FBMainFrame extends GameFrame implements InXMLAnalysis {
 
     private static final long serialVersionUID = 1L;
 
@@ -143,13 +144,13 @@ public class FBMainFrame extends JFrame implements InXMLAnalysis {
         FBListener listener = new FBListener(this);
         this.addMouseListener(listener);
         this.addMouseMotionListener(listener);
-        new Thread(listener).start();
+        startGameWorker("flappy-game-loop", listener);
     }
 
     private void move() {
         bird.setX((frameWidth - bird.getWidth()) / 2);
         bird.setY(frameHeight / 4 + titleImage.getHeight());
-        new Thread(bird).start();
+        startGameWorker("flappy-bird-animation", bird);
     }
 
     private void initMainFrame() {

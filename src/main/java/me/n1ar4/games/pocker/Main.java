@@ -10,13 +10,13 @@
 
 package me.n1ar4.games.pocker;
 
+import me.n1ar4.games.GameFrame;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
@@ -24,9 +24,8 @@ import java.util.Random;
 import java.util.Vector;
 
 @SuppressWarnings("unchecked")
-public class Main extends JFrame implements ActionListener {
+public class Main extends GameFrame implements ActionListener {
     public Container container = null;
-    private static volatile boolean stopAll = false;
     JButton[] landlord = new JButton[2];
     JButton[] publishCard = new JButton[2];
     int dizhuFlag;
@@ -37,12 +36,8 @@ public class Main extends JFrame implements ActionListener {
     List<Card> lordList;
     Card[] card = new Card[56];
     JTextField[] time = new JTextField[3];
-    Time t;
-    boolean nextPlayer = false;
-
-    public static boolean closed() {
-        return stopAll;
-    }
+    volatile Time t;
+    volatile boolean nextPlayer = false;
 
     public void SetMenu() {
         landlord[0] = new JButton("抢地主");
@@ -73,30 +68,35 @@ public class Main extends JFrame implements ActionListener {
         }
     }
 
-    private void onExit() {
-        stopAll = true;
-        this.dispose();
+    public Main() {
+        Init();
+        SetMenu();
+        this.setVisible(true);
+        startGameWorker("poker-game-loop", this::initializeGame);
     }
 
-    public Main() {
-        stopAll = false;
-        this.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                onExit();
-            }
-        });
+    private void initializeGame() {
         try {
-            Init();
-            SetMenu();
-            this.setVisible(true);
             CardInit();
+            if (!isGameRunning()) {
+                return;
+            }
+            t = new Time(this, 10);
             getLord();
             time[1].setVisible(true);
-            t = new Time(this, 10);
-            t.start();
+            t.run();
         } catch (Exception ex) {
-            throw new RuntimeException(ex);
+            if (isGameRunning()) {
+                throw new RuntimeException(ex);
+            }
+        }
+    }
+
+    @Override
+    protected void onGameStop() {
+        nextPlayer = true;
+        if (t != null) {
+            t.isRun = false;
         }
     }
 
@@ -112,11 +112,10 @@ public class Main extends JFrame implements ActionListener {
     }
 
     public void CardInit() throws IOException {
-
         int count = 1;
 
-        for (int i = 1; i <= 5; i++) {
-            for (int j = 1; j <= 13; j++) {
+        for (int i = 1; i <= 5 && isGameRunning(); i++) {
+            for (int j = 1; j <= 13 && isGameRunning(); j++) {
                 if ((i == 5) && (j > 2))
                     break;
                 else {
@@ -130,7 +129,7 @@ public class Main extends JFrame implements ActionListener {
 
         Random random = new Random();
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 100 && isGameRunning(); i++) {
             int a = random.nextInt(54) + 1;
             int b = random.nextInt(54) + 1;
 
@@ -145,7 +144,7 @@ public class Main extends JFrame implements ActionListener {
 
         lordList = new Vector<>();
         int t = 0;
-        for (int i = 1; i <= 54; i++) {
+        for (int i = 1; i <= 54 && isGameRunning(); i++) {
             if (i >= 52) {
                 Common.move(card[i], card[i].getLocation(), new Point(300 + (i - 52) * 80, 10));
                 lordList.add(card[i]);
@@ -174,9 +173,12 @@ public class Main extends JFrame implements ActionListener {
             container.setComponentZOrder(card[i], 0);
         }
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3 && isGameRunning(); i++) {
             Common.order(playerList[i]);
             Common.rePosition(this, playerList[i], i);
+        }
+        if (!isGameRunning()) {
+            return;
         }
         dizhu = new JLabel(new ImageIcon(ImageIO.read(
                 Objects.requireNonNull(

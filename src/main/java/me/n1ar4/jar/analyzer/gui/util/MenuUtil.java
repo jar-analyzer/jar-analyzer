@@ -11,6 +11,7 @@
 package me.n1ar4.jar.analyzer.gui.util;
 
 import com.github.rjeschke.txtmark.Processor;
+import me.n1ar4.games.GameFrame;
 import me.n1ar4.games.flappy.FBMainFrame;
 import me.n1ar4.games.pocker.Main;
 import me.n1ar4.jar.analyzer.ai.AIChatDialog;
@@ -350,10 +351,10 @@ public class MenuUtil {
             JMenu gameMenu = new JMenu("games");
             JMenuItem flappyItem = new JMenuItem("Flappy Bird");
             flappyItem.setIcon(SvgManager.TopMenuFlappyIcon);
-            flappyItem.addActionListener(e -> new FBMainFrame().startGame());
+            flappyItem.addActionListener(e -> GameFrame.launch(FBMainFrame::new));
             JMenuItem pokerItem = new JMenuItem("斗地主");
             pokerItem.setIcon(SvgManager.TopMenuCardsIcon);
-            pokerItem.addActionListener(e -> new Thread(Main::new).start());
+            pokerItem.addActionListener(e -> GameFrame.launch(Main::new));
 
             gameMenu.add(flappyItem);
             gameMenu.add(pokerItem);

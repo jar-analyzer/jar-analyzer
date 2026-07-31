@@ -6,7 +6,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
@@ -20,9 +22,11 @@ class GameFrameTest {
         SwingUtilities.invokeAndWait(() -> holder[0] = new TestGameFrame());
         TestGameFrame frame = holder[0];
 
-        frame.startWorker();
+        Thread worker = frame.startWorker();
         assertTrue(frame.started.await(2, TimeUnit.SECONDS));
         assertTrue(frame.isGameRunning());
+        assertTrue(worker.isDaemon());
+        assertEquals(Thread.MIN_PRIORITY, worker.getPriority());
 
         SwingUtilities.invokeAndWait(frame::dispose);
 
@@ -30,13 +34,30 @@ class GameFrameTest {
         assertTrue(frame.stopped.await(2, TimeUnit.SECONDS));
     }
 
+    @Test
+    void managedLoopIdlesWhileHiddenAndTerminatesOnDispose() throws Exception {
+        assumeFalse(GraphicsEnvironment.isHeadless());
+
+        TestGameFrame[] holder = new TestGameFrame[1];
+        SwingUtilities.invokeAndWait(() -> holder[0] = new TestGameFrame());
+        TestGameFrame frame = holder[0];
+        AtomicInteger ticks = new AtomicInteger();
+        Thread loop = frame.startLoop(ticks);
+
+        Thread.sleep(250);
+        assertEquals(0, ticks.get());
+        SwingUtilities.invokeAndWait(frame::dispose);
+        loop.join(2000);
+        assertFalse(loop.isAlive());
+    }
+
     private static final class TestGameFrame extends GameFrame {
         private static final long serialVersionUID = 1L;
         private final CountDownLatch started = new CountDownLatch(1);
         private final CountDownLatch stopped = new CountDownLatch(1);
 
-        private void startWorker() {
-            startGameWorker("test-game-worker", () -> {
+        private Thread startWorker() {
+            return startGameWorker("test-game-worker", () -> {
                 started.countDown();
                 try {
                     while (isGameRunning()) {
@@ -48,6 +69,11 @@ class GameFrameTest {
                     stopped.countDown();
                 }
             });
+        }
+
+        private Thread startLoop(AtomicInteger ticks) {
+            return startGameLoop("test-game-loop", 60,
+                    ignored -> ticks.incrementAndGet());
         }
     }
 }

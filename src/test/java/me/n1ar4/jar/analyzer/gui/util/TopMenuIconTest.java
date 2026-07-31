@@ -41,6 +41,7 @@ class TopMenuIconTest {
                 SvgManager.TopMenuProxyIcon,
                 SvgManager.TopMenuFlappyIcon,
                 SvgManager.TopMenuCardsIcon,
+                SvgManager.TopMenuRacingIcon,
                 SvgManager.TopMenuSettingsIcon,
                 SvgManager.TopMenuDocsIcon,
                 SvgManager.TopMenuIssueIcon,

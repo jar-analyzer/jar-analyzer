@@ -101,6 +101,7 @@ public class SvgManager {
     public static FlatSVGIcon TopMenuProxyIcon = icon("proxy");
     public static FlatSVGIcon TopMenuFlappyIcon = icon("flappy");
     public static FlatSVGIcon TopMenuCardsIcon = icon("cards");
+    public static FlatSVGIcon TopMenuRacingIcon = icon("racing");
     public static FlatSVGIcon TopMenuSettingsIcon = icon("settings");
     public static FlatSVGIcon TopMenuDocsIcon = icon("docs");
     public static FlatSVGIcon TopMenuIssueIcon = icon("issue");

@@ -13,7 +13,8 @@ package me.n1ar4.jar.analyzer.gui.util;
 import com.github.rjeschke.txtmark.Processor;
 import me.n1ar4.games.GameFrame;
 import me.n1ar4.games.flappy.FBMainFrame;
-import me.n1ar4.games.pocker.Main;
+import me.n1ar4.games.landlord.PokerGameFrame;
+import me.n1ar4.games.racing.RacingGameFrame;
 import me.n1ar4.jar.analyzer.ai.AIChatDialog;
 import me.n1ar4.jar.analyzer.ai.AISettingsDialog;
 import me.n1ar4.jar.analyzer.ai.workflow.AIWorkflowDialog;
@@ -351,13 +352,17 @@ public class MenuUtil {
             JMenu gameMenu = new JMenu("games");
             JMenuItem flappyItem = new JMenuItem("Flappy Bird");
             flappyItem.setIcon(SvgManager.TopMenuFlappyIcon);
-            flappyItem.addActionListener(e -> GameFrame.launch(FBMainFrame::new));
+            flappyItem.addActionListener(e -> GameFrame.launch("flappy", FBMainFrame::new));
             JMenuItem pokerItem = new JMenuItem("斗地主");
             pokerItem.setIcon(SvgManager.TopMenuCardsIcon);
-            pokerItem.addActionListener(e -> GameFrame.launch(Main::new));
+            pokerItem.addActionListener(e -> GameFrame.launch("landlord", PokerGameFrame::new));
+            JMenuItem racingItem = new JMenuItem("极速公路 / Racing");
+            racingItem.setIcon(SvgManager.TopMenuRacingIcon);
+            racingItem.addActionListener(e -> GameFrame.launch("racing", RacingGameFrame::new));
 
             gameMenu.add(flappyItem);
             gameMenu.add(pokerItem);
+            gameMenu.add(racingItem);
             return gameMenu;
         } catch (Exception ex) {
             logger.error("error: {}", ex.toString());

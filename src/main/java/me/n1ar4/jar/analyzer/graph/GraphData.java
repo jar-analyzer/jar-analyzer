@@ -10,10 +10,13 @@
 
 package me.n1ar4.jar.analyzer.graph;
 
+import java.util.List;
+import java.util.Map;
+
 public class GraphData {
     private String currentNodeId;
-    private String nodes;
-    private String links;
+    private List<Map<String, String>> nodes;
+    private List<Map<String, String>> links;
 
     public String getCurrentNodeId() {
         return currentNodeId;
@@ -23,19 +26,19 @@ public class GraphData {
         this.currentNodeId = currentNodeId;
     }
 
-    public String getNodes() {
+    public List<Map<String, String>> getNodes() {
         return nodes;
     }
 
-    public void setNodes(String nodes) {
+    public void setNodes(List<Map<String, String>> nodes) {
         this.nodes = nodes;
     }
 
-    public String getLinks() {
+    public List<Map<String, String>> getLinks() {
         return links;
     }
 
-    public void setLinks(String links) {
+    public void setLinks(List<Map<String, String>> links) {
         this.links = links;
     }
 }

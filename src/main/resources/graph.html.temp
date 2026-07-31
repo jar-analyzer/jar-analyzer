@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="__CSP__">
     <title>Jar Analyzer Call Graph</title>
     <script src="__D3JS__"></script>
     <style>
@@ -35,16 +36,14 @@
 </head>
 <body>
 <svg width="1200" height="800"></svg>
-<script>
+<script id="graph-data" type="application/json" nonce="__NONCE__">__GRAPH_DATA__</script>
+<script nonce="__NONCE__">
+    const graphData = JSON.parse(document.getElementById('graph-data').textContent);
     const data = {
-        nodes: [
-            __NODES__
-        ],
-        links: [
-            __LINKS__
-        ]
+        nodes: graphData.nodes,
+        links: graphData.links
     };
-    const currentMethod = '__CURRENT_NODE__';
+    const currentMethod = graphData.currentNodeId;
     const svg = d3.select('svg');
     const width = +svg.attr('width');
     const height = +svg.attr('height');

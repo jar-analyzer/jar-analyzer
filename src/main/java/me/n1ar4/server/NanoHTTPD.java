@@ -124,6 +124,17 @@ public abstract class NanoHTTPD {
         return executor == null ? 0 : executor.getQueue().size();
     }
 
+    int getMaximumWorkerCount() {
+        ThreadPoolExecutor executor = workers;
+        return executor == null ? 0 : executor.getMaximumPoolSize();
+    }
+
+    int getConnectionQueueCapacity() {
+        ThreadPoolExecutor executor = workers;
+        return executor == null ? 0 : executor.getQueue().size()
+                + executor.getQueue().remainingCapacity();
+    }
+
     private void acceptLoop() {
         while (!Thread.currentThread().isInterrupted()) {
             try {

@@ -12,13 +12,12 @@ package me.n1ar4.jar.analyzer.graph;
 
 import me.n1ar4.jar.analyzer.entity.MethodResult;
 
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
 public class RenderEngine {
-    private static final Map<String, MethodResult> methodIdStringMap = new HashMap<>();
-
     private static String generateId() {
         return UUID.randomUUID().toString();
     }
@@ -31,61 +30,69 @@ public class RenderEngine {
     public static String processGraph(MethodResult cur,
                                       List<MethodResult> caller,
                                       List<MethodResult> callee) {
-        methodIdStringMap.clear();
-        MethodData data = new MethodData();
+        String html = renderGraph(cur, caller, callee);
+        if (html == null) {
+            return null;
+        }
+        try {
+            String fileName = String.format(
+                    "jar-analyzer-graph-%d.html", System.currentTimeMillis());
+            Files.write(Paths.get(fileName),
+                    html.getBytes(StandardCharsets.UTF_8));
+            return fileName;
+        } catch (Exception ignored) {
+        }
+        return null;
+    }
+
+    static String renderGraph(MethodResult cur,
+                              List<MethodResult> caller,
+                              List<MethodResult> callee) {
+        Map<String, MethodResult> methods = new LinkedHashMap<>();
         String curId = generateId();
-        data.setUuid(curId);
-        data.setMethodString(getShortClassName(cur.getClassName()) + " " + cur.getMethodName());
         List<String> callerIds = new ArrayList<>();
-        methodIdStringMap.put(curId, cur);
+        methods.put(curId, cur);
         for (MethodResult c : caller) {
             String id = generateId();
-            methodIdStringMap.put(id, c);
+            methods.put(id, c);
             callerIds.add(id);
         }
         List<String> calleeIds = new ArrayList<>();
         for (MethodResult c : callee) {
             String id = generateId();
-            methodIdStringMap.put(id, c);
+            methods.put(id, c);
             calleeIds.add(id);
         }
-        data.setCalleeIds(calleeIds);
-        data.setCallerIds(callerIds);
 
-        StringBuilder nodesBuffer = new StringBuilder();
-        for (Map.Entry<String, MethodResult> entry : methodIdStringMap.entrySet()) {
-            String id = entry.getKey();
+        List<Map<String, String>> nodes = new ArrayList<>();
+        for (Map.Entry<String, MethodResult> entry : methods.entrySet()) {
             MethodResult mr = entry.getValue();
-            String temp = String.format("{ id: '%s', name: '%s' },\n", id,
-                    getShortClassName(mr.getClassName()) + " " + mr.getMethodName());
-            nodesBuffer.append(temp);
+            Map<String, String> node = new LinkedHashMap<>();
+            node.put("id", entry.getKey());
+            node.put("name", getShortClassName(mr.getClassName())
+                    + " " + mr.getMethodName());
+            nodes.add(node);
         }
 
-        StringBuilder linksBuffer = new StringBuilder();
+        List<Map<String, String>> links = new ArrayList<>();
         for (String callerId : callerIds) {
-            String temp = String.format("{ source: '%s', target: '%s' },\n", callerId, curId);
-            linksBuffer.append(temp);
+            links.add(link(callerId, curId));
         }
         for (String calleeId : calleeIds) {
-            String temp = String.format("{ source: '%s', target: '%s' },\n", curId, calleeId);
-            linksBuffer.append(temp);
+            links.add(link(curId, calleeId));
         }
 
         GraphData graphData = new GraphData();
-        graphData.setCurrentNodeId(data.getUuid());
-        graphData.setNodes(nodesBuffer.toString());
-        graphData.setLinks(linksBuffer.toString());
+        graphData.setCurrentNodeId(curId);
+        graphData.setNodes(nodes);
+        graphData.setLinks(links);
+        return HtmlGraphUtil.render(graphData);
+    }
 
-        String html = HtmlGraphUtil.render(graphData);
-        if (html == null) {
-            return null;
-        }
-        try {
-            String fileName = String.format("jar-analyzer-graph-%d.html", System.currentTimeMillis());
-            Files.write(Paths.get(fileName), html.getBytes());
-            return fileName;
-        } catch (Exception ignored) {
-        }
-        return null;
+    private static Map<String, String> link(String source, String target) {
+        Map<String, String> link = new LinkedHashMap<>();
+        link.put("source", source);
+        link.put("target", target);
+        return link;
     }
 }

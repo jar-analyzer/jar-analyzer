@@ -87,6 +87,29 @@ public class SvgManager {
     public static FlatSVGIcon AiSettingsIcon = new FlatSVGIcon("svg/aiSettings.svg", 16, 16);
     public static FlatSVGIcon AiGenIcon = new FlatSVGIcon("svg/aiGen.svg", 16, 16);
 
+    // ---- top menu item icons -------------------------------------------
+    // A compact, consistent 16x16 line-icon set for the menu bar and all
+    // icon-bearing entries in its drop-down menus.
+    public static FlatSVGIcon TopMenuSystemIcon = icon("system");
+    public static FlatSVGIcon TopMenuDecompilerIcon = icon("decompiler");
+    public static FlatSVGIcon TopMenuExportIcon = icon("export");
+    public static FlatSVGIcon TopMenuDiffIcon = icon("diff");
+    public static FlatSVGIcon TopMenuDatabaseIcon = icon("database");
+    public static FlatSVGIcon TopMenuHttpIcon = icon("http");
+    public static FlatSVGIcon TopMenuTomcatIcon = icon("tomcat");
+    public static FlatSVGIcon TopMenuDebuggerIcon = icon("debugger");
+    public static FlatSVGIcon TopMenuProxyIcon = icon("proxy");
+    public static FlatSVGIcon TopMenuFlappyIcon = icon("flappy");
+    public static FlatSVGIcon TopMenuCardsIcon = icon("cards");
+    public static FlatSVGIcon TopMenuSettingsIcon = icon("settings");
+    public static FlatSVGIcon TopMenuDocsIcon = icon("docs");
+    public static FlatSVGIcon TopMenuIssueIcon = icon("issue");
+    public static FlatSVGIcon TopMenuProjectIcon = icon("project");
+    public static FlatSVGIcon TopMenuVersionIcon = icon("version");
+    public static FlatSVGIcon TopMenuChangelogIcon = icon("changelog");
+    public static FlatSVGIcon TopMenuThanksIcon = icon("thanks");
+    public static FlatSVGIcon TopMenuUpdateIcon = icon("update");
+
     // ---- context menu icons --------------------------------------------
     // A single 16x16 visual system for the file tree, code editor and
     // code-tab popup menus. These replace the old stretched PNG assets.
@@ -137,4 +160,8 @@ public class SvgManager {
     public static FlatSVGIcon WfTransformIcon = new FlatSVGIcon("svg/wf/wfTransform.svg", 28, 28);
     public static FlatSVGIcon WfAgentIcon = new FlatSVGIcon("svg/wf/wfAgent.svg", 28, 28);
     public static FlatSVGIcon WfReportIcon = new FlatSVGIcon("svg/wf/wfReport.svg", 28, 28);
+
+    private static FlatSVGIcon icon(String name) {
+        return new FlatSVGIcon("svg/menu/" + name + ".svg", 16, 16);
+    }
 }

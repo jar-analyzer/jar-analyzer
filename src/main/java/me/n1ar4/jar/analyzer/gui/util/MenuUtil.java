@@ -29,7 +29,6 @@ import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 import me.n1ar4.shell.analyzer.form.ShellForm;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.io.InputStream;
@@ -216,30 +215,30 @@ public class MenuUtil {
         menuBar.add(createTheme());
         JMenu plugins = new JMenu("plugins");
         JMenuItem systemItem = new JMenuItem("system info");
-        systemItem.setIcon(IconManager.systemIcon);
+        systemItem.setIcon(SvgManager.TopMenuSystemIcon);
         systemItem.addActionListener(e -> SystemChart.start0());
         plugins.add(systemItem);
         JMenuItem luceneItem = new JMenuItem("global search");
-        luceneItem.setIcon(IconManager.luceneIcon);
+        luceneItem.setIcon(SvgManager.MenuGlobalSearchIcon);
         luceneItem.addActionListener(e -> LuceneSearchForm.start(1));
         plugins.add(luceneItem);
         JMenuItem jdItem = new JMenuItem("start jd-gui");
-        jdItem.setIcon(IconManager.jdIcon);
+        jdItem.setIcon(SvgManager.TopMenuDecompilerIcon);
         jdItem.addActionListener(e -> JDGUIStarter.start());
         plugins.add(jdItem);
         plugins.addSeparator();
         JMenuItem exportItem = new JMenuItem("decompile and export");
-        exportItem.setIcon(IconManager.engineIcon);
+        exportItem.setIcon(SvgManager.TopMenuExportIcon);
         exportItem.addActionListener(e -> ExportForm.start());
         plugins.add(exportItem);
         JMenuItem diffJarItem = new JMenuItem("diff jars");
-        diffJarItem.setIcon(IconManager.engineIcon);
+        diffJarItem.setIcon(SvgManager.TopMenuDiffIcon);
         diffJarItem.addActionListener(e -> JarDiffForm.start());
         plugins.add(diffJarItem);
         plugins.addSeparator();
         // 合并自原 develop 菜单
         JMenuItem connectDbItem = new JMenuItem("connect db");
-        connectDbItem.setIcon(IconManager.javaIcon);
+        connectDbItem.setIcon(SvgManager.TopMenuDatabaseIcon);
         connectDbItem.addActionListener(e ->
                 me.n1ar4.jar.analyzer.plugins.sqlite.SQLiteForm.start());
         plugins.add(connectDbItem);
@@ -250,7 +249,6 @@ public class MenuUtil {
 
     private static JMenu createAIMenu() {
         JMenu aiMenu = new JMenu("AI");
-        aiMenu.setIcon(SvgManager.AiIcon);
 
         JMenuItem chatItem = new JMenuItem("AI 助手对话");
         chatItem.setIcon(SvgManager.AiChatIcon);
@@ -329,19 +327,19 @@ public class MenuUtil {
     private static JMenu loadRemote() {
         JMenu loadRemote = new JMenu("remote");
         JMenuItem loadByHttp = new JMenuItem("load jars (http)");
-        loadByHttp.setIcon(IconManager.remoteIcon);
+        loadByHttp.setIcon(SvgManager.TopMenuHttpIcon);
         loadByHttp.addActionListener(e -> RemoteHttp.start());
         loadRemote.add(loadByHttp);
         JMenuItem start = new JMenuItem("start tomcat analyzer");
-        start.setIcon(IconManager.tomcatIcon);
+        start.setIcon(SvgManager.TopMenuTomcatIcon);
         start.addActionListener(e -> ShellForm.start0());
         loadRemote.add(start);
         JMenuItem dbgItem = new JMenuItem("open bytecode debugger");
-        dbgItem.setIcon(IconManager.debugIcon);
+        dbgItem.setIcon(SvgManager.TopMenuDebuggerIcon);
         dbgItem.addActionListener(e -> me.n1ar4.dbg.gui.MainForm.start());
         loadRemote.add(dbgItem);
         JMenuItem proxyItem = new JMenuItem("open proxy config");
-        proxyItem.setIcon(IconManager.proxyIcon);
+        proxyItem.setIcon(SvgManager.TopMenuProxyIcon);
         proxyItem.addActionListener(e -> ProxyForm.start());
         loadRemote.add(proxyItem);
         return loadRemote;
@@ -351,22 +349,10 @@ public class MenuUtil {
         try {
             JMenu gameMenu = new JMenu("games");
             JMenuItem flappyItem = new JMenuItem("Flappy Bird");
-            InputStream is = MainForm.class.getClassLoader().getResourceAsStream(
-                    "game/flappy/flappy_bird/bird1_0.png");
-            if (is == null) {
-                return null;
-            }
-            ImageIcon flappyIcon = new ImageIcon(ImageIO.read(is));
-            flappyItem.setIcon(flappyIcon);
+            flappyItem.setIcon(SvgManager.TopMenuFlappyIcon);
             flappyItem.addActionListener(e -> new FBMainFrame().startGame());
             JMenuItem pokerItem = new JMenuItem("斗地主");
-            is = MainForm.class.getClassLoader().getResourceAsStream(
-                    "game/pocker/images/logo.png");
-            if (is == null) {
-                return null;
-            }
-            ImageIcon pokerIcon = new ImageIcon(ImageIO.read(is));
-            pokerItem.setIcon(pokerIcon);
+            pokerItem.setIcon(SvgManager.TopMenuCardsIcon);
             pokerItem.addActionListener(e -> new Thread(Main::new).start());
 
             gameMenu.add(flappyItem);
@@ -395,7 +381,7 @@ public class MenuUtil {
             JMenu configMenu = new JMenu("config");
             // 所有具体配置项（含 partition 分片大小）已统一迁移到 ConfigHelpDialog 面板里管理。
             JMenuItem helpItem = new JMenuItem("配置说明与设置");
-            helpItem.setIcon(IconManager.javaIcon);
+            helpItem.setIcon(SvgManager.TopMenuSettingsIcon);
             helpItem.addActionListener(e -> ConfigHelpDialog.start());
             configMenu.add(helpItem);
             return configMenu;
@@ -412,7 +398,7 @@ public class MenuUtil {
 
             // QUICK START
             JMenuItem docsItem = new JMenuItem("官方文档 / docs");
-            docsItem.setIcon(IconManager.ausIcon);
+            docsItem.setIcon(SvgManager.TopMenuDocsIcon);
             docsItem.addActionListener(e -> {
                 try {
                     Desktop desktop = Desktop.getDesktop();
@@ -425,12 +411,7 @@ public class MenuUtil {
             aboutMenu.add(docsItem);
 
             JMenuItem bugItem = new JMenuItem("report bug");
-            InputStream is = MainForm.class.getClassLoader().getResourceAsStream("img/issue.png");
-            if (is == null) {
-                return null;
-            }
-            ImageIcon imageIcon = new ImageIcon(ImageIO.read(is));
-            bugItem.setIcon(imageIcon);
+            bugItem.setIcon(SvgManager.TopMenuIssueIcon);
             aboutMenu.add(bugItem);
             bugItem.addActionListener(e -> {
                 try {
@@ -443,12 +424,7 @@ public class MenuUtil {
             });
 
             JMenuItem projectItem = new JMenuItem("project");
-            is = MainForm.class.getClassLoader().getResourceAsStream("img/address.png");
-            if (is == null) {
-                return null;
-            }
-            imageIcon = new ImageIcon(ImageIO.read(is));
-            projectItem.setIcon(imageIcon);
+            projectItem.setIcon(SvgManager.TopMenuProjectIcon);
             aboutMenu.add(projectItem);
             projectItem.addActionListener(e -> {
                 try {
@@ -460,20 +436,10 @@ public class MenuUtil {
                 }
             });
             JMenuItem jarItem = new JMenuItem("version: " + Const.version);
-            is = MainForm.class.getClassLoader().getResourceAsStream("img/ver.png");
-            if (is == null) {
-                return null;
-            }
-            imageIcon = new ImageIcon(ImageIO.read(is));
-            jarItem.setIcon(imageIcon);
+            jarItem.setIcon(SvgManager.TopMenuVersionIcon);
             aboutMenu.add(jarItem);
             JMenuItem changelogItem = new JMenuItem("changelogs");
-            is = MainForm.class.getClassLoader().getResourceAsStream("img/update.png");
-            if (is == null) {
-                return null;
-            }
-            imageIcon = new ImageIcon(ImageIO.read(is));
-            changelogItem.setIcon(imageIcon);
+            changelogItem.setIcon(SvgManager.TopMenuChangelogIcon);
             changelogItem.addActionListener(e -> {
                 try {
                     InputStream i = MenuUtil.class.getClassLoader().getResourceAsStream("CHANGELOG.MD");
@@ -494,12 +460,7 @@ public class MenuUtil {
             });
             aboutMenu.add(changelogItem);
             JMenuItem thanksItem = new JMenuItem("thanks");
-            is = MainForm.class.getClassLoader().getResourceAsStream("img/github.png");
-            if (is == null) {
-                return null;
-            }
-            imageIcon = new ImageIcon(ImageIO.read(is));
-            thanksItem.setIcon(imageIcon);
+            thanksItem.setIcon(SvgManager.TopMenuThanksIcon);
             thanksItem.addActionListener(e -> {
                 try {
                     InputStream i = MenuUtil.class.getClassLoader().getResourceAsStream("thanks.md");
@@ -520,12 +481,7 @@ public class MenuUtil {
             });
             aboutMenu.add(thanksItem);
             JMenuItem checkUpdateItem = new JMenuItem("check update");
-            is = MainForm.class.getClassLoader().getResourceAsStream("img/normal.png");
-            if (is == null) {
-                return null;
-            }
-            imageIcon = new ImageIcon(ImageIO.read(is));
-            checkUpdateItem.setIcon(imageIcon);
+            checkUpdateItem.setIcon(SvgManager.TopMenuUpdateIcon);
             checkUpdateItem.addActionListener(e -> new Thread(() -> {
                 logger.info("check update from aliyun oss");
                 HttpResponse resp = Y4Client.INSTANCE.get(Const.checkUpdateUrl);

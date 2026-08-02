@@ -13,6 +13,7 @@ package me.n1ar4.jar.analyzer.gui;
 import me.n1ar4.jar.analyzer.engine.CoreHelper;
 import me.n1ar4.jar.analyzer.entity.MethodResult;
 import me.n1ar4.jar.analyzer.gui.util.CtrlClickNavigator;
+import me.n1ar4.jar.analyzer.gui.util.UIHelper;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
@@ -202,6 +203,7 @@ public class ShowStringForm {
         stringList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         stringList.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
         stringList.setCellRenderer(new ZebraStringRenderer());
+        UIHelper.fixSingleLineListCellHeight(stringList);
         stringList.setToolTipText("<html>双击 / Enter：跳转到包含该字符串的方法<br/>"
                 + "右键：精确反查 / 模糊反查 / 复制</html>");
         stringList.addListSelectionListener(e -> {

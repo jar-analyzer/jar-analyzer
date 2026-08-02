@@ -4,6 +4,7 @@
 
 更新日志：
 
+- [BUG] 修复 `JList` 渲染不稳定问题 @4ra1n
 - [优化] 所有 `GUI Designer` 换成原生 `Swing` @4ra1n
 - [优化] 优化 `MCP` 面板 @4ra1n
 - [优化] 优化内置小游戏执行框架 @4ra1n

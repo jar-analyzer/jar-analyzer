@@ -17,6 +17,7 @@ import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.render.ZebraListCellRenderer;
 import me.n1ar4.jar.analyzer.gui.util.ProcessDialog;
 import me.n1ar4.jar.analyzer.gui.util.SwingLayout;
+import me.n1ar4.jar.analyzer.gui.util.UIHelper;
 import me.n1ar4.shell.analyzer.model.ClassObj;
 import me.n1ar4.shell.analyzer.model.InfoObj;
 import me.n1ar4.shell.analyzer.start.SocketHelper;
@@ -74,6 +75,7 @@ public class ShellForm {
             newJScroll.setViewportView(this.dataList);
             this.dataList.addMouseListener(new CommonMouse());
             this.dataList.setCellRenderer(new ZebraListCellRenderer());
+            UIHelper.fixSingleLineListCellHeight(this.dataList);
             this.dataModel = new DefaultListModel<>();
             this.dataCache = new ArrayList<>();
         }
@@ -181,6 +183,7 @@ public class ShellForm {
         }
         urlList.setModel(infoModel);
         urlList.setCellRenderer(new ZebraListCellRenderer());
+        UIHelper.fixSingleLineListCellHeight(urlList);
     }
 
     private static RSyntaxTextArea codeArea;

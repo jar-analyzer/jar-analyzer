@@ -1013,6 +1013,12 @@ public class MainForm {
         favList.setCellRenderer(new MethodCallRender());
         leakResultList.setCellRenderer(new LeakResultRender());
 
+        UIHelper.fixSingleLineListCellHeight(
+                allMethodList, calleeList, callerList, searchList,
+                methodImplList, superImplList, springCList, springMList,
+                springIList, servletList, filterList, listenerList,
+                springConfigList, historyList, favList, leakResultList);
+
         historyListData = new DefaultListModel<>();
         historyList.setModel(historyListData);
         favData = new DefaultListModel<>();

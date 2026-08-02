@@ -23,6 +23,7 @@ import me.n1ar4.jar.analyzer.ai.workflow.report.ReportStore;
 import me.n1ar4.jar.analyzer.ai.workflow.report.VulnReport;
 import me.n1ar4.jar.analyzer.ai.workflow.report.VulnReportHtmlRenderer;
 import me.n1ar4.jar.analyzer.gui.util.SvgManager;
+import me.n1ar4.jar.analyzer.gui.util.UIHelper;
 import me.n1ar4.jar.analyzer.utils.OpenUtil;
 
 import javax.swing.Timer;
@@ -119,6 +120,7 @@ public final class AIWorkflowDialog {
         final JList<IterEntry> iterList = new JList<>(iterListModel);
         iterList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         iterList.setCellRenderer(new IterEntry.Renderer());
+        UIHelper.fixSingleLineListCellHeight(iterList);
 
         final JTextArea iterDetailArea = newConsoleArea();
         JScrollPane iterDetailScroll = new JScrollPane(iterDetailArea);
@@ -768,6 +770,7 @@ public final class AIWorkflowDialog {
         }
         final JList<AgentTurn> list = new JList<>(model);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        UIHelper.fixSingleLineListCellHeight(list);
 
         // 高亮渲染：用 JEditorPane(text/html) 替代纯 JTextArea
         final JEditorPane detail = new JEditorPane();

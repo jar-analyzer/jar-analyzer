@@ -16,4 +16,20 @@ public class UIHelper {
     public static void setup() {
         UIManager.put("Tree.showDefaultIcons", true);
     }
+
+    /**
+     * Keep lists that are designed as single-line lists at a stable row height.
+     * Swing's HTML label renderer otherwise reports a taller preferred size when
+     * long content wraps, which makes individual JList rows uneven.
+     */
+    public static void fixSingleLineListCellHeight(JList<?>... lists) {
+        for (JList<?> list : lists) {
+            if (list == null) {
+                continue;
+            }
+            int fontHeight = list.getFontMetrics(list.getFont()).getHeight() + 6;
+            int lafHeight = UIManager.getInt("List.rowHeight");
+            list.setFixedCellHeight(Math.max(fontHeight, lafHeight));
+        }
+    }
 }

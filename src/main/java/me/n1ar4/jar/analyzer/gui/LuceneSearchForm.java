@@ -13,6 +13,7 @@ package me.n1ar4.jar.analyzer.gui;
 import me.n1ar4.jar.analyzer.entity.LuceneSearchResult;
 import me.n1ar4.jar.analyzer.gui.util.IconManager;
 import me.n1ar4.jar.analyzer.gui.util.SwingLayout;
+import me.n1ar4.jar.analyzer.gui.util.UIHelper;
 import me.n1ar4.jar.analyzer.lucene.*;
 
 import javax.swing.*;
@@ -130,6 +131,7 @@ public class LuceneSearchForm {
 
         luceneBuildBtn.addActionListener(new LuceneBuildListener());
         searchResultList.setCellRenderer(new LuceneResultRender());
+        UIHelper.fixSingleLineListCellHeight(searchResultList);
         searchResultList.addMouseListener(new LuceneMouseListener());
 
         searchIconLabel.setIcon(IconManager.gsIcon);

@@ -10,6 +10,8 @@
 
 package me.n1ar4.jar.analyzer.plugins.sqlite.ui;
 
+import me.n1ar4.jar.analyzer.gui.util.UIHelper;
+
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.JTextComponent;
@@ -136,6 +138,7 @@ public class SQLAutoCompleteProvider {
         suggestionList.setFont(textComponent.getFont());
         suggestionList.setVisibleRowCount(8);
         suggestionList.setFocusable(false);
+        UIHelper.fixSingleLineListCellHeight(suggestionList);
 
         suggestionList.addMouseListener(new MouseAdapter() {
             @Override

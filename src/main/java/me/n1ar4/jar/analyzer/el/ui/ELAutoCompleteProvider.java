@@ -10,6 +10,8 @@
 
 package me.n1ar4.jar.analyzer.el.ui;
 
+import me.n1ar4.jar.analyzer.gui.util.UIHelper;
+
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.JTextComponent;
@@ -115,6 +117,7 @@ public class ELAutoCompleteProvider {
                 return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
             }
         });
+        UIHelper.fixSingleLineListCellHeight(suggestionList);
 
         suggestionList.addMouseListener(new MouseAdapter() {
             @Override

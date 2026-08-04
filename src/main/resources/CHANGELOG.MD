@@ -1,5 +1,25 @@
 # CHANGELOG
 
+## 6.1
+
+更新日志：
+
+- [GHSA-fgw4-24hw-cjm6] 修复 `ZIP SLIP` 漏洞 @4ra1n
+- [GHSA-77fr-7cxc-mxqr] 修复 `拒绝服务` 漏洞 @4ra1n
+- [GHSA-xxj8-5qwp-rrmh] 修复 `XSS` 漏洞 @4ra1n
+- [BUG] 修复 `JList` 渲染不稳定问题 @4ra1n
+- [优化] 优化 `AI` 相关功能以及内置 `Prompt` @4ra1n
+- [优化] 所有 `GUI Designer` 换成原生 `Swing` @4ra1n
+- [优化] 优化 `MCP` 面板 @4ra1n
+- [优化] 优化内置小游戏执行框架 @4ra1n
+- [其他] 删除某些用不到的测试功能 @4ra1n
+- [其他] 更新所有依赖到最新 @4ra1n
+- [其他] 升级内置 `JRE` 到 `8u502/25.0.4` @4ra1n
+
+感谢以下用户的贡献:
+
+- 4ra1n (https://github.com/4ra1n)
+
 ## 6.0
 
 重要版本更新，内置 `MCP` 一键启动，内置 `AI` 助手

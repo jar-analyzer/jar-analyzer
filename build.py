@@ -122,10 +122,6 @@ if __name__ == '__main__':
     copy_file("dfs-sink.json", "release\\" + release_win_25_dir + "\\dfs-sink.json")
     copy_file("dfs-sink.json", "release\\" + release_zip_dir + "\\dfs-sink.json")
 
-    print("[*] copy windows tools.jar")
-    copy_file("lib\\tools.jar", "release\\" + release_win_system_dir + "\\lib\\tools.jar")
-    copy_file("lib\\tools.jar", "release\\" + release_win_full_dir + "\\lib\\tools.jar")
-
     print("[*] copy jd-gui")
     copy_file("lib\\jd-gui-1.6.6.jar", "release\\" + release_win_system_dir + "\\lib\\jd-gui-1.6.6.jar")
     copy_file("lib\\jd-gui-1.6.6.jar", "release\\" + release_win_full_dir + "\\lib\\jd-gui-1.6.6.jar")

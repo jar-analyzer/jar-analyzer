@@ -248,13 +248,6 @@
             <version>${cfr.version}</version>
         </dependency>
         <dependency>
-            <groupId>tools</groupId>
-            <artifactId>tools</artifactId>
-            <version>0.0.1</version>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/lib/tools.jar</systemPath>
-        </dependency>
-        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>${junit.version}</version>

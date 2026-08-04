@@ -340,7 +340,7 @@ git clone --depth 1 https://github.com/jar-analyzer/jar-analyzer
 
 ## 其他
 
-早期文章视频以及解释一些内部的原理和注意事项
+早期文章以及解释一些内部的原理和注意事项
 
 [文档](doc/README-others.md)
 
@@ -358,6 +358,9 @@ git clone --depth 1 https://github.com/jar-analyzer/jar-analyzer
 - [\[GHSA-x5h2-78p8-w943\] Jar Analyzer 2.13 版本之前存在 SQL 注入漏洞](https://github.com/jar-analyzer/jar-analyzer/security/advisories/GHSA-x5h2-78p8-w943)
 - [\[GHSA-jmcg-r2c5-7m29\] Jar Analyzer 存在 ZIP SLIP 漏洞（最坏情况可导致 RCE 风险）](https://github.com/jar-analyzer/jar-analyzer/security/advisories/GHSA-jmcg-r2c5-7m29)
 - [\[GHSA-h6vc-3rcp-p7qp\] 表达式分析功能中的 SpEL 注入漏洞可导致远程代码执行](https://github.com/jar-analyzer/jar-analyzer/security/advisories/GHSA-h6vc-3rcp-p7qp)
+- [\[GHSA-xxj8-5qwp-rrmh\] Jar Analyzer 恶意 class 方法名可在 HTML 调用图中注入 JavaScript](https://github.com/jar-analyzer/jar-analyzer/security/advisories/GHSA-xxj8-5qwp-rrmh)
+- [\[GHSA-77fr-7cxc-mxqr\] Jar Analyzer HTTP API 请求大小及连接线程未受限可导致拒绝服务](https://github.com/jar-analyzer/jar-analyzer/security/advisories/GHSA-77fr-7cxc-mxqr)
+- [\[GHSA-fgw4-24hw-cjm6\] Jar Analyzer JAR 解包路径校验绕过可将文件写出临时目录](https://github.com/jar-analyzer/jar-analyzer/security/advisories/GHSA-fgw4-24hw-cjm6)
 
 不再接受用户的输入导致的安全问题，除非恶意的输入 `class/jar` 文件可能导致的安全问题
 
@@ -366,11 +369,3 @@ git clone --depth 1 https://github.com/jar-analyzer/jar-analyzer
 注意：当 `Jar` 数量较多或巨大时 **可能导致临时目录和数据库文件巨大** 请确保足够的空间
 
 有 `UI` 兼容性问题请查看 `ISSUE` 部分的置顶
-
-## Star
-
-<div align="center">
-
-<img src="https://api.star-history.com/svg?repos=jar-analyzer/jar-analyzer&type=Date" width="600" height="400" alt="Star History Chart" valign="middle">
-
-</div>

@@ -4,9 +4,9 @@
 
 更新日志：
 
-- [安全] 修复某些情况下的 `ZIP SLIP` 漏洞 @4ra1n
-- [安全] 修复某些情况下的 `拒绝服务` 漏洞 @4ra1n
-- [安全] 修复某些情况下的 `XSS` 漏洞 @4ra1n
+- [GHSA-fgw4-24hw-cjm6] 修复 `ZIP SLIP` 漏洞 @4ra1n
+- [GHSA-77fr-7cxc-mxqr] 修复 `拒绝服务` 漏洞 @4ra1n
+- [GHSA-xxj8-5qwp-rrmh] 修复 `XSS` 漏洞 @4ra1n
 - [BUG] 修复 `JList` 渲染不稳定问题 @4ra1n
 - [优化] 优化 `AI` 相关功能以及内置 `Prompt` @4ra1n
 - [优化] 所有 `GUI Designer` 换成原生 `Swing` @4ra1n

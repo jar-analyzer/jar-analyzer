@@ -336,10 +336,6 @@ public class MenuUtil {
         start.setIcon(SvgManager.TopMenuTomcatIcon);
         start.addActionListener(e -> ShellForm.start0());
         loadRemote.add(start);
-        JMenuItem dbgItem = new JMenuItem("open bytecode debugger");
-        dbgItem.setIcon(SvgManager.TopMenuDebuggerIcon);
-        dbgItem.addActionListener(e -> me.n1ar4.dbg.gui.MainForm.start());
-        loadRemote.add(dbgItem);
         JMenuItem proxyItem = new JMenuItem("open proxy config");
         proxyItem.setIcon(SvgManager.TopMenuProxyIcon);
         proxyItem.addActionListener(e -> ProxyForm.start());

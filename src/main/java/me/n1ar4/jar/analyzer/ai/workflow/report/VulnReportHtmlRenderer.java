@@ -291,10 +291,10 @@ public final class VulnReportHtmlRenderer {
             sb.append("      </div>\n");
         }
 
-        // 推断 PoC（含 RAW HTTP，使用 <pre> 保留格式）
+        // 最小复现方案，使用 <pre> 保留请求、脚本或样例数据的格式
         if (!poc.isEmpty()) {
             sb.append("      <div class=\"block\">\n");
-            sb.append("        <div class=\"block-title\">推断 PoC（含 RAW HTTP）</div>\n");
+            sb.append("        <div class=\"block-title\">PoC / 最小复现方案</div>\n");
             sb.append("        <pre class=\"poc\"><code>").append(escape(poc)).append("</code></pre>\n");
             sb.append("      </div>\n");
         }

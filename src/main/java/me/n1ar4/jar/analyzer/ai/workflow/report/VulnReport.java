@@ -37,9 +37,8 @@ public final class VulnReport {
      */
     private String attackVector;
     /**
-     * 推断的 PoC（中文 + RAW HTTP）：
-     * 一段可读的 PoC 描述，必须包含一段 RAW HTTP 请求示例
-     * （含请求行、Host、Content-Type、关键 Header 与 Body）。
+     * 与漏洞入口类型匹配的最小复现方案。
+     * Web 场景可使用 RAW HTTP，文件、JAR、配置或消息场景可使用构造脚本、样例数据或调用代码。
      */
     private String poc;
     /**

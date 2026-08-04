@@ -56,7 +56,7 @@ public final class ReportTool implements AgentTool {
 
     @Override
     public String description() {
-        return "上报已确认的漏洞结果，包括类型、独特标题、原因、攻击方式、推断 PoC（含 RAW HTTP）、评分(1-10) 和调用链 trace。所有文本字段必须使用中文。";
+        return "上报证据充分的漏洞结果，包括类型、独特标题、数据流依据、攻击方式、与入口匹配的最小复现方案、评分(1-10) 和已核实调用链。所有文本字段必须使用中文。";
     }
 
     @Override
@@ -84,27 +84,27 @@ public final class ReportTool implements AgentTool {
 
         JSONObject reasonProp = new JSONObject();
         reasonProp.put("type", "string");
-        reasonProp.put("description", "漏洞判断依据，必须使用中文，详细解释源到汇的数据流与触发条件。");
+        reasonProp.put("description", "漏洞判断依据，必须使用中文，按 source、传播/校验、sink 说明数据流、可控字段、触发条件及关键代码证据。");
         props.put("reason", reasonProp);
 
         JSONObject attackProp = new JSONObject();
         attackProp.put("type", "string");
         attackProp.put("description",
-                "攻击方式，必须使用中文。描述攻击者如何触发该漏洞、所需前置条件、入口点和数据流路径。");
+                "攻击方式，必须使用中文。描述攻击者身份、入口点、所需权限或用户交互、前置条件和载荷形态；不得虚构路径或参数。");
         props.put("attack_vector", attackProp);
 
         JSONObject pocProp = new JSONObject();
         pocProp.put("type", "string");
         pocProp.put("description",
-                "推断的 PoC，必须使用中文做说明，并且必须包含一段完整的 RAW HTTP 请求示例（含请求行、Host、关键 Header、Content-Type 和 Body）。"
-                        + "若无法明确路径，请基于代码合理推断并标注【推断】。");
+                "与漏洞入口匹配的最小复现方案，必须使用中文说明。Web 漏洞提供完整 RAW HTTP；文件、JAR、配置或消息类漏洞提供构造脚本、样例数据或调用代码。"
+                        + "区分已验证内容与【推断】，禁止虚构 HTTP 接口。");
         props.put("poc", pocProp);
 
         JSONObject scoreProp = new JSONObject();
         scoreProp.put("type", "integer");
         scoreProp.put("minimum", 1);
         scoreProp.put("maximum", 10);
-        scoreProp.put("description", "风险评分 1-10");
+        scoreProp.put("description", "风险评分 1-10，需综合攻击面、权限、用户交互、前置条件和可信影响");
         props.put("score", scoreProp);
 
         JSONObject traceProp = new JSONObject();
@@ -123,7 +123,7 @@ public final class ReportTool implements AgentTool {
         itemProps.put("desc", descProp);
         item.put("properties", itemProps);
         traceProp.put("items", item);
-        traceProp.put("description", "漏洞调用链");
+        traceProp.put("description", "按数据流顺序排列的已核实漏洞调用链");
         props.put("trace", traceProp);
 
         schema.put("properties", props);
@@ -162,7 +162,7 @@ public final class ReportTool implements AgentTool {
         }
         String poc = args.getString("poc");
         if (poc == null || poc.trim().isEmpty()) {
-            return ToolResult.error("missing poc (推断 PoC 必填，需包含 RAW HTTP)");
+            return ToolResult.error("missing poc (与入口类型匹配的最小复现方案必填)");
         }
         Integer score = args.getInteger("score");
         if (score == null || score < 1 || score > 10) {

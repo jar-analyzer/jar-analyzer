@@ -601,8 +601,8 @@ public class AISettingsDialog extends JDialog {
             try {
                 LLMClient client = new LLMClient(snapshot);
                 String resp = client.chat(LLMClient.singleTurn(
-                        "You are a helpful assistant. Reply with one short sentence.",
-                        "ping"));
+                        "你是 Jar Analyzer 的连接测试助手。严格只回复：连接正常",
+                        "执行连接测试。"));
                 final String shown = resp == null ? "(空)" : resp.trim();
                 SwingUtilities.invokeLater(() -> {
                     toastSuccess("连接成功");

@@ -128,11 +128,12 @@ public final class AIActionHelper {
             return;
         }
         StringBuilder sb = new StringBuilder();
-        sb.append("请逐段解释下面这段 Java 反编译代码，包括：\n");
-        sb.append("1. 该方法/代码块的功能；\n");
-        sb.append("2. 关键 API 调用与外部交互（IO/反射/反序列化/网络/SQL/命令执行 等）；\n");
-        sb.append("3. 可能的安全风险或可疑模式；\n");
-        sb.append("4. 如有外部输入污染路径，请指出 source 与潜在 sink。\n\n");
+        sb.append("请分析下面的 Java 反编译代码。反编译结果可能不完整，请只依据可见证据回答，并按以下结构输出：\n");
+        sb.append("1. 【功能概述】说明代码目的、关键分支和返回结果；\n");
+        sb.append("2. 【关键行为】列出重要 API、状态变化及外部交互（文件、网络、数据库、反射、类加载、进程等）；\n");
+        sb.append("3. 【安全研判】识别可疑点，并说明输入来源、传播/校验过程、危险操作及触发条件；\n");
+        sb.append("4. 【结论】标记为已确认风险、潜在风险或未发现明确风险，并给出置信度与仍缺少的上下文。\n");
+        sb.append("不要仅因出现危险 API 就认定存在漏洞，也不要猜测代码中未出现的接口或参数。\n\n");
         if (className != null && !className.isEmpty()) {
             sb.append("当前类：").append(className).append("\n\n");
         }
@@ -365,12 +366,13 @@ public final class AIActionHelper {
      */
     private static String buildChainPrompt(String title, List<String> methods, List<String> sources) {
         StringBuilder sb = new StringBuilder();
-        sb.append("下面是一条 Java 调用链（DFS 静态分析得到），每个节点都附带了反编译后的源代码。请基于代码内容判断：\n");
-        sb.append("1. 该链是否真实可达（关注每个节点中的条件分支、异常处理、null 检查、参数过滤）；\n");
-        sb.append("2. 入口 source 是否可由外部用户直接或间接控制（HTTP 参数 / 反序列化输入 / 配置 等）；\n");
-        sb.append("3. sink 处的危害性，可能被利用的方式；\n");
-        sb.append("4. 若可利用，简要描述构造 PoC 的关键参数路径与前提条件；\n");
-        sb.append("5. 给出明确结论：高/中/低风险，并说明判断依据。\n\n");
+        sb.append("下面是一条由 DFS 静态分析得到的 Java 候选调用链，每个节点尽量附带反编译代码。静态连边不等于运行时可达，请完成漏洞可利用性研判：\n");
+        sb.append("1. 【链路校验】逐节点确认调用关系、参数对应关系和数据是否连续传播，并指出断点或缺失代码；\n");
+        sb.append("2. 【输入可控性】判断 source 是否可被外部或低权限主体控制，具体说明入口类型与所需前置条件；\n");
+        sb.append("3. 【防护检查】检查鉴权、白名单、规范化、编码、类型约束、条件分支和异常处理是否阻断利用；\n");
+        sb.append("4. 【危险操作】说明 sink 的实际语义、攻击者可控制的参数部分以及最坏可信影响；\n");
+        sb.append("5. 【最终结论】仅从“已确认可利用 / 高度疑似 / 证据不足 / 不可利用”中选择一项，给出置信度和证据缺口。\n");
+        sb.append("只有链路和可控性证据完整时才给出 PoC 思路；无法确定的路径、参数必须明确标注为推断。\n\n");
         if (title != null && !title.isEmpty()) {
             sb.append("链路标题：").append(title).append("\n\n");
         }
@@ -441,11 +443,12 @@ public final class AIActionHelper {
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append("下面是两个 JAR 包的差异内容，请分析：\n");
-        sb.append("1. 这次变更是否包含明显的安全修复（CVE 修复、输入校验、权限检查、危险 API 替换 等）？\n");
-        sb.append("2. 若是安全修复，可能修复了什么类型的漏洞（RCE / 反序列化 / SQL 注入 / 越权 / 信息泄漏 等）？\n");
-        sb.append("3. 列出最值得关注的 3-5 个变更，并解释判断依据；\n");
-        sb.append("4. 是否存在引入新风险的可能。\n\n");
+        sb.append("下面是两个 JAR 版本的代码差异。请从安全审计与行为变更角度分析，并注意 diff 可能缺少完整上下文：\n");
+        sb.append("1. 【变更摘要】概括核心行为变化，区分新增、删除与重构；\n");
+        sb.append("2. 【安全相关变更】识别输入校验、鉴权、反序列化、文件/网络/命令操作、加密或依赖调用的变化；\n");
+        sb.append("3. 【修复研判】若疑似安全修复，说明旧逻辑的触发条件、危险数据流和新逻辑如何阻断，不要仅凭方法名猜测 CVE；\n");
+        sb.append("4. 【回归风险】指出新版本可能引入的绕过、兼容性或防护不完整问题；\n");
+        sb.append("5. 【结论】列出最值得复核的 3-5 处变更，并分别标记证据强度及建议验证方式。\n\n");
         if (leftLabel != null) {
             sb.append("旧版本：").append(leftLabel).append("\n");
         }

@@ -23,9 +23,9 @@ import java.util.List;
 public enum AIProvider {
     DEEPSEEK("DeepSeek",
             "https://api.deepseek.com",
-            "deepseek-v4-pro",
+            "deepseek-v4-flash",
             "https://platform.deepseek.com/api_keys",
-            "deepseek-v4-pro", "deepseek-v4-flash"),
+            "deepseek-v4-flash", "deepseek-v4-pro"),
     GLM("智谱 GLM",
             "https://open.bigmodel.cn/api/paas/v4",
             "glm-5.2",

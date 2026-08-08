@@ -10,12 +10,13 @@
 
 package me.n1ar4.jar.analyzer.ai;
 
-import com.github.rjeschke.txtmark.Processor;
+import me.n1ar4.jar.analyzer.markdown.MarkdownRenderer;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.SvgManager;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.EmptyBorder;
@@ -25,6 +26,10 @@ import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.geom.Ellipse2D;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +55,7 @@ public class AIChatDialog extends JDialog {
     private static final Color DOT_GREEN = new Color(0x10B981);
     private static final Color DOT_AMBER = new Color(0xF59E0B);
     private static final Color DOT_RED = new Color(0xEF4444);
+    private static final Icon AUTHOR_AVATAR = loadAuthorAvatar();
 
     // 顶部
     private final StatusDot statusDot;
@@ -75,8 +81,8 @@ public class AIChatDialog extends JDialog {
     private MessageBubble pendingAssistant;        // 当前正在流式接收的助手气泡
     private final StringBuilder pendingAcc = new StringBuilder();
 
-    // 渲染模式：Markdown 开关（默认关闭，原样输出）
-    private final JCheckBox renderMarkdownToggle = new JCheckBox("Markdown 渲染", false);
+    // 渲染模式：Markdown 开关（默认开启）
+    private final JCheckBox renderMarkdownToggle = new JCheckBox("Markdown 渲染", true);
 
     public AIChatDialog(Window owner) {
         super(owner, "AI 助手", ModalityType.MODELESS);
@@ -565,6 +571,49 @@ public class AIChatDialog extends JDialog {
         return m == null ? t.toString() : m;
     }
 
+    private static Icon loadAuthorAvatar() {
+        try (InputStream input = AIChatDialog.class.getResourceAsStream(
+                "/img/author-avatar.jpg")) {
+            if (input == null) {
+                return null;
+            }
+            BufferedImage source = ImageIO.read(input);
+            if (source == null || source.getWidth() <= 0 || source.getHeight() <= 0) {
+                return null;
+            }
+
+            int size = 28;
+            BufferedImage avatar = new BufferedImage(
+                    size, size, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D graphics = avatar.createGraphics();
+            try {
+                graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                        RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+                graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                        RenderingHints.VALUE_ANTIALIAS_ON);
+                graphics.setClip(new Ellipse2D.Double(0, 0, size, size));
+
+                double scale = Math.max(size / (double) source.getWidth(),
+                        size / (double) source.getHeight());
+                int width = (int) Math.ceil(source.getWidth() * scale);
+                int height = (int) Math.ceil(source.getHeight() * scale);
+                int x = (size - width) / 2;
+                int y = (size - height) / 2;
+                graphics.drawImage(source, x, y, width, height, null);
+
+                graphics.setClip(null);
+                graphics.setColor(new Color(0xFB923C));
+                graphics.drawOval(0, 0, size - 1, size - 1);
+            } finally {
+                graphics.dispose();
+            }
+            return new ImageIcon(avatar);
+        } catch (IOException | RuntimeException ex) {
+            logger.debug("load author avatar failed: {}", ex.toString());
+            return null;
+        }
+    }
+
     // ============================================================
     //                          内部组件
     // ============================================================
@@ -729,12 +778,20 @@ public class AIChatDialog extends JDialog {
 
             // 头像
             JLabel avatar = new JLabel(role == Role.USER ? "U" : "AI", SwingConstants.CENTER);
-            avatar.setOpaque(true);
+            boolean hasAuthorAvatar = role == Role.USER && AUTHOR_AVATAR != null;
+            if (hasAuthorAvatar) {
+                avatar.setText("");
+                avatar.setIcon(AUTHOR_AVATAR);
+            }
+            avatar.setOpaque(!hasAuthorAvatar);
             avatar.setBackground(role == Role.USER ? new Color(0xFB923C) : new Color(0x6366F1));
             avatar.setForeground(Color.WHITE);
             avatar.setFont(avatar.getFont().deriveFont(Font.BOLD, 12f));
             avatar.setPreferredSize(new Dimension(28, 28));
-            avatar.setBorder(new RoundedBorder(14, role == Role.USER ? new Color(0xFB923C) : new Color(0x6366F1)));
+            if (!hasAuthorAvatar) {
+                avatar.setBorder(new RoundedBorder(14,
+                        role == Role.USER ? new Color(0xFB923C) : new Color(0x6366F1)));
+            }
 
             // 文本（用 JTextArea 便于流式 append + 选择/复制）
             String init = initial == null ? "" : initial;
@@ -879,7 +936,7 @@ public class AIChatDialog extends JDialog {
          */
         private void renderMarkdown(String md) {
             try {
-                String html = Processor.process(md);
+                String html = MarkdownRenderer.toHtml(md);
                 JEditorPane pane = new JEditorPane();
                 pane.setContentType("text/html");
                 pane.setEditable(false);

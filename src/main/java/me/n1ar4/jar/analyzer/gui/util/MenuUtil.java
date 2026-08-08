@@ -10,7 +10,7 @@
 
 package me.n1ar4.jar.analyzer.gui.util;
 
-import com.github.rjeschke.txtmark.Processor;
+import me.n1ar4.jar.analyzer.markdown.MarkdownRenderer;
 import me.n1ar4.games.GameFrame;
 import me.n1ar4.games.flappy.FBMainFrame;
 import me.n1ar4.games.landlord.PokerGameFrame;
@@ -455,7 +455,7 @@ public class MenuUtil {
                     for (int numRead; (numRead = in.read(buffer, 0, buffer.length)) > 0; ) {
                         out.append(buffer, 0, numRead);
                     }
-                    ChangeLogForm.start(Const.ChangeLogForm, Processor.process(out.toString()));
+                    ChangeLogForm.start(Const.ChangeLogForm, MarkdownRenderer.toHtml(out.toString()));
                 } catch (Exception ex) {
                     logger.error("error: {}", ex.toString());
                 }
@@ -476,7 +476,7 @@ public class MenuUtil {
                     for (int numRead; (numRead = in.read(buffer, 0, buffer.length)) > 0; ) {
                         out.append(buffer, 0, numRead);
                     }
-                    ChangeLogForm.start("THANKS", Processor.process(out.toString()));
+                    ChangeLogForm.start("THANKS", MarkdownRenderer.toHtml(out.toString()));
                 } catch (Exception ex) {
                     logger.error("error: {}", ex.toString());
                 }

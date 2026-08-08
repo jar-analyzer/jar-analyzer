@@ -10,7 +10,6 @@
 
 package me.n1ar4.jar.analyzer.gui.util;
 
-import me.n1ar4.jar.analyzer.markdown.MarkdownRenderer;
 import me.n1ar4.games.GameFrame;
 import me.n1ar4.games.flappy.FBMainFrame;
 import me.n1ar4.games.landlord.PokerGameFrame;
@@ -24,6 +23,7 @@ import me.n1ar4.jar.analyzer.gui.*;
 import me.n1ar4.jar.analyzer.gui.diff.JarDiffForm;
 import me.n1ar4.jar.analyzer.http.HttpResponse;
 import me.n1ar4.jar.analyzer.http.Y4Client;
+import me.n1ar4.jar.analyzer.markdown.MarkdownRenderer;
 import me.n1ar4.jar.analyzer.os.SystemChart;
 import me.n1ar4.jar.analyzer.plugins.jd.JDGUIStarter;
 import me.n1ar4.jar.analyzer.starter.Const;

@@ -10,9 +10,9 @@
 
 package me.n1ar4.jar.analyzer.ai;
 
-import me.n1ar4.jar.analyzer.markdown.MarkdownRenderer;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.SvgManager;
+import me.n1ar4.jar.analyzer.markdown.MarkdownRenderer;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 

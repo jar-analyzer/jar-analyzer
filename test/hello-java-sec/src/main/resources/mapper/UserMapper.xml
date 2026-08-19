@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace:改mapper.xml映射文件的唯一标识并且必须和数据处理层的接口的路径相同 -->
+<mapper namespace="com.best.hello.mapper.UserMapper">
+
+    <resultMap id="BaseResultMap" type="com.best.hello.entity.User">
+        <id column="id" property="id" javaType="java.lang.Integer"/>
+        <id column="user" property="username" javaType="String"/>
+        <id column="pass" property="password" javaType="String"/>
+    </resultMap>
+
+    <!-- id的值必须和数据处理层的接口名一致 -->
+    <select id="orderBy" resultType="com.best.hello.entity.User">
+        select *
+        from users
+        order by ${field} ${sort}
+    </select>
+
+    <select id="orderBySafe" resultType="com.best.hello.entity.User">
+        select * from users
+        <choose>
+            <when test="field == 'id'">
+                order by id desc
+            </when>
+            <when test="field == 'user'">
+                order by user desc
+            </when>
+            <otherwise>
+                order by pass desc limit 2
+            </otherwise>
+        </choose>
+    </select>
+
+</mapper>

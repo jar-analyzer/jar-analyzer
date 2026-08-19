@@ -12,10 +12,12 @@ package me.n1ar4.core.spring;
 
 import me.n1ar4.jar.analyzer.core.AnalyzeEnv;
 import me.n1ar4.jar.analyzer.core.CoreRunner;
+import me.n1ar4.jar.analyzer.core.DatabaseManager;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -25,27 +27,41 @@ import java.sql.ResultSet;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
+/**
+ * 目标 jar 为 test/test-springboot 项目（源码已入库）在 CI 中
+ * 构建的 test-0.0.1-SNAPSHOT.jar，不再依赖外部下载
+ */
 public class SpringCustomTest {
-    String dbPath = "jar-analyzer.db";
+    private static final String JAR = "test-0.0.1-SNAPSHOT.jar";
+    private static final String DB = "jar-analyzer.db";
+
+    @BeforeAll
+    @SuppressWarnings("all")
+    static void setup() {
+        Assumptions.assumeTrue(Files.exists(Paths.get(JAR)),
+                JAR + " 不存在，跳过（应由 test-spring-custom workflow 构建）");
+        try {
+            DatabaseManager.closeForRebuild();
+            Files.delete(Paths.get(DB));
+            Files.deleteIfExists(Paths.get(DB + "-wal"));
+            Files.deleteIfExists(Paths.get(DB + "-shm"));
+        } catch (Exception ignored) {
+        }
+        DatabaseManager.reopen();
+
+        AnalyzeEnv.isCli = true;
+        CoreRunner.run(Paths.get(JAR), null, false, null);
+    }
 
     @Test
     @SuppressWarnings("all")
     public void testRun() {
         try {
-            Files.delete(Paths.get(dbPath));
-        } catch (Exception ignored) {
-        }
-        try {
-            Path file = Paths.get("test-0.0.1-SNAPSHOT.jar");
-
-            AnalyzeEnv.isCli = true;
-            CoreRunner.run(file, null, false, null);
-
             // 连接数据库
-            String url = "jdbc:sqlite:" + dbPath;
+            String url = "jdbc:sqlite:" + DB;
             Connection conn = DriverManager.getConnection(url);
 
-            // 读取当前目录的 jar-analyzer.db 文件的 spring_controller_table 表确保包含了 4 条数据
+            // spring_controller_table 表应包含 4 条数据
             PreparedStatement stmt1 = conn.prepareStatement("SELECT COUNT(*) FROM spring_controller_table");
             ResultSet rs1 = stmt1.executeQuery();
             if (rs1.next()) {
@@ -56,24 +72,24 @@ public class SpringCustomTest {
             rs1.close();
             stmt1.close();
 
-            // 读取 class_table 表确保有 73 条数据
+            // class_table 表应有 76 条数据
             PreparedStatement stmt3 = conn.prepareStatement("SELECT COUNT(*) FROM class_table");
             ResultSet rs3 = stmt3.executeQuery();
             if (rs3.next()) {
                 int classCount = rs3.getInt(1);
                 System.out.println("class_table 表数据条数: " + classCount);
-                assertEquals(73, classCount, "class_table 表应该包含 73 条数据");
+                assertEquals(76, classCount, "class_table 表应该有 76 条数据");
             }
             rs3.close();
             stmt3.close();
 
-            // 读取 method_call_table 表确保有 1746 条数据
+            // method_call_table 表应有 1755 条数据
             PreparedStatement stmt4 = conn.prepareStatement("SELECT COUNT(*) FROM method_call_table");
             ResultSet rs4 = stmt4.executeQuery();
             if (rs4.next()) {
                 int methodCallCount = rs4.getInt(1);
                 System.out.println("method_call_table 表数据条数: " + methodCallCount);
-                assertEquals(1746, methodCallCount, "method_call_table 表应该包含 1746 条数据");
+                assertEquals(1755, methodCallCount, "method_call_table 表应该有 1755 条数据");
             }
             rs4.close();
             stmt4.close();

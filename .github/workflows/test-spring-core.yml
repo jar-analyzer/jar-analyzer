@@ -1,0 +1,36 @@
+name: test core
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  spring-core:
+    name: spring core test - javasec
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: set up java 8
+        uses: actions/setup-java@v5
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+          cache: maven
+      - name: build hello-java-sec test project
+        run: mvn -B -f test/hello-java-sec/pom.xml -DskipTests package
+      - name: prepare jar
+        run: cp test/hello-java-sec/target/javasec-1.15.jar .
+      - name: run maven core test
+        run: mvn -B test -Dtest=SpringCoreTest#testRun -DfailIfNoTests=true
+      - name: upload surefire reports
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: surefire-reports-spring-core
+          path: target/surefire-reports/
+          if-no-files-found: ignore
+      - name: clean test file
+        if: always()
+        run: rm -f javasec-1.15.jar jar-analyzer.db jar-analyzer.db-wal jar-analyzer.db-shm

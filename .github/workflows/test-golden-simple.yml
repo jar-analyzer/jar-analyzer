@@ -1,0 +1,36 @@
+name: test golden simple
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  golden-simple:
+    name: golden test - string/spring simple
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: set up java 8
+        uses: actions/setup-java@v5
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+          cache: maven
+      - name: build springboot-simple test project
+        run: mvn -B -f test/springboot-simple/pom.xml -DskipTests package
+      - name: prepare jar
+        run: cp test/springboot-simple/target/springboot-simple-*.jar simple-test.jar
+      - name: run golden simple test
+        run: mvn -B test -Dtest=SimpleGoldenTest -DfailIfNoTests=true
+      - name: upload surefire reports
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: surefire-reports-golden-simple
+          path: target/surefire-reports/
+          if-no-files-found: ignore
+      - name: clean
+        if: always()
+        run: rm -f simple-test.jar jar-analyzer.db jar-analyzer.db-wal jar-analyzer.db-shm

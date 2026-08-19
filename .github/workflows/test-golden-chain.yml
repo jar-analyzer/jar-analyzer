@@ -1,0 +1,36 @@
+name: test golden chain
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  golden-chain:
+    name: golden test - dfs/el chain
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: set up java 8
+        uses: actions/setup-java@v5
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+          cache: maven
+      - name: build springboot-chain test project
+        run: mvn -B -f test/springboot-chain/pom.xml -DskipTests package
+      - name: prepare jar
+        run: cp test/springboot-chain/target/springboot-chain-*.jar chain-test.jar
+      - name: run golden chain test
+        run: mvn -B test -Dtest=ChainGoldenTest -DfailIfNoTests=true
+      - name: upload surefire reports
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: surefire-reports-golden-chain
+          path: target/surefire-reports/
+          if-no-files-found: ignore
+      - name: clean
+        if: always()
+        run: rm -f chain-test.jar jar-analyzer.db jar-analyzer.db-wal jar-analyzer.db-shm

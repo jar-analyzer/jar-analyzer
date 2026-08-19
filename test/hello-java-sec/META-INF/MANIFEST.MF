@@ -1,0 +1,50 @@
+Manifest-Version: 1.0
+Main-Class: 
+Class-Path: groovy-console-2.5.14.jar ant-antlr-1.9.15.jar mybatis-sprin
+ g-boot-starter-2.1.4.jar springfox-core-2.9.2.jar jcommander-1.72.jar f
+ astjson-1.2.24.jar log4j-core-2.13.3.jar LatencyUtils-2.0.3.jar HdrHist
+ ogram-2.1.12.jar swagger-models-1.5.20.jar spring-core-5.3.2.jar unbesc
+ ape-1.1.6.RELEASE.jar logback-core-1.2.3.jar spring-aop-5.3.2.jar sprin
+ gfox-spring-web-2.9.2.jar jsoup-1.12.2.jar jackson-databind-2.11.3.jar 
+ groovy-json-2.5.14.jar groovy-nio-2.5.14.jar picocli-4.3.2.jar spring-c
+ ontext-5.3.2.jar jdom2-2.0.6.jar commons-lang-2.4.jar spring-boot-start
+ er-json-2.4.1.jar springfox-swagger-common-2.9.2.jar groovy-sql-2.5.14.
+ jar junit-4.13.1.jar jakarta.el-3.0.3.jar groovy-testng-2.5.14.jar guav
+ a-20.0.jar json-simple-1.1.1.jar thymeleaf-extras-java8time-3.0.4.RELEA
+ SE.jar spring-boot-starter-logging-2.4.1.jar mybatis-spring-boot-autoco
+ nfigure-2.1.4.jar groovy-cli-commons-2.5.14.jar groovy-datetime-2.5.14.
+ jar byte-buddy-1.10.18.jar groovy-2.5.14.jar junit-jupiter-api-5.7.0.ja
+ r jakarta.annotation-api-1.3.5.jar testng-6.13.1.jar jackson-core-2.11.
+ 3.jar springfox-spi-2.9.2.jar groovy-jmx-2.5.14.jar spring-beans-5.3.2.
+ jar junit-platform-commons-1.7.0.jar HikariCP-3.4.5.jar jackson-datatyp
+ e-jsr310-2.11.3.jar swagger-annotations-1.5.20.jar log4j-api-2.13.3.jar
+  tomcat-embed-websocket-9.0.41.jar classmate-1.5.1.jar junit-platform-e
+ ngine-1.7.0.jar commons-collections-3.2.1.jar groovy-docgenerator-2.5.1
+ 4.jar jul-to-slf4j-1.7.30.jar spring-boot-starter-2.4.1.jar spring-jcl-
+ 5.3.2.jar ant-junit-1.9.15.jar groovy-ant-2.5.14.jar springfox-swagger-
+ ui-2.10.5.jar groovy-groovydoc-2.5.14.jar jackson-module-parameter-name
+ s-2.11.3.jar commons-cli-1.4.jar spring-boot-devtools-2.4.1.jar snakeya
+ ml-1.27.jar groovy-cli-picocli-2.5.14.jar logback-classic-1.2.3.jar thy
+ meleaf-spring5-3.0.11.RELEASE.jar mapstruct-1.2.0.Final.jar jackson-dat
+ atype-jdk8-2.11.3.jar micrometer-core-1.6.2.jar log4j-to-slf4j-2.13.3.j
+ ar spring-boot-actuator-2.4.1.jar attoparser-2.0.5.RELEASE.jar hamcrest
+ -core-2.2.jar spring-tx-5.3.2.jar spring-web-5.3.2.jar groovy-macro-2.5
+ .14.jar groovy-xml-2.5.14.jar junit-platform-launcher-1.7.0.jar xpp3_mi
+ n-1.1.4c.jar groovy-test-2.5.14.jar spring-boot-starter-jdbc-2.4.1.jar 
+ ant-launcher-1.9.15.jar spring-boot-starter-thymeleaf-2.4.1.jar spring-
+ webmvc-5.3.2.jar tomcat-embed-core-9.0.41.jar spring-boot-autoconfigure
+ -2.4.1.jar spring-boot-2.4.1.jar slf4j-api-1.7.30.jar ant-1.9.15.jar my
+ batis-spring-2.0.6.jar thymeleaf-3.0.11.RELEASE.jar groovy-swing-2.5.14
+ .jar dom4j-2.1.3.jar apiguardian-api-1.1.0.jar jolokia-core-1.4.0.jar x
+ mlprojector-1.4.14.jar xstream-1.4.10.jar groovy-jsr223-2.5.14.jar spri
+ ngfox-swagger2-2.9.2.jar junit-jupiter-engine-5.7.0.jar groovy-servlet-
+ 2.5.14.jar groovy-groovysh-2.5.14.jar spring-plugin-core-1.2.0.RELEASE.
+ jar spring-boot-starter-actuator-2.4.1.jar velocity-1.7.jar mysql-conne
+ ctor-java-8.0.22.jar spring-boot-actuator-autoconfigure-2.4.1.jar sprin
+ g-boot-starter-tomcat-2.4.1.jar spring-expression-5.3.2.jar spring-plug
+ in-metadata-1.2.0.RELEASE.jar groovy-templates-2.5.14.jar spring-jdbc-5
+ .3.2.jar hamcrest-2.2.jar jackson-annotations-2.11.3.jar groovy-test-ju
+ nit5-2.5.14.jar springfox-schema-2.9.2.jar jline-2.14.6.jar xmlpull-1.1
+ .3.1.jar spring-boot-starter-web-2.4.1.jar qdox-1.12.1.jar opentest4j-1
+ .2.0.jar mybatis-3.5.6.jar
+

@@ -64,7 +64,8 @@ public class MainForm {
     private static final MainForm fakeInstance = new MainForm(true);
     private static MainForm instance;
     private static ConfigFile config;
-    private static CoreEngine engine;
+    // HTTP/MCP 线程读、构建线程重建时写，必须保证可见性
+    private static volatile CoreEngine engine;
     private static JTextArea codeArea;
     private static CodeTabPanel codeTabPanel;
     private static MethodResult curMethod;

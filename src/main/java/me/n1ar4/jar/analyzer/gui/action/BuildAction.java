@@ -12,7 +12,9 @@ package me.n1ar4.jar.analyzer.gui.action;
 
 import me.n1ar4.jar.analyzer.core.AnalyzeEnv;
 import me.n1ar4.jar.analyzer.core.CoreRunner;
+import me.n1ar4.jar.analyzer.core.DatabaseManager;
 import me.n1ar4.jar.analyzer.gui.MainForm;
+import me.n1ar4.jar.analyzer.gui.adapter.SearchInputListener;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
 import me.n1ar4.jar.analyzer.gui.util.MenuUtil;
 import me.n1ar4.jar.analyzer.gui.util.ProcessDialog;
@@ -21,6 +23,7 @@ import me.n1ar4.jar.analyzer.utils.DirUtil;
 import me.n1ar4.jar.analyzer.utils.StringUtil;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -40,8 +43,19 @@ public class BuildAction {
                             "</html>");
             if (res == JOptionPane.OK_OPTION) {
                 LogUtil.info("delete old db");
+                // 重建前必须关闭全部数据库连接（常驻会话 + 连接池），
+                // 否则 macOS/Linux 上 unlink 后旧连接继续写孤儿文件、
+                // 其他线程的新查询会打开空库；Windows 上直接删除失败
+                DatabaseManager.closeForRebuild();
+                SearchInputListener.resetSession();
+                MainForm.setEngine(null);
+                boolean deleted = false;
                 try {
                     Files.delete(od);
+                    // WAL 模式可能残留 sidecar 文件，一并删除
+                    Files.deleteIfExists(Paths.get(Const.dbFile + "-wal"));
+                    Files.deleteIfExists(Paths.get(Const.dbFile + "-shm"));
+                    deleted = true;
                     LogUtil.info("delete old db success");
                 } catch (Exception ex) {
                     LogUtil.error("cannot delete db : " + ex.getMessage());
@@ -50,6 +64,15 @@ public class BuildAction {
                                     "<p>无法删除之前的 <strong>jar-analyzer.db</strong> 请手动删除</p>" +
                                     "<p>" + ex.getMessage().trim() + "</p>" +
                                     "</html>");
+                }
+                // 无论删除是否成功都要恢复数据库可用：成功则打开新库，
+                // 失败则重新挂回旧库文件
+                DatabaseManager.reopen();
+                if (!deleted) {
+                    // engine 已置空，同步把引擎状态从 RUNNING 刷成 CLOSED，
+                    // 避免标签误导用户以为旧库仍可查询
+                    MainForm.getInstance().getEngineVal().setText("CLOSED");
+                    MainForm.getInstance().getEngineVal().setForeground(Color.RED);
                     return;
                 }
             }

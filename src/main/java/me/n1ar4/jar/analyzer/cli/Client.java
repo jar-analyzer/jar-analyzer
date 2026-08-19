@@ -13,6 +13,7 @@ package me.n1ar4.jar.analyzer.cli;
 import com.beust.jcommander.JCommander;
 import me.n1ar4.jar.analyzer.core.AnalyzeEnv;
 import me.n1ar4.jar.analyzer.core.CoreRunner;
+import me.n1ar4.jar.analyzer.core.DatabaseManager;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.utils.DirUtil;
 import me.n1ar4.log.LogManager;
@@ -57,11 +58,17 @@ public class Client {
                 }
                 if (buildCmd.delExist()) {
                     logger.info("delete old db");
+                    // 先关闭可能存在的数据库会话与连接池再删除，
+                    // 避免旧连接继续占用/写入已删除的库文件
+                    DatabaseManager.closeForRebuild();
                     try {
                         Files.delete(Paths.get(Const.dbFile));
+                        Files.deleteIfExists(Paths.get(Const.dbFile + "-wal"));
+                        Files.deleteIfExists(Paths.get(Const.dbFile + "-shm"));
                     } catch (Exception ignored) {
                         logger.warn("delete old db fail");
                     }
+                    DatabaseManager.reopen();
                 }
                 AnalyzeEnv.jarsInJar = buildCmd.enableInnerJars();
                 AnalyzeEnv.isCli = true;

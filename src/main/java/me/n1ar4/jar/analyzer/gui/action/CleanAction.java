@@ -12,7 +12,9 @@ package me.n1ar4.jar.analyzer.gui.action;
 
 import me.n1ar4.jar.analyzer.config.ConfigEngine;
 import me.n1ar4.jar.analyzer.config.UIPrefs;
+import me.n1ar4.jar.analyzer.core.DatabaseManager;
 import me.n1ar4.jar.analyzer.gui.MainForm;
+import me.n1ar4.jar.analyzer.gui.adapter.SearchInputListener;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.jar.analyzer.utils.DirUtil;
@@ -39,8 +41,14 @@ public class CleanAction {
                             "delete jar-analyzer-export dir <br>" +
                             "</html>");
             if (res == JOptionPane.OK_OPTION) {
+                // 先关闭全部数据库连接，否则 Windows 上删除 db 文件会
+                // 因文件被占用而失败；随后进程退出，无需 reopen
+                DatabaseManager.closeForRebuild();
+                SearchInputListener.resetSession();
                 try {
                     Files.delete(Paths.get(Const.dbFile));
+                    Files.deleteIfExists(Paths.get(Const.dbFile + "-wal"));
+                    Files.deleteIfExists(Paths.get(Const.dbFile + "-shm"));
                 } catch (Exception ignored) {
                 }
                 try {

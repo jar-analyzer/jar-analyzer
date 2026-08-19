@@ -33,25 +33,25 @@ import java.util.*;
 public class DatabaseManager {
     private static final Logger logger = LogManager.getLogger();
     public static int PART_SIZE = 100;
-    private static final SqlSession session;
-    private static final ClassMapper classMapper;
-    private static final MemberMapper memberMapper;
-    private static final JarMapper jarMapper;
-    private static final AnnoMapper annoMapper;
-    private static final MethodMapper methodMapper;
-    private static final StringMapper stringMapper;
-    private static final InterfaceMapper interfaceMapper;
-    private static final ClassFileMapper classFileMapper;
-    private static final MethodImplMapper methodImplMapper;
-    private static final MethodCallMapper methodCallMapper;
-    private static final SpringControllerMapper springCMapper;
-    private static final SpringInterceptorMapper springIMapper;
-    private static final SpringMethodMapper springMMapper;
-    private static final JavaWebMapper javaWebMapper;
-    private static final DFSMapper dfsMapper;
-    private static final DFSListMapper dfsListMapper;
-    private static final FavMapper favMapper;
-    private static final HisMapper hisMapper;
+    private static SqlSession session;
+    private static ClassMapper classMapper;
+    private static MemberMapper memberMapper;
+    private static JarMapper jarMapper;
+    private static AnnoMapper annoMapper;
+    private static MethodMapper methodMapper;
+    private static StringMapper stringMapper;
+    private static InterfaceMapper interfaceMapper;
+    private static ClassFileMapper classFileMapper;
+    private static MethodImplMapper methodImplMapper;
+    private static MethodCallMapper methodCallMapper;
+    private static SpringControllerMapper springCMapper;
+    private static SpringInterceptorMapper springIMapper;
+    private static SpringMethodMapper springMMapper;
+    private static JavaWebMapper javaWebMapper;
+    private static DFSMapper dfsMapper;
+    private static DFSListMapper dfsListMapper;
+    private static FavMapper favMapper;
+    private static HisMapper hisMapper;
 
     // --inner-jar 仅解析此jar包引用的 jdk 类及其它jar中的类,但不会保存其它jar的jarId等信息
     private static final ClassReference notFoundClassReference = new ClassReference(
@@ -68,6 +68,13 @@ public class DatabaseManager {
 
 
     static {
+        openInternal();
+    }
+
+    /**
+     * 打开会话与全部 mapper 并建表（db 文件不存在时由 SQLite 自动创建）
+     */
+    private static synchronized void openInternal() {
         logger.info("init database");
         LogUtil.info("init database");
         SqlSessionFactory factory = SqlSessionFactoryUtil.sqlSessionFactory;
@@ -111,8 +118,57 @@ public class DatabaseManager {
         // NOTE
         initMapper.createFavoriteTable();
         initMapper.createHistoryTable();
+        searchOptsApplied = false;
         logger.info("create database finish");
         LogUtil.info("create database finish");
+    }
+
+    /**
+     * 重建 jar-analyzer.db 前调用：关闭常驻会话并把 mapper 置空，
+     * 随后关闭整个连接池（见 {@link SqlSessionFactoryUtil#rebuildFactory}），
+     * 使旧库文件不再被任何连接占用，之后删除旧库文件并调用
+     * {@link #reopen()} 打开新库。close 与 reopen 之间调用本类的
+     * save/query 方法会 NPE，该窗口只应存在于删除文件的前后
+     */
+    public static synchronized void closeForRebuild() {
+        try {
+            if (session != null) {
+                session.close();
+            }
+        } catch (Throwable t) {
+            logger.warn("close database session failed: {}", t.toString());
+        }
+        session = null;
+        classMapper = null;
+        jarMapper = null;
+        annoMapper = null;
+        methodMapper = null;
+        memberMapper = null;
+        stringMapper = null;
+        classFileMapper = null;
+        interfaceMapper = null;
+        methodCallMapper = null;
+        methodImplMapper = null;
+        springCMapper = null;
+        springIMapper = null;
+        springMMapper = null;
+        javaWebMapper = null;
+        dfsMapper = null;
+        dfsListMapper = null;
+        favMapper = null;
+        hisMapper = null;
+        SqlSessionFactoryUtil.rebuildFactory();
+    }
+
+    /**
+     * 删除旧库文件后调用：重新打开会话并建表（文件不存在时新建）。
+     * 已处于打开状态时为空操作
+     */
+    public static synchronized void reopen() {
+        if (session != null) {
+            return;
+        }
+        openInternal();
     }
 
     /**
@@ -171,6 +227,12 @@ public class DatabaseManager {
     }
 
     public static void saveDFS(DFSResultEntity dfsResultEntity) {
+        // closeForRebuild 与 reopen 之间的窗口期可能被 DFS 工作线程调用，
+        // mapper 已置空，跳过而不是让 NPE 冒泡到全局异常处理器
+        if (dfsMapper == null) {
+            logger.warn("save dfs skipped: database rebuilding");
+            return;
+        }
         int a = dfsMapper.insertDFSResult(dfsResultEntity);
         if (a < 1) {
             logger.warn("save dfs error");
@@ -178,6 +240,10 @@ public class DatabaseManager {
     }
 
     public static void saveDFSList(DFSResultListEntity dfsResultListEntity) {
+        if (dfsListMapper == null) {
+            logger.warn("save dfs list skipped: database rebuilding");
+            return;
+        }
         int a = dfsListMapper.insertDFSResultList(dfsResultListEntity);
         if (a < 1) {
             logger.warn("save dfs list error");

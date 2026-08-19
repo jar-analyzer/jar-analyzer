@@ -1834,11 +1834,23 @@ public class MainForm {
                 JOptionPane.showMessageDialog(instance.getMasterPanel(), "请确保 DFS 漏洞链分析有结果");
                 return;
             }
-            List<TaintResult> taintResult = TaintAnalyzer.analyze(new ArrayList<>(TaintCache.dfsCache));
-            TaintCache.cache.clear();
-            TaintCache.cache.addAll(taintResult);
-            TaintResultDialog.showTaintResults(instance.getMasterPanel().getTopLevelAncestor() instanceof Frame ?
-                    (Frame) instance.getMasterPanel().getTopLevelAncestor() : null, new ArrayList<>(TaintCache.cache));
+            // 2026/08/20 修复：污点分析可能耗时较长，在 EDT 上同步执行会
+            // 冻结整个界面。挪到后台线程，进度框与结果展示沿用上方 DFS
+            // 线程的既有模式（模态进度框顺带挡住了重复点击）
+            logger.info("start taint analyze (button)");
+            JDialog dialog = ProcessDialog.createProgressDialog(instance.getMasterPanel());
+            new Thread(() -> dialog.setVisible(true)).start();
+            new Thread(() -> {
+                try {
+                    List<TaintResult> taintResult = TaintAnalyzer.analyze(new ArrayList<>(TaintCache.dfsCache));
+                    TaintCache.cache.clear();
+                    TaintCache.cache.addAll(taintResult);
+                    TaintResultDialog.showTaintResults(instance.getMasterPanel().getTopLevelAncestor() instanceof Frame ?
+                            (Frame) instance.getMasterPanel().getTopLevelAncestor() : null, new ArrayList<>(TaintCache.cache));
+                } finally {
+                    closeProgressDialog(dialog);
+                }
+            }).start();
         });
     }
 

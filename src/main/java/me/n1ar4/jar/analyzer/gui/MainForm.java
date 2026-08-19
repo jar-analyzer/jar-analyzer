@@ -1582,6 +1582,7 @@ public class MainForm {
                     && UIPrefs.getInt(UIPrefs.K_FRAME_H) != null;
             UIPrefs.applyFrameGeometry(frame);
             if (!hadGeometry) {
+                widenDefaultFrameToFitButtons(frame);
                 frame.setLocationRelativeTo(null);
             }
             UIPrefs.installFrameListeners(frame);
@@ -1595,6 +1596,58 @@ public class MainForm {
         frame.setResizable(true);
         frame.setVisible(false);
         return frame;
+    }
+
+    /**
+     * 首次启动时把窗口稍微加宽：以 start 标签页（首页）布局后实际
+     * 需要的宽度为准，刚好放下右侧按钮即可。pack() 因 rootSplit
+     * 约束上固定的首选尺寸（200x200）只按最小尺寸开窗，这里只补
+     * 差值，不按最宽标签页的首选宽度大幅拓宽。
+     */
+    private static void widenDefaultFrameToFitButtons(JFrame frame) {
+        try {
+            // 固定两个分隔条的初始位置：补进去的宽度全部给右侧标签区
+            // （coreSplit 的 resizeWeight 会让左侧代码区拿走 80% 增量）
+            int rootLoc = instance.rootSplit.getDividerLocation();
+            int coreLoc = instance.coreSplit.getDividerLocation();
+            // start 标签页的首选宽度首次布局后才稳定（其中的文本框
+            // 首选宽度依赖已布局尺寸），循环补齐到收敛，最多三轮
+            for (int i = 0; i < 3; i++) {
+                int startNeed = instance.startPanel.getPreferredSize().width
+                        + instance.tabbedPanel.getInsets().left
+                        + instance.tabbedPanel.getInsets().right;
+                int needFrameW = rootLoc + instance.rootSplit.getDividerSize()
+                        + coreLoc + instance.coreSplit.getDividerSize()
+                        + startNeed;
+                int maxW = maxFrameWidthOfScreen(frame);
+                if (needFrameW > maxW) {
+                    needFrameW = maxW;
+                }
+                if (frame.getWidth() >= needFrameW) {
+                    break;
+                }
+                frame.setSize(needFrameW, frame.getHeight());
+                frame.validate();
+                instance.rootSplit.setDividerLocation(rootLoc);
+                instance.coreSplit.setDividerLocation(coreLoc);
+            }
+        } catch (Exception ignored) {
+        }
+    }
+
+    private static int maxFrameWidthOfScreen(JFrame frame) {
+        try {
+            GraphicsConfiguration gc = frame.getGraphicsConfiguration();
+            if (gc == null) {
+                gc = GraphicsEnvironment.getLocalGraphicsEnvironment()
+                        .getDefaultScreenDevice().getDefaultConfiguration();
+            }
+            Rectangle bounds = gc.getBounds();
+            Insets insets = Toolkit.getDefaultToolkit().getScreenInsets(gc);
+            return Math.max(400, bounds.width - insets.left - insets.right);
+        } catch (Exception e) {
+            return Integer.MAX_VALUE;
+        }
     }
 
     private static void initNote() {

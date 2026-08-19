@@ -30,7 +30,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 public class FileTree extends JTree {
 
@@ -67,6 +69,7 @@ public class FileTree extends JTree {
     private final DefaultTreeModel savedModel;
     protected DefaultMutableTreeNode rootNode;
     protected DefaultTreeModel fileTreeModel;
+    private boolean listenersInstalled;
 
     public FileTree() {
         savedModel = (DefaultTreeModel) this.getModel();
@@ -154,12 +157,110 @@ public class FileTree extends JTree {
         repaint();
     }
 
+    /**
+     * 重建整棵树并保持展开与选中状态不变。
+     * 用于配置切换（如 show inner class）这类只需要重新过滤、
+     * 不应该丢失用户当前浏览位置的场景。
+     */
+    public void refreshKeepingExpansion() {
+        if (rootNode == null) {
+            refresh();
+            return;
+        }
+
+        Path base = Paths.get(Const.tempDir).normalize();
+
+        // 刷新后的节点是全新对象，TreePath 无法直接复用，
+        // 只能按“相对 tempDir 的文件路径”记录再逐层恢复
+        Set<Path> expandedRels = new LinkedHashSet<>();
+        Enumeration<TreePath> expanded = getExpandedDescendants(new TreePath(rootNode.getPath()));
+        while (expanded != null && expanded.hasMoreElements()) {
+            Path rel = relOf(expanded.nextElement().getLastPathComponent(), base);
+            if (rel != null) {
+                expandedRels.add(rel);
+            }
+        }
+        Path selectedRel = null;
+        TreePath selection = getSelectionPath();
+        if (selection != null) {
+            selectedRel = relOf(selection.getLastPathComponent(), base);
+        }
+
+        refresh();
+
+        if (rootNode == null) {
+            return;
+        }
+        restoreExpansion(rootNode, base, expandedRels);
+        if (selectedRel != null) {
+            DefaultMutableTreeNode node = selectedRel.getNameCount() == 0
+                    ? rootNode : findNodeByRel(rootNode, selectedRel);
+            if (node != null) {
+                setSelectionPath(new TreePath(node.getPath()));
+            }
+        }
+    }
+
+    private static Path relOf(Object treeNode, Path base) {
+        if (!(treeNode instanceof DefaultMutableTreeNode)) {
+            return null;
+        }
+        Object userObject = ((DefaultMutableTreeNode) treeNode).getUserObject();
+        if (!(userObject instanceof FileTreeNode)) {
+            return null;
+        }
+        Path path = ((FileTreeNode) userObject).file.toPath();
+        if (!path.startsWith(base)) {
+            return null;
+        }
+        return base.relativize(path);
+    }
+
+    private void restoreExpansion(DefaultMutableTreeNode node, Path base, Set<Path> expandedRels) {
+        Path rel = relOf(node, base);
+        if (rel == null || !expandedRels.contains(rel)) {
+            return;
+        }
+        // 程序化 expandPath 会触发 treeExpanded 监听器完成懒加载，
+        // 返回后该节点的真实子节点已就绪，可以继续向下恢复
+        expandPath(new TreePath(node.getPath()));
+        for (int i = 0; i < node.getChildCount(); i++) {
+            restoreExpansion((DefaultMutableTreeNode) node.getChildAt(i), base, expandedRels);
+        }
+    }
+
+    private DefaultMutableTreeNode findNodeByRel(DefaultMutableTreeNode start, Path targetRel) {
+        DefaultMutableTreeNode current = start;
+        for (int i = 0; i < targetRel.getNameCount(); i++) {
+            String component = targetRel.getName(i).toString();
+            DefaultMutableTreeNode next = null;
+            for (int c = 0; c < current.getChildCount(); c++) {
+                DefaultMutableTreeNode child = (DefaultMutableTreeNode) current.getChildAt(c);
+                if (child.getUserObject() instanceof FileTreeNode
+                        && ((FileTreeNode) child.getUserObject()).file.getName().equals(component)) {
+                    next = child;
+                    break;
+                }
+            }
+            if (next == null) {
+                return null;
+            }
+            current = next;
+        }
+        return current;
+    }
+
     private void initComponents() {
         initRoot();
         setEditable(false);
     }
 
     private void initListeners() {
+        // refresh() 可能被反复调用（搜索定位、配置切换），监听器只能注册一次
+        if (listenersInstalled) {
+            return;
+        }
+        listenersInstalled = true;
         // 2024-07-31 删除 addTreeSelectionListener
         // 不需要提供自动的滚动功能 影响正常使用
         addTreeExpansionListener(new TreeExpansionListener() {

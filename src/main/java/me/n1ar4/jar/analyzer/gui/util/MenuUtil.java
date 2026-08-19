@@ -181,6 +181,12 @@ public class MenuUtil {
 
     public static void setShowInner(boolean v) {
         showInnerConfig.setState(v);
+        // 文件树节点是懒加载缓存的，切换后必须重建整棵树才能立即生效；
+        // 重建时保持展开/选中状态，避免打断用户当前的浏览位置
+        MainForm inst = MainForm.getInstance();
+        if (inst != null && inst.getFileTree() != null) {
+            inst.getFileTree().refreshKeepingExpansion();
+        }
     }
 
     public static void setFixClassPath(boolean v) {

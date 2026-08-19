@@ -1,6 +1,6 @@
 # Jar-Analyzer
 
-[CHANGE LOG](src/main/resources/CHANGELOG.MD)
+[CHANGE LOG](CHANGELOG.MD)
 
 `jar-analyzer` 项目连续 `5` 年更新，共发布 `66` 个版本（含 `v1` 和 `v2` 版本）完全开源，完全免费
 

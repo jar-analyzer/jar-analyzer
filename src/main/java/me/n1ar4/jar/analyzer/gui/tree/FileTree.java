@@ -397,11 +397,10 @@ public class FileTree extends JTree {
     }
 
     public void searchPathTarget(String classname) {
-        refresh();
         String originClassName = classname;
         String[] split = originClassName.split("/");
 
-        // CHECK FILE EXIST
+        // CHECK FILE EXIST（先解析真实落盘路径，再重建树）
         Path dir = Paths.get(Const.tempDir);
         Path classPath = dir.resolve(classname + ".class");
         if (!Files.exists(classPath)) {
@@ -419,6 +418,13 @@ public class FileTree extends JTree {
             }
             split = classname.split("/");
         }
+
+        // show inner class 关闭时内部类整体隐藏，被跳转的这一个
+        // 需要单独放行；跳转普通类时清空，避免残留
+        TreeFileFilter.setExceptedInnerClass(
+                split[split.length - 1].contains("$") ? classPath : null);
+
+        refresh();
 
         Enumeration<?> children = rootNode.children();
         FileTree.setFound(false);

@@ -14,9 +14,16 @@ import me.n1ar4.jar.analyzer.gui.util.MenuUtil;
 import me.n1ar4.jar.analyzer.starter.Const;
 
 import java.io.File;
+import java.nio.file.Path;
 
 public class TreeFileFilter {
     private static final String INNER = "$";
+    /**
+     * 当前搜索跳转定位的内部类文件。show inner class 关闭时内部类
+     * 整体隐藏，但被跳转的这一个必须单独显示，否则只能退回主类。
+     * 跳转普通类时置回 null。
+     */
+    private static volatile Path exceptedInnerClass;
     private static final String DECOMPILE_DIR = "jar-analyzer-decompile";
     private static final String CONSOLE_DLL = "console.dll";
     /**
@@ -37,10 +44,15 @@ public class TreeFileFilter {
         this.showHiddenFiles = showHiddenFiles;
     }
 
+    public static void setExceptedInnerClass(Path target) {
+        exceptedInnerClass = target;
+    }
+
     @SuppressWarnings("all")
     public boolean shouldFilter() {
         boolean showInner = MenuUtil.getShowInnerConfig().getState();
-        if (!showInner && file.getName().contains(INNER)) {
+        if (!showInner && file.getName().contains(INNER)
+                && !file.toPath().equals(exceptedInnerClass)) {
             return true;
         }
         if (file.isFile() && !showFiles) {

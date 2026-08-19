@@ -21,6 +21,7 @@ import me.n1ar4.jar.analyzer.config.ConfigEngine;
 import me.n1ar4.jar.analyzer.config.ConfigFile;
 import me.n1ar4.jar.analyzer.gui.*;
 import me.n1ar4.jar.analyzer.gui.diff.JarDiffForm;
+import me.n1ar4.jar.analyzer.gui.tree.TreeFileFilter;
 import me.n1ar4.jar.analyzer.http.HttpResponse;
 import me.n1ar4.jar.analyzer.http.Y4Client;
 import me.n1ar4.jar.analyzer.markdown.MarkdownRenderer;
@@ -181,6 +182,8 @@ public class MenuUtil {
 
     public static void setShowInner(boolean v) {
         showInnerConfig.setState(v);
+        // 切换配置后此前的内部类跳转放行不再有意义，清空
+        TreeFileFilter.setExceptedInnerClass(null);
         // 文件树节点是懒加载缓存的，切换后必须重建整棵树才能立即生效；
         // 重建时保持展开/选中状态，避免打断用户当前的浏览位置
         MainForm inst = MainForm.getInstance();

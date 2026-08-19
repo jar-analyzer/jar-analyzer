@@ -59,7 +59,7 @@ public class SimpleGoldenTest {
     }
 
     /**
-     * 常量 GOLDEN-SECRET-1984 被 javac 内联进 leak() 的 LDC
+     * 常量 GOLDEN-MARKER-1984 被 javac 内联进 leak() 的 LDC
      * （static final 编译期常量不产生 <clinit>）
      */
     @Test
@@ -67,7 +67,7 @@ public class SimpleGoldenTest {
     void testStringSearch() {
         CoreEngine engine = MainForm.getEngine();
         assertNotNull(engine);
-        List<MethodResult> results = engine.getMethodsByStr("GOLDEN-SECRET-1984");
+        List<MethodResult> results = engine.getMethodsByStr("GOLDEN-MARKER-1984");
         assertFalse(results.isEmpty(), "应能搜到常量所在方法");
 
         Set<String> keys = new HashSet<>();

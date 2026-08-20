@@ -90,7 +90,6 @@ public class SvgManager {
     // ---- top menu item icons -------------------------------------------
     // A compact, consistent 16x16 line-icon set for the menu bar and all
     // icon-bearing entries in its drop-down menus.
-    public static FlatSVGIcon TopMenuSystemIcon = icon("system");
     public static FlatSVGIcon TopMenuDecompilerIcon = icon("decompiler");
     public static FlatSVGIcon TopMenuExportIcon = icon("export");
     public static FlatSVGIcon TopMenuDiffIcon = icon("diff");

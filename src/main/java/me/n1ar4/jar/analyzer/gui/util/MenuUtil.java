@@ -25,7 +25,6 @@ import me.n1ar4.jar.analyzer.gui.tree.TreeFileFilter;
 import me.n1ar4.jar.analyzer.http.HttpResponse;
 import me.n1ar4.jar.analyzer.http.Y4Client;
 import me.n1ar4.jar.analyzer.markdown.MarkdownRenderer;
-import me.n1ar4.jar.analyzer.os.SystemChart;
 import me.n1ar4.jar.analyzer.plugins.jd.JDGUIStarter;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.log.LogManager;
@@ -225,10 +224,6 @@ public class MenuUtil {
         menuBar.add(createGames());
         menuBar.add(createTheme());
         JMenu plugins = new JMenu("plugins");
-        JMenuItem systemItem = new JMenuItem("system info");
-        systemItem.setIcon(SvgManager.TopMenuSystemIcon);
-        systemItem.addActionListener(e -> SystemChart.start0());
-        plugins.add(systemItem);
         JMenuItem luceneItem = new JMenuItem("global search");
         luceneItem.setIcon(SvgManager.MenuGlobalSearchIcon);
         luceneItem.addActionListener(e -> LuceneSearchForm.start(1));

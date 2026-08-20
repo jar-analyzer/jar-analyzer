@@ -24,6 +24,7 @@ import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -52,6 +53,45 @@ public class SyntaxAreaHelper {
      */
     public static CodeTabPanel getCodeTabPanel() {
         return codeTabPanel;
+    }
+
+    /**
+     * 按 Tab 的 key（类名或配置文件路径）选择语法高亮样式。
+     * 类名 key（如 com/foo/Bar）没有扩展名，回落到 Java；
+     * 配置文件按扩展名选择对应样式（.toml 无专用样式，
+     * 与 .conf/.config/.ini 一起按最接近的 ini 处理）
+     */
+    public static String styleForKey(String key) {
+        if (key == null || key.isEmpty()) {
+            return SyntaxConstants.SYNTAX_STYLE_JAVA;
+        }
+        String leaf = key;
+        int sep = Math.max(key.lastIndexOf('/'), key.lastIndexOf('\\'));
+        if (sep >= 0 && sep < key.length() - 1) {
+            leaf = key.substring(sep + 1);
+        }
+        int dot = leaf.lastIndexOf('.');
+        if (dot < 0) {
+            return SyntaxConstants.SYNTAX_STYLE_JAVA;
+        }
+        switch (leaf.substring(dot + 1).toLowerCase(Locale.ROOT)) {
+            case "xml":
+                return SyntaxConstants.SYNTAX_STYLE_XML;
+            case "yml":
+            case "yaml":
+                return SyntaxConstants.SYNTAX_STYLE_YAML;
+            case "json":
+                return SyntaxConstants.SYNTAX_STYLE_JSON;
+            case "properties":
+                return SyntaxConstants.SYNTAX_STYLE_PROPERTIES_FILE;
+            case "ini":
+            case "conf":
+            case "config":
+            case "toml":
+                return SyntaxConstants.SYNTAX_STYLE_INI;
+            default:
+                return SyntaxConstants.SYNTAX_STYLE_JAVA;
+        }
     }
 
     public static int findWordStart(String text, int position) {

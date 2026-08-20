@@ -156,9 +156,13 @@ public class CodeTabPanel extends JPanel {
                     "// 该文件不支持反编译或反编译失败\n";
         }
 
+        // 按文件类型选择语法高亮（类名 key 无扩展名，回落 Java）
+        String syntaxStyle = SyntaxAreaHelper.styleForKey(className);
+
         // 如果这个类已经有 Tab 了，切换到它并更新内容
         if (tabMap.containsKey(className)) {
             RSyntaxTextArea existingArea = tabMap.get(className);
+            existingArea.setSyntaxEditingStyle(syntaxStyle);
             existingArea.setText(code);
             if (caretPos >= 0 && caretPos < code.length()) {
                 existingArea.setCaretPosition(caretPos);
@@ -185,6 +189,7 @@ public class CodeTabPanel extends JPanel {
 
         // 创建新 Tab
         RSyntaxTextArea newArea = createCodeArea();
+        newArea.setSyntaxEditingStyle(syntaxStyle);
         newArea.setText(code);
         if (caretPos >= 0 && caretPos < code.length()) {
             newArea.setCaretPosition(caretPos);

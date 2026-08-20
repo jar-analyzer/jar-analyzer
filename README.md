@@ -30,6 +30,7 @@ The `jar-analyzer` project has been continuously updated for `5` years, with `66
 ![](https://github.com/jar-analyzer/jar-analyzer/workflows/test%20custom/badge.svg)
 ![](https://github.com/jar-analyzer/jar-analyzer/workflows/test%20golden%20chain/badge.svg)
 ![](https://github.com/jar-analyzer/jar-analyzer/workflows/test%20golden%20simple/badge.svg)
+![](https://github.com/jar-analyzer/jar-analyzer/workflows/test%20golden%20taint/badge.svg)
 
 官方网站：https://jar-analyzer.github.io
 

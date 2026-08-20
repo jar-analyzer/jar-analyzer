@@ -32,6 +32,11 @@ public class TreeFileFilter {
      * targets, so it must not pollute the project file tree.
      */
     private static final String DIFF_DIR = "diff";
+    /**
+     * AI 工作流报告目录，与 diff/decompile 同为工具自身产物，
+     * 只隐藏 tempDir 顶层的那一个
+     */
+    private static final String REPORTS_DIR = "reports";
     private final File file;
     private final boolean showFiles;
     private final boolean showHiddenFiles;
@@ -67,10 +72,12 @@ public class TreeFileFilter {
         if (file.getName().equals(CONSOLE_DLL)) {
             return true;
         }
-        // Hide the diff working directory, but only when it sits directly
-        // under jar-analyzer-temp/. A nested `diff` folder inside the user's
-        // own jar contents must still be visible.
-        if (file.isDirectory() && DIFF_DIR.equals(file.getName())) {
+        // Hide the tool's own working directories (diff / reports), but
+        // only when they sit directly under jar-analyzer-temp/. A nested
+        // `diff`/`reports` folder inside the user's own jar contents must
+        // still be visible.
+        if (file.isDirectory()
+                && (DIFF_DIR.equals(file.getName()) || REPORTS_DIR.equals(file.getName()))) {
             File parent = file.getParentFile();
             if (parent != null && Const.tempDir.equals(parent.getName())) {
                 return true;

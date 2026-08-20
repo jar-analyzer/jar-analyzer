@@ -39,10 +39,8 @@ public final class ReportStore implements ReportSink {
     public ReportStore() {
         Path p = Paths.get(Const.tempDir).resolve(DIR_NAME).normalize().toAbsolutePath();
         this.baseDir = p;
-        try {
-            Files.createDirectories(this.baseDir);
-        } catch (IOException ignored) {
-        }
+        // 2026/08/20 FIX 目录创建延迟到 save()：构造器做 IO 会让
+        // "仅用于预览图" 的实例化在 tempDir 下留下空的 reports 目录
     }
 
     public Path getBaseDir() {
@@ -55,6 +53,7 @@ public final class ReportStore implements ReportSink {
             return;
         }
         try {
+            Files.createDirectories(baseDir);
             String ts = new SimpleDateFormat("yyyyMMdd-HHmmss", Locale.ROOT).format(new Date());
             String fname = ts + "-" + UUID.randomUUID() + ".json";
             // 仅允许文件名中出现安全字符

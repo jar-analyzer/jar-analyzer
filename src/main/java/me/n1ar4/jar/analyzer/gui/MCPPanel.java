@@ -10,6 +10,8 @@
 
 package me.n1ar4.jar.analyzer.gui;
 
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONWriter;
 import me.n1ar4.jar.analyzer.gui.util.SwingLayout;
 import me.n1ar4.jar.analyzer.gui.util.layout.GridConstraints;
 import me.n1ar4.jar.analyzer.mcp.McpClientConfig;
@@ -27,11 +29,11 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -242,6 +244,7 @@ public class MCPPanel extends JPanel implements McpEventListener {
                 TitledBorder.DEFAULT_POSITION));
         toolsTable.setFillsViewportHeight(true);
         toolsTable.setRowHeight(20);
+        toolsTable.setToolTipText("双击或回车查看工具详情");
         toolsTable.getColumnModel().getColumn(0).setPreferredWidth(220);
         toolsTable.getColumnModel().getColumn(1).setPreferredWidth(600);
         JScrollPane sp = new JScrollPane(toolsTable);
@@ -313,6 +316,88 @@ public class MCPPanel extends JPanel implements McpEventListener {
         startBtn.addActionListener(startAl);
         stopBtn.addActionListener(stopAl);
         clientConfigBtn.addActionListener(e -> showClientConfig());
+        bindToolsTableActions();
+    }
+
+    /**
+     * 已注册工具表格：双击或回车查看工具详情
+     * （与文件树打开类文件一致使用双击交互，单击仅选中行）
+     */
+    private void bindToolsTableActions() {
+        toolsTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    showToolDetail(toolsTable.rowAtPoint(e.getPoint()));
+                }
+            }
+        });
+        toolsTable.getInputMap(JComponent.WHEN_FOCUSED).put(
+                KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "showToolDetail");
+        toolsTable.getActionMap().put("showToolDetail", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showToolDetail(toolsTable.getSelectedRow());
+            }
+        });
+    }
+
+    /**
+     * 弹窗展示单个工具的完整信息：名称 / 描述 / 入参 Schema。
+     * 表格中描述列可能被截断，Schema 完全没有展示
+     */
+    private void showToolDetail(int row) {
+        if (row < 0 || row >= toolsTable.getRowCount()) {
+            return;
+        }
+        Object nameObj = toolsModel.getValueAt(row, 0);
+        if (nameObj == null) {
+            return;
+        }
+        ToolDefinition def = ToolRegistry.getInstance().get(nameObj.toString());
+        if (def == null) {
+            return;
+        }
+
+        JLabel nameLabel = new JLabel(def.getName());
+        nameLabel.setFont(nameLabel.getFont().deriveFont(Font.BOLD, 14f));
+
+        JTextArea descArea = new JTextArea(
+                def.getDescription() == null ? "" : def.getDescription(), 3, 48);
+        descArea.setEditable(false);
+        descArea.setLineWrap(true);
+        descArea.setWrapStyleWord(true);
+        JScrollPane descScroll = new JScrollPane(descArea);
+
+        JPanel descPanel = new JPanel(new BorderLayout(0, 2));
+        descPanel.add(new JLabel("描述"), BorderLayout.NORTH);
+        descPanel.add(descScroll, BorderLayout.CENTER);
+
+        String schemaJson = def.getInputSchema() == null ? "{}"
+                : JSON.toJSONString(def.getInputSchema(), JSONWriter.Feature.PrettyFormat);
+        RSyntaxTextArea schemaArea = new RSyntaxTextArea(10, 48);
+        schemaArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JSON);
+        schemaArea.setEditable(false);
+        schemaArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+        schemaArea.setLineWrap(false);
+        schemaArea.setHighlightCurrentLine(false);
+        schemaArea.setAntiAliasingEnabled(true);
+        schemaArea.setText(schemaJson);
+        schemaArea.setCaretPosition(0);
+        RTextScrollPane schemaScroll = new RTextScrollPane(schemaArea);
+        schemaScroll.setLineNumbersEnabled(false);
+
+        JPanel schemaPanel = new JPanel(new BorderLayout(0, 2));
+        schemaPanel.add(new JLabel("入参 Schema"), BorderLayout.NORTH);
+        schemaPanel.add(schemaScroll, BorderLayout.CENTER);
+
+        JPanel content = new JPanel(new BorderLayout(0, 8));
+        content.add(nameLabel, BorderLayout.NORTH);
+        content.add(descPanel, BorderLayout.CENTER);
+        content.add(schemaPanel, BorderLayout.SOUTH);
+
+        JOptionPane.showMessageDialog(this, content,
+                "工具详情", JOptionPane.PLAIN_MESSAGE);
     }
 
     private void showClientConfig() {
@@ -497,7 +582,10 @@ public class MCPPanel extends JPanel implements McpEventListener {
 
     private void refreshTools() {
         toolsModel.setRowCount(0);
-        for (ToolDefinition def : ToolRegistry.getInstance().list()) {
+        List<ToolDefinition> tools = new ArrayList<>(ToolRegistry.getInstance().list());
+        tools.sort(Comparator.comparing(ToolDefinition::getName,
+                String.CASE_INSENSITIVE_ORDER));
+        for (ToolDefinition def : tools) {
             toolsModel.addRow(new Object[]{def.getName(),
                     def.getDescription() == null ? "" : def.getDescription()});
         }

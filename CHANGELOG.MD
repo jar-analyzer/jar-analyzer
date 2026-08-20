@@ -18,6 +18,7 @@
 - [BUG] 修复反编译 `module-info` 时 `NPE` 问题 @4ra1n
 - [BUG] 修复默认启动的 `GUI` 界面存在微小的截断 @4ra1n
 - [BUG] `MacOS` 强制要求 `Java 11` 以上 @4ra1n
+- [优化] `MCP` 面板允许查看工具详情 @4ra1n
 - [优化] 优化内部类相关用户交互和展示 @4ra1n
 - [优化] 优化 `Markdown` 渲染代码 @4ra1n
 - [优化] 优化 `AI` 对话用户体验 @4ra1n

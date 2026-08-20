@@ -234,6 +234,18 @@ public class DecompileEngine {
                     lruCache.put(key, codeStr);
                     return codeStr;
                 } else {
+                    // 2026/08/20 FIX
+                    // module-info 是 JPMS 模块描述符（requires/exports 声明，
+                    // 不是普通字节码结构），FernFlower 不会为它产出 .java 文件：
+                    // 返回说明文本而不是 null，避免 openTab 等调用方 NPE
+                    if (fileName.startsWith("module-info.")) {
+                        String tip = FERN_PREFIX +
+                                "// module-info.class is a JPMS module descriptor\n" +
+                                "// 内容为模块声明（requires/exports 等），并非普通 Java 类\n" +
+                                "// 反编译器不支持将其导出为源代码\n";
+                        lruCache.put(key, tip);
+                        return tip;
+                    }
                     return null;
                 }
             } else {

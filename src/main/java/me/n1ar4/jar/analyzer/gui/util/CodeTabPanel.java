@@ -145,6 +145,12 @@ public class CodeTabPanel extends JPanel {
         if (className == null || className.isEmpty()) {
             className = "Untitled-" + System.currentTimeMillis();
         }
+        if (code == null) {
+            // 反编译引擎对 module-info 等特殊文件可能返回 null，
+            // 展示占位说明而不是让 code.length() 抛 NPE
+            code = "// 反编译结果为空\n" +
+                    "// 该文件不支持反编译或反编译失败\n";
+        }
 
         // 如果这个类已经有 Tab 了，切换到它并更新内容
         if (tabMap.containsKey(className)) {

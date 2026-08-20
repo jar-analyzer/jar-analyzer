@@ -371,7 +371,8 @@ public class ChainsResultPanel extends JPanel {
             String code = DecompileEngine.decompile(Paths.get(finalClassPath));
             String methodName = finalRes.getMethodName();
 
-            int pos = FinderRunner.find(code, methodName, finalRes.getMethodDesc());
+            // module-info 等特殊文件反编译结果可能为 null
+            int pos = code == null ? -1 : FinderRunner.find(code, methodName, finalRes.getMethodDesc());
 
             // SET FILE TREE HIGHLIGHT
             SearchInputListener.getFileTree().searchPathTarget(className);

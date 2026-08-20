@@ -2,6 +2,7 @@ package com.best.hello.entity;
 
 /**
  * entity 实体类代码
+ *
  * @date 2021/07/23
  */
 

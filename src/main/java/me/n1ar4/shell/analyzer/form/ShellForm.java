@@ -40,8 +40,8 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 
 public class ShellForm {
     private static final String DEFAULT_PASSWD = "P4sSW0rD";

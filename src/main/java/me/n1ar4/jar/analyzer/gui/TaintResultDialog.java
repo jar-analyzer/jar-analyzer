@@ -33,8 +33,8 @@ import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 
 /**
  * 污点分析结果对话框（重构版）。

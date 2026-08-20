@@ -24,13 +24,13 @@ class DataController {
         rceService.test(cmd);
         return status;
     }
-    
+
     @PostMapping("/submit")
     @ResponseBody
     public String submitData(@RequestParam String data) {
         return "数据已提交: " + data;
     }
-    
+
     @RequestMapping(value = "/health", method = RequestMethod.GET)
     @ResponseBody
     public String healthCheck() {

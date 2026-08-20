@@ -12,6 +12,6 @@ public class RegistryVul {
     public static void main(String[] args) throws Exception {
         LocateRegistry.createRegistry(9999);
         System.out.println("Registry created on port 9999");
-        while (true);
+        while (true) ;
     }
 }

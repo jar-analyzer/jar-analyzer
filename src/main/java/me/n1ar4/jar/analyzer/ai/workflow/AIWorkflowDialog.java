@@ -26,14 +26,14 @@ import me.n1ar4.jar.analyzer.gui.util.SvgManager;
 import me.n1ar4.jar.analyzer.gui.util.UIHelper;
 import me.n1ar4.jar.analyzer.utils.OpenUtil;
 
-import javax.swing.Timer;
 import javax.swing.*;
+import javax.swing.Timer;
 import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 
 /**
  * Workflow 主对话框：左侧控制 + 中央画布 + 底部 Tab（Execution Log / Loop Iterations）。

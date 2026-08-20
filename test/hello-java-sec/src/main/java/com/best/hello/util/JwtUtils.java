@@ -23,9 +23,9 @@ public class JwtUtils {
     /**
      * Generate JWT Token by jjwt (last update time: Jul 05, 2018)
      *
-     * @author JoyChou 2022-09-20
      * @param userId userid
      * @return token
+     * @author JoyChou 2022-09-20
      */
     public static String generateToken(String userId) {
         return Jwts.builder()
@@ -38,7 +38,6 @@ public class JwtUtils {
                 .signWith(SignatureAlgorithm.HS256, B64_SECRET)
                 .compact();
     }
-
 
 
     public static String generateTokenByJavaJwt(String username) {
@@ -59,7 +58,7 @@ public class JwtUtils {
             JWTVerifier verifier = JWT.require(algorithm).build();
             verifier.verify(token);
             return true;
-        } catch (JWTVerificationException exception){
+        } catch (JWTVerificationException exception) {
             log.error(exception.toString());
             return false;
         }

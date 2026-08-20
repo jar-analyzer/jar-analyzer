@@ -36,7 +36,6 @@ public class RegexUtils {
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^([a-zA-Z0-9_\\.\\-])+\\@(([a-zA-Z0-9\\-])+\\.)+([a-zA-Z0-9]{2,4})+$");
 
 
-
     public static void main(String[] args) {
         Matcher phone = MOBILE_PATTERN.matcher("15898989898");
         Matcher mail = EMAIL_PATTERN.matcher("222.com");

@@ -55,8 +55,8 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 
 public class MainForm {
     private static final Logger logger = LogManager.getLogger();

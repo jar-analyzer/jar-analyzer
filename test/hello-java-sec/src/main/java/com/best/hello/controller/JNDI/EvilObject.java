@@ -11,7 +11,7 @@ public class EvilObject {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 
         String line;
-        while((line = reader.readLine()) != null) {
+        while ((line = reader.readLine()) != null) {
             System.out.println(line);
         }
 

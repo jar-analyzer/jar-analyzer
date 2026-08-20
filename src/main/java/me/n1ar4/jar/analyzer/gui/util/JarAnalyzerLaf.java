@@ -19,7 +19,7 @@ import me.n1ar4.log.Logger;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.Theme;
 
-import javax.swing.UIManager;
+import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;

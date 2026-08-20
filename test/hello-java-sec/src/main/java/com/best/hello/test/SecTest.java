@@ -13,7 +13,7 @@ public class SecTest {
 
     @Test
     public void testXss() {
-        String result =  Security.filterXss("<");
+        String result = Security.filterXss("<");
         Assert.assertEquals("&lt;", result);
     }
 

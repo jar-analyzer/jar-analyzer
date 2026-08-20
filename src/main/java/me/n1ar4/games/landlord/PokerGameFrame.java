@@ -19,8 +19,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 
 /**
  * Rewritten Fight the Landlord with vector cards and a testable rule model.

@@ -1570,8 +1570,10 @@ public class MainForm {
             boolean hadGeometry = UIPrefs.getInt(UIPrefs.K_FRAME_W) != null
                     && UIPrefs.getInt(UIPrefs.K_FRAME_H) != null;
             UIPrefs.applyFrameGeometry(frame);
+            // 2026/08/20 双字体修复：界面字体变大后，之前记忆的窗口
+            // 宽度可能放不下右侧按钮，因此不再限于首次启动才补宽
+            widenDefaultFrameToFitButtons(frame);
             if (!hadGeometry) {
-                widenDefaultFrameToFitButtons(frame);
                 frame.setLocationRelativeTo(null);
             }
             UIPrefs.installFrameListeners(frame);
@@ -1588,10 +1590,10 @@ public class MainForm {
     }
 
     /**
-     * 首次启动时把窗口稍微加宽：以 start 标签页（首页）布局后实际
-     * 需要的宽度为准，刚好放下右侧按钮即可。pack() 因 rootSplit
-     * 约束上固定的首选尺寸（200x200）只按最小尺寸开窗，这里只补
-     * 差值，不按最宽标签页的首选宽度大幅拓宽。
+     * 启动时保证窗口宽度放得下 start 标签页（首页）的右侧按钮：
+     * 以布局后实际需要的宽度为准补齐。pack() 因 rootSplit 约束上
+     * 固定的首选尺寸（200x200）只按最小尺寸开窗；记忆的几何可能
+     * 是更小字体时保存的，字体变大后同样需要补宽
      */
     private static void widenDefaultFrameToFitButtons(JFrame frame) {
         try {
@@ -1599,23 +1601,32 @@ public class MainForm {
             // （coreSplit 的 resizeWeight 会让左侧代码区拿走 80% 增量）
             int rootLoc = instance.rootSplit.getDividerLocation();
             int coreLoc = instance.coreSplit.getDividerLocation();
-            // start 标签页的首选宽度首次布局后才稳定（其中的文本框
-            // 首选宽度依赖已布局尺寸），循环补齐到收敛，最多三轮
-            for (int i = 0; i < 3; i++) {
+            // startNeed 只有两轮测量相同才算稳定：界面字体经 FlatLaf
+            // 懒解析，pack 时刻的首选宽度可能偏小（文本框首选宽度也
+            // 依赖已布局尺寸），用低估值退出会导致右侧按钮截断
+            int lastStartNeed = -1;
+            for (int i = 0; i < 6; i++) {
                 int startNeed = instance.startPanel.getPreferredSize().width
                         + instance.tabbedPanel.getInsets().left
                         + instance.tabbedPanel.getInsets().right;
                 int needFrameW = rootLoc + instance.rootSplit.getDividerSize()
                         + coreLoc + instance.coreSplit.getDividerSize()
                         + startNeed;
-                int maxW = maxFrameWidthOfScreen(frame);
-                if (needFrameW > maxW) {
-                    needFrameW = maxW;
-                }
-                if (frame.getWidth() >= needFrameW) {
+                if (startNeed == lastStartNeed && frame.getWidth() >= needFrameW) {
                     break;
                 }
-                frame.setSize(needFrameW, frame.getHeight());
+                lastStartNeed = startNeed;
+                // 只加宽不缩窄：startNeed 未稳定时避免把窗口拉小
+                int target = Math.max(needFrameW, frame.getWidth());
+                int maxW = maxFrameWidthOfScreen(frame);
+                if (target > maxW) {
+                    // 屏幕装不下完整宽度：收缩左侧代码区让位，
+                    // 优先保证右侧按钮完整（代码区有滚动条）
+                    coreLoc = Math.max(maxW - rootLoc - instance.rootSplit.getDividerSize()
+                            - instance.coreSplit.getDividerSize() - startNeed, 120);
+                    target = maxW;
+                }
+                frame.setSize(target, frame.getHeight());
                 frame.validate();
                 instance.rootSplit.setDividerLocation(rootLoc);
                 instance.coreSplit.setDividerLocation(coreLoc);

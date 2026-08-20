@@ -54,6 +54,10 @@ public class CodeTabPanel extends JPanel {
     // 当前语法主题路径（供新 Tab 使用）
     private static String currentSyntaxTheme = "syntax/default.xml";
 
+    public String getCurrentSyntaxTheme() {
+        return currentSyntaxTheme;
+    }
+
     public CodeTabPanel() {
         setLayout(new BorderLayout());
         tabbedPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);

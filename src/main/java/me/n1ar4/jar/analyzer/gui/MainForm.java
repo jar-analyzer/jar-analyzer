@@ -931,52 +931,40 @@ public class MainForm {
     }
 
     public static float FONT_SIZE = 16f;
+    // 界面字体（菜单/按钮/标签）与代码区字体分开指定
+    public static float UI_FONT_SIZE = 13f;
 
     public MainForm() {
-        // 2025/08/01 FONT SIZE 允许通过 CMD 设置
+        // 2026/08/20 代码区与界面字号分开指定：
+        // 优先级 CLI 参数 > UIPrefs 记忆值 > 首次启动弹窗
         initializeComponents();
         int inputFontSize = Application.startCmd.getFontSize();
-        String input;
-        float font;
-        if (inputFontSize < 1) {
-            // 2025/06/14 修复有时候找不到 DIALOG 的问题
-            JDialog topDialog = new JDialog();
-            topDialog.setAlwaysOnTop(true);
-            topDialog.setModal(true);
-            topDialog.setLocationRelativeTo(null);
-            input = (String) JOptionPane.showInputDialog(
-                    topDialog,
-                    "请输入字体大小 (10-50)：",
-                    "设置字体大小",
-                    JOptionPane.PLAIN_MESSAGE,
-                    IconManager.ausIcon,
-                    null,
-                    "16"
-            );
-            topDialog.dispose();
-        } else {
-            input = String.valueOf(inputFontSize);
-        }
-        if (input != null) {
-            try {
-                int size = Integer.parseInt(input.trim());
-                if (size < 10 || size > 50) {
-                    JOptionPane.showMessageDialog(null,
-                            "字体大小必须在 10 到 50 之间！使用默认 16", "警告", JOptionPane.WARNING_MESSAGE);
-                    font = 16;
-                } else {
-                    font = size;
-                }
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null,
-                        "请输入有效的数字！使用默认 16", "错误", JOptionPane.ERROR_MESSAGE);
-                font = 16;
+        int inputUiFontSize = Application.startCmd.getUiFontSize();
+        if (inputFontSize >= 1 || inputUiFontSize >= 1) {
+            if (inputFontSize >= 1) {
+                FONT_SIZE = inputFontSize;
             }
+            if (inputUiFontSize >= 1) {
+                UI_FONT_SIZE = inputUiFontSize;
+            }
+            saveFontPrefs();
         } else {
-            font = 16;
+            Integer savedCode = UIPrefs.getInt(UIPrefs.K_FONT_CODE);
+            Integer savedUi = UIPrefs.getInt(UIPrefs.K_FONT_UI);
+            if (savedCode != null && savedCode >= 10 && savedCode <= 50
+                    && savedUi != null && savedUi >= 10 && savedUi <= 50) {
+                FONT_SIZE = savedCode;
+                UI_FONT_SIZE = savedUi;
+            } else {
+                float[] sizes = FontSizeDialog.show();
+                if (sizes != null) {
+                    FONT_SIZE = sizes[0];
+                    UI_FONT_SIZE = sizes[1];
+                    saveFontPrefs();
+                }
+            }
         }
-        FONT_SIZE = font;
-        logger.info("use font size {}", FONT_SIZE);
+        logger.info("use font size {} / ui font size {}", FONT_SIZE, UI_FONT_SIZE);
 
         logger.info("init main form");
         methodCallRadioButton.setSelected(true);
@@ -1648,6 +1636,35 @@ public class MainForm {
             return Math.max(400, bounds.width - insets.left - insets.right);
         } catch (Exception e) {
             return Integer.MAX_VALUE;
+        }
+    }
+
+    private static void saveFontPrefs() {
+        try {
+            UIPrefs.setInt(UIPrefs.K_FONT_CODE, (int) FONT_SIZE);
+            UIPrefs.setInt(UIPrefs.K_FONT_UI, (int) UI_FONT_SIZE);
+            UIPrefs.scheduleSave();
+        } catch (Exception ignored) {
+        }
+    }
+
+    /**
+     * 菜单里重新设置字体大小：两个字号实时生效并持久化
+     */
+    public static void reconfigureFonts() {
+        float[] sizes = FontSizeDialog.show();
+        if (sizes == null) {
+            return;
+        }
+        FONT_SIZE = sizes[0];
+        UI_FONT_SIZE = sizes[1];
+        saveFontPrefs();
+        // 重建 LaF：界面字体生效，同时刷新代码区主题与字号；
+        // 已打开的 Tab 由 applyThemeToAllTabs 同步
+        JarAnalyzerLaf.refreshUiFont();
+        CodeTabPanel tabPanel = getCodeTabPanel();
+        if (tabPanel != null) {
+            tabPanel.applyThemeToAllTabs(tabPanel.getCurrentSyntaxTheme());
         }
     }
 

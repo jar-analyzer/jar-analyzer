@@ -395,6 +395,11 @@ public class MenuUtil {
             helpItem.setIcon(SvgManager.TopMenuSettingsIcon);
             helpItem.addActionListener(e -> ConfigHelpDialog.start());
             configMenu.add(helpItem);
+            // 2026/08/20 字体大小（代码区/界面分开）设置入口
+            JMenuItem fontItem = new JMenuItem("字体大小设置");
+            fontItem.setIcon(SvgManager.TopMenuSettingsIcon);
+            fontItem.addActionListener(e -> MainForm.reconfigureFonts());
+            configMenu.add(fontItem);
             return configMenu;
         } catch (Exception ex) {
             logger.error("error: {}", ex.toString());

@@ -20,6 +20,9 @@ public class StartCmd {
     @Parameter(names = {"-fz", "--font-size"}, description = "font size")
     public int fontSize;
 
+    @Parameter(names = {"-uz", "--ui-font-size"}, description = "ui font size")
+    public int uiFontSize;
+
     @Parameter(names = {"-t", "--theme"},
             description = "use theme name (default|metal|win|win-classic|motif|mac|gtk|cross|aqua|nimbus)")
     public String theme;
@@ -41,6 +44,10 @@ public class StartCmd {
 
     public int getFontSize() {
         return fontSize;
+    }
+
+    public int getUiFontSize() {
+        return uiFontSize;
     }
 
     public String getTheme() {

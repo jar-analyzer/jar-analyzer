@@ -54,6 +54,8 @@ public final class UIPrefs {
     public static final String K_SPLIT_ROOT = "main.split.root";
     public static final String K_SPLIT_TREE = "main.split.tree";
     public static final String K_SPLIT_CORE = "main.split.core";
+    public static final String K_FONT_CODE = "font.code";
+    public static final String K_FONT_UI = "font.ui";
 
     private static final long DEBOUNCE_MS = 800L;
 

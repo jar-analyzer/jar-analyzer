@@ -49,6 +49,7 @@ public class SearchInputListener implements DocumentListener {
         searchSession = null;
         classMapper = null;
     }
+
     private static final FileTree fileTree = MainForm.getInstance().getFileTree();
     private static final JTextField fileTreeSearchTextField = MainForm.getInstance().getFileTreeSearchTextField();
     private static final JLabel fileTreeSearchLabel = MainForm.getInstance().getFileTreeSearchLabel();

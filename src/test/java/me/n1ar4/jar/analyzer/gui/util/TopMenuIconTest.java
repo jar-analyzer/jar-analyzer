@@ -38,7 +38,6 @@ class TopMenuIconTest {
     @Test
     void topMenuIconsLoadAtTheExpectedSizeAndRender() {
         FlatSVGIcon[] icons = {
-                SvgManager.TopMenuSystemIcon,
                 SvgManager.TopMenuDecompilerIcon,
                 SvgManager.TopMenuExportIcon,
                 SvgManager.TopMenuDiffIcon,

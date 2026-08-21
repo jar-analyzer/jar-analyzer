@@ -352,6 +352,9 @@ public class CoreRunner {
 
         MainForm.getInstance().getFileTree().refresh();
 
+        // 分析结果为空时提醒用户检查类白名单（清理前记录数量）
+        int totalClassCount = AnalyzeEnv.discoveredClasses.size();
+
         // GC
         AnalyzeEnv.classFileList.clear();
         AnalyzeEnv.discoveredClasses.clear();
@@ -378,6 +381,31 @@ public class CoreRunner {
         CoreHelper.refreshServlets();
         CoreHelper.refreshFilters();
         CoreHelper.refreshLiteners();
+
+        // 2026/08/21
+        // 分析完成但没有发现任何类：最常见原因是类白名单过滤了全部类
+        if (totalClassCount == 0 && !AnalyzeEnv.isCli) {
+            String msg = "<html><body style='width:380px'>" +
+                    "<h3>未分析到任何类 (No Classes Found)</h3>" +
+                    "<p>分析已完成，但结果中没有任何类。" +
+                    "最常见的原因是 <b style='color:#D32F2F'>类白名单 (Class White List)</b>" +
+                    " 把所有类全部过滤掉了。</p>" +
+                    "<p>请检查白名单/黑名单规则后重新分析。</p>" +
+                    "</body></html>";
+            int op = JOptionPane.showOptionDialog(
+                    MainForm.getInstance().getMasterPanel(),
+                    msg,
+                    "类白名单提示 (White List Warning)",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE,
+                    null,
+                    new Object[]{"前往查看白名单", "忽略"},
+                    "前往查看白名单");
+            if (op == JOptionPane.YES_OPTION) {
+                MainForm.getInstance().getTabbedPanel().setSelectedIndex(0);
+                highlightWhiteListArea();
+            }
+        }
 
         // Show popup notification if there are corrupted files with StackMapTable issues
         if (!AnalyzeEnv.corruptedFiles.isEmpty()) {
@@ -414,6 +442,27 @@ public class CoreRunner {
             dialog.setVisible(false);
             dialog.dispose();
         }
+    }
+
+    /**
+     * 类白名单输入框高亮闪烁数次并聚焦，引导用户检查配置
+     */
+    private static void highlightWhiteListArea() {
+        JTextArea area = MainForm.getInstance().getClassWhiteArea();
+        final Color origin = area.getBackground();
+        final Color highlight = new Color(0xFF, 0xC1, 0x07);
+        final int[] tick = {0};
+        javax.swing.Timer timer = new javax.swing.Timer(280, e -> {
+            tick[0]++;
+            if (tick[0] >= 7) {
+                ((javax.swing.Timer) e.getSource()).stop();
+                area.setBackground(origin);
+                area.requestFocusInWindow();
+                return;
+            }
+            area.setBackground(tick[0] % 2 == 1 ? highlight : origin);
+        });
+        timer.start();
     }
 
     private static long getFileSize() {

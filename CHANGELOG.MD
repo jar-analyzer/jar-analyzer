@@ -19,6 +19,7 @@
 - [BUG] 修复反编译 `module-info` 时 `NPE` 问题 @4ra1n
 - [BUG] 修复默认启动的 `GUI` 界面存在微小的截断 @4ra1n
 - [BUG] `MacOS` 强制要求 `Java 11` 以上 @4ra1n
+- [BUG] 修复内置 `FernFlower` 在 `JDK 25` 不兼容 @4ra1n
 - [优化] 各处黑白名单配置鼠标光标模糊修复 @4ra1n
 - [优化] `MCP` 面板允许查看工具详情 @4ra1n
 - [优化] 优化内部类相关用户交互和展示 @4ra1n

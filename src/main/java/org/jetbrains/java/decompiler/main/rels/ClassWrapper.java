@@ -19,6 +19,7 @@ import org.jetbrains.java.decompiler.struct.gen.MethodDescriptor;
 import org.jetbrains.java.decompiler.util.InterpreterUtil;
 import org.jetbrains.java.decompiler.util.VBStyleCollection;
 
+import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -165,9 +166,15 @@ public class ClassWrapper {
         DecompilerContext.getLogger().endClass();
     }
 
-    @SuppressWarnings("deprecation")
+    // JDK 20+ 移除了 Thread.stop：老版本仍用 stop 强杀超时线程，
+    // 新版本反射失败后至少发出中断信号
     private static void killThread(Thread thread) {
-        thread.stop();
+        try {
+            Method stop = Thread.class.getMethod("stop");
+            stop.invoke(thread);
+        } catch (Throwable ignored) {
+            thread.interrupt();
+        }
     }
 
     public MethodWrapper getMethodWrapper(String name, String descriptor) {

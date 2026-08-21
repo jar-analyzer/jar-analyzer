@@ -8,14 +8,18 @@ on:
 
 jobs:
   golden-chain:
-    name: golden test - dfs/el chain
+    name: golden test - dfs/el chain (jdk ${{ matrix.java-version }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        java-version: [ '8', '17', '25' ]
     steps:
       - uses: actions/checkout@v6
-      - name: set up java 8
+      - name: set up java ${{ matrix.java-version }}
         uses: actions/setup-java@v5
         with:
-          java-version: '8'
+          java-version: ${{ matrix.java-version }}
           distribution: 'temurin'
           cache: maven
       - name: build springboot-chain test project
@@ -28,7 +32,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v6
         with:
-          name: surefire-reports-golden-chain
+          name: surefire-reports-golden-chain-jdk${{ matrix.java-version }}
           path: target/surefire-reports/
           if-no-files-found: ignore
       - name: clean

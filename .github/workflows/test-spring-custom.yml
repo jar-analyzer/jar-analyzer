@@ -8,29 +8,52 @@ on:
 
 jobs:
   spring-custom:
-    name: spring core test - custom
+    name: spring custom test - ${{ matrix.project }} (jdk ${{ matrix.java-version }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # 三个变体业务代码完全一致，仅 JDK 与 Spring Boot 大版本不同：
+        # java8/SB2、java17/SB3、java25/SB4；依赖差异导致类数与
+        # 方法调用数不同，期望值经实跑校准后固化在此
+        include:
+          - java-version: '8'
+            project: test-springboot-java8
+            jar: test-springboot-java8/target/test-springboot-java8-0.0.1-SNAPSHOT.jar
+            classes: 76
+            calls: 1755
+          - java-version: '17'
+            project: test-springboot-java17
+            jar: test-springboot-java17/target/test-springboot-java17-0.0.1-SNAPSHOT.jar
+            classes: 107
+            calls: 2612
+          - java-version: '25'
+            project: test-springboot-java25
+            jar: test-springboot-java25/target/test-springboot-java25-0.0.1-SNAPSHOT.jar
+            classes: 107
+            calls: 2594
     steps:
       - uses: actions/checkout@v6
-      - name: set up java 8
+      - name: set up java ${{ matrix.java-version }}
         uses: actions/setup-java@v5
         with:
-          java-version: '8'
+          java-version: ${{ matrix.java-version }}
           distribution: 'temurin'
           cache: maven
-      - name: build test-springboot test project
-        run: mvn -B -f test/test-springboot/pom.xml -DskipTests package
+      - name: build ${{ matrix.project }} test project
+        run: mvn -B -f test/${{ matrix.project }}/pom.xml -DskipTests package
       - name: prepare jar
-        run: cp test/test-springboot/target/test-0.0.1-SNAPSHOT.jar .
+        run: cp ${{ matrix.jar }} custom-test.jar
       - name: run maven custom test
         run: mvn -B test -Dtest=SpringCustomTest#testRun -DfailIfNoTests=true
+          -Dcustom.test.classes=${{ matrix.classes }} -Dcustom.test.calls=${{ matrix.calls }}
       - name: upload surefire reports
         if: always()
         uses: actions/upload-artifact@v6
         with:
-          name: surefire-reports-spring-custom
+          name: surefire-reports-spring-custom-jdk${{ matrix.java-version }}
           path: target/surefire-reports/
           if-no-files-found: ignore
       - name: clean test file
         if: always()
-        run: rm -f test-0.0.1-SNAPSHOT.jar jar-analyzer.db jar-analyzer.db-wal jar-analyzer.db-shm
+        run: rm -f custom-test.jar jar-analyzer.db jar-analyzer.db-wal jar-analyzer.db-shm

@@ -3,21 +3,20 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>me.n1ar4</groupId>
-    <artifactId>test</artifactId>
+    <artifactId>test-springboot-java25</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>test</name>
-    <description>Test Project for Jar Analyzer</description>
+    <name>test-springboot-java25</name>
+    <description>Test Project for Jar Analyzer (Java 25 + Spring Boot 4)</description>
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>25</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <spring-boot.version>2.3.12.RELEASE</spring-boot.version>
     </properties>
     <packaging>jar</packaging>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.0</version>
+        <version>4.0.8</version>
         <relativePath/>
     </parent>
     <dependencies>

@@ -1039,6 +1039,12 @@ public class MainForm {
         bindListAreaPersist(blackArea, UIPrefs.K_SEARCH_FILTER);
         bindListAreaPersist(classBlackArea, UIPrefs.K_CLASS_BLACK_LIST);
         bindListAreaPersist(classWhiteArea, UIPrefs.K_CLASS_WHITE_LIST);
+        ListAreaMenu.install(blackArea, Const.blackAreaText,
+                "搜索过滤规则", ListAreaMenu.searchFilterRules());
+        ListAreaMenu.install(classBlackArea, Const.classBlackAreaText,
+                "类黑名单规则", ListAreaMenu.classBlackRules());
+        ListAreaMenu.install(classWhiteArea, Const.classWhiteAreaText,
+                "类白名单规则", ListAreaMenu.classWhiteRules());
 
         likeSearchRadioButton.setSelected(true);
 

@@ -12,6 +12,7 @@ package me.n1ar4.jar.analyzer.gui;
 
 import com.alibaba.fastjson2.JSON;
 import me.n1ar4.jar.analyzer.dfs.DFSResult;
+import me.n1ar4.jar.analyzer.gui.util.ListAreaMenu;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
 import me.n1ar4.jar.analyzer.taint.TaintCache;
 
@@ -92,6 +93,9 @@ public class DFSConfigDialog extends JDialog {
         JTextArea blackArea = new JTextArea();
         blackArea.setText(blacklist);
         blackArea.setRows(10);
+        // 右键：恢复默认 / 查看语法规则
+        ListAreaMenu.install(
+                blackArea, "", "DFS 类名黑名单规则", ListAreaMenu.dfsBlackRules());
         JScrollPane scrollPane = new JScrollPane(blackArea);
         gbc.gridx = 1;
         gbc.gridy = 3;

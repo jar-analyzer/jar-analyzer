@@ -47,6 +47,8 @@ import me.n1ar4.log.Logger;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
 import java.awt.*;
@@ -1028,9 +1030,15 @@ public class MainForm {
 
         authorTextLabel.addMouseListener(new AuthorAdapter());
 
-        blackArea.setText(Const.blackAreaText);
-        classBlackArea.setText(Const.classBlackAreaText);
-        classWhiteArea.setText(Const.classWhiteAreaText);
+        blackArea.setText(UIPrefs.getString(
+                UIPrefs.K_SEARCH_FILTER, Const.blackAreaText));
+        classBlackArea.setText(UIPrefs.getString(
+                UIPrefs.K_CLASS_BLACK_LIST, Const.classBlackAreaText));
+        classWhiteArea.setText(UIPrefs.getString(
+                UIPrefs.K_CLASS_WHITE_LIST, Const.classWhiteAreaText));
+        bindListAreaPersist(blackArea, UIPrefs.K_SEARCH_FILTER);
+        bindListAreaPersist(classBlackArea, UIPrefs.K_CLASS_BLACK_LIST);
+        bindListAreaPersist(classWhiteArea, UIPrefs.K_CLASS_WHITE_LIST);
 
         likeSearchRadioButton.setSelected(true);
 
@@ -1060,7 +1068,12 @@ public class MainForm {
 
         filterModeCombo.addItem("黑名单模式 (Black List) - 排除匹配项");
         filterModeCombo.addItem("白名单模式 (White List) - 仅保留匹配项");
-        filterModeCombo.setSelectedIndex(0);
+        Integer filterMode = UIPrefs.getInt(UIPrefs.K_SEARCH_FILTER_MODE);
+        filterModeCombo.setSelectedIndex(filterMode != null && filterMode == 1 ? 1 : 0);
+        filterModeCombo.addActionListener(e -> {
+            UIPrefs.setInt(UIPrefs.K_SEARCH_FILTER_MODE, filterModeCombo.getSelectedIndex());
+            UIPrefs.scheduleSave();
+        });
 
         quickSinkBtn.addActionListener(e -> tabbedPanel.setSelectedIndex(9));
 
@@ -1660,6 +1673,31 @@ public class MainForm {
     }
 
     /**
+     * 黑白名单等编辑区内容持久化到 UIPrefs，重启后自动恢复
+     */
+    private static void bindListAreaPersist(JTextArea area, String key) {
+        area.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                UIPrefs.setString(key, area.getText());
+                UIPrefs.scheduleSave();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                UIPrefs.setString(key, area.getText());
+                UIPrefs.scheduleSave();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                UIPrefs.setString(key, area.getText());
+                UIPrefs.scheduleSave();
+            }
+        });
+    }
+
+    /**
      * 菜单里重新设置字体大小：两个字号实时生效并持久化
      */
     public static void reconfigureFonts() {
@@ -1757,6 +1795,15 @@ public class MainForm {
                 instance.sinkMethodText,
                 instance.sinkDescText);
 
+        Integer savedDfsLimit = UIPrefs.getInt(UIPrefs.K_DFS_MAX_LIMIT);
+        if (savedDfsLimit != null && savedDfsLimit > 0) {
+            dfsMaxLimit = savedDfsLimit;
+        }
+        String savedDfsBlacklist = UIPrefs.getString(UIPrefs.K_DFS_BLACKLIST, null);
+        if (savedDfsBlacklist != null) {
+            dfsBlacklist = savedDfsBlacklist;
+        }
+
         instance.dfsAdvanceBtn.addActionListener(e -> {
             DFSConfigDialog dialog = new DFSConfigDialog(
                     (JFrame) instance.getMasterPanel().getTopLevelAncestor(),
@@ -1767,6 +1814,9 @@ public class MainForm {
             if (dialog.isSaved()) {
                 dfsMaxLimit = dialog.getMaxLimit();
                 dfsBlacklist = dialog.getBlacklist();
+                UIPrefs.setInt(UIPrefs.K_DFS_MAX_LIMIT, dfsMaxLimit);
+                UIPrefs.setString(UIPrefs.K_DFS_BLACKLIST, dfsBlacklist);
+                UIPrefs.scheduleSave();
             }
         });
 
@@ -2010,6 +2060,8 @@ public class MainForm {
         classBlackArea = new JTextArea();
         classBlackArea.setBackground(new Color(-12895429));
         classBlackArea.setForeground(new Color(-16711931));
+        // 背景是硬编码深色，光标颜色必须与前景一致否则不可见
+        classBlackArea.setCaretColor(new Color(-16711931));
         classBlackArea.setLineWrap(true);
         classBlackArea.setRows(0);
         classBlackPanel.setViewportView(classBlackArea);
@@ -2021,6 +2073,7 @@ public class MainForm {
         classWhiteArea = new JTextArea();
         classWhiteArea.setBackground(new Color(-12895429));
         classWhiteArea.setForeground(new Color(-853761));
+        classWhiteArea.setCaretColor(new Color(-853761));
         classWhiteArea.setLineWrap(true);
         classWhiteArea.setRows(0);
         classWhiteArea.setText("");
@@ -2183,6 +2236,7 @@ public class MainForm {
         Font blackAreaFont = this.resolveFont("Consolas", -1, -1, blackArea.getFont());
         if (blackAreaFont != null) blackArea.setFont(blackAreaFont);
         blackArea.setForeground(new Color(-16711931));
+        blackArea.setCaretColor(new Color(-16711931));
         blackScroll.setViewportView(blackArea);
         classBlackLabel = new JLabel();
         classBlackLabel.setText(" class / package black list (split by ; and \\n) 类名包名黑名单 (按照 ; 和 \\n 分割)");

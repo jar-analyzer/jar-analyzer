@@ -56,6 +56,12 @@ public final class UIPrefs {
     public static final String K_SPLIT_CORE = "main.split.core";
     public static final String K_FONT_CODE = "font.code";
     public static final String K_FONT_UI = "font.ui";
+    public static final String K_CLASS_BLACK_LIST = "list.class-black";
+    public static final String K_CLASS_WHITE_LIST = "list.class-white";
+    public static final String K_SEARCH_FILTER = "list.search-filter";
+    public static final String K_SEARCH_FILTER_MODE = "list.search-filter-mode";
+    public static final String K_DFS_MAX_LIMIT = "dfs.max-limit";
+    public static final String K_DFS_BLACKLIST = "dfs.blacklist";
 
     private static final long DEBOUNCE_MS = 800L;
 
@@ -174,6 +180,21 @@ public final class UIPrefs {
     public static void setInt(String key, int value) {
         load();
         PROPS.setProperty(key, Integer.toString(value));
+    }
+
+    public static String getString(String key, String def) {
+        load();
+        String v = PROPS.getProperty(key);
+        return v == null ? def : v;
+    }
+
+    public static void setString(String key, String value) {
+        load();
+        if (value == null) {
+            PROPS.remove(key);
+        } else {
+            PROPS.setProperty(key, value);
+        }
     }
 
     // ---- frame geometry helpers ----------------------------------------

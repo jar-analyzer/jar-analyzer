@@ -327,7 +327,7 @@ public class JarUtil {
                                 continue;
                             }
                             copyArchiveEntry(jarFile, jarEntry, fullPath);
-                            logger.info("save config file: {}", jarEntryName);
+                            logger.debug("save config file: {}", jarEntryName);
                             continue;
                         }
 
@@ -389,7 +389,7 @@ public class JarUtil {
                             continue;
                         }
                         copyArchiveEntry(jarFile, jarEntry, fullPath);
-                        logger.info("save config file: {}", jarEntryName);
+                        logger.debug("save config file: {}", jarEntryName);
                         continue;
                     }
 

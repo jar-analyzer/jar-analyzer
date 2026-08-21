@@ -19,17 +19,14 @@ jobs:
         include:
           - java-version: '8'
             project: test-springboot-java8
-            jar: test-springboot-java8/target/test-springboot-java8-0.0.1-SNAPSHOT.jar
             classes: 76
             calls: 1755
           - java-version: '17'
             project: test-springboot-java17
-            jar: test-springboot-java17/target/test-springboot-java17-0.0.1-SNAPSHOT.jar
             classes: 107
             calls: 2612
           - java-version: '25'
             project: test-springboot-java25
-            jar: test-springboot-java25/target/test-springboot-java25-0.0.1-SNAPSHOT.jar
             classes: 107
             calls: 2594
     steps:
@@ -43,7 +40,9 @@ jobs:
       - name: build ${{ matrix.project }} test project
         run: mvn -B -f test/${{ matrix.project }}/pom.xml -DskipTests package
       - name: prepare jar
-        run: cp ${{ matrix.jar }} custom-test.jar
+        run: |
+          ls -la test/${{ matrix.project }}/target/ || true
+          cp test/${{ matrix.project }}/target/*.jar custom-test.jar
       - name: run maven custom test
         run: mvn -B test -Dtest=SpringCustomTest#testRun -DfailIfNoTests=true
           -Dcustom.test.classes=${{ matrix.classes }} -Dcustom.test.calls=${{ matrix.calls }}

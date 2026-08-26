@@ -1592,6 +1592,9 @@ public class MainForm {
             // 2026/08/20 双字体修复：界面字体变大后，之前记忆的窗口
             // 宽度可能放不下右侧按钮，因此不再限于首次启动才补宽
             widenDefaultFrameToFitButtons(frame);
+            // 2026/08/27 纵向对称修复：treeContentSplit 上半部分固定的
+            // 分隔位置会把底部日志区压到最小高度以下，窗口高度补齐
+            fixDefaultFrameHeight(frame);
             if (!hadGeometry) {
                 frame.setLocationRelativeTo(null);
             }
@@ -1628,6 +1631,12 @@ public class MainForm {
                 int startNeed = instance.startPanel.getPreferredSize().width
                         + instance.tabbedPanel.getInsets().left
                         + instance.tabbedPanel.getInsets().right;
+                // 首选宽度与实际内容区宽度的差值包含 JTabbedPane 的
+                // content border 等布局开销，不单独补上会残留几像素截断
+                if (instance.startPanel.getWidth() > 0) {
+                    startNeed += Math.max(0, instance.startPanel.getPreferredSize().width
+                            - instance.startPanel.getWidth());
+                }
                 int needFrameW = rootLoc + instance.rootSplit.getDividerSize()
                         + coreLoc + instance.coreSplit.getDividerSize()
                         + startNeed;
@@ -1651,6 +1660,62 @@ public class MainForm {
                 instance.coreSplit.setDividerLocation(coreLoc);
             }
         } catch (Exception ignored) {
+        }
+    }
+
+    /**
+     * 启动时保证窗口高度放得下底部日志区（当前方法 + LOG 输出）：
+     * 以纵向分隔条位置 + 分隔条 + logPanel 最小高度反推需要的窗口
+     * 高度。横向的 {@link #widenDefaultFrameToFitButtons} 只补宽度，
+     * 纵向没有对应逻辑时默认分隔位置（760）会把 logPanel 压到最小
+     * 高度（150）以下，底部内容被切掉
+     */
+    private static void fixDefaultFrameHeight(JFrame frame) {
+        try {
+            JSplitPane tcs = instance.treeContentSplit;
+            int divSize = tcs.getDividerSize();
+            int logMin = Math.max(120, instance.logPanel.getMinimumSize().height);
+            int chrome = Math.max(0,
+                    frame.getHeight() - frame.getContentPane().getHeight());
+            // 记忆的分隔位置此刻可能尚未应用（bindSplit 延迟恢复），
+            // 用保存值反推需要高度，避免把用户特意收窄的窗口拉高
+            Integer savedTree = UIPrefs.getInt(UIPrefs.K_SPLIT_TREE);
+            int topLoc = (savedTree != null && savedTree > 0)
+                    ? savedTree : tcs.getDividerLocation();
+            int maxH = maxFrameHeightOfScreen(frame);
+            for (int i = 0; i < 3; i++) {
+                int needFrameH = topLoc + divSize + logMin + chrome;
+                if (frame.getHeight() >= needFrameH) {
+                    break;
+                }
+                if (needFrameH > maxH) {
+                    // 屏幕高度装不下：收缩上方代码区让位（代码区有
+                    // 滚动条），优先保证底部日志区最小高度
+                    topLoc = Math.max(maxH - chrome - divSize - logMin, 240);
+                    frame.setSize(frame.getWidth(), maxH);
+                    frame.validate();
+                    tcs.setDividerLocation(topLoc);
+                    break;
+                }
+                frame.setSize(frame.getWidth(), needFrameH);
+                frame.validate();
+            }
+        } catch (Exception ignored) {
+        }
+    }
+
+    private static int maxFrameHeightOfScreen(JFrame frame) {
+        try {
+            GraphicsConfiguration gc = frame.getGraphicsConfiguration();
+            if (gc == null) {
+                gc = GraphicsEnvironment.getLocalGraphicsEnvironment()
+                        .getDefaultScreenDevice().getDefaultConfiguration();
+            }
+            Rectangle bounds = gc.getBounds();
+            Insets insets = Toolkit.getDefaultToolkit().getScreenInsets(gc);
+            return Math.max(300, bounds.height - insets.top - insets.bottom);
+        } catch (Exception e) {
+            return Integer.MAX_VALUE;
         }
     }
 

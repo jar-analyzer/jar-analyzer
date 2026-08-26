@@ -1,6 +1,25 @@
 # CHANGELOG
 
-## 6.2 - 开发中 - 未发布
+## 6.3 - 开发中 - 未发布
+
+更新日志：
+
+- todo
+
+感谢以下用户的贡献:
+
+- 4ra1n (https://github.com/4ra1n)
+
+所有可供下载的文件都由 `Github Actions` 构建，提供以下四种:
+
+- `windows-full` 版内置开启 `G1GC` 的 `JRE 8` 环境 (主要版本)
+- `windows-25` 版内置开启 `ZGC` 的 `JRE 25` 环境（未完全测试）
+- `windows-system` 版使用系统 `JRE` 的启动脚本 (推荐安装 `JRE/JDK 8`)
+- `zip` 版仅包含简单的 `jar` 文件 (使用 `java -jar` 启动)
+
+不再发布 `Go` 版本的 `MCP` 代码和发布，内置 `Java` 版本 `MCP`
+
+## 6.2 - 已发布最新版
 
 发现 `MacOS + Java 8` 存在字符模糊和乱码问题，研究后确认是 `Java` 自身问题
 
@@ -43,7 +62,7 @@
 
 不再发布 `Go` 版本的 `MCP` 代码和发布，内置 `Java` 版本 `MCP`
 
-## 6.1 - 已发布最新版
+## 6.1
 
 更新日志：
 

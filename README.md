@@ -13,7 +13,6 @@ The `jar-analyzer` project has been continuously updated for `5` years, with `67
 - 确定性分析，结果可复现：`AI` 存在幻觉，可能编造类名和调用关系；安全审计需要精确
 - 全程本地离线分析，代码与 `JAR` 不出本机，满足企业内部代码与甲方资产的保密要求
 - 调用链 / `CFG` / `JVM` 栈帧等图形化分析能力，鼠标点点点即可交互式探索，这是纯文本对话难以替代的
-- 一次构建无限次查询，无需按 `token` 付费；批量分析成百上千个 `JAR` 的边际成本为零
 - 并非拒绝 `AI`：内置 `AI` 助手与 `MCP` 服务一键启动
 
 ![](https://img.shields.io/github/last-commit/jar-analyzer/jar-analyzer)

@@ -97,9 +97,12 @@ public class TaintResultDialog extends JFrame {
         setResizable(true);
         setMinimumSize(new Dimension(900, 600));
 
-        // 与项目其它对话框保持一致：先置顶，避免被主窗口遮挡
+        // 与项目其它对话框保持一致：先置顶避免被主窗口遮挡
         setAlwaysOnTop(true);
         setVisible(true);
+        // 置顶只维持到窗口显示完成，随后恢复普通层级
+        // 否则该窗口会永远盖在所有窗口之上（参考 ShowStringForm 的处理）
+        SwingUtilities.invokeLater(() -> setAlwaysOnTop(false));
     }
 
     // -------------------- 组件 --------------------

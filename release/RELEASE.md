@@ -28,6 +28,7 @@ Steps:
 - Change `version.txt` on `OSS Browser`
 - UPDATE `README` version count
 - 更新官方文档：版本数量，修改时间
+- 更新 github pages 配置重新构建
 
 Test Steps:
 

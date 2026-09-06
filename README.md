@@ -20,12 +20,12 @@ The `jar-analyzer` project has been continuously updated for `5` years, with `67
 ![](https://img.shields.io/github/v/release/jar-analyzer/jar-analyzer)
 ![](https://img.shields.io/github/downloads/jar-analyzer/jar-analyzer/total)
 
-|      |                                                                                                                                                                                                                                                                                     |
-|:-----|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 质量 | ![](https://github.com/jar-analyzer/jar-analyzer/workflows/leak%20check/badge.svg) ![](https://github.com/jar-analyzer/jar-analyzer/workflows/truffle%20check/badge.svg)                                                                                                            |
-|      | ![](https://github.com/jar-analyzer/jar-analyzer/workflows/maven%20check/badge.svg) ![](https://github.com/jar-analyzer/jar-analyzer/workflows/python%20check/badge.svg)                                                                                                            |
-| 测试 | ![](https://github.com/jar-analyzer/jar-analyzer/workflows/test%20core/badge.svg) ![](https://github.com/jar-analyzer/jar-analyzer/workflows/test%20custom/badge.svg) ![](https://github.com/jar-analyzer/jar-analyzer/workflows/test%20golden%20chain/badge.svg)                   |
-|      | ![](https://github.com/jar-analyzer/jar-analyzer/workflows/test%20golden%20simple/badge.svg) ![](https://github.com/jar-analyzer/jar-analyzer/workflows/test%20golden%20taint/badge.svg) ![](https://github.com/jar-analyzer/jar-analyzer/workflows/test%20golden%20rule/badge.svg) |
+| CI 测试分类 | CI 测试具体项结果                                                                                                                                                                                                                                                                   |
+|:------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 质量        | ![](https://github.com/jar-analyzer/jar-analyzer/workflows/leak%20check/badge.svg) ![](https://github.com/jar-analyzer/jar-analyzer/workflows/truffle%20check/badge.svg)                                                                                                            |
+|             | ![](https://github.com/jar-analyzer/jar-analyzer/workflows/maven%20check/badge.svg) ![](https://github.com/jar-analyzer/jar-analyzer/workflows/python%20check/badge.svg)                                                                                                            |
+| 测试        | ![](https://github.com/jar-analyzer/jar-analyzer/workflows/test%20core/badge.svg) ![](https://github.com/jar-analyzer/jar-analyzer/workflows/test%20custom/badge.svg) ![](https://github.com/jar-analyzer/jar-analyzer/workflows/test%20golden%20chain/badge.svg)                   |
+|             | ![](https://github.com/jar-analyzer/jar-analyzer/workflows/test%20golden%20simple/badge.svg) ![](https://github.com/jar-analyzer/jar-analyzer/workflows/test%20golden%20taint/badge.svg) ![](https://github.com/jar-analyzer/jar-analyzer/workflows/test%20golden%20rule/badge.svg) |
 
 官方网站：https://jar-analyzer.github.io
 

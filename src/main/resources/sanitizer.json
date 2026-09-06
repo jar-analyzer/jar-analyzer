@@ -37,27 +37,9 @@
       "paramIndex": 0
     },
     {
-      "className": "java/sql/PreparedStatement",
-      "methodName": "setString",
-      "methodDesc": "(ILjava/lang/String;)V",
-      "paramIndex": 1
-    },
-    {
-      "className": "java/sql/PreparedStatement",
-      "methodName": "setObject",
-      "methodDesc": "(ILjava/lang/Object;)V",
-      "paramIndex": 1
-    },
-    {
       "className": "java/util/regex/Pattern",
       "methodName": "quote",
       "methodDesc": "(Ljava/lang/String;)Ljava/lang/String;",
-      "paramIndex": 0
-    },
-    {
-      "className": "org/owasp/esapi/ESAPI",
-      "methodName": "encoder",
-      "methodDesc": "()Lorg/owasp/esapi/Encoder;",
       "paramIndex": 0
     },
     {
@@ -70,7 +52,7 @@
       "className": "org/owasp/esapi/Encoder",
       "methodName": "encodeForSQL",
       "methodDesc": "(Lorg/owasp/esapi/codecs/Codec;Ljava/lang/String;)Ljava/lang/String;",
-      "paramIndex": 1
+      "paramIndex": 2
     },
     {
       "className": "org/owasp/esapi/Encoder",
@@ -106,6 +88,234 @@
       "className": "org/apache/commons/validator/routines/UrlValidator",
       "methodName": "isValid",
       "methodDesc": "(Ljava/lang/String;)Z",
+      "paramIndex": 0
+    },
+    {
+      "className": "java/lang/Integer",
+      "methodName": "parseInt",
+      "methodDesc": "(Ljava/lang/String;)I",
+      "paramIndex": 0
+    },
+    {
+      "className": "java/lang/Long",
+      "methodName": "parseLong",
+      "methodDesc": "(Ljava/lang/String;)J",
+      "paramIndex": 0
+    },
+    {
+      "className": "java/lang/Double",
+      "methodName": "parseDouble",
+      "methodDesc": "(Ljava/lang/String;)D",
+      "paramIndex": 0
+    },
+    {
+      "className": "java/lang/Float",
+      "methodName": "parseFloat",
+      "methodDesc": "(Ljava/lang/String;)F",
+      "paramIndex": 0
+    },
+    {
+      "className": "java/lang/Short",
+      "methodName": "parseShort",
+      "methodDesc": "(Ljava/lang/String;)S",
+      "paramIndex": 0
+    },
+    {
+      "className": "java/lang/Byte",
+      "methodName": "parseByte",
+      "methodDesc": "(Ljava/lang/String;)B",
+      "paramIndex": 0
+    },
+    {
+      "className": "java/lang/Boolean",
+      "methodName": "parseBoolean",
+      "methodDesc": "(Ljava/lang/String;)Z",
+      "paramIndex": 0
+    },
+    {
+      "className": "java/lang/Integer",
+      "methodName": "valueOf",
+      "methodDesc": "(Ljava/lang/String;)Ljava/lang/Integer;",
+      "paramIndex": 0
+    },
+    {
+      "className": "java/lang/Long",
+      "methodName": "valueOf",
+      "methodDesc": "(Ljava/lang/String;)Ljava/lang/Long;",
+      "paramIndex": 0
+    },
+    {
+      "className": "java/lang/Double",
+      "methodName": "valueOf",
+      "methodDesc": "(Ljava/lang/String;)Ljava/lang/Double;",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/owasp/encoder/Encode",
+      "methodName": "forHtml",
+      "methodDesc": "(Ljava/lang/String;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/owasp/encoder/Encode",
+      "methodName": "forHtmlContent",
+      "methodDesc": "(Ljava/lang/String;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/owasp/encoder/Encode",
+      "methodName": "forHtmlAttribute",
+      "methodDesc": "(Ljava/lang/String;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/owasp/encoder/Encode",
+      "methodName": "forJavaScript",
+      "methodDesc": "(Ljava/lang/String;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/owasp/encoder/Encode",
+      "methodName": "forJavaScriptAttribute",
+      "methodDesc": "(Ljava/lang/String;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/owasp/encoder/Encode",
+      "methodName": "forCss",
+      "methodDesc": "(Ljava/lang/String;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/owasp/encoder/Encode",
+      "methodName": "forUri",
+      "methodDesc": "(Ljava/lang/String;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/owasp/encoder/Encode",
+      "methodName": "forUriComponent",
+      "methodDesc": "(Ljava/lang/String;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/jsoup/Jsoup",
+      "methodName": "clean",
+      "methodDesc": "(Ljava/lang/String;Lorg/jsoup/safety/Safelist;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/jsoup/Jsoup",
+      "methodName": "clean",
+      "methodDesc": "(Ljava/lang/String;Ljava/lang/String;Lorg/jsoup/safety/Safelist;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/jsoup/Jsoup",
+      "methodName": "clean",
+      "methodDesc": "(Ljava/lang/String;Lorg/jsoup/safety/Whitelist;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/jsoup/Jsoup",
+      "methodName": "clean",
+      "methodDesc": "(Ljava/lang/String;Ljava/lang/String;Lorg/jsoup/safety/Whitelist;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/apache/commons/text/StringEscapeUtils",
+      "methodName": "escapeHtml4",
+      "methodDesc": "(Ljava/lang/String;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/apache/commons/text/StringEscapeUtils",
+      "methodName": "escapeHtml3",
+      "methodDesc": "(Ljava/lang/String;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/apache/commons/text/StringEscapeUtils",
+      "methodName": "escapeXml",
+      "methodDesc": "(Ljava/lang/String;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/apache/commons/text/StringEscapeUtils",
+      "methodName": "escapeJava",
+      "methodDesc": "(Ljava/lang/String;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/apache/commons/text/StringEscapeUtils",
+      "methodName": "escapeEcmaScript",
+      "methodDesc": "(Ljava/lang/String;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/apache/commons/lang3/StringEscapeUtils",
+      "methodName": "escapeHtml3",
+      "methodDesc": "(Ljava/lang/String;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/apache/commons/lang3/StringEscapeUtils",
+      "methodName": "escapeEcmaScript",
+      "methodDesc": "(Ljava/lang/String;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/apache/commons/lang3/StringEscapeUtils",
+      "methodName": "escapeJson",
+      "methodDesc": "(Ljava/lang/String;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/apache/commons/lang3/StringEscapeUtils",
+      "methodName": "escapeXml11",
+      "methodDesc": "(Ljava/lang/String;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/apache/commons/io/FilenameUtils",
+      "methodName": "getName",
+      "methodDesc": "(Ljava/lang/String;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/owasp/esapi/Encoder",
+      "methodName": "encodeForLDAP",
+      "methodDesc": "(Ljava/lang/String;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/owasp/esapi/Encoder",
+      "methodName": "encodeForDN",
+      "methodDesc": "(Ljava/lang/String;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/owasp/esapi/Encoder",
+      "methodName": "encodeForXPath",
+      "methodDesc": "(Ljava/lang/String;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "org/owasp/esapi/Encoder",
+      "methodName": "encodeForCSS",
+      "methodDesc": "(Ljava/lang/String;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "java/net/URLEncoder",
+      "methodName": "encode",
+      "methodDesc": "(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;",
+      "paramIndex": 0
+    },
+    {
+      "className": "java/net/URLEncoder",
+      "methodName": "encode",
+      "methodDesc": "(Ljava/lang/String;)Ljava/lang/String;",
       "paramIndex": 0
     }
   ]

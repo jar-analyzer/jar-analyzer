@@ -2358,6 +2358,167 @@
       "methodDesc": "*",
       "from": "this",
       "to": "ret"
+    },
+    {
+      "className": "jakarta/servlet/http/HttpServletRequest",
+      "methodName": "getParameterValues",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "jakarta/servlet/http/HttpServletRequest",
+      "methodName": "getHeaders",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "jakarta/servlet/http/HttpServletRequest",
+      "methodName": "getQueryString",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "jakarta/servlet/http/HttpServletRequest",
+      "methodName": "getRequestURI",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "jakarta/servlet/http/HttpServletRequest",
+      "methodName": "getCookies",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "jakarta/servlet/http/HttpServletRequest",
+      "methodName": "getInputStream",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "jakarta/servlet/http/HttpServletRequest",
+      "methodName": "getReader",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "javax/servlet/http/HttpServletRequestWrapper",
+      "methodName": "getParameter",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "javax/servlet/http/HttpServletRequestWrapper",
+      "methodName": "getParameterValues",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "javax/servlet/http/HttpServletRequestWrapper",
+      "methodName": "getQueryString",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "javax/servlet/http/HttpServletRequestWrapper",
+      "methodName": "getHeader",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "javax/servlet/http/HttpServletRequestWrapper",
+      "methodName": "getHeaders",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "jakarta/servlet/http/HttpServletRequestWrapper",
+      "methodName": "getParameter",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "jakarta/servlet/http/HttpServletRequestWrapper",
+      "methodName": "getParameterValues",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "jakarta/servlet/http/HttpServletRequestWrapper",
+      "methodName": "getQueryString",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "jakarta/servlet/http/HttpServletRequestWrapper",
+      "methodName": "getHeader",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "jakarta/servlet/http/HttpServletRequestWrapper",
+      "methodName": "getHeaders",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "javax/servlet/ServletRequestWrapper",
+      "methodName": "getParameter",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "javax/servlet/ServletRequestWrapper",
+      "methodName": "getParameterValues",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "javax/servlet/ServletRequestWrapper",
+      "methodName": "getQueryString",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "jakarta/servlet/ServletRequestWrapper",
+      "methodName": "getParameter",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "jakarta/servlet/ServletRequestWrapper",
+      "methodName": "getParameterValues",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
+    },
+    {
+      "className": "jakarta/servlet/ServletRequestWrapper",
+      "methodName": "getQueryString",
+      "methodDesc": "*",
+      "from": "this",
+      "to": "ret"
     }
   ]
 }

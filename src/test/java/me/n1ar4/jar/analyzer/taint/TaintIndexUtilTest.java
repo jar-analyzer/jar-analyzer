@@ -157,6 +157,64 @@ class TaintIndexUtilTest {
         assertEquals(-1, local);
     }
 
+    // ---------------- 双 slot（long/double）参数 ----------------
+
+    @Test
+    void argCount_static_longArgs_bySlots() {
+        // static foo(long, int)：J 占 2 slot + I 占 1 slot = 3
+        assertEquals(3, TaintIndexUtil.calleeArgCount(
+                Opcodes.INVOKESTATIC, "(JI)V"));
+    }
+
+    @Test
+    void argCount_virtual_longString_bySlots() {
+        // virtual foo(long, String)：this(1) + J(2) + String(1) = 4
+        assertEquals(4, TaintIndexUtil.calleeArgCount(
+                Opcodes.INVOKEVIRTUAL, "(JLjava/lang/String;)V"));
+    }
+
+    @Test
+    void stackToLocal_static_dualSlot_stringAfterLong() {
+        // static foo(long, String)：栈顶是 String，对应 locals[2]（J 占 0-1）
+        int local = TaintIndexUtil.stackOffsetFromTopToCalleeLocalIndex(
+                Opcodes.INVOKESTATIC, "(JLjava/lang/String;)V", 0);
+        assertEquals(2, local);
+    }
+
+    @Test
+    void stackToLocal_static_dualSlot_longLowAtBottom() {
+        // static foo(long, String)：栈底是 long 低位，对应 locals[0]
+        int local = TaintIndexUtil.stackOffsetFromTopToCalleeLocalIndex(
+                Opcodes.INVOKESTATIC, "(JLjava/lang/String;)V", 2);
+        assertEquals(0, local);
+    }
+
+    @Test
+    void localToStack_static_dualSlot_longHigh() {
+        // static foo(long, String)：long 高位在 locals[1]，距栈顶 1
+        int off = TaintIndexUtil.localIndexToStackOffsetFromTop(
+                Opcodes.INVOKESTATIC, "(JLjava/lang/String;)V", 1);
+        assertEquals(1, off);
+    }
+
+    @Test
+    void localToStack_virtual_dualSlot_string() {
+        // virtual foo(long, String)：String 在 locals[3]（this=0, J=1-2），栈顶
+        int off = TaintIndexUtil.localIndexToStackOffsetFromTop(
+                Opcodes.INVOKEVIRTUAL, "(JLjava/lang/String;)V", 3);
+        assertEquals(0, off);
+    }
+
+    @Test
+    void roundTrip_static_mixedDualSlots() {
+        String desc = "(JIJ)V"; // slots: 0-1=J, 2=I, 3-4=J
+        for (int slot = 0; slot < 5; slot++) {
+            int off = TaintIndexUtil.localIndexToStackOffsetFromTop(Opcodes.INVOKESTATIC, desc, slot);
+            int back = TaintIndexUtil.stackOffsetFromTopToCalleeLocalIndex(Opcodes.INVOKESTATIC, desc, off);
+            assertEquals(slot, back, "dual-slot round-trip at slot=" + slot);
+        }
+    }
+
     // ---------------- 双向往返 ----------------
 
     @Test

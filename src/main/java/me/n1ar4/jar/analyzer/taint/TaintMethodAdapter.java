@@ -121,8 +121,9 @@ public class TaintMethodAdapter extends JVMRuntimeAdapter<String> {
         // 当前栈快照（仅用于读取参数污点；实际栈深度由父类 super.visitMethodInsn 维护）
         List<Set<String>> stack = this.operandStack.getList();
 
-        Type[] argumentTypes = Type.getArgumentTypes(calleeDesc);
-        int argCount = argumentTypes.length + (opcode == Opcodes.INVOKESTATIC ? 0 : 1);
+        // 2026/09/06 修复：参数总 slot 数（含 this；long/double 占 2 slot）
+        // 栈与 locals 都是 slot 布局，按参数个数计数会漏掉高位槽
+        int argCount = TaintIndexUtil.calleeArgCount(opcode, calleeDesc);
 
         String nextClass = next.getClassReference().getName().replace(".", "/");
         boolean isNextCall = calleeOwner.equals(nextClass)

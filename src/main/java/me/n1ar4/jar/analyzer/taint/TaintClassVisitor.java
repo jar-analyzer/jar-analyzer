@@ -57,31 +57,33 @@ public class TaintClassVisitor extends ClassVisitor {
         this.className = name;
         this.iface = (access & Opcodes.ACC_INTERFACE) != 0;
 
-        // 接口默认按"参数完全对应"的方式透传：
-        // 把 entry 的 locals 索引集合直接投影到 next 的 locals 索引上。
-        // 这比旧实现"全透传所有参数"更精准，能正确反映 entry 中被污染的具体参数位置。
+        // 接口默认按"参数槽位完全对应"的方式透传：
+        // cur 与 next 同名同 desc（override），locals 布局一致，直接按槽位投影。
+        // 跳过 cur 的 this（index 0）——接口 → 实现的 receiver 是新对象，污点不可靠。
+        // 2026/09/06 修复：边界检查改为 slot 数（long/double 形参占 2 槽，
+        // 按参数个数判断会把合法槽位误判为越界导致透传丢污点）
         if (this.iface) {
-            int nextArgCount = Type.getArgumentTypes(next.getDesc()).length;
+            int nextSlotCount = 1; // this
+            for (Type t : Type.getArgumentTypes(next.getDesc())) {
+                nextSlotCount += t.getSize();
+            }
             for (int i = entry.getTaintedLocals().nextSetBit(0);
                  i >= 0;
                  i = entry.getTaintedLocals().nextSetBit(i + 1)) {
-                if (i == 0) {
-                    // 跳过 cur 的 this（接口 → 实现的 receiver 是新对象，污点不可靠）
+                if (i == 0 || i >= nextSlotCount) {
                     continue;
                 }
-                int curParamSeq = i - 1;
-                if (curParamSeq < 0 || curParamSeq >= nextArgCount) {
-                    continue;
-                }
-                exit.markLocal(1 + curParamSeq);
+                exit.markLocal(i);
             }
-            // 兜底：如果一个都没传到，至少透传"按 entry 第一个参数序号"，
+            // 兜底：如果一个都没传到，至少透传"按 entry 第一个参数槽位"，
             // 维持与旧行为一致，避免接口断链。
             if (!exit.hasTaint() && entry.hasTaint()) {
                 int first = entry.getTaintedLocals().nextSetBit(0);
                 if (first >= 0) {
-                    int curParamSeq = Math.max(0, first - 1);
-                    exit.markLocal(1 + curParamSeq);
+                    int target = Math.max(1, first);
+                    if (target < nextSlotCount) {
+                        exit.markLocal(target);
+                    }
                 }
             }
             logger.info("taint analysis (interface) {} - {} - {} -> {}",

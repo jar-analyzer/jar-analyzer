@@ -92,10 +92,11 @@ public class TaintAnalyzer {
                 try {
                     clsBytes = Files.readAllBytes(Paths.get(absPath));
                 } catch (Exception ex) {
+                    // 2026/09/06 修复：读取失败只中断本链，不应丢弃已完成的其他链结果
                     sink.emit(TaintEvent.atMethod(TaintEvent.Type.WARN, i,
                             m.getClassReference().getName(), m.getName(), m.getDesc(),
                             "读取类文件失败：" + ex));
-                    return new ArrayList<>();
+                    break;
                 }
 
                 String desc = m.getDesc();
@@ -110,16 +111,22 @@ public class TaintAnalyzer {
 
                     boolean reached = false;
                     for (int paramSeq = 0; paramSeq < paramCount && !reached; paramSeq++) {
-                        // 先尝试"非 static 视角"（locals[0]=this，所以 arg = paramSeq+1）
-                        // 再尝试"static 视角"（arg = paramSeq）
+                        // 2026/09/06 修复：播种按 slot 布局而非参数序数，
+                        // long/double 形参占 2 个槽，后续参数的 locals 起点相应偏移
+                        int slotOffset = 0;
+                        for (int k = 0; k < paramSeq; k++) {
+                            slotOffset += argumentTypes[k].getSize();
+                        }
+                        // 先尝试"非 static 视角"（locals[0]=this，所以 arg 起点 +1）
+                        // 再尝试"static 视角"（arg 起点 +0）
                         for (int viewStart = 1; viewStart >= 0 && !reached; viewStart--) {
                             TaintTransfer entry = new TaintTransfer();
-                            entry.markLocal(viewStart + paramSeq);
+                            entry.markLocal(viewStart + slotOffset);
                             TaintTransfer exit = new TaintTransfer();
 
                             sink.emit(TaintEvent.atMethod(TaintEvent.Type.SOURCE_TRY, 0,
                                     m.getClassReference().getName(), m.getName(), m.getDesc(),
-                                    "尝试 source：第 " + paramSeq + " 个参数（locals 索引 " + (viewStart + paramSeq) + "）"));
+                                    "尝试 source：第 " + paramSeq + " 个参数（locals 槽位 " + (viewStart + slotOffset) + "）"));
 
                             try {
                                 TaintClassVisitor tcv = new TaintClassVisitor(entry, m, next, exit, rule, propagation, sink, 0);

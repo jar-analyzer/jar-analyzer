@@ -25,8 +25,8 @@ class AIProviderTest {
 
     @Test
     void glmUsesGlm52AsItsDefaultAndOffersItForSelection() {
-        assertEquals("glm-5.2", AIProvider.GLM.getDefaultModel());
-        assertEquals("glm-5.2", AIProvider.GLM.getModelOptions().get(0));
-        assertTrue(AIProvider.GLM.getModelOptions().contains("glm-5.2"));
+        assertEquals("glm-5.3", AIProvider.GLM.getDefaultModel());
+        assertEquals("glm-5.3", AIProvider.GLM.getModelOptions().get(0));
+        assertTrue(AIProvider.GLM.getModelOptions().contains("glm-5.3"));
     }
 }

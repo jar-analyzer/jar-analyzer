@@ -18,6 +18,7 @@ import me.n1ar4.jar.analyzer.entity.MethodResult;
 import me.n1ar4.jar.analyzer.gui.ChainsResultPanel;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.mcp.McpContext;
+import me.n1ar4.jar.analyzer.utils.ASMUtil;
 import me.n1ar4.log.LogManager;
 import me.n1ar4.log.Logger;
 
@@ -546,7 +547,9 @@ public class DFSEngine {
     private void outputSourceChain(List<MethodResult> path, MethodResult sourceMethod) {
         sourceCount++;
         String chainId = "source_" + sourceCount;
-        String title = " (调用链长度: " + path.size() + ") #" + sourceCount + ": " + formatMethod(sourceMethod);
+        String title = " (调用链长度: " + path.size() + ") #" + sourceCount + ": "
+                + ASMUtil.prettyMethod(sourceMethod.getClassName(),
+                sourceMethod.getMethodName(), sourceMethod.getMethodDesc());
 
         List<String> methods = new ArrayList<>();
 

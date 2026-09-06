@@ -19,6 +19,7 @@ import me.n1ar4.jar.analyzer.entity.MethodResult;
 import me.n1ar4.jar.analyzer.gui.adapter.SearchInputListener;
 import me.n1ar4.jar.analyzer.gui.util.ProcessDialog;
 import me.n1ar4.jar.analyzer.starter.Const;
+import me.n1ar4.jar.analyzer.utils.ASMUtil;
 import me.n1ar4.jar.analyzer.utils.MouseUtil;
 import me.n1ar4.jar.analyzer.utils.StringUtil;
 import me.n1ar4.log.LogManager;
@@ -206,7 +207,9 @@ public class ChainsResultPanel extends JPanel {
                     methodLinePanel.add(arrowLabel);
                 }
 
-                JLabel methodLabel = new JLabel(method);
+                // 展示人可读格式（类名点号 + 参数简名），点击与悬停提示仍使用原始签名
+                JLabel methodLabel = new JLabel(ASMUtil.prettySignature(method));
+                methodLabel.setToolTipText(method);
                 methodLabel.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
                 methodLabel.setForeground(Color.BLUE);
                 methodLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

@@ -27,6 +27,19 @@ public class JVMRuntimeAdapter<T> extends MethodVisitor {
     private final int access;
     private final String desc;
 
+    /**
+     * 数组引用标记前缀：NEWARRAY/ANEWARRAY 产生的新数组引用槽携带唯一标记，
+     * AASTORE 时据此把"元素污点"传播回数组引用（varargs 轻量堆近似）。
+     */
+    private static final String ARRAY_REF_PREFIX = "ARR-REF-";
+
+    /**
+     * 污点 token，与 {@code TaintAnalyzer.TAINT} 同值（本类仅服务污点模拟）。
+     */
+    private static final String TAINT = "TAINT";
+
+    private int arraySeq = 0;
+
     private final Map<Label, GotoState<T>> gotoStates = new HashMap<>();
     private final Set<Label> exceptionHandlerLabels = new HashSet<>();
 
@@ -101,6 +114,93 @@ public class JVMRuntimeAdapter<T> extends MethodVisitor {
             newGotoState.setOperandStack(newOperandStack);
             newGotoState.setLocalVariables(newLocalVariables);
             gotoStates.put(label, newGotoState);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private Set<T> newArrayMarkedSet() {
+        Set<T> set = new HashSet<>();
+        set.add((T) (ARRAY_REF_PREFIX + (++arraySeq)));
+        return set;
+    }
+
+    private boolean hasArrayRefMark(Set<T> slot) {
+        for (T t : slot) {
+            if (t instanceof String && ((String) t).startsWith(ARRAY_REF_PREFIX)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 把数组引用槽上的标记集合中含有的全部数组标记对应的槽位染上 TAINT
+     * （同一数组的引用可能同时存在于栈与多个 local 槽）。
+     */
+    private void propagateTaintToMarkedSlots(Set<T> arrayRefSet) {
+        List<String> markers = new ArrayList<>();
+        for (T t : arrayRefSet) {
+            if (t instanceof String && ((String) t).startsWith(ARRAY_REF_PREFIX)) {
+                markers.add((String) t);
+            }
+        }
+        if (markers.isEmpty()) {
+            return;
+        }
+        List<Set<T>> stacks = this.operandStack.getList();
+        for (int i = 0; i < stacks.size(); i++) {
+            addTaintIfMarked(stacks.get(i), markers);
+        }
+        List<Set<T>> locals = this.localVariables.getList();
+        for (int i = 0; i < locals.size(); i++) {
+            addTaintIfMarked(locals.get(i), markers);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void addTaintIfMarked(Set<T> slot, List<String> markers) {
+        if (slot == null || slot.isEmpty()) {
+            return;
+        }
+        for (String marker : markers) {
+            if (slot.contains(marker)) {
+                slot.add((T) TAINT);
+                return;
+            }
+        }
+    }
+
+    /**
+     * ATHROW 时把异常对象污点 merge 进 handler 的 gotoState：
+     * handler 入口栈为单个异常引用，locals 与抛出点合并。
+     */
+    private void mergeThrowState(Label handler, Set<T> thrownTaint) {
+        GotoState<T> incoming = gotoStates.get(handler);
+        if (incoming == null) {
+            GotoState<T> state = new GotoState<>();
+            LocalVariables<T> lv = new LocalVariables<>();
+            for (Set<T> s : localVariables.getList()) {
+                lv.add(new HashSet<>(s));
+            }
+            OperandStack<T> os = new OperandStack<>();
+            os.add(new HashSet<>(thrownTaint));
+            state.setLocalVariables(lv);
+            state.setOperandStack(os);
+            gotoStates.put(handler, state);
+        } else {
+            LocalVariables<T> lv = incoming.getLocalVariables();
+            for (int i = 0; i < localVariables.size(); i++) {
+                while (lv.size() <= i) {
+                    lv.add(new HashSet<>());
+                }
+                lv.get(i).addAll(localVariables.get(i));
+            }
+            OperandStack<T> os = incoming.getOperandStack();
+            if (os.size() > 0) {
+                os.get(0).addAll(thrownTaint);
+            } else {
+                os.add(new HashSet<>(thrownTaint));
+            }
         }
     }
 
@@ -202,10 +302,27 @@ public class JVMRuntimeAdapter<T> extends MethodVisitor {
                 break;
             case Opcodes.IASTORE:
             case Opcodes.FASTORE:
-            case Opcodes.AASTORE:
             case Opcodes.BASTORE:
             case Opcodes.CASTORE:
             case Opcodes.SASTORE:
+                operandStack.pop();
+                operandStack.pop();
+                operandStack.pop();
+                break;
+            case Opcodes.AASTORE:
+                // varargs 轻量堆近似：引用数组的元素带污点时（典型场景
+                // javac 为 String.format(...args) 生成的 ANEWARRAY+DUP+AASTORE），
+                // 把污点传播到持有该数组引用的全部栈/locals 槽——
+                // 否则数组引用本身干净，varargs 调用的污点必然丢失
+                List<Set<T>> rawList = operandStack.getList();
+                if (rawList.size() >= 3) {
+                    Set<T> storedValue = rawList.get(rawList.size() - 1);
+                    Set<T> arrayRef = rawList.get(rawList.size() - 3);
+                    if (storedValue != null && !storedValue.isEmpty()
+                            && arrayRef != null && hasArrayRefMark(arrayRef)) {
+                        propagateTaintToMarkedSlots(arrayRef);
+                    }
+                }
                 operandStack.pop();
                 operandStack.pop();
                 operandStack.pop();
@@ -442,7 +559,14 @@ public class JVMRuntimeAdapter<T> extends MethodVisitor {
                 operandStack.push();
                 break;
             case Opcodes.ATHROW:
-                operandStack.pop();
+                // 2026/09/06 修复：抛出对象的污点应进入异常 handler
+                // （merge 到全部 handler 属保守过近似，无 try 范围判定）
+                Set<T> thrownTaint = operandStack.pop();
+                if (!thrownTaint.isEmpty()) {
+                    for (Label handler : exceptionHandlerLabels) {
+                        mergeThrowState(handler, thrownTaint);
+                    }
+                }
                 break;
             case Opcodes.MONITORENTER:
             case Opcodes.MONITOREXIT:
@@ -464,7 +588,7 @@ public class JVMRuntimeAdapter<T> extends MethodVisitor {
                 break;
             case Opcodes.NEWARRAY:
                 operandStack.pop();
-                operandStack.push();
+                operandStack.push(newArrayMarkedSet());
                 break;
             default:
                 throw new IllegalStateException("unsupported opcode: " + opcode);
@@ -530,7 +654,7 @@ public class JVMRuntimeAdapter<T> extends MethodVisitor {
                 break;
             case Opcodes.ANEWARRAY:
                 operandStack.pop();
-                operandStack.push();
+                operandStack.push(newArrayMarkedSet());
                 break;
             case Opcodes.CHECKCAST:
                 break;

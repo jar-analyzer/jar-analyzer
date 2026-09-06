@@ -33,8 +33,8 @@ import static org.junit.jupiter.api.Assertions.*;
  * 传播/净化规则黄金测试：验证 propagation.json 与 sanitizer.json
  * 在真实字节码上的行为。
  * <p>
- * 目标 jar 为 test/rule-test 项目构建的 rule-test.jar（十三条链路：
- * 七条净化链应断链 / 五条传播链应命中 / 一条常量对照不命中），
+ * 目标 jar 为 test/rule-test 项目构建的 rule-test.jar（十四条链路：
+ * 七条净化链应断链 / 六条传播链应命中 / 一条常量对照不命中），
  * 由 test-golden-rule workflow 在 CI 中构建；jar 不存在时全部跳过。
  * SINK 与 GUI 默认值一致：java/lang/Runtime#exec(String)。
  */
@@ -126,7 +126,7 @@ public class RuleGoldenTest {
     }
 
     /**
-     * 从 SINK 反向查找所有 SOURCE：根节点应恰好是十三个无调用者的入口
+     * 从 SINK 反向查找所有 SOURCE：根节点应恰好是十四个无调用者的入口
      */
     @Test
     void testDfsFindAllSources() {
@@ -153,12 +153,13 @@ public class RuleGoldenTest {
         expected.add(key("PropReplaceController", "propReplace"));
         expected.add(key("PropBufferController", "propBuffer"));
         expected.add(key("PropTrimController", "propTrim"));
+        expected.add(key("PropFormatController", "propFormat"));
         expected.add(key("ConstController", "constant"));
-        assertEquals(expected, sources, "所有可能的 SOURCE 点应恰好是十三个入口");
+        assertEquals(expected, sources, "所有可能的 SOURCE 点应恰好是十四个入口");
     }
 
     /**
-     * 全量链路 golden：五条传播链命中、七条净化链与一条对照链不命中
+     * 全量链路 golden：六条传播链命中、七条净化链与一条对照链不命中
      */
     @Test
     void testRuleGoldenOutcome() {
@@ -186,6 +187,7 @@ public class RuleGoldenTest {
         expected.put(key("PropReplaceController", "propReplace"), true);
         expected.put(key("PropBufferController", "propBuffer"), true);
         expected.put(key("PropTrimController", "propTrim"), true);
+        expected.put(key("PropFormatController", "propFormat"), true);
         // 净化链：不应命中
         expected.put(key("SanEncoderController", "sanEncoder"), false);
         expected.put(key("SanJsoupController", "sanJsoup"), false);
@@ -196,7 +198,7 @@ public class RuleGoldenTest {
         expected.put(key("SanDigestController", "sanDigest"), false);
         // 常量对照：不应命中
         expected.put(key("ConstController", "constant"), false);
-        assertEquals(expected, outcome, "十三条链路的污点命中情况应与 golden 完全一致");
+        assertEquals(expected, outcome, "十四条链路的污点命中情况应与 golden 完全一致");
     }
 
     // -------- 净化链（应断链 + SANITIZER_HIT） --------
@@ -262,6 +264,12 @@ public class RuleGoldenTest {
     @Test
     void testPropTrim() {
         assertPropagated("PropTrimController", "propTrim");
+    }
+
+    @Test
+    void testPropFormat() {
+        // varargs（Object[]）元素污点传播的黄金验证
+        assertPropagated("PropFormatController", "propFormat");
     }
 
     // -------- 常量对照（不应命中且无净化事件） --------

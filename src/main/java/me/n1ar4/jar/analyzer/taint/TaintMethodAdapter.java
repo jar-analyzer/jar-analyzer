@@ -214,13 +214,15 @@ public class TaintMethodAdapter extends JVMRuntimeAdapter<String> {
                 if (!matchesPropagation(pr, calleeOwner, calleeName, calleeDesc)) {
                     continue;
                 }
-                if (!propagationFromMatched(pr, opcode, calleeDesc, stack, argCount)) {
+                // from 命中的 token 必须在 super 弹栈之前收集（栈上参数 soon 消失）
+                Set<String> fromTokens = collectFromTokens(pr, opcode, calleeDesc, stack, argCount);
+                if (fromTokens.isEmpty()) {
                     continue;
                 }
                 // 该规则触发：先正常调用栈维护
                 super.visitMethodInsn(opcode, calleeOwner, calleeName, calleeDesc, itf);
-                // 应用 to 操作（写回 this 槽 / 染色返回值）
-                applyPropagationTo(pr, opcode, calleeDesc);
+                // 应用 to 操作（染返回值 / 构造器染栈顶对象引用）
+                applyPropagationTo(pr, opcode, calleeName, calleeDesc, fromTokens);
                 sink.emit(TaintEvent.atMethod(TaintEvent.Type.PROPAGATION_RULE_HIT, chainIndex,
                         calleeOwner, calleeName, calleeDesc,
                         "命中传播规则 from=" + pr.getFrom() + " to=" + pr.getTo()));
@@ -262,10 +264,12 @@ public class TaintMethodAdapter extends JVMRuntimeAdapter<String> {
     }
 
     /**
-     * 检查"调用前"栈是否满足 from 条件。
+     * 收集"调用前"栈上满足 from 条件的参数 token 并集（空集合 = from 未命中）。
+     * 注意：必须在 super.visitMethodInsn 之前调用（super 会弹掉参数槽）。
      */
-    private boolean propagationFromMatched(PropagationRule pr, int opcode, String calleeDesc,
-                                           List<Set<String>> stack, int argCount) {
+    private Set<String> collectFromTokens(PropagationRule pr, int opcode, String calleeDesc,
+                                          List<Set<String>> stack, int argCount) {
+        Set<String> tokens = new HashSet<>();
         String from = pr.getFrom();
         if (from == null || from.trim().isEmpty()) {
             from = PropagationRule.FROM_ANY;
@@ -274,14 +278,16 @@ public class TaintMethodAdapter extends JVMRuntimeAdapter<String> {
             token = token.trim();
             if (token.isEmpty()) continue;
             if (PropagationRule.FROM_ANY.equals(token)) {
-                if (anyArgTainted(stack, argCount)) return true;
+                tokens.addAll(unionArgTokens(stack, argCount));
             } else if (PropagationRule.FROM_THIS.equals(token)) {
                 if (opcode == Opcodes.INVOKESTATIC) continue;
                 // this 在栈底，距离顶 argCount-1
                 int idx = stack.size() - 1 - (argCount - 1);
                 if (idx >= 0 && idx < stack.size()) {
                     Set<String> slot = stack.get(idx);
-                    if (slot != null && slot.contains(TaintAnalyzer.TAINT)) return true;
+                    if (slot != null) {
+                        tokens.addAll(slot);
+                    }
                 }
             } else {
                 // 数字：locals 索引
@@ -292,27 +298,50 @@ public class TaintMethodAdapter extends JVMRuntimeAdapter<String> {
                     int idx = stack.size() - 1 - off;
                     if (idx >= 0 && idx < stack.size()) {
                         Set<String> slot = stack.get(idx);
-                        if (slot != null && slot.contains(TaintAnalyzer.TAINT)) return true;
+                        if (slot != null) {
+                            tokens.addAll(slot);
+                        }
                     }
                 } catch (NumberFormatException ignore) {
                 }
             }
         }
-        return false;
+        return tokens;
+    }
+
+    private Set<String> unionArgTokens(List<Set<String>> stack, int argCount) {
+        Set<String> union = new HashSet<>();
+        if (stack.size() < argCount) {
+            return union;
+        }
+        for (int i = 0; i < argCount; i++) {
+            Set<String> slot = stack.get(stack.size() - 1 - i);
+            if (slot != null) {
+                union.addAll(slot);
+            }
+        }
+        return union;
+    }
+
+    private boolean anyArgTainted(List<Set<String>> stack, int argCount) {
+        return !unionArgTokens(stack, argCount).isEmpty();
     }
 
     /**
      * 在父类 visitMethodInsn 之后应用 to 操作。
      * 注意：栈状态此时已被父类更新（参数已 pop、返回值已 push）。
+     * 2026/09/06 修复：构造器（INVOKESPECIAL <init>）场景下 NEW+DUP 留在栈顶的
+     * 对象引用就是 this，to:this 可直接把污点染到栈顶——此前对所有 void 方法
+     * 均为空操作，new String(taintedBytes) 一类规则完全失效。
      */
-    private void applyPropagationTo(PropagationRule pr, int opcode, String calleeDesc) {
+    private void applyPropagationTo(PropagationRule pr, int opcode, String calleeName,
+                                    String calleeDesc, Set<String> fromTokens) {
         String to = pr.getTo();
         if (to == null || to.trim().isEmpty()) {
             return;
         }
         boolean wantThis = false;
         boolean wantRet = false;
-        List<Integer> writeBackIndices = new java.util.ArrayList<>();
         for (String t : to.split(",")) {
             t = t.trim();
             if (t.isEmpty()) continue;
@@ -320,11 +349,6 @@ public class TaintMethodAdapter extends JVMRuntimeAdapter<String> {
                 wantRet = true;
             } else if (PropagationRule.TO_THIS.equals(t)) {
                 wantThis = true;
-            } else {
-                try {
-                    writeBackIndices.add(Integer.parseInt(t));
-                } catch (NumberFormatException ignore) {
-                }
             }
         }
 
@@ -334,24 +358,34 @@ public class TaintMethodAdapter extends JVMRuntimeAdapter<String> {
             taintReturnValue(calleeDesc);
         }
 
-        // 处理 this：受 invoke 类型限制；非 static 才有 this
-        // 注：此时 this 已被 pop。我们采用副作用语义——本步无法把污点写回到调用者本地变量，
-        // 但通过让"返回值带污点"近似补偿（很多链式 API 都返回 this）。
-        // 这里保留一个空操作，避免在父类 visit 之后再去翻栈造成不一致；
-        // 调用方会通过下一次方法访问（例如 .toString()) 触发对应 this->ret 规则继续传播。
+        // 处理 this：
+        // 1) 构造器场景（INVOKESPECIAL <init> 且返回 void）——NEW+DUP 语义保证
+        //    调用结束后栈顶就是 this 的另一份引用，直接染污点即可
+        // 2) 链式 API 场景（返回 this）——用"返回值带污点"近似补偿
         if (wantThis) {
-            // 保守：若有返回值，与 wantRet 等效（链式 API：StringBuilder.append() 返回 this）
-            if (rt.getSort() != Type.VOID && !wantRet) {
+            if (rt.getSort() == Type.VOID
+                    && opcode == Opcodes.INVOKESPECIAL
+                    && "<init>".equals(calleeName)) {
+                taintStackTopWithTaint();
+            } else if (rt.getSort() != Type.VOID && !wantRet) {
                 taintReturnValue(calleeDesc);
             }
         }
+    }
 
-        // 写回到入参槽：父类已 pop，无法再访问；忽略（等同于通用传播）
-        // 该能力暂未启用（极少用），如未来需要，可在父类调用前 snapshot 并恢复。
-        // 故 writeBackIndices 仅用于占位，不做实际处理。
-        if (!writeBackIndices.isEmpty()) {
-            // 不实现：见上注释
+    /**
+     * 把栈顶单个 slot 染上 TAINT（用于构造器调用后 DUP 留下的对象引用）。
+     */
+    private void taintStackTopWithTaint() {
+        List<Set<String>> stack = this.operandStack.getList();
+        if (stack.isEmpty()) {
+            return;
         }
+        int topIdx = stack.size() - 1;
+        Set<String> top = stack.get(topIdx);
+        Set<String> tainted = new HashSet<>(top == null ? new HashSet<>() : top);
+        tainted.add(TaintAnalyzer.TAINT);
+        stack.set(topIdx, tainted);
     }
 
     /**
@@ -393,22 +427,6 @@ public class TaintMethodAdapter extends JVMRuntimeAdapter<String> {
                     bsm == null ? null : bsm.getOwner(), idyName, idyDesc,
                     "invokedynamic 捕获参数带污点 → 返回值染色（lambda/字符串拼接等）"));
         }
-    }
-
-    /**
-     * 检查"调用前"栈顶 N 个参数槽是否有任意一个带污点。
-     */
-    private boolean anyArgTainted(List<Set<String>> stack, int argCount) {
-        if (stack.size() < argCount) {
-            return false;
-        }
-        for (int i = 0; i < argCount; i++) {
-            Set<String> slot = stack.get(stack.size() - 1 - i);
-            if (slot != null && slot.contains(TaintAnalyzer.TAINT)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**

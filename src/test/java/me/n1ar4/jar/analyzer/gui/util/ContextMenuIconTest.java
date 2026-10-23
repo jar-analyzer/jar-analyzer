@@ -34,7 +34,6 @@ class ContextMenuIconTest {
                 SvgManager.MenuCallSearchIcon,
                 SvgManager.MenuClassSearchIcon,
                 SvgManager.MenuGlobalSearchIcon,
-                SvgManager.MenuAiExplainIcon,
                 SvgManager.TabCloseIcon,
                 SvgManager.TabCloseOthersIcon,
                 SvgManager.TabCloseAllIcon,

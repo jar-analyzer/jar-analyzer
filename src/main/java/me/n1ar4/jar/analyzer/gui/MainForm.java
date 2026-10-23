@@ -202,8 +202,6 @@ public class MainForm {
     private JCheckBox leakIdBox;
     private JCheckBox leakEmailBox;
     private JCheckBox leakDetBase64Box;
-    private JCheckBox leakAITriageBox;
-    private JButton leakAITriageViewBtn;
     private JList<LeakResult> leakResultList;
     private JButton leakCleanBtn;
     private JButton leakStartBtn;
@@ -343,7 +341,6 @@ public class MainForm {
     private JCheckBox bankCardCheckBox;
     private JCheckBox APIKeyCheckBox;
     private JCheckBox cryptoKeyCheckBox;
-    private JCheckBox AIKeyCheckBox;
     private JCheckBox passwordCheckBox;
     private JButton exportLeakBtn;
     private JButton startTaintBtn;
@@ -410,14 +407,6 @@ public class MainForm {
 
     public JCheckBox getLeakDetBase64Box() {
         return leakDetBase64Box;
-    }
-
-    public JCheckBox getLeakAITriageBox() {
-        return leakAITriageBox;
-    }
-
-    public JButton getLeakAITriageViewBtn() {
-        return leakAITriageViewBtn;
     }
 
     public JList<LeakResult> getLeakResultList() {
@@ -895,10 +884,6 @@ public class MainForm {
 
     public JCheckBox getPasswordCheckBox() {
         return passwordCheckBox;
-    }
-
-    public JCheckBox getAIKeyCheckBox() {
-        return AIKeyCheckBox;
     }
 
     public JCheckBox getCryptoKeyCheckBox() {
@@ -2575,12 +2560,9 @@ public class MainForm {
         cryptoKeyCheckBox = new JCheckBox();
         cryptoKeyCheckBox.setText("Crypto Key");
         SwingLayout.add(leakRulesPanel, cryptoKeyCheckBox, 4, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_FIXED, null, null, null, 0);
-        AIKeyCheckBox = new JCheckBox();
-        AIKeyCheckBox.setText("AI Key");
-        SwingLayout.add(leakRulesPanel, AIKeyCheckBox, 4, 1, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_FIXED, null, null, null, 0);
         passwordCheckBox = new JCheckBox();
         passwordCheckBox.setText("Password");
-        SwingLayout.add(leakRulesPanel, passwordCheckBox, 4, 2, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_FIXED, null, null, null, 0);
+        SwingLayout.add(leakRulesPanel, passwordCheckBox, 4, 1, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_FIXED, null, null, null, 0);
         leakConfigPanel = new JPanel();
         SwingLayout.configureGrid(leakConfigPanel, 1, 6, new Insets(0, 0, 0, 0), -1, -1);
         SwingLayout.add(leakPanel, leakConfigPanel, 1, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, null, null, null, 0);
@@ -2588,23 +2570,15 @@ public class MainForm {
         leakDetBase64Box = new JCheckBox();
         leakDetBase64Box.setText("Detect Base64");
         SwingLayout.add(leakConfigPanel, leakDetBase64Box, 0, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_FIXED, null, null, null, 0);
-        leakAITriageBox = new JCheckBox();
-        leakAITriageBox.setText("AI Triage");
-        leakAITriageBox.setToolTipText("启用 AI 对每条命中结果研判，仅展示通过的结果");
-        SwingLayout.add(leakConfigPanel, leakAITriageBox, 0, 1, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_FIXED, null, null, null, 0);
-        leakAITriageViewBtn = new JButton();
-        leakAITriageViewBtn.setText("AI VIEW");
-        leakAITriageViewBtn.setToolTipText("查看 AI 研判面板（通过/未通过及原因）");
-        SwingLayout.add(leakConfigPanel, leakAITriageViewBtn, 0, 2, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_FIXED, null, null, null, 0);
         leakStartBtn = new JButton();
         leakStartBtn.setText("START");
-        SwingLayout.add(leakConfigPanel, leakStartBtn, 0, 3, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_FIXED, null, null, null, 0);
+        SwingLayout.add(leakConfigPanel, leakStartBtn, 0, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_FIXED, null, null, null, 0);
         leakCleanBtn = new JButton();
         leakCleanBtn.setText("CLEAN");
-        SwingLayout.add(leakConfigPanel, leakCleanBtn, 0, 4, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_FIXED, null, null, null, 0);
+        SwingLayout.add(leakConfigPanel, leakCleanBtn, 0, 2, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_FIXED, null, null, null, 0);
         exportLeakBtn = new JButton();
         exportLeakBtn.setText("EXPORT");
-        SwingLayout.add(leakConfigPanel, exportLeakBtn, 0, 5, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_FIXED, null, null, null, 0);
+        SwingLayout.add(leakConfigPanel, exportLeakBtn, 0, 3, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, SwingLayout.SIZEPOLICY_CAN_SHRINK | SwingLayout.SIZEPOLICY_CAN_GROW, SwingLayout.SIZEPOLICY_FIXED, null, null, null, 0);
         leakProgressBar = new JProgressBar();
         leakProgressBar.setBorderPainted(true);
         leakProgressBar.setString("ready");

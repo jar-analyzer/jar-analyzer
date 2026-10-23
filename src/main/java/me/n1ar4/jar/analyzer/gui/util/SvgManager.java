@@ -79,14 +79,6 @@ public class SvgManager {
     public static FlatSVGIcon ElConsoleIcon = new FlatSVGIcon("svg/elConsole.svg", 16, 16);
     public static FlatSVGIcon ElFilterIcon = new FlatSVGIcon("svg/elFilter.svg", 16, 16);
 
-    // ---- AI menu icons -------------------------------------------------
-    // Icons used by the top-level AI menu and its sub-items
-    // (chat dialog / provider settings).
-    public static FlatSVGIcon AiIcon = new FlatSVGIcon("svg/ai.svg", 16, 16);
-    public static FlatSVGIcon AiChatIcon = new FlatSVGIcon("svg/aiChat.svg", 16, 16);
-    public static FlatSVGIcon AiSettingsIcon = new FlatSVGIcon("svg/aiSettings.svg", 16, 16);
-    public static FlatSVGIcon AiGenIcon = new FlatSVGIcon("svg/aiGen.svg", 16, 16);
-
     // ---- top menu item icons -------------------------------------------
     // A compact, consistent 16x16 line-icon set for the menu bar and all
     // icon-bearing entries in its drop-down menus.
@@ -135,8 +127,6 @@ public class SvgManager {
             new FlatSVGIcon("svg/context/menuClassSearch.svg", 16, 16);
     public static FlatSVGIcon MenuGlobalSearchIcon =
             new FlatSVGIcon("svg/context/menuGlobalSearch.svg", 16, 16);
-    public static FlatSVGIcon MenuAiExplainIcon =
-            new FlatSVGIcon("svg/context/menuAiExplain.svg", 16, 16);
     public static FlatSVGIcon TabCloseIcon =
             new FlatSVGIcon("svg/context/tabClose.svg", 16, 16);
     public static FlatSVGIcon TabCloseOthersIcon =
@@ -147,19 +137,6 @@ public class SvgManager {
             new FlatSVGIcon("svg/context/tabCloseLeft.svg", 16, 16);
     public static FlatSVGIcon TabCloseRightIcon =
             new FlatSVGIcon("svg/context/tabCloseRight.svg", 16, 16);
-
-    // ---- Workflow (DAG canvas) icons -----------------------------------
-    // Per-node-type glyphs rendered inside a node card on the workflow
-    // canvas (28x28 looks crisp on HiDPI without jagged edges).
-    public static FlatSVGIcon WfTriggerIcon = new FlatSVGIcon("svg/wf/wfTrigger.svg", 28, 28);
-    public static FlatSVGIcon WfConstantsIcon = new FlatSVGIcon("svg/wf/wfConstants.svg", 28, 28);
-    public static FlatSVGIcon WfHttpIcon = new FlatSVGIcon("svg/wf/wfHttp.svg", 28, 28);
-    public static FlatSVGIcon WfMergeIcon = new FlatSVGIcon("svg/wf/wfMerge.svg", 28, 28);
-    public static FlatSVGIcon WfLoopIcon = new FlatSVGIcon("svg/wf/wfLoop.svg", 28, 28);
-    public static FlatSVGIcon WfIfIcon = new FlatSVGIcon("svg/wf/wfIf.svg", 28, 28);
-    public static FlatSVGIcon WfTransformIcon = new FlatSVGIcon("svg/wf/wfTransform.svg", 28, 28);
-    public static FlatSVGIcon WfAgentIcon = new FlatSVGIcon("svg/wf/wfAgent.svg", 28, 28);
-    public static FlatSVGIcon WfReportIcon = new FlatSVGIcon("svg/wf/wfReport.svg", 28, 28);
 
     private static FlatSVGIcon icon(String name) {
         return new FlatSVGIcon("svg/menu/" + name + ".svg", 16, 16);

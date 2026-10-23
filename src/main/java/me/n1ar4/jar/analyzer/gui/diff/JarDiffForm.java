@@ -10,7 +10,6 @@
 
 package me.n1ar4.jar.analyzer.gui.diff;
 
-import me.n1ar4.jar.analyzer.ai.AIActionHelper;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.starter.Const;
 import me.n1ar4.log.LogManager;
@@ -67,7 +66,6 @@ public class JarDiffForm {
     private final JTextField rightPath = new JTextField();
     private final JButton runBtn = new JButton("Run Diff");
     private final JButton exportBtn = new JButton("Export Diff");
-    private final JButton aiAnalyzeBtn = new JButton("AI 分析变更");
     private final JCheckBox hideEqual = new JCheckBox("Hide unchanged", true);
     private final JLabel statusLabel = new JLabel("idle");
     private final JProgressBar progressBar = new JProgressBar();
@@ -228,21 +226,8 @@ public class JarDiffForm {
         g.gridx = 2;
         ctrl.add(exportBtn, g);
 
-        // AI 分析按钮：把当前选中条目的 unified diff 文本发给 AI，让其判断是否为安全修复
-        aiAnalyzeBtn.setToolTipText("把当前选中条目的 diff 文本发给 AI 分析，判断是否为安全修复 / 漏洞类型");
-        aiAnalyzeBtn.addActionListener(e -> {
-            String diffText = unifiedPane.getText();
-            String left = leftPath.getText();
-            String right = rightPath.getText();
-            // 以按钮为 anchor：弹窗 owner 绑定到 JarDiffForm 所在窗口，
-            // 避免 AI 对话框被反复盖到 diff 子窗口下层
-            AIActionHelper.summarizeDiff(aiAnalyzeBtn, left, right, diffText);
-        });
-        g.gridx = 3;
-        ctrl.add(aiAnalyzeBtn, g);
-
         // separator that takes the slack so status / progress sit at the right
-        g.gridx = 4;
+        g.gridx = 3;
         g.weightx = 1;
         g.fill = GridBagConstraints.HORIZONTAL;
         ctrl.add(Box.createHorizontalGlue(), g);

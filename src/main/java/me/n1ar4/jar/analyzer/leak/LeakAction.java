@@ -10,14 +10,10 @@
 
 package me.n1ar4.jar.analyzer.leak;
 
-import me.n1ar4.jar.analyzer.ai.AIConfig;
-import me.n1ar4.jar.analyzer.ai.AIConfigManager;
 import me.n1ar4.jar.analyzer.engine.CoreEngine;
 import me.n1ar4.jar.analyzer.entity.LeakResult;
-import me.n1ar4.jar.analyzer.entity.LeakTriageEntry;
 import me.n1ar4.jar.analyzer.entity.MemberEntity;
 import me.n1ar4.jar.analyzer.exporter.LeakCsvExporter;
-import me.n1ar4.jar.analyzer.gui.LeakAITriageForm;
 import me.n1ar4.jar.analyzer.gui.MainForm;
 import me.n1ar4.jar.analyzer.gui.util.LogUtil;
 import me.n1ar4.jar.analyzer.starter.Const;
@@ -36,15 +32,6 @@ import java.util.function.Function;
 
 public class LeakAction {
     private static final Logger logger = LogManager.getLogger();
-
-    /**
-     * 最近一次 AI 研判结果（用于"AI VIEW"按钮回看；包含通过+未通过+失败三类）
-     */
-    private static volatile List<LeakTriageEntry> lastTriageEntries = Collections.emptyList();
-
-    public static List<LeakTriageEntry> getLastTriageEntries() {
-        return lastTriageEntries;
-    }
 
     // 规则配置类
     private static class RuleConfig {
@@ -290,10 +277,7 @@ public class LeakAction {
         JCheckBox bankBox = instance.getBankCardCheckBox();
         JCheckBox cloudAkSkBox = instance.getAKSKCheckBox();
         JCheckBox cryptoBox = instance.getCryptoKeyCheckBox();
-        JCheckBox aiKeyBox = instance.getAIKeyCheckBox();
         JCheckBox passBox = instance.getPasswordCheckBox();
-        JCheckBox aiTriageBox = instance.getLeakAITriageBox();
-        JButton aiTriageViewBtn = instance.getLeakAITriageViewBtn();
         JProgressBar progressBar = instance.getLeakProgressBar();
         updateProgressBar(progressBar, 0, "ready");
 
@@ -311,37 +295,7 @@ public class LeakAction {
         bankBox.setSelected(true);
         cloudAkSkBox.setSelected(true);
         cryptoBox.setSelected(true);
-        aiKeyBox.setSelected(true);
         passBox.setSelected(true);
-        // AI 研判默认关闭，避免用户在未配置 AI 时误开
-        aiTriageBox.setSelected(false);
-
-        // 勾选 AI Triage 时立即检查 LLM 配置，未配置则提示并取消勾选
-        aiTriageBox.addActionListener(e -> {
-            if (!aiTriageBox.isSelected()) {
-                return;
-            }
-            AIConfig cfg = AIConfigManager.getActive();
-            if (!cfg.isReady()) {
-                aiTriageBox.setSelected(false);
-                JOptionPane.showMessageDialog(instance.getMasterPanel(),
-                        "<html>AI 尚未配置，无法启用研判。<br><br>" +
-                                "请先在菜单栏 <b>AI</b> → <b>AI 配置</b> 中填写：<br>" +
-                                "&nbsp;&nbsp;• Base URL（OpenAI 兼容协议）<br>" +
-                                "&nbsp;&nbsp;• Model<br>" +
-                                "&nbsp;&nbsp;• API Key<br><br>" +
-                                "并选择启用一条配置后，再回来勾选。</html>",
-                        "AI 未配置",
-                        JOptionPane.WARNING_MESSAGE);
-            } else {
-                // 简单回显当前生效的 provider/model（不显示 apiKey）
-                String name = cfg.getName() == null || cfg.getName().isEmpty() ? "(未命名)" : cfg.getName();
-                log("ai triage enabled, profile=" + name +
-                        ", provider=" + cfg.getProvider() +
-                        ", model=" + cfg.getModel());
-            }
-        });
-
 
         JList<LeakResult> leakList = instance.getLeakResultList();
 
@@ -370,35 +324,7 @@ public class LeakAction {
             }
         });
 
-        // AI 研判面板查看
-        aiTriageViewBtn.addActionListener(e -> {
-            List<LeakTriageEntry> entries = lastTriageEntries;
-            if (entries == null || entries.isEmpty()) {
-                JOptionPane.showMessageDialog(instance.getMasterPanel(),
-                        "暂无 AI 研判数据，请先勾选 AI Triage 并执行 START");
-                return;
-            }
-            LeakAITriageForm.start(entries);
-        });
-
         instance.getLeakStartBtn().addActionListener(e -> {
-            // START 前再做一次 AI 配置校验（双保险：勾选后用户可能又改/删了配置）
-            if (aiTriageBox.isSelected()) {
-                AIConfig cfg = AIConfigManager.getActive();
-                if (!cfg.isReady()) {
-                    int choice = JOptionPane.showConfirmDialog(instance.getMasterPanel(),
-                            "<html>已勾选 <b>AI Triage</b>，但当前 AI 未配置或配置不完整。<br><br>" +
-                                    "<b>是</b>：取消 AI 研判，继续按原始规则扫描<br>" +
-                                    "<b>否</b>：本次不执行扫描，去配置 AI</html>",
-                            "AI 未配置",
-                            JOptionPane.YES_NO_OPTION,
-                            JOptionPane.WARNING_MESSAGE);
-                    if (choice != JOptionPane.YES_OPTION) {
-                        return;
-                    }
-                    aiTriageBox.setSelected(false);
-                }
-            }
             instance.getLeakStartBtn().setEnabled(false);
             updateProgressBar(progressBar, 0, "leak scan starting");
             new Thread(() -> {
@@ -424,7 +350,6 @@ public class LeakAction {
                             new RuleConfig(bankBox, BankCardRule::match, "BANK-CARD", "bank-card"),
                             new RuleConfig(cloudAkSkBox, CloudAKSKRule::match, "CLOUD-AKSK", "cloud-aksk"),
                             new RuleConfig(cryptoBox, CryptoKeyRule::match, "CRYPTO-KEY", "crypto-key"),
-                            new RuleConfig(aiKeyBox, OpenAITokenRule::match, "AI-KEY", "ai-key"),
                             new RuleConfig(passBox, PasswordRule::match, "PASSWORD", "password")
                     };
 
@@ -454,44 +379,9 @@ public class LeakAction {
                     }
                     scanProgress.finish("leak scan finished, found=" + results.size());
 
-                    // AI 研判（可选）
-                    List<LeakResult> finalResults;
-                    if (aiTriageBox.isSelected() && !results.isEmpty()) {
-                        List<LeakResult> raw = new ArrayList<>(results);
-                        final int total = raw.size();
-                        log("ai triage start (total=" + total + ")");
-                        ProgressState aiProgress = new ProgressState(progressBar, total);
-                        aiProgress.start("ai triage start");
-                        List<LeakTriageEntry> entries = LeakAITriageService.triageAll(raw,
-                                (done, t, current) -> {
-                                    aiProgress.advance("ai triage");
-                                    // 每 5 条或最后一条刷新一次进度
-                                    if (done == t || done % 5 == 0) {
-                                        log("ai triage progress: " + done + "/" + t);
-                                    }
-                                });
-                        aiProgress.finish("ai triage finished");
-                        lastTriageEntries = entries;
-                        // 仅保留 AI 判定为敏感的（未通过的从最终结果剔除）
-                        finalResults = new ArrayList<>(entries.size());
-                        int filtered = 0;
-                        for (LeakTriageEntry entry : entries) {
-                            if (entry.isSensitive()) {
-                                finalResults.add(entry.getResult());
-                            } else {
-                                filtered++;
-                            }
-                        }
-                        log("ai triage finish, filtered=" + filtered + ", kept=" + finalResults.size());
-                    } else {
-                        // 未启用 AI：清空旧的研判记录，避免误以为是当前结果
-                        lastTriageEntries = Collections.emptyList();
-                        finalResults = new ArrayList<>(results);
-                    }
-
                     // 更新UI
                     DefaultListModel<LeakResult> model = new DefaultListModel<>();
-                    for (LeakResult leakResult : finalResults) {
+                    for (LeakResult leakResult : results) {
                         model.addElement(leakResult);
                     }
                     SwingUtilities.invokeLater(() -> leakList.setModel(model));
@@ -507,7 +397,6 @@ public class LeakAction {
 
         instance.getLeakCleanBtn().addActionListener(e -> {
             leakList.setModel(new DefaultListModel<>());
-            lastTriageEntries = Collections.emptyList();
             updateProgressBar(progressBar, 0, "ready");
             JOptionPane.showMessageDialog(instance.getMasterPanel(), "clean data finish");
         });

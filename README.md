@@ -6,14 +6,13 @@
 
 The `jar-analyzer` project has been continuously updated for `5` years, with `67` versions released, contains v1 and v2 version, completely open source and completely free.
 
-`AI` 时代为什么还要使用 `jar-analyzer` 工具：
+为什么使用 `jar-analyzer` 工具：
 
-- 快速精准有目标地做一些分析，使用 `AI` 需要合适的 `prompt` 以及等待分析
-- 大型项目动辄数十万类、上百万方法，远超 `AI` 的上下文窗口；`jar-analyzer` 一次构建数据库，之后任意组合查询都是秒级响应，结果精确到具体类具体方法
-- 确定性分析，结果可复现：`AI` 存在幻觉，可能编造类名和调用关系；安全审计需要精确
+- 确定性分析，结果可复现，满足安全审计对准确性的要求
+- 大型项目动辄数十万类上百万方法；`jar-analyzer` 一次构建数据库，之后任意组合查询都是秒级响应
 - 全程本地离线分析，代码与 `JAR` 不出本机，满足企业内部代码与甲方资产的保密要求
-- 调用链 / `CFG` / `JVM` 栈帧等图形化分析能力，鼠标点点点即可交互式探索，这是纯文本对话难以替代的
-- 并非拒绝 `AI`：内置 `AI` 助手与 `MCP` 服务一键启动
+- 调用链 / `CFG` / `JVM` 栈帧等图形化分析能力，鼠标点即可交互式探索
+- 可通过 `MCP` 服务将分析能力接入外部工具
 
 ![](https://img.shields.io/github/last-commit/jar-analyzer/jar-analyzer)
 ![](https://img.shields.io/github/release-date/jar-analyzer/jar-analyzer)
@@ -56,9 +55,9 @@ The `jar-analyzer` project has been continuously updated for `5` years, with `67
 
 Jar Analyzer
 
-- 一个 `JAR` 包分析工具，`AI` 赋能古法安全审计
+- 一个 `JAR` 包分析工具，辅助安全审计
 - 支持 `JAR DIFF` 深入分析源码变动（支持目录对比）
-- 自从 `6.0` 版本后内置 `AI` 助手和 `MCP`
+- 自从 `6.0` 版本后内置 `MCP` 服务
 - 完善美观的 `GUI` 支持（现代化 `Java GUI` 界面，可拖拽，明暗橙三主题，十种风格）
 - 基础分析（支持 `Jar/War/Classes` 输入，支持多文件，支持嵌套 `FatJar`）
 - 黑白名单配置（构建数据库和搜索功能都支持黑白名单过滤，支持精确类名和包名过滤）
@@ -90,7 +89,6 @@ Jar Analyzer
 - 代码完全开源，构建基于 `github actions` 你可以随意查看功能代码，定制功能
 - 简单易用无需额外配置的 `污点分析` 能力，帮助您进行深入的漏洞和程序分析
 - 活跃的开源社区和维护，常年持续更新完善，欢迎贡献和参与
-- 本项目跟随主流技术路线，尝试基于 `AI` 做探索
 
 ![](img/0080.png)
 
@@ -107,19 +105,19 @@ Jar Analyzer
 - 选择 `JAR` 分析结束后，人工搜索 `sink` 逐步跟调用，内部集成了众多常见的 `Java` 漏洞 `sink`
 - `Java WEB` 入口分析：支持 `Spring Controller/Serlvet` 等常见入口点定位和导出，辅助分析
 - 自动化分析，支持 `DFS` 调用链分析，支持模拟 `JVM` 的污点分析，人工经验结合自动化，进阶分析
-- 信息泄露分析：帮你找到 `JAR` 包中所有静态资源文件和 `class` 中的敏感信息，内置 `AI` 研判
-- 更多专业级功能：支持 `DIFF JAR` 以及目录对比，功能更新分析，漏洞补丁分析，内置 `AI` 研判
+- 信息泄露分析：帮你找到 `JAR` 包中所有静态资源文件和 `class` 中的敏感信息
+- 更多专业级功能：支持 `DIFF JAR` 以及目录对比，分析功能更新和漏洞修复补丁
 
 (3) 不了解 `Java` 也想审计
 
 - 选择 `JAR` 分析结束后，点开 `MCP` 面板，一键启动 `MCP`
 - 在 `Claude Code / Codex / Qwen Code / ZCode` 等工具中完成 `MCP` 配置
 - 对话：请使用 `jar-analyzer-mcp` 分析漏洞吧
-- 可选：让 `AI` 帮你写一个针对 `jar-analyzer-mcp` 的 `SKILL` 进行辅助分析
+- 可选：配置客户端工具的 `SKILL`，辅助分析
 
 ## 近期更新
 
-自从 `5.21` 版本以后支持了 `JAR DIFF` 功能，在 `5.22` 版本支持导出完整记录，便于 `AI` 分析漏洞
+自从 `5.21` 版本以后支持了 `JAR DIFF` 功能，在 `5.22` 版本支持导出完整记录
 
 ![](img/0087.png)
 
@@ -128,12 +126,6 @@ Jar Analyzer
 `Agent` 端配置参考 [MCP 配置](#MCP)
 
 ![](img/1008.png)
-
-自从 `6.0` 版本以后，内置了 `AI` 助手和 `workflow` 内容，详情参考 [AI 文档](doc/README-ai.md)
-
-![](img/1000.png)
-
-![](img/1004.png)
 
 静态分析 `spring / java web` 项目
 
@@ -182,7 +174,7 @@ Jar Analyzer
 - 场景13：你有一个 `BCEL` 格式的字节码需要一键反编译代码分析
 - 场景14：你有一大堆 `Jar` 文件或目录需要全部批量反编译导出代码
 - 场景15：从大量 `JAR` 中分析 `IP` 地址/手机号/邮箱等各种信息泄露
-- 场景16：需要将 `JAR` 分析加入到已有的工作流（`CICD` / `AI workflow` 等） 
+- 场景16：需要将 `JAR` 分析加入到已有的工作流（`CICD` 等）
 - 场景17：需要 `DIFF` 两个 `JAR/目录` 的文件变动分析漏洞修复补丁等
 
 ## 更新记录
@@ -334,10 +326,6 @@ git clone --depth 1 https://github.com/jar-analyzer/jar-analyzer
 1. 可选：构建 `agent` 子项目 `cd agent && package.bat`
 2. 可选：使用 `winres` 和 `gcc` 构建启动 `exe` 文件和图标信息
 3. 可选：完整发版参考 `build.py` 和 `build.yml` 文件
-
-## AI 相关内容
-
-`AI` 相关功能文档：[README-ai.md](doc/README-ai.md)
 
 ## 注意
 

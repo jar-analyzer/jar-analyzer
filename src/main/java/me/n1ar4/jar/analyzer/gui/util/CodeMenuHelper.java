@@ -10,7 +10,6 @@
 
 package me.n1ar4.jar.analyzer.gui.util;
 
-import me.n1ar4.jar.analyzer.ai.AIActionHelper;
 import me.n1ar4.jar.analyzer.entity.MethodResult;
 import me.n1ar4.jar.analyzer.gui.LuceneSearchForm;
 import me.n1ar4.jar.analyzer.gui.MainForm;
@@ -135,20 +134,6 @@ public class CodeMenuHelper {
         luceneItem.setIcon(SvgManager.MenuGlobalSearchIcon);
         luceneItem.addActionListener(e -> LuceneSearchForm.start(1));
         popupMenu.add(luceneItem);
-
-        // ===== AI 解释代码 =====
-        popupMenu.addSeparator();
-        JMenuItem aiExplainItem = new JMenuItem("AI 解释这段代码");
-        aiExplainItem.setIcon(SvgManager.MenuAiExplainIcon);
-        aiExplainItem.addActionListener(e -> {
-            String selected = rArea.getSelectedText();
-            String code = (selected != null && !selected.trim().isEmpty())
-                    ? selected
-                    : rArea.getText();
-            // 以代码区为 anchor：弹窗 owner 绑定到反编译窗口所在的 Window
-            AIActionHelper.explainCode(rArea, code, MainForm.getCurClass());
-        });
-        popupMenu.add(aiExplainItem);
 
         rArea.setPopupMenu(popupMenu);
     }

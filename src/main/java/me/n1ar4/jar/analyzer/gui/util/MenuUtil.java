@@ -14,9 +14,6 @@ import me.n1ar4.games.GameFrame;
 import me.n1ar4.games.flappy.FBMainFrame;
 import me.n1ar4.games.landlord.PokerGameFrame;
 import me.n1ar4.games.racing.RacingGameFrame;
-import me.n1ar4.jar.analyzer.ai.AIChatDialog;
-import me.n1ar4.jar.analyzer.ai.AISettingsDialog;
-import me.n1ar4.jar.analyzer.ai.workflow.AIWorkflowDialog;
 import me.n1ar4.jar.analyzer.config.ConfigEngine;
 import me.n1ar4.jar.analyzer.config.ConfigFile;
 import me.n1ar4.jar.analyzer.gui.*;
@@ -249,36 +246,7 @@ public class MenuUtil {
                 me.n1ar4.jar.analyzer.plugins.sqlite.SQLiteForm.start());
         plugins.add(connectDbItem);
         menuBar.add(plugins);
-        menuBar.add(createAIMenu());
         return menuBar;
-    }
-
-    private static JMenu createAIMenu() {
-        JMenu aiMenu = new JMenu("AI");
-
-        JMenuItem chatItem = new JMenuItem("AI 助手对话");
-        chatItem.setIcon(SvgManager.AiChatIcon);
-        chatItem.addActionListener(e -> AIChatDialog.open());
-        aiMenu.add(chatItem);
-
-        JMenuItem settingsItem = new JMenuItem("AI 设置 (DeepSeek / 智谱 GLM)");
-        settingsItem.setIcon(SvgManager.AiSettingsIcon);
-        settingsItem.addActionListener(e -> AISettingsDialog.open());
-        aiMenu.add(settingsItem);
-
-        aiMenu.addSeparator();
-        JMenuItem workflowItem = new JMenuItem("AI 漏洞扫描工作流 (DAG)");
-        workflowItem.setIcon(SvgManager.AiIcon);
-        workflowItem.addActionListener(e ->
-                AIWorkflowDialog.open(MainForm.getInstance().getMasterPanel()));
-        aiMenu.add(workflowItem);
-
-        aiMenu.addSeparator();
-        JMenuItem hintItem = new JMenuItem("已支持: DeepSeek / 智谱 GLM / 自定义");
-        hintItem.setEnabled(false);
-        aiMenu.add(hintItem);
-
-        return aiMenu;
     }
 
     private static JMenu createTheme() {

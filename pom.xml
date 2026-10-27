@@ -80,7 +80,7 @@
         <syntax.version>3.6.3</syntax.version>
         <slf4j.api.version>2.0.20</slf4j.api.version>
         <slf4j.simple.version>2.0.20</slf4j.simple.version>
-        <mybatis.version>3.6.0</mybatis.version>
+        <mybatis.version>3.5.19</mybatis.version>
         <commons.dhcp.version>2.14.0</commons.dhcp.version>
         <jcommander.version>1.82</jcommander.version>
         <dom4j.version>2.1.5</dom4j.version>
@@ -282,6 +282,14 @@
                                 <ignoreVersion>
                                     <type>regex</type>
                                     <version>[6-9].*</version>
+                                </ignoreVersion>
+                            </rule>
+                            <!-- MyBatis 3.6+ requires Java 11; keep Java 8 compatibility -->
+                            <rule>
+                                <groupId>org.mybatis</groupId>
+                                <ignoreVersion>
+                                    <type>regex</type>
+                                    <version>3\.(6|[7-9]|[1-9][0-9])\..*</version>
                                 </ignoreVersion>
                             </rule>
                             <!-- LUCENE 7 + 需要 JRE 8 + -->

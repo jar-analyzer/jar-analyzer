@@ -932,9 +932,9 @@ public class MainForm {
         }
     }
 
-    public static float FONT_SIZE = 16f;
+    public static float FONT_SIZE = 15f;
     // 界面字体（菜单/按钮/标签）与代码区字体分开指定
-    public static float UI_FONT_SIZE = 13f;
+    public static float UI_FONT_SIZE = 12f;
 
     public MainForm() {
         // 2026/08/20 代码区与界面字号分开指定：

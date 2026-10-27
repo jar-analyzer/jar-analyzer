@@ -18,8 +18,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class AIProviderTest {
     @Test
     void deepSeekUsesFlashAsItsDefaultAndFirstOption() {
-        assertEquals("deepseek-v4-flash", AIProvider.DEEPSEEK.getDefaultModel());
-        assertEquals("deepseek-v4-flash", AIProvider.DEEPSEEK.getModelOptions().get(0));
+        assertEquals("deepseek-flash", AIProvider.DEEPSEEK.getDefaultModel());
+        assertEquals("deepseek-flash", AIProvider.DEEPSEEK.getModelOptions().get(0));
         assertTrue(AIProvider.DEEPSEEK.getModelOptions().contains("deepseek-v4-pro"));
     }
 
